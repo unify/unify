@@ -1,0 +1,3 @@
+[submodule "external/qooxdoo"]
+	path = external/qooxdoo
+	url = http://github.com/unify/qooxdoo.git
