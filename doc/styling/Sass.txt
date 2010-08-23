@@ -1,0 +1,127 @@
+How to use css styling with Sass
+================================
+
+From the website: Sass makes CSS fun again. Sass is CSS, plus nested rules, 
+variables, mixins, and more, all in a concise, readable syntax.
+
+Sass helps writing css in adding some features really missing in the css specs.
+There is a sass compiler to translate sass files into valid css files.
+
+
+The main concepts
+=================
+
+
+Variables
+---------
+
+You can now use variables in your style code as known from programming languages.
+
+/******************************************/
+!blue = #3bbfce
+!margin = 16px
+
+.content_navigation
+	border-color = !blue
+
+.border
+	padding = !margin
+	margin = !margin
+	border-color = !blue
+/******************************************/ 
+
+
+Mixins (Macros)
+---------------
+
+The use of macros is also possible with Sass. The macro calls (+<macro name>) are
+replaced with the macro content itself. Variables are allowed in macros so you can
+create a default set of common used macros.
+
+/******************************************/ 
+=table-scaffolding
+	th
+		text-align: center
+		font-weight: bold
+	td, th
+		padding: 2px
+
+=left(!dist)
+	float: left
+ 	margin-left = !dist
+
+#data
+	+left(10px)
+	+table-scaffolding
+/******************************************/ 
+
+
+Nested Rules
+------------
+
+Big advantages of Sass over CSS are nested rules. With this you can write cleaner
+style code. 
+
+/******************************************/ 
+table.hl
+	margin: 2em 0
+	td.ln
+		text-align: right
+
+li
+	font:
+		family: serif
+		weight: bold
+		size: 1.2em
+/******************************************/ 
+
+
+Operations
+----------
+
+An advanced concept of Sass is the use of operations. You can calculate values
+based upon standard values. This is also possible with colors.
+
+/******************************************/
+!blue = #3bbfce
+!margin = 16px
+
+.content_navigation
+	border-color = !blue
+	color = !blue - #111
+
+.border
+	padding = !margin / 2
+	margin = !margin / 2
+	border-color = !blue
+/******************************************/ 
+
+
+Imports
+-------
+
+To get a more structured style sheet you can import other Sass style sheets into 
+your Sass style sheet file.
+
+/******************************************/
+@import animation.sass
+@import core.sass
+/******************************************/ 
+
+
+Starting point
+==============
+
+In unify we created an central starting point in your unify application project.
+It is located at source/resource/<yourAppName>/desktop/style.sass for desktop
+applications and source/resource/<yourAppName>/mobile/style.sass for mobile
+applications. Everytime you call 'generate.py' with the build or source parameter
+the Sass files are compiled to CSS files. You need to include the style.css file
+to your app.
+
+
+Links
+=====
+
+You can find Sass on the web at http://sass-lang.com/
+An tutorial is available at http://sass-lang.com/tutorial.html

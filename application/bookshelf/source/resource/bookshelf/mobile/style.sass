@@ -1,0 +1,189 @@
+@import ../../../../../../external/qooxdoo/qooxdoo/../../../framework/source/resource/unify/mobile/core.sass
+@import ../../../../../../external/qooxdoo/qooxdoo/../../../framework/source/resource/unify/mobile/iphoneos/style.sass
+
+=3dquad(!width, !height, !depth)
+	> .top, > .front, > .right, > .back, > .left, > .bottom
+		position: absolute
+	
+	> .top
+		-webkit-transform = rotateX(90deg) 
+		-webkit-transform-origin: top
+		width = !width
+		height = !depth
+	
+	> .front
+		-webkit-transform = translateZ(!depth) translateX(-62px) translateY(62px) rotate(90deg)
+		//width = !width
+		width = !height
+		//height = !height
+		height = !width
+
+	> .right
+		-webkit-transform = rotateY(90deg) translateZ(!width) translateX(-!depth)
+		-webkit-transform-origin: left
+		width = !depth
+		height = !height
+	
+	> .back
+		-webkit-transform = rotateY(180deg) 
+		width = !width
+		height = !height
+	
+	> .left
+		-webkit-transform = rotateY(-90deg) 
+		-webkit-transform-origin: left
+		width = !depth
+		height = !height
+	
+	> .bottom
+		-webkit-transform = rotateX(-90deg) rotate(180deg) translateZ(!height)
+		-webkit-transform-origin: top
+		width = !width
+		height = !depth
+	
+
+#sys-info
+	+vbox
+	+padded-layer
+	
+	.content
+		> ul
+			+keyvalue-list
+
+#start
+	.board
+		width: 400px
+		+3dquad(400px, 20px, 150px)
+		
+#three-long
+	.board
+		width: 800px
+		+3dquad(800px, 20px, 150px)
+
+#start, #three-long
+	+padded-layer
+	+vbox
+
+	.content
+		+box-flex(1)
+		position: relative
+		
+		.root
+			position: absolute
+			top: 0
+			left: 0
+			width: 100%
+			height: 100%
+			background: #f5f5f5
+			-webkit-perspective: 800
+			-webkit-perspective-origin: 60% 0px
+
+		.board
+			height: 20px
+			background: #eee
+			margin: auto
+			top: 200px
+			position: relative
+				
+			> div
+				background: white
+				
+			> .front
+				border: 1px solid #ddd
+				
+			> .bottom
+				-webkit-box-shadow: 0px 4px 20px rgba(0,0,0,0.3)
+
+
+		.book
+			position: relative
+			width: 16px
+			top: -140px
+			display: inline-block
+			margin-right: 4px
+			margin-left: 4px
+
+			-webkit-transform-style: preserve-3d
+			-webkit-transform-origin: center right
+
+		
+			+3dquad(16px, 140px, 120px)
+			
+			> div
+				background: rgb(247,216,145)
+				border: 1px solid #EC9
+			
+			> .front
+				background: #565656
+				color: white
+				font-size: 11px
+				text-align: center
+				
+			> .bottom
+				-webkit-box-shadow: 1px -2px 5px rgba(0,0,0,0.3)
+				
+			> .right img
+				width: 100%
+				height: 100%
+				position: absolute
+				top: 0
+				left: 0
+
+#two
+	+padded-layer
+	+vbox
+	
+	.content
+		+box-flex(1)
+		position: relative
+		
+	.root
+		position: absolute
+		top: 0
+		left: 0
+		width: 100%
+		height: 100%
+		background: #f5f5f5
+	
+	.board
+		background-image = inline_image("board.png")
+		background-repeat: no-repeat
+		background-position: center bottom
+		width: 480px
+		height: 320px
+		
+	.bookcontainer
+		position: absolute
+		top: 170px
+		left: 130px
+		
+	.book
+		display: inline-block
+		width: 50px
+		height: 80px
+		overflow: hidden
+		//display: none
+		
+		&.active
+			img
+				display: block
+		
+		img
+			min-width: 100%
+			height: 100%
+			display: block
+			
+	.cover
+		display: inline-block
+		width: 20px
+		height: 80px
+		overflow: hidden
+		background: #565656
+		
+		div
+			-webkit-transform = translateX(-40px) translateY(10px) rotate(90deg) translateY(-10px) translateX(-49px)
+			width: 80px
+			height: 20px
+			text-align: center
+			font-size: 11px
+			color: white

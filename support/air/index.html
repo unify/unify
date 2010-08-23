@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>T-Witter</title>
+    <script type="text/javascript" src="AIRAliases.js"></script>
+    <script type="text/javascript">
+      // Create an object that will be used to expose AIR functionality.
+      // to the browser sandbox
+      var Exposed =
+      {
+        trace : function(str) {
+          air.trace(str);
+        }
+      };
+
+      // Called from the onload event of the body element.
+      function load()
+      {
+        // Place the Exposed object on the parentSandboxBridge property of the ui frame's window object.
+        var frame = document.getElementById('UI').contentWindow.parentSandboxBridge = Exposed;
+      }
+    </script>
+    <style type="text/css">
+      html,body{
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        padding: 0;
+        margin: 0;
+        background: white;
+        color: black;
+      }
+      iframe{
+        width: 100%;
+        height: 100%;
+        border: 0 none;
+        outset: 0 none;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body onload="load();">
+    <iframe id="UI" src="http://unify.foo.com/" documentRoot="app:/"></iframe>
+  </body>
+</html>

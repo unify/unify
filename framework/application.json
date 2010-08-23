@@ -1,0 +1,412 @@
+{
+  "name"    : "Unify Application Build Config",
+  
+  
+  
+
+  "include" :
+  [
+    {
+      "path" : "${QOOXDOO_PATH}/tool/data/config/base.json",
+      "as"   : "qooxdoo" 
+    },
+    
+    {
+      "path" : "${APIVIEWER_PATH}/api.json",
+      "as"   : "apiviewer"
+    },
+    
+    {
+      "path" : "${TESTRUNNER_PATH}/testrunner.json",
+      "as"   : "testrunner"
+    }    
+  ],
+
+
+
+
+  "let" :
+  {
+    "QOOXDOO_PATH"      : "../external/qooxdoo/qooxdoo",
+    "UNIFY_PATH"        : ".",
+    "APIVIEWER_PATH"    : "${QOOXDOO_PATH}/component/apiviewer",
+    "TESTRUNNER_PATH"   : "${QOOXDOO_PATH}/component/testrunner",
+    "APPLICATION"       : "${APP_NAME}",
+    
+    "QXVERSION"         : "1.0.0",
+
+    "APP_THEME"         : "${APP_NAME}.ui.desktop.theme.Theme"
+  },
+  
+  
+  
+  
+  
+  "jobs" : 
+  {
+    /* 
+    ---------------------------------
+       UNIFY JOBS
+    ---------------------------------
+    */
+
+    "libraries" :
+    {
+      "desc" : "includer job, to hold the essential libraries for the compile jobs",
+
+      "library" :
+      [
+        {
+          "manifest" : "${QOOXDOO_PATH}/framework/Manifest.json"
+        },
+
+        {
+          "manifest" : "${UNIFY_PATH}/framework/Manifest.json"
+        },
+        
+        {
+          "manifest" : "${APP_PATH}/Manifest.json" 
+        }
+      ]
+    },
+    
+    "unify-core" : 
+    {
+      "extend" : [ "libraries" ],
+      
+      "cache" :
+      {
+        "compile"   :  "${CACHE}",
+        "downloads" :  "${CACHE}/downloads"
+      },      
+
+      "settings" :
+      {
+        "qx.version" : "${QXVERSION}",
+        "unify.root" : "/${APP_NAME}"
+      }  
+    },
+    
+    "uml":
+    {
+      "extend" : [ "libraries" ],
+      
+      "cache" :
+      {
+        "compile"   :  "${CACHE}",
+        "downloads" :  "${CACHE}/downloads"
+      }, 
+      "include"    : [ "unify.*", "${APP_NAME}.*" ],
+      "exclude"    : ["qx.test.*", "unify.test.*", "${APP_NAME}.test.*" ],
+      "uml":
+      {
+        "path"  : "${APP_PATH}/uml",
+        "compact" : "true",
+        "name": "${APP_NAME}"
+      }    
+    },
+    
+    
+
+    /* 
+    ---------------------------------
+       UNIFY TARGET JOBS
+    ---------------------------------
+    */    
+    
+    "unify-target-mobile" :
+    {
+      "extend" : [ "unify-core", "sass-mobile" ],
+      
+      "include" :
+      [
+        "${APP_NAME}.application.Mobile"
+      ],    
+      
+      "settings" :
+      {
+        "qx.application" : "${APP_NAME}.application.Mobile"
+      },
+      
+      "variants" : 
+      {
+        "unify.platform" : [ "mobile" ]
+      }
+    },
+
+    "unify-target-desktop" :
+    {
+      "extend" : [ "unify-core" ],
+      
+      "include" :
+      [
+        "${APP_NAME}.application.Desktop",
+        "${APP_THEME}"
+      ],
+            
+      "settings" :
+      {
+        "qx.application" : "${APP_NAME}.application.Desktop",
+        "qx.theme"       : "${APP_THEME}"
+      },
+      
+      "variants" : 
+      {
+        "unify.platform" : [ "desktop" ]
+      }
+    },
+    
+    
+    
+    /* 
+    ---------------------------------
+       UNIFY TYPE JOBS
+    ---------------------------------
+    */    
+    
+    "unify-run-build" : 
+    {
+      "extend" : [ "unify-core" ],
+      
+      "compile-options" :
+      {
+        "paths"  :
+        {
+          "file" : "${BUILD_PATH}/script/${APP_NAME}-{qx.client}-{qx.debug}.js"
+        },
+        
+        "uris"   :
+        {
+          "script" : "script"
+        },
+        
+        "code"   :
+        {
+          "format"   : false,
+          "locales"  : "${APP_LOCALES}",
+          "optimize" : [ "variables", "privates", "basecalls" ]
+        }
+      },
+      
+      "variants" :
+      {
+        "qx.dynlocale" : [ "off" ],
+        "qx.aspects" : [ "off" ],
+        "qx.debug" : [ "off", "on" ]
+      },      
+      
+      "copy-files" :
+      {
+        "files" : "${COPY_FILES}",
+        "target" : "${BUILD_PATH}",
+        "source" : "${APP_PATH}/source"
+      },
+
+      "copy-resources" :
+      {
+        "target" : "${BUILD_PATH}",
+        "resource-filter" : true
+      },
+      
+      "compile" : { "type" : "build" }
+    },
+    
+    "unify-run-source" : 
+    {
+      "extend" : [ "unify-core" ],
+      
+      "variants" :
+      {
+        "qx.debug" : [ "on" ]
+      },
+      
+      "compile-options" :
+      {
+        "paths" :
+        {
+          "file" : "source/script/${APP_NAME}-{unify.platform}.js",
+          "app-root" : "source"
+        },
+        "code" :
+        {
+          "locales" : "${APP_LOCALES}"
+        }
+      },
+      
+      "compile" : { "type" : "source" }   
+    },
+    
+
+
+
+    /* 
+    ---------------------------------
+       SASS COMPILER
+    ---------------------------------
+    */  
+    
+    "sass-mobile" : 
+    {
+      "shell" : 
+      {
+        "command" : "python ${UNIFY_PATH}/tool/sass.py ${APP_PATH}/source/resource/${APP_NAME}/mobile/style.sass ${APP_PATH}/source/resource/${APP_NAME}/mobile/style.css"
+      }
+    },
+
+    
+    
+
+    /* 
+    ---------------------------------
+       PUBLIC UNIFY JOBS
+    ---------------------------------
+    */
+    
+    "source-mobile" : {
+      "extend" : [ "unify-target-mobile", "unify-run-source" ]
+    },
+    
+    "build-mobile" : 
+    {
+      "extend" : [ "unify-target-mobile", "unify-run-build" ],
+      "let" : {
+        "BUILD_PATH" : "build/mobile",
+        "COPY_FILES" : [ "index.html", "mobile.html", "resource/${APP_NAME}/mobile" ]
+      },
+      "variants" : {
+        "qx.client" : ["webkit", "gecko", "opera"]
+      }
+    },
+
+    "source-phonegap" : {
+      "extend" : [ "unify-target-mobile", "unify-run-source" ]
+    },
+    
+    "build-phonegap" : 
+    {
+      "extend" : [ "unify-target-mobile", "unify-run-build" ],
+      "let" : {
+        "BUILD_PATH" : "build/phonegap",
+        "COPY_FILES" : [ "phonegap.html", "resource/${APP_NAME}/mobile" ]
+      },
+      "variants" : {
+        "qx.client" : ["webkit"]
+      }
+    },
+    
+    "source-desktop" : {
+      "extend" : [ "unify-target-desktop", "unify-run-source" ]
+    },
+
+    "build-desktop" : 
+    {
+      "extend" : [ "unify-target-desktop", "unify-run-build" ],
+      "let" : {
+        "BUILD_PATH" : "build/desktop",
+        "COPY_FILES" : [ "index.html", "desktop.html" ]
+      },
+      "variants" : {
+        "qx.client" : ["webkit", "mshtml", "gecko", "opera"]
+      }
+    },
+
+    "source-widget" : {
+      "extend" : [ "unify-target-desktop", "unify-run-source" ]
+    },
+
+    "build-widget" : 
+    {
+      "extend" : [ "unify-target-desktop", "unify-run-build" ],
+      "let" : {
+        "BUILD_PATH" : "build/widget",
+        "COPY_FILES" : [ "widget.html" ]
+      },
+      "variants" : {
+        "qx.client" : ["webkit"]
+      }
+    },
+        
+  
+    
+        
+    /* 
+    ---------------------------------
+       QOOXDOO JOB ALIASES 
+    ---------------------------------
+    */
+     
+    "clean" : {
+      "run" : [ "qooxdoo::clean" ]
+    },
+    
+    "distclean" : {
+      "run" : [ "qooxdoo::distclean" ]
+    },
+    
+    "fix" : {
+      "run" : [ "qooxdoo::fix" ]
+    },
+    
+    "migration" : {
+      "run" : [ "qooxdoo::migration" ]
+    },
+     
+    "translation" : {
+      "run" : [ "qooxdoo::translation" ]
+    },    
+
+    "pretty" : {
+      "run" : [ "qooxdoo::pretty" ]
+    },    
+    
+    "lint" : {
+      "run" : [ "qooxdoo::lint" ]
+    },    
+    
+
+
+
+    /* 
+    ---------------------------------
+       API VIEWER JOB ALIASES 
+    ---------------------------------
+    */
+    
+    "api" : 
+    {
+      "extend" : [ "libraries", "apiviewer::build" ],
+      
+      "let" :
+      {
+        "APIVIEWER_ROOT" : "${APIVIEWER_PATH}",
+        "BUILD_PATH"     : "api",
+        "QXTHEME"        : "qx.theme.Modern",
+        "API_INCLUDE"    : [ "qx.*", "unify.*", "${APP_NAME}.*" ],
+        "API_EXCLUDE"    : [ "qx.test.*", "unify.test.*", "${APP_NAME}.test.*" ]
+      }
+    },
+    
+    
+
+
+    /* 
+    ---------------------------------
+       TEST RUNNER JOB ALIASES 
+    ---------------------------------
+    */  
+    
+    "test" : 
+    {
+      "extend" : [ "libraries", "testrunner::build", "testrunner::build-with-tests-source" ],
+      
+      "let" :
+      {
+        "APPLICATION"     : "${APP_NAME}",
+        "TESTRUNNER_ROOT" : "${TESTRUNNER_PATH}",
+        "TEST_INCLUDE"    : "${APP_NAME}.test.*",        
+        "BUILD_PATH"      : "test",
+        "QXTHEME"         : "qx.theme.Modern"
+      }      
+    }
+  }
+}

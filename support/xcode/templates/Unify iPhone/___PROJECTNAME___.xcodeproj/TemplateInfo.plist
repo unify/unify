@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>This template provides a starting point for a Unify/PhoneGap based application.
+
+The application is automatically build using qooxdoo's generator and copied to the local "www" folder. At each build the application icons, splashscreens, scripts, and styles are automatically copied over from your source. Do not modify files in the iPhone application!
+
+Select the folder "dist/iphone" during creation of the template based application. Name it as you like, but it is suggested to just name it like the application root folder/namespace.
+</string>
+</dict> 
+</plist>

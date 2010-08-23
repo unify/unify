@@ -1,0 +1,22 @@
+{
+  "name"    : "${Name}",
+
+  "include" :
+  [
+    {
+      "path" : "$${UNIFY_PATH}/framework/application.json"
+    }
+  ],
+
+  "let" :
+  {
+    "QOOXDOO_PATH"      : "${REL_QOOXDOO_PATH}",
+    "UNIFY_PATH"        : "${REL_QOOXDOO_PATH}/../../..",
+    "APP_PATH"          : ".",
+
+    "CACHE"             : "${Cache}",
+
+    "APP_NAME"          : "${Namespace}",
+    "APP_LOCALES"       : [ "de" ]
+  }
+}

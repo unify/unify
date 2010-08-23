@@ -1,0 +1,22 @@
+{
+  "name"    : "bookshelf",
+
+  "include" :
+  [
+    {
+      "path" : "${UNIFY_PATH}/framework/application.json"
+    }
+  ],
+
+  "let" :
+  {
+    "QOOXDOO_PATH"      : "../../external/qooxdoo/qooxdoo",
+    "UNIFY_PATH"        : "../../external/qooxdoo/qooxdoo/../../..",
+    "APP_PATH"          : ".",
+
+    "CACHE"             : "${TMPDIR}/cache",
+
+    "APP_NAME"          : "bookshelf",
+    "APP_LOCALES"       : [ "de" ]
+  }
+}

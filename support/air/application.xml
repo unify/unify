@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<application xmlns="http://ns.adobe.com/air/application/1.5">
+	<id>telekom.unify</id>
+	<version>0.1</version>
+	<filename>Unify</filename>
+	<copyright>Copyright 2009, Deutsche Telekom AG</copyright>
+	<initialWindow>
+		<content>index.html</content>
+		<visible>true</visible>
+		<width>590</width>
+		<height>450</height>
+		<minSize>590 200</minSize>
+		<maxSize>590 800</maxSize>
+		<systemChrome>standard</systemChrome>
+		<transparent>false</transparent>
+		<x>0</x>
+		<y>0</y>
+		<maximizable />
+		<minimizable />
+		<resizable />
+	</initialWindow>
+	<icon>
+		<image16x16>icons/16.png</image16x16>
+		<image32x32>icons/32.png</image32x32>
+		<image48x48>icons/48.png</image48x48>
+		<image128x128>icons/128.png</image128x128>
+	</icon>
+	<name />
+	<description />
+</application>

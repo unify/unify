@@ -1,0 +1,51 @@
+<project basedir="../.." name="${Name}" default="air">
+	<property name="tempdir" value="$${basedir}/_temp/android" />
+	<property name="targetdir" value="$${basedir}/build/target" />
+	<property name="srcdir" value="${REL_QOOXDOO_PATH}/../../support/air/skeleton" />
+	<property name="libdir" value="${REL_QOOXDOO_PATH}/../../support/air" />
+	<property file="local-settings.property" />
+
+	<target name="setup">
+		<fail message="Please specify your adobe air sdk directory in your local-settings.property file">
+			<condition>
+				<not>
+					<isset property="air.sdk.dir" />
+				</not>
+			</condition>
+		</fail>
+
+		<fail message="Please build mobile variant with 'python generate.py build-mobile'">
+			<condition>
+				<not>
+					<available file="$${basedir}/build/mobile/script" type="dir" />
+				</not>
+			</condition>
+		</fail>
+
+		<condition property="isDosLikeOS">
+			<os family="dos" />
+		</condition>
+		<condition property="isNotDosLikeOS">
+			<not>
+				<os family="dos" />
+			</not>
+		</condition>
+		
+		<property name="air.adt" value="$${air.sdk.dir}/lib/adt.jar" />
+		
+		<mkdir dir="$${targetdir}/air" />
+	</target>
+	
+	<target name="setup-os-dos-property" depends="setup" if="isDosLikeOS">
+		<property name="air.adl" value="$${air.sdk.dir}/bin/adl.exe" />
+	</target>
+	
+	<target name="setup-os-notdos-property" depends="setup" if="isNotDosLikeOS">
+		<property name="air.adl" value="$${air.sdk.dir}/bin/adl" />
+	</target>
+	
+	<target name="air" depends="setup,setup-os-dos-property,setup-os-notdos-property">
+		
+	</target>
+	
+</project>

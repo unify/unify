@@ -1,0 +1,35 @@
+{
+  "info" : 
+  {
+    "name" : "tweet",
+
+    "summary" : "Tweet - Unify Based Twitter Application",
+    "description" : "Demo for Unify Framework",
+    
+    "homepage" : "http://telekom.de/",
+
+    "license" : "Closed",
+    
+    "authors" : 
+    [
+      {
+        "name" : "First Author (uid)",
+        "email" : "first.author@some.domain"
+      }
+    ],
+
+    "version" : "trunk",
+    "qooxdoo-versions": ["1.0"]
+  },
+  
+  "provides" : 
+  {
+    "namespace"   : "tweet",
+    "encoding"    : "utf-8",
+    "class"       : "source/class",
+    "resource"    : "source/resource",
+    "translation" : "source/translation",
+    "type"        : "application"
+  }
+}
+

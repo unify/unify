@@ -1,0 +1,38 @@
+/* ************************************************************************
+
+	 Unify Framework
+
+	 Copyright:
+		 2010 Deutsche Telekom AG, Germany, http://telekom.com
+
+ ************************************************************************ */
+
+/**
+ * Activity indicator to show activities like loading of data
+ */
+qx.Class.define("unify.ui.mobile.ActivityIndicator", 
+{
+	extend : unify.ui.mobile.Overlay,
+	type : "singleton",
+
+
+  /*
+	*****************************************************************************
+		 MEMBERS
+	*****************************************************************************
+	*/
+	
+	members : 
+	{
+		// overridden
+		_createElement : function() 
+		{
+			var elem = this.base(arguments);
+			
+			elem.innerHTML = "Lade Daten...";
+			elem.id = "activity";
+			
+			return elem;
+		}
+	}
+});

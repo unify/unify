@@ -1,0 +1,257 @@
+@import ../../../../../../framework/source/resource/unify/mobile/core.sass
+@import ../../../../../../framework/source/resource/unify/mobile/iphoneos/style.sass
+
+
+// ***************************************************************************************************
+//	 MIXINS
+// ***************************************************************************************************
+
+=greyish-list
+	li
+		+linear-gradient(color-stops(rgb(255,255,255), rgb(255,255,255) 40%, rgb(241,241,241)))
+		padding: 2px 6px
+		border-top: 1px solid rgb(251,247,248)
+		border-bottom: 1px solid rgb(222,222,224)
+		
+		img
+			+border-radius(4px)
+			+box-shadow(#ccc, 1px, 1px, 1px)
+			background: white
+			border: 1px solid #eee
+			width: 40px
+			height: 40px
+			margin-right: 6px
+			margin-left: -4px
+
+
+=user-block
+	font-size: 12px
+	margin-top: 20px
+
+	> img
+		width: 48px
+		height: 48px
+		float: left
+	
+	> div
+		margin-left: 52px
+		
+		
+=timeline-list
+	> ul
+		+greyish-list
+	
+		> li
+			+hbox("start")
+			
+			> div
+				+box-flex(1)
+
+				> small
+					position: absolute
+					right: 2px
+					top: 2px
+					color: rgb(115,137,166)
+					font-size: 12px
+
+
+// ***************************************************************************************************
+//	 VIEW: SYS INFO
+// ***************************************************************************************************
+
+#sys-info
+	+vbox
+	+padded-layer
+	
+	.content
+		> ul
+			+keyvalue-list
+
+
+// ***************************************************************************************************
+//	 VIEW: PROFILE
+// ***************************************************************************************************
+
+#profile
+	+padded-layer
+	
+	.content
+		> ul
+			+navigation-list
+
+
+// ***************************************************************************************************
+//	 VIEW: TIMELINE
+// ***************************************************************************************************
+
+#timeline
+	+vbox
+	
+	.tool-bar
+		[exec=refresh]
+			+tool-bar-button-icon("icons-22/gear.png")
+
+	.content
+		+timeline-list
+
+
+// ***************************************************************************************************
+//	 VIEW: USERLIST
+// ***************************************************************************************************
+
+#userlist
+	+vbox
+	
+	.title-bar
+		[exec=refresh]
+			+tool-bar-button-icon("icons-22/gear.png")
+				
+	.content > ul
+		+navigation-list
+		+greyish-list
+
+
+// ***************************************************************************************************
+//	 VIEW: USER
+// ***************************************************************************************************
+
+#user
+	+vbox
+	+padded-layer
+	
+	.tool-bar
+		background-color: rgb(218,105,90)
+		
+	.content
+		+box-flex(1)
+	
+		> div.user
+			+user-block
+	
+		> ul
+			+keyvalue-list
+
+
+// ***************************************************************************************************
+//	 VIEW: STATUS
+// ***************************************************************************************************
+
+#status
+	+vbox
+	+padded-layer
+
+	.tool-bar
+		background-color: rgb(218,105,90)
+		
+		[exec=favorite]
+			+tool-bar-button-icon("icons-22/star.png")
+			
+	.content
+		+box-flex(1)
+	
+		> div.user
+			+user-block
+				
+		> ul
+			+keyvalue-list
+		
+
+// ***************************************************************************************************
+//	 VIEW: COMPOSE
+// ***************************************************************************************************
+
+#compose
+	.content
+		> .countdown
+			position: absolute
+			top: 108px
+			right: 8px
+			border: 1px solid #888
+			text-shadow: rgba(0,0,0,0.3) 1px 1px 0px
+			padding: 4px 8px
+			color: white
+			font-weight: bold
+			+border-radius(4px)
+			+linear-gradient(color-stops(#DDD, #555))
+			+box-shadow(rgba(0,0,0,0.3), 1px, 1px, 1px)
+		
+		> textarea
+			height: 80px
+			width: 100%
+			font-size: 14px
+			border: none
+			padding: 6px
+			
+			
+// ***************************************************************************************************
+//	 VIEW: SEARCH
+// ***************************************************************************************************			
+
+#search
+	+vbox
+
+	.content
+		+timeline-list
+
+		> div.search
+			+linear-gradient(color-stops(rgb(224,228,229), rgb(181,191,197)))
+			+hbox
+			padding: 6px 8px
+			border-bottom: 1px solid #888
+
+			> input
+				+box-flex(1)
+				font-size: 17px
+				margin-right: 8px
+				padding: 4px 8px
+			
+			> div
+				border: 1px solid #000
+				+linear-gradient(color-stops(#999, #666))
+				color: white
+				font-weight: bold
+
+
+// ***************************************************************************************************
+//	 VIEW: COMPONENTS
+// ***************************************************************************************************
+
+#components
+	+vbox
+	
+	.content > ul
+		+navigation-list
+		+greyish-list
+		
+	.slide-view
+		height: 30px
+		
+		.content
+			white-space: nowrap
+		
+			> *
+				display: inline-block
+				background-color: red
+
+
+// ***************************************************************************************************
+//	 COMPONENT: TAB BAR
+// ***************************************************************************************************
+	
+#tab-bar
+	[goto="timeline"]
+		+tab-bar-button-icon('icons-32/03-loopback.png')
+			
+	[goto="userlist"]
+		+tab-bar-button-icon('icons-32/04-squiggle.png')
+		
+	[goto="profile"]
+		+tab-bar-button-icon('icons-32/108-badge.png')
+		
+	[goto="sys-info"]
+		+tab-bar-button-icon('icons-32/54-lock.png')
+		
+	[goto="components"]
+		+tab-bar-button-icon('icons-32/87-wineglass.png')
+		
+		

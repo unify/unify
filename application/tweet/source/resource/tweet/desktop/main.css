@@ -1,0 +1,6 @@
+.message a:link,
+.message a:visited,
+.message a:active,
+.message a:hover{
+  color: #477CB1;
+}

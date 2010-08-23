@@ -1,0 +1,35 @@
+{
+  "info" : 
+  {
+    "name" : "unify",
+
+    "summary" : "Unify",
+    "description" : "Framework for Development of Cross Platform Applications",
+    
+    "homepage" : "http://telekom.de/",
+
+    "license" : "Closed",
+    
+    "authors" : 
+    [
+      {
+        "name" : "Sebastian Werner (se.werner)",
+        "email" : "se.werner@telekom.de"
+      }
+    ],
+
+    "version" : "trunk",
+    "qooxdoo-versions": ["0.8.3"]
+  },
+  
+  "provides" : 
+  {
+    "namespace"   : "unify",
+    "encoding"    : "utf-8",
+    "class"       : "source/class",
+    "resource"    : "source/resource",
+    "translation" : "source/translation",
+    "type"        : "library"
+  }
+}
+

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>bookshelf</title>
+    <script type="text/javascript">
+      var elem = document.createElement("script");
+      var variant = location.search.substring(1) == "debug" ? "on" : "off";
+      
+      elem.type = "text/javascript";
+      elem.src = "script/bookshelf-webkit-" + variant + ".js";
+      
+      document.getElementsByTagName("head")[0].appendChild(elem);
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
