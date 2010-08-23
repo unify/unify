@@ -1,3 +1,15 @@
 [submodule "external/qooxdoo"]
 	path = external/qooxdoo
 	url = http://github.com/unify/qooxdoo.git
+[submodule "external/phonegap-android"]
+	path = external/phonegap-android
+	url = http://github.com/unify/phonegap-android.git
+[submodule "external/phonegap-palm"]
+	path = external/phonegap-palm
+	url = http://github.com/unify/phonegap-palm.git
+[submodule "external/phonegap-iphone"]
+	path = external/phonegap-iphone
+	url = http://github.com/unify/phonegap-iphone.git
+[submodule "external/jstools"]
+	path = external/jstools
+	url = http://github.com/unify/jstools.git
