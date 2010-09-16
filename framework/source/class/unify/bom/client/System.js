@@ -155,19 +155,25 @@ qx.Bootstrap.define("unify.bom.client.System",
 				}
 				else
 				{
-					// Fallback
-					// Opera as of Version 10.01 has no information about the detailed
-					// Mac OS X version. Are other clients affected as well?
-
-					// The last option here is to simply base on the OS X string
-					// basically found on all new Macs - even in Opera
-					if (navigator.platform === "MacIntel") {
-						version = 10.4;
-					} else if (/Mac OS X/.exec(agent)) {
-						version = 10.0;
-					} else {
-						version = 9.0;
-					}
+          // If detection of iOS with user string without version number, test for generic
+          // device names
+          if (/(iPad|iPhone|iPod)/.test(agent)) {
+            name = "ios";
+          } else {
+            // Fallback
+            // Opera as of Version 10.01 has no information about the detailed
+            // Mac OS X version. Are other clients affected as well?
+            
+            // The last option here is to simply base on the OS X string
+            // basically found on all new Macs - even in Opera
+            if (navigator.platform === "MacIntel") {
+              version = 10.4;
+            } else if (/Mac OS X/.exec(agent)) {
+              version = 10.0;
+            } else {
+              version = 9.0;
+            }
+          }
 				}
 			}
 		}
