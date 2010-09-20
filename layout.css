@@ -74,10 +74,25 @@ pre{
   -moz-border-radius: 8px;
   border-radius: 8px;
   padding: 4px 8px;
-  background: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.2);
   font-family: "Consolas", monospace;
-  border: 1px solid black;
+  border: 1px solid white;
 }
+
+ul{
+  padding-left: 25px;
+  list-style: square;
+}
+
+dt{
+  font-weight: bold;
+}
+
+dd{
+  padding-left: 20px;
+}
+
+
 
 
 /* 
@@ -89,6 +104,7 @@ pre{
 header{
 	margin: 50px 0;
 	text-align: center;
+	position: relative;
 }
 
 header img {
@@ -99,6 +115,20 @@ header h1{
 	display: none;
 }
 
+header p{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px;
+  text-transform: lowercase;
+  font-size: 30px;
+  color: white;
+  background: rgb(255,165,60);
+  -webkit-transform: rotate(45deg) translateY(-60px) translateX(30px);
+  -moz-transform: rotate(45deg) translateY(-60px) translateX(30px);
+  -o-transform: rotate(45deg) translateY(-60px) translateX(30px);
+  -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
 
 
 
@@ -113,11 +143,16 @@ footer{
   color: white;
   border-top: 1px solid rgb(49,51,61);
   border-bottom: 1px solid rgb(49,51,61);
+  font-size: 14px;
 }
 
 footer p:last-child{
   text-align: right;
-  margin-top: 20px;
+  margin-top: 40px;
+}
+
+footer img{
+  margin: 0 8px;
 }
 
 
@@ -143,8 +178,6 @@ nav li {
 
 nav a {
   display: block;
-  border-left: 1px solid rgba(255,255,255,0.2);
-  border-right: 1px solid rgba(255,255,255,0.2);
 	padding: 10px 16px;
 	  
   color: white;
@@ -183,7 +216,7 @@ article.twocols{
 }
 
 article.twocols section{
-  width: 40%;
+  width: 50%;
   float: left;
 }
 
@@ -207,52 +240,60 @@ footer > .inner{
   padding: 60px 0;
 }
 
-
-#showcase{
-  background: rgb(22,31,36);
-  padding: 60px 0;
-}
-
-
 #download{
   background: rgb(36,115,107);
   color: white;
 }
 
+
+
+#features,
+#technology,
+#roadmap,
+#events{
+  font-size: 16px;
+}
+
+#features h1,
+#technology h1,
+#roadmap h1,
+#events h1{
+  font-size: 28px;
+  margin-bottom: 28px;
+}
+
+
+
 #features{
   background: rgb(104,178,152);
 }
 
-
-#technology{
-  background: rgb(215,229,155);
+#technology section{
+  display: inline-block;
+  float: left;
+  font-size: 14px;
+  width: 45%;
+  padding-right: 40px;
+  height: 280px;
 }
 
-
-#events{
+#technology section img{
+  display: block;
 }
 
 #events img{
   display: block;
 }
 
-#faq{
-  background: rgb(215,229,155);
-}
-
 
 
 #developer{
+  background: rgb(49,51,61);
   color: white;
-  background: rgb(25,83,71);
 }
 
 #developer h1{
-  text-shadow: 2px 2px 2px rgba(0,0,0,0.5);
-}
-
-#developer a{
-  color: white;
+  margin-bottom: 30px;
 }
 
 #developer p{
@@ -276,6 +317,10 @@ footer > .inner{
   -webkit-border-top-right-radius: 12px;
   -moz-border-radius-topleft: 12px;
   -moz-border-radius-topright: 12px;
+}
+
+#faq{
+  background: rgb(215,229,155);
 }
 
 
