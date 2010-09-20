@@ -1,25 +1,31 @@
-/* =========================================================
- 	RESET
-========================================================= */
+/* 
+=========================================================
+ 	  RESET
+========================================================= 
+*/
 
 *{
 	outline: 1px dotted red;
 	margin: 0;
 }
 
+
+
+
+
+/* 
+=========================================================
+ 	  CORE
+========================================================= 
+*/
+
 .clearfix:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
 }
-
-
-
-/* =========================================================
- 	CORE
-========================================================= */
 
 body {
   font-family: Tahoma, sans-serif;
@@ -48,9 +54,11 @@ p{
 }
 
 
-/* =========================================================
- 	HEADER
-========================================================= */
+/* 
+=========================================================
+ 	  HEADER
+========================================================= 
+*/
 
 header{
 	margin-top: 40px;
@@ -68,9 +76,11 @@ header h1{
 
 
 
-/* =========================================================
- 	FOOTER
-========================================================= */
+/* 
+=========================================================
+ 	  FOOTER
+========================================================= 
+*/
 
 footer {
   background-color: #31333d;
@@ -83,9 +93,11 @@ footer {
 
 
 
-/* =========================================================
- 	NAV
-========================================================= */
+/* 
+=========================================================
+ 	  NAVIGATION
+========================================================= 
+*/
 
 nav {
     background: #31333d;
@@ -99,17 +111,17 @@ nav {
 }
 
 nav ul{
-    list-style: none;
+  list-style: none;
 	padding: 10px 16px;
 	text-align:center;
 }
 
 nav li {
-    float: left;
+  float: left;
 }
 
 nav a {
-    color: white;
+  color: white;
 	text-decoration: none;
 	font-weight: bold;
 	font-size: 16px;
@@ -123,9 +135,11 @@ nav li a:hover{
 
 
 
-/* =========================================================
- 	ARTICLE
-========================================================= */
+/* 
+=========================================================
+ 	  ARTICLE
+========================================================= 
+*/
 
 article{
 	
@@ -139,117 +153,12 @@ article h1{
 
 
 
-/* =========================================================
- 	SECTIONS
-========================================================= */
+/* 
+=========================================================
+ 	  SECTIONS
+========================================================= 
+*/
 
-section.unify{
-	color:#195347;
-	font-weight: bold;
-}
-section.twocols{
-	float:left;
-	width: 35%;
-	margin: 3% 13% 0% 0%;
-	
-}
-section.twocols.first {
-	clear: left;
-}
-section.twocols > * {
-	clear: both;
-}
 
-section.fourcols {
-	float:left;
-	width: 20%;
-	margin: 2%;
-}
 
-section.fourcols > * {
-	clear: both;
-}
 
-section.threecols {
-	float:left;
-	width: 30%;
-	margin: 1%;
-}
-section.threecols > * {
-	clear: both;
-}
-section.teammember {
-	height: 400px;
-}
-
-section.test{
-	padding-left: 12%;
-}
-
-.imprint {
-	float:right;	
-}
-
-section.powered{
-	display: block;
-	width: 50%;
-	padding-top:100px;
-	padding-left: 900px;
-}
-
-.powered img {
-	display: block;
-	padding-top:25px;
-	padding-left:90px;
-}
-
-section.tlogo{
-	padding-right: 280px;
-}
-
-section.event{
-	clear:both;
-	float:left;
-	width: 100%;
-}
-
-section.copy{
-	
-	padding-top:50px;
-	padding-left:20px;
-	
-}
-section.events{
-	display:block;
-	margin-left:249px;
-	
-}
-section.onecols{
-	float:left;
-	
-}
-section.onecols > * {
-	clear: both;
-}
-
-img.event{
-	float:left;
-	margin-right: 6%;
-}
- object{
- 	
-	width: 640;
-	height:385;
-	margin-left:  20%;
-	
-	
- }
-
- div.clear {
- 	clear: both;
- }
- 
- ul.top{
-	margin-top: 30px;
-	
-}
