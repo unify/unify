@@ -49,8 +49,8 @@ figure img {width: 100%;}
 }
 
 body {
-  font-size: 16px;
-	line-height: 1.6;
+  font-size: 20px;
+  line-height: 1.8;
   font-family: "Lucida Grande", Tahoma, sans-serif;
 }
 
@@ -61,12 +61,22 @@ img {
 	border: none;
 }
 
-header, footer, nav, block, article{
-	display: block;
-}
-
 p{
 	margin: 20px 0;
+}
+
+a{
+  color: inherit;
+}
+
+pre{
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  padding: 4px 8px;
+  background: rgba(255,255,255,0.3);
+  font-family: "Consolas", monospace;
+  border: 1px solid black;
 }
 
 
@@ -98,15 +108,17 @@ header h1{
 ========================================================= 
 */
 
-footer {
-  background-color: #31333d;
-	clear:both;
-	color: #D7E59B;
-	width:100%;
-	height: 300px;
-	margin: 0 auto;
+footer{
+  background: rgb(49,51,61);
+  color: white;
+  border-top: 1px solid rgb(49,51,61);
+  border-bottom: 1px solid rgb(49,51,61);
 }
 
+footer p:last-child{
+  text-align: right;
+  margin-top: 20px;
+}
 
 
 /* 
@@ -156,13 +168,14 @@ nav li a:hover{
 */
 
 article{
-  border-top: 1px solid rgb(33,33,33);	
-  border-bottom: 1px solid rgb(100,100,100);
+  padding: 60px 0;
+  border-bottom: 1px solid black;
 }
 
 article h1{
 	font-size: 40px;
-	font-weight: 100;
+  line-height: 1.2;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
 }
 
 article.twocols{
@@ -172,11 +185,10 @@ article.twocols{
 article.twocols section{
   width: 40%;
   float: left;
-  
 }
 
-
-article > .inner{
+article > .inner,
+footer > .inner{
   margin: 0 auto;
   width: 768px;
 }
@@ -191,45 +203,79 @@ article > .inner{
 
 #about{
   background: rgb(25,83,71);
-  font-size: 20px;
-  line-height: 1.8;
   color: rgb(250,250,250);
   padding: 60px 0;
 }
 
-#about h1{
-  line-height: 1.2;
-}
 
 #showcase{
-  background: rgb(49,51,61);
+  background: rgb(22,31,36);
   padding: 60px 0;
 }
 
 
 #download{
-  background: rgb(36,115,107)
+  background: rgb(36,115,107);
+  color: white;
 }
 
 #features{
+  background: rgb(104,178,152);
+}
+
+
+#technology{
   background: rgb(215,229,155);
 }
 
-#features section{
 
+#events{
+}
+
+#events img{
+  display: block;
 }
 
 #faq{
   background: rgb(215,229,155);
 }
 
+
+
 #developer{
-  background: rgb(49,51,61)
+  color: white;
+  background: rgb(25,83,71);
 }
 
-footer{
-  background: black;
+#developer h1{
+  text-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+}
+
+#developer a{
   color: white;
+}
+
+#developer p{
+  padding: 0 10px;
+}
+
+#developer section{
+  height: 310px;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  float: left;
+  display: inline-block;
+  background: rgb(49,51,61);
+  -webkit-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  font-size: 12px;
+}
+
+#developer section,
+#developer section img{
+  -webkit-border-top-left-radius: 12px;
+  -webkit-border-top-right-radius: 12px;
+  -moz-border-radius-topleft: 12px;
+  -moz-border-radius-topright: 12px;
 }
 
 
