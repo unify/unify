@@ -5,8 +5,12 @@
 */
 
 *{
-	outline: 1px dotted red;
+	outline: 0px dotted red;
 	margin: 0;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
 }
 
 
@@ -28,13 +32,13 @@
 }
 
 body {
-  font-family: Tahoma, sans-serif;
+  font-family: "Lucida Grande", Tahoma, sans-serif;
 	line-height: 1.6;
 }
 
 body > *{
 	width: 960px;
-	margin: 60px auto;
+	margin: 0px auto;
 }
 
 img {
@@ -43,10 +47,6 @@ img {
 
 header, footer, nav, block, article{
 	display: block;
-}
-
-h1, h2, h3{
-	font-family: "Trebuchet MS", sans-serif;
 }
 
 p{
@@ -142,13 +142,23 @@ nav li a:hover{
 */
 
 article{
-	
+  border-bottom: 1px solid rgb(229,229,229);	
 }
 
 article h1{
 	font-size: 20px;
 	color: rgb(49,51,61);
 	text-shadow: 1px 1px 1px rgba(49,51,61,0.3);
+}
+
+article.twocols{
+  
+}
+
+article.twocols section{
+  width: 40%;
+  float: left;
+  
 }
 
 
@@ -158,6 +168,17 @@ article h1{
  	  SECTIONS
 ========================================================= 
 */
+
+#features{
+}
+
+#features section{
+  border: 1px solid rgb(222,222,222);
+  -webkit-border-radius: 10px;
+  background: rgb(246,246,246);
+  padding: 30px;
+  font-size: 13px;
+}
 
 
 
