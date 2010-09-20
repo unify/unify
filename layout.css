@@ -1,0 +1,260 @@
+/* =========================================================
+ 	RESET
+========================================================= */
+
+*{
+	outline: 0px dotted red;
+	margin: 0;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+
+
+/* =========================================================
+ 	CORE
+========================================================= */
+
+html, body{
+	margin: 0;
+}
+
+body {
+    font-family: Tahoma, sans-serif;
+	line-height: 1.6;
+}
+
+body > *{
+	width: 960px;
+	margin: 60px auto;
+}
+
+img {
+	border: none;
+}
+
+header, footer, nav, block, article{
+	display: block;
+}
+
+h1, h2, h3{
+	font-family: "Trebuchet MS", sans-serif;
+}
+
+p{
+	margin: 20px 0;
+}
+
+
+/* =========================================================
+ 	HEADER
+========================================================= */
+
+header{
+	margin-top: 40px;
+	text-align: center;
+}
+
+header img {
+    margin: 0 auto;
+
+}
+
+header h1{
+	display: none;
+}
+
+
+
+
+/* =========================================================
+ 	FOOTER
+========================================================= */
+
+footer {
+    background-color: #31333d;
+	clear:both;
+	color: #D7E59B;
+	width:100%;
+	height: 300px;
+	margin: 0 auto;
+}
+
+
+
+/* =========================================================
+ 	NAV
+========================================================= */
+
+nav {
+    background: #31333d;
+	border-radius: 8px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	-webkit-box-shadow: 0px 3px 3px rgba(49,51,61,0.4);
+	-moz-box-shadow: 0px 3px 3px rgba(49,51,61,0.4);
+
+	margin: 40px auto;
+}
+
+nav ul{
+    list-style: none;
+	padding: 10px 16px;
+	text-align:center;
+}
+
+nav li {
+    float: left;
+}
+
+nav a {
+    color: white;
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 16px;
+	text-shadow: 1px 1px 1px black;
+	margin: 0 8px;
+}
+
+nav li a:hover{
+	color: #D7E59B;
+}
+
+
+
+/* =========================================================
+ 	ARTICLE
+========================================================= */
+
+article{
+	
+}
+
+article h1{
+	font-size: 20px;
+	color: rgb(49,51,61);
+	text-shadow: 1px 1px 1px rgba(49,51,61,0.3);
+}
+
+
+
+/* =========================================================
+ 	SECTIONS
+========================================================= */
+
+section.unify{
+	color:#195347;
+	font-weight: bold;
+}
+section.twocols{
+	float:left;
+	width: 35%;
+	margin: 3% 13% 0% 0%;
+	
+}
+section.twocols.first {
+	clear: left;
+}
+section.twocols > * {
+	clear: both;
+}
+
+section.fourcols {
+	float:left;
+	width: 20%;
+	margin: 2%;
+}
+
+section.fourcols > * {
+	clear: both;
+}
+
+section.threecols {
+	float:left;
+	width: 30%;
+	margin: 1%;
+}
+section.threecols > * {
+	clear: both;
+}
+section.teammember {
+	height: 400px;
+}
+
+section.test{
+	padding-left: 12%;
+}
+
+.imprint {
+	float:right;	
+}
+
+section.powered{
+	display: block;
+	width: 50%;
+	padding-top:100px;
+	padding-left: 900px;
+}
+
+.powered img {
+	display: block;
+	padding-top:25px;
+	padding-left:90px;
+}
+
+section.tlogo{
+	padding-right: 280px;
+}
+
+section.event{
+	clear:both;
+	float:left;
+	width: 100%;
+}
+
+section.copy{
+	
+	padding-top:50px;
+	padding-left:20px;
+	
+}
+section.events{
+	display:block;
+	margin-left:249px;
+	
+}
+section.onecols{
+	float:left;
+	
+}
+section.onecols > * {
+	clear: both;
+}
+
+img.event{
+	float:left;
+	margin-right: 6%;
+}
+ object{
+ 	
+	width: 640;
+	height:385;
+	margin-left:  20%;
+	
+	
+ }
+
+ div.clear {
+ 	clear: both;
+ }
+ 
+ ul.top{
+	margin-top: 30px;
+	
+}
