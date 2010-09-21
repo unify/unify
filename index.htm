@@ -266,16 +266,14 @@
               Philipp Eicher<br/>
               Software Developer<br/>
               <a href= "http://github.com/peicher">GitHub</a> |
-							<a href= "https://www.xing.com/profile/Philipp_Eicher">XING</a>
+              <a href= "https://www.xing.com/profile/Philipp_Eicher">XING</a>
             </p>
           </section>
-					<section>
+          <section>
             <img src="pics/developer/florian.jpg" />
             <p>
               Florian Brandel<br/>
-              Software Developer<br/>
-              
-               
+              Software Developer
             </p>
           </section>
           <section>
@@ -376,25 +374,29 @@
       </div>
     </footer>
 
-		<div id="videomask" style="display: none; position: fixed; left:0; top: 0; right: 0; bottom: 0; z-index: 100; background-color:#000; opacity: 0.6;">
-			<div id="video" style="left: 50%; top: 50%; margin-left: -427px; margin-top:-253px; width: 853px; height: 505px; position: absolute; z-index: 105; background-color: #000;"></div>
-		</div>
+    <div id="videomask" style="display: none; position: fixed; left:0; top: 0; right: 0; bottom: 0; z-index: 100; background-color:#000;">
+      <div id="video" style="left: 50%; top: 50%; margin-left: -427px; margin-top:-253px; width: 853px; height: 505px; position: absolute; z-index: 105; background-color: #000;"></div>
+    </div>
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
     <script type="text/javascript">
-      $(document).ready(function(){
-			$("#videomask").click(function(e) {
-                     e.preventDefault();
-				$("#videomask").fadeOut('fast', function() {
-					$("#videomask").css("display","none");
-				});
-				$("#video").html("");
-			});
-        $(".videolink").click(function(e) {
-            e.preventDefault();
-			$("#video").html('<iframe class="youtube-player" type="text/html" width="853" height="505" src="http://www.youtube.com/embed/5SG975uV_4M" frameborder="0"></iframe>');
-			$("#videomask").fadeIn('fast');
-		});
+      $(document).ready(function()
+      {
+        $("#videomask").click(function(e)
+        {
+          e.preventDefault();
+          $("#videomask").fadeOut('fast', function() {
+            $("#videomask").css("display","none");
+          });
+          $("#video").html("");
+        });
+        
+        $(".videolink").click(function(e) 
+        {
+          e.preventDefault();
+          $("#video").html('<iframe class="youtube-player" type="text/html" width="853" height="505" src="http://www.youtube.com/embed/5SG975uV_4M" frameborder="0"></iframe>');
+          $("#videomask").fadeIn('fast');
+        });
       });
     </script>
   </body>
