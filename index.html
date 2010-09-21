@@ -10,7 +10,7 @@
         <!--
         <link href='http://fonts.googleapis.com/css?family=Molengo' rel='stylesheet' type='text/css'>
         -->
-        <link rel="stylesheet" type="text/css" href="jquery/ceebox/css/ceebox-min.css">
+        <link rel="stylesheet" type="text/css" href="jquery/colorbox/colorbox/colorbox.css">
     </head>
     <body>
         <!-- Logo -->
@@ -38,7 +38,7 @@
                     <a name"developer" href="#developer">Developers</a>
                 </li>
                 <li>
-                    <a class="videolink" href="http://www.youtube.com/watch?v=5SG975uV_4M&and;feature=player_embedded">Showcase</a>
+                    <a class="videolink" href="http://www.youtube.com/embed/5SG975uV_4M">Showcase</a>
                 </li>
             </ul>
         </nav>
@@ -373,14 +373,13 @@
         </footer>
 
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-        <script type="text/javascript" src="jquery/ceebox/js/jquery.swfobject.js"></script>
-        <script type="text/javascript" src="jquery/ceebox/js/jquery.ceebox-min.js"></script>
+        <script type="text/javascript" src="jquery/colorbox/colorbox/jquery.colorbox-min.js"></script>
         <script type="text/javascript">
-            $(document).ready(function(){ 
-                $(".videolink").ceebox({
-                    titles: false,
-                    videoGalery: false,
-                    boxColor: "#000000"
+            $(document).ready(function() {
+                $(".videolink").colorbox({
+                    innerWidth: 853,
+                    innerHeight: 505,
+                    iframe: true
                 });
             });
         </script>
