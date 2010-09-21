@@ -1,29 +1,29 @@
 /* 
 =========================================================
- 	  RESET
+    RESET
 ========================================================= 
 */
 
 *{
-	margin: 0;
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-o-box-sizing: border-box;
+  margin: 0;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -o-box-sizing: border-box;
 }
 
 html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, 
 p, blockquote, pre, a, abbr, address, cite, code, del, dfn, em, 
 img, ins, q, small, strong, sub, sup, dl, dt, dd, ol, ul, li, 
 fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
-	margin: 0;
-	padding: 0;
-	border: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
 article, aside, figure, figure img, figcaption, hgroup,
 footer, header, nav, section, video, object {
-	display: block;
+  display: block;
 }
 
 a img {border: 0;}
@@ -36,7 +36,7 @@ figure img {width: 100%;}
 
 /* 
 =========================================================
- 	  CORE
+    CORE
 ========================================================= 
 */
 
@@ -58,11 +58,11 @@ body > *{
 }
 
 img {
-	border: none;
+  border: none;
 }
 
 p{
-	margin: 20px 0;
+  margin: 20px 0;
 }
 
 a{
@@ -97,14 +97,14 @@ dd{
 
 /* 
 =========================================================
- 	  HEADER
+    HEADER
 ========================================================= 
 */
 
 header{
-	margin: 50px 0;
-	text-align: center;
-	position: relative;
+  margin: 50px 0;
+  text-align: center;
+  position: relative;
 }
 
 header img {
@@ -112,7 +112,7 @@ header img {
 }
 
 header h1{
-	display: none;
+  display: none;
 }
 
 header p{
@@ -134,7 +134,7 @@ header p{
 
 /* 
 =========================================================
- 	  FOOTER
+    FOOTER
 ========================================================= 
 */
 
@@ -156,20 +156,21 @@ footer img{
 }
 
 
+
 /* 
 =========================================================
- 	  NAVIGATION
+    NAVIGATION
 ========================================================= 
 */
 
 nav {
   background: rgb(49,51,61);
-	text-align: center;
+  text-align: center;
 }
 
 nav ul{
   list-style: none;
-	text-align:center;
+  text-align:center;
 }
 
 nav li {
@@ -178,25 +179,64 @@ nav li {
 
 nav a {
   display: block;
-	padding: 10px 16px;
-	  
+  padding: 10px 16px;
+    
   color: white;
-	text-decoration: none;
-	font-weight: bold;
-	font-size: 16px;
-	text-shadow: 1px 1px 1px black;
-	margin: 0 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  text-shadow: 1px 1px 1px black;
+  margin: 0 8px;
 }
 
 nav li a:hover{
-	background-color: rgba(255,255,255,0.2);
+  background-color: rgba(255,255,255,0.2);
 }
 
 
 
 /* 
 =========================================================
- 	  ARTICLE
+    VIDEOMASK
+========================================================= 
+*/
+
+#videomask{
+  position: fixed; 
+  left:0; 
+  top: 0; 
+  right: 0; 
+  bottom: 0; 
+  z-index: 100;
+  background:rgba(0,0,0,0.5);
+  -webkit-transform: translateY(-100%) scale(0.01);
+  -webkit-transition-properties: background-color, -webkit-transform, -o-transform, -moz-transform;
+  -webkit-transition-duration: 300ms;
+}
+
+#videomask.visible{
+  background:rgba(0,0,0,0.7);
+  -webkit-transform: translateY(0px) scale(1);
+}
+
+#video{
+  left: 50%; 
+  top: 50%; 
+  margin-left: -427px; 
+  margin-top:-253px; 
+  width: 853px; 
+  height: 505px; 
+  position: absolute; 
+  z-index: 105; 
+  background-color: #000;
+}
+
+
+
+
+/* 
+=========================================================
+    ARTICLE
 ========================================================= 
 */
 
@@ -205,7 +245,7 @@ article{
 }
 
 article h1{
-	font-size: 40px;
+  font-size: 40px;
   line-height: 1.2;
   text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
 }
@@ -229,7 +269,7 @@ footer > .inner{
 
 /* 
 =========================================================
- 	  SECTIONS
+    SECTIONS
 ========================================================= 
 */
 

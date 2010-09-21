@@ -5,8 +5,6 @@
     <title>Unify</title>
     <!--[if lt IE 9]><script src="ie.js"></script><![endif]-->
     <link rel="stylesheet" type="text/css" href="layout.css">
-    <link rel="stylesheet" type="text/css" href="jquery/ceebox/css/ceebox-min.css">
-    <link rel="stylesheet" type="text/css" href="jquery/colorbox/colorbox/colorbox.css">
   </head>
   <body>
     <!-- Logo -->
@@ -349,7 +347,7 @@
           Unlike some older and less sophisticated solutions Unify aims to bring a native look&feel to applications. The usage of a professional and mature JavaScript framework helps developers building applications rapidly.
         </p>
         <p>
-          <b>Q: Is Unify prepared for the future ? </b>
+          <b>Q: Is Unify prepared for the future?</b>
           <br>
           A: In contrast to technologies which are based on a translation of program code, Unify is future safe, as the foundation is built on open and widely distributed technology. Though the improvements in the underlaying software the speed and the possibilities are quite good even on older hardware.
         </p>
@@ -374,29 +372,24 @@
       </div>
     </footer>
 
-    <div id="videomask" style="display: none; position: fixed; left:0; top: 0; right: 0; bottom: 0; z-index: 100; background-color:#000;">
-      <div id="video" style="left: 50%; top: 50%; margin-left: -427px; margin-top:-253px; width: 853px; height: 505px; position: absolute; z-index: 105; background-color: #000;"></div>
+    <div id="videomask">
+      <div id="video"></div>
     </div>
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
     <script type="text/javascript">
-      $(document).ready(function()
+      $("#videomask").click(function(e)
       {
-        $("#videomask").click(function(e)
-        {
-          e.preventDefault();
-          $("#videomask").fadeOut('fast', function() {
-            $("#videomask").css("display","none");
-          });
-          $("#video").html("");
-        });
-        
-        $(".videolink").click(function(e) 
-        {
-          e.preventDefault();
-          $("#video").html('<iframe class="youtube-player" type="text/html" width="853" height="505" src="http://www.youtube.com/embed/5SG975uV_4M" frameborder="0"></iframe>');
-          $("#videomask").fadeIn('fast');
-        });
+        e.preventDefault();
+        $("#videomask").removeClass("visible");
+        $("#video").html("");
+      });
+      
+      $(".videolink").click(function(e) 
+      {
+        e.preventDefault();
+        $("#videomask").addClass("visible");
+        $("#video").html('<iframe class="youtube-player" type="text/html" width="853" height="505" src="http://www.youtube.com/embed/5SG975uV_4M" frameborder="0"></iframe>');
       });
     </script>
   </body>
