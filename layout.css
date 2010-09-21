@@ -49,9 +49,10 @@ figure img {width: 100%;}
 }
 
 body {
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1.8;
   font-family: "Lucida Grande", Tahoma, sans-serif;
+  color: rgb(49,51,61);
 }
 
 body > *{
@@ -62,7 +63,7 @@ img {
 }
 
 p{
-  margin: 20px 0;
+  margin: 30px 0;
 }
 
 a{
@@ -127,7 +128,11 @@ header p{
   -webkit-transform: rotate(45deg) translateY(-60px) translateX(30px);
   -moz-transform: rotate(45deg) translateY(-60px) translateX(30px);
   -o-transform: rotate(45deg) translateY(-60px) translateX(30px);
+  transform: rotate(45deg) translateY(-60px) translateX(30px);
   -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  -moz-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  -o-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
 
@@ -166,11 +171,13 @@ footer img{
 nav {
   background: rgb(49,51,61);
   text-align: center;
+  border-bottom: 1px solid rgb(29,31,38)
 }
 
 nav ul{
   list-style: none;
   text-align:center;
+  padding: 4px 0 3px;
 }
 
 nav li {
@@ -179,7 +186,7 @@ nav li {
 
 nav a {
   display: block;
-  padding: 10px 16px;
+  padding: 6px 16px;
     
   color: white;
   text-decoration: none;
@@ -187,6 +194,14 @@ nav a {
   font-size: 16px;
   text-shadow: 1px 1px 1px black;
   margin: 0 8px;
+  -webkit-transition: background-color 100ms ease-in-out;
+  -moz-transition: background-color 100ms ease-in-out;
+  -o-transition: background-color 100ms ease-in-out;
+  transition: background-color 100ms ease-in-out;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -o-border-radius: 6px;
+  border-radius: 6px;
 }
 
 nav li a:hover{
@@ -218,6 +233,9 @@ nav li a:hover{
   -o-transform: translateY(-100%) scale(0.01);
   -o-transition-properties: background-color, -o-transform;
   -o-transition-duration: 300ms;
+  transform: translateY(-100%) scale(0.01);
+  transition-properties: background-color, transform;
+  transition-duration: 300ms;
 }
 
 #videomask.visible{
@@ -225,6 +243,7 @@ nav li a:hover{
   -webkit-transform: none;
   -moz-transform: none;
   -o-transform: none;
+  transform: none;
 }
 
 #videomask iframe{
@@ -257,13 +276,9 @@ article{
 }
 
 article h1{
-  font-size: 40px;
+  font-size: 38px;
   line-height: 1.2;
   text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
-}
-
-article.twocols{
-  
 }
 
 article.twocols section{
@@ -274,7 +289,7 @@ article.twocols section{
 article > .inner,
 footer > .inner{
   margin: 0 auto;
-  width: 768px;
+  width: 720px;
 }
 
 
@@ -286,20 +301,41 @@ footer > .inner{
 */
 
 #about{
-  background: rgb(25,83,71);
+  background: -webkit-gradient(linear, 0% 0%, 0% 150, from(rgba(255,255,255,0.07)), to(rgba(255,255,255,0.0))) top left;
+  background-color: rgb(25,83,71);
   color: rgb(250,250,250);
-  padding: 60px 0;
+  padding: 80px 0px 60px;
 }
 
 #about .button{
-  border: 2px solid white;
-  background: rgb(255,255,255,0.8);
-  color: black;
+  text-align: center;
+  border: 4px solid rgb(36,115,107);
+  background: rgb(215,229,155);
+  color: rgb(36,115,107);
+  -webkit-background-clip: padding-box;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  -o-border-radius: 12px;
+  border-radius: 12px;
+  padding: 6px 22px;
+  display: inline-block;
+  text-decoration: none;
+  font-weight: bold;
+  width: 150px;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,1.0)), color-stop(0.4, rgba(255,255,255,0.0)), color-stop(0.5, rgba(255,255,255,0.0)), to(rgba(255,255,255,0.3)));
+  -webkit-transition: -webkit-transform 100ms ease-in-out;
+  margin-right: 15px;
+}
+
+#about .button:hover{
+  -webkit-transform: scale(1.2);
+  
 }
 
 #download{
-  background: rgb(36,115,107);
-  color: white;
+  background: -webkit-gradient(linear, 0% 0%, 0% 150, from(rgba(255,255,255,0.2)), to(rgba(255,255,255,0.0))) top left;
+  background-color: rgb(215,229,155);
+  border-bottom: 20px solid rgb(25,83,71);
 }
 
 
@@ -315,15 +351,13 @@ footer > .inner{
 #technology h1,
 #roadmap h1,
 #events h1{
-  font-size: 28px;
+  font-sizes: 28px;
   margin-bottom: 28px;
 }
 
 
 
-#features{
-  background: rgb(104,178,152);
-}
+
 
 #technology section{
   display: inline-block;
@@ -345,8 +379,6 @@ footer > .inner{
 
 
 #developer{
-  background: rgb(49,51,61);
-  color: white;
 }
 
 #developer h1{
@@ -364,8 +396,9 @@ footer > .inner{
   float: left;
   display: inline-block;
   background: rgb(49,51,61);
+  background: rgb(104,178,152);
   -webkit-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 #developer section,
@@ -377,7 +410,7 @@ footer > .inner{
 }
 
 #faq{
-  background: rgb(215,229,155);
+  
 }
 
 
