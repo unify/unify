@@ -271,8 +271,7 @@
                         <p>
                             Philipp Eicher<br/>
                             Software Developer<br/>
-                            <a href= "http://github.com/peicher">GitHub</a> |
-							<a href= "https://www.xing.com/profile/Philipp_Eicher">XING</a>
+                            <a href= "http://github.com/peicher">GitHub</a>
                         </p>
                     </section>
 					<section>
@@ -382,26 +381,13 @@
             </div>
         </footer>
 
-		<div id="videomask" style="display: none; position: fixed; left:0; top: 0; right: 0; bottom: 0; z-index: 100; background-color:#000; opacity: 0.6;">
-			<div id="video" style="left: 50%; top: 50%; margin-left: -427px; margin-top:-253px; width: 853px; height: 505px; position: absolute; z-index: 105; background-color: #000;"></div>
-		</div>
+		<div id="video" style="width: 1px; height: 1px; position: absolute;"></div>
 
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
         <script type="text/javascript">
-            $(document).ready(function(){
-				$("#videomask").click(function() {
-					$("#videomask").fadeOut('fast', function() {
-						$("#videomask").css("display","none");
-					});
-					$("#video").html("");
-					
-					return false;
-				});
+            $(document).ready(function(){ 
                 $(".videolink").click(function() {
-					$("#video").html('<iframe class="youtube-player" type="text/html" width="853" height="505" src="http://www.youtube.com/embed/5SG975uV_4M" frameborder="0"></iframe>');
-					$("#videomask").fadeIn('fast');
-					
-					return false;
+					$("body").insertChild('<iframe src="http://www.youtube.com/watch?v=5SG975uV_4M" width="50%" height="50%" name="videolink" scrolling="yes" framesborder="0"></iframe>');
 				});
             });
         </script>
