@@ -15,7 +15,7 @@
     <body>
         <!-- Logo -->
         <header>
-            <img src="pics/logos/unify_logo.png" /><h1>Unify</h1>
+            <img src="pics/unify_logo.png" /><h1>Unify</h1>
             <p>New</p>
         </header>
         
@@ -127,7 +127,7 @@
                 <h1>Technology</h1>
                 <div class="clearfix">
                     <section>
-                        <a href="http://qooxdoo.org"><img src="pics/logos/qx_logo.gif"/></a>
+                        <a href="http://qooxdoo.org"><img src="pics/qx_logo.gif"/></a>
                         <br>
                         <ul>
                             <li>Desktop user interface components</li>
@@ -140,7 +140,7 @@
                     </section>
             
                     <section>
-                        <a href="http://www.phonegap.com"><img src="pics/logos/phonegab.png"/></a>
+                        <a href="http://www.phonegap.com"><img src="pics/phonegab.png"/></a>
                         <ul>
                             <li>Native application wrapper for web apps</li>
                             <li>Publish applications to app stores</li>
@@ -150,7 +150,7 @@
                     </section
 
                     <section>
-                        <a href="http://www.sass-lang.com"><img src="pics/logos/sass.png"/></a>
+                        <a href="http://www.sass-lang.com"><img src="pics/sass.png"/></a>
                         <ul>
                             <li>Like CSS++</li>
                             <li>Mixins and includes to keep DRY</li>
@@ -159,7 +159,7 @@
                     </section>
             
                     <section>
-                        <a href="http://adobe.com/products/air"><img src="pics/logos/adobeair_logo.png"/></a>
+                        <a href="http://adobe.com/products/air"><img src="pics/adobeair_logo.png"/></a>
                         <ul>
                             <li>Cross platform desktop runtime</li>
                             <li>Real installable applications</li>
@@ -207,7 +207,7 @@
             <div class="inner">
                 <h1>Events</h1>
                 <p>
-                    <a href="http://jsconf.eu/2010/"><img src="pics/events/jsconf.png"></a><b>25.+26. September 2010: JSConf.EU</b>
+                    <a href="http://jsconf.eu/2010/"><img src="pics/jsconf.png"></a><b>25.+26. September 2010: JSConf.EU</b>
                     <br>Unify goes OpenSource
                 </p>
                 <p>
@@ -219,7 +219,7 @@
                     <br>Unify is part of the show 
                 </p>
                 <p>
-                    <a href="http://www.riaworld.de/"><img src="pics/events/ria.gif"></a><b>10.-11. November 2010: RIA World M&uuml;nchen</b>
+                    <a href="http://www.riaworld.de/"><img src="pics/ria.gif"></a><b>10.-11. November 2010: RIA World M&uuml;nchen</b>
                     <br>Presentation of Unify Framework
                 </p>
             </div>
@@ -232,7 +232,7 @@
                 <h1>Developer</h1>
                 <div class="clearfix">
                     <section>
-                        <img src="pics/developer/bernhard.png" />
+                        <img src="pics/bernhard.png" />
                         <p>
                             Bernhard Hochst&auml;tter<br/>
                             Team Lead
@@ -240,7 +240,7 @@
                         </p>
                     </section>
                     <section>
-                        <img src="pics/developer/werner.jpg" />
+                        <img src="pics/werner.jpg" />
                         <p>
                             Sebastian Werner<br/>
                             Lead Developer<br/>
@@ -249,7 +249,7 @@
                         </p>
                     </section>
                     <section>
-                        <img src="pics/developer/sebastianf.jpg" />
+                        <img src="pics/sebastianf.jpg" />
                         <p>
                             Sebastian Fastner<br/>
                             Software Developer<br/>
@@ -258,7 +258,7 @@
                         </p>
                     </section>
                     <section>
-                        <img src="pics/developer/alex.jpg" />
+                        <img src="pics/alex.jpg" />
                         <p>
                             Alexander Dittner<br/>
                             Software Developer<br/>
@@ -267,7 +267,7 @@
                         </p>
                     </section>
                     <section>
-                        <img src="pics/developer/phillip.jpg" />
+                        <img src="pics/phillip.jpg" />
                         <p>
                             Philipp Eicher<br/>
                             Software Developer<br/>
@@ -275,7 +275,7 @@
                         </p>
                     </section>
                     <section>
-                        <img src="pics/developer/filiz.png" />
+                        <img src="pics/filiz.png" />
                         <p>
                             Filiz Hazer<br/>
                             Software Developer<br/>
@@ -368,7 +368,7 @@
         <footer>
             <div class="inner">
                 <p>Copyright 2010 Unify Project</p>
-                <p>powered by<img src="pics/logos/T_.png" /></p>
+                <p>powered by<img src="pics/T_.png" /></p>
             </div>
         </footer>
 
