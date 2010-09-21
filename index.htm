@@ -390,33 +390,20 @@
 		</div>
 
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-<<<<<<< HEAD:index.htm
         <script type="text/javascript">
             $(document).ready(function(){
-				$("#videomask").click(function() {
-					$("#videomask").fadeOut('fast', function() {
-						$("#videomask").css("display","none");
-					});
-					$("#video").html("");
-					
-					return false;
+			$("#videomask").click(function(e) {
+                                       e.preventDefault();
+				$("#videomask").fadeOut('fast', function() {
+					$("#videomask").css("display","none");
 				});
-                $(".videolink").click(function() {
-					$("#video").html('<iframe class="youtube-player" type="text/html" width="853" height="505" src="http://www.youtube.com/embed/5SG975uV_4M" frameborder="0"></iframe>');
-					$("#videomask").fadeIn('fast');
-					
-					return false;
-				});
-=======
-        <script type="text/javascript" src="jquery/colorbox/colorbox/jquery.colorbox-min.js"></script>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $(".videolink").colorbox({
-                    innerWidth: 853,
-                    innerHeight: 505,
-                    iframe: true
-                });
->>>>>>> 1caf7c21600b5c1312acc47569618aae2e8831c1:index.html
+				$("#video").html("");
+			});
+                $(".videolink").click(function(e) {
+                        e.preventDefault();
+			$("#video").html('<iframe class="youtube-player" type="text/html" width="853" height="505" src="http://www.youtube.com/embed/5SG975uV_4M" frameborder="0"></iframe>');
+			$("#videomask").fadeIn('fast');
+		});
             });
         </script>
     </body>
