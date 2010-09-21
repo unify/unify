@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>CeeBox Test Page</title>
+<!-- ceebox and prereqs -->
+	<script type='text/javascript' src='js/jquery.js'></script>
+	<script type='text/javascript' src='js/jquery.swfobject.js' ></script>
+	<script type='text/javascript' src='js/jquery.metadata.js'></script>
+	<script type='text/javascript' src='js/jquery.color.js'></script>
+    <script type='text/javascript' src='js/jquery.ceebox.js'></script>
+    <script type='text/javascript' >
+    jQuery(document).ready(function(){
+		debugging = true;
+
+		$.fn.ceebox.videos.base.param.allowScriptAccess = "sameDomain" //added to kill the permissions problem
+		$.extend($.fn.ceebox.videos,{
+			uctv:{
+				siteRgx: /uctv\.tv\/search\-details/i, 
+				idRgx: /(?:showID=)([0-9]+)/i, 
+				src: "http://www.uctv.tv/player/player_uctv_bug.swf",
+				flashvars: {previewImage : "http://www.uctv.tv/images/programs/[id].jpg", movie : "rtmp://webcast.ucsd.edu/vod/mp4:[id]",videosize:0,buffer:1,volume:50,repeat:false,smoothing:true}
+			}
+		});
+		//$().ceebox(); //used to test to make sure the init call works.
+		//$(".ceebox").ceebox({boxColor:'#fff',borderColor:'#525252',textColor:'#333',videoJSON:"js/humor.json"});
+		$(".ceebox").ceebox({borderColor:'#dcdcdc',boxColor:"#fff"});
+		//$("map").ceebox({fadeOut:"slow",fadeIn:"slow",onload:function(){$("#cee_box").animate({backgroundColor:"#F00"},function(){$(this).animate({backgroundColor:"#fff"})});}});		
+		$("map").ceebox();		
+		$(".ceebox2").ceebox({unload:function(){$("body").css({background:"#ddf"})}});
+		//window.console.log($.fn.ceebox.videos.colbertFull)
+		//$("body").ceebox(); //uncomment and every link on the page is in one gallery
+		var testhtml = "<a href='http://balsaman.org' title='Balsa Man'>Balsa Man</a>"
+		var testhtml2 = "<div style='padding:20px;text-align:center'><h2>Hi I am some content built as a javascript variable!</h2><p><a href='#' class='cee_close'>Close Me</a></p></div>"
+		$("#testlink").click(function(){
+			$.fn.ceebox.overlay();
+			$.fn.ceebox.popup(testhtml,{onload:true,htmlWidth:600,htmlHeight:450});
+			return false;		  
+		});
+		$("#testlink2").click(function(){
+			$.fn.ceebox.overlay();
+			$.fn.ceebox.popup(testhtml2,{width:600,height:400});
+			return false;
+		});
+		//$.fn.ceebox.popup(testhtml,{onload:true,htmlWidth:600,htmlHeight:450});
+	});
+    </script>
+    
+	<link rel="stylesheet" href="css/ceebox.css" type="text/css" media="screen" />
+	<style type="text/css">
+		body{font:12px Arial, Helvetica, sans-serif;}
+		p,h1,h2,ul{margin:10px 0 4px;}
+		#wrap{width:800px;margin:auto;}
+		#ajaxcontent {border:1px dotted #777;padding:6px;color:#666;text-align:center;margin-top:10px;}
+		ul {padding-left:40px;}
+		hr {margin:40px 0;}
+	</style>
+</head>
+
+<body>
+<div id="wrap">
+    <h1>CeeBox 2.1 Ugly test page</h1>
+    <p>Yeah I know this page is ugly. Maybe later I'll throw together a better example page.</p><p> <em><strong>Note:</strong> if you run ceebox locally and call external video players you will get permissions errors unless you add $.fn.ceebox.videos.base.param.allowScriptAccess = "sameDomain" to your document ready</em></p>
+    <h2>Link list with multiple video/image/html</h2>
+    <ul class="ceebox mixed {videoWidth:200}">
+    	<li><a href="http://www.youtube.com/watch?v=G_5htGZkp9g" title="Balsa Man 2009 Video" >YouTube: balsa man vid</a></li>
+        <li><a href="http://www.youtube.com/watch?v=__GhJl_UQg0" title="Machine with oil" class="{videoGallery:false}">Machine with Oil</a> set to not be in gallery</li>
+        <li><a href="http://www.vimeo.com/5606758" title="Awesome Aquarium">link to vimeo video</a></li>
+    	<li><a href="http://www.facebook.com/video/video.php?v=238358730483" class="{videoWidth:400,boxColor:'#bbf',borderColor:'#db0 #aa0',borderWidth:'12px'}" title="Lame Facebook Video">link to facebook video</a>  (videoWidth set to 400, boxColor set to a light blue, and borderColor set to orange via metadata)</li>
+        <li><a href="http://farm3.static.flickr.com/2642/3894718411_88fe1d2968.jpg" title="16th Indian Tacos (photo by sninky-chan)">16th Indian Tacos</a></li>
+        <li><a href="http://www.catcubed.com" title="Catcubed: My blog">Catcubed</a></li>
+        <li><a href="http://www.spike.com/video/crazy-heart/3292468" title="Crazy heart" rel="width:600" class="{video:false,html:false}">Spike.com: Crazy Heart Trailer</a> Set to not display via metadata</li>
+        <li><a href="http://www.ifilm.com/video/2861849">iFilm: Swear Jar</a> Note: this is an old link. iFilm forwards to spike.com but CeeBox still works </li>
+        <li><a href="http://us.cnn.com/video/?/video/world/2009/11/18/amanpour.rwanda.cnn" >CNN: Rwanda Then and Now</a></li>
+        <li><a href="http://www.metacafe.com/watch/3740158/the_wolfman_movie_trailer/" >Metacafe: The Wolfman Movie Trailer</a></li>
+        <li><a href="http://www.colbertnation.com/the-colbert-report-videos/256451/november-19-2009/ak-47-designer-celebrates-his-birthday---john-pike" rel="ratio:1.3333">Colbert: AK-47 designers birthday</a> Colbert supported via the humor.json</li>
+        <li><a href="http://www.thedailyshow.com/watch/tue-november-17-2009/submission-accomplished" rel="videoId:256344 ratio:4:3">Daily Show: Submission Accomplished</a> NOTE: ceebox does not support Daily Show videos natively. It requires the humor.json file to be loaded and a videoId to be on the rel</li>
+        <li><a href="http://www.uctv.tv/search-details.aspx?showID=16803">uctv</a></li>
+    </ul>
+<!--
+http://www.ifilm.com/video/2861849
+-->
+
+<h2>Small Form iFrame</h2>
+
+<p><a href="test-form.html" class="ceebox2" rel="iframe width:300 height:400 modal:true" title="small form test">Test small form iframe</a> Includes unload event to make body blue</p>
+
+    <h2>Image Gallery with next/prev</h2>
+    <ul class="ceebox images">
+        <li><a href="http://catcubed.com/images/kurtvon.jpg" title="drawing of Kurt Vonnegut">Kurt</a></li>
+        <li><a href="http://catcubed.com/images/zombie_puppetmaster.jpg" title="Zombie Sock Puppet" class="{boxColor:'#130',textColor:'#dfd'}">Zombie Puppet</a> color of background at text set via metadata</li>
+        <li><a href="http://catcubed.com/images/balsa-man.jpg" title="Balsa Man 2008 as the sunsets. Oh boy isn't it pretty! Didn't get as nice of a picture this time.">Balsa Man</a></li>
+        <li><a href="http://farm3.static.flickr.com/2642/3894718411_88fe1d2968.jpg" title="16th Indian Tacos (photo by sninky-chan)">16th Indian Tacos</a></li>
+        <li><a href="http://tr-tr.facebook.com/profile/pic.php?oid=AAAAAQAQ_W8eL0hDl1i9pyC5HlMBWwAAAA_UlK1k0GmRW2Jc1JOQvcPL&size=normal" rel="image">photo</a> photo link does not contain jpg but we are forcing CeeBox to recognize it as an image with rel="image"</li>
+    </ul>
+    <h2>Image single link called by class</h2>
+    <p class="ceebox">
+<a href="http://farm3.static.flickr.com/2616/3897136195_42c708467a_b.jpg" class="{boxColor:'#000',textColor:'#ddd'}" title="UN at Balsa Man 2009">UN at Balsa Man</a> ceebox bg color set to black via metadata plugin</p>
+
+    <h3>Image Map with image links</h3>
+    <p>Note: these links are set to fade "slow" and also have an onload function called that makes them flash red</p>
+            <p><img src="http://www.w3schools.com/TAGS/planets.gif" width="145" height="126" alt="Planets" usemap="#planetmapImages" />
+       </p>
+    <h2>Daily Motion video</h2>
+    <ul class="ceebox"><li><a title="BMW M3 auf dem Nürburgring" rel="600 400" href="http://www.dailymotion.com/video/x3j545_bmw-m3-auf-dem-nurburgring_auto">
+      <img class="video-thumb" alt="BMW M3 auf dem Nürburgring" src="http://ak2.static.dailymotion.com/static/video/149/139/5931941:jpeg_preview_medium.jpg?20090120063245"/>
+      </a></li>
+    </ul>
+    <h2>iFrame</h2>
+    <ul class="ceebox html">
+    	<li><a href="http://balsaman.org" title="Balsa Man">Balsa Man</a></li>
+        <li><a rel="modal:false" href="http://www.laughingsquid.com" title="Laughing Squid">Laughing Squid</a></li>
+        <li><a rel="iframe modal:true" href="http://www.laughingsquid.com" title="Laughing Squid modal box">Laughing Squid</a> (modal version; Note as there is no cee_close button on this page you'll need to reload after clicking on this link)</li>
+   </ul>
+            <h3>Image Map with iFrame links</h3>
+            <p>Note: these links are set to fade "slow" and also have an onload function called that makes them flash red once all the iframe content is done loading</p>
+            <p><img src="http://www.w3schools.com/TAGS/planets.gif" width="145" height="126" alt="Planets" usemap="#planetmap" /></p>
+
+
+    <h2>AJAX</h2>
+    <ul class="ceebox">    
+        <li><a rel="width:500 height:200" href="test.html#ajaxcontent" title="AJAX box">link to ajax content</a></li>
+        <li><a rel="modal:true width:300 height:150" href="test.html#ajaxcontent" title="AJAX modal box">link to ajax content</a> (modal version; made to be a small box)</li>
+        <li><a rel="modal:true width:400" href="test.html#ajaxcontent2" class="{htmlWidth:600,htmlHeight:300,boxColor:'#aad',titles:false}" title="AJAX modal box 2">link to ajax content 2</a> (set to load as iframe. some settings set via metadata including color, size and titles are turned off)</li>
+    </ul>
+    <h2>SWF Test</h2>
+    <p><a href="http://www.thepcmanwebsite.com/media/pacman_flash/pacman-flash.swf" class="ceebox {boxColor:'#000',videoRatio:'0.8'}">Pacman Flash Game</a> (boxColor and videoRatio changed via metadata. <em>swf link thanks to the <a href="http://www.thepcmanwebsite.com">Pacman Website</a>)</em></p>
+    <h2>CeeBox Public Function</h2>
+    <p id="tester">The CeeBox popup function is public so it can be called from your script. You can sent it any piece of html content and it will include it in a ceebox style popup (see head of document for onclick code). <br/><a id="testlink" href="#">link with public function attached onclick</a> link to balsaman <br/><a id="testlink2" href="#">another link with public function attached onclick</a> generic html content</p>
+    <hr/>
+    <div id="ajaxcontent"><h2>Div content for the Ajax link test</h2><p>Hi this is content in a div on this very page!</p> <a href="#" class="cee_close">Close Me</a></div>
+    <div id="ajaxcontent2"><h2>Another Div content for the Ajax</h2><p>Hi this is the second content in a div on this very page!</p> <a href="#" class="cee_close">Close Me Too</a></div>
+    <div id="ajaxtest"></div>
+
+    <map name="planetmap" class="iframe">
+      <area shape="rect" coords="0,0,82,126" alt="Sun" href="http://en.wikipedia.org/wiki/Sun" title="It's the Sun!"/>
+      <area shape="circle" coords="90,58,3" alt="Mercury" href="http://en.wikipedia.org/wiki/Mercury_(planet)" title="Welcome to Mercury. It is a tad hot"/>
+      <area shape="circle" coords="124,58,8" alt="Venus" href="http://en.wikipedia.org/wiki/Venus"/>
+    </map>
+    <map name="planetmapImages" class="images">
+      <area shape="rect" coords="0,0,82,126" alt="Sun" href="http://z.about.com/d/space/1/5/Y/Q/sun_tour.jpg" title="It's the Sun!"/>
+      <area shape="circle" coords="90,58,3" alt="Mercury" href="http://www.trinity.edu/jdunn/images/Galaxy/mercury/mercury.gif" title="Welcome to Mercury. It is a tad hot"/>
+      <area shape="circle" coords="124,58,8" alt="Venus" href="http://martianchronicles.files.wordpress.com/2008/12/venus_magellan.jpg"/>
+    </map>
+</div>
+</body>
+</html>

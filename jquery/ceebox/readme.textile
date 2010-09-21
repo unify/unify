@@ -1,0 +1,191 @@
+h1. Ceebox 2.1.5 jQuery Plugin
+
+* Requires jQuery 1.3.2 and swfobject.jquery.js plugin to work.
+* Code hosted on GitHub (http://github.com/catcubed/CeeBox) Please visit there for version history information
+* By Colin Fahrion (http://www.catcubed.com)
+* Inspiration for CeeBox comes from Thickbox (http://jquery.com/demo/thickbox/) and Videobox (http://videobox-lb.sourceforge.net/). However, along the upgrade path CeeBox has morphed a long way from those roots.
+* Copyright (c) 2009 Colin Fahrion
+* Licensed under the MIT License: http://www.opensource.org/licenses/mit-license.php
+
+h2. What's included
+
+I have included both a minified version and the full version of the CeeBox js and css. You can choose to use either.
+
+CeeBox requires both jquery.js and jquery.swfobject.js, The most recent versions of both are included in this archive (v1.3.2 & v1.0.7). It is also recommended that you visit http://jquery.com/ and http://code.google.com/p/swfobject/ to make sure that these are up to date.
+
+The easing, color, and metadata plugins are included but are optional and not required for CeeBox to work. However if you want their additional functionality you will need them.
+
+Additionally, I have included the test.html page which I have been using to test functionality and I have included the original psd source files for the buttons so that you can adjust the buttons to your liking.
+
+h2. How to turn on CeeBox
+
+To make ceebox work add $(".ceebox").ceebox(); to your global js file in the document ready and add ceebox as a class to your links.
+
+h3. OPTIONAL SETTINGS
+
+For html and videos, CeeBox automatically defaults to the size of the browser (minus a few pixels). You can change this on a case by case basis via the rel attribute. You can also change the default to a static size by adding settings to the ceebox function like so:
+* $(".ceebox").ceebox({vidWidth:600,vidHeight:400,htmlWidth:600,htmlHeight:400});
+* There are tons more default options that can be changed. Read the js file for more.
+
+h3. Additional Instructions
+
+Please refer to the following link for instructions.
+"CeeBox - instruction page":http://catcubed.com/2008/12/23/ceebox-a-thickboxvideobox-mashup/
+
+h2. Release History
+
+h3. 2.1.5 Minor Improvement
+* can now force CeeBox to treat a link as an image with rel="image" (similarly rel="video" forces CeeBox to treat it as a video)
+
+h3. 2.1.4 Fix
+* fix for Esc key. Esc now closes popup.
+
+h3. 2.1.3 Fix
+* fix for gallery issue (prev tag not showing on 2nd item and arrow keys not working) which was introduced in 2.1.1
+
+h3. 2.1.2 Fix
+* fix for gallery issue (prev tag shown accidentally on first item) which was introduced in 2.1.1
+
+h3. 2.1.1 Code cleanup
+* A bit of code tidying. No bug fixes, No new features.
+
+h3. 2.1 Event Bubbling & Flash Plugin / iPhone Detection
+* Revamped to use jQuery Live event bubbling function which has improved code performance over the Bind function.
+* Detects flash plugin and displays message instead of embeds movie if not present
+* Detects iPhone and if link is a youtube movie it automatically sends to youtube (which launchs iPhone youtube player)
+
+h3. 2.0.11 Bug Fix Release for iframe & wordpress
+* changed iframe loader anim close function to use jQuery instead of $ which is required for Wordpress and other places where no-conflict is needed
+
+h3. 2.0.10 Bug Fix Release for public function
+* fix making it easier to use $.fn.ceebox.popup() as a stand alone.
+
+h3. 2.0.9 Bug Fix Release
+* fixed issue with enter/return key causing odd behaviour
+* fixed issue with google video player
+* fixed minor regex issue with properly identifying ajax popups and #idnames
+* added support for CeeTip (a small tooltip plugin that works with CeeBox... to be found at (http://github.com/catcubed/CeeBox))
+
+h3. 2.0.8 Fix for Safari video player bug
+* Small fix for youtube video regex (some youtube videos use a dash which wasn't accounted for)
+
+h3. 2.0.7 Fix for Safari video player bug
+* Fixed bug with safari and video players that was introduced in 2.0.6
+
+h3. 2.0.6 video player bug fix & new video support via JSON functionality 
+* video player gallery bug is now fixed
+* additional video support can now be added via an external JSON file (example humor.json included)
+
+h3. 2.0.5 revamp of video functionality, added unload callback, & iframe bug fix
+* improved method to test and add support for video players from different sites
+** new public variable $.fn.ceebox.videos which allows anyone (with a little regex knowhow) to add support for more video players
+** bonus: added support for CNN and for Spike.com (which used to be ifilm)
+* added optional unload callback so you can call a script when ceebox closes
+* added fix for iframe popups (onload was not working for small html files)
+
+h3. 2.0.4 Minor feature and bug fix release
+* Added support for color animations via "jquery.color.js":http://plugins.jquery.com/project/color 
+** background color, text color, and border color can all be changed per link through the use of the metadata and color plugins
+** If you use this, you will need to add a base color option when you call the ceebox function.
+* Several small fixes that you may not even notice. Including shifting the close button in IE so it's not cut off.
+* Code optimization (minimized version is now 11.2KB and it seems to run a bit smoother in IE)
+
+h3. 2.0.3 Minor feature add
+* background color and border color can be changed as an option
+
+h3. 2.0.2 Patch & Full Browser Testing
+
+* massive testing across all browsers (Opera 10,Firefox 3.5, Safari 4, Chrome, IE6/7/8 ) and with all combinations of functions
+* fixes, fixes, and more fixes.
+* support for the metadata plugin (options can be altered for each link via the class attr) http://docs.jquery.com/Plugins/Metadata
+* I consider this sucker out of Beta.
+
+h3. 2.0.1 Patch _still BETA_
+* ceebox popup can be called as a public function which accepts any html content you throw at it
+* minor fixes
+* change to close button design
+
+
+h3. 2.0.0 Major Upgrade BETA _this has been tested on all major browsers but needs to be tested further_
+
+* completely rewritten from the ground up with improved code design
+* tons of new default options that can be set, allowing ceebox to modify to your needs
+* optional onload callback function
+* gallery functionality now works for images, video, or html including a mixure of all of them
+* allows ceebox to be set on a parent element and it will grab all child links and create automatically create a gallery
+* improved transitional animations/effects and supports use of the easing plugin http://gsgd.co.uk/sandbox/jquery/easing/
+* various fixes: jquery chaining, expandable title area, etc.
+* Even with all this additional functionality the size is only 12KB compressed.
+
+h3. 1.4.3 Minor Upgrade
+
+* Added animation effects to popup load and gallery transitions. 
+* New optional settings:
+** *animSpeed* which allows for "slow","normal","fast", or speed in milliseconds (i.e., 1000) [default is "normal"]
+** *overlayColor* change the overlay color [default is "#000"]
+** *overlayOpacity* change the overlay opacity (i.e., 0 to 1) [default is 0.8]
+* Additional code refinements and reorganization. Code is much better organized and commented. Adding additional video formats is easy.
+
+h3. 1.4.2 Patch
+
+* fixed modal functionality which broke when it became a jquery plugin. *NOTE:* modal function works differently (and better) now! To make a close button, just give it the class "cee_close" -- no need to add javascript to the link any more. 
+* optimized and streamlined code (namely how the overlay is built) which reduced the size of both the js and css
+
+h3. 1.4.1 Patch
+
+* small bug fixes
+
+h3. 1.4 jQuery Plugin Release
+
+* Now a full fledged jquery plugin.
+* Incorporates all the improvements and code optimization of 1.3.x
+* Tested on FF 3.5, Opera 10, Safari 4, Chrome, and IE6,IE7,IE8 (with graceful degrading: rounded corners revert to square corners and in IE6 pngs lack transparency)
+* Due to additional refinements jquery.ceebox.js is 8.4KB minimized
+
+h3. 1.3.5 Patch
+
+* small bug fixes
+
+h3. 1.3.4 Patch (though really more of an upgrade)
+
+* Optimize code that generates image gallery (smaller and cleaner than before)
+* Add graphic links for next, prev, and close buttons; make next/prev occur as rollovers on top of the image.
+* Further optimize/shrink js (now 14.2KB upcompressed and 9.5KB compressed using YUI compressor)
+* provide minimized version of css
+
+h3. 1.3.3 Patch
+
+* Converted the urlMatch from a giant if then else to a switch, which makes it much easier to grok the code and add more video players.
+* Also, it should make the javascript run slighty faster. 
+* Fixed another Opera display bug (with html and body needing 100% height)
+* Added Facebook video embeding
+
+h3. 1.3.2 Patch
+
+Includes fix for Opera, which is admittedly a little hacky but it works. if anyone has a better less janky solution that would be great.
+
+h3. 1.3.1 Patch
+
+Includes fixes by Mark Elphinstone-Hoadley for IE6.
+
+h3. 1.3 UPGRADE
+
+Code cleanup and optimization. Reduced size of file from 17.7KB to 15.5KB. Minimized version is 10.1KB
+
+h3. 1.2 UPGRADE
+
+ * Uses the much smaller jquery.swfobject.js 1.0.7 instead of the swfobject.js
+ * Allows Base Width & Height to be flexible based on the browser window or static
+ * fixes problem with Esc not working and position problem with iframes
+ * adds arrow keys functionality to move to next/prev image when used for galleries
+ * General code cleanup.
+
+h3. 1.1 UPGRADE
+
+ * includes fix for jQuery 1.3.2
+ * adds support for Vimeo and Dailymotion
+
+
+
+
+

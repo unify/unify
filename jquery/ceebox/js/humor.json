@@ -1,0 +1,20 @@
+{
+	dailyshowClip: { //only partial support! Requires the videoId be added to the rel
+		siteRgx : /thedailyshow\.com\/watch/i, 
+		src : "http://media.mtvnservices.com/mgid:cms:item:comedycentral.com:[id]"
+	},
+	dailyshowFull: {
+		siteRgx : /thedailyshow\.com\/full\-episodes/i,
+		idRgx: /(?:full-episodes\/)([0-9]+)/i,
+		src : "http://media.mtvnservices.com/mgid:cms:fullepisode:comedycentral.com:[id]"
+	},
+	colbertClip: {
+		siteRgx : /the\-colbert\-report\-videos/i,
+		idRgx: /(?:videos\/)([0-9]+)/i,
+		src : "http://media.mtvnservices.com/mgid:cms:item:comedycentral.com:[id]"
+	},
+	colbertFull: {
+		siteRgx : /colbertreport\/full\-episodes/i,
+		idRgx: /(?:Id=)([0-9]+)/i,
+		src : "http://media.mtvnservices.com/mgid:cms:fullepisode:comedycentral.com:[id]"
+	}}
