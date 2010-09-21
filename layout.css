@@ -210,13 +210,25 @@ nav li a:hover{
   z-index: 100;
   background:rgba(0,0,0,0.5);
   -webkit-transform: translateY(-100%) scale(0.01);
-  -webkit-transition-properties: background-color, -webkit-transform, -o-transform, -moz-transform;
+  -webkit-transition-properties: background-color, -webkit-transform;
   -webkit-transition-duration: 300ms;
+  -moz-transform: translateY(-100%) scale(0.01);
+  -moz-transition-properties: background-color, -moz-transform;
+  -moz-transition-duration: 300ms;
+  -o-transform: translateY(-100%) scale(0.01);
+  -o-transition-properties: background-color, -o-transform;
+  -o-transition-duration: 300ms;
 }
 
 #videomask.visible{
   background:rgba(0,0,0,0.7);
   -webkit-transform: translateY(0px) scale(1);
+  -moz-transform: translateY(0px) scale(1);
+  -o-transform: translateY(0px) scale(1);
+}
+
+#videomask iframe{
+  background: black;
 }
 
 #video{
