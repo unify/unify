@@ -54,9 +54,9 @@
         </p>
         <p>Unify is made available under a dual license: <a href="http://www.opensource.org/licenses/mit-license.php">MIT</a> + <a href="http://www.opensource.org/licenses/apache2.0.php">Apache, Version 2.0</a></p>
         <p>
-          <a class="button videolink" href="http://www.youtube.com/watch?v=5SG975uV_4M&and;feature=player_embedded">Showcase</a>
-          <a class="button" href="api/index.html">API</a>
-          <a class="button" href="demo/index.html">Demo</a>
+          <a class="button videolink primary" href="http://www.youtube.com/watch?v=5SG975uV_4M&and;feature=player_embedded">Showcase</a>
+          <a class="button secondary" href="api/index.html">API</a>
+          <a class="button secondary" href="demo/index.html">Demo</a>
         </p>
       </div>
     </article>
@@ -399,12 +399,7 @@
       {
         e.preventDefault();
         $("#videomask").addClass("visible");
-
-        window.setTimeout(function() {
-          $("#video").html('<iframe class="youtube-player" type="text/html" width="853" height="505" src="http://www.youtube.com/embed/5SG975uV_4M" frameborder="0"></iframe>');
-        }, 500);
-        
-        
+        $("#video").html('<iframe class="youtube-player" type="text/html" width="853" height="505" src="http://www.youtube.com/embed/5SG975uV_4M" frameborder="0"></iframe>');
       });
     </script>
   </body>
