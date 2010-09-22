@@ -40,10 +40,9 @@ figure img {width: 100%;}
 */
 
 body {
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1.8;
-  font-family: "Museo Sans", "museo-sans-1","museo-sans-2", sans-serif;
-  font-weight: 200;  
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Verdana, sans-serif;
   color: rgb(49,51,61);
   background: url(pics/style/Pattern-1.png) top left repeat rgb(227,237,185);
 }
@@ -98,14 +97,9 @@ dd{
 .twocols section{
   display: inline-block;
   float: left;
-  font-size: 14px;
   width: 47%;
-  margin-bottom: 30px;
-  margin-right: 30px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -o-border-radius: 10px;
-  border-radius: 10px;
+  margin-bottom: 38px;
+  margin-right: 38px;
 }
 
 .twocols section:nth-child(even){
@@ -293,12 +287,13 @@ nav li a:hover{
 */
 
 article{
-  padding: 60px 0;
+  padding: 40px 0;
 }
 
 article h1{
-  font-size: 30px;
+  font-size: 34px;
   line-height: 1.2;
+  margin-bottom: 30px;
 }
 
 article > .inner,
@@ -323,7 +318,7 @@ footer > .inner{
 }
 
 #about h1{
-  font-size: 42px;
+  font-size: 38px;
 }
 
 #about .button{
@@ -363,47 +358,68 @@ footer > .inner{
   border-bottom: 20px solid rgb(25,83,71);
 }
 
-
-
-
-
 #features section{
-}
-
-
-#technology h1{
-  margin-bottom: 30px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
 }
 
 #technology section{
   text-align: center;
   background: white;
   border: 1px solid rgb(49,51,61);
-  -webkit-border-radius: 12px;
-  -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
-}
+  -webkit-background-clip: padding-box;
 
-#technology section:first-child{
-  background: rgb(19,66,117);
+  -webkit-border-bottom-left-radius: 12px;
+  -webkit-border-bottom-right-radius: 12px;
+  -moz-border-radius-bottomleft: 12px;
+  -moz-border-radius-bottomright: 12px;
+
+  -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+  -moz-box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+  -o-box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+  box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
 }
 
 #technology section a{
   display: block;
-  margin: 10px 0 4px;
+  padding: 10px 0 4px;
+}
+
+#technology section:first-child a{
+  background: rgb(19,66,117);
 }
 
 #technology section ul{
-  min-height: 150px;
+  min-height: 190px;
   border-top: 1px solid rgb(49,51,61);
   padding: 15px 35px;
   text-align: left;
   background: rgb(215,229,155);
+  -webkit-background-clip: padding-box;
+  
   -webkit-border-bottom-left-radius: 12px;
   -webkit-border-bottom-right-radius: 12px;
   -moz-border-radius-bottomleft: 12px;
   -moz-border-radius-bottomright: 12px;
 }
 
+#events p{
+  background: white;
+  padding: 20px;
+  border: 1px solid rgb(150,150,150);
+  
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  -o-border-radius: 12px;
+  border-radius: 12px;
+  
+  -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+  -moz-box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+  -o-box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+  box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+}
 
 
 
@@ -436,10 +452,6 @@ footer > .inner{
   -webkit-border-top-right-radius: 12px;
   -moz-border-radius-topleft: 12px;
   -moz-border-radius-topright: 12px;
-}
-
-#faq{
-  
 }
 
 
