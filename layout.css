@@ -365,15 +365,6 @@ footer > .inner{
 
 
 
-#features h1,
-#technology h1,
-#roadmap h1,
-#events h1{
-  font-sizes: 28px;
-  margin-bottom: 28px;
-}
-
-
 
 #features{
   
@@ -387,7 +378,7 @@ footer > .inner{
   background: white;
   -webkit-border-radius: 12px;
   border: 1px solid rgb(49,51,61);
-  -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
+  -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
 }
 
 #technology section:first-child{
