@@ -18,60 +18,60 @@
  */
 qx.Bootstrap.define("unify.bom.client.Engine",
 {
-	/*
-	*****************************************************************************
-		 STATICS
-	*****************************************************************************
-	*/
+  /*
+  *****************************************************************************
+     STATICS
+  *****************************************************************************
+  */
 
-	statics :
-	{
-		/** {Boolean} Whether the client's engine is not known/supported */
-		UNKNOWN : true,
+  statics :
+  {
+    /** {Boolean} Whether the client's engine is not known/supported */
+    UNKNOWN : true,
 
-		/** {String} The name of the engine. One of <code>trident</code>, <code>gecko</code>, <code>webkit</code> or <code>presto</code>. */
-		NAME : "unknown",
+    /** {String} The name of the engine. One of <code>trident</code>, <code>gecko</code>, <code>webkit</code> or <code>presto</code>. */
+    NAME : "unknown",
 
-		/** {Boolean} Whether the client uses Microsoft's browser engine */
-		TRIDENT : false,
+    /** {Boolean} Whether the client uses Microsoft's browser engine */
+    TRIDENT : false,
 
-		/** {Boolean} Whether the client uses Mozilla's Gecko browser engine */
-		GECKO : false,
+    /** {Boolean} Whether the client uses Mozilla's Gecko browser engine */
+    GECKO : false,
 
-		/** {Boolean} Whether the client uses Apple's Webkit browser engine */
-		WEBKIT : false,
+    /** {Boolean} Whether the client uses Apple's Webkit browser engine */
+    WEBKIT : false,
 
-		/** {Boolean} Whether the client uses Opera's browser engine */
-		PRESTO : false
-	},
+    /** {Boolean} Whether the client uses Opera's browser engine */
+    PRESTO : false
+  },
 
 
 
-	/*
-	*****************************************************************************
-		 DEFER
-	*****************************************************************************
-	*/
+  /*
+  *****************************************************************************
+     DEFER
+  *****************************************************************************
+  */
 
-	defer : function(statics)
-	{
-		// Doing some object detection magic to find out the engine without
-		// relying on the user agent string which is modifyable by the user.
-		var engine;
-		if (window.opera && Object.prototype.toString.call(window.opera) == "[object Opera]") {
-			engine = "presto";
-		} else if (window.controllers && Object.prototype.toString.call(window.controllers) == "[object XULControllers]") {
-			engine = "gecko";
-		} else if (typeof navigator.cpuClass === "string") {
-			engine = "trident";
-		} else if (document.createElement("div").style.WebkitAppearance != null) {
-			engine = "webkit";
-		} else {
-			return;
-		}
+  defer : function(statics)
+  {
+    // Doing some object detection magic to find out the engine without
+    // relying on the user agent string which is modifyable by the user.
+    var engine;
+    if (window.opera && Object.prototype.toString.call(window.opera) == "[object Opera]") {
+      engine = "presto";
+    } else if (window.controllers && Object.prototype.toString.call(window.controllers) == "[object XULControllers]") {
+      engine = "gecko";
+    } else if (typeof navigator.cpuClass === "string") {
+      engine = "trident";
+    } else if (document.createElement("div").style.WebkitAppearance != null) {
+      engine = "webkit";
+    } else {
+      return;
+    }
 
-		statics[engine.toUpperCase()] = true;
-		statics.NAME = engine;
-		statics.UNKNOWN = false;
-	}
+    statics[engine.toUpperCase()] = true;
+    statics.NAME = engine;
+    statics.UNKNOWN = false;
+  }
 });

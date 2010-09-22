@@ -12,30 +12,30 @@
  */
 qx.Class.define("unify.ui.mobile.Content",
 {
-	extend : unify.ui.mobile.Container,
+  extend : unify.ui.mobile.Container,
 
 
 
-	/*
-	*****************************************************************************
-		 MEMBERS
-	*****************************************************************************
-	*/
+  /*
+  *****************************************************************************
+     MEMBERS
+  *****************************************************************************
+  */
 
-	members :
-	{
-		/*
-		---------------------------------------------------------------------------
-			OVERRIDEABLE METHODS
-		---------------------------------------------------------------------------
-		*/
+  members :
+  {
+    /*
+    ---------------------------------------------------------------------------
+      OVERRIDEABLE METHODS
+    ---------------------------------------------------------------------------
+    */
 
-		// overridden
-		_createElement : function()
-		{
-			var elem = document.createElement("div");
-			elem.className = "content";
-			return elem;
-		}
-	}
+    // overridden
+    _createElement : function()
+    {
+      var elem = document.createElement("div");
+      elem.className = "content";
+      return elem;
+    }
+  }
 });

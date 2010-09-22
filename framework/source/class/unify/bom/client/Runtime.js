@@ -17,51 +17,51 @@
  */
 qx.Class.define("unify.bom.client.Runtime",
 {
-	/*
-	*****************************************************************************
-		 STATICS
-	*****************************************************************************
-	*/
-		
-	statics :
-	{
-		/** {String} The type of the runtime */
-		TYPE : "browser",
-		
-		/** {Boolean} Whether the application is running in a typical browser application */
-		BROWSER : false,		
-		
-		/** {Boolean} Whether the application is running in a widget e.g. Adobe AIR, custom widget manager, etc. */
-		WIDGET : false,
-		
-		/** {Boolean} Whether the application is running inside a basic web view without browser controls */
-		WEBVIEW : false,
-		
-		/** {Boolean} Whether the app is running as a native app e.g. PhoneGap */
-		NATIVE : false		
-	},
-	
-	
-	/*
-	*****************************************************************************
-		 DEFER
-	*****************************************************************************
-	*/
-		
-	defer : function(statics)
-	{
-		var Extension = unify.bom.client.Extension;
-		var type = "browser";
+  /*
+  *****************************************************************************
+     STATICS
+  *****************************************************************************
+  */
+    
+  statics :
+  {
+    /** {String} The type of the runtime */
+    TYPE : "browser",
+    
+    /** {Boolean} Whether the application is running in a typical browser application */
+    BROWSER : false,    
+    
+    /** {Boolean} Whether the application is running in a widget e.g. Adobe AIR, custom widget manager, etc. */
+    WIDGET : false,
+    
+    /** {Boolean} Whether the application is running inside a basic web view without browser controls */
+    WEBVIEW : false,
+    
+    /** {Boolean} Whether the app is running as a native app e.g. PhoneGap */
+    NATIVE : false    
+  },
+  
+  
+  /*
+  *****************************************************************************
+     DEFER
+  *****************************************************************************
+  */
+    
+  defer : function(statics)
+  {
+    var Extension = unify.bom.client.Extension;
+    var type = "browser";
 
-		if (Extension.PHONEGAP) {
-			type = "native";
-		} else if (Extension.AIR || Extension.PRISM || Extension.TITANIUM || Extension.BONDI) {
-			type = "widget";
-		} else if (navigator.standalone) {
-			type = "webview";
-		}	
-		
-		statics.TYPE = type;
-		statics[type.toUpperCase()] = true;
-	}
+    if (Extension.PHONEGAP) {
+      type = "native";
+    } else if (Extension.AIR || Extension.PRISM || Extension.TITANIUM || Extension.BONDI) {
+      type = "widget";
+    } else if (navigator.standalone) {
+      type = "webview";
+    }  
+    
+    statics.TYPE = type;
+    statics[type.toUpperCase()] = true;
+  }
 });

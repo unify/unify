@@ -17,56 +17,56 @@
  */
 qx.Bootstrap.define("unify.bom.client.Platform",
 {
-	/*
-	*****************************************************************************
-		 STATICS
-	*****************************************************************************
-	*/
+  /*
+  *****************************************************************************
+     STATICS
+  *****************************************************************************
+  */
 
-	statics :
-	{
-		/** {String} The name of the platform. One of: "win", "mac", "unix" or "unknown" */
-		NAME : "unknown",
+  statics :
+  {
+    /** {String} The name of the platform. One of: "win", "mac", "unix" or "unknown" */
+    NAME : "unknown",
 
-		/** {Boolean} Flag to detect if the client system is running Windows */
-		WIN : false,
+    /** {Boolean} Flag to detect if the client system is running Windows */
+    WIN : false,
 
-		/** {Boolean} Flag to detect if the client system is running Mac OS */
-		MAC : false,
+    /** {Boolean} Flag to detect if the client system is running Mac OS */
+    MAC : false,
 
-		/** {Boolean} Flag to detect if the client system is running Unix, Linux, BSD, Symbian, etc */
-		UNIX : false,
+    /** {Boolean} Flag to detect if the client system is running Unix, Linux, BSD, Symbian, etc */
+    UNIX : false,
 
-		/** {Boolean} Flag to detect if the client system is unknown */
-		UNKNOWN : true
-	},
-
-
+    /** {Boolean} Flag to detect if the client system is unknown */
+    UNKNOWN : true
+  },
 
 
-	/*
-	*****************************************************************************
-		 DEFER
-	*****************************************************************************
-	*/
 
-	defer : function(statics)
-	{
-		var input = navigator.platform || navigator.userAgent;
-		var name;
 
-		if (/Windows|Win32|Win64/.exec(input)) {
-			name = "win";
-		} else if (/Macintosh|MacPPC|MacIntel|Mac OS/.exec(input)) {
-			name = "mac";
-		} else if (/X11|Linux|BSD|Sun OS|Maemo|Android|SymbianOS|webOS/.exec(input)) {
-			name = "unix";
-		}
-		
-		if (name)
-		{
-			statics[name.toUpperCase()] = true;
-			statics.NAME = name;
-		}
-	}
+  /*
+  *****************************************************************************
+     DEFER
+  *****************************************************************************
+  */
+
+  defer : function(statics)
+  {
+    var input = navigator.platform || navigator.userAgent;
+    var name;
+
+    if (/Windows|Win32|Win64/.exec(input)) {
+      name = "win";
+    } else if (/Macintosh|MacPPC|MacIntel|Mac OS/.exec(input)) {
+      name = "mac";
+    } else if (/X11|Linux|BSD|Sun OS|Maemo|Android|SymbianOS|webOS/.exec(input)) {
+      name = "unix";
+    }
+    
+    if (name)
+    {
+      statics[name.toUpperCase()] = true;
+      statics.NAME = name;
+    }
+  }
 });

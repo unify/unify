@@ -24,5 +24,5 @@
  * Application class for desktop-class devices.
  */
 qx.Class.define("unify.application.Desktop", {
-	extend : qx.application.Standalone
+  extend : qx.application.Standalone
 });

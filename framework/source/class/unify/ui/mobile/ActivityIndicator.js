@@ -12,27 +12,27 @@
  */
 qx.Class.define("unify.ui.mobile.ActivityIndicator", 
 {
-	extend : unify.ui.mobile.Overlay,
-	type : "singleton",
+  extend : unify.ui.mobile.Overlay,
+  type : "singleton",
 
 
   /*
-	*****************************************************************************
-		 MEMBERS
-	*****************************************************************************
-	*/
-	
-	members : 
-	{
-		// overridden
-		_createElement : function() 
-		{
-			var elem = this.base(arguments);
-			
-			elem.innerHTML = "Lade Daten...";
-			elem.id = "activity";
-			
-			return elem;
-		}
-	}
+  *****************************************************************************
+     MEMBERS
+  *****************************************************************************
+  */
+  
+  members : 
+  {
+    // overridden
+    _createElement : function() 
+    {
+      var elem = this.base(arguments);
+      
+      elem.innerHTML = "Lade Daten...";
+      elem.id = "activity";
+      
+      return elem;
+    }
+  }
 });

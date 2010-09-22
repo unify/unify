@@ -16,193 +16,193 @@
  */
 qx.Class.define("unify.event.handler.Transition",
 {
-	extend : qx.core.Object,
-	implement : qx.event.IEventHandler,
+  extend : qx.core.Object,
+  implement : qx.event.IEventHandler,
 
 
 
 
-	/*
-	*****************************************************************************
-		 CONSTRUCTOR
-	*****************************************************************************
-	*/
+  /*
+  *****************************************************************************
+     CONSTRUCTOR
+  *****************************************************************************
+  */
 
-	/**
-	 * Create a new instance
-	 *
-	 * @param manager {qx.event.Manager} Event manager for the window to use
-	 */
-	construct : function(manager)
-	{
-		this.base(arguments);
+  /**
+   * Create a new instance
+   *
+   * @param manager {qx.event.Manager} Event manager for the window to use
+   */
+  construct : function(manager)
+  {
+    this.base(arguments);
 
-		// Define shorthands
-		this.__window = manager.getWindow();
-		this.__root = this.__window.document.documentElement;
+    // Define shorthands
+    this.__window = manager.getWindow();
+    this.__root = this.__window.document.documentElement;
 
-		// Wrap functions
-		this.__onEventWrapper = qx.lang.Function.listener(this.__onEvent, this);
-	},
-
-
-
-
-	/*
-	*****************************************************************************
-		 STATICS
-	*****************************************************************************
-	*/
-
-	statics :
-	{
-		/** {Integer} Priority of this handler */
-		PRIORITY : qx.event.Registration.PRIORITY_NORMAL,
-
-		/** {Map} Supported event types */
-		SUPPORTED_TYPES :
-		{
-			transitionEnd : 1,
-			animationEnd : 1,
-			animationStart : 1,
-			animationIteration : 1
-		},
-
-		/** {Integer} Which target check to use */
-		TARGET_CHECK : qx.event.IEventHandler.TARGET_DOMNODE,
-
-		/** {Integer} Whether the method "canHandleEvent" must be called */
-		IGNORE_CAN_HANDLE : true
-	},
+    // Wrap functions
+    this.__onEventWrapper = qx.lang.Function.listener(this.__onEvent, this);
+  },
 
 
 
 
+  /*
+  *****************************************************************************
+     STATICS
+  *****************************************************************************
+  */
 
-	/*
-	*****************************************************************************
-		 MEMBERS
-	*****************************************************************************
-	*/
+  statics :
+  {
+    /** {Integer} Priority of this handler */
+    PRIORITY : qx.event.Registration.PRIORITY_NORMAL,
 
-	members:
-	{
-		__onEventWrapper : null,
-		__window : null,
-		__root : null,
+    /** {Map} Supported event types */
+    SUPPORTED_TYPES :
+    {
+      transitionEnd : 1,
+      animationEnd : 1,
+      animationStart : 1,
+      animationIteration : 1
+    },
 
-		__nativeTypes : qx.core.Variant.select("qx.client",
-		{
-			"webkit" :
-			{
-				transitionEnd : "webkitTransitionEnd",
-				animationEnd : "webkitAnimationEnd",
-				animationStart : "webkitAnimationStart",
-				animationIteration : "webkitAnimationIteration"
-			},
+    /** {Integer} Which target check to use */
+    TARGET_CHECK : qx.event.IEventHandler.TARGET_DOMNODE,
 
-			"gecko" :
-			{
-				transitionEnd : "mozTransitionEnd",
-				animationEnd : "mozAnimationEnd",
-				animationStart : "mozAnimationStart",
-				animationIteration : "mozAnimationIteration"
-			},
-
-			"default" : null
-		}),
-
-		__publicTypes : qx.core.Variant.select("qx.client",
-		{
-			"webkit" :
-			{
-				webkitTransitionEnd : "transitionEnd",
-				webkitAnimationEnd : "animationEnd",
-				webkitAnimationStart : "animationStart",
-				webkitAnimationIteration : "animationIteration"
-			},
-
-			"gecko" :
-			{
-				mozTransitionEnd : "transitionEnd",
-				mozAnimationEnd : "animationEnd",
-				mozAnimationStart : "animationStart",
-				mozAnimationIteration : "animationIteration"
-			},
-
-			"default" : null
-		}),
+    /** {Integer} Whether the method "canHandleEvent" must be called */
+    IGNORE_CAN_HANDLE : true
+  },
 
 
 
 
-		/*
-		---------------------------------------------------------------------------
-			EVENT HANDLER INTERFACE
-		---------------------------------------------------------------------------
-		*/
 
-		// interface implementation
-		canHandleEvent: function(target, type) {
-			// Nothing needs to be done here
-		},
+  /*
+  *****************************************************************************
+     MEMBERS
+  *****************************************************************************
+  */
 
+  members:
+  {
+    __onEventWrapper : null,
+    __window : null,
+    __root : null,
 
-		// interface implementation
-		/**
-		 * @signature function(target, type, capture)
-		 */
-		registerEvent: qx.core.Variant.select("qx.client",
-		{
-			"webkit|gecko" : function(target, type, capture) {
-				qx.bom.Event.addNativeListener(target, this.__nativeTypes[type], this.__onEventWrapper);
-			},
+    __nativeTypes : qx.core.Variant.select("qx.client",
+    {
+      "webkit" :
+      {
+        transitionEnd : "webkitTransitionEnd",
+        animationEnd : "webkitAnimationEnd",
+        animationStart : "webkitAnimationStart",
+        animationIteration : "webkitAnimationIteration"
+      },
 
-			"default" : function() {}
-		}),
+      "gecko" :
+      {
+        transitionEnd : "mozTransitionEnd",
+        animationEnd : "mozAnimationEnd",
+        animationStart : "mozAnimationStart",
+        animationIteration : "mozAnimationIteration"
+      },
 
+      "default" : null
+    }),
 
-		// interface implementation
-		/**
-		 * @signature function(target, type, capture)
-		 */
-		unregisterEvent: qx.core.Variant.select("qx.client",
-		{
-			"webkit|gecko" : function(target, type, capture) {
-				qx.bom.Event.removeNativeListener(target, this.__nativeTypes[type], this.__onEventWrapper);
-			},
+    __publicTypes : qx.core.Variant.select("qx.client",
+    {
+      "webkit" :
+      {
+        webkitTransitionEnd : "transitionEnd",
+        webkitAnimationEnd : "animationEnd",
+        webkitAnimationStart : "animationStart",
+        webkitAnimationIteration : "animationIteration"
+      },
 
-			"default" : function() {}
-		}),
+      "gecko" :
+      {
+        mozTransitionEnd : "transitionEnd",
+        mozAnimationEnd : "animationEnd",
+        mozAnimationStart : "animationStart",
+        mozAnimationIteration : "animationIteration"
+      },
 
-
-
-		/*
-		---------------------------------------------------------------------------
-			NATIVE EVENT OBSERVERS
-		---------------------------------------------------------------------------
-		*/
-
-		/**
-		 * Global handler for the touch event.
-		 *
-		 * @signature function(domEvent)
-		 * @param domEvent {Event} DOM event
-		 */
-		__onEvent : qx.event.GlobalError.observeMethod(function(nativeEvent) {
-			qx.event.Registration.fireEvent(nativeEvent.target, this.__publicTypes[nativeEvent.type], qx.event.type.Event);
-		})
-	},
+      "default" : null
+    }),
 
 
 
-	/*
-	*****************************************************************************
-		 DEFER
-	*****************************************************************************
-	*/
 
-	defer : function(statics) {
-		qx.event.Registration.addHandler(statics);
-	}
+    /*
+    ---------------------------------------------------------------------------
+      EVENT HANDLER INTERFACE
+    ---------------------------------------------------------------------------
+    */
+
+    // interface implementation
+    canHandleEvent: function(target, type) {
+      // Nothing needs to be done here
+    },
+
+
+    // interface implementation
+    /**
+     * @signature function(target, type, capture)
+     */
+    registerEvent: qx.core.Variant.select("qx.client",
+    {
+      "webkit|gecko" : function(target, type, capture) {
+        qx.bom.Event.addNativeListener(target, this.__nativeTypes[type], this.__onEventWrapper);
+      },
+
+      "default" : function() {}
+    }),
+
+
+    // interface implementation
+    /**
+     * @signature function(target, type, capture)
+     */
+    unregisterEvent: qx.core.Variant.select("qx.client",
+    {
+      "webkit|gecko" : function(target, type, capture) {
+        qx.bom.Event.removeNativeListener(target, this.__nativeTypes[type], this.__onEventWrapper);
+      },
+
+      "default" : function() {}
+    }),
+
+
+
+    /*
+    ---------------------------------------------------------------------------
+      NATIVE EVENT OBSERVERS
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Global handler for the touch event.
+     *
+     * @signature function(domEvent)
+     * @param domEvent {Event} DOM event
+     */
+    __onEvent : qx.event.GlobalError.observeMethod(function(nativeEvent) {
+      qx.event.Registration.fireEvent(nativeEvent.target, this.__publicTypes[nativeEvent.type], qx.event.type.Event);
+    })
+  },
+
+
+
+  /*
+  *****************************************************************************
+     DEFER
+  *****************************************************************************
+  */
+
+  defer : function(statics) {
+    qx.event.Registration.addHandler(statics);
+  }
 });

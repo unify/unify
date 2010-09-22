@@ -18,143 +18,143 @@
  */
 qx.Bootstrap.define("unify.bom.client.System",
 {
-	/*
-	*****************************************************************************
-		 STATICS
-	*****************************************************************************
-	*/
+  /*
+  *****************************************************************************
+     STATICS
+  *****************************************************************************
+  */
 
-	statics :
-	{
-		/** {String} The name of the operating system */
-		NAME : "",
+  statics :
+  {
+    /** {String} The name of the operating system */
+    NAME : "",
 
-		/** {Number} Version number of operating system */
-		VERSION : 0,
+    /** {Number} Version number of operating system */
+    VERSION : 0,
 
-		/** {String} Name and version combined. */
-		TITLE : "unknown 0.0",
+    /** {String} Name and version combined. */
+    TITLE : "unknown 0.0",
 
-		/** {Boolean} Flag to detect if the client system is unknown */
-		UNKNOWN : true,
+    /** {Boolean} Flag to detect if the client system is unknown */
+    UNKNOWN : true,
 
-		/** {Boolean} Flag to detect if the client system is Windows (Desktop) */
-		WIN : false,
+    /** {Boolean} Flag to detect if the client system is Windows (Desktop) */
+    WIN : false,
 
-		/** {Boolean} Flag to detect if the client system is Windows Mobile (partly also Windows CE) */
-		WINMOBILE : false,
+    /** {Boolean} Flag to detect if the client system is Windows Mobile (partly also Windows CE) */
+    WINMOBILE : false,
 
-		/** {Boolean} Flag to detect if the client system is Linux */
-		LINUX : false,
+    /** {Boolean} Flag to detect if the client system is Linux */
+    LINUX : false,
 
-		/** {Boolean} Flag to detect if the client system is BSD (FreeBSD, NetBSD, ...) */
-		BSD : false,
+    /** {Boolean} Flag to detect if the client system is BSD (FreeBSD, NetBSD, ...) */
+    BSD : false,
 
-		/** {Boolean} Flag to detect if the client system is Unix (Not BSD and Linux) */
-		UNIX : false,
+    /** {Boolean} Flag to detect if the client system is Unix (Not BSD and Linux) */
+    UNIX : false,
 
-		/** {Boolean} Flag to detect if the client system is Mac OS */
-		MACOS : false,
+    /** {Boolean} Flag to detect if the client system is Mac OS */
+    MACOS : false,
 
-		/** {Boolean} Flag to detect if the client system is Symbian */
-		SYMBIAN : false,
+    /** {Boolean} Flag to detect if the client system is Symbian */
+    SYMBIAN : false,
 
-		/** {Boolean} Whether the device runs iOS (iPhone, iPod Touch, iPad) */
-		IOS : false,
+    /** {Boolean} Whether the device runs iOS (iPhone, iPod Touch, iPad) */
+    IOS : false,
 
-		/** {Boolean} Whether the device runs Android */
-		ANDROID : false,
+    /** {Boolean} Whether the device runs Android */
+    ANDROID : false,
 
-		/** {Boolean} Whether the device runs Palm Web OS */
-		WEBOS : false,
+    /** {Boolean} Whether the device runs Palm Web OS */
+    WEBOS : false,
 
-		/** {Boolean} Whether the device runs Nokia Maemo */
-		MAEMO : false
-	},
-
-
+    /** {Boolean} Whether the device runs Nokia Maemo */
+    MAEMO : false
+  },
 
 
-	/*
-	*****************************************************************************
-		 DEFER
-	*****************************************************************************
-	*/
 
-	defer : function(statics)
-	{
-		var Platform = qx.bom.client.Platform;
-		var agent = navigator.userAgent.replace(/_/g, ".");
-		var match, title, version, name;
 
-		if (Platform.WIN)
-		{
-			name = "win";
-			match = /((Windows NT|Windows|Win) ?([0-9\.]+))/.exec(agent);
-			if (match)
-			{
-				version = parseFloat(match[3], 10);
-				title = "windows " + ({
-					"5.0" : "2000",
-					"5.01" : "2000",
-					"5.1" : "xp",
-					"5.2" : "2003",
-					"6.0" : "vista",
-					"6.1" : "7"
-				}[version] || version);
-			}
-			else
-			{
-				match = /(Windows CE)/.exec(agent);
-				if (match)
-				{
-					match = /IEMobile ([0-9\.]+)/.exec(agent);
-					if (match)
-					{
-						version = parseFloat(match[1]);
-						if (version >= 7) {
-							version = 6.1;
-						} else if (version >= 6) {
-							version = 6.0;
-						} else {
-							version = 5.0;
-						}
-					}
-					else
-					{
-						match = /PPC|Smartphone/.exec(agent);
-						if (match) {
-							version = 5.0;
-						}
-					}
+  /*
+  *****************************************************************************
+     DEFER
+  *****************************************************************************
+  */
 
-					name = "winmobile";
-				}
-				else if (/PPC|Smartphone/.exec(agent))
-				{
-					name = "winmobile";
-					version = 5.0;
-				}
-			}
-		}
-		else if (Platform.MAC)
-		{
-			match = /(((Mac OS X)|(Mac OS)) ([0-9\.]+))/.exec(agent);
-			name = "macos";
-			if (match)
-			{
-				version = parseFloat(match[5], 10);
-			}
-			else
-			{
-				var match = /((iPhone OS|iOS) ([0-9\.]+))/.exec(agent);
-				if (match)
-				{
-					version = parseFloat(match[3]);
-					name = "ios";
-				}
-				else
-				{
+  defer : function(statics)
+  {
+    var Platform = qx.bom.client.Platform;
+    var agent = navigator.userAgent.replace(/_/g, ".");
+    var match, title, version, name;
+
+    if (Platform.WIN)
+    {
+      name = "win";
+      match = /((Windows NT|Windows|Win) ?([0-9\.]+))/.exec(agent);
+      if (match)
+      {
+        version = parseFloat(match[3], 10);
+        title = "windows " + ({
+          "5.0" : "2000",
+          "5.01" : "2000",
+          "5.1" : "xp",
+          "5.2" : "2003",
+          "6.0" : "vista",
+          "6.1" : "7"
+        }[version] || version);
+      }
+      else
+      {
+        match = /(Windows CE)/.exec(agent);
+        if (match)
+        {
+          match = /IEMobile ([0-9\.]+)/.exec(agent);
+          if (match)
+          {
+            version = parseFloat(match[1]);
+            if (version >= 7) {
+              version = 6.1;
+            } else if (version >= 6) {
+              version = 6.0;
+            } else {
+              version = 5.0;
+            }
+          }
+          else
+          {
+            match = /PPC|Smartphone/.exec(agent);
+            if (match) {
+              version = 5.0;
+            }
+          }
+
+          name = "winmobile";
+        }
+        else if (/PPC|Smartphone/.exec(agent))
+        {
+          name = "winmobile";
+          version = 5.0;
+        }
+      }
+    }
+    else if (Platform.MAC)
+    {
+      match = /(((Mac OS X)|(Mac OS)) ([0-9\.]+))/.exec(agent);
+      name = "macos";
+      if (match)
+      {
+        version = parseFloat(match[5], 10);
+      }
+      else
+      {
+        var match = /((iPhone OS|iOS) ([0-9\.]+))/.exec(agent);
+        if (match)
+        {
+          version = parseFloat(match[3]);
+          name = "ios";
+        }
+        else
+        {
           // If detection of iOS with user string without version number, test for generic
           // device names
           if (/(iPad|iPhone|iPod)/.test(agent)) {
@@ -174,50 +174,50 @@ qx.Bootstrap.define("unify.bom.client.System",
               version = 9.0;
             }
           }
-				}
-			}
-		}
-		else if (Platform.UNIX)
-		{
-			if (agent.indexOf("Linux") != -1)
-			{
-				match = /((Android|Maemo) ([0-9\.]+))/.exec(agent);
-				if (match)
-				{
-					name = match[2].toLowerCase();
-					version = parseFloat(match[3]);
-				}
-				else
-				{
-					name = "linux";
-				}
-			}
-			else if (agent.indexOf("webOS") != -1)
-			{
-				name = "webos";
-				match = /webOS\/([\.0-9]+)/.exec(agent);
-				if (match) {
-					version = parseFloat(match[1]);
-				}
-			}
-			else if (agent.indexOf("Symbian") != -1)
-			{
-				name = "symbian";
-			}
-			else if (agent.indexOf("BSD") != -1)
-			{
-				name = "bsd";
-			}
-			else
-			{
-				name = "unix";
-			}
-		}
+        }
+      }
+    }
+    else if (Platform.UNIX)
+    {
+      if (agent.indexOf("Linux") != -1)
+      {
+        match = /((Android|Maemo) ([0-9\.]+))/.exec(agent);
+        if (match)
+        {
+          name = match[2].toLowerCase();
+          version = parseFloat(match[3]);
+        }
+        else
+        {
+          name = "linux";
+        }
+      }
+      else if (agent.indexOf("webOS") != -1)
+      {
+        name = "webos";
+        match = /webOS\/([\.0-9]+)/.exec(agent);
+        if (match) {
+          version = parseFloat(match[1]);
+        }
+      }
+      else if (agent.indexOf("Symbian") != -1)
+      {
+        name = "symbian";
+      }
+      else if (agent.indexOf("BSD") != -1)
+      {
+        name = "bsd";
+      }
+      else
+      {
+        name = "unix";
+      }
+    }
 
-		statics.NAME = name;
-		statics[name.toUpperCase()] = true;
-		statics.VERSION = version == null ? 0.0 : version;
-		statics.TITLE = title || (name + " " + version);
-		statics.UNKNOWN = false;
-	}
+    statics.NAME = name;
+    statics[name.toUpperCase()] = true;
+    statics.VERSION = version == null ? 0.0 : version;
+    statics.TITLE = title || (name + " " + version);
+    statics.UNKNOWN = false;
+  }
 });
