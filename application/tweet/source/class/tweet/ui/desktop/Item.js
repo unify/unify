@@ -83,7 +83,7 @@ qx.Class.define("tweet.ui.desktop.Item",
       }
 
       var Twitter = tweet.util.Twitter;
-			var user = entry.from_user || entry.user.screen_name;
+      var user = entry.from_user || entry.user.screen_name;
 
       this.getChildControl("icon").setSource(Twitter.getIcon(entry));
       this.getChildControl("message").setValue(user + " " + Twitter.getFormattedText(entry));

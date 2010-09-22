@@ -58,10 +58,10 @@ qx.Class.define("tweet.application.Desktop",
       // Set title
       document.title = "Tweet";
 
-			// Initialize Twitter business object
-			var TwitterAuth = tweet.business.TwitterAuth.getInstance();
-			TwitterAuth.setUser("telekomria");
-			TwitterAuth.setPassword("32u8AH555wKdQvhqgZZ9");
+      // Initialize Twitter business object
+      var TwitterAuth = tweet.business.TwitterAuth.getInstance();
+      TwitterAuth.setUser("telekomria");
+      TwitterAuth.setPassword("32u8AH555wKdQvhqgZZ9");
 
       // Add tab view
       var mainPane = this.__mainPane = new qx.ui.tabview.TabView;

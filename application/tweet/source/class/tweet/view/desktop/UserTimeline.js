@@ -14,8 +14,8 @@ qx.Class.define("tweet.view.desktop.UserTimeline",
   
   members : 
   {
-		__requestId : null,	
-	
+    __requestId : null,  
+  
     _createView : function()
     {
       var page = this.build(

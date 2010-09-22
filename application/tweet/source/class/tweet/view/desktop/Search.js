@@ -15,7 +15,7 @@ qx.Class.define("tweet.view.desktop.Search",
   members : 
   {
     __requestId : null,
-	
+  
     _createView : function()
     {
       var page = this.build(
@@ -125,7 +125,7 @@ qx.Class.define("tweet.view.desktop.Search",
       this.getById("searchBox").setEnabled(false);
       var value = encodeURIComponent(this.getById("searchField").getValue());
 
-			var TwitterAnon = tweet.business.TwitterAnon.getInstance();
+      var TwitterAnon = tweet.business.TwitterAnon.getInstance();
       this.__requestId = TwitterAnon.get("search", {query:value});
     },
 
