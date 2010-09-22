@@ -368,26 +368,23 @@ footer > .inner{
 
 
 #features section{
-  
 }
 
 
-
+#technology h1{
+  margin-bottom: 30px;
+}
 
 #technology section{
   text-align: center;
   background: white;
-  -webkit-border-radius: 12px;
   border: 1px solid rgb(49,51,61);
+  -webkit-border-radius: 12px;
   -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
 }
 
 #technology section:first-child{
   background: rgb(19,66,117);
-}
-
-#technolgy section img{
-  
 }
 
 #technology section a{
