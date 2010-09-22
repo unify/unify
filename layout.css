@@ -1,4 +1,3 @@
-/* 
 =========================================================
     RESET
 ========================================================= 
@@ -355,10 +354,12 @@ footer > .inner{
 
 #features,
 #technology,
-#roadmap,
-#events{
+#events,
+#roadmap
+{
   font-size: 16px;
 }
+
 
 #features h1,
 #technology h1,
