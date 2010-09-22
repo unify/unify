@@ -444,6 +444,7 @@ footer > .inner{
   background: rgb(104,178,152);
   -webkit-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
   font-size: 11px;
+  -moz-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
 #developer section,
