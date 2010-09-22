@@ -53,6 +53,7 @@ body {
   line-height: 1.8;
   font-family: "Lucida Grande", Tahoma, sans-serif;
   color: rgb(49,51,61);
+  background: url(pics/style/Pattern-1.png) top left repeat rgb(215,229,155);
 }
 
 body > *{
@@ -103,13 +104,13 @@ dd{
 */
 
 header{
-  margin: 50px 0;
   text-align: center;
   position: relative;
+  background: white;
 }
 
 header img {
-  margin: 0 auto;
+  margin: 50px auto 50px;
 }
 
 header h1{
@@ -124,13 +125,14 @@ header p{
   text-transform: uppercase;
   font-size: 28px;
   padding: 4px 0;
+  margin: 0;
   color: white;
   text-shadow: -1px 1px 1px rgba(0,0,0,0.3);
   background: rgb(255,165,60);
-  -webkit-transform: rotate(45deg) translateY(-70px) translateX(30px);
-  -moz-transform: rotate(45deg) translateY(-70px) translateX(30px);
-  -o-transform: rotate(45deg) translateY(-70px) translateX(30px);
-  transform: rotate(45deg) translateY(-60px) translateX(30px);
+  -webkit-transform: rotate(45deg) translateY(-10px) translateX(80px);
+  -moz-transform: rotate(45deg) translateY(-30px) translateX(30px);
+  -o-transform: rotate(45deg) translateY(-30px) translateX(30px);
+  transform: rotate(45deg) translateY(-30px) translateX(30px);
   -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
   -moz-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
   -o-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
@@ -312,15 +314,6 @@ footer > .inner{
   padding: 80px 0px 60px;
 }
 
-#about .button.primary{
-  background: rgb(255,165,60);
-}
-
-#about .button.secondary{
-  background: rgb(215,229,155);
-  
-}
-
 #about .button{
   text-align: center;
   color: rgb(49,51,61);
@@ -340,9 +333,16 @@ footer > .inner{
   -webkit-box-shadow: 0px 2px 1px rgba(255,255,255,0.3);
 }
 
+#about .button.primary{
+  background: rgb(255,165,60);
+}
+
+#about .button.secondary{
+  background: rgb(215,229,155);
+}
+
 #about .button:hover{
   -webkit-transform: scale(1.05);
-  
 }
 
 #download{
@@ -356,7 +356,10 @@ footer > .inner{
 #features,
 #technology,
 #roadmap,
-#events{
+#events,
+#developer,
+#faq{
+  
   font-size: 16px;
 }
 
