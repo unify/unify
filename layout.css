@@ -50,9 +50,10 @@ figure img {width: 100%;}
 body {
   font-size: 18px;
   line-height: 1.8;
-  font-family: "Lucida Grande", Tahoma, sans-serif;
+  font-family: "Museo Sans", "museo-sans-1","museo-sans-2", sans-serif;
   color: rgb(49,51,61);
   background: url(pics/style/Pattern-1.png) top left repeat rgb(215,229,155);
+  background-color: rgb(104,178,152);
 }
 
 body > *{
@@ -147,7 +148,7 @@ header p{
 */
 
 footer{
-  background: rgb(49,51,61);
+  background-color: rgb(25,83,71);
   color: rgba(255,255,255,0.4);
   border-top: 1px solid rgb(49,51,61);
   border-bottom: 1px solid rgb(49,51,61);
@@ -162,7 +163,7 @@ footer p:last-child{
 
 footer img{
   margin: 0 8px;
-  opacity: 0.2;
+  border: 1px solid black;
 }
 
 
@@ -196,8 +197,7 @@ nav a {
   color: white;
   text-decoration: none;
   font-weight: bold;
-  font-size: 16px;
-  text-shadow: 1px 1px 1px black;
+  font-size: 18px;
   margin: 0 8px;
   -webkit-transition: background-color 100ms ease-in-out;
   -moz-transition: background-color 100ms ease-in-out;
