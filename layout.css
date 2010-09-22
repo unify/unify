@@ -385,6 +385,15 @@ footer > .inner{
   background: rgb(19,66,117);
 }
 
+#technolgy img{
+  
+}
+
+#technology a{
+  display: block;
+  margin: 10px 0 4px;
+}
+
 #technology section ul{
   min-height: 150px;
   border-top: 1px solid rgb(49,51,61);
