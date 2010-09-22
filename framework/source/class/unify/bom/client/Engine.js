@@ -1,12 +1,12 @@
-/* ************************************************************************
+/* ***********************************************************************************************
 
-	 Unify Framework
+    Unify Project
+    
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
-	 Copyright:
-		 2009 Deutsche Telekom AG, Germany, http://telekom.com
-
-************************************************************************ */
-
+*********************************************************************************************** */
 /**
  * Engine detection. This class uses a new system to detect browser
  * engines which is not affected by any user agent modifications as

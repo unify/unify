@@ -1,26 +1,12 @@
-/* ************************************************************************
+/* ***********************************************************************************************
 
-	 Unify Framework
+    Unify Project
+    
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
-	 Copyright:
-		 2009 Deutsche Telekom AG, Germany, http://telekom.com
-
-	 ======================================================================
-
-	 This class contains code based on the following work:
-
-	 * parseUri
-			 http://blog.stevenlevithan.com/archives/parseuri
-			 Version 1.2.1
-
-		 Copyright:
-			 (c) 2007, Steven Levithan
-
-		 License:
-			 MIT: http://en.wikipedia.org/wiki/MIT_License
-
-************************************************************************ */
-
+*********************************************************************************************** */
 /**
  * Deals with client specific URI support e.g. which are opened
  * in another native application by default. For desktop web browsers

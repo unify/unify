@@ -1,12 +1,12 @@
-/* ************************************************************************
+/* ***********************************************************************************************
 
-	 Unify Framework
+    Unify Project
+    
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
-	 Copyright:
-		 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
-
-************************************************************************ */
-
+*********************************************************************************************** */
 /**
  * A view is basically a combination two parts from the typical MVC model: 
  * a controller for the UI and the UI itself. It creates the UI logic

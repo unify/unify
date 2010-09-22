@@ -1,3 +1,13 @@
+/* ***********************************************************************************************
+
+    Unify Project
+    
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
+
+*********************************************************************************************** */
+
 /**
  * Slide view component to have left/right sliding boxes with 100% width
  */

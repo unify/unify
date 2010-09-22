@@ -1,3 +1,12 @@
+/* ***********************************************************************************************
+
+    Unify Project
+    
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
+
+*********************************************************************************************** */
 qx.Class.define("tweet.view.desktop.Search",
 {
   extend : tweet.view.desktop.Abstract,

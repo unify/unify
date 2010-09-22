@@ -1,12 +1,12 @@
-/* ************************************************************************
+/* ***********************************************************************************************
 
-	 Tweet
+    Unify Project
+    
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
-	 Copyright:
-		 2009 Deutsche Telekom AG, Germany, http://telekom.com
-
-************************************************************************ */
-
+*********************************************************************************************** */
 /**
  * List of all people who the current user is following or are following her/him.
  */

@@ -1,23 +1,12 @@
-/* ************************************************************************
+/* ***********************************************************************************************
 
-	 Unify Framework
+    Unify Project
+    
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
-	 Copyright:
-		 2009 Deutsche Telekom AG, Germany, http://telekom.com
-
-	 ======================================================================
-
-	 This class contains code based on the excellent work by:
-
-	 qooxdoo, http://qooxdoo.org
-	 2004-2008 1&1 Internet AG, Germany, http://www.1und1.de
-
-	 License:
-		 LGPL: http://www.gnu.org/licenses/lgpl.html
-		 EPL: http://www.eclipse.org/org/documents/epl-v10.php
-
-************************************************************************ */
-
+*********************************************************************************************** */
 /**
  * This class comes with all relevant information regarding
  * the client's implemented features.

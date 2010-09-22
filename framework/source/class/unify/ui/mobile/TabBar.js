@@ -1,12 +1,12 @@
-/* ************************************************************************
+/* ***********************************************************************************************
 
-	 Unify Framework
+    Unify Project
+    
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
-	 Copyright:
-		 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
-
-************************************************************************ */
-
+*********************************************************************************************** */
 /**
  * The TabBar is an singleton element of the ui. If it is enabled by adding
  * buttons to it, the tab bar is displayed on all views. It is possible to
