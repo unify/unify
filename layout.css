@@ -101,10 +101,11 @@ dd{
   font-size: 14px;
   width: 47%;
   margin-bottom: 30px;
-
   margin-right: 30px;
-  background: white;
   -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
 }
 
 .twocols section:nth-child(even){
@@ -366,7 +367,7 @@ footer > .inner{
 
 
 
-#features{
+#features section{
   
 }
 
@@ -385,11 +386,11 @@ footer > .inner{
   background: rgb(19,66,117);
 }
 
-#technolgy img{
+#technolgy section img{
   
 }
 
-#technology a{
+#technology section a{
   display: block;
   margin: 10px 0 4px;
 }
