@@ -356,6 +356,7 @@ footer > .inner{
   background: -webkit-gradient(linear, 0% 0%, 0% 150, from(rgba(255,255,255,0.2)), to(rgba(255,255,255,0.0))) top left;
   background-color: rgb(215,229,155);
   border-bottom: 20px solid rgb(25,83,71);
+  margin-bottom: 20px;
 }
 
 #features section{
