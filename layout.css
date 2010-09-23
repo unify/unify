@@ -455,6 +455,7 @@ footer > .inner{
   overflow: hidden;
   -webkit-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
   -moz-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+ 
 }
 
 #developer section p{
@@ -480,6 +481,7 @@ footer > .inner{
   -moz-border-radius-topleft: 12px;
   -moz-border-radius-topright: 12px;
    -moz-background-clip: padding-box;
+   
 }
 
 #faq{
