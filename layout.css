@@ -355,7 +355,7 @@ footer > .inner{
 #download{
   background: -webkit-gradient(linear, 0% 0%, 0% 150, from(rgba(255,255,255,0.2)), to(rgba(255,255,255,0.0))) top left;
   background-color: rgb(215,229,155);
- /* border-bottom: 20px solid rgb(25,83,71);*/
+  border-bottom: 20px solid rgb(25,83,71);
   margin-bottom: 20px;
 }
 
@@ -397,34 +397,14 @@ footer > .inner{
   border-top: 1px solid rgb(49,51,61);
   padding: 15px 35px;
   text-align: left;
-  background: #195347;
+  background: rgb(215,229,155);
   -webkit-background-clip: padding-box;
-   -moz-background-clip: padding-box;
-  color:white;
-  
- 
+  -moz-background-clip: padding-box;
+  -o-background-clip: padding-box;
+  background-clip: padding-box;
 }
 
-#events div{
-	color:white;
-	background-color: #195347;
-	padding:20px;
-	border: 1px solid rgb(150,150,150);
-	
-	
-  -webkit-border-top-left-radius: 12px;
-  -webkit-border-top-right-radius: 12px;
- -webkit-box-shadow: 20px 20px 20px rgba(0,0,0,0.1);
-  -moz-box-shadow: 20px 20px 20px rgba(0,0,0,0.1);
-  -o-box-shadow: 20px 20px 20px rgba(0,0,0,0.1);
-  box-shadow: 20px 20px 20px rgba(0,0,0,0.1);
-  -moz-border-radius-topleft: 12px;
-  -moz-border-radius-topright: 12px;
-  -o-border-top-left-radius: 12px;
-  -o-border-top-right-radius: 12px;
-}
-
-/*#events p{
+#events p{
   background: white;
   padding: 20px;
   border: 1px solid rgb(150,150,150);
@@ -440,9 +420,7 @@ footer > .inner{
   box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
 }
 
-*/
 #developer section{
-  
   height: 310px;
   margin-bottom: 24px;
   margin-right: 24px;
@@ -465,9 +443,6 @@ footer > .inner{
   line-height: 1.3;
 }
 
-#developer section p a{
-}
-
 #developer section img+p{
   font-size: 20px;
 }
@@ -479,7 +454,7 @@ footer > .inner{
   -webkit-border-top-right-radius: 12px;
   -moz-border-radius-topleft: 12px;
   -moz-border-radius-topright: 12px;
-   -moz-background-clip: padding-box;
+  -moz-background-clip: padding-box;
 }
 
 #faq{
