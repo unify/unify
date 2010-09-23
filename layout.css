@@ -70,8 +70,9 @@ pre{
   
   padding: 4px 8px;
   background: rgba(255,255,255,0.2);
+  color: rgba(49,51,61,0.8);
   font-family: "Consolas", monospace;
-  border: 1px solid white;
+  border: 1px solid rgba(255,255,255,0.8);
 }
 
 ul{
@@ -86,7 +87,6 @@ dt{
 dd{
   padding-left: 20px;
 }
-
 
 .clearfix:after {
   content: ".";
@@ -322,6 +322,7 @@ footer > .inner{
 
 #about{
   background: -webkit-gradient(linear, 0% 0%, 0% 150, from(rgba(255,255,255,0.07)), to(rgba(255,255,255,0.0))) top left;
+  background: -moz-linear-gradient(top, rgba(255,255,255,0.07), rgba(255,255,255,0.0));
   /* TODO MOZILLA */
   
   background-color: rgb(25,83,71);
@@ -386,7 +387,7 @@ footer > .inner{
   
   background-color: rgb(215,229,155);
   border-bottom: 20px solid rgb(25,83,71);
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 #features section{
@@ -441,6 +442,14 @@ footer > .inner{
   -moz-background-clip: padding-box;
   -o-background-clip: padding-box;
   background-clip: padding-box;
+}
+
+#roadmap dl{
+  margin-bottom: 17px;
+}
+
+#roadmap dt{
+  font-size: 20px;
 }
 
 #events section{
