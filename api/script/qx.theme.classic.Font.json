@@ -1,0 +1,1 @@
+{"attributes": {"fullName": "qx.theme.classic.Font", "packageName": "qx.theme.classic", "isStatic": true, "type": "theme", "name": "Font"}, "type": "class", "children": [{"attributes": {"text": "<p>The classic qooxdoo font theme.</p>"}, "type": "desc"}]}

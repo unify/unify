@@ -1,0 +1,1 @@
+{"attributes": {"fullName": "unify.application.Desktop", "packageName": "unify.application", "type": "class", "name": "Desktop", "superClass": "qx.application.Standalone"}, "type": "class", "children": [{"attributes": {"text": "<p>Application class for desktop-class devices.</p>"}, "type": "desc"}]}
