@@ -1,14 +1,14 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
 *********************************************************************************************** */
 /**
- * Fired by business object whenever a data communication is completed. 
+ * Fired by business object whenever a data communication is completed.
  */
 qx.Class.define("unify.business.CompletedEvent",
 {
@@ -20,8 +20,8 @@ qx.Class.define("unify.business.CompletedEvent",
     __data : null,
     __errornous : null,
     __request : null,
-    
-    
+
+
     /**
      * Initialize the fields of the event. The event must be initialized before
      * it can be dispatched.
@@ -37,17 +37,17 @@ qx.Class.define("unify.business.CompletedEvent",
     init : function(id, data, modified, errornous, malformed, request)
     {
       this.base(arguments, false, false);
-          
+
       this.__id = id;
       this.__data = data;
       this.__modified = modified;
       this.__errornous = errornous;
       this.__malformed = malformed;
       this.__request = request;
-      
+
       return this;
     },
-    
+
 
     /**
      * Get a copy of this object
@@ -56,7 +56,7 @@ qx.Class.define("unify.business.CompletedEvent",
      *     be configured using the data of this event instance. The event must be
      *     an instance of this event class. If the data is <code>null</code>,
      *     a new pooled instance is created.
-     * 
+     *
      * @return {tweet.business.TwitterEvent} a copy of this object
      */
     clone : function(embryo)
@@ -76,8 +76,8 @@ qx.Class.define("unify.business.CompletedEvent",
 
     /**
      * Returns the ID of the request.
-     * 
-     * @return {String} Unique ID of the request. 
+     *
+     * @return {String} Unique ID of the request.
      */
     getId: function() {
       return this.__id;
@@ -85,51 +85,51 @@ qx.Class.define("unify.business.CompletedEvent",
 
 
     /**
-     * Returns the data gathered from the request 
-     * 
+     * Returns the data gathered from the request
+     *
      * @return {Map} Returns the data. Typically a JSON data structure.
      */
     getData: function() {
       return this.__data;
     },
-    
-    
+
+
     /**
      * Whether the request resulted in new data being returned
-     * 
+     *
      * Typcically only makes sense in GET requests.
-     * 
+     *
      * @return {Boolean} Whether the data was modified
      */
     isModified : function() {
       return this.__modified;
     },
-    
-    
+
+
     /**
      * Whether the request has resulted into errors.
-     * 
-     * @return {Boolean} Whether there were errors in the request. 
+     *
+     * @return {Boolean} Whether there were errors in the request.
      */
     isErrornous : function() {
       return this.__errornous;
     },
-    
-    
+
+
     /**
      * Whether the request returned with malformed data
-     * 
-     * @return {Boolean} Whether there were errors in the request. 
+     *
+     * @return {Boolean} Whether there were errors in the request.
      */
     isMalformed : function() {
       return this.__malformed;
-    },    
-    
-    
+    },
+
+
     /**
-     * Returns the request object. Don't rely on this object to persist. 
+     * Returns the request object. Don't rely on this object to persist.
      * It is immediately destroyed after the function is quit.
-     * 
+     *
      * @return {qx.io.HttpRequest} Request object
      */
     getRequest : function() {

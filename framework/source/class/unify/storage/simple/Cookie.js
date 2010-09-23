@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -9,7 +9,7 @@
 *********************************************************************************************** */
 /**
  * Implementation for simple storage based on cookies.
- * 
+ *
  * Adds support for namespacing to run multiple applications on the same domain.
  */
 qx.Class.define("unify.storage.simple.Cookie",
@@ -24,75 +24,75 @@ qx.Class.define("unify.storage.simple.Cookie",
      CONSTRUCTOR
   *****************************************************************************
   */
-  
+
   construct : function()
   {
     this.base(arguments);
-    
+
     this.__prefix = qx.core.Init.getApplication().getNamespace() + "/";
   },
-  
-  
-  
+
+
+
   /*
   *****************************************************************************
      STATICS
   *****************************************************************************
-  */  
+  */
 
-  statics : 
+  statics :
   {
     isSupported : function() {
       // TODO
     },
-    
+
     getPriority : function() {
       return 60;
     }
   },
-  
-  
-  
+
+
+
   /*
   *****************************************************************************
      MEMBERS
   *****************************************************************************
-  */  
-  
+  */
+
   members :
   {
     __prefix : null,
-    
+
     setItem : function(key, value) {
-      return 
+      return
     },
-    
+
     getItem : function(key) {
-      return 
+      return
     },
-    
+
     removeItem : function(key) {
-      return 
-    },    
-    
-    getLength : function() {
-      return 
+      return
     },
-    
+
+    getLength : function() {
+      return
+    },
+
     clear : function() {
-      return 
+      return
     }
   },
-  
-  
-  
+
+
+
   /*
   *****************************************************************************
      DEFER
   *****************************************************************************
   */
-    
-  defer : function(statics) 
+
+  defer : function(statics)
   {
     if (statics.isSupported()) {
       unify.storage.Simple.register(statics);

@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -9,7 +9,7 @@
 *********************************************************************************************** */
 /**
  * Remote data business object with intelligent cache managment.
- * 
+ *
  * * Supports localStorage for storing data between application runs.
  * * Supports HTTP-proxying for cross-domain communication
  * * Supports basic HTTP authentification
@@ -31,20 +31,20 @@ qx.Class.define("unify.business.RemoteData",
   construct : function()
   {
     this.base(arguments);
-    
+
     /** {Map} In-Memory Cache */
     this.__cache = {};
-    
+
     /** {String} Prefix used for storage */
     var prefix = "unify/" + qx.lang.String.hyphenate(this.basename).substring(1);
     this.__storageDataPrefix = prefix + "/data/";
     this.__storageMetaPrefix = prefix + "/meta/";
-    
+
     // Detect requirement of cross domain proxy
     if (unify.bom.client.Extension.PHONEGAP) {
       this.setEnableProxy(false);
     }
-    
+
     // Safari supports cross-domain requests when the document is loaded from file system
     // Not supported in other Webkit browsers like Chrome or browsers with other engines
     else if (location.protocol == "file:" && qx.bom.client.Browser.NAME == "safari") {
@@ -64,13 +64,13 @@ qx.Class.define("unify.business.RemoteData",
   {
     /**
      * Fired whenever a communication with a service has been completed.
-     * 
+     *
      * Identify whether the event is interesting for you by the events ID property.
      */
     "completed" : "unify.business.CompletedEvent"
   },
-  
-  
+
+
 
   /*
   *****************************************************************************
@@ -86,69 +86,69 @@ qx.Class.define("unify.business.RemoteData",
       check : "Boolean",
       init : true
     },
-    
+
     /** Whether the proxy should be enabled (globally) */
-    enableProxy : 
+    enableProxy :
     {
       check : "Boolean",
       init : true
     },
-    
+
     enableCacheRefresh :
     {
       check : "Boolean",
       init : true
     },
-    
+
     /** Whether automatic conversion of xml format to json format should be executed */
     enableXmlConverter :
     {
       check : "Boolean",
       init : true
     },
-    
+
     /** Whether it's OK no have no content from the service (HTTP 204 response)*/
-    enableNoContent : 
+    enableNoContent :
     {
       check : "Boolean",
       init : false
     },
-    
+
     /** URL of proxy to fix cross domain communication */
-    proxyUrl : 
+    proxyUrl :
     {
       check : "String",
       init : "generic-proxy.appspot.com"
     },
-    
+
     /** Request mime type */
     requestType :
     {
       check : ["application/x-www-form-urlencoded", "application/json", "application/xml", "text/plain", "text/javascript", "text/html" ],
       init : "application/x-www-form-urlencoded"
     },
-    
+
     /** Response mime type */
-    responseType : 
+    responseType :
     {
       check : [ "application/json", "application/xml", "text/plain", "text/javascript", "text/html" ],
       init : "application/json"
     },
-    
+
     /** Time after communication should be regarded as failed (in milliseconds) */
     timeout :
     {
       check : "Integer",
       init : 10000
     },
-    
+
     /** Which authentication method is needed for all services */
     authMethod :
     {
       check : ["basic","xauth","oauth"],
       nullable : true
     },
-    
+
     /** User name for authentification (basic auth) */
     user :
     {
@@ -163,9 +163,9 @@ qx.Class.define("unify.business.RemoteData",
       nullable : true
     }
   },
-  
-  
-  
+
+
+
 
   /*
   *****************************************************************************
@@ -179,32 +179,32 @@ qx.Class.define("unify.business.RemoteData",
     ---------------------------------------------------------------------------
       OVERRIDDEN
     ---------------------------------------------------------------------------
-    */    
-    
+    */
+
     // overridden
     _readData : function(service, params)
     {
       var entry = this.getCachedEntry(service, params);
       return entry ? entry.data : null;
     },
-    
-    
-    
-    
+
+
+
+
     /*
     ---------------------------------------------------------------------------
       PUBLIC API :: CACHE
     ---------------------------------------------------------------------------
     */
-    
+
     /**
      * Returns the cache status for the given service.
-     * 
+     *
      * * 0: cache is disabled
      * * 1: nothing cached
      * * 2: cache is old
      * * 3: cache is valid
-     * 
+     *
      * @param service {String} One the supported services
      * @param params {Map?null} Optional map of params
      * @return {Integer} Number from 0-3 ass listed above
@@ -215,15 +215,15 @@ qx.Class.define("unify.business.RemoteData",
       if (!(keep > 0)) {
         return 0;
       }
-      
+
       var checked = this.getCachedField(service, params, "checked");
       return checked != null ? Math.round((new Date - checked) / 1000) > keep ? 2 : 3 : 1;
     },
-    
-    
+
+
     /**
      * Whether the cache is available and valid
-     * 
+     *
      * @param service {String} One the supported services
      * @param params {Map?null} Optional map of params
      * @return {Boolean} Whether cached data is available and valid
@@ -231,12 +231,12 @@ qx.Class.define("unify.business.RemoteData",
     isCacheValid : function(service, params) {
       return this.getCacheStatus(service, params) === 3;
     },
-    
-    
+
+
     /**
      * Whether there is a cache available for the given service. This method
      * does not check the age of the cache - just if it's available.
-     * 
+     *
      * @param service {String} One the supported services
      * @param params {Map?null} Optional map of params
      * @return {Boolean} Whether cached data is available
@@ -246,11 +246,11 @@ qx.Class.define("unify.business.RemoteData",
       var cacheId = this.__getCacheId(service, params);
       return !!(this.__cache[cacheId] || (window.localStorage && this.getEnableStorage() && localStorage[this.__storageMetaPrefix + cacheId]))
     },
-    
-    
+
+
     /**
      * Returns the value of the given field inside the cache for the given service.
-     * 
+     *
      * @param service {String} One the supported services
      * @param params {Map?null} Optional map of params
      * @param field {String} Any supported field name: "created", "checked", "modified" and "type"
@@ -261,28 +261,28 @@ qx.Class.define("unify.business.RemoteData",
       var cacheId = this.__getCacheId(service, params);
       var cache = this.__cache;
       var entry = cache[cacheId];
-      
+
       if (entry) {
         return entry[field] || null;
       }
-      
-      if (window.localStorage && this.getEnableStorage()) 
+
+      if (window.localStorage && this.getEnableStorage())
       {
         var meta = localStorage[this.__storageMetaPrefix + cacheId];
-        if (meta !== undefined) 
+        if (meta !== undefined)
         {
           meta = qx.lang.Json.parse(meta);
           return meta[field] || null;
         }
       }
-      
+
       return null;
     },
-    
-    
+
+
     /**
-     * Reads an entry (all data stored for the given service/param combination) from the cache. 
-     * 
+     * Reads an entry (all data stored for the given service/param combination) from the cache.
+     *
      * Each entry consists of
      * the keys <code>data</code> and <code>type</code>
      * (the data and type of data) and the timestamps <code>created</code>,
@@ -290,27 +290,27 @@ qx.Class.define("unify.business.RemoteData",
      * an <code>id</code> which could be used in an easy way to compare
      * whether one have used the same version of cache entry before. This
      * ID is updated every time new data was loaded.
-     * 
+     *
      * @param service {String} One the supported services
      * @param params {Map?null} Optional map of params
-     * @return {Map} Returns the entry as stored in the cache. 
+     * @return {Map} Returns the entry as stored in the cache.
      */
     getCachedEntry : function(service, params)
     {
       var cacheId = this.__getCacheId(service, params);
       var cache = this.__cache;
       var entry = cache[cacheId] || null;
-      if (!entry && window.localStorage && this.getEnableStorage()) 
+      if (!entry && window.localStorage && this.getEnableStorage())
       {
         entry = localStorage[this.__storageMetaPrefix + cacheId];
-        if (entry) 
+        if (entry)
         {
           entry = qx.lang.Json.parse(entry);
-          
+
           // Recover json/xml data
           var data = localStorage[this.__storageDataPrefix + cacheId];
           var start;
-          if (entry.type === "application/json") 
+          if (entry.type === "application/json")
           {
             start = new Date;
             data = qx.lang.Json.parse(data);
@@ -320,12 +320,12 @@ qx.Class.define("unify.business.RemoteData",
           {
             start = new Date;
             data = qx.xml.Document.fromString(data);
-            this.debug("Recovered XML in: " + (new Date - start) + "ms");            
+            this.debug("Recovered XML in: " + (new Date - start) + "ms");
           }
-          
+
           // Store data
           entry.data = data;
-          
+
           // Parse timestamps
           entry.created = parseInt(entry.created, 10);
           entry.checked = parseInt(entry.checked, 10);
@@ -334,15 +334,15 @@ qx.Class.define("unify.business.RemoteData",
           cache[cacheId] = entry;
         }
       }
-      
+
       return entry;
     },
-    
-    
+
+
     /**
      * Clears the cache for the given service & param combination. Also
      * deletes data stored on local storage.
-     * 
+     *
      * @param service {String} One the supported services
      * @param params {Map?null} Optional map of params
      */
@@ -350,14 +350,14 @@ qx.Class.define("unify.business.RemoteData",
     {
       var cacheId = this.__getCacheId(service, params);
       delete this.__cache[cacheId];
-      
-      if (window.localStorage && this.getEnableStorage()) 
+
+      if (window.localStorage && this.getEnableStorage())
       {
         delete localStorage[this.__storageMetaPrefix + cacheId];
         delete localStorage[this.__storageDataPrefix + cacheId];
       }
     },
-    
+
 
 
 
@@ -365,23 +365,23 @@ qx.Class.define("unify.business.RemoteData",
     ---------------------------------------------------------------------------
       PUBLIC API :: REQUESTS
     ---------------------------------------------------------------------------
-    */    
+    */
 
     /**
      * Sends a OPTIONS request to the given service
-     * 
+     *
      * @param service {String} One the supported services
      * @param params {Map?null} Optional map of params
      * @return {String} Unique ID to identify service/param combination in the "completed" event
      */
     options : function(service, params) {
       return this.__communicate(service, params, "OPTIONS");
-    },    
+    },
 
 
     /**
      * Sends a GET request to the given service
-     * 
+     *
      * @param service {String} One the supported services
      * @param params {Map?null} Optional map of params
      * @return {String} Unique ID to identify service/param combination in the "completed" event
@@ -389,11 +389,11 @@ qx.Class.define("unify.business.RemoteData",
     get : function(service, params) {
       return this.__communicate(service, params, "GET");
     },
-    
+
 
     /**
      * Sends a POST request to the given service. Attaches the given data to the request.
-     * 
+     *
      * @param service {String} One the supported services
      * @param params {Map?null} Optional map of params
      * @param data {var} Data to attach
@@ -401,12 +401,12 @@ qx.Class.define("unify.business.RemoteData",
      */
     post : function(service, params, data) {
       return this.__communicate(service, params, "POST", data);
-    },    
+    },
 
 
     /**
      * Sends a PUT request to the given service
-     * 
+     *
      * @param service {String} One the supported services
      * @param params {Map?null} Optional map of params
      * @return {String} Unique ID to identify service/param combination in the "completed" event
@@ -414,23 +414,23 @@ qx.Class.define("unify.business.RemoteData",
     put : function(service, params) {
       return this.__communicate(service, params, "PUT");
     },
-    
+
 
     /**
      * Sends a DELETE request to the given service
-     * 
+     *
      * @param service {String} One the supported services
      * @param params {Map?null} Optional map of params
      * @return {String} Unique ID to identify service/param combination in the "completed" event
      */
     del : function(service, params) {
       return this.__communicate(service, params, "DELETE");
-    },    
+    },
 
 
     /**
      * Sends a HEAD request to the given service
-     * 
+     *
      * @param service {String} One the supported services
      * @param params {Map?null} Optional map of params
      * @return {String} Unique ID to identify service/param combination in the "completed" event
@@ -438,26 +438,26 @@ qx.Class.define("unify.business.RemoteData",
     head : function(service, params) {
       return this.__communicate(service, params, "HEAD");
     },
-    
-    
-    
-    
+
+
+
+
     /*
     ---------------------------------------------------------------------------
       INTERNALS
     ---------------------------------------------------------------------------
-    */    
-    
+    */
+
     /** {Map} In-Memory cache for reponse data */
-    __cache : null,    
-    
+    __cache : null,
+
     __storageDataPrefix : null,
     __storageMetaPrefix : null,
 
 
     /** {Integer} Number of requests made (used for unique request IDs) */
     __requestCounter : 0,
-    
+
 
     /**
      * Returns the cache ID for the given argument set.
@@ -466,23 +466,23 @@ qx.Class.define("unify.business.RemoteData",
      * @param params {Map} Optional map of params
      * @return {String} Cache ID
      */
-    __getCacheId : function(service, params) 
+    __getCacheId : function(service, params)
     {
-      if (qx.core.Variant.isSet("qx.debug", "on")) 
+      if (qx.core.Variant.isSet("qx.debug", "on"))
       {
         if (service == null) {
           throw new Error("Please define at least a service name!");
         }
       }
-      
+
       return params ? service + "=" + qx.lang.Json.stringify(params) : service;
     },
-    
-    
+
+
     /**
      * Patches the given URL to fill template fields with
      * given params and add support for proxying of the request.
-     * 
+     *
      * @param url {String} The original URL
      * @param params {Map?null} Optional map of params
      * @return {String} Patched URL
@@ -493,24 +493,24 @@ qx.Class.define("unify.business.RemoteData",
       if (params)
       {
         var value;
-        for (var key in params) 
+        for (var key in params)
         {
           value = params[key];
           if (value == "" || value == null) {
             continue;
           }
-          
+
           url = url.replace("%" + key + "%", params[key]);
         }
       }
-      
-      if (url.indexOf("%") > 0) 
+
+      if (url.indexOf("%") > 0)
       {
         // FIXME: Don't use templates via % sign because of special characters using the same!
         this.warn("Unresolved params in URL: " + url);
         //return;
       }
-      
+
       if (this.getEnableProxy())
       {
         var match = url.match(/^(https|http):\/\//);
@@ -519,16 +519,16 @@ qx.Class.define("unify.business.RemoteData",
         } else if (qx.core.Variant.isSet("qx.debug", "on")) {
           throw new Error("Proxy could not be added to url: " + url);
         }
-      }  
-      
+      }
+
       return url;
     },
-    
-    
+
+
     /**
      * Adds basic authentification data to the request given on the
      * properties {@link #user} and {@link #password}.
-     * 
+     *
      * @param req {qx.io.HttpRequest} Request object to modify
      */
     __addBasicAuth : function(req)
@@ -542,7 +542,7 @@ qx.Class.define("unify.business.RemoteData",
 
     /**
      * Main communication routine. Called by most developer-level APIs.
-     * 
+     *
      * @param service {String} Identifier of the service to communicate to
      * @param params {Map?null} Optional map of parameters to patch URL with / use for filter method
      * @param method {String} Any supported HTTP method: OPTIONS, GET, POST, PUT, DELETE and HEAD
@@ -552,35 +552,35 @@ qx.Class.define("unify.business.RemoteData",
     __communicate : function(service, params, method, data)
     {
       var config = this._getService(service);
-      
+
       try {
         var url = this.__patchUrl(config.url, params);
-      } 
-      catch(ex) 
+      }
+      catch(ex)
       {
         this.warn("Unable to communicate with service: " + service);
         this.warn("Parameter/Configuration problem: " + ex);
         return false;
       }
-      
+
       // Create request object
       var HttpRequest = qx.io.HttpRequest;
       var req = new HttpRequest(url);
-      
+
       // Sync mime type
       req.setResponseType(this.getResponseType());
 
       // Sync timeout
       req.setTimeout(this.getTimeout());
-      
+
       // Enable load cache
-      if (method === "GET") 
+      if (method === "GET")
       {
         req.setCache(true);
         if (this.getEnableCacheRefresh()) {
           req.setRefresh(true);
         }
-        
+
         // Enable refresh if there is a usable cache entry
         var cacheModified = this.getCachedField(service, params, "modified");
         if (cacheModified != null) {
@@ -594,7 +594,7 @@ qx.Class.define("unify.business.RemoteData",
       if (method != null && method != "GET") {
         req.setMethod(method);
       }
-      
+
       // Support for authentification methods
       var auth = this.getAuthMethod();
       if (auth === "basic") {
@@ -602,7 +602,7 @@ qx.Class.define("unify.business.RemoteData",
       }
 
       // Add post data
-      if (method == "POST") 
+      if (method == "POST")
       {
         req.setRequestMimeType(this.getRequestMimeType());
         req.setData(data);
@@ -624,14 +624,14 @@ qx.Class.define("unify.business.RemoteData",
 
       // Finally send request
       req.send();
-      
+
       return id;
     },
-    
-    
+
+
     /**
      * Event listener for request object
-     * 
+     *
      * @param e {qx.event.type.Event} Event object of request
      */
     __onRequestDone : function(e)
@@ -643,7 +643,7 @@ qx.Class.define("unify.business.RemoteData",
       var eventType = e.getType();
       var isErrornous = eventType=="error" || eventType=="timeout";
       var isMalformed = false;
-      
+
       // Read request specific data
       var id = req.getUserData("id");
       var service = req.getUserData("service");
@@ -653,11 +653,11 @@ qx.Class.define("unify.business.RemoteData",
       if (qx.core.Variant.isSet("qx.debug", "on")) {
         this.debug("Request done: " + service + "[id=" + id + "]");
       }
-      
+
       var now = +new Date;
       var text = req.getResponseText();
       var start;
-      
+
       // Prepare data (Parse JSON/XML)
       var isModified = req.isModified();
       if (isModified)
@@ -670,20 +670,20 @@ qx.Class.define("unify.business.RemoteData",
         if (text.length > 0)
         {
           // data is only defined if response text is available
-          // otherwise function scope data is "undefined" 
+          // otherwise function scope data is "undefined"
           var data = text;
-          switch(type) 
+          switch(type)
           {
             case "application/json":
               start = new Date;
               data = Json.parse(text);
               this.debug("Parsed JSON in: " + (new Date - start) + "ms");
               break;
-        
+
             case "application/xml":
               data = req.getResponseXml();
               // Modify data and modify text
-              if (this.getEnableXmlConverter()) 
+              if (this.getEnableXmlConverter())
               {
                 start = new Date;
                 data = unify.util.XmlToJson.convert(data);
@@ -691,7 +691,7 @@ qx.Class.define("unify.business.RemoteData",
 
                 // Fix type as we now deal with JSON only
                 type = "application/json";
-                
+
                 // Overwrite original text from service with stringified converted json
                 start = new Date;
                 text = Json.stringify(data);
@@ -700,20 +700,20 @@ qx.Class.define("unify.business.RemoteData",
               break;
           }
         }
-        
-        if (this.getEnableNoContent() && req.getStatusCode() == 204) 
+
+        if (this.getEnableNoContent() && req.getStatusCode() == 204)
         {
           // pass
-        }        
-        else if (!data) 
+        }
+        else if (!data)
         {
           this.error("Malformed data returned. Do not validates as: " + type);
           isMalformed = true;
         }
       }
-    
+
       // Cache data
-      if (!isErrornous && !isMalformed && this._getService(service).keep > 0) 
+      if (!isErrornous && !isMalformed && this._getService(service).keep > 0)
       {
         var cacheId = this.__getCacheId(service, params);
         var modified = req.getResponseHeader("Last-Modified");
@@ -721,7 +721,7 @@ qx.Class.define("unify.business.RemoteData",
 
         if (isModified)
         {
-          cache[cacheId] = 
+          cache[cacheId] =
           {
             id : id,
             created : now,
@@ -734,37 +734,37 @@ qx.Class.define("unify.business.RemoteData",
         else
         {
           cache[cacheId].checked = now;
-        }        
-      
+        }
+
         // Store additionally in local storage
         if (window.localStorage && this.getEnableStorage())
         {
           // We split the storage of the time from the other stuff for faster access
           // without parsing the whole data into objects
           var storageMetaId = this.__storageMetaPrefix + cacheId;
-          
+
           if (isModified)
           {
             start = new Date;
-            
+
             var storeData = Json.stringify(
             {
               id : id,
               created : now,
               checked : now,
-              modified : modified, 
+              modified : modified,
               type : type
             });
-            
+
             try
             {
               delete localStorage[storageMetaId];
               localStorage[storageMetaId] = storeData;
-            } 
+            }
             catch(ex) {
               this.warn("Could not store data: " + ex);
             }
-            
+
             // We always store the text as complex objects are not supported by localStorage
             var storageDataId = this.__storageDataPrefix + cacheId;
             localStorage[storageDataId] = text;
@@ -779,26 +779,26 @@ qx.Class.define("unify.business.RemoteData",
           }
         }
       }
-      
+
       // Fire event
       var args = [id, data, isModified, isErrornous, isMalformed, req];
       this.fireEvent("completed", unify.business.CompletedEvent, args);
-      
+
       // Dispose request
       req.dispose();
     }
   },
-  
-  
+
+
   /*
   *****************************************************************************
      DESTRUCTOR
   *****************************************************************************
   */
-    
+
   destruct : function()
   {
     // Dereference native binding
-    this.__cache = null;    
+    this.__cache = null;
   }
 });

@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -157,11 +157,11 @@ qx.Class.define("unify.io.Uri",
   members :
   {
     __params : null,
-    
-    
+
+
     /**
      * Clones the URI object
-     * 
+     *
      * @return {unify.io.Uri} URI Object
      */
     clone : function()

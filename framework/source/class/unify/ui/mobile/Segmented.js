@@ -1,14 +1,14 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
 *********************************************************************************************** */
 /**
- * Segmented control 
+ * Segmented control
  */
 qx.Class.define("unify.ui.mobile.Segmented",
 {
@@ -20,12 +20,12 @@ qx.Class.define("unify.ui.mobile.Segmented",
      CONSTRUCTOR
   *****************************************************************************
   */
-  
+
   construct : function(view)
   {
     this.base(arguments);
-    
-    if (qx.core.Variant.isSet("qx.debug", "on")) 
+
+    if (qx.core.Variant.isSet("qx.debug", "on"))
     {
       if (!view || !(view instanceof unify.view.mobile.StaticView)) {
         throw new Error("Invalid view: " + view);
@@ -34,13 +34,13 @@ qx.Class.define("unify.ui.mobile.Segmented",
 
     // Remember attached view
     this.__view = view;
-    
+
     // Sync selection
     var segment = view.getSegment();
     if (segment != null) {
       this.setSelected(segment);
     }
-    
+
     // Register to segment change on view
     view.addListener("changeSegment", this.__onViewChangeSegment, this);
   },
@@ -55,7 +55,7 @@ qx.Class.define("unify.ui.mobile.Segmented",
 
   properties :
   {
-    selected : 
+    selected :
     {
       check : "String",
       event : "changeSelected",
@@ -63,7 +63,7 @@ qx.Class.define("unify.ui.mobile.Segmented",
       apply : "_applySelected"
     }
   },
-  
+
 
 
   /*
@@ -76,26 +76,26 @@ qx.Class.define("unify.ui.mobile.Segmented",
   {
     /** {unify.view.mobile.StaticView} Attached view instance */
     __view : null,
-    
-    
-    
+
+
+
     /*
     ---------------------------------------------------------------------------
       OVERRIDEABLE METHODS
     ---------------------------------------------------------------------------
     */
-    
+
     // overridden
     _createElement : function()
     {
       var elem = document.createElement("div");
       elem.className = "segmented";
-      
+
       return elem;
     },
-    
-    
-    
+
+
+
     /*
     ---------------------------------------------------------------------------
       INTERNALS
@@ -106,7 +106,7 @@ qx.Class.define("unify.ui.mobile.Segmented",
     _applySelected : function(value, old)
     {
       var Class = qx.bom.element2.Class;
-      
+
       if (old)
       {
         var oldElem = this.query("[goto=" + old + "]");
@@ -114,7 +114,7 @@ qx.Class.define("unify.ui.mobile.Segmented",
           Class.remove(oldElem, "checked");
         }
       }
-      
+
       if (value)
       {
         var newElem = this.query("[goto=" + value + "]");
@@ -123,11 +123,11 @@ qx.Class.define("unify.ui.mobile.Segmented",
         }
       }
     },
-    
-    
+
+
     /**
      * Event listener for view's changeSegment event
-     * 
+     *
      * @param e {qx.event.type.Data} Property data event
      */
     __onViewChangeSegment : function(e) {
@@ -141,38 +141,38 @@ qx.Class.define("unify.ui.mobile.Segmented",
       PUBLIC API
     ---------------------------------------------------------------------------
     */
-    
+
     /**
      * Adds the given element
-     * 
+     *
      * @param config {Map} Configuration for element to add
      * @return {Element} Created DOM element
      */
     add : function(config)
     {
       var elem = this.getElement();
-      
+
       var buttonElem = document.createElement("div");
       buttonElem.setAttribute("goto", config.segment);
       buttonElem.setAttribute("rel", "segment");
-      
+
       if (config.label) {
         buttonElem.innerHTML = config.label;
       } else if (config.icon) {
         buttonElem.innerHTML = "<div/>";
       }
-      
+
       elem.appendChild(buttonElem);
-      
+
       if (this.getSelected() == config.segment) {
         buttonElem.className = "checked";
       }
-      
+
       return buttonElem;
     }
   },
 
-    
+
 
   /*
   *****************************************************************************
@@ -183,7 +183,7 @@ qx.Class.define("unify.ui.mobile.Segmented",
   destruct : function()
   {
     var view = this.__view;
-    if (view) 
+    if (view)
     {
       view.removeListener("changeSegment", this.__onViewChangeSegment, this);
       this.__view = null;

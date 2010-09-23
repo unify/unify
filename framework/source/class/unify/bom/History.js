@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -27,10 +27,10 @@ qx.Class.define("unify.bom.History",
   construct : function()
   {
     this.base(arguments);
-    
+
     // Init callback
     this.__onCallbackWrapped = qx.lang.Function.bind(this.__onCallback, this);
-      
+
     // HTML5 hashchange supported by IE>=8, Firefox>=3.6, Webkit (!Safari 4)
     // See also: https://bugs.webkit.org/show_bug.cgi?id=21605
     // https://developer.mozilla.org/en/DOM/window.onhashchange
@@ -87,20 +87,20 @@ qx.Class.define("unify.bom.History",
   {
     /** {Timer} Handle for timeout */
     __intervalHandler : null,
-    
+
     /** {Function} Wrapped callback method */
     __onCallbackWrapped : null,
-    
-    
+
+
     /**
      * Change hash to the given hash. Completely replaces current location.
-     * 
+     *
      * @param location {String} A valid URL hash without leading "#".
      */
     jump : function(location)
     {
       location = window.encodeURI(location);
-      
+
       // Apply property first, to ignore browser hash change afterwards
       this.setLocation(location);
 
@@ -112,14 +112,14 @@ qx.Class.define("unify.bom.History",
         window.location.hash = "#" + location;
       }
     },
-    
-    
+
+
     /**
      * Should be called after the page is loaded to
      * show the the content based on the loaded hash
      * or go to the default screen.
-     * 
-     * @param defaultPath {String} Default path to jump to, 
+     *
+     * @param defaultPath {String} Default path to jump to,
      *   when no one is given through URL
      */
     init : function(defaultPath)
@@ -155,7 +155,7 @@ qx.Class.define("unify.bom.History",
     __onCallback : function(e)
     {
       var current = location.hash.substring(1);
-      if (current !== this.getLocation()) 
+      if (current !== this.getLocation())
       {
         this.debug("Native Changed: '" + current + "'");
         this.setLocation(current);

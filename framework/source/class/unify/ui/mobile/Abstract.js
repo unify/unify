@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -25,8 +25,8 @@ qx.Class.define("unify.ui.mobile.Abstract",
   members :
   {
     __element : null,
-    
-    
+
+
     /*
     ---------------------------------------------------------------------------
       ABSTRACT METHODS
@@ -67,8 +67,8 @@ qx.Class.define("unify.ui.mobile.Abstract",
     query : function(selector) {
       return qx.bom.Selector.query(selector, this.getElement())[0];
     },
-    
-    
+
+
     /**
      * Returns all matching element for the given selector
      *
@@ -97,13 +97,13 @@ qx.Class.define("unify.ui.mobile.Abstract",
      * @final
      * @return {Element} DOM element
      */
-    getElement : function() 
+    getElement : function()
     {
       var current = this.__element;
       if (current) {
         return current;
       }
-      
+
       current = this.__element = this._createElement();
       if (qx.core.Variant.isSet("qx.debug", "on"))
       {
@@ -111,7 +111,7 @@ qx.Class.define("unify.ui.mobile.Abstract",
           throw new Error(this.toString() + ": Implementation of _createElement did not return an element!");
         }
       }
-      
+
       return current;
     },
 

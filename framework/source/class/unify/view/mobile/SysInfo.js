@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -14,8 +14,8 @@ qx.Class.define("unify.view.mobile.SysInfo",
 {
   extend : unify.view.mobile.ServiceView,
   type : "singleton",
-  
-  
+
+
   /*
   *****************************************************************************
      MEMBERS
@@ -25,33 +25,33 @@ qx.Class.define("unify.view.mobile.SysInfo",
   members :
   {
     __content : null,
-    
-    
-    
-    
+
+
+
+
     /*
     ---------------------------------------------------------------------------
       STATIC VIEW INTERFACE
     ---------------------------------------------------------------------------
     */
-    
+
     // overridden
     getTitle : function(type, param) {
       return "System Info";
     },
-        
-        
+
+
     // overridden
     getDefaultSegment : function() {
       return "basics";
     },
-    
-    
+
+
     // overridden
-    _createView : function() 
+    _createView : function()
     {
       var layer = new unify.ui.mobile.Layer(this);
-      
+
       var toolbar = new unify.ui.mobile.ToolBar(this);
       layer.add(toolbar);
 
@@ -64,18 +64,18 @@ qx.Class.define("unify.view.mobile.SysInfo",
       var scrollview = this.__content = new unify.ui.mobile.ScrollView(this);
       scrollview.setEnableScrollX(false);
       layer.add(scrollview);
-      
+
       return layer;
     },
-    
-    
-    
+
+
+
     /*
     ---------------------------------------------------------------------------
       SERVICE VIEW INTERFACE
     ---------------------------------------------------------------------------
     */
-    
+
     // overridden
     _getBusinessObject : function() {
       return unify.business.SysInfo.getInstance();
@@ -85,12 +85,12 @@ qx.Class.define("unify.view.mobile.SysInfo",
     _getServiceName : function() {
       return this.getSegment();
     },
-    
+
     // overridden
     _getRenderVariant : function() {
       return this.getSegment();
-    },    
-    
+    },
+
     // overridden
     _renderData : function(data)
     {
@@ -100,16 +100,16 @@ qx.Class.define("unify.view.mobile.SysInfo",
       {
         html += "<h2>" + header + "</h2>";
         html += "<ul>";
-        
+
         fields = data[header];
         for (title in fields) {
           html += "<li><label>" + title + "</label><span>" + fields[title] + "</span></li>";
         }
 
         html += "</ul>";
-      }      
-      
-      this.__content.replace(html);      
+      }
+
+      this.__content.replace(html);
     }
   }
 });

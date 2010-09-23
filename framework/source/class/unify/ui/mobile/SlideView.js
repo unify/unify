@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -16,7 +16,7 @@ qx.Class.define("unify.ui.mobile.SlideView", {
 
   construct : function() {
     this.base(arguments);
-    
+
     this.setEnableScrollY(false);
     this.setPaging(true);
     this.setShowIndicatorX(false);
@@ -30,40 +30,40 @@ qx.Class.define("unify.ui.mobile.SlideView", {
      */
     add : function(obj) {
       this.base(arguments, obj);
-      
+
       this.__resize();
     },
-    
+
     /**
      * Scrolls to a specific page
-     * 
+     *
      * @param pageIndex {Integer} Page to show, starting with 0
      */
     scrollToPage : function(pageIndex) {
       this.scrollTo(-pageIndex*qx.bom.Document.getWidth());
     },
-    
+
     // overridden
     _createElement : function() {
       var elem = this.base(arguments);
-      
+
       elem.className = "scroll-view slide-view";
-      
+
       var Registration = qx.event.Registration;
       Registration.addListener(window, "resize", this.__onResize, this);
-      
+
       return elem;
     },
-    
+
     /**
      * Window resize event handler to resize slide view and resnap into bounds of paging
      */
     __onResize : function() {
       this.__resize();
-      
+
       this.reflow();
     },
-    
+
     /**
      * Resize of slide view to document width
      */

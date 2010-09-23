@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -31,8 +31,8 @@ qx.Class.define("unify.event.type.History",
     getLocation : function() {
       return this.__location;
     },
-    
-    
+
+
     /**
      * Returns the previous location on page
      *
@@ -40,9 +40,9 @@ qx.Class.define("unify.event.type.History",
      */
     getPreviousLocation : function() {
       return this.__previous;
-    },    
-    
-    
+    },
+
+
     /**
      * Initializes an event object.
      *
@@ -78,7 +78,7 @@ qx.Class.define("unify.event.type.History",
 
       clone.__location = this.__location;
       clone.__previous = this.__previous;
-                  
+
       return clone;
     }
   }

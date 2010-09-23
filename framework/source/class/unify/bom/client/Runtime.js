@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -9,7 +9,7 @@
 *********************************************************************************************** */
 /**
  * Detects the runtime type in which the application is running.
- * 
+ *
  * * Browser: Mozilla Firefox, etc.
  * * Widget: Adobe AIR, etc.
  * * Web View: Home Screen Icon on iPhone, etc.
@@ -22,32 +22,32 @@ qx.Class.define("unify.bom.client.Runtime",
      STATICS
   *****************************************************************************
   */
-    
+
   statics :
   {
     /** {String} The type of the runtime */
     TYPE : "browser",
-    
+
     /** {Boolean} Whether the application is running in a typical browser application */
-    BROWSER : false,    
-    
+    BROWSER : false,
+
     /** {Boolean} Whether the application is running in a widget e.g. Adobe AIR, custom widget manager, etc. */
     WIDGET : false,
-    
+
     /** {Boolean} Whether the application is running inside a basic web view without browser controls */
     WEBVIEW : false,
-    
+
     /** {Boolean} Whether the app is running as a native app e.g. PhoneGap */
-    NATIVE : false    
+    NATIVE : false
   },
-  
-  
+
+
   /*
   *****************************************************************************
      DEFER
   *****************************************************************************
   */
-    
+
   defer : function(statics)
   {
     var Extension = unify.bom.client.Extension;
@@ -59,8 +59,8 @@ qx.Class.define("unify.bom.client.Runtime",
       type = "widget";
     } else if (navigator.standalone) {
       type = "webview";
-    }  
-    
+    }
+
     statics.TYPE = type;
     statics[type.toUpperCase()] = true;
   }

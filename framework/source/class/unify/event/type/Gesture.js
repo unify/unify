@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -13,17 +13,17 @@
 qx.Class.define("unify.event.type.Gesture",
 {
   extend: qx.event.type.Native,
-  
-  
+
+
   /*
   *****************************************************************************
     MEMBERS
   *****************************************************************************
    */
-  
+
   members:
   {
-    
+
     /**
      * Returns the distance between two fingers since the start of the event,
      * as a multiplier of the initial distance.
@@ -37,8 +37,8 @@ qx.Class.define("unify.event.type.Gesture",
     getScale: function() {
       return this._native.scale;
     },
-    
-    
+
+
     /**
      * Returns the delta rotation since the start of the event, in degrees,
      * where clockwise is positive and counter-clockwise is negative.

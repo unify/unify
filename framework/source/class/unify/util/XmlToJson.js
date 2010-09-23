@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -9,21 +9,21 @@
 *********************************************************************************************** */
 /**
  * XML to JSON converter with the intention to create a small as possible
- * JSON result. 
- * 
+ * JSON result.
+ *
  * Depending on the structure of the an element the complexity
  * of its JSON result may differ e.g. elements which only contain attributes
  * are simply converted to a map, while elements with children and no attributes
  * are converted to arrays etc.
  */
-qx.Class.define("unify.util.XmlToJson", 
+qx.Class.define("unify.util.XmlToJson",
 {
-  statics : 
+  statics :
   {
     /**
      * {Map} internal converter map for automatic conversion of some special text nodes
      */
-    __CONVERTXMLMAP : 
+    __CONVERTXMLMAP :
     {
       "FALSE" : false,
       "false" : false,
@@ -41,24 +41,24 @@ qx.Class.define("unify.util.XmlToJson",
 
     /**
      * Converts XML to JSON
-     * 
+     *
      * TODO: CDATA sections???
-     * 
+     *
      * @param xmlNode
      *            {Node|Document} XML document or XML node to convert to
      *            JSON
      * @return {Object|null} JSON object or null when element is empty
      */
-    convert : function(xmlNode) 
+    convert : function(xmlNode)
     {
       var json = {};
       var child = xmlNode.childNodes;
       var attrs = xmlNode.attributes;
       var map = this.__CONVERTXMLMAP;
       var current, key, type, value, i, len;
-      
+
       // Process children
-      if ((child.length == 1) && (child[0].nodeType == 3)) 
+      if ((child.length == 1) && (child[0].nodeType == 3))
       {
         value = child[0].nodeValue;
         if (value in map) {
@@ -69,10 +69,10 @@ qx.Class.define("unify.util.XmlToJson",
         } else {
           return value;
         }
-      } 
-      else if (child.length) 
+      }
+      else if (child.length)
       {
-        for (i=0, len=child.length; i<len; i++) 
+        for (i=0, len=child.length; i<len; i++)
         {
           current = child[i];
           key = current.nodeName;
@@ -81,14 +81,14 @@ qx.Class.define("unify.util.XmlToJson",
 
           // If key name is already in json convert to array
           var used = json[key];
-          if (used) 
+          if (used)
           {
             // Remap content to array... this might happen when multiple elements
             // with the same tag name exist
             if (!(used instanceof Array)) {
               used = json[key] = [ used ];
             }
-            
+
             if (type == 3) {
               used.push(value in map ? map[value] : value);
             } else {
@@ -107,23 +107,23 @@ qx.Class.define("unify.util.XmlToJson",
       }
 
       // Add attributes
-      if (attrs) 
+      if (attrs)
       {
-        for (i=0, len=attrs.length; i<len; i++) 
+        for (i=0, len=attrs.length; i<len; i++)
         {
           current = attrs[i];
-          
+
           // Check whether key is in json, if so add "@" in front of attribute name
           key = current.name;
           json[key in json ? "@"+key : key] = current.value;
         }
       }
-      
+
       // Quick validation if there is really content which was converted
       for (key in json) {
         return json;
       }
-      
+
       return null;
     }
   }

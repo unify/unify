@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -21,38 +21,38 @@ qx.Class.define("unify.business.SysInfo",
      CONSTRUCTOR
   *****************************************************************************
   */
-  
+
   // overridden
   construct : function()
   {
     this.base(arguments);
-    
+
     this._addService("basics");
     this._addService("env");
     this._addService("features");
   },
 
-  
-  
+
+
   /*
   *****************************************************************************
      MEMBERS
   *****************************************************************************
   */
-  
+
   members :
   {
     /*
     ---------------------------------------------------------------------------
       STATIC DATA INTERFACE
     ---------------------------------------------------------------------------
-    */    
-    
+    */
+
     // overridden
-    _readData : function(service, params) 
+    _readData : function(service, params)
     {
       var data;
-      
+
       switch(service)
       {
         case "basics":
@@ -70,7 +70,7 @@ qx.Class.define("unify.business.SysInfo",
             }
           };
           break;
-          
+
         case "env":
           data =
           {
@@ -84,7 +84,7 @@ qx.Class.define("unify.business.SysInfo",
             "Extensions" : this.__fromConstants(unify.bom.client.Extension)
           };
           break;
-        
+
         case "features":
           data =
           {
@@ -93,36 +93,36 @@ qx.Class.define("unify.business.SysInfo",
           };
           break;
       }
-      
+
       return data;
     },
-    
-    
+
+
     /*
     ---------------------------------------------------------------------------
       INTERNALS
     ---------------------------------------------------------------------------
     */
-    
+
     __fromConstants : function(clazz)
     {
       var String = qx.lang.String;
       var result = {};
       var title;
-      
-      for (var key in clazz) 
+
+      for (var key in clazz)
       {
-        if (key.toUpperCase() === key) 
+        if (key.toUpperCase() === key)
         {
           title = key.toLowerCase().split("_");
           for (var i=0, l=title.length; i<l; i++) {
             title[i] = String.firstUp(title[i]);
           }
-          
+
           result[title.join(" ")] = clazz[key] && "Yes" || "No";
         }
       }
-      
+
       return result;
     }
   }

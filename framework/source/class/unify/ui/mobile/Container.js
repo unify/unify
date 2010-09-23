@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -135,13 +135,13 @@ qx.Class.define("unify.ui.mobile.Container",
      */
     replace : function(obj)
     {
-      if (this.__intervalHandle) 
+      if (this.__intervalHandle)
       {
         this.warn("Still executing old replace() call. Clear it.");
         window.clearInterval(this.__intervalHandle);
         this.__intervalHandle = null;
       }
-      
+
       var target = this.getContentElement();
       if (typeof obj === "string")
       {
@@ -155,15 +155,15 @@ qx.Class.define("unify.ui.mobile.Container",
         if (!target.firstChild)
         {
           this.warn("Content could not be applied with first try!");
-          
+
           var self = this;
           var counter = 0;
-          self.__intervalHandle = window.setInterval(function() 
+          self.__intervalHandle = window.setInterval(function()
           {
             target.innerHTML = obj;
             counter++;
-            
-            if (target.firstChild) 
+
+            if (target.firstChild)
             {
               self.debug("Content applied successfully after " + counter + " attempts");
               window.clearInterval(self.__intervalHandle);

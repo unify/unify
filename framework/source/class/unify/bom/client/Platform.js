@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -62,7 +62,7 @@ qx.Bootstrap.define("unify.bom.client.Platform",
     } else if (/X11|Linux|BSD|Sun OS|Maemo|Android|SymbianOS|webOS/.exec(input)) {
       name = "unix";
     }
-    
+
     if (name)
     {
       statics[name.toUpperCase()] = true;

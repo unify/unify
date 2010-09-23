@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -18,15 +18,15 @@ qx.Class.define("unify.view.mobile.RemoteView",
 {
   extend : unify.view.mobile.ServiceView,
   type : "abstract",
-  
-  
-  
+
+
+
   /*
   *****************************************************************************
      CONSTRUCTOR
   *****************************************************************************
   */
-  
+
   construct : function()
   {
     this.base(arguments);
@@ -42,18 +42,18 @@ qx.Class.define("unify.view.mobile.RemoteView",
      MEMBERS
   *****************************************************************************
   */
-  
+
   members :
   {
     /** {String} Version of cache which was used to render current view */
-    __appliedVersion : undefined,    
-    
+    __appliedVersion : undefined,
+
     /** {String} Used internally to store the rendered variant. Needs to be undefined for views without parameters */
-    __appliedVariant : undefined,    
-    
+    __appliedVariant : undefined,
+
     /** {Integer} ID of request. Used to identify requests in completed events */
     __requestId : null,
-    
+
 
 
     /*
@@ -65,36 +65,36 @@ qx.Class.define("unify.view.mobile.RemoteView",
     /**
      * Reloads the data of the view
      */
-    refresh : function() 
+    refresh : function()
     {
-      if (this.__requestId) 
+      if (this.__requestId)
       {
         this.warn("Request is already running!");
         return;
       }
-      
-      this.__requestId = this._getBusinessObject().get(this._getServiceName(), this._getServiceParams()); 
+
+      this.__requestId = this._getBusinessObject().get(this._getServiceName(), this._getServiceParams());
       if (this.__requestId !== false) {
         unify.ui.mobile.ActivityIndicator.getInstance().show();
       }
     },
-    
-    
-    
+
+
+
     /*
     ---------------------------------------------------------------------------
       INTERNALS
     ---------------------------------------------------------------------------
     */
-    
+
     /**
      * Applies updates to the view
-     * 
+     *
      * Should be called whenever the view is active and the result of
      * {@link #_getRenderVariant} changes or at the moment a view gets
      * active. Changes should not be applied during the view being
-     * invisible. 
-     * 
+     * invisible.
+     *
      * This method automatically checks the version of the
      * cache which was used for a previous rendering to automatically
      * handle refreshes.
@@ -104,22 +104,22 @@ qx.Class.define("unify.view.mobile.RemoteView",
       var business = this._getBusinessObject();
       var service = this._getServiceName();
       var params = this._getServiceParams();
-      
+
       var renderVariant = this._getRenderVariant();
       if (renderVariant !== this.__appliedVariant)
       {
         // this.debug("New render variant: " + renderVariant);
-        
+
         var cachedEntry = business.getCachedEntry(service, params);
-        if (cachedEntry != null) 
+        if (cachedEntry != null)
         {
           // this.debug("Render cache value (ignoring age)...")
           this.__appliedVariant = renderVariant;
           this.__appliedVersion = cachedEntry.created;
-          
+
           this._wrappedRenderData(cachedEntry.data);
         }
-        
+
         if (!cachedEntry || !business.isCacheValid(service, params))
         {
           // this.debug("Cache was " + (cachedEntry ? "old" : "empty") + ". Loading data...");
@@ -129,11 +129,11 @@ qx.Class.define("unify.view.mobile.RemoteView",
       else
       {
         // this.debug("Same variant...");
-        
+
         if (business.isCacheValid(service, params))
         {
           // this.debug("Cache is valid!")
-          
+
           var cachedEntry = business.getCachedEntry(service, params);
           if (cachedEntry.created > this.__appliedVersion)
           {
@@ -150,8 +150,8 @@ qx.Class.define("unify.view.mobile.RemoteView",
         }
       }
     },
-    
-    
+
+
     /**
      * Event listener for "completed" event of business object.
      *
@@ -162,10 +162,10 @@ qx.Class.define("unify.view.mobile.RemoteView",
       if (e.getId() !== this.__requestId) {
         return;
       }
-      
+
       delete this.__requestId;
       unify.ui.mobile.ActivityIndicator.getInstance().hide();
-      
+
       if (e.isErrornous()) {
         this._errorHandler("communication", e.getRequest().getStatusCode());
       } else if (e.isMalformed()) {
@@ -177,16 +177,16 @@ qx.Class.define("unify.view.mobile.RemoteView",
       }
     }
   },
-  
-  
-  
+
+
+
   /*
   *****************************************************************************
      DESTRUCTOR
   *****************************************************************************
   */
-    
-  destruct : function() 
+
+  destruct : function()
   {
     var business = this._getBusinessObject();
     if (business) {

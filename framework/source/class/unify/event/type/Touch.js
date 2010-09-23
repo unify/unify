@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -13,14 +13,14 @@
 qx.Class.define("unify.event.type.Touch",
 {
   extend: qx.event.type.Native,
-  
-  
+
+
   /*
   *****************************************************************************
     MEMBERS
   *****************************************************************************
   */
-  
+
   members:
   {
     /**
@@ -33,8 +33,8 @@ qx.Class.define("unify.event.type.Touch",
     getNumberOfTouches: function(type) {
       return this.__getTouchList(type).length;
     },
-    
-    
+
+
     /**
      * Get the horizontal coordinate at which the event occurred relative
      * to the view port depending on the touch object at given index in given list.
@@ -47,8 +47,8 @@ qx.Class.define("unify.event.type.Touch",
     getViewportLeft: function(index, type) {
       return this.__getTouch(index, type).clientX;
     },
-    
-    
+
+
     /**
      * Get the vertical coordinate at which the event occurred relative
      * to the view port depending on the touch object at given index in given list.
@@ -61,8 +61,8 @@ qx.Class.define("unify.event.type.Touch",
     getViewportTop: function(index, type) {
       return this.__getTouch(index, type).clientY;
     },
-    
-    
+
+
     /**
      * Get the horizontal coordinate at which the event occurred relative to
      * the origin of the screen coordinate system
@@ -78,8 +78,8 @@ qx.Class.define("unify.event.type.Touch",
     getScreenLeft: function(index, type) {
       return this.__getTouch(index, type).screenX;
     },
-    
-    
+
+
     /**
      * Get the vertical coordinate at which the event occurred relative to
      * the origin of the screen coordinate system
@@ -95,8 +95,8 @@ qx.Class.define("unify.event.type.Touch",
     getScreenTop: function(index, type) {
       return this.__getTouch(index, type).screenY;
     },
-    
-    
+
+
     /**
      * Get the horizontal position at which the event occurred relative to the
      * left of the document depending on the touch object at given index in given list.
@@ -109,8 +109,8 @@ qx.Class.define("unify.event.type.Touch",
     getDocumentLeft: function(index, type) {
       return this.__getTouch(index, type).pageX;
     },
-    
-    
+
+
     /**
      * Get the vertical position at which the event occurred relative to the
      * top of the document depending on the touch object at given index in given list.
@@ -123,8 +123,8 @@ qx.Class.define("unify.event.type.Touch",
     getDocumentTop: function(index, type) {
       return this.__getTouch(index, type).pageY;
     },
-    
-    
+
+
     /**
      * Returns a unique number which identifies the given touch object.
      *
@@ -135,8 +135,8 @@ qx.Class.define("unify.event.type.Touch",
     getIdentifier: function(index, type) {
       return this.__getTouch(index, type).identifier;
     },
-    
-    
+
+
     /**
      * Get the touch object at given index in given list.
      *
@@ -146,17 +146,17 @@ qx.Class.define("unify.event.type.Touch",
      * @throws {Error} if the index (given as first argument) is out of bounds
      *                 in the list specified with the second argument.
      */
-    __getTouch: function(index, type) 
+    __getTouch: function(index, type)
     {
       var ret = this.__getTouchList(type)[index||0];
       if (!ret) {
         throw new Error("No such touch object, index out of bounds!");
       }
-      
+
       return ret;
     },
-    
-    
+
+
     /**
      * Get a list of touch objects depending on the given type.
      * Type "target": All touches that originated in the same target node.
@@ -167,37 +167,37 @@ qx.Class.define("unify.event.type.Touch",
      * @param type {String ? null} The type of touch list
      * @return {Object[]} The list of touch objects
      */
-    __getTouchList: function(type) 
+    __getTouchList: function(type)
     {
       var nat = this._native;
-      
+
       // emulate one finger touch events via mouse events for development purposes
-      if (!nat.touches) 
+      if (!nat.touches)
       {
         // The identifier is the only missing value on the native mouse event
         // compared to a list entry from one of the touch lists
         nat.identifier = 0;
-        
+
         // During touchend with no remaining finger the only content
         // is available in the changed touch list.
         /*if (nat.type === "mouseup" && type !== "changed") {
           return [];
         }*/
-        
+
         // Emulating the list, but returning the event itself as first entry
         // as it has basically the same interfaces as an entry from the
         // touch lists returned below.
         return [nat];
       }
-      
-      switch (type) 
+
+      switch (type)
       {
         case "target":
           return nat.targetTouches;
-          
+
         case "touches":
           return nat.touches;
-          
+
         default:
           return nat.changedTouches;
       }

@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -10,7 +10,7 @@
 /**
  * Activity indicator to show activities like loading of data
  */
-qx.Class.define("unify.ui.mobile.ActivityIndicator", 
+qx.Class.define("unify.ui.mobile.ActivityIndicator",
 {
   extend : unify.ui.mobile.Overlay,
   type : "singleton",
@@ -21,17 +21,17 @@ qx.Class.define("unify.ui.mobile.ActivityIndicator",
      MEMBERS
   *****************************************************************************
   */
-  
-  members : 
+
+  members :
   {
     // overridden
-    _createElement : function() 
+    _createElement : function()
     {
       var elem = this.base(arguments);
-      
+
       elem.innerHTML = "Lade Daten...";
       elem.id = "activity";
-      
+
       return elem;
     }
   }

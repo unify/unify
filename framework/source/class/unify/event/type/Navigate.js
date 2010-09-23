@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -31,8 +31,8 @@ qx.Class.define("unify.event.type.Navigate",
     getPath : function() {
       return this.__path;
     },
-    
-    
+
+
     /**
      * Returns the mode in relation to the previous path
      *
@@ -41,9 +41,9 @@ qx.Class.define("unify.event.type.Navigate",
      */
     getMode : function() {
       return this.__mode;
-    },    
-    
-    
+    },
+
+
     /**
      * Initializes an event object.
      *
@@ -79,7 +79,7 @@ qx.Class.define("unify.event.type.Navigate",
 
       clone.__path = this.__path;
       clone.__mode = this.__mode;
-                  
+
       return clone;
     }
   }

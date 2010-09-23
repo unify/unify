@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -52,10 +52,10 @@ qx.Class.define("unify.io.datastore.SQLiteAdapter", {
 
     /**
      * Generates unique id
-     * 
+     *
      * @param len {Integer|Null} Length of uuid
      * @param radix {Integer|Null} Radix of uuid
-     * 
+     *
      * @return {String} Unique ID
      */
     __uuid : function(len, radix) {
@@ -92,7 +92,7 @@ qx.Class.define("unify.io.datastore.SQLiteAdapter", {
 
     /**
      * Updates entry
-     * 
+     *
      * @param id {String} ID of object to update
      * @param obj
      *            {Object} JSON Object to store
@@ -112,7 +112,7 @@ qx.Class.define("unify.io.datastore.SQLiteAdapter", {
 
     /**
      * Inserts entry
-     * 
+     *
      * @param obj
      *            {Object} JSON Object to store
      * @param callback
@@ -139,7 +139,7 @@ qx.Class.define("unify.io.datastore.SQLiteAdapter", {
     /**
      * Save an object to the store. If a key is present then update.
      * Otherwise create a new record.
-     * 
+     *
      * @param obj
      *            {Object} JSON Object to store
      * @param callback
@@ -166,7 +166,7 @@ qx.Class.define("unify.io.datastore.SQLiteAdapter", {
 
     /**
      * Invokes a callback on an object with the matching key.
-     * 
+     *
      * @param key
      *            {Object} Key of object
      * @param callback
@@ -189,7 +189,7 @@ qx.Class.define("unify.io.datastore.SQLiteAdapter", {
 
     /**
      * Returns all rows to a callback.
-     * 
+     *
      * @param callback
      *            {Function} Callback function after all is done
      */
@@ -215,7 +215,7 @@ qx.Class.define("unify.io.datastore.SQLiteAdapter", {
 
     /**
      * Removes a json object from the store.
-     * 
+     *
      * @param keyOrObj
      *            {Object} Key of object or object itself
      * @param callback
@@ -231,7 +231,7 @@ qx.Class.define("unify.io.datastore.SQLiteAdapter", {
 
     /**
      * Removes all documents from a store and returns self.
-     * 
+     *
      * @param callback
      *            {Function} Callback function after nuke is done
      */

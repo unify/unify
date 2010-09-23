@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -163,7 +163,7 @@ qx.Bootstrap.define("unify.bom.client.System",
             // Fallback
             // Opera as of Version 10.01 has no information about the detailed
             // Mac OS X version. Are other clients affected as well?
-            
+
             // The last option here is to simply base on the OS X string
             // basically found on all new Macs - even in Opera
             if (navigator.platform === "MacIntel") {

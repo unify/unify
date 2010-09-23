@@ -1,7 +1,7 @@
 /* ***********************************************************************************************
 
     Unify Project
-    
+
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -29,7 +29,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
 
     // Initialize storage for views
     this.__views = {};
-    
+
     // Connect to NavigationManager
     unify.view.mobile.NavigationManager.getInstance().addListener("navigate", this.__onNavigate, this);
   },
@@ -66,7 +66,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
   {
     /** {Map} A map with all keys (by ID) */
     __views : null,
-    
+
     /** {String} Mode of last view switch */
     __mode : null,
 
@@ -96,8 +96,8 @@ qx.Class.define("unify.view.mobile.ViewManager",
       var viewObj = viewClass.getInstance();
       this.__views[viewObj.getId()] = viewObj;
     },
-    
-    
+
+
     /**
      * Returns the view instance stored behind the given ID.
      *
@@ -107,7 +107,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
     getById : function(id)
     {
       var view = id && this.__views[id] || null;
-      if (qx.core.Variant.isSet("qx.debug", "on")) 
+      if (qx.core.Variant.isSet("qx.debug", "on"))
       {
         if (!view) {
           this.warn("Unknown view ID: " + id);
@@ -116,34 +116,34 @@ qx.Class.define("unify.view.mobile.ViewManager",
 
       return view;
     },
-    
-    
+
+
     /**
      * Returns default view id (first added view)
-     * 
+     *
      * @return {String} ID of default view
      */
-    getDefaultId : function() 
+    getDefaultId : function()
     {
       for (var id in this.__views) {
         return id;
       }
-      
+
       return null;
     },
-    
-    
+
+
     /**
      * Returns the last mode for a view switch.
-     * 
+     *
      * See also: {@link unify.event.type.Navigate#getMode}
-     * 
+     *
      * @return {String} Mode of last view switch.
      */
     getMode : function() {
       return this.__mode;
     },
-    
+
 
 
 
@@ -152,25 +152,25 @@ qx.Class.define("unify.view.mobile.ViewManager",
       INTERNALS
     ---------------------------------------------------------------------------
     */
-    
+
     // property apply
     _applyView : function(value, old)
     {
       this.debug("View: " + value);
-      
+
       if (old) {
         old.resetActive();
       }
-      
+
       var LayerManager = unify.ui.mobile.LayerManager.getInstance();
-      
+
       if (value)
       {
         // Resume the view
         var now = (new Date).valueOf();
-        value.setActive(true);        
+        value.setActive(true);
         this.debug("Activated in " + ((new Date).valueOf()-now) + "ms");
-        
+
         // Switch layers
         var now = (new Date).valueOf();
         LayerManager.setLayer(value.getLayer());
@@ -182,34 +182,34 @@ qx.Class.define("unify.view.mobile.ViewManager",
         LayerManager.resetLayer();
       }
     },
-    
-    
+
+
     /**
      * Event listener for navigation changes
-     * 
+     *
      * @param e {qx.event.type.Data} Navigation event
      */
-    __onNavigate : function(e) 
+    __onNavigate : function(e)
     {
       this.__mode = e.getMode();
-      
+
       var path = e.getPath();
       var view = this.getById(path.getView());
       view.setSegment(path.getSegment());
       view.setParam(path.getParam());
-      
+
       this.setView(view);
     }
   },
-  
-  
-  
+
+
+
   /*
   *****************************************************************************
      DESTRUCTOR
   *****************************************************************************
   */
-    
+
   destruct : function() {
     unify.view.mobile.NavigationManager.getInstance().removeListener("navigate", this.__onNavigate, this);
   }
