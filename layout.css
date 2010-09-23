@@ -65,7 +65,9 @@ a{
 pre{
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
+  -o-border-radius: 8px;
   border-radius: 8px;
+  
   padding: 4px 8px;
   background: rgba(255,255,255,0.2);
   font-family: "Consolas", monospace;
@@ -140,10 +142,12 @@ header p{
   color: white;
   text-shadow: -1px 1px 1px rgba(0,0,0,0.3);
   background: rgb(255,165,60);
+  
   -webkit-transform: rotate(45deg) translateY(-10px) translateX(80px);
   -moz-transform: rotate(45deg) translateY(-30px) translateX(30px);
   -o-transform: rotate(45deg) translateY(-30px) translateX(30px);
   transform: rotate(45deg) translateY(-30px) translateX(30px);
+  
   -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
   -moz-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
   -o-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
@@ -160,9 +164,9 @@ header p{
 
 footer{
   background-color: rgb(49,51,61);
-  color: rgba(255,255,255,0.7);
   border-top: 1px solid rgb(49,51,61);
   border-bottom: 1px solid rgb(49,51,61);
+  color: rgba(255,255,255,0.7);
   font-size: 18px;
   padding: 30px 0;
 }
@@ -208,10 +212,12 @@ nav a {
   text-decoration: none;
   font-size: 16px;
   margin: 0 8px;
+  
   -webkit-transition: background-color 100ms ease-in-out;
   -moz-transition: background-color 100ms ease-in-out;
   -o-transition: background-color 100ms ease-in-out;
   transition: background-color 100ms ease-in-out;
+  
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   -o-border-radius: 6px;
@@ -237,16 +243,20 @@ nav li a:hover{
   right: 0; 
   bottom: 0; 
   z-index: 100;
-  background:rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.5);
+  
   -webkit-transform: translateY(-100%) scale(0.01);
   -webkit-transition-properties: background-color, -webkit-transform;
   -webkit-transition-duration: 200ms;
+  
   -moz-transform: translateY(-100%) scale(0.01);
   -moz-transition-properties: background-color, -moz-transform;
   -moz-transition-duration: 200ms;
+  
   -o-transform: translateY(-100%) scale(0.01);
   -o-transition-properties: background-color, -o-transform;
   -o-transition-duration: 200ms;
+  
   transform: translateY(-100%) scale(0.01);
   transition-properties: background-color, transform;
   transition-duration: 200ms;
@@ -254,6 +264,7 @@ nav li a:hover{
 
 #videomask.visible{
   background:rgba(0,0,0,0.7);
+  
   -webkit-transform: none;
   -moz-transform: none;
   -o-transform: none;
@@ -276,7 +287,6 @@ nav li a:hover{
   background-color: #000;
   outline: 4px solid black;
 }
-
 
 
 
@@ -312,6 +322,8 @@ footer > .inner{
 
 #about{
   background: -webkit-gradient(linear, 0% 0%, 0% 150, from(rgba(255,255,255,0.07)), to(rgba(255,255,255,0.0))) top left;
+  /* TODO MOZILLA */
+  
   background-color: rgb(25,83,71);
   color: rgb(250,250,250);
   padding: 80px 0px 60px;
@@ -324,20 +336,36 @@ footer > .inner{
 #about .button{
   text-align: center;
   color: rgb(49,51,61);
+  
   -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
+  -o-background-clip: padding-box;
+  background-clip: padding-box;
+
   -webkit-border-radius: 12px;
   -moz-border-radius: 12px;
   -o-border-radius: 12px;
   border-radius: 12px;
+  
   padding: 6px 22px;
   display: inline-block;
   text-decoration: none;
   font-weight: bold;
   width: 150px;
   margin-right: 15px;
+  
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.6)), color-stop(0.5, rgba(255,255,255,0.2)), color-stop(0.5, rgba(255,255,255,0.0)), to(rgba(255,255,255,0.0))) !important;
+  /* TODO: MOZILLA */
+  
   -webkit-transition: -webkit-transform 100ms ease-in-out;
+  -moz-transition: -moz-transform 100ms ease-in-out;
+  -o-transition: -o-transform 100ms ease-in-out;
+  transition: transform 100ms ease-in-out;
+
   -webkit-box-shadow: 0px 2px 1px rgba(255,255,255,0.3);
+  -moz-box-shadow: 0px 2px 1px rgba(255,255,255,0.3);
+  -o-box-shadow: 0px 2px 1px rgba(255,255,255,0.3);
+  box-shadow: 0px 2px 1px rgba(255,255,255,0.3);
 }
 
 #about .button.primary{
@@ -354,6 +382,8 @@ footer > .inner{
 
 #download{
   background: -webkit-gradient(linear, 0% 0%, 0% 150, from(rgba(255,255,255,0.2)), to(rgba(255,255,255,0.0))) top left;
+  /* TODO MOZILLA */
+  
   background-color: rgb(215,229,155);
   border-bottom: 20px solid rgb(25,83,71);
   margin-bottom: 20px;
@@ -370,12 +400,20 @@ footer > .inner{
   text-align: center;
   background: white;
   border: 1px solid rgb(49,51,61);
+  
   -webkit-background-clip: padding-box;
- -moz-background-clip: padding-box;
+  -moz-background-clip: padding-box;
+  -o-background-clip: padding-box;
+  background-clip: padding-box;
+  
   -webkit-border-top-left-radius: 12px;
   -webkit-border-top-right-radius: 12px;
   -moz-border-radius-topleft: 12px;
   -moz-border-radius-topright: 12px;
+  -o-border-radius-topleft: 12px;
+  -o-border-radius-topright: 12px;
+  border-radius-topleft: 12px;
+  border-radius-topright: 12px;
 
   -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
   -moz-box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
@@ -398,15 +436,15 @@ footer > .inner{
   padding: 15px 35px;
   text-align: left;
   background: rgb(215,229,155);
+  
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding-box;
   -o-background-clip: padding-box;
   background-clip: padding-box;
 }
 
-#events p{
-  background: white;
-  padding: 20px;
+#events section{
+  background: rgb(215,229,155);
   border: 1px solid rgb(150,150,150);
   
   -webkit-border-radius: 12px;
@@ -420,6 +458,10 @@ footer > .inner{
   box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
 }
 
+#events h2{
+  background: white;
+}
+
 #developer section{
   height: 310px;
   margin-bottom: 24px;
@@ -431,8 +473,11 @@ footer > .inner{
   font-size: 13px;
   width: 132px;
   overflow: hidden;
+  
   -webkit-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
   -moz-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  -o-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
 #developer section p{
