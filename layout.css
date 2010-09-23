@@ -163,11 +163,10 @@ header p{
 */
 
 footer{
-  background-color: rgb(49,51,61);
+  background-color: rgb(25,83,71);
   border-top: 1px solid rgb(49,51,61);
-  border-bottom: 1px solid rgb(49,51,61);
-  color: rgba(255,255,255,0.7);
-  font-size: 18px;
+  color: rgb(104,178,152);
+  font-size: 17px;
   padding: 30px 0;
 }
 
@@ -237,6 +236,7 @@ nav li a:hover{
 */
 
 #videomask{
+  display: none;
   position: fixed; 
   left:0; 
   top: 0; 
@@ -372,6 +372,10 @@ footer > .inner{
   background: rgb(255,165,60);
 }
 
+.videolink{
+  display: none;
+}
+
 #about .button.secondary{
   background: rgb(215,229,155);
 }
@@ -504,8 +508,8 @@ footer > .inner{
 
 #developers section{
   height: 320px;
-  margin-bottom: 24px;
-  margin-right: 24px;
+  margin-bottom: 12px;
+  margin-right: 12px;
   float: left;
   display: inline-block;
   background: rgb(25,83,71);
@@ -547,6 +551,26 @@ footer > .inner{
   -o-border-top-right-radius: 12px;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
+}
+
+#developers .powered{
+  background: white;
+  text-align: right;
+  color: #777;
+  font-weight: normal;
+  padding-right: 20px;
+  font-size: 12px;
+  -webkit-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  -moz-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  -o-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.5);  
+}
+
+#developers .powered em{
+  display: block;
+  padding-top: 20px;
+  padding-right: 135px;
+  font-style: normal;
 }
 
 #faq{

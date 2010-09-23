@@ -6,7 +6,7 @@
     
     <title>Unify Project</title>
     <meta name="description" content="The Unify Project aims to simplify cross platform development"/>
-    <meta name="author" content="Sebastian Werner, Alexander Dittner, Sebastian Fastner, ..."/>
+    <meta name="author" content="Sebastian Werner, Sebastian Fastner, Filiz Hazer, ..."/>
     
     <!--[if lt IE 9]><script src="ie.js"></script><![endif]-->
     <link rel="stylesheet" type="text/css" href="layout.css"/>
@@ -304,6 +304,7 @@
             </p>
           </section>
         </div>
+        <p class="powered"><em>powered by</em><img src="pics/logos/telekom.png" /></p>
       </div>
     </article>
 
@@ -388,7 +389,6 @@
     <footer>
       <div class="inner">
         <p>Copyright 2010 Unify Project</p>
-        <p>powered by<img src="pics/logos/telekom.png" /></p>
       </div>
     </footer>
 
@@ -398,6 +398,12 @@
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
     <script type="text/javascript">
+    if(!$.browser.ie)
+    {
+      // enable video in non-ie browsers
+      $("#videomask").show();
+      $(".videolink").show();
+      
       $("#videomask").click(function(e)
       {
         e.preventDefault();
@@ -411,6 +417,7 @@
         $("#videomask").addClass("visible");
         $("#video").html('<iframe class="youtube-player" type="text/html" width="853" height="505" src="http://www.youtube.com/embed/5SG975uV_4M" frameborder="0"></iframe>');
       });
+    }
     </script>
   </body>
 </html>
