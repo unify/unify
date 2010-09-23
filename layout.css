@@ -5,10 +5,10 @@
 
 *{
   margin: 0;
-  box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -o-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, 
@@ -144,10 +144,10 @@ header p{
   background: rgb(255,165,60);
   
   -webkit-transform: rotate(45deg) translateY(-10px) translateX(80px);
-  -moz-transform: rotate(45deg) translateY(-30px) translateX(30px);
-  -o-transform: rotate(45deg) translateY(-30px) translateX(30px);
-  transform: rotate(45deg) translateY(-30px) translateX(30px);
-  
+  -moz-transform: rotate(45deg) translateY(-10px) translateX(80px);
+  -o-transform: rotate(45deg) translateY(-10px) translateX(80px);
+  transform: rotate(45deg) translateY(-10px) translateX(80px);
+    
   -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
   -moz-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
   -o-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
@@ -410,10 +410,10 @@ footer > .inner{
   -webkit-border-top-right-radius: 12px;
   -moz-border-radius-topleft: 12px;
   -moz-border-radius-topright: 12px;
-  -o-border-radius-topleft: 12px;
-  -o-border-radius-topright: 12px;
-  border-radius-topleft: 12px;
-  border-radius-topright: 12px;
+  -o-border-top-left-radius: 12px;
+  -o-border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 
   -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
   -moz-box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
@@ -466,10 +466,10 @@ footer > .inner{
   -webkit-border-top-right-radius: 12px;
   -moz-border-radius-topleft: 12px;
   -moz-border-radius-topright: 12px;
-  -o-border-radius-topleft: 12px;
-  -o-border-radius-topright: 12px;
-  border-radius-topleft: 12px;
-  border-radius-topright: 12px;
+  -o-border-top-left-radius: 12px;
+  -o-border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
   
   -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
   -moz-box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
@@ -488,10 +488,10 @@ footer > .inner{
   -webkit-border-top-right-radius: 12px;
   -moz-border-radius-topleft: 12px;
   -moz-border-radius-topright: 12px;
-  -o-border-radius-topleft: 12px;
-  -o-border-radius-topright: 12px;
-  border-radius-topleft: 12px;
-  border-radius-topright: 12px;  
+  -o-border-top-left-radius: 12px;
+  -o-border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
 #events h2 a{
@@ -543,10 +543,10 @@ footer > .inner{
   -webkit-border-top-right-radius: 12px;
   -moz-border-radius-topleft: 12px;
   -moz-border-radius-topright: 12px;
-  -o-border-radius-topleft: 12px;
-  -o-border-radius-topright: 12px;
-  border-radius-topleft: 12px;
-  border-radius-topright: 12px;
+  -o-border-top-left-radius: 12px;
+  -o-border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
 #faq{
