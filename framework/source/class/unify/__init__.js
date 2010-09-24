@@ -1,8 +1,7 @@
 /** 
- * <h3>Unify Framework</h3>
+ * Unify - A project for building applications for multiple platforms
  *
- * A framework for building applications for multiple platforms:
- *
- * * Smartphones: Based on e.g. Mobile OSX, Android, Maemo, Palm Web OS, etc.
+ * * Smartphones: Based on e.g. iOS, Android, WebOS, etc.
  * * Desktop: Running in a browser or a desktop widget like Adobe AIR
+ * * Tablets: iPad, ...
  */
