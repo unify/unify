@@ -7,6 +7,7 @@
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
 *********************************************************************************************** */
+
 /**
  * Segmented control
  */
@@ -21,6 +22,9 @@ qx.Class.define("unify.ui.mobile.Segmented",
   *****************************************************************************
   */
 
+  /**
+   * @param view {unify.view.mobile.Static} View to connect to
+   */
   construct : function(view)
   {
     this.base(arguments);
@@ -55,6 +59,7 @@ qx.Class.define("unify.ui.mobile.Segmented",
 
   properties :
   {
+    /** The selected section */
     selected :
     {
       check : "String",
