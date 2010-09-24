@@ -87,25 +87,6 @@
       }  
     },
     
-    "uml":
-    {
-      "extend" : [ "libraries" ],
-      
-      "cache" :
-      {
-        "compile"   :  "${CACHE}",
-        "downloads" :  "${CACHE}/downloads"
-      }, 
-      "include"    : [ "unify.*", "${APP_NAME}.*" ],
-      "exclude"    : ["qx.test.*", "unify.test.*", "${APP_NAME}.test.*" ],
-      "uml":
-      {
-        "path"  : "${APP_PATH}/uml",
-        "compact" : "true",
-        "name": "${APP_NAME}"
-      }    
-    },
-    
     
 
     /* 
