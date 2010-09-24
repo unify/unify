@@ -45,12 +45,25 @@ qx.Class.define("unify.view.mobile.SysInfo",
     getDefaultSegment : function() {
       return "basics";
     },
+    
+    
+    // overridden
+    isFullScreen : function() {
+      return true;
+    },
 
 
     // overridden
     _createView : function()
     {
       var layer = new unify.ui.mobile.Layer(this);
+
+      var titlebar = new unify.ui.mobile.TitleBar(this);
+      layer.add(titlebar);
+
+      var scrollview = this.__content = new unify.ui.mobile.ScrollView(this);
+      scrollview.setEnableScrollX(false);
+      layer.add(scrollview);
 
       var toolbar = new unify.ui.mobile.ToolBar(this);
       layer.add(toolbar);
@@ -60,10 +73,6 @@ qx.Class.define("unify.view.mobile.SysInfo",
       segmented.add({ label : "Environment", segment : "env" });
       segmented.add({ label : "Features", segment : "features" });
       toolbar.add(segmented);
-
-      var scrollview = this.__content = new unify.ui.mobile.ScrollView(this);
-      scrollview.setEnableScrollX(false);
-      layer.add(scrollview);
 
       return layer;
     },
