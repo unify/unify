@@ -19,3 +19,6 @@ Usage
     $ ./generate build-mobile
     $ ./generate build-desktop
     
+There is a client auto detection built into the included index.html. You might to override
+your user agent string or just use the HTML file of the version you prefer to load. For
+example: to open the mobile version on a desktop browser just open "mobile.html" directly.
