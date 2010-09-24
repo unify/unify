@@ -7,6 +7,10 @@
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
 *********************************************************************************************** */
+
+/**
+ * Business class to do requests to YQL (Yahoo Query Language)
+ */
 qx.Class.define("unify.business.YqlData",
 {
   extend : unify.business.RemoteData,

@@ -98,12 +98,19 @@ qx.Class.define("unify.business.SysInfo",
     },
 
 
+
     /*
     ---------------------------------------------------------------------------
       INTERNALS
     ---------------------------------------------------------------------------
     */
 
+    /**
+     * Reads values from constants of the given class.
+     * 
+     * @param clazz {Class} Class to read from
+     * @return {Map} Map of all constants
+     */
     __fromConstants : function(clazz)
     {
       var String = qx.lang.String;

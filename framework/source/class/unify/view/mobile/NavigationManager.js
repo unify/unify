@@ -46,7 +46,7 @@ qx.Class.define("unify.view.mobile.NavigationManager",
 
     //TODO: Variant for android
     if (unify.bom.client.System.ANDROID) {
-      qx.event.Registration.addListener(document, "backKeyDown", this.__androidBackButton, this);
+      qx.event.Registration.addListener(document, "backKeyDown", this.__onAndroidBackButton, this);
     }
   },
 
@@ -399,7 +399,13 @@ qx.Class.define("unify.view.mobile.NavigationManager",
       }
     },
 
-    __androidBackButton : function()
+
+    /**
+     * Event listener for Android back button
+     * 
+     * @param e {qx.event.type.Event} Event object
+     */
+    __onAndroidBackButton : function(e)
     {
       var current = this.__path.toString();
       var pos = current.lastIndexOf("/");

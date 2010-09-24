@@ -94,6 +94,10 @@ qx.Class.define("unify.business.RemoteData",
       init : true
     },
 
+    /**
+     * Option for GET request to allow the request to be successful only, if the response 
+     * has changed since the last request. This is done by checking the Last-Modified header.
+     */    
     enableCacheRefresh :
     {
       check : "Boolean",
