@@ -5,10 +5,10 @@
 
 *{
   margin: 0;
-  box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -o-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, 
@@ -65,11 +65,14 @@ a{
 pre{
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
+  -o-border-radius: 8px;
   border-radius: 8px;
+  
   padding: 4px 8px;
   background: rgba(255,255,255,0.2);
+  color: rgba(49,51,61,0.8);
   font-family: "Consolas", monospace;
-  border: 1px solid white;
+  border: 1px solid rgba(255,255,255,0.8);
 }
 
 ul{
@@ -84,7 +87,6 @@ dt{
 dd{
   padding-left: 20px;
 }
-
 
 .clearfix:after {
   content: ".";
@@ -140,10 +142,12 @@ header p{
   color: white;
   text-shadow: -1px 1px 1px rgba(0,0,0,0.3);
   background: rgb(255,165,60);
+  
   -webkit-transform: rotate(45deg) translateY(-10px) translateX(80px);
-  -moz-transform: rotate(45deg) translateY(-30px) translateX(30px);
-  -o-transform: rotate(45deg) translateY(-30px) translateX(30px);
-  transform: rotate(45deg) translateY(-30px) translateX(30px);
+  -moz-transform: rotate(45deg) translateY(-10px) translateX(80px);
+  -o-transform: rotate(45deg) translateY(-10px) translateX(80px);
+  transform: rotate(45deg) translateY(-10px) translateX(80px);
+    
   -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
   -moz-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
   -o-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
@@ -159,11 +163,10 @@ header p{
 */
 
 footer{
-  background-color: rgb(49,51,61);
-  color: rgba(255,255,255,0.7);
+  background-color: rgb(25,83,71);
   border-top: 1px solid rgb(49,51,61);
-  border-bottom: 1px solid rgb(49,51,61);
-  font-size: 18px;
+  color: rgb(104,178,152);
+  font-size: 17px;
   padding: 30px 0;
 }
 
@@ -203,15 +206,17 @@ nav li {
 
 nav a {
   display: block;
-  padding: 6px 16px;
+  padding: 7px 14px;
   color: white;
   text-decoration: none;
   font-size: 16px;
-  margin: 0 8px;
+  margin: 0 6px;
+  
   -webkit-transition: background-color 100ms ease-in-out;
   -moz-transition: background-color 100ms ease-in-out;
   -o-transition: background-color 100ms ease-in-out;
   transition: background-color 100ms ease-in-out;
+  
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   -o-border-radius: 6px;
@@ -231,22 +236,27 @@ nav li a:hover{
 */
 
 #videomask{
+  display: none;
   position: fixed; 
   left:0; 
   top: 0; 
   right: 0; 
   bottom: 0; 
   z-index: 100;
-  background:rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.5);
+  
   -webkit-transform: translateY(-100%) scale(0.01);
   -webkit-transition-properties: background-color, -webkit-transform;
   -webkit-transition-duration: 200ms;
+  
   -moz-transform: translateY(-100%) scale(0.01);
   -moz-transition-properties: background-color, -moz-transform;
   -moz-transition-duration: 200ms;
+  
   -o-transform: translateY(-100%) scale(0.01);
   -o-transition-properties: background-color, -o-transform;
   -o-transition-duration: 200ms;
+  
   transform: translateY(-100%) scale(0.01);
   transition-properties: background-color, transform;
   transition-duration: 200ms;
@@ -254,6 +264,7 @@ nav li a:hover{
 
 #videomask.visible{
   background:rgba(0,0,0,0.7);
+  
   -webkit-transform: none;
   -moz-transform: none;
   -o-transform: none;
@@ -276,7 +287,6 @@ nav li a:hover{
   background-color: #000;
   outline: 4px solid black;
 }
-
 
 
 
@@ -311,7 +321,9 @@ footer > .inner{
 */
 
 #about{
-  background: -webkit-gradient(linear, 0% 0%, 0% 150, from(rgba(255,255,255,0.07)), to(rgba(255,255,255,0.0))) top left;
+  background: -webkit-gradient(linear, 0% 0%, 0% 150, from(rgba(255,255,255,0.09)), to(rgba(255,255,255,0.0))) top left;
+  background: -moz-linear-gradient(top, rgba(255,255,255,0.09), rgba(255,255,255,0.0) 150px) top left;
+  
   background-color: rgb(25,83,71);
   color: rgb(250,250,250);
   padding: 80px 0px 60px;
@@ -324,24 +336,44 @@ footer > .inner{
 #about .button{
   text-align: center;
   color: rgb(49,51,61);
+  
   -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
+  -o-background-clip: padding-box;
+  background-clip: padding-box;
+
   -webkit-border-radius: 12px;
   -moz-border-radius: 12px;
   -o-border-radius: 12px;
   border-radius: 12px;
+  
   padding: 6px 22px;
   display: inline-block;
   text-decoration: none;
   font-weight: bold;
   width: 150px;
   margin-right: 15px;
+  
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.6)), color-stop(0.5, rgba(255,255,255,0.2)), color-stop(0.5, rgba(255,255,255,0.0)), to(rgba(255,255,255,0.0))) !important;
+  background-image: -moz-linear-gradient(top, rgba(255,255,255,0.6), rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.0) 50%, rgba(255,255,255,0.0)) !important;
+  
   -webkit-transition: -webkit-transform 100ms ease-in-out;
+  -moz-transition: -moz-transform 100ms ease-in-out;
+  -o-transition: -o-transform 100ms ease-in-out;
+  transition: transform 100ms ease-in-out;
+
   -webkit-box-shadow: 0px 2px 1px rgba(255,255,255,0.3);
+  -moz-box-shadow: 0px 2px 1px rgba(255,255,255,0.3);
+  -o-box-shadow: 0px 2px 1px rgba(255,255,255,0.3);
+  box-shadow: 0px 2px 1px rgba(255,255,255,0.3);
 }
 
 #about .button.primary{
-  background: rgb(104,178,152);
+  background: rgb(255,165,60);
+}
+
+.videolink{
+  display: none;
 }
 
 #about .button.secondary{
@@ -354,9 +386,11 @@ footer > .inner{
 
 #download{
   background: -webkit-gradient(linear, 0% 0%, 0% 150, from(rgba(255,255,255,0.2)), to(rgba(255,255,255,0.0))) top left;
+  background: -moz-linear-gradient(top, rgba(255,255,255,0.2), rgba(255,255,255,0.0) 150px) top left;
+  
   background-color: rgb(215,229,155);
- /* border-bottom: 20px solid rgb(25,83,71);*/
-  margin-bottom: 20px;
+  border-bottom: 20px solid rgb(25,83,71);
+  margin-bottom: 40px;
 }
 
 #features section{
@@ -370,12 +404,20 @@ footer > .inner{
   text-align: center;
   background: white;
   border: 1px solid rgb(49,51,61);
+  
   -webkit-background-clip: padding-box;
- -moz-background-clip: padding-box;
+  -moz-background-clip: padding-box;
+  -o-background-clip: padding-box;
+  background-clip: padding-box;
+  
   -webkit-border-top-left-radius: 12px;
   -webkit-border-top-right-radius: 12px;
   -moz-border-radius-topleft: 12px;
   -moz-border-radius-topright: 12px;
+  -o-border-top-left-radius: 12px;
+  -o-border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 
   -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
   -moz-box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
@@ -397,42 +439,41 @@ footer > .inner{
   border-top: 1px solid rgb(49,51,61);
   padding: 15px 35px;
   text-align: left;
-  background: #195347;
-  -webkit-background-clip: padding-box;
-   -moz-background-clip: padding-box;
-  color:white;
+  background: rgb(215,229,155);
   
- 
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
+  -o-background-clip: padding-box;
+  background-clip: padding-box;
 }
 
-#events div{
-	color:white;
-	background-color: #195347;
-	padding:20px;
-	border: 1px solid rgb(150,150,150);
-	
-	
+#roadmap dl{
+  margin-bottom: 17px;
+}
+
+#roadmap dt{
+  font-size: 20px;
+}
+
+#roadmap dt span{
+  color: rgba(49,51,61,0.8);
+  font-size: 14px;
+}
+
+#events section{
+  background: rgb(215,229,155);
+  border: 1px solid rgb(150,150,150);
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  
   -webkit-border-top-left-radius: 12px;
   -webkit-border-top-right-radius: 12px;
- -webkit-box-shadow: 20px 20px 20px rgba(0,0,0,0.1);
-  -moz-box-shadow: 20px 20px 20px rgba(0,0,0,0.1);
-  -o-box-shadow: 20px 20px 20px rgba(0,0,0,0.1);
-  box-shadow: 20px 20px 20px rgba(0,0,0,0.1);
   -moz-border-radius-topleft: 12px;
   -moz-border-radius-topright: 12px;
   -o-border-top-left-radius: 12px;
   -o-border-top-right-radius: 12px;
-}
-
-/*#events p{
-  background: white;
-  padding: 20px;
-  border: 1px solid rgb(150,150,150);
-  
-  -webkit-border-radius: 12px;
-  -moz-border-radius: 12px;
-  -o-border-radius: 12px;
-  border-radius: 12px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
   
   -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
   -moz-box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
@@ -440,12 +481,35 @@ footer > .inner{
   box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
 }
 
-*/
-#developer section{
+#events h2{
+  background: white;
+  margin-bottom: 20px;
+  font-size: 17px;
+  padding: 8px 20px;
+  border-bottom: 1px solid rgb(49,51,61);
   
-  height: 310px;
-  margin-bottom: 24px;
-  margin-right: 24px;
+  -webkit-border-top-left-radius: 12px;
+  -webkit-border-top-right-radius: 12px;
+  -moz-border-radius-topleft: 12px;
+  -moz-border-radius-topright: 12px;
+  -o-border-top-left-radius: 12px;
+  -o-border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+#events h2 a{
+  text-decoration: none;
+}
+
+#events p{
+  margin: 0px 20px;
+}
+
+#developers section{
+  height: 320px;
+  margin-bottom: 12px;
+  margin-right: 12px;
   float: left;
   display: inline-block;
   background: rgb(25,83,71);
@@ -453,12 +517,14 @@ footer > .inner{
   font-size: 13px;
   width: 132px;
   overflow: hidden;
+  
   -webkit-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
   -moz-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
- 
+  -o-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
-#developer section p{
+#developers section p{
   padding: 0 10px;
   margin: 0;
   margin-top: 4px;
@@ -466,25 +532,48 @@ footer > .inner{
   line-height: 1.3;
 }
 
-#developer section p a{
-}
-
-#developer section img+p{
+#developers section img+p{
   font-size: 20px;
 }
 
-#developer section,
-#developer section img{
+#developers section,
+#developers section img{
   -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
+  -o-background-clip: padding-box;
+  background-clip: padding-box;
+
   -webkit-border-top-left-radius: 12px;
   -webkit-border-top-right-radius: 12px;
   -moz-border-radius-topleft: 12px;
   -moz-border-radius-topright: 12px;
-   -moz-background-clip: padding-box;
-   
+  -o-border-top-left-radius: 12px;
+  -o-border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+#developers .powered{
+  background: white;
+  text-align: right;
+  color: #777;
+  font-weight: normal;
+  padding-right: 20px;
+  font-size: 12px;
+  -webkit-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  -moz-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  -o-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.5);  
+}
+
+#developers .powered em{
+  display: block;
+  padding-top: 20px;
+  padding-right: 135px;
+  font-style: normal;
 }
 
 #faq{
-  font-size: 14px;
+  
 }
 

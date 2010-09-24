@@ -1,537 +1,436 @@
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Unify Project</title>
         <!--[if lt IE 9]><script src="ie.js"></script><![endif]-->
         <link rel="stylesheet" type="text/css" href="layout.css">
-        <script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-18716436-1']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
+    
     </head>
     <body>
         <!-- Logo -->
         <header>
             <img src="pics/logos/unify.png" /><h1>Unify</h1>
-            <p>
-                New
-            </p>
-        </header>
-        <!-- Navigation -->
-        <nav>
-            <ul class="clearfix">
-                <li>
-                    <a href="#download">Download</a>
-                </li>
-                <li>
-                    <a href="#features">Features</a>
-                </li>
-                <li>
-                    <a href="#faq">FAQ</a>
-                </li>
-                <li>
-                    <a href="#events">Events</a>
-                </li>
-                <li>
-                    <a href="#developer">Developers</a>
-                </li>
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    
+    <title>Unify Project</title>
+    <meta name="description" content="The Unify Project aims to simplify cross platform development"/>
+    <meta name="author" content="Sebastian Werner, Sebastian Fastner, Filiz Hazer, ..."/>
+    
+    <!--[if lt IE 9]><script src="ie.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="layout.css"/>
+  </head>
+  <body>
+    <!-- Logo -->
+    <header>
+      <img src="pics/logos/unify.png" width="400" height="197"/><h1>Unify</h1>
+      <p>New</p>
+    </header>
+    
+    <!-- Navigation -->
+    <nav>
+      <ul class="clearfix">
+        <li>
+          <a href="#download">Download</a>
+        </li>
+        <li>
+          <a href="#features">Features</a>
+        </li>
+        <li>
+          <a href="#technology">Technology</a>
+        </li>
+        <li>
+          <a href="#roadmap">Roadmap</a>
+        </li>
+        <li>
+          <a href="#events">Events</a>
+        </li>
+        <li>
+          <a href="#developers">Developers</a>
+        </li>
+      </ul>
+    </nav>
+    
+    <!-- About -->
+    <article id="about">
+      <div class="inner">
+        <h1>Native-like applications for smartphones, tablets and desktops</h1>
+        <p>
+          Unify was built to improve the development efficiency of apps for smartphones.
+          Currently it supports smartphones based on the platforms iOS, Android and WebOS.
+          There is support for deskop operating systems like Windows or Mac OS as well. Support
+          for tablet devices is planned for the next year.
+        </p>
+        <p>
+          The software makes use of a whole range of modern web technologies such as HTML5, CSS3 
+          and JavaScript. A typical end user should not be able to distinguish an application built with Unify 
+          from a natively programmed application. Unify bypasses the traditional limitations of the web browser. 
+          Detecting the current geo location, accessing the file system, etc. is easy to implement.
+        </p>
+        <p>Unify is made available under a dual license: <a href="http://www.opensource.org/licenses/mit-license.php">MIT</a> + 
+          <a href="http://www.opensource.org/licenses/apache2.0.php">Apache, Version 2.0</a></p>
+        <p>
+          <a class="button videolink primary" href="http://www.youtube.com/watch?v=5SG975uV_4M&and;feature=player_embedded">Showcase</a>
+          <a class="button secondary" href="api/index.html">API</a>
+          <a class="button secondary" href="demo/index.html">Demo</a>
+        </p>
+      </div>
+    </article>
+        
+    <!-- Download -->
+    <article id="download">
+      <div class="inner">
+        <h1>Download</h1>
+        <p>
+          You can download this project in either <a href= "http://github.com/unify/unify/zipball/master">zip</a>
+          or <a href= "http://github.com/unify/unify/tarball/master">tar</a> formats. You can also clone the project 
+          with <a href="http://git-scm.com">Git</a> by running:
+        </p>
+        <pre>$ git clone git://github.com/unify/unify</pre>
+      </div>
+    </article>
+        
+    <!-- Features / Benefits -->
+    <article id="features">
+      <div class="inner twocols clearfix">
+        <section>
+          <h1>Features</h1>
+          <ul>
+            <li>Rich User Interface</li>
+            <li>Impressive Animations</li>
+            <li>Professional Software Development</li>
+            <li>Reusing Code between Platforms</li>
+            <li>Full Localization Support</li>
+            <li>Access to Hardware &amp; System APIs</li>
+            <li>Platform Specific Optimization</li>
+            <li>Integration of Native SDKs</li>
+            <li>API Viewer &amp; Unit Testing Integrated</li>
+          </ul>
+        </section>
+      
+        <!--Benefits-->
+        <section>
+          <h1>Benefits</h1>
+          <ul>
+            <li>Reduced Costs</li>
+            <li>Improved Time-2-Market</li>
+            <li>Wide Platform Support</li>
+            <li>Reusing Code between Platforms</li>
+            <li>Many Available Web Developers</li>
+            <li>Quickly Improving Technology</li>
+          </ul>
+        </section>
+      </div>
+    </article>
+    
+    
+    <!-- Technology -->
+    <article id="technology">
+      <div class="inner">
+        <h1>Technology</h1>
+        <div class="twocols clearfix">
+          <section >
+            <a href="http://qooxdoo.org"><img src="pics/logos/qx.gif" width="271" height="80"/></a>
+            <ul>
+              <li>High end UI components</li>
+              <li>Low level DOM manipulation</li>
+              <li>Support for internationalization</li>
+              <li>Flexible build system</li>
+              <li>API documentation system</li>
+              <li>Unit testing framework</li>
             </ul>
-        </nav>
-        <!-- About -->
-        <article id="about">
-            <div class="inner">
-                <h1>Native-like applications for smartphones, tablets and desktops</h1>
-                <p>
-                    Unify was built to improve the efficiency of the development of apps for smartphones.
-                    Currently it supports smartphones based on the platforms iOS, Android and WebOS.
-                    There is support for deskop operating systems like Windows or Mac OS as well. Support
-                    for tablet devices is planned for the next year.
-                </p>
-                <p>
-                    Unify makes use of a whole range of modern web technologies such as HTML5, CSS3 
-                    and JavaScript.  
-                    A typical end user is not able to distinguish an application built with Unify 
-                    from a natively programmed application.  
-                    Unify bypasses the traditional limitations of the web browser. Detecting the current geo location, 
-                    accessing the file system, etc. is easy to implement.
-                </p>
-                <p>
-                    Unify is made available under a dual license: <a href="http://www.opensource.org/licenses/mit-license.php">MIT</a>
-                    + <a href="http://www.opensource.org/licenses/apache2.0.php">Apache, Version 2.0</a>
-                </p>
-                <p>
-                    <a class="button videolink primary" href="http://www.youtube.com/watch?v=5SG975uV_4M&and;feature=player_embedded">Showcase</a>
-                    <a class="button secondary" href="api/index.html">API</a>
-                    <a class="button secondary" href="demo/index.html">Demo</a>
-                </p>
-            </div>
-        </article>
-        <!-- Download -->
-        <article id="download">
-            <div class="inner">
-                <h1>Download</h1>
-                <p>
-                    You can download this project in either <a href= "http://github.com/unify/unify/zipball/master">zip</a>
-                    or <a href= "http://github.com/unify/unify/tarball/master">tar</a>
-                    formats. You can also clone the project 
-                    with <a href="http://git-scm.com">Git</a>
-                    by running:
-                </p>
-                <pre>$ git clone git://github.com/unify/unify</pre>
-            </div>
-        </article>
-        <!-- Features / Benefits -->
-        <article id="features">
-            <div class="inner twocols clearfix">
-                <section>
-                    <h1>Features</h1>
-                    <ul>
-                        <li>
-                            Rich User Interface
-                        </li>
-                        <li>
-                            Impressive Animations
-                        </li>
-                        <li>
-                            Professional Software Development
-                        </li>
-                        <li>
-                            Reusing Code between Platforms
-                        </li>
-                        <li>
-                            Full Localization Support
-                        </li>
-                        <li>
-                            Access to Hardware &amp; System APIs
-                        </li>
-                        <li>
-                            Platform Specific Optimization
-                        </li>
-                        <li>
-                            Integration of Native SDKs
-                        </li>
-                        <li>
-                            API Viewer &amp; Unit Testing Integrated
-                        </li>
-                    </ul>
-                </section>
-                <!--Benefits-->
-                <section>
-                    <h1>Benefits</h1>
-                    <ul>
-                        <li>
-                            Reduced Costs
-                        </li>
-                        <li>
-                            Improved Time-2-Market
-                        </li>
-                        <li>
-                            Wide Platform Support
-                        </li>
-                        <li>
-                            Reusing Code between Platforms
-                        </li>
-                        <li>
-                            Many Available Web Developers
-                        </li>
-                        <li>
-                            Quickly Improving Technology
-                        </li>
-                    </ul>
-                </section>
-            </div>
-        </article>
-        <!-- Technology -->
-        <article id="technology">
-            <div class="inner">
-                <h1>Technology</h1>
-                <div class="twocols clearfix">
-                    <section>
-                        <a href="http://qooxdoo.org"><img src="pics/logos/qx.gif"/></a>
-                        <ul>
-                            <li>
-                                High-End UI components
-                            </li>
-                            <li>
-                                Low-Level DOM manipulation
-                            </li>
-                            <li>
-                                Support for internationalization
-                            </li>
-                            <li>
-                                Flexible build system
-                            </li>
-                            <li>
-                                API documentation system
-                            </li>
-                            <li>
-                                Unit testing framework
-                            </li>
-                        </ul>
-                    </section>
-                    <section>
-                        <a href="http://www.phonegap.com"><img src="pics/logos/phonegap.png"/></a>
-                        <ul>
-                            <li>
-                                Native wrapper for web apps
-                            </li>
-                            <li>
-                                Deploy apps to existing stores
-                            </li>
-                            <li>
-                                Supports many platforms
-                            </li>
-                            <li>
-                                Extendable via plugins
-                            </li>
-                        </ul>
-                    </section
-                    <section>
-                        <a href="http://www.sass-lang.com"><img src="pics/logos/sass.png"/></a>
-                        <ul>
-                            <li>
-                                Like CSS++
-                            </li>
-                            <li>
-                                Mixins/Includes
-                            </li>
-                            <li>
-                                Variables
-                            </li>
-                            <li>
-                                Image embedding
-                            </li>
-                        </ul>
-                    </section>
-                    <section>
-                        <a href="http://adobe.com/products/air"><img src="pics/logos/adobeair.png"/></a>
-                        <ul>
-                            <li>
-                                Cross platform desktop runtime
-                            </li>
-                            <li>
-                                Real installable applications
-                            </li>
-                            <li>
-                                Extended system access
-                            </li>
-                        </ul>
-                    </section>
-                </div>
-            </div>
-        </article>
-        <!-- Roadmap-->
-        <article id="roadmap">
-            <div class="inner">
-                <h1>Roadmap</h1>
-                <dl>
-                    <dt>
-                        Unify 0.5
-                    </dt>
-                    <dd>
-                        supports IPhone OS/IOS 3.x. at Q4/2009
-                    </dd>
-                </dl>
-                <dl>
-                    <dt>
-                        Unify 1.0
-                    </dt>
-                    <dd>
-                        supports Android 2.x. at Q2/2010
-                    </dd>
-                    <dd>
-                        supports Web OS 1.x. at Q3/2010
-                    </dd>
-                </dl>
-                <dl>
-                    <dt>
-                        Unify 1.1
-                    </dt>
-                    <dd>
-                        supports Black Berry OS 6.0 at Q1/2011
-                    </dd>
-                </dl>
-                <dl>
-                    <dt>
-                        Unify 1.5
-                    </dt>
-                    <dd>
-                        supports Symbian 3.x. (via Qt Web Runtime)
-                    </dd>
-                    <dd>
-                        MeeGo (via Qt Web Runtime)
-                    </dd>
-                    <dd>
-                        Bada (via PhoneGap) at Q2/2011
-                    </dd>
-                </dl>
-                <dl>
-                    <dt>
-                        Unify 2.0
-                    </dt>
-                    <dd>
-                        supports Windows Phone(with IE9) at Q4/2011
-                    </dd>
-                </dl>
-            </div>
-        </article>
-        <!--Events-->
-        <article id="events">
-            <div class="inner">
-                <h1>Events</h1>
-                <section>
-                    <h2><a href="http://jsconf.eu/2010/"><img src="pics/events/jsconf.png">JSConf.EU</a></h2>
-                    <p>
-                        25.+26. September 2010
-                        <br>
-                        Unify goes OpenSource
-                    </p>
-                </section>
-                <section>
-                    <h2><a href="https://www.xing.com/events/javascript-user-group-frankfurt-548018">JavaScript User Group Frankfurt</a></h2>
-                    <p>
-                        30. September 2010
-                        <br>
-                        Presentation of Unify Framework
-                    </p>
-                </section>
-                <section>
-                    <h2><a href="">Innovation Day of Deutsche Telekom</a></h2>
-                    <p>
-                        07. October 2010
-                        <br>
-                        Unify is part of the show
-                    </p>
-                </section>
-                <section>
-                    <h2><a href="http://www.riaworld.de/"><img src="pics/events/ria.gif">RIA World M&uuml;nchen</a></h2>
-                    <p>
-                        10.-11. November 2010
-                        <br>
-                        Presentation of Unify Framework
-                    </p>
-                </section>
-            </div>
-        </article>
-        <!-- Developer -->
-        <article id="developer">
-            <div class="inner">
-                <h1>Developer</h1>
-                <div class="clearfix">
-                    <section>
-                        <img src="pics/developer/bernhard.jpg" />
-                        <p>
-                            Bernhard Hochst&auml;tter
-                        </p>
-                        <p>
-                            Project Lead
-                            <br/>
-                            <a href= "http://www.xing.com/profile/Bernhard_Hochstaetter">XING</a>
-                        </p>
-                    </section>
-                    <section>
-                        <img src="pics/developer/werner.jpg" />
-                        <p>
-                            Sebastian Werner
-                        </p>
-                        <p>
-                            Lead Developer
-                            <br/>
-                            <a href= "http://github.com/wpbasti">GitHub</a>
-                            <a href= "http://twitter.com/wpbasti">Twitter</a>
-                            <a href= "http://www.xing.com/profile/Sebastian_Werner7">XING</a>
-                        </p>
-                    </section>
-                    <section>
-                        <img src="pics/developer/alex.jpg" />
-                        <p>
-                            Alexander Dittner
-                        </p>
-                        <p>
-                            Developer
-                            <br/>
-                            <a href= "http://github.com/mcdit">GitHub</a>
-                            <a href= "http://www.xing.com/profile/Alexander_Dittner">XING</a>
-                        </p>
-                    </section>
-                    <section>
-                        <img src="pics/developer/sebastianf.jpg" />
-                        <p>
-                            Sebastian Fastner
-                        </p>
-                        <p>
-                            Developer
-                            <br/>
-                            <a href= "http://github.com/fastner">GitHub</a>
-                            <a href= "http://twitter.com/fastner">Twitter</a>
-                            <a href= "http://www.xing.com/profile/Sebastian_Fastner">XING</a>
-                        </p>
-                    </section>
-                    <section>
-                        <img src="pics/developer/phillip.jpg" />
-                        <p>
-                            Philipp Eicher
-                        </p>
-                        <p>
-                            Developer
-                            <br/>
-                            <a href= "http://github.com/peicher">GitHub</a>
-                            <a href= "https://www.xing.com/profile/Philipp_Eicher">XING</a>
-                        </p>
-                    </section>
-                    <section>
-                        <img src="pics/developer/marek.jpg" />
-                        <p>
-                            Marek Pawlowski
-                        </p>
-                        <p>
-                            Developer
-                            <br>
-                            <a href= "http://github.com/fbrandel">GitHub</a>
-                        </p>
-                    </section>
-                    <section>
-                        <img src="pics/developer/florian.jpg" />
-                        <p>
-                            Florian Brandel
-                        </p>
-                        <p>
-                            Developer
-                            <br/>
-                            <a href= "http://github.com/fbrandel">GitHub</a>
-                        </p>
-                    </section>
-                    <section>
-                        <img src="pics/developer/filiz.jpg" />
-                        <p>
-                            Filiz 
-                            <br/>
-                            Hazer
-                        </p>
-                        <p>
-                            Student
-                            <br/>
-                            <a href= "http://github.com/FilizHazer">GitHub</a>
-                            <a href= "http://www.xing.com/profile/Filiz_Hazer">XING</a>
-                        </p>
-                    </section>
-                </div>
-            </div>
-        </article>
-        <!--FAQ-->
-        <article id="faq">
-            <div class="inner">
-                <h1>FAQ</h1>
-                <p>
-                    <b>Q: Why Unify?</b>
-                    <br>
-                    A: Unify allows the programming of smart phone apps, regardless of
-                    the operating system. With Unify one is able to develop an application for
-                    the iPhone or Android-based phones like the HTC Desire in one process. This saves time and money.
-                </p>
-                <p>
-                    <b>Q: What's Unify?</b>
-                    <br>
-                    A: Unify allows the programming of applications for smartphones,
-                    tablets and desktops with a single technology. The main claim of Unify is to allow solutions which the end user can not differentiate from a natively programmed application.
-                </p>
-                <p>
-                    <b>Q: What platforms are supported by Unify?</b>
-                    <br>
-                    A: At the moment Unify supports smartphones based on Android, iOS and WebOS. It also supports the three desktop operating systems Windows, Mac OS and Linux.
-                </p>
-                <p>
-                    <b>Q: What about smartphones from Nokia, Blackberry, etc.?</b>
-                    <br>
-                    A: The current priority is to support smartphone platforms with a working application market. In this aspect the iPhone and Android-based devices are currently the most interesting platforms. As soon as manufacturers of the other platforms achieve a similar popularity, Unify will also strive to support them. Support for BlackBerry OS 6.0, Windows Phone and Nokia's operating systems is planned for next year.
-                </p>
-                <p>
-                    <b>Q: Is not it difficult to desktop and smartphones using the same
-                        to develop technology?</b>
-                    <br>
-                    A: The technical foundation is identical in all developments but large parts of the user interfaces will be optimized on a device category. Currently Unify distinguishes between smartphones (with touch screen), tablets and desktop computers. In contrast to the interface, the implementation of the business logic and data models is shared in all device categories.
-                </p>
-                <p>
-                    <b>Q: Why does Deutsche Telekom develop such a solution?</b>
-                    <br>
-                    A: Currently there are no comprehensive and well-established solutions available. The cost of the native development for multiple devices are high. Each platform must be individually developed, maintained and improved.
-                </p>
-                <p>
-                    <b>Q: Do external partners contribute to Unify? </b>
-                    <br>
-                    A: Unify has just been published as open source and thus allows external partners to use, extend and improve it was well. As open source software allows everybody to have a look at the code there is a good chance that the overall quality is higher than in closed software. 
-                </p>
-                <p>
-                    <b>Q: What technology is Unify based on? </b>
-                    <br>
-                    A: Unify makes use of several existing frameworks and technologies. At its core it is based on web technologies. Unify makes use of HTML5 and CSS 3. The whole UI is generated via JavaScript on base of the qooxdoo framework.
-                </p>
-                <p>
-                    <b>Q: Are web technologies powerful enough? </b>
-                    <br>
-                    A: Web technologies are currently improved at a rapid pace. Browsers such as Firefox from Mozilla or Chrome from Google are improving their performance by about 30% per quarter. Impressive animations, playing audio and video files, accessing databases etc. is pretty easy to implement.
-                </p>
-                <p>
-                    <b>Q: What distinguishes Unify from other solutions based on web technology? </b>
-                    <br>
-                    Unlike some older and less sophisticated solutions Unify aims to bring a native look&feel to applications. The usage of a professional and mature JavaScript framework helps developers building applications rapidly.
-                </p>
-                <p>
-                    <b>Q: Is Unify prepared for the future?</b>
-                    <br>
-                    A: In contrast to technologies which are based on a translation of program code, Unify is future safe, as the foundation is built on open and widely distributed technology. Though the improvements in the underlaying software the speed and the possibilities are quite good even on older hardware.
-                </p>
-                <p>
-                    <b>Q: Could web applications integrate themselves to the system?</b>
-                    <br>
-                    A: Web applications typically run in a browser, which does not allow any access to the system. That is the so-called sandbox. A typical web application has no way to read e-mails or files of the user. Technologies like Adobe AIR or PhoneGap allows the break the boundaries of these sandboxes. These are basically installed like native applications and allow the web applications inside them to enjoy the same level of access and integration.
-                </p>
-                <p>
-                    <b>Q: Why does Unify apply on  PhoneGap?</b>
-                    <br>
-                    A: PhoneGap is currently the only technology of its kind, which makes it possible to publish applications in the Apple AppStore and Android Market. For the moment this is the reason why it is more interesting for application developers than initiatives like BONDI or JIL. PhoneGap is open source and can thus be adapted perfectly to the needs of Unify.
-                </p>
-            </div>
-        </article>
-        <!-- footer -->
-        <footer>
-            <div class="inner">
-                <p>
-                    Copyright 2010 Unify Project
-                </p>
-                <p>
-                    powered by<img src="pics/logos/telekom.png" />
-                </p>
-            </div>
-        </footer>
-        <div id="videomask">
-            <div id="video">
-            </div>
+          </section>
+      
+          <section>
+            <a href="http://www.phonegap.com"><img src="pics/logos/phonegap.png" width="173" height="80"/></a>
+            <ul>
+              <li>Native wrapper for web apps</li>
+              <li>Deploy apps to existing stores</li>
+              <li>Supports many platforms</li>
+              <li>Extendable via plugins</li>
+            </ul>
+          </section>
+
+          <section>
+            <a href="http://www.sass-lang.com"><img src="pics/logos/sass.png" width="156" height="80"/></a>
+            <ul>
+              <li>Like CSS++</li>
+              <li>Mixins/Includes</li>
+              <li>Variables</li>
+              <li>Image embedding</li>
+            </ul>
+          </section>
+      
+          <section>
+            <a href="http://adobe.com/products/air"><img src="pics/logos/adobeair.png" width="217" height="80"/></a>
+            <ul>
+              <li>Cross platform desktop runtime</li>
+              <li>Real installable applications</li>
+              <li>Extended system access</li>
+            </ul>
+          </section>
         </div>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
-        </script>
-        <script type="text/javascript">
-            $("#videomask").click(function(e){
-              e.preventDefault();
-              $("#videomask").removeClass("visible");
-              $("#video").html("");
-            });
-            
-            $(".videolink").click(function(e){
-              e.preventDefault();
-              $("#videomask").addClass("visible");
-              $("#video").html('<iframe class="youtube-player" type="text/html" width="853" height="505" src="http://www.youtube.com/embed/5SG975uV_4M" frameborder="0"></iframe>');
-            });
-        </script>
-    </body>
+      </div>
+    </article>
+    
+    
+    <!-- Roadmap-->
+    <article id="roadmap">
+      <div class="inner">
+        <h1>Roadmap</h1>
+        <dl>
+          <dt>Unify 0.5 <span>(in Q4/2009)</span></dt>
+          <dd>iOS 3.x.</dd>
+        </dl>
+        <dl>
+          <dt>Unify 1.0 <span>(in Q3/2010)</span></dt>
+          <dd>added support for iOS 4.x</dd>
+          <dd>added support for Android 2.x.</dd>
+          <dd>added support for WebOS 1.x.</dd>
+        </dl>
+        <dl>
+          <dt>Unify 1.1 <span>(planned for Q1/2011)</span></dt>
+          <dd>planned to support BlackBerry OS 6.0</dd>
+        </dl>
+        <dl>
+          <dt>Unify 1.5 <span>(planned for Q3/2011)</span></dt>
+          <dd>planned to offer UI components for tablet devices</dd>
+          <dd>planned to support Symbian 3.x. (via Qt Web Runtime)</dd>
+          <dd>planned to support MeeGo (via Qt Web Runtime)</dd>
+          <dd>planned to support Bada (via PhoneGap)</dd>
+        </dl>
+        <dl>
+          <dt>Unify 2.0 <span>(planned for Q4/2011)</span></dt>
+          <dd>planned to support Windows Phone (via IE 9 engine)</dd>
+        </dl>
+      </div>
+    </article>
+    
+    
+    <!--Events-->    
+    <article  id="events">
+      <div class="inner">
+        <h1>Events</h1>
+        <section>
+          <h2><a href="http://jsconf.eu/2010/">JSConf.EU</a></h2>
+          <p>25.+26. September 2010</p>
+          <p>Unify goes OpenSource</p>
+        </section>
+        <section>
+          <h2><a href="https://www.xing.com/events/javascript-user-group-frankfurt-548018">JavaScript User Group Frankfurt</a></h2>
+          <p>30. September 2010</p>
+          <p>Presentation of Unify Framework</p>
+        </section>
+        <section>
+          <h2><a href="">Innovation Day of Deutsche Telekom</a></h2>
+          <p>07. October 2010</p>
+          <p>Unify is part of the show</p>
+        </section>
+        <section>
+          <h2><a href="http://www.riaworld.de/">RIA World M&uuml;nchen</a></h2>
+          <p>10.-11. November 2010</p>
+          <p>Presentation of Unify Framework</p>
+        </section>
+      </div>
+    </article> 
+    
+    
+    <!-- Developers -->
+    <article id="developers">
+      <div class="inner">
+        <h1>Developers</h1>
+        <div class="clearfix">
+          <section>
+            <img src="pics/developer/bernhard.jpg" width="133" height="178"/>
+            <p>Bernhard Hochst&auml;tter</p>
+            <p>Project Lead</p>
+
+            <p>
+              <a href= "http://www.xing.com/profile/Bernhard_Hochstaetter">XING</a>
+            </p>
+          </section>
+          <section>
+            <img src="pics/developer/werner.jpg" />
+            <p>Sebastian Werner</p>
+            <p>Lead Developer</p>
+            <p>
+              <a href= "http://github.com/wpbasti">GitHub</a>
+              <a href= "http://twitter.com/wpbasti">Twitter</a>
+              <a href= "http://www.xing.com/profile/Sebastian_Werner7">XING</a>
+            </p>
+          </section>
+          <section>
+            <img src="pics/developer/alex.jpg" />
+            <p>Alexander Dittner</p>
+            <p>Developer</p>
+            <p>
+              <a href= "http://github.com/mcdit">GitHub</a>
+              <a href= "http://twitter.com/mcdit">Twitter</a>
+              <a href= "http://www.xing.com/profile/Alexander_Dittner">XING</a>
+            </p>
+          </section>          
+          <section>
+            <img src="pics/developer/sebastianf.jpg" />
+            <p>Sebastian Fastner</p>
+            <p>Developer</p>
+            <p>
+              <a href= "http://github.com/fastner">GitHub</a>
+              <a href= "http://twitter.com/fastner">Twitter</a>
+              <a href= "http://www.xing.com/profile/Sebastian_Fastner">XING</a>
+            </p>
+          </section>
+          <section>
+            <img src="pics/developer/phillip.jpg" />
+            <p>Philipp Eicher</p>
+            <p>Developer</p>
+            <p>
+              <a href= "http://github.com/peicher">GitHub</a>
+              <a href= "https://www.xing.com/profile/Philipp_Eicher">XING</a>
+            </p>
+          </section>
+          <section>
+            <img src="pics/developer/marek.jpg" />
+            <p>Marek Pawlowski</p>
+            <p>Developer</p>
+            <p>
+              <a href= "http://github.com/fbrandel">GitHub</a> 
+            </p>
+          </section>
+          <section>
+            <img src="pics/developer/florian.jpg" />
+            <p>Florian Brandel</p>
+            <p>Developer</p>
+            <p>
+              <a href= "http://github.com/fbrandel">GitHub</a> 
+            </p>
+          </section>
+          <section>
+            <img src="pics/developer/filiz.jpg" />
+            <p>Filiz <br/>Hazer</p>
+            <p>Student</p>
+            <p>
+              <a href= "http://github.com/FilizHazer">GitHub</a>
+              <a href= "http://www.xing.com/profile/Filiz_Hazer">XING</a>
+            </p>
+          </section>
+        </div>
+        <p class="powered"><em>powered by</em><a href="http://telekom.com"><img src="pics/logos/telekom.png" width="210" height="69"/></a></p>
+      </div>
+    </article>
+
+    
+    <!--FAQ-->
+    <article id="faq">
+      <div class="inner">
+        <h1>FAQ</h1>
+        <p>
+          <b>Q: Why Unify?</b>
+          <br>
+          A: Unify allows the programming of smart phone apps, regardless of
+          the operating system. With Unify one is able to develop an application for
+          the iPhone or Android-based phones.
+        </p>
+        <p>
+          <b>Q: What's Unify?</b>
+          <br>
+          A: Unify allows the programming of applications for smartphones,
+          tablets and desktops with a single technology. The main claim of Unify is to allow solutions which the end user can not differentiate from a natively programmed application.
+        </p>
+        <p>
+          <b>Q: What platforms are supported by Unify?</b>
+          <br>
+          A: At the moment Unify supports smartphones based on iOS, Android and WebOS. It also supports the three desktop operating systems Windows, Mac OS and Linux.
+        </p>
+        <p>
+          <b>Q: What about smartphones from Nokia, Blackberry, etc.?</b>
+          <br>
+          A: Our priority is, to support smartphone platforms with a accepted application market. In this aspect the iPhone and Android-based devices are currently the most interesting platforms. As soon as manufacturers of the other platforms achieve a similar popularity, Unify will also strive to support them. There might be limitations on which systems to support as Unify has quite challenging goals. Support for BlackBerry OS 6.0, Windows Phone and Nokia's operating systems is planned for next year.
+        </p>
+        <p>
+          <b>Q: Is it difficult to develop desktop and smartphone applications using the same to develop technology?</b>
+          <br>
+          A: The technical foundation is identical in all developments but large parts of the user interfaces will be optimized on a device category. Currently Unify distinguishes between smartphones (with touch screen), tablets and desktop computers. In contrast to the interface, the implementation of the business logic and data models is shared in all device categories.
+        </p>
+        <p>
+          <b>Q: Why does Deutsche Telekom develops such a solution?</b>
+          <br>
+          A: Currently there are no comprehensive and well-established solutions available. The cost of the native development for multiple devices are high. Each platform must be individually developed, maintained and improved.
+        </p>
+        <p>
+          <b>Q: Do external partners contribute to Unify? </b>
+          <br>
+          A: Unify has just been published as open source. The license allows external partners to use, extend and improve it as well. As open source software allows everybody to have a look at the code. there is a good chance, that the overall quality will be higher than in closed software. 
+        </p>
+        <p>
+          <b>Q: What technologies is Unify based on? </b>
+          <br>
+          A: Unify makes use of several existing frameworks and technologies. At its core it is based on web technologies. HTML5 and CSS 3 are two of the essential ingredients. The whole UI is generated via JavaScript. Unify makes use of the qooxdoo framework for professional JavaScript development.
+        </p>
+        <p>
+          <b>Q: Are web technologies powerful enough? </b>
+          <br>
+          A: Web technologies are currently improved at a rapid pace. Browsers such as Firefox from Mozilla or Chrome from Google are improving their performance by about 30% per quarter. Impressive animations, playing audio and video files, accessing databases etc. is pretty easy to implement. Even features like accelerated graphics are on the way to the browser engines.
+        </p>
+        <p>
+          <b>Q: What distinguishes Unify from other solutions based on web technology? </b>
+          <br>
+          Unlike some older and less sophisticated solutions Unify aims to bring a native look&and;feel to applications. The usage of a professional and mature JavaScript framework helps developers building applications rapidly.
+        </p>
+        <p>
+          <b>Q: Is Unify prepared for the future?</b>
+          <br>
+          A: In contrast to technologies, which are based on a translation of program code, Unify is future safe. Its foundation is built on open and widely distributed technology. Though the improvements in the underlaying software the speed and the possibilities are quite good even on older hardware.
+        </p>
+        <p>
+          <b>Q: Could web applications integrate themselves to the system?</b>
+          <br>
+          A: Web applications typically run in a browser, which does not allow any access to the system. That is the so-called sandbox. A typical web application has no way to read e-mails or files of the user. Technologies like Adobe AIR or PhoneGap allow to break out of these boundaries. Applications built using these solutions are more like native applications. They enjoy the same level of access and integration.
+        </p>
+        <p>
+          <b>Q: Why does Unify chose PhoneGap?</b>
+          <br>
+          A: PhoneGap is currently the only technology of its kind, which makes it possible to publish applications in the Apple AppStore and Android Market. For the moment this is the reason why it is more interesting for application developers than initiatives like BONDI or JIL. PhoneGap is open source. It can be perfectly adaptedto the needs of Unify.
+        </p>
+      </div>
+    </article>
+    
+    <!-- footer -->
+    <footer>
+      <div class="inner">
+        <p>Copyright 2010 Unify Project</p>
+      </div>
+    </footer>
+
+    <div id="videomask">
+      <div id="video"></div>
+    </div>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script type="text/javascript">
+    if(!$.browser.msie)
+    {
+      // enable video in non-ie browsers
+      $("#videomask").show();
+      $(".videolink").show();
+      
+      $("#videomask").click(function(e)
+      {
+        e.preventDefault();
+        $("#videomask").removeClass("visible");
+        $("#video").html("");
+      });
+      
+      $(".videolink").click(function(e) 
+      {
+        e.preventDefault();
+        $("#videomask").addClass("visible");
+        $("#video").html('<iframe class="youtube-player" type="text/html" width="853" height="505" src="http://www.youtube.com/embed/5SG975uV_4M" frameborder="0"></iframe>');
+      });
+    }
+    </script>
+  </body>
 </html>
