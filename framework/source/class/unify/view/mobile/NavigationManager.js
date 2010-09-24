@@ -409,11 +409,15 @@ qx.Class.define("unify.view.mobile.NavigationManager",
     {
       var current = this.__path.toString();
       var pos = current.lastIndexOf("/");
-      if (pos > 0) {
+      if (pos > 0) 
+      {
         // Go up in unify hierarchy
         this.up();
-      } else {
+      }
+      else 
+      {
         // Finish (native) activity
+        var DroidGap = window.DroidGap;
         if (DroidGap) {
           DroidGap.nativeBackButton();
         }
