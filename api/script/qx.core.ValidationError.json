@@ -1,0 +1,1 @@
+{"attributes": {"fullName": "qx.core.ValidationError", "packageName": "qx.core", "type": "class", "name": "ValidationError", "superClass": "qx.type.BaseError"}, "type": "class", "children": [{"attributes": {"text": "<p>A validation Error which should be thrown if a validation fails.</p>"}, "type": "desc"}]}
