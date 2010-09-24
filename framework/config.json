@@ -27,7 +27,7 @@
   {
     "APPLICATION"  : "unify",
     "API_EXCLUDE"  : [ "qx.test.*", "unify.test.*" ],
-    "QOOXDOO_PATH" : "../../qooxdoo.unify/qooxdoo",
+    "QOOXDOO_PATH" : "../../qooxdoo/qooxdoo",
     "CACHE"        : "cache",
     "ROOT"         : "."
   }
