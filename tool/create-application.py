@@ -5,7 +5,7 @@ import subprocess, os, sys, optparse
 
 fullpath = os.path.join(os.getcwd(), os.path.dirname(sys.argv[0]))
 capath = os.path.abspath(
-    os.path.join(fullpath, "..", "external", "qooxdoo", "qooxdoo", "tool", "bin", "create-application.py")
+    os.path.join(fullpath, "..", "..", "qooxdoo", "qooxdoo", "tool", "bin", "create-application.py")
 )
 skeletonpath = os.path.abspath(
     os.path.join(fullpath, "..", "application", "skeleton")
