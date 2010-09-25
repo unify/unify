@@ -11,7 +11,7 @@
   "let" :
   {
     "UNIFY_PATH"        : "../..",
-    "QOOXDOO_PATH"      : "../../external/qooxdoo/qooxdoo",
+    "QOOXDOO_PATH"      : "../../../qooxdoo/qooxdoo",
     "APP_PATH"          : ".",
 
     "CACHE"             : "${UNIFY_PATH}/framework/cache",
