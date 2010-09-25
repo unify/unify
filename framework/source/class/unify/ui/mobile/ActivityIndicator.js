@@ -29,7 +29,7 @@ qx.Class.define("unify.ui.mobile.ActivityIndicator",
     {
       var elem = this.base(arguments);
 
-      elem.innerHTML = "Lade Daten...";
+      elem.innerHTML = "Loading data...";
       elem.id = "activity";
 
       return elem;
