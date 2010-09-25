@@ -46,6 +46,9 @@ qx.Class.define("tweet.application.Mobile",
       var TwitterAuth = tweet.business.TwitterAuth.getInstance();
       TwitterAuth.setUser("telekomria");
       TwitterAuth.setPassword("32u8AH555wKdQvhqgZZ9");
+      
+      // Set up
+      document.title = "Tweet";
 
       // Register views
       var ViewManager = unify.view.mobile.ViewManager.getInstance();
