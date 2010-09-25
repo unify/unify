@@ -48,7 +48,7 @@ qx.Class.define("unify.business.RemoteData",
     // Safari supports cross-domain requests when the document is loaded from file system
     // Not supported in other Webkit browsers like Chrome or browsers with other engines
     else if (location.protocol == "file:" && qx.bom.client.Browser.NAME == "safari") {
-      this.setEnableProxy(false);
+      //this.setEnableProxy(false);
     }
   },
 

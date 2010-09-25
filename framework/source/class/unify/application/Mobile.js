@@ -69,6 +69,7 @@ qx.Class.define("unify.application.Mobile",
       Registration.addListener(window, "resize", this.__onResize, this);
       Registration.addListener(window, "rotate", this.__onRotate, this);
 
+      Registration.addListener(document.body, "click", this.__onClick, this);
       Registration.addListener(document.body, "tap", this.__onTap, this);
       Registration.addListener(document.body, "touchhold", this.__onTouchHold, this);
       Registration.addListener(document.body, "touchrelease", this.__onTouchRelease, this);
@@ -117,6 +118,20 @@ qx.Class.define("unify.application.Mobile",
 
     /** {String} CSS selector with elements which are followable by the navigation manager */
     __followable : "a[href],[rel],[goto],[exec]",
+
+
+    /**
+     * Prevents clicks from executing native behavior
+     * 
+     * @parm e {qx.event.type.Mouse} Mouse event object
+     */
+    __onClick : function(e)
+    {
+      var elem = qx.dom.Hierarchy.closest(e.getTarget(), "a[href]");
+      if (elem) {
+        e.preventDefault();
+      }
+    },
 
 
     /**

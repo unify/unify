@@ -47,7 +47,7 @@ qx.Class.define("tweet.util.Twitter",
 
       this.__atRegExp.lastIndex = 0;
       text = text.replace(this.__atRegExp, function(match) {
-        return '<a target="_blank" href="#user:' + match.substring(1, match.length) + '">' + match + '</a>';
+        return '<span goto="user:' + match.substring(1, match.length) + '">' + match + '</span>';
       });
 
       return text;
