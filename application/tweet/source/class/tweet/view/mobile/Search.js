@@ -79,6 +79,12 @@ qx.Class.define("tweet.view.mobile.Search",
     
     
     // overridden
+    _hasServiceRequestParams : function() {
+      return this.__query.value.length > 0;
+    },
+    
+    
+    // overridden
     _getServiceParams : function() 
     {
       return { 
