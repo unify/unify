@@ -7,9 +7,9 @@ rm -f ~/Library/Application\ Support/Developer/Shared/Xcode/Project\ Templates/U
 ln -s `pwd`/templates ~/Library/Application\ Support/Developer/Shared/Xcode/Project\ Templates/Unify
 
 echo ">>> Configuring XCode preferences..."
-cd ../../
-UNIFY=`pwd`
-defaults write ~/Library/Preferences/com.apple.Xcode PBXApplicationwideBuildSettings -dict-add UNIFY "$UNIFY"
-defaults write ~/Library/Preferences/com.apple.Xcode PBXSourceTreeDisplayNames -dict-add UNIFY "Unify"
+cd ../../../
+WORKSPACE=`pwd`
+defaults write ~/Library/Preferences/com.apple.Xcode PBXApplicationwideBuildSettings -dict-add WORKSPACE "$WORKSPACE"
+defaults write ~/Library/Preferences/com.apple.Xcode PBXSourceTreeDisplayNames -dict-add WORKSPACE "Unify Workspace"
 
 echo ">>> Done"
