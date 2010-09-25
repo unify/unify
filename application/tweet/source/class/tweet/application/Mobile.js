@@ -56,14 +56,12 @@ qx.Class.define("tweet.application.Mobile",
       ViewManager.add(tweet.view.mobile.User);
       ViewManager.add(tweet.view.mobile.Profile);
       ViewManager.add(tweet.view.mobile.Search);
-      ViewManager.add(unify.view.mobile.SysInfo);
       
       // Configure tab bar
       var TabBar = unify.ui.mobile.TabBar.getInstance();
       TabBar.add(tweet.view.mobile.Timeline);
       TabBar.add(tweet.view.mobile.Userlist);
       TabBar.add(tweet.view.mobile.Profile);
-      TabBar.add(unify.view.mobile.SysInfo);
       
       // Initialize navigation
       unify.view.mobile.NavigationManager.getInstance().init();
