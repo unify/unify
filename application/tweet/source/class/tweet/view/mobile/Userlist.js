@@ -54,7 +54,7 @@ qx.Class.define("tweet.view.mobile.Userlist",
       var layer = new unify.ui.mobile.Layer(this);
 
       var toolbar = new unify.ui.mobile.ToolBar(this);
-      toolbar.add({ icon : true, exec : "refresh", target : "right" });
+      toolbar.add({ icon : true, exec : "refresh", target : "left" });
       layer.add(toolbar);
 
       var segmented = new unify.ui.mobile.Segmented(this);

@@ -102,7 +102,7 @@
 #userlist
 	+vbox
 	
-	.title-bar
+	.tool-bar
 		[exec=refresh]
 			+tool-bar-button-icon("icons-22/gear.png")
 				
@@ -213,28 +213,6 @@
 
 
 // ***************************************************************************************************
-//	 VIEW: COMPONENTS
-// ***************************************************************************************************
-
-#components
-	+vbox
-	
-	.content > ul
-		+navigation-list
-		+greyish-list
-		
-	.slide-view
-		height: 30px
-		
-		.content
-			white-space: nowrap
-		
-			> *
-				display: inline-block
-				background-color: red
-
-
-// ***************************************************************************************************
 //	 COMPONENT: TAB BAR
 // ***************************************************************************************************
 	
@@ -247,11 +225,4 @@
 		
 	[goto="profile"]
 		+tab-bar-button-icon('icons-32/108-badge.png')
-		
-	[goto="sys-info"]
-		+tab-bar-button-icon('icons-32/54-lock.png')
-		
-	[goto="components"]
-		+tab-bar-button-icon('icons-32/87-wineglass.png')
-		
 		
