@@ -40,7 +40,7 @@ qx.Class.define("tweet.view.mobile.Timeline",
       }
       
       if (!param) {
-        param = this.getParam();
+        param = this.getSegment();
       }      
       
       return param == "sent" ? "Sent" : "Updates";

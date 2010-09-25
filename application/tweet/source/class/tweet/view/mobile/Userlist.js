@@ -28,6 +28,12 @@ qx.Class.define("tweet.view.mobile.Userlist",
     */
     
     // overridden
+    getDefaultSegment : function() {
+      return "followers";
+    },
+        
+    
+    // overridden
     getTitle : function(type, param) 
     {
       if (type == "tab-bar") {
@@ -35,30 +41,27 @@ qx.Class.define("tweet.view.mobile.Userlist",
       }
       
       if (!param) {
-        param = this.getParam();
+        param = this.getSegment();
       }
             
       return param === "friends" ? "Friends" : "Followers"; 
     },
-    
-    
-    // overridden
-    getDefaultParam : function() {
-      return "friends";
-    },
-    
+
         
     // overridden
     _createView : function() 
     {
       var layer = new unify.ui.mobile.Layer(this);
 
-      var titlebar = new unify.ui.mobile.TitleBar(this);
-      titlebar.add({ label : "Friends", jump : "friends", rel : "param", target : "left" });
-      titlebar.add({ label : "Followers", jump : "followers", rel : "param", target : "left" });
-      titlebar.add({ icon : true, exec : "refresh", target : "right" });
-      layer.add(titlebar);
+      var toolbar = new unify.ui.mobile.ToolBar(this);
+      toolbar.add({ icon : true, exec : "refresh", target : "right" });
+      layer.add(toolbar);
 
+      var segmented = new unify.ui.mobile.Segmented(this);
+      segmented.add({ label : "Friends", segment : "friends" });
+      segmented.add({ label : "Followers", segment : "followers" });
+      toolbar.add(segmented);      
+      
       var scrollview = this.__content = new unify.ui.mobile.ScrollView();
       scrollview.setEnableScrollX(false);
       layer.add(scrollview);
@@ -83,7 +86,13 @@ qx.Class.define("tweet.view.mobile.Userlist",
     
     // overridden
     _getServiceName : function() {
-      return this.getParam();
+      return this.getSegment();
+    },
+    
+    
+    // overridden
+    _getRenderVariant : function() {
+      return this.getSegment();
     },
     
 
