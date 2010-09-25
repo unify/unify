@@ -29,7 +29,7 @@ qx.Class.define("tweet.view.mobile.Userlist",
     
     // overridden
     getDefaultSegment : function() {
-      return "followers";
+      return "friends";
     },
         
     
