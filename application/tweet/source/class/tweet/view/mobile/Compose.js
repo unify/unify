@@ -7,6 +7,11 @@
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
 *********************************************************************************************** */
+
+/*
+#require(qx.event.handler.Input)
+*/
+ 
 /**
  * Allows the user to write new status updates.
  */
