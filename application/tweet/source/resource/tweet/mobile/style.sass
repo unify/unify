@@ -38,6 +38,9 @@
 		
 		
 =timeline-list
+	!selection_start = rgb(66,134,245)
+	!selection_end = rgb(25,79,219)
+
 	> ul
 		+greyish-list
 	
@@ -53,6 +56,12 @@
 					top: 2px
 					color: rgb(115,137,166)
 					font-size: 12px
+					
+			&.selected, &.pressed 
+				background-color = !selection_start
+				+linear-gradient(color-stops(!selection_start, !selection_end))
+				color: #fff
+			
 
 
 // ***************************************************************************************************
@@ -210,7 +219,7 @@
 				+linear-gradient(color-stops(#999, #666))
 				color: white
 				font-weight: bold
-
+				
 
 // ***************************************************************************************************
 //	 COMPONENT: TAB BAR
