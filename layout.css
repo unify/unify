@@ -394,13 +394,6 @@ footer > .inner{
   margin-bottom: 40px;
 }
 
-#features section{
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -o-border-radius: 10px;
-  border-radius: 10px;
-}
-
 #technology section{
   text-align: center;
   background: white;
@@ -447,6 +440,15 @@ footer > .inner{
   -o-background-clip: padding-box;
   background-clip: padding-box;
 }
+
+#features ul{
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+}
+
+
 
 #roadmap dl{
   margin-bottom: 17px;
