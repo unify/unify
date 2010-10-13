@@ -35,6 +35,9 @@ qx.Class.define("unify.business.RemoteData",
     /** {Map} In-Memory Cache */
     this.__cache = {};
 
+    /** {Map} Custom http headers */
+    this.__headers = {};
+
     /** {String} Prefix used for storage */
     var prefix = "unify/" + qx.lang.String.hyphenate(this.basename).substring(1);
     this.__storageDataPrefix = prefix + "/data/";
@@ -463,6 +466,10 @@ qx.Class.define("unify.business.RemoteData",
     __requestCounter : 0,
 
 
+    /** {Map} Custom request headers */
+    __headers : null,
+
+
     /**
      * Returns the cache ID for the given argument set.
      *
@@ -543,6 +550,32 @@ qx.Class.define("unify.business.RemoteData",
       req.setRequestHeader(key, value);
     },
 
+    /**
+     * Adds custom request headers to the request
+     *
+     * @param req {qx.io.HttpRequest} Request object to modify
+     */        
+    __addRequestHeaders : function(req)
+    {
+      var headers = this.__headers;
+      for (var name in headers) 
+      {
+        req.setRequestHeader(name, headers[name]);
+        this.debug(""+name+"-"+headers[name]+"");
+      }
+    },
+        
+    /**
+     * Sets custom request headers
+     *
+     * @param name {String} Name of header
+     * @param value {String} Value of header
+     */    
+    setRequestHeader : function(name, value)
+    {
+      this.__headers[name] = value;              
+    },
+
 
     /**
      * Main communication routine. Called by most developer-level APIs.
@@ -604,6 +637,9 @@ qx.Class.define("unify.business.RemoteData",
       if (auth === "basic") {
         this.__addBasicAuth(req);
       }
+
+      // Add custom headers
+      this.__addRequestHeaders(req);
 
       // Add post data
       if (method == "POST")
