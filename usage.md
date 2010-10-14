@@ -6,7 +6,7 @@ Usage
 
 * Create an application:
   
-    $ unify/framework/tool/create-application.py -n $appname
+    $ unify/tool/create-application.py -n $appname
     $ cd $appname
 
 * Prepare development version (re-run after major changes)
@@ -16,8 +16,8 @@ Usage
     
 * Create deployment version
 
-    $ ./generate build-mobile
-    $ ./generate build-desktop
+    $ ./generate.py build-mobile
+    $ ./generate.py build-desktop
     
 There is a client auto detection built into the included index.html. You might to override
 your user agent string or just use the HTML file of the version you prefer to load. For
