@@ -2,547 +2,444 @@
 //	MIXIN: PADDED LAYER
 // ***************************************************************************************************
 
-=padded-layer(!border_color = #B4B4B4, !border_radius = 8px)
-	background-image = inline_image("pinstripes.png")
-	background-color: rgb(203,210,216)
-
-	.content
-		padding: 10px
-		
-		> *:first-child
-			margin-top: 0 !important
-
-		> *:last-child
-			margin-bottom: 0 !important
-	
-		> p, > ul, > div
-			margin: 15px 0px 17px
-
-		> h2
-			text-shadow: rgb(255,255,255) 0 1px 1px
-			color: rgb(77,87,107)
-			margin: 15px 11px 0px 11px
-			font-size: 17px
-			font-weight: bold
-
-		> p, > ul > li
-			padding: 10px
-			border = 1px "solid" !border_color
-			background-color: white
-
-		> p
-			+border-radius(!border_radius)
-			font-size: 15px
-		
-		> ul > li
-			border-bottom-style: none
-
-			&:first-child
-				+border-top-radius(!border_radius)
-
-			&:last-child
-				+border-bottom-radius(!border_radius)
-				border-bottom-style: solid
-
-
+=padded-layer($border_color: #b4b4b4, $border_radius: 8px)
+  background-image: inline_image(unquote("pinstripes.png"))
+  background-color: rgb(203, 210, 216)
+  .content
+    padding: 10px
+    > *:first-child
+      margin-top: 0 !important
+    > *:last-child
+      margin-bottom: 0 !important
+    > p, > ul, > div
+      margin: 15px 0px 17px
+    > h2
+      text-shadow: rgb(255, 255, 255) 0 1px 1px
+      color: rgb(77, 87, 107)
+      margin: 15px 11px 0px 11px
+      font-size: 17px
+      font-weight: bold
+    > p, > ul > li
+      padding: 10px
+      border: 1px solid $border_color
+      background-color: white
+    > p
+      +border-radius($border_radius)
+      font-size: 15px
+    > ul > li
+      border-bottom-style: none
+      &:first-child
+        +border-top-radius($border_radius)
+      &:last-child
+        +border-bottom-radius($border_radius)
+        border-bottom-style: solid
 
 // ***************************************************************************************************
 //	 MIXIN: KEY-VALUE LIST
 // ***************************************************************************************************
 
 =keyvalue-list
-	li
-		+hbox
-		font-size: 17px
-		
-		> *
-			display: block
-	
-		> label
-			font-weight: bold
-	
-		> span
-			color: rgb(56,84,135)
-			text-align: right
-			+box-flex(1)
-		
-		
-		
+  li
+    +hbox
+    font-size: 17px
+    > *
+      display: block
+    > label
+      font-weight: bold
+    > span
+      color: rgb(56, 84, 135)
+      text-align: right
+      +box-flex(1)
+
 // ***************************************************************************************************
 //	 MIXIN: NAVIGATION LIST
 // ***************************************************************************************************
 
-/**
-	Allows arbitrary sub elements
-	Uses a horizontal box layout for layouting children
-	Icon is supported in front of text using a "img" element
-	Text needs to be wrapped by a "label" element
-	Supports additional infos using "em" element
-	May show an arrow to indicate sub content using (self-closed) "hr" element
-	
+/*
+ * Allows arbitrary sub elements
+ * Uses a horizontal box layout for layouting children
+ * Icon is supported in front of text using a "img" element
+ * Text needs to be wrapped by a "label" element
+ * Supports additional infos using "em" element
+ * May show an arrow to indicate sub content using (self-closed) "hr" element
+
 =navigation-list
-	!selection_start = rgb(66,134,245)
-	!selection_end = rgb(25,79,219)
-	!count = rgb(130,151,188)
-
-	li
-		+hbox
-		
-		font-weight: bold
-		font-size: 17px
-		
-		> *
-			display: block
-		
-		> label
-			+box-flex(1)
-			+text-overflow
-			white-space: nowrap
-			width: 10px
-			
-		> em
-			+border-radius(9px)
-			background = !count
-			color: white
-			padding: 2px 10px
-			font-size: 13px
-			font-style: normal
-		
-		> hr
-			margin-left: 8px
-			border: none
-			
-			&:after
-				content = inline_image("list/arrow.png")
-			
-		&.selected, &.pressed 
-			+linear-gradient(color-stops(!selection_start, !selection_end))
-			color: #fff
-			
-			> em
-				// maybe we can tweak this gradient further by using CSS background-clip:text
-				// http://webkit.org/blog/164/background-clip-text/
-				background: #fff
-				color = (!selection_start + !selection_end) / 2
-		
-			> hr
-				:after
-					content = inline_image("list/arrow-selected.png")
-
+  $selection_start: rgb(66, 134, 245)
+  $selection_end: rgb(25, 79, 219)
+  $count: rgb(130, 151, 188)
+  li
+    +hbox
+    font-weight: bold
+    font-size: 17px
+    > *
+      display: block
+    > label
+      +box-flex(1)
+      +text-overflow
+      white-space: nowrap
+      width: 10px
+    > em
+      +border-radius(9px)
+      background: $count
+      color: white
+      padding: 2px 10px
+      font-size: 13px
+      font-style: normal
+    > hr
+      margin-left: 8px
+      border: none
+      &:after
+        content: inline_image(unquote("list/arrow.png"))
+    &.selected, &.pressed
+      +linear-gradient(color-stops($selection_start, $selection_end))
+      color: white
+      > em
+        // maybe we can tweak this gradient further by using CSS background-clip:text
+        // http://webkit.org/blog/164/background-clip-text/
+        background: white
+        color: ($selection_start + $selection_end) / 2
+      > hr
+        after:
+          content: inline_image(unquote("list/arrow-selected.png"))
 
 // ***************************************************************************************************
 //	 MIXIN: BUTTON
 // ***************************************************************************************************
 
 =content-button
-	display: block
-	padding: 10px
-	text-align: center
-	font-size: 20px
-	font-weight: bold
-	border: 3px solid rgb(58,58,58)
-	background-color: rgb(36,36,36)
-	color: white	
-	+border-radius(12px)
-	+linear-gradient(color-stops(rgba(255,255,255,0.61), rgba(255,255,255,0.45) 5%, rgba(255,255,255,0.27) 50%, rgba(255,255,255,0.20) 50%, rgba(255,255,255,0)))
-
-
+  display: block
+  padding: 10px
+  text-align: center
+  font-size: 20px
+  font-weight: bold
+  border: 3px solid rgb(58, 58, 58)
+  background-color: rgb(36, 36, 36)
+  color: white
+  +border-radius(12px)
+  +linear-gradient(color-stops(rgba(255, 255, 255, 0.61), rgba(255, 255, 255, 0.45) 5%, rgba(255, 255, 255, 0.27) 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0)))
 
 // ***************************************************************************************************
 //	 TAGS
 // ***************************************************************************************************
 
 body
-	font-family: Helvetica, sans-serif
-	font-size: 14px
-	line-height: 1.4
-	color: black
-	background: white
-
-
+  font-family: Helvetica, sans-serif
+  font-size: 14px
+  line-height: 1.4
+  color: black
+  background: white
 
 // ***************************************************************************************************
 //	 SINGLETON: ACTIVITY INDICATOR
 // ***************************************************************************************************
 
 #activity
-	background-color: rgb(12,12,12)
-	background-image = inline_image("ajax-loader.gif")
-	background-repeat: no-repeat
-	background-position: center
-	opacity: 0.85
-	+box-shadow("black", 0px, 2px, 10px)
-	+border-radius(12px)
-	padding-top: 110px
-
-	color: #EEE
-	font-weight: bold
-	font-size: 16px
-	text-align: center
-
-	&.out
-		+scale(0.3)
-		
-	&.in
-		+scale(1.5)
-		
-
+  background-color: rgb(12, 12, 12)
+  background-image: inline_image(unquote("ajax-loader.gif"))
+  background-repeat: no-repeat
+  background-position: center
+  opacity: 0.85
+  +box-shadow(black, 0px, 2px, 10px)
+  +border-radius(12px)
+  padding-top: 110px
+  color: #eeeeee
+  font-weight: bold
+  font-size: 16px
+  text-align: center
+  &.out
+    +scale(0.3)
+  &.in
+    +scale(1.5)
 
 // ***************************************************************************************************
 //	 CLASS: LAYER
 // ***************************************************************************************************
 
 .layer
-	background: white
-
-
+  background: white
 
 // ***************************************************************************************************
 //	 CLASS: TITLEBAR & TOOLBAR
 // ***************************************************************************************************
 
-=tool-bar-button-icon(!source)
-	!size = 20px
-	!width = image_width(!source)
-	!height = image_height(!source)
-
-	> div:empty
-		width = !size
-		height = !size
-
-		&:after
-			width = !width
-			height = !height
-			margin-top = (!size - !height) / 2
-			-webkit-mask-image = inline_image(!source)
-			background: white
-			content: ""
-			display: inline-block
-			vertical-align: top		
-
+=tool-bar-button-icon($source)
+  $size: 20px
+  $width: image_width($source)
+  $height: image_height($source)
+  > div:empty
+    width: $size
+    height: $size
+    &:after
+      width: $width
+      height: $height
+      margin-top: ($size - $height) / 2
+      -webkit-mask-image: inline_image($source)
+      background: white
+      content: ""
+      display: inline-block
+      vertical-align: top
 
 =tool-bar-button-core
-	font-size: 12px
-	font-weight: bold
-	text-decoration: none
-	white-space: nowrap
-	display: inline-block
-	text-shadow: rgba(0,0,0,0.5) 0px -1px 0
-	color: #FFFFFF
-	vertical-align: middle
-	line-height: 20px
-	margin-top: 2px
+  font-size: 12px
+  font-weight: bold
+  text-decoration: none
+  white-space: nowrap
+  display: inline-block
+  text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
+  color: white
+  vertical-align: middle
+  line-height: 20px
+  margin-top: 2px
 
-		
 .title-bar
-	> .center
-		font-size: 20px
-		color: #fff
-		text-shadow: rgba(0,0,0,0.4) 0px -1px 0	
-		font-weight: bold
-
+  > .center
+    font-size: 20px
+    color: white
+    text-shadow: rgba(0, 0, 0, 0.4) 0px -1px 0
+    font-weight: bold
 
 .title-bar,
 .tool-bar
-	height: 44px
-	+hbox
-	padding: 0 3px
-	background = inline_image("tool-bar/background.png")
-	border-bottom: 1px solid rgb(43,53,76)
-
-	&:last-child
-		border-bottom: 0px none
-		border-top: 1px solid rgb(43,53,76)
-
-	> div
-		text-align: center
-		
-	> .left
-		text-align: left
-
-		> *
-			margin-left: 3px	
-		
-	> .right
-		text-align: right
-
-		> *
-			margin-right: 3px
-			
-	> .center
-		padding: 0 3px
-	
-		> *
-			margin-right: 3px
-			
-		> *:last-child
-			margin-right: 0
-		
-	.tool-button
-		+tool-bar-button-core
-	
-		padding: 4px
-		border-width: 1px 5px
-		-webkit-border-image = inline_image("tool-bar/button.png") + " 1 5 1 5"
-
-		&.pressed, &.checked
-			-webkit-border-image = inline_image("tool-bar/button-pressed.png") + " 1 5 1 5"
-			
-		&[rel=up]
-			border-left-width: 12px
-			padding-left: 0
-			-webkit-border-image = inline_image("tool-bar/upwards.png") + " 1 5 1 12"
-
-			&.pressed
-				-webkit-border-image = inline_image("tool-bar/upwards-pressed.png") + " 1 5 1 12"
-
-		&[rel=down]
-			border-right-width: 12px
-			padding-right: 0
-			-webkit-border-image = inline_image("tool-bar/downwards.png") + " 1 12 1 5"
-
-			&.pressed
-				-webkit-border-image = inline_image("tool-bar/downwards-pressed.png") + " 1 12 1 5"
-
-
-
+  height: 44px
+  +hbox
+  padding: 0 3px
+  background: inline_image(unquote("tool-bar/background.png"))
+  border-bottom: 1px solid rgb(43, 53, 76)
+  &:last-child
+    border-bottom: 0px none
+    border-top: 1px solid rgb(43, 53, 76)
+  > div
+    text-align: center
+  > .left
+    text-align: left
+    > *
+      margin-left: 3px
+  > .right
+    text-align: right
+    > *
+      margin-right: 3px
+  > .center
+    padding: 0 3px
+    > *
+      margin-right: 3px
+    > *:last-child
+      margin-right: 0
+  .tool-button
+    +tool-bar-button-core
+    padding: 4px
+    border-width: 1px 5px
+    -webkit-border-image: inline_image(unquote("tool-bar/button.png")) + unquote(" 1 5 1 5")
+    &.pressed, &.checked
+      -webkit-border-image: inline_image(unquote("tool-bar/button-pressed.png")) + unquote(" 1 5 1 5")
+    &[rel=up]
+      border-left-width: 12px
+      padding-left: 0
+      -webkit-border-image: inline_image(unquote("tool-bar/upwards.png")) + unquote(" 1 5 1 12")
+      &.pressed
+        -webkit-border-image: inline_image(unquote("tool-bar/upwards-pressed.png")) + unquote(" 1 5 1 12")
+    &[rel=down]
+      border-right-width: 12px
+      padding-right: 0
+      -webkit-border-image: inline_image(unquote("tool-bar/downwards.png")) + unquote(" 1 12 1 5")
+      &.pressed
+        -webkit-border-image: inline_image(unquote("tool-bar/downwards-pressed.png")) + unquote(" 1 12 1 5")
 
 // ***************************************************************************************************
 //	 CLASS: SEGMENTED
 // ***************************************************************************************************
 
 .segmented
-	// insert helper elements for rounded corners (first two selectors) and separators
-	div:first-child:before,
-	div:last-child:before,
-	div+div:after
-		content: ""
-		background-image = inline_image("segment/blue/button.png")
-		background-repeat: no-repeat
-		position: absolute
-		top: 0
-		height: 30px
-
-	> div
-		+tool-bar-button-core
-		
-		position: relative
-		padding: 5px 12px
-		background-image = inline_image("segment/blue/middle.png")
-		
-		&.checked
-			background-position: 0 30px
-			
-		// rounded corners are 4 pixel wide
-		&:first-child:before,
-		&:last-child:before
-			width: 4px
-			
-		// place left rounded corner to the left edge
-		&:first-child:before
-			left: 0
-			background-position: 0px 0
-				
-		&.checked:first-child:before
-			background-position: -8px 0
-
-		// place right rounded corner to the right edge
-		&:last-child:before
-			right: 0
-			background-position: -4px 0
-				
-		&.checked:last-child:before
-			background-position: -12px 0
-
-		// position and size separators
-		&+div:after
-			width: 1px
-			background-position: -16px 0
-			left: 0
-		
-		&.checked+div:after, 
-		&+div.checked:after
-			background-position: -17px 0
-
-
+  // insert helper elements for rounded corners (first two selectors) and separators
+  div:first-child:before,
+  div:last-child:before,
+  div+div:after
+    content: ""
+    background-image: inline_image(unquote("segment/blue/button.png"))
+    background-repeat: no-repeat
+    position: absolute
+    top: 0
+    height: 30px
+  > div
+    +tool-bar-button-core
+    position: relative
+    padding: 5px 12px
+    background-image: inline_image(unquote("segment/blue/middle.png"))
+    &.checked
+      background-position: 0 30px
+    // rounded corners are 4 pixel wide
+    &:first-child:before,
+    &:last-child:before
+      width: 4px
+    // place left rounded corner to the left edge
+    &:first-child:before
+      left: 0
+      background-position: 0px 0
+    &.checked:first-child:before
+      background-position: -8px 0
+    // place right rounded corner to the right edge
+    &:last-child:before
+      right: 0
+      background-position: -4px 0
+    &.checked:last-child:before
+      background-position: -12px 0
+    // position and size separators
+    &+div:after
+      width: 1px
+      background-position: -16px 0
+      left: 0
+    &.checked+div:after,
+    &+div.checked:after
+      background-position: -17px 0
 
 // ***************************************************************************************************
 //	 CLASS: TABBAR
 // ***************************************************************************************************
 
-=tab-bar-button-icon(!source)
-	!size = 32px
-	!width = image_width(!source)
-	!height = image_height(!source)
+=tab-bar-button-icon($source)
+  $size: 32px
+  $width: image_width($source)
+  $height: image_height($source)
+  .tab-bar-element-image
+    width: $size
+    height: $size
+    &:after
+      width: $width
+      height: $height
+      margin-top: ($size - $height) / 2
+      -webkit-mask-image: inline_image($source)
 
-	.tab-bar-element-image
-		width = !size
-		height = !size
-
-		&:after
-			width = !width
-			height = !height
-			margin-top = (!size - !height) / 2
-			-webkit-mask-image = inline_image(!source)
-
-
-!tab-bar-height = 50px
+$tab-bar-height: 50px
 
 #tab-bar
-	height = !tab-bar-height
-	+translate(0,100%)
-	+linear-gradient(color-stops(#434343, #2e2e2e 2%, #151515 50%, black 50%, black 100%))
-	+transition-property("opacity, transform, -webkit-transform, -moz-transform")
-	+transition-duration(350ms)
-	+transition-timing-function(cubic-bezier(0.88, 0, 0.9, 0.9))
-	bottom: 0
-	border-top: 1px solid black
-	font:
-		weight: bold
-		size: 10px
-	color: #9a9a9a
-	
-	&.active
-		+translate(0,0)
-		
-	&.noanimation
-		+transition-duration(0ms)
-	
-	.tab-bar-element
-		display: block
-		height: 44px
-		background: transparent
-		margin-top: 2px
-		margin-left: 2px
-		margin-right: 2px
-		padding: 0
-		border: 0
-		
-		+border-radius(3px)
-		position: relative
-		
-		&.active
-			color: white
-			+linear-gradient(color-stops(#494949, #353535 50%, #252525 50%, #252525))
-			
-			.tab-bar-element-image:after
-				+linear-gradient(color-stops(#c7e8fb, #3673C1), "top", true)
-		
-	.tab-bar-element-image
-		margin:
-			left: auto
-			right: auto
-	
-		&:after
-			content: ""
-			display: inline-block
-			vertical-align: top		
-			+linear-gradient(color-stops(#b0b0b0, #545454), "top", true)
-				
+  height: $tab-bar-height
+  +translate(0, 100%)
+  +linear-gradient(color-stops(#434343, #2e2e2e 2%, #151515 50%, black 50%, black 100%))
+  +transition-property(unquote("opacity, transform, -webkit-transform, -moz-transform"))
+  +transition-duration(350ms)
+  +transition-timing-function(cubic-bezier(0.88, 0, 0.9, 0.9))
+  bottom: 0
+  border-top: 1px solid black
+  font:
+    weight: bold
+    size: 10px
+  color: #9a9a9a
+  &.active
+    +translate(0, 0)
+  &.noanimation
+    +transition-duration(0ms)
+  .tab-bar-element
+    display: block
+    height: 44px
+    background: transparent
+    margin-top: 2px
+    margin-left: 2px
+    margin-right: 2px
+    padding: 0
+    border: 0
+    +border-radius(3px)
+    position: relative
+    &.active
+      color: white
+      +linear-gradient(color-stops(#494949, #353535 50%, #252525 50%, #252525))
+      .tab-bar-element-image:after
+        +linear-gradient(color-stops(#c7e8fb, #3673c1), top, true)
+  .tab-bar-element-image
+    margin:
+      left: auto
+      right: auto
+    &:after
+      content: ""
+      display: inline-block
+      vertical-align: top
+      +linear-gradient(color-stops(#b0b0b0, #545454), top, true)
 
 .layer.has-tabbar
-	padding-bottom = !tab-bar-height
-	
-
+  padding-bottom: $tab-bar-height
 
 // ***************************************************************************************************
 //	 DIALOG
 // ***************************************************************************************************
 
 .dialog
-	bottom: 0
-	left: 0
-	right: 0
-	padding: 20px
-	font-weight: bold
-	color: white
-
-	&-background
-		opacity: 0.9
-		background: -webkit-gradient(linear, 0 0, 0 100%, from(#b3b6ba), to(#7f838c)) 0 0 no-repeat, -webkit-gradient(linear, 0 0, 0 100%, from(#717883), to(#606779)) 0 20px no-repeat, -webkit-gradient(linear, 0 0, 0 100%, from(#626975), to(#626975)) 0 42px no-repeat
-		-webkit-background-size: 100% 20px, 100% 22px, 100% 100%
-
-	&-mask
-		left: 0
-		top: 0
-		bottom: 0
-		right: 0
-		background-color: black
-		opacity: 0.425
-		
-		.layer &
-			top: 45px
-	
-	.button
-		display: block
-		width: 100%
-		margin-bottom: 8px
-		height: 39px
-		+border-radius(10px)
-		text-align: center
-		border: 2px solid #494a4d
-		color: black
-		+linear-gradient(color-stops(#f0f0f0, #d8d8d8 50%, #c6c8c9 50%, #c4cbcd 100%))
-		
-		&.close
-			margin-top: 20px
-			color: white
-			+linear-gradient(color-stops(#798088, #313c47 50%, #1c2935 50%, #333c48 100%))
-
+  bottom: 0
+  left: 0
+  right: 0
+  padding: 20px
+  font-weight: bold
+  color: white
+  &-background
+    opacity: 0.9
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#b3b6ba), to(#7f838c)) 0 0 no-repeat, -webkit-gradient(linear, 0 0, 0 100%, from(#717883), to(#606779)) 0 20px no-repeat, -webkit-gradient(linear, 0 0, 0 100%, from(#626975), to(#626975)) 0 42px no-repeat
+    -webkit-background-size: 100% 20px, 100% 22px, 100% 100%
+  &-mask
+    left: 0
+    top: 0
+    bottom: 0
+    right: 0
+    background-color: black
+    opacity: 0.425
+    .layer &
+      top: 45px
+  .button
+    display: block
+    width: 100%
+    margin-bottom: 8px
+    height: 39px
+    +border-radius(10px)
+    text-align: center
+    border: 2px solid #494a4d
+    color: black
+    +linear-gradient(color-stops(#f0f0f0, #d8d8d8 50%, #c6c8c9 50%, #c4cbcd 100%))
+    &.close
+      margin-top: 20px
+      color: white
+      +linear-gradient(color-stops(#798088, #313c47 50%, #1c2935 50%, #333c48 100%))
 
 .infodialog
-	top: 35%
-	width: 276px
-	left = 320px - 276px
-	padding: 7px
-	font-weight: bold
-	color: #efefef
-
-	&-background
-		!c1 = #c0cfff + #111 + #220
-		!c2 = #002e9b + #333 + #210
-		!c3 = #001f5e + #333 + #210
-		background: -webkit-gradient(linear, 0 0, 0 100%, from(#{!c1}), to(#{!c2})) 0 0 no-repeat, -webkit-gradient(linear, 0 0, 0 100%, from(#{!c3}), to(#{!c3})) 0 25px no-repeat
-		-webkit-background-size: 100% 25px, 100% 100%
-		opacity: 0.8
-		border: 2px solid white
-		+border-radius(10px)
-
-	&-mask
-		left: 0
-		top: 0
-		bottom: 0
-		right: 0
-		background-color: black
-		opacity: 0.425
-		
-		.layer &
-			top: 45px
-		
-	.buttons
-		+hbox
-	
-	.button
-		display: block
-		margin-bottom: 8px
-		height: 39px
-		+border-radius(10px)
-		text-align: center
-		border: 2px solid #494a4d
-		color: black
-		margin-left: 5px
-		margin-right: 5px
-		+linear-gradient(color-stops(#f0f0f0, #d8d8d8 50%, #c6c8c9 50%, #c4cbcd 100%))
-		width: 10%
-		+box-flex(1)
-		
-		&.close
-			margin-top: 20px
-			color: white
-			+linear-gradient(color-stops(#798088, #313c47 50%, #1c2935 50%, #333c48 100%))
-			
-		&:first-child
-			margin-left: 0
-		
-		&:last-child
-			margin-right: 0
+  top: 35%
+  width: 276px
+  left: 320px - 276px
+  padding: 7px
+  font-weight: bold
+  color: #efefef
+  &-background
+    $c1: #c0cfff + #111111 + #222200
+    $c2: #002e9b + #333333 + #221100
+    $c3: #001f5e + #333333 + #221100
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#{$c1}), to(#{$c2})) 0 0 no-repeat, -webkit-gradient(linear, 0 0, 0 100%, from(#{$c3}), to(#{$c3})) 0 25px no-repeat
+    -webkit-background-size: 100% 25px, 100% 100%
+    opacity: 0.8
+    border: 2px solid white
+    +border-radius(10px)
+  &-mask
+    left: 0
+    top: 0
+    bottom: 0
+    right: 0
+    background-color: black
+    opacity: 0.425
+    .layer &
+      top: 45px
+  .buttons
+    +hbox
+  .button
+    display: block
+    margin-bottom: 8px
+    height: 39px
+    +border-radius(10px)
+    text-align: center
+    border: 2px solid #494a4d
+    color: black
+    margin-left: 5px
+    margin-right: 5px
+    +linear-gradient(color-stops(#f0f0f0, #d8d8d8 50%, #c6c8c9 50%, #c4cbcd 100%))
+    width: 10%
+    +box-flex(1)
+    &.close
+      margin-top: 20px
+      color: white
+      +linear-gradient(color-stops(#798088, #313c47 50%, #1c2935 50%, #333c48 100%))
+    &:first-child
+      margin-left: 0
+    &:last-child
+      margin-right: 0
