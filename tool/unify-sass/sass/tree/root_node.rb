@@ -21,6 +21,16 @@ module Sass
         raise e
       end
 
+      # Runs the dynamic Sass code *and* computes the CSS for the tree.
+      #
+      # @see #perform
+      # @see #to_s
+      def render
+        result, extends = perform(Environment.new).cssize
+        result = result.do_extend(extends) unless extends.empty?
+        result.to_s
+      end
+
       # @see Node#perform
       def perform(environment)
         environment.options = @options if environment.options.nil? || environment.options.empty?
@@ -30,9 +40,14 @@ module Sass
         raise e
       end
 
-      # @see Node#cssize
-      def cssize(*args)
-        super
+      # Like {Node#cssize}, except that this method
+      # will create its own `extends` map if necessary,
+      # and it returns that map along with the cssized tree.
+      #
+      # @return [(Tree::Node, Haml::Util::SubsetMap)] The resulting tree of static nodes
+      #   *and* the extensions defined for this tree
+      def cssize(extends = Haml::Util::SubsetMap.new, parent = nil)
+        return super(extends), extends
       rescue Sass::SyntaxError => e
         e.sass_template = @template
         raise e
@@ -44,20 +59,37 @@ module Sass
         super
       end
 
+      # Converts a node to Sass code that will generate it.
+      #
+      # @param opts [{Symbol => Object}] An options hash (see {Sass::CSS#initialize})
+      # @return [String] The Sass code corresponding to the node
+      def to_sass(opts = {})
+        to_src(opts, :sass)
+      end
+
+      # Converts a node to SCSS code that will generate it.
+      #
+      # @param opts [{Symbol => Object}] An options hash (see {Sass::CSS#initialize})
+      # @return [String] The SCSS code corresponding to the node
+      def to_scss(opts = {})
+        to_src(opts, :scss)
+      end
+
       protected
 
-      # Destructively converts this static Sass node into a static CSS node,
-      # and checks that there are no properties at root level.
-      #
-      # @param parent [Node, nil] The parent node of this node.
-      #   This should only be non-nil if the parent is the same class as this node
-      # @see Node#cssize!
-      def cssize!(parent)
-        super
-        return unless child = children.find {|c| c.is_a?(PropNode)}
-        message = "Properties aren't allowed at the root of a document." +
-          child.pseudo_class_selector_message
-        raise Sass::SyntaxError.new(message, :line => child.line)
+      # @see Node#to_src
+      def to_src(opts, fmt)
+        Haml::Util.enum_cons(children + [nil], 2).map do |child, nxt|
+          child.send("to_#{fmt}", 0, opts) +
+            if nxt &&
+                (child.is_a?(CommentNode) && child.line + child.value.count("\n") + 1 == nxt.line) ||
+                (child.is_a?(ImportNode) && nxt.is_a?(ImportNode) && child.line + 1 == nxt.line) ||
+                (child.is_a?(VariableNode) && nxt.is_a?(VariableNode) && child.line + 1 == nxt.line)
+              ""
+            else
+              "\n"
+            end
+        end.join.rstrip + "\n"
       end
 
       # Computes the CSS corresponding to this Sass tree.
@@ -75,6 +107,18 @@ module Sass
         result.rstrip!
         return "" if result.empty?
         return result + "\n"
+      end
+
+      # Returns an error message if the given child node is invalid,
+      # and false otherwise.
+      #
+      # Only property nodes are invalid at root level.
+      #
+      # @see Node#invalid_child?
+      def invalid_child?(child)
+        return unless child.is_a?(Tree::PropNode)
+        "Properties aren't allowed at the root of a document." +
+          child.pseudo_class_selector_message
       end
     end
   end

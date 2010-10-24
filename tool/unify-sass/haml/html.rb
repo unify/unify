@@ -100,6 +100,23 @@ end
 
 require 'hpricot'
 
+# @private
+HAML_TAGS = %w[haml:block haml:loud haml:silent]
+
+Hpricot::ElementContent.keys.each do |k|
+  HAML_TAGS.each do |el|
+    val = Hpricot::ElementContent[k]
+    val[el.hash] = true if val.is_a?(Hash)
+  end
+end
+
+HAML_TAGS.each do |t|
+  Hpricot::ElementContent[t] = {}
+  Hpricot::ElementContent.keys.each do |key|
+    Hpricot::ElementContent[t][key.hash] = true
+  end
+end
+
 module Haml
   # Converts HTML documents into Haml templates.
   # Depends on [Hpricot](http://github.com/whymirror/hpricot) for HTML parsing.
@@ -146,7 +163,6 @@ module Haml
     end
     alias_method :to_haml, :render
 
-    # @private
     TEXT_REGEXP = /^(\s*).*$/
 
     # @see Hpricot
@@ -222,7 +238,7 @@ module Haml
         if content.include?("\n")
           "#{tabulate(tabs)}/#{condition}\n#{parse_text(content, tabs + 1)}"
         else
-          "#{tabulate(tabs)}/#{condition} #{content.strip}"
+          "#{tabulate(tabs)}/#{condition} #{content.strip}\n"
         end
       end
     end
@@ -280,6 +296,18 @@ module Haml
           end
         end
 
+        if self.next && self.next.text? && self.next.content =~ /\A[^\s]/
+          if self.previous.nil? || self.previous.text? &&
+              (self.previous.content =~ /[^\s]\Z/ ||
+               self.previous.content =~ /\A\s*\Z/ && self.previous.previous.nil?)
+            nuke_outer_whitespace = true
+          else
+            output << "= succeed #{self.next.content.slice!(/\A[^\s]+/).dump} do\n"
+            tabs += 1
+            output << tabulate(tabs)
+          end
+        end
+
         output << "%#{name}" unless name == 'div' &&
           (static_id?(options) ||
            static_classname?(options) &&
@@ -301,6 +329,7 @@ module Haml
           output << haml_attributes(options) if attr_hash.length > 0
         end
 
+        output << ">" if nuke_outer_whitespace
         output << "/" if empty? && !etag
 
         if children && children.size == 1

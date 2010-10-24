@@ -26,10 +26,19 @@ module Sass
   module Tree
     # The abstract superclass of all parse-tree nodes.
     class Node
+      include Enumerable
+
       # The child nodes of this node.
       #
       # @return [Array<Tree::Node>]
       attr_accessor :children
+
+      # Whether or not this node has child nodes.
+      # This may be true even when \{#children} is empty,
+      # in which case this node has an empty block (e.g. `{}`).
+      #
+      # @return [Boolean]
+      attr_accessor :has_children
 
       # The line of the document on which this node appeared.
       #
@@ -60,6 +69,12 @@ module Sass
         @options = options
       end
 
+      # @private
+      def children=(children)
+        self.has_children ||= !children.empty?
+        @children = children
+      end
+
       # The name of the document on which this node appeared.
       #
       # @return [String]
@@ -69,23 +84,29 @@ module Sass
 
       # Appends a child to the node.
       #
-      # @param child [Tree::Node] The child node
+      # @param child [Tree::Node, Array<Tree::Node>] The child node or nodes
       # @raise [Sass::SyntaxError] if `child` is invalid
       # @see #invalid_child?
       def <<(child)
+        return if child.nil?
+        if child.is_a?(Array)
+          child.each {|c| self << c}
+        else
+          check_child! child
+          self.has_children = true
+          @children << child
+        end
+      end
+
+      # Raises an error if the given child node is invalid.
+      #
+      # @param child [Tree::Node] The child node
+      # @raise [Sass::SyntaxError] if `child` is invalid
+      # @see #invalid_child?
+      def check_child!(child)
         if msg = invalid_child?(child)
           raise Sass::SyntaxError.new(msg, :line => child.line)
         end
-        @children << child
-      end
-
-      # Return the last child node.
-      #
-      # We need this because {Tree::Node} duck types as an Array for {Sass::Engine}.
-      #
-      # @return [Tree::Node] The last child node
-      def last
-        children.last
       end
 
       # Compares this node and another object (only other {Tree::Node}s will be equal).
@@ -101,14 +122,6 @@ module Sass
       # @see Sass::Tree
       def ==(other)
         self.class == other.class && other.children == children
-      end
-
-      # Runs the dynamic Sass code *and* computes the CSS for the tree.
-      #
-      # @see #perform
-      # @see #to_s
-      def render
-        perform(Environment.new).cssize.to_s
       end
 
       # True if \{#to\_s} will return `nil`;
@@ -142,19 +155,42 @@ module Sass
         raise e
       end
 
+      # Converts a static CSS tree (e.g. the output of \{#cssize})
+      # into another static CSS tree,
+      # with the given extensions applied to all relevant {RuleNode}s.
+      #
+      # @todo Link this to the reference documentation on `@extend`
+      #   when such a thing exists.
+      #
+      # @param extends [Haml::Util::SubsetMap{Selector::Simple => Selector::Sequence}]
+      #   The extensions to perform on this tree
+      # @return [Tree::Node] The resulting tree of static CSS nodes.
+      # @raise [Sass::SyntaxError] Only if there's a programmer error
+      #   and this is not a static CSS tree
+      def do_extend(extends)
+        node = dup
+        node.children = children.map {|c| c.do_extend(extends)}
+        node
+      rescue Sass::SyntaxError => e
+        e.modify_backtrace(:filename => filename, :line => line)
+        raise e
+      end
+
       # Converts a static Sass tree (e.g. the output of \{#perform})
       # into a static CSS tree.
       #
       # \{#cssize} shouldn't be overridden directly;
       # instead, override \{#\_cssize} or \{#cssize!}.
       #
+      # @param extends [Haml::Util::SubsetMap{Selector::Simple => Selector::Sequence}]
+      #   The extensions defined for this tree
       # @param parent [Node, nil] The parent node of this node.
       #   This should only be non-nil if the parent is the same class as this node
       # @return [Tree::Node] The resulting tree of static nodes
       # @raise [Sass::SyntaxError] if some element of the tree is invalid
       # @see Sass::Tree
-      def cssize(parent = nil)
-        _cssize((parent if parent.class == self.class))
+      def cssize(extends, parent = nil)
+        _cssize(extends, (parent if parent.class == self.class))
       rescue Sass::SyntaxError => e
         e.modify_backtrace(:filename => filename, :line => line)
         raise e
@@ -180,6 +216,34 @@ module Sass
         raise e
       end
 
+      # Iterates through each node in the tree rooted at this node
+      # in a pre-order walk.
+      #
+      # @yield node
+      # @yieldparam node [Node] a node in the tree
+      def each(&block)
+        yield self
+        children.each {|c| c.each(&block)}
+      end
+
+      # Converts a node to Sass code that will generate it.
+      #
+      # @param tabs [Fixnum] The amount of tabulation to use for the Sass code
+      # @param opts [{Symbol => Object}] An options hash (see {Sass::CSS#initialize})
+      # @return [String] The Sass code corresponding to the node
+      def to_sass(tabs = 0, opts = {})
+        to_src(tabs, opts, :sass)
+      end
+
+      # Converts a node to SCSS code that will generate it.
+      #
+      # @param tabs [Fixnum] The amount of tabulation to use for the SCSS code
+      # @param opts [{Symbol => Object}] An options hash (see {Sass::CSS#initialize})
+      # @return [String] The Sass code corresponding to the node
+      def to_scss(tabs = 0, opts = {})
+        to_src(tabs, opts, :scss)
+      end
+
       protected
 
       # Computes the CSS corresponding to this particular Sass node.
@@ -201,15 +265,17 @@ module Sass
       # returning the new node.
       # This doesn't modify this node or any of its children.
       #
+      # @param extends [Haml::Util::SubsetMap{Selector::Simple => Selector::Sequence}]
+      #   The extensions defined for this tree
       # @param parent [Node, nil] The parent node of this node.
       #   This should only be non-nil if the parent is the same class as this node
       # @return [Tree::Node, Array<Tree::Node>] The resulting static CSS nodes
       # @raise [Sass::SyntaxError] if some element of the tree is invalid
       # @see #cssize
       # @see Sass::Tree
-      def _cssize(parent)
+      def _cssize(extends, parent)
         node = dup
-        node.cssize!(parent)
+        node.cssize!(extends, parent)
         node
       end
 
@@ -217,11 +283,13 @@ module Sass
       # This *does* modify this node,
       # but will be run non-destructively by \{#\_cssize\}.
       #
+      # @param extends [Haml::Util::SubsetMap{Selector::Simple => Selector::Sequence}]
+      #   The extensions defined for this tree
       # @param parent [Node, nil] The parent node of this node.
       #   This should only be non-nil if the parent is the same class as this node
       # @see #cssize
-      def cssize!(parent)
-        self.children = children.map {|c| c.cssize(self)}.flatten
+      def cssize!(extends, parent)
+        self.children = children.map {|c| c.cssize(extends, self)}.flatten
       end
 
       # Runs any dynamic Sass code in this particular node.
@@ -258,27 +326,21 @@ module Sass
         children.map {|c| c.perform(environment)}.flatten
       end
 
-      # Replaces SassScript in a chunk of text (via `#{}`)
+      # Replaces SassScript in a chunk of text
       # with the resulting value.
       #
-      # @param text [String] The text to interpolate
+      # @param text [Array<String, Sass::Script::Node>] The text to interpolate
       # @param environment [Sass::Environment] The lexical environment containing
       #   variable and mixin values
       # @return [String] The interpolated text
-      def interpolate(text, environment)
-        res = ''
-        rest = Haml::Shared.handle_interpolation text do |scan|
-          escapes = scan[2].size
-          res << scan.matched[0...-2 - escapes]
-          if escapes % 2 == 1
-            res << "\\" * (escapes - 1) << '#{'
-          else
-            res << "\\" * [0, escapes - 1].max
-            res << Script::Parser.new(scan, line, scan.pos - scan.matched_size, filename).
-              parse_interpolated.perform(environment).to_s
-          end
-        end
-        res + rest
+      def run_interp(text, environment)
+        text.map do |r|
+          next r if r.is_a?(String)
+          val = r.perform(environment)
+          # Interpolated strings should never render with quotes
+          next val.value if val.is_a?(Sass::Script::String)
+          val.to_s
+        end.join.strip
       end
 
       # @see Haml::Shared.balance
@@ -292,7 +354,8 @@ module Sass
       # Returns an error message if the given child node is invalid,
       # and false otherwise.
       #
-      # By default, all child nodes are valid.
+      # By default, all child nodes except those only allowed under specific nodes
+      # ({Tree::MixinDefNode}, {Tree::ImportNode}, {Tree::ExtendNode}) are valid.
       # This is expected to be overriden by subclasses
       # for which some children are invalid.
       #
@@ -300,7 +363,102 @@ module Sass
       # @return [Boolean, String] Whether or not the child node is valid,
       #   as well as the error message to display if it is invalid
       def invalid_child?(child)
-        false
+        case child
+        when Tree::MixinDefNode
+          "Mixins may only be defined at the root of a document."
+        when Tree::ImportNode
+          "Import directives may only be used at the root of a document."
+        when Tree::ExtendNode
+          "Extend directives may only be used within rules."
+        end
+      end
+
+      # Converts a node to Sass or SCSS code that will generate it.
+      #
+      # This method is called by the default \{#to\_sass} and \{#to\_scss} methods,
+      # so that the same code can be used for both with minor variations.
+      #
+      # @param tabs [Fixnum] The amount of tabulation to use for the SCSS code
+      # @param opts [{Symbol => Object}] An options hash (see {Sass::CSS#initialize})
+      # @param fmt [Symbol] `:sass` or `:scss`
+      # @return [String] The Sass or SCSS code corresponding to the node
+      def to_src(tabs, opts, fmt)
+        raise NotImplementedError.new("All static-node subclasses of Sass::Tree::Node must override #to_#{fmt}.")
+      end
+
+      # Converts the children of this node to a Sass or SCSS string.
+      # This will return the trailing newline for the previous line,
+      # including brackets if this is SCSS.
+      #
+      # @param tabs [Fixnum] The amount of tabulation to use for the Sass code
+      # @param opts [{Symbol => Object}] An options hash (see {Sass::CSS#initialize})
+      # @param fmt [Symbol] `:sass` or `:scss`
+      # @return [String] The Sass or SCSS code corresponding to the children
+      def children_to_src(tabs, opts, fmt)
+        return fmt == :sass ? "\n" : " {}\n" if children.empty?
+
+        (fmt == :sass ? "\n" : " {\n") +
+          children.map {|c| c.send("to_#{fmt}", tabs + 1, opts)}.join.rstrip +
+          (fmt == :sass ? "\n" : " }\n")
+      end
+
+      # Converts a selector to a Sass or SCSS string.
+      #
+      # @param sel [Array<String, Sass::Script::Node>] The selector to convert
+      # @param tabs [Fixnum] The indentation of the selector
+      # @param opts [{Symbol => Object}] An options hash (see {Sass::CSS#initialize})
+      # @param fmt [Symbol] `:sass` or `:scss`
+      # @return [String] The Sass or SCSS code corresponding to the selector
+      def selector_to_src(sel, tabs, opts, fmt)
+        fmt == :sass ? selector_to_sass(sel, opts) : selector_to_scss(sel, tabs, opts)
+      end
+
+      # Converts a selector to a Sass string.
+      #
+      # @param sel [Array<String, Sass::Script::Node>] The selector to convert
+      # @param opts [{Symbol => Object}] An options hash (see {Sass::CSS#initialize})
+      # @return [String] The Sass code corresponding to the selector
+      def selector_to_sass(sel, opts)
+        sel.map do |r|
+          if r.is_a?(String)
+            r.gsub(/(,[ \t]*)?\n\s*/) {$1 ? $1 + "\n" : " "}
+          else
+            "\#{#{r.to_sass(opts)}}"
+          end
+        end.join
+      end
+
+      # Converts a selector to a SCSS string.
+      #
+      # @param sel [Array<String, Sass::Script::Node>] The selector to convert
+      # @param tabs [Fixnum] The indentation of the selector
+      # @param opts [{Symbol => Object}] An options hash (see {Sass::CSS#initialize})
+      # @return [String] The SCSS code corresponding to the selector
+      def selector_to_scss(sel, tabs, opts)
+        sel.map {|r| r.is_a?(String) ? r : "\#{#{r.to_sass(opts)}}"}.
+          join.gsub(/^[ \t]*/, '  ' * tabs)
+      end
+
+      # Convert any underscores in a string into hyphens,
+      # but only if the `:dasherize` option is set.
+      #
+      # @param s [String] The string to convert
+      # @param opts [{Symbol => Object}] The options hash
+      # @return [String] The converted string
+      def dasherize(s, opts)
+        if opts[:dasherize]
+          s.gsub('_', '-')
+        else
+          s
+        end
+      end
+
+      # Returns a semicolon if this is SCSS, or an empty string if this is Sass.
+      #
+      # @param fmt [Symbol] `:sass` or `:scss`
+      # @return [String] A semicolon or the empty string
+      def semi(fmt)
+        fmt == :sass ? "" : ";"
       end
     end
   end

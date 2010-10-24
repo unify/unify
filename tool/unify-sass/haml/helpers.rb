@@ -1,8 +1,3 @@
-if defined?(ActionView)
-  require 'haml/helpers/action_view_mods'
-  require 'haml/helpers/action_view_extensions'
-end
-
 module Haml
   # This module contains various helpful methods to make it easier to do various tasks.
   # {Haml::Helpers} is automatically included in the context
@@ -52,8 +47,7 @@ MESSAGE
 
     self.extend self
 
-    @@action_view_defined = defined?(ActionView)
-    @@force_no_action_view = false
+    @@action_view_defined = false
 
     # @return [Boolean] Whether or not ActionView is loaded
     def self.action_view?
@@ -348,7 +342,9 @@ MESSAGE
         haml_buffer.capture_position = position
         block.call(*args)
 
-        captured = haml_buffer.buffer.slice!(position..-1).split(/^/)
+        captured = haml_buffer.buffer.slice!(position..-1)
+        return captured if haml_buffer.options[:ugly]
+        captured = captured.split(/^/)
 
         min_tabs = nil
         captured.each do |line|
@@ -446,7 +442,8 @@ MESSAGE
       text = rest.shift.to_s unless [Symbol, Hash, NilClass].any? {|t| rest.first.is_a? t}
       flags = []
       flags << rest.shift while rest.first.is_a? Symbol
-      name, attrs = merge_name_and_attributes(name.to_s, rest.shift || {})
+      attrs = Haml::Util.map_keys(rest.shift || {}) {|key| key.to_s}
+      name, attrs = merge_name_and_attributes(name.to_s, attrs)
 
       attributes = Haml::Precompiler.build_attributes(haml_buffer.html?,
                                                       haml_buffer.options[:attr_wrapper],
@@ -498,7 +495,6 @@ MESSAGE
     end
 
     # Characters that need to be escaped to HTML entities from user input
-    # @private
     HTML_ESCAPE = { '&'=>'&amp;', '<'=>'&lt;', '>'=>'&gt;', '"'=>'&quot;', "'"=>'&#039;', }
 
     # Returns a copy of `text` with ampersands, angle brackets and quotes
@@ -511,7 +507,7 @@ MESSAGE
     # @param text [String] The string to sanitize
     # @return [String] The sanitized string
     def html_escape(text)
-      text.to_s.gsub(/[\"><&]/n) {|s| HTML_ESCAPE[s]}
+      Haml::Util.silence_warnings {text.to_s.gsub(/[\"><&]/n) {|s| HTML_ESCAPE[s]}}
     end
 
     # Escapes HTML entities in `text`, but without escaping an ampersand
@@ -556,8 +552,7 @@ MESSAGE
       return name, attributes_hash unless name =~ /^(.+?)?([\.#].*)$/
 
       return $1 || "div", Buffer.merge_attrs(
-        Precompiler.parse_class_and_id($2),
-        Haml::Util.map_keys(attributes_hash) {|key| key.to_s})
+        Precompiler.parse_class_and_id($2), attributes_hash)
     end
 
     # Runs a block of code with the given buffer as the currently active buffer.
@@ -592,11 +587,10 @@ MESSAGE
       _erbout = _hamlout.buffer
       proc { |*args| proc.call(*args) }
     end
-
-    include ActionViewExtensions if self.const_defined? "ActionViewExtensions"
   end
 end
 
+# @private
 class Object
   # Haml overrides various `ActionView` helpers,
   # which call an \{#is\_haml?} method

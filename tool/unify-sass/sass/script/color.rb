@@ -19,7 +19,6 @@ module Sass::Script
     class << self; include Haml::Util; end
 
     # A hash from color names to `[red, green, blue]` value arrays.
-    # @private
     HTML4_COLORS = map_vals({
         'black'   => 0x000000,
         'silver'  => 0xc0c0c0,
@@ -39,7 +38,6 @@ module Sass::Script
         'aqua'    => 0x00ffff
       }) {|color| (0..2).map {|n| color >> (n << 3) & 0xff}.reverse}
     # A hash from `[red, green, blue]` value arrays to color names.
-    # @private
     HTML4_COLORS_REVERSE = map_hash(HTML4_COLORS) {|k, v| [v, k]}
 
     # Constructs an RGB or HSL color object,
@@ -108,12 +106,15 @@ module Sass::Script
       end
 
       [:saturation, :lightness].each do |k|
-        next if @attrs[k].nil? || (0..100).include?(@attrs[k])
+        next if @attrs[k].nil?
+        @attrs[k] = 0 if @attrs[k] < 0.00001 && @attrs[k] > -0.00001
+        @attrs[k] = 100 if @attrs[k] - 100 < 0.00001 && @attrs[k] - 100 > -0.00001
+        next if (0..100).include?(@attrs[k])
         raise Sass::SyntaxError.new("#{k.to_s.capitalize} must be between 0 and 100")
       end
 
       unless (0..1).include?(@attrs[:alpha])
-        raise Sass::SyntaxError.new("Alpha channel must between 0 and 1")
+        raise Sass::SyntaxError.new("Alpha channel must be between 0 and 1")
       end
     end
 
@@ -184,7 +185,7 @@ module Sass::Script
     # @deprecated This will be removed in version 3.2.
     # @see #rgb
     def value
-      warn <<END
+      Haml::Util.haml_warn <<END
 DEPRECATION WARNING:
 The Sass::Script::Color #value attribute is deprecated and will be
 removed in version 3.2. Use the #rgb attribute instead.
@@ -375,13 +376,13 @@ END
     # but if the color has a name that's used instead.
     #
     # @return [String] The string representation
-    def to_s
+    def to_s(opts = {})
       return rgba_str if alpha?
       return smallest if options[:style] == :compressed
       return HTML4_COLORS_REVERSE[rgb] if HTML4_COLORS_REVERSE[rgb]
       hex_str
     end
-    alias_method :inspect, :to_s
+    alias_method :to_sass, :to_s
 
     # Returns a string representation of the color.
     #
@@ -400,7 +401,8 @@ END
     end
 
     def rgba_str
-      "rgba(#{rgb.join(', ')}, #{alpha % 1 == 0.0 ? alpha.to_i : alpha})"
+      split = options[:style] == :compressed ? ',' : ', '
+      "rgba(#{rgb.join(split)}#{split}#{Number.round(alpha)})"
     end
 
     def hex_str

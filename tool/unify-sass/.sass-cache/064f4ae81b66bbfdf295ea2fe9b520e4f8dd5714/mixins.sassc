@@ -1,501 +1,0 @@
-
-f66bc6e10eb6d45679b58d6911d4c3ff5092ab6d
-o:Sass::Tree::RootNode:@template"ƒ6// ***************************************************************************************************
-//	BOX LAYOUTS
-//	Mimics typical box layouts from classical interface toolkit layout managers
-//	Used to position items in a row/column one by one.
-//	Allows flexible children using the 'flex' class
-//	See also: http://ajaxian.com/archives/css-3-flexible-box-model
-// ***************************************************************************************************
-
-=boxcore
-	display: -webkit-box
-	display: -moz-box
-	display: box
-
-	> .flex
-		-webkit-box-flex: 1
-		-moz-box-flex: 1
-		box-flex: 1
-
-=hbox
-	+boxcore
-
-	-webkit-box-orient: horizontal
-	-moz-box-orient: horizontal
-	box-orient: horizontal
-
-	-webkit-box-align: stretch
-	-moz-box-align: stretch
-	box-align: stretch
-
-	> *
-		-webkit-box-flex: 0
-		-moz-box-flex: 0
-		box-flex: 0
-		display: block
-
-=vbox
-	+boxcore
-
-	-webkit-box-orient: vertical
-	-moz-box-orient: vertical
-	box-orient: vertical
-
-	-webkit-box-align: stretch
-	-moz-box-align: stretch
-	box-align: stretch
-
-	> *
-		-webkit-box-flex: 0
-		-moz-box-flex: 0
-		box-flex: 0
-		display: block
-
-
-
-// ***************************************************************************************************
-//	BORDER RADIUS
-// ***************************************************************************************************
-
-!default_border_radius ||= 5px
-
-// Round all borders by amount
-=border-radius(!radius = !default_border_radius)
-	border-radius= !radius
-	-moz-border-radius= !radius
-	-webkit-border-radius= !radius
-
-// Round radius at position by amount.
-// values for !vert: "top", "bottom"
-// values for !horz: "left", "right
-=border-corner-radius(!vert, !horz, !radius = !default_border_radius)
-	border-#{!vert}-#{!horz}-radius= !radius
-	-moz-border-radius-#{!vert}#{!horz}= !radius
-	-webkit-border-#{!vert}-#{!horz}-radius= !radius
-
-=border-top-left-radius(!radius = !default_border_radius)
-	+border-corner-radius("top", "left", !radius)
-
-=border-top-right-radius(!radius = !default_border_radius)
-	+border-corner-radius("top", "right", !radius)
-
-=border-bottom-left-radius(!radius = !default_border_radius)
-	+border-corner-radius("bottom", "left", !radius)
-
-=border-bottom-right-radius(!radius = !default_border_radius)
-	+border-corner-radius("bottom", "right", !radius)
-
-// Round top corners by amount
-=border-top-radius(!radius = !default_border_radius)
-	+border-top-left-radius(!radius)
-	+border-top-right-radius(!radius)
-
-// Round right corners by amount
-=border-right-radius(!radius = !default_border_radius)
-	+border-top-right-radius(!radius)
-	+border-bottom-right-radius(!radius)
-
-// Round bottom corners by amount
-=border-bottom-radius(!radius = !default_border_radius)
-	+border-bottom-left-radius(!radius)
-	+border-bottom-right-radius(!radius)
-
-// Round left corners by amount
-=border-left-radius(!radius = !default_border_radius)
-	+border-top-left-radius(!radius)
-	+border-bottom-left-radius(!radius)
-
-
-
-// ***************************************************************************************************
-//	BOX SHADOW
-// ***************************************************************************************************
-
-//**
-	Provides cross-browser css box shadows for Webkit, Gecko, and CSS3 standard
-	arguments are color, horizontal offset, vertical offset, and blur
-
-//**
-	These defaults make the arguments optional for this mixin
-	If you like, set different defaults in your project
-
-!default_box_shadow_color			||= #333
-!default_box_shadow_h_offset	||= 1px
-!default_box_shadow_v_offset	||= 1px
-!default_box_shadow_blur			||= 5px
-
-=box-shadow(!color = !default_box_shadow_color, !hoff = !default_box_shadow_h_offset, !voff = !default_box_shadow_v_offset, !blur = !default_box_shadow_blur)
-	/* Webkit (Safari, Chrome) */
-	-webkit-box-shadow= !color !hoff !voff !blur
-	/* Gecko (Firefox, Camino) */
-	-moz-box-shadow= !color !hoff !voff !blur
-	/* CSS3 */
-	box-shadow= !color !hoff !voff !blur
-
-
-
-
-// ***************************************************************************************************
-//	BOX SIZING
-// ***************************************************************************************************
-
-//**
-	Change the box model for Mozilla, Webkit, IE8 and the future
-	@param !bs
-		[ content-box | border-box ]
-=box-sizing(!bs)
-	/* Mozilla (FireFox, Camino)
-	-moz-box-sizing= !bs
-	/* Webkit (Safari, Chrome)
-	-webkit-box-sizing= !bs
-	/* IE (8)
-	-ms-box-sizing= !bs
-	/* CSS3
-	box-sizing= !bs
-
-
-
-// ***************************************************************************************************
-//	COLUMNS
-// ***************************************************************************************************
-
-//**
-	CSS3 columns for Mozilla, Webkit and the Future
-
-=column-count(!n)
-	-moz-column-count= !n
-	-webkit-column-count= !n
-	column-count= !n
-
-=column-gap(!u)
-	-moz-column-gap= !u
-	-webkit-column-gap= !u
-	column-gap= !u
-
-=column-width(!u)
-	-moz-column-width= !u
-	-webkit-column-width= !u
-	column-width= !u
-
-=column-rule-width(!w)
-	-moz-column-rule-width= !w
-	-webkit-column-rule-width= !w
-	column-rule-width= !w
-
-=column-rule-style(!s)
-	-moz-column-rule-style= !s
-	-webkit-column-rule-style= !s
-	column-rule-style= !s
-
-=column-rule-color(!c)
-	-moz-column-rule-color= !c
-	-webkit-column-rule-color= !c
-	column-rule-color= !c
-
-=column-rule(!w, !s = "solid", !c = " ")
-	+column-rule-width(!w)
-	+column-rule-style(!s)
-	+column-rule-color(!c)
-
-
-
-
-// ***************************************************************************************************
-//	GRADIENTS
-// ***************************************************************************************************
-
-// This yields a linear gradient spanning from top to bottom
-//
-//		 +linear-gradient(color_stops(white, black))
-//
-// This yields a linear gradient spanning from bottom to top
-//
-//		 +linear-gradient(color_stops(white, black), "bottom")
-//
-// This yields a linear gradient spanning from left to right
-//
-//		 +linear-gradient(color_stops(white, black), "left")
-//
-// This yields a linear gradient starting at white passing
-// thru blue at 33% down and then to black
-//
-//		 +linear-gradient(color_stops(white, blue 33%, black))
-//
-// This yields a linear gradient starting at white passing
-// thru blue at 33% down and then to black at 67% until the end
-//
-//		 +linear-gradient(color_stops(white, blue 33%, black 67%))
-//
-// Browsers Supported:
-//
-// - Chrome
-// - Safari
-// - Firefox 3.6
-
-=linear-gradient(!color_stops, !start = "top")
-	// Firefox's gradient api is nice.
-	// Webkit's gradient api sucks -- hence these backflips:
-	!end = grad_opposite_position(!start)
-	background-image: -webkit-gradient(linear, #{grad_point(!start)}, #{grad_point(!end)}, #{grad_color_stops(!color_stops)})
-	background-image: -moz-linear-gradient(#{!start}, #{!color_stops})
-
-// Due to limitation's of webkit, the radial gradient mixin works best if you use
-// pixel-based color stops.
-//
-// Examples:
-//
-//		 // Defaults to a centered, 100px radius gradient
-//		 +radial-gradient(color_stops(#c00, #00c))
-//		 // 100px radius gradient in the top left corner
-//		 +radial-gradient(color_stops(#c00, #00c), "top left")
-//		 // Three colors, ending at 50px and passing thru #fff at 25px
-//		 +radial-gradient(color_stops(#c00, #fff, #00c 50px))
-//
-// Browsers Supported:
-//
-// - Chrome
-// - Safari
-// - Firefox 3.6
-
-=radial-gradient(!color_stops, !center_position = "center center")
-	!end_pos = grad_end_position(!color_stops, true)
-	background-image: -webkit-gradient(radial, #{grad_point(!center_position)}, 0, #{grad_point(!center_position)}, #{!end_pos}, #{grad_color_stops(!color_stops)})
-	background-image: -moz-radial-gradient(#{!center_position}, circle, #{!color_stops})
-
-
-
-
-// ***************************************************************************************************
-//	TEXT SHADOW
-// ***************************************************************************************************
-
-//**
-	Provides css text shadows
-	arguments are color, horizontal offset, vertical offset, and blur
-
-//**
-	These defaults make the arguments optional for this mixin
-	If you like, set different defaults in your project
-
-!default_text_shadow_color		 ||= #aaa
-!default_text_shadow_h_offset	 ||= 1px
-!default_text_shadow_v_offset	 ||= 1px
-!default_text_shadow_blur			 ||= 1px
-
-=text-shadow(!color = !default_text_shadow_color, !hoff = !default_text_shadow_h_offset, !voff = !default_text_shadow_v_offset, !blur = !default_text_shadow_blur)
-	text-shadow= !color !hoff !voff !blur
-
-
-
-// ***************************************************************************************************
-//	TRANSFORM
-// ***************************************************************************************************
-
-// CSS Transform and Transform-Origin
-
-// Apply a transform sent as a complete string
-=apply-transform(!transform = false)
-	transform= !transform
-	-webkit-transform= !transform
-	-moz-transform= !transform
-
-// Apply a transform-origin sent as a complete string
-=apply-origin(!origin = false)
-	transform-origin= !origin
-	-webkit-transform-origin= !origin
-	-moz-transform-origin= !origin
-
-// transform-origin requires x and y coordinates
-//	- only applies the coordinates if they are there
-//		so that it can be called by scale, rotate and skew safely
-=transform-origin(!originx = 50%, !originy = 50%)
-	!origin = false
-	@if !originx and !originy
-		!origin = "#{!originx} #{!originy}"
-	@else if !originx
-		!origin = "#{!originx}"
-	@else if !originy
-		!origin = "#{!originy}"
-	@if !origin
-		+apply-origin(!origin)
-
-// A full transform mixin with everything you could want
-//	- including origin adjustments if you want them
-//	- scale, rotate and skew don't require units
-//		scale takes a multiplier, rotate and skew take degrees
-=transform(!scale = 1, !rotate = 0, !transx = 0, !transy = 0, !skewx = 0, !skewy = 0, !originx = false, !originy = false)
-	!transform = "scale(#{!scale}) rotate(#{!rotate}deg) translate(#{!transx}, #{!transy}) skew(#{!skewx}deg, #{!skewy}deg)"
-	+apply-transform(!transform)
-	+transform-origin(!originx, !originy)
-
-// Transform Partials
-// These work well on their own, but they don't add to each other, they override
-// Use them with extra origin args, or along side +transform-origin
-
-// adjust only the scale
-//	- with optional origin coordinates
-=scale(!scale = 1.25, !originx = false, !originy = false)
-	+apply-transform("scale(#{!scale})")
-	+transform-origin(!originx, !originy)
-
-// adjust only the rotation
-//	- with optional origin coordinates
-=rotate(!rotate = 45, !originx = false, !originy = false)
-	+apply-transform("rotate(#{!rotate}deg)")
-	+transform-origin(!originx, !originy)
-
-// adjust only the translation
-=translate(!transx = 0, !transy = 0)
-	+apply-transform("translate(#{!transx}, #{!transy})")
-
-// adjust only the translation
-=translate3d(!transx = 0, !transy = 0, !transz = 0)
-	+apply-transform("translate3d(#{!transx}, #{!transy}, #{!transz})")
-
-// adjust only the skew
-//	- with optional origin coordinates
-=skew(!skewx = 0, !skewy = 0, !originx = false, !originy = false)
-	+apply-transform("skew(#{!skewx}deg, #{!skewy}deg)")
-	+transform-origin(!originx, !originy)
-
-
-
-// ***************************************************************************************************
-//	TRANSITION
-// ***************************************************************************************************
-
-// CSS Transitions
-// Currently only works in Webkit
-//	- expected in CSS3, FireFox 3.6/7 and Opera Presto 2.3
-//	- we'll be prepared.
-
-// Override these defaults with your own, if you like
-//	- timing-function and delay are set to false for browser defaults (ease, 0s)
-!default_transition_property ||= "all"
-!default_transition_duration ||= 1s
-!default_transition_function ||= false
-!default_transition_delay ||= false
-
-// One or more properties to transition
-//	- for multiple, use a comma-delimited list
-//	- also accepts "all" or "none"
-=transition-property(!properties = !default_transition_property)
-	transition-property = !properties
-	-webkit-transition-property = !properties
-	-moz-transition-property = !properties
-	-o-transition-property = !properties
-
-// One or more durrations in seconds
-//	- for multiple, use a comma-delimited list
-//		- these durrations will effect the properties in the same list position
-=transition-duration(!duration = !default_transition_duration)
-	transition-duration = !duration
-	-webkit-transition-duration = !duration
-	-moz-transition-duration = !duration
-	-o-transition-duration = !duration
-
-// One or more timing functions
-//	- [ ease | linear | ease-in | ease-out | ease-in-out | cubic-bezier(x1, y1, x2, y2)]
-//	- for multiple, use a comma-delimited list
-//		- these functions will effect the properties in the same list position
-=transition-timing-function(!function = !default_transition_function)
-	transition-timing-function = !function
-	-webkit-transition-timing-function = !function
-	-moz-transition-timing-function = !function
-	-o-transition-timing-function = !function
-
-// One or more transition-delays in seconds
-//	- for multiple, use a comma-delimited list
-//		- these delays will effect the properties in the same list position
-=transition-delay(!delay = !default_transition_delay)
-	transition-delay = !delay
-	-webkit-transition-delay = !delay
-	-moz-transition-delay = !delay
-	-o-transition-delay = !delay
-
-// Transition all-in-one shorthand
-=transition(!properties = !default_transition_property, !duration = !default_transition_duration, !function = !default_transition_function, !delay = !default_transition_delay)
-	+transition-property(!properties)
-	+transition-duration(!duration)
-	@if !function
-		+transition-timing-function(!function)
-	@if !delay
-		+transition-delay(!delay)
-
-
-
-// ***************************************************************************************************
-//	USER SELECT
-// ***************************************************************************************************
-
-=user-select(!sel = "auto")
-	-webkit-user-select = !sel
-	-moz-user-select = !sel
-	user-select = !sel
-	
-	:@children[∫o:Sass::Tree::CommentNode:@options{:
-style:nested:load_paths[".:
-cacheT:cache_location"./.sass-cache:filename"Ö/Users/Sebastian/Workspace/tweet/source/resource/tweet/mobile/../../../../../unify/framework/source/resource/unify/mobile/mixins.sass:css_filename"L/Users/Sebastian/Workspace/tweet/source/resource/tweet/mobile/style.css:line_comments0:property_syntax0:
-@linei;[ :@value"h***************************************************************************************************:@lines[ :@filename@:@silentTo;;	@	;i;[ ;"BOX LAYOUTS;[ ;@;To;;	@	;i;[ ;"PMimics typical box layouts from classical interface toolkit layout managers;[ ;@;To;;	@	;i	;[ ;"7Used to position items in a row/column one by one.;[ ;@;To;;	@	;i
-;[ ;"4Allows flexible children using the 'flex' class;[ ;@;To;;	@	;i;[ ;"CSee also: http://ajaxian.com/archives/css-3-flexible-box-model;[ ;@;To;;	@	;i;[ ;"h***************************************************************************************************;[ ;@;To:Sass::Tree::MixinDefNode;	@	:
-@args[ ;i;[	o:Sass::Tree::PropNode;	@	:
-@tabsi :@prop_syntax:new;i;[ ;"-webkit-box:
-@name"display;@o;;	@	;i ;;;i;[ ;"-moz-box;"display;@o;;	@	;i ;;;i;[ ;"box;"display;@o:Sass::Tree::RuleNode;	@	;i ;i;[o;;	@	;i ;;;i;[ ;"1;"-webkit-box-flex;@o;;	@	;i ;;;i;[ ;"1;"-moz-box-flex;@o;;	@	;i ;;;i;[ ;"1;"box-flex;@:@rules["> .flex;@;"boxcore;@o;;	@	;[ ;i;[o:Sass::Tree::MixinNode;	@	;[ ;i;[ ;"boxcore;@o;;	@	;i ;;;i;[ ;"horizontal;"-webkit-box-orient;@o;;	@	;i ;;;i;[ ;"horizontal;"-moz-box-orient;@o;;	@	;i ;;;i;[ ;"horizontal;"box-orient;@o;;	@	;i ;;;i;[ ;"stretch;"-webkit-box-align;@o;;	@	;i ;;;i ;[ ;"stretch;"-moz-box-align;@o;;	@	;i ;;;i!;[ ;"stretch;"box-align;@o;;	@	;i ;i#;[	o;;	@	;i ;;;i$;[ ;"0;"-webkit-box-flex;@o;;	@	;i ;;;i%;[ ;"0;"-moz-box-flex;@o;;	@	;i ;;;i&;[ ;"0;"box-flex;@o;;	@	;i ;;;i';[ ;"
-block;"display;@; ["> *;@;"	hbox;@o;;	@	;[ ;i);[o;!;	@	;[ ;i*;[ ;"boxcore;@o;;	@	;i ;;;i,;[ ;"vertical;"-webkit-box-orient;@o;;	@	;i ;;;i-;[ ;"vertical;"-moz-box-orient;@o;;	@	;i ;;;i.;[ ;"vertical;"box-orient;@o;;	@	;i ;;;i0;[ ;"stretch;"-webkit-box-align;@o;;	@	;i ;;;i1;[ ;"stretch;"-moz-box-align;@o;;	@	;i ;;;i2;[ ;"stretch;"box-align;@o;;	@	;i ;i4;[	o;;	@	;i ;;;i5;[ ;"0;"-webkit-box-flex;@o;;	@	;i ;;;i6;[ ;"0;"-moz-box-flex;@o;;	@	;i ;;;i7;[ ;"0;"box-flex;@o;;	@	;i ;;;i8;[ ;"
-block;"display;@; ["> *;@;"	vbox;@o;;	@	;i<;[ ;"h***************************************************************************************************;[ ;@;To;;	@	;i=;[ ;"BORDER RADIUS;[ ;@;To;;	@	;i>;[ ;"h***************************************************************************************************;[ ;@;To:Sass::Tree::VariableNode;	@	;i@;[ :@guardedT:
-@expro:Sass::Script::Number	:@numerator_units["px:@denominator_units[ ;i
-;	@	;"default_border_radius;@o;;	@	;iB;[ ;" Round all borders by amount;[ ;@;To;;	@	;[[o:Sass::Script::Variable;	@	;"radiuso;(;	@	;"default_border_radius;iC;[o;;	@	;i ;;;iD;[ ;o;(;	@	;"radius;"border-radius;@o;;	@	;i ;;;iE;[ ;o;(;	@	;"radius;"-moz-border-radius;@o;;	@	;i ;;;iF;[ ;o;(;	@	;"radius;"-webkit-border-radius;@;"border-radius;@o;;	@	;iH;[ ;"(Round radius at position by amount.;[ ;@;To;;	@	;iI;[ ;"&values for !vert: "top", "bottom";[ ;@;To;;	@	;iJ;[ ;"%values for !horz: "left", "right;[ ;@;To;;	@	;[[o;(;	@	;"	vert0[o;(;	@	;"	horz0[o;(;	@	;"radiuso;(;	@	;"default_border_radius;iK;[o;;	@	;i ;;;iL;[ ;o;(;	@	;"radius;"$border-#{!vert}-#{!horz}-radius;@o;;	@	;i ;;;iM;[ ;o;(;	@	;"radius;"(-moz-border-radius-#{!vert}#{!horz};@o;;	@	;i ;;;iN;[ ;o;(;	@	;"radius;",-webkit-border-#{!vert}-#{!horz}-radius;@;"border-corner-radius;@o;;	@	;[[o;(;	@	;"radiuso;(;	@	;"default_border_radius;iP;[o;!;	@	;[o:Sass::Script::String;"top;	@	o;);"	left;	@	o;(;	@	;"radius;iQ;[ ;"border-corner-radius;@;"border-top-left-radius;@o;;	@	;[[o;(;	@	;"radiuso;(;	@	;"default_border_radius;iS;[o;!;	@	;[o;);"top;	@	o;);"
-right;	@	o;(;	@	;"radius;iT;[ ;"border-corner-radius;@;"border-top-right-radius;@o;;	@	;[[o;(;	@	;"radiuso;(;	@	;"default_border_radius;iV;[o;!;	@	;[o;);"bottom;	@	o;);"	left;	@	o;(;	@	;"radius;iW;[ ;"border-corner-radius;@;"border-bottom-left-radius;@o;;	@	;[[o;(;	@	;"radiuso;(;	@	;"default_border_radius;iY;[o;!;	@	;[o;);"bottom;	@	o;);"
-right;	@	o;(;	@	;"radius;iZ;[ ;"border-corner-radius;@;"border-bottom-right-radius;@o;;	@	;i\;[ ;" Round top corners by amount;[ ;@;To;;	@	;[[o;(;	@	;"radiuso;(;	@	;"default_border_radius;i];[o;!;	@	;[o;(;	@	;"radius;i^;[ ;"border-top-left-radius;@o;!;	@	;[o;(;	@	;"radius;i_;[ ;"border-top-right-radius;@;"border-top-radius;@o;;	@	;ia;[ ;""Round right corners by amount;[ ;@;To;;	@	;[[o;(;	@	;"radiuso;(;	@	;"default_border_radius;ib;[o;!;	@	;[o;(;	@	;"radius;ic;[ ;"border-top-right-radius;@o;!;	@	;[o;(;	@	;"radius;id;[ ;"border-bottom-right-radius;@;"border-right-radius;@o;;	@	;if;[ ;"#Round bottom corners by amount;[ ;@;To;;	@	;[[o;(;	@	;"radiuso;(;	@	;"default_border_radius;ig;[o;!;	@	;[o;(;	@	;"radius;ih;[ ;"border-bottom-left-radius;@o;!;	@	;[o;(;	@	;"radius;ii;[ ;"border-bottom-right-radius;@;"border-bottom-radius;@o;;	@	;ik;[ ;"!Round left corners by amount;[ ;@;To;;	@	;[[o;(;	@	;"radiuso;(;	@	;"default_border_radius;il;[o;!;	@	;[o;(;	@	;"radius;im;[ ;"border-top-left-radius;@o;!;	@	;[o;(;	@	;"radius;in;[ ;"border-bottom-left-radius;@;"border-left-radius;@o;;	@	;ir;[ ;"h***************************************************************************************************;[ ;@;To;;	@	;is;[ ;"BOX SHADOW;[ ;@;To;;	@	;it;[ ;"h***************************************************************************************************;[ ;@;To;;	@	;iv;[ ;"ê**
-Provides cross-browser css box shadows for Webkit, Gecko, and CSS3 standard
-arguments are color, horizontal offset, vertical offset, and blur;[ ;@;To;;	@	;iz;[ ;"u**
-These defaults make the arguments optional for this mixin
-If you like, set different defaults in your project;[ ;@;To;";	@	;i~;[ ;#T;$o:Sass::Script::Color;0;	@	:@attrs{	:redi8:
-greeni8:	bluei8:
-alphai;"default_box_shadow_color;@o;";	@	;i;[ ;#T;$o;%	;&["px;'[ ;i;	@	;" default_box_shadow_h_offset;@o;";	@	;i{;[ ;#T;$o;%	;&["px;'[ ;i;	@	;" default_box_shadow_v_offset;@o;";	@	;i|;[ ;#T;$o;%	;&["px;'[ ;i
-;	@	;"default_box_shadow_blur;@o;;	@	;[	[o;(;	@	;"
-coloro;(;	@	;"default_box_shadow_color[o;(;	@	;"	hoffo;(;	@	;" default_box_shadow_h_offset[o;(;	@	;"	voffo;(;	@	;" default_box_shadow_v_offset[o;(;	@	;"	bluro;(;	@	;"default_box_shadow_blur;i~;[o;;	@	;i;[ ;"Webkit (Safari, Chrome) */;[ ;@;Fo;;	@	;i ;;;iÄ;[ ;o:Sass::Script::Operation	:@operand2o;(;	@	;"	blur:@operand1o;0	;1o;(;	@	;"	voff;2o;0	;1o;(;	@	;"	hoff;2o;(;	@	;"
-color:@operator:concat;	@	;3;4;	@	;3;4;	@	;"-webkit-box-shadow;@o;;	@	;iÅ;[ ;"Gecko (Firefox, Camino) */;[ ;@;Fo;;	@	;i ;;;iÇ;[ ;o;0	;1o;(;	@	;"	blur;2o;0	;1o;(;	@	;"	voff;2o;0	;1o;(;	@	;"	hoff;2o;(;	@	;"
-color;3;4;	@	;3;4;	@	;3;4;	@	;"-moz-box-shadow;@o;;	@	;iÉ;[ ;"CSS3 */;[ ;@;Fo;;	@	;i ;;;iÑ;[ ;o;0	;1o;(;	@	;"	blur;2o;0	;1o;(;	@	;"	voff;2o;0	;1o;(;	@	;"	hoff;2o;(;	@	;"
-color;3;4;	@	;3;4;	@	;3;4;	@	;"box-shadow;@;"box-shadow;@o;;	@	;iâ;[ ;"h***************************************************************************************************;[ ;@;To;;	@	;iä;[ ;"BOX SIZING;[ ;@;To;;	@	;iã;[ ;"h***************************************************************************************************;[ ;@;To;;	@	;iç;[ ;"m**
-Change the box model for Mozilla, Webkit, IE8 and the future
-@param !bs
-	[ content-box | border-box ];[ ;@;To;;	@	;[[o;(;	@	;"bs0;ië;[o;;	@	;ií;[ ;"Mozilla (FireFox, Camino);[ ;@;Fo;;	@	;i ;;;iì;[ ;o;(;	@	;"bs;"-moz-box-sizing;@o;;	@	;iî;[ ;"Webkit (Safari, Chrome);[ ;@;Fo;;	@	;i ;;;iï;[ ;o;(;	@	;"bs;"-webkit-box-sizing;@o;;	@	;iñ;[ ;"IE (8);[ ;@;Fo;;	@	;i ;;;ió;[ ;o;(;	@	;"bs;"-ms-box-sizing;@o;;	@	;iò;[ ;"	CSS3;[ ;@;Fo;;	@	;i ;;;iô;[ ;o;(;	@	;"bs;"box-sizing;@;"box-sizing;@o;;	@	;iù;[ ;"h***************************************************************************************************;[ ;@;To;;	@	;iû;[ ;"COLUMNS;[ ;@;To;;	@	;iü;[ ;"h***************************************************************************************************;[ ;@;To;;	@	;i°;[ ;"7**
-CSS3 columns for Mozilla, Webkit and the Future;[ ;@;To;;	@	;[[o;(;	@	;"n0;i§;[o;;	@	;i ;;;i•;[ ;o;(;	@	;"n;"-moz-column-count;@o;;	@	;i ;;;i¶;[ ;o;(;	@	;"n;"-webkit-column-count;@o;;	@	;i ;;;iß;[ ;o;(;	@	;"n;"column-count;@;"column-count;@o;;	@	;[[o;(;	@	;"u0;i©;[o;;	@	;i ;;;i™;[ ;o;(;	@	;"u;"-moz-column-gap;@o;;	@	;i ;;;i´;[ ;o;(;	@	;"u;"-webkit-column-gap;@o;;	@	;i ;;;i¨;[ ;o;(;	@	;"u;"column-gap;@;"column-gap;@o;;	@	;[[o;(;	@	;"u0;iÆ;[o;;	@	;i ;;;iØ;[ ;o;(;	@	;"u;"-moz-column-width;@o;;	@	;i ;;;i∞;[ ;o;(;	@	;"u;"-webkit-column-width;@o;;	@	;i ;;;i±;[ ;o;(;	@	;"u;"column-width;@;"column-width;@o;;	@	;[[o;(;	@	;"w0;i≥;[o;;	@	;i ;;;i¥;[ ;o;(;	@	;"w;"-moz-column-rule-width;@o;;	@	;i ;;;iµ;[ ;o;(;	@	;"w;"-webkit-column-rule-width;@o;;	@	;i ;;;i∂;[ ;o;(;	@	;"w;"column-rule-width;@;"column-rule-width;@o;;	@	;[[o;(;	@	;"s0;i∏;[o;;	@	;i ;;;iπ;[ ;o;(;	@	;"s;"-moz-column-rule-style;@o;;	@	;i ;;;i∫;[ ;o;(;	@	;"s;"-webkit-column-rule-style;@o;;	@	;i ;;;iª;[ ;o;(;	@	;"s;"column-rule-style;@;"column-rule-style;@o;;	@	;[[o;(;	@	;"c0;iΩ;[o;;	@	;i ;;;iæ;[ ;o;(;	@	;"c;"-moz-column-rule-color;@o;;	@	;i ;;;iø;[ ;o;(;	@	;"c;"-webkit-column-rule-color;@o;;	@	;i ;;;i¿;[ ;o;(;	@	;"c;"column-rule-color;@;"column-rule-color;@o;;	@	;[[o;(;	@	;"w0[o;(;	@	;"so;);"
-solid;	@	[o;(;	@	;"co;);" ;	@	;i¬;[o;!;	@	;[o;(;	@	;"w;i√;[ ;"column-rule-width;@o;!;	@	;[o;(;	@	;"s;iƒ;[ ;"column-rule-style;@o;!;	@	;[o;(;	@	;"c;i≈;[ ;"column-rule-color;@;"column-rule;@o;;	@	;i ;[ ;"h***************************************************************************************************;[ ;@;To;;	@	;iÀ;[ ;"GRADIENTS;[ ;@;To;;	@	;iÃ;[ ;"h***************************************************************************************************;[ ;@;To;;	@	;iŒ;[ ;">This yields a linear gradient spanning from top to bottom;[ ;@;To;;	@	;iœ;[ ;" ;[ ;@;To;;	@	;i–;[ ;"0+linear-gradient(color_stops(white, black));[ ;@;To;;	@	;i—;[ ;" ;[ ;@;To;;	@	;i“;[ ;">This yields a linear gradient spanning from bottom to top;[ ;@;To;;	@	;i”;[ ;" ;[ ;@;To;;	@	;i‘;[ ;":+linear-gradient(color_stops(white, black), "bottom");[ ;@;To;;	@	;i’;[ ;" ;[ ;@;To;;	@	;i÷;[ ;">This yields a linear gradient spanning from left to right;[ ;@;To;;	@	;i◊;[ ;" ;[ ;@;To;;	@	;iÿ;[ ;"8+linear-gradient(color_stops(white, black), "left");[ ;@;To;;	@	;iŸ;[ ;" ;[ ;@;To;;	@	;i⁄;[ ;"<This yields a linear gradient starting at white passing;[ ;@;To;;	@	;i€;[ ;",thru blue at 33% down and then to black;[ ;@;To;;	@	;i‹;[ ;" ;[ ;@;To;;	@	;i›;[ ;":+linear-gradient(color_stops(white, blue 33%, black));[ ;@;To;;	@	;iﬁ;[ ;" ;[ ;@;To;;	@	;iﬂ;[ ;"<This yields a linear gradient starting at white passing;[ ;@;To;;	@	;i‡;[ ;"Athru blue at 33% down and then to black at 67% until the end;[ ;@;To;;	@	;i·;[ ;" ;[ ;@;To;;	@	;i‚;[ ;">+linear-gradient(color_stops(white, blue 33%, black 67%));[ ;@;To;;	@	;i„;[ ;" ;[ ;@;To;;	@	;i‰;[ ;"Browsers Supported:;[ ;@;To;;	@	;iÂ;[ ;" ;[ ;@;To;;	@	;iÊ;[ ;"- Chrome;[ ;@;To;;	@	;iÁ;[ ;"- Safari;[ ;@;To;;	@	;iË;[ ;"- Firefox 3.6;[ ;@;To;;	@	;[[o;(;	@	;"color_stops0[o;(;	@	;"
-starto;);"top;	@	;iÍ;[
-o;;	@	;iÎ;[ ;"$Firefox's gradient api is nice.;[ ;@;To;;	@	;iÏ;[ ;":Webkit's gradient api sucks -- hence these backflips:;[ ;@;To;";	@	;iÌ;[ ;#F;$o:Sass::Script::Funcall;[o;(;	@	;"
-start;"grad_opposite_position;	@	;"end;@o;;	@	;i ;;;iÓ;[ ;"l-webkit-gradient(linear, #{grad_point(!start)}, #{grad_point(!end)}, #{grad_color_stops(!color_stops)});"background-image;@o;;	@	;i ;;;iÔ;[ ;"5-moz-linear-gradient(#{!start}, #{!color_stops});"background-image;@;"linear-gradient;@o;;	@	;iÒ;[ ;"SDue to limitation's of webkit, the radial gradient mixin works best if you use;[ ;@;To;;	@	;iÚ;[ ;"pixel-based color stops.;[ ;@;To;;	@	;iÛ;[ ;" ;[ ;@;To;;	@	;iÙ;[ ;"Examples:;[ ;@;To;;	@	;iı;[ ;" ;[ ;@;To;;	@	;iˆ;[ ;"5// Defaults to a centered, 100px radius gradient;[ ;@;To;;	@	;i˜;[ ;".+radial-gradient(color_stops(#c00, #00c));[ ;@;To;;	@	;i¯;[ ;"4// 100px radius gradient in the top left corner;[ ;@;To;;	@	;i˘;[ ;":+radial-gradient(color_stops(#c00, #00c), "top left");[ ;@;To;;	@	;i˙;[ ;"B// Three colors, ending at 50px and passing thru #fff at 25px;[ ;@;To;;	@	;i˚;[ ;"9+radial-gradient(color_stops(#c00, #fff, #00c 50px));[ ;@;To;;	@	;i¸;[ ;" ;[ ;@;To;;	@	;i˝;[ ;"Browsers Supported:;[ ;@;To;;	@	;i˛;[ ;" ;[ ;@;To;;	@	;iˇ;[ ;"- Chrome;[ ;@;To;;	@	;i ;[ ;"- Safari;[ ;@;To;;	@	;i;[ ;"- Firefox 3.6;[ ;@;To;;	@	;[[o;(;	@	;"color_stops0[o;(;	@	;"center_positiono;);"center center;	@	;i;[o;";	@	;i;[ ;#F;$o;5;[o;(;	@	;"color_stopso:Sass::Script::Bool;T;	@	;"grad_end_position;	@	;"end_pos;@o;;	@	;i ;;;i;[ ;"ç-webkit-gradient(radial, #{grad_point(!center_position)}, 0, #{grad_point(!center_position)}, #{!end_pos}, #{grad_color_stops(!color_stops)});"background-image;@o;;	@	;i ;;;i;[ ;"G-moz-radial-gradient(#{!center_position}, circle, #{!color_stops});"background-image;@;"radial-gradient;@o;;	@	;i;[ ;"h***************************************************************************************************;[ ;@;To;;	@	;i;[ ;"TEXT SHADOW;[ ;@;To;;	@	;i;[ ;"h***************************************************************************************************;[ ;@;To;;	@	;i;[ ;"c**
-Provides css text shadows
-arguments are color, horizontal offset, vertical offset, and blur;[ ;@;To;;	@	;i;[ ;"u**
-These defaults make the arguments optional for this mixin
-If you like, set different defaults in your project;[ ;@;To;";	@	;i;[ ;#T;$o;*;0;	@	;+{	;,i™;-i™;.i™;/i;"default_text_shadow_color;@o;";	@	;i;[ ;#T;$o;%	;&["px;'[ ;i;	@	;"!default_text_shadow_h_offset;@o;";	@	;i;[ ;#T;$o;%	;&["px;'[ ;i;	@	;"!default_text_shadow_v_offset;@o;";	@	;i;[ ;#T;$o;%	;&["px;'[ ;i;	@	;"default_text_shadow_blur;@o;;	@	;[	[o;(;	@	;"
-coloro;(;	@	;"default_text_shadow_color[o;(;	@	;"	hoffo;(;	@	;"!default_text_shadow_h_offset[o;(;	@	;"	voffo;(;	@	;"!default_text_shadow_v_offset[o;(;	@	;"	bluro;(;	@	;"default_text_shadow_blur;i;[o;;	@	;i ;;;i;[ ;o;0	;1o;(;	@	;"	blur;2o;0	;1o;(;	@	;"	voff;2o;0	;1o;(;	@	;"	hoff;2o;(;	@	;"
-color;3;4;	@	;3;4;	@	;3;4;	@	;"text-shadow;@;"text-shadow;@o;;	@	;i!;[ ;"h***************************************************************************************************;[ ;@;To;;	@	;i";[ ;"TRANSFORM;[ ;@;To;;	@	;i#;[ ;"h***************************************************************************************************;[ ;@;To;;	@	;i%;[ ;"'CSS Transform and Transform-Origin;[ ;@;To;;	@	;i';[ ;"0Apply a transform sent as a complete string;[ ;@;To;;	@	;[[o;(;	@	;"transformo;6;F;	@	;i(;[o;;	@	;i ;;;i);[ ;o;(;	@	;"transform;"transform;@o;;	@	;i ;;;i*;[ ;o;(;	@	;"transform;"-webkit-transform;@o;;	@	;i ;;;i+;[ ;o;(;	@	;"transform;"-moz-transform;@;"apply-transform;@o;;	@	;i-;[ ;"7Apply a transform-origin sent as a complete string;[ ;@;To;;	@	;[[o;(;	@	;"origino;6;F;	@	;i.;[o;;	@	;i ;;;i/;[ ;o;(;	@	;"origin;"transform-origin;@o;;	@	;i ;;;i0;[ ;o;(;	@	;"origin;"-webkit-transform-origin;@o;;	@	;i ;;;i1;[ ;o;(;	@	;"origin;"-moz-transform-origin;@;"apply-origin;@o;;	@	;i3;[ ;"2transform-origin requires x and y coordinates;[ ;@;To;;	@	;i4;[ ;"5- only applies the coordinates if they are there;[ ;@;To;;	@	;i5;[ ;">so that it can be called by scale, rotate and skew safely;[ ;@;To;;	@	;[[o;(;	@	;"originxo;%	;&["%;'[ ;i7;	@	[o;(;	@	;"originyo;%	;&["%;'[ ;i7;	@	;i6;[o;";	@	;i7;[ ;#F;$o;6;F;	@	;"origin;@o:Sass::Tree::IfNode;	@	:
-@elseo;7
-;	@	;8o;7	;	@	;[o;";	@	;i=;[ ;#F;$o;0	;1o;0	;1o;);" ;	@	;2o;(;	@	;"originy;3:	plus;	@	;2o;);" ;	@	;3;9;	@	;"origin;@:@last_else@ﬁ;$o;(;	@	;"originy;[o;";	@	;i;;[ ;#F;$o;0	;1o;0	;1o;);" ;	@	;2o;(;	@	;"originx;3;9;	@	;2o;);" ;	@	;3;9;	@	;"origin;@;:@›;$o;(;	@	;"originx;i8;[o;";	@	;i9;[ ;#F;$o;0	;1o;0	;1o;0	;1o;0	;1o;);" ;	@	;2o;(;	@	;"originy;3;9;	@	;2o;);" ;	@	;3;9;	@	;2o;(;	@	;"originx;3;9;	@	;2o;);" ;	@	;3;9;	@	;"origin;@;:@ﬁ;$o;0	;1o;(;	@	;"originy;2o;(;	@	;"originx;3:and;	@	;@o;7;	@	;i>;[o;!;	@	;[o;(;	@	;"origin;i?;[ ;"apply-origin;@;:@;$o;(;	@	;"origin;@;"transform-origin;@o;;	@	;iA;[ ;":A full transform mixin with everything you could want;[ ;@;To;;	@	;iB;[ ;"4- including origin adjustments if you want them;[ ;@;To;;	@	;iC;[ ;"1- scale, rotate and skew don't require units;[ ;@;To;;	@	;iD;[ ;";scale takes a multiplier, rotate and skew take degrees;[ ;@;To;;	@	;[[o;(;	@	;"
-scaleo;%	;&[ ;'[ ;i;	@	[o;(;	@	;"rotateo;%	;&[ ;'[ ;i ;	@	[o;(;	@	;"transxo;%	;&[ ;'[ ;i ;	@	[o;(;	@	;"transyo;%	;&[ ;'[ ;i ;	@	[o;(;	@	;"
-skewxo;%	;&[ ;'[ ;i ;	@	[o;(;	@	;"
-skewyo;%	;&[ ;'[ ;i ;	@	[o;(;	@	;"originxo;6;F;	@	[o;(;	@	;"originyo;6;F;	@	;iE;[o;";	@	;iF;[ ;#F;$o;0	;1o;0	;1o;0	;1o;0	;1o;0	;1o;0	;1o;0	;1o;0	;1o;0	;1o;0	;1o;0	;1o;0	;1o;);"	deg);	@	;2o;(;	@	;"
-skewy;3;9;	@	;2o;);"
-deg, ;	@	;3;9;	@	;2o;(;	@	;"
-skewx;3;9;	@	;2o;);") skew(;	@	;3;9;	@	;2o;(;	@	;"transy;3;9;	@	;2o;);", ;	@	;3;9;	@	;2o;(;	@	;"transx;3;9;	@	;2o;);"deg) translate(;	@	;3;9;	@	;2o;(;	@	;"rotate;3;9;	@	;2o;);") rotate(;	@	;3;9;	@	;2o;(;	@	;"
-scale;3;9;	@	;2o;);"scale(;	@	;3;9;	@	;"transform;@o;!;	@	;[o;(;	@	;"transform;iG;[ ;"apply-transform;@o;!;	@	;[o;(;	@	;"originxo;(;	@	;"originy;iH;[ ;"transform-origin;@;"transform;@o;;	@	;iJ;[ ;"Transform Partials;[ ;@;To;;	@	;iK;[ ;"RThese work well on their own, but they don't add to each other, they override;[ ;@;To;;	@	;iL;[ ;"EUse them with extra origin args, or along side +transform-origin;[ ;@;To;;	@	;iN;[ ;"adjust only the scale;[ ;@;To;;	@	;iO;[ ;"'- with optional origin coordinates;[ ;@;To;;	@	;[[o;(;	@	;"
-scaleo;%	;&[ ;'[ ;f	1.25;	@	[o;(;	@	;"originxo;6;F;	@	[o;(;	@	;"originyo;6;F;	@	;iP;[o;!;	@	;[o;0	;1o;0	;1o;);");	@	;2o;(;	@	;"
-scale;3;9;	@	;2o;);"scale(;	@	;3;9;	@	;iQ;[ ;"apply-transform;@o;!;	@	;[o;(;	@	;"originxo;(;	@	;"originy;iR;[ ;"transform-origin;@;"
-scale;@o;;	@	;iT;[ ;"adjust only the rotation;[ ;@;To;;	@	;iU;[ ;"'- with optional origin coordinates;[ ;@;To;;	@	;[[o;(;	@	;"rotateo;%	;&[ ;'[ ;i2;	@	[o;(;	@	;"originxo;6;F;	@	[o;(;	@	;"originyo;6;F;	@	;iV;[o;!;	@	;[o;0	;1o;0	;1o;);"	deg);	@	;2o;(;	@	;"rotate;3;9;	@	;2o;);"rotate(;	@	;3;9;	@	;iW;[ ;"apply-transform;@o;!;	@	;[o;(;	@	;"originxo;(;	@	;"originy;iX;[ ;"transform-origin;@;"rotate;@o;;	@	;iZ;[ ;" adjust only the translation;[ ;@;To;;	@	;[[o;(;	@	;"transxo;%	;&[ ;'[ ;i ;	@	[o;(;	@	;"transyo;%	;&[ ;'[ ;i ;	@	;i[;[o;!;	@	;[o;0	;1o;0	;1o;0	;1o;0	;1o;);");	@	;2o;(;	@	;"transy;3;9;	@	;2o;);", ;	@	;3;9;	@	;2o;(;	@	;"transx;3;9;	@	;2o;);"translate(;	@	;3;9;	@	;i\;[ ;"apply-transform;@;"translate;@o;;	@	;i^;[ ;" adjust only the translation;[ ;@;To;;	@	;[[o;(;	@	;"transxo;%	;&[ ;'[ ;i ;	@	[o;(;	@	;"transyo;%	;&[ ;'[ ;i ;	@	[o;(;	@	;"transzo;%	;&[ ;'[ ;i ;	@	;i_;[o;!;	@	;[o;0	;1o;0	;1o;0	;1o;0	;1o;0	;1o;0	;1o;);");	@	;2o;(;	@	;"transz;3;9;	@	;2o;);", ;	@	;3;9;	@	;2o;(;	@	;"transy;3;9;	@	;2o;);", ;	@	;3;9;	@	;2o;(;	@	;"transx;3;9;	@	;2o;);"translate3d(;	@	;3;9;	@	;i`;[ ;"apply-transform;@;"translate3d;@o;;	@	;ib;[ ;"adjust only the skew;[ ;@;To;;	@	;ic;[ ;"'- with optional origin coordinates;[ ;@;To;;	@	;[	[o;(;	@	;"
-skewxo;%	;&[ ;'[ ;i ;	@	[o;(;	@	;"
-skewyo;%	;&[ ;'[ ;i ;	@	[o;(;	@	;"originxo;6;F;	@	[o;(;	@	;"originyo;6;F;	@	;id;[o;!;	@	;[o;0	;1o;0	;1o;0	;1o;0	;1o;);"	deg);	@	;2o;(;	@	;"
-skewy;3;9;	@	;2o;);"
-deg, ;	@	;3;9;	@	;2o;(;	@	;"
-skewx;3;9;	@	;2o;);"
-skew(;	@	;3;9;	@	;ie;[ ;"apply-transform;@o;!;	@	;[o;(;	@	;"originxo;(;	@	;"originy;if;[ ;"transform-origin;@;"	skew;@o;;	@	;ij;[ ;"h***************************************************************************************************;[ ;@;To;;	@	;ik;[ ;"TRANSITION;[ ;@;To;;	@	;il;[ ;"h***************************************************************************************************;[ ;@;To;;	@	;in;[ ;"CSS Transitions;[ ;@;To;;	@	;io;[ ;"#Currently only works in Webkit;[ ;@;To;;	@	;ip;[ ;";- expected in CSS3, FireFox 3.6/7 and Opera Presto 2.3;[ ;@;To;;	@	;iq;[ ;"- we'll be prepared.;[ ;@;To;;	@	;is;[ ;"7Override these defaults with your own, if you like;[ ;@;To;;	@	;it;[ ;"Q- timing-function and delay are set to false for browser defaults (ease, 0s);[ ;@;To;";	@	;iu;[ ;#T;$o;);"all;	@	;" default_transition_property;@o;";	@	;iv;[ ;#T;$o;%	;&["s;'[ ;i;	@	;" default_transition_duration;@o;";	@	;iw;[ ;#T;$o;6;F;	@	;" default_transition_function;@o;";	@	;ix;[ ;#T;$o;6;F;	@	;"default_transition_delay;@o;;	@	;iz;[ ;")One or more properties to transition;[ ;@;To;;	@	;i{;[ ;"/- for multiple, use a comma-delimited list;[ ;@;To;;	@	;i|;[ ;"#- also accepts "all" or "none";[ ;@;To;;	@	;[[o;(;	@	;"propertieso;(;	@	;" default_transition_property;i};[	o;;	@	;i ;;;i~;[ ;o;(;	@	;"properties;"transition-property;@o;;	@	;i ;;;i;[ ;o;(;	@	;"properties;" -webkit-transition-property;@o;;	@	;i ;;;iÄ;[ ;o;(;	@	;"properties;"-moz-transition-property;@o;;	@	;i ;;;iÅ;[ ;o;(;	@	;"properties;"-o-transition-property;@;"transition-property;@o;;	@	;iÉ;[ ;"&One or more durrations in seconds;[ ;@;To;;	@	;iÑ;[ ;"/- for multiple, use a comma-delimited list;[ ;@;To;;	@	;iÖ;[ ;"L- these durrations will effect the properties in the same list position;[ ;@;To;;	@	;[[o;(;	@	;"durationo;(;	@	;" default_transition_duration;iÜ;[	o;;	@	;i ;;;iá;[ ;o;(;	@	;"duration;"transition-duration;@o;;	@	;i ;;;ià;[ ;o;(;	@	;"duration;" -webkit-transition-duration;@o;;	@	;i ;;;iâ;[ ;o;(;	@	;"duration;"-moz-transition-duration;@o;;	@	;i ;;;iä;[ ;o;(;	@	;"duration;"-o-transition-duration;@;"transition-duration;@o;;	@	;iå;[ ;"!One or more timing functions;[ ;@;To;;	@	;iç;[ ;"Y- [ ease | linear | ease-in | ease-out | ease-in-out | cubic-bezier(x1, y1, x2, y2)];[ ;@;To;;	@	;ié;[ ;"/- for multiple, use a comma-delimited list;[ ;@;To;;	@	;iè;[ ;"K- these functions will effect the properties in the same list position;[ ;@;To;;	@	;[[o;(;	@	;"functiono;(;	@	;" default_transition_function;iê;[	o;;	@	;i ;;;ië;[ ;o;(;	@	;"function;"transition-timing-function;@o;;	@	;i ;;;ií;[ ;o;(;	@	;"function;"'-webkit-transition-timing-function;@o;;	@	;i ;;;iì;[ ;o;(;	@	;"function;"$-moz-transition-timing-function;@o;;	@	;i ;;;iî;[ ;o;(;	@	;"function;""-o-transition-timing-function;@;"transition-timing-function;@o;;	@	;iñ;[ ;"-One or more transition-delays in seconds;[ ;@;To;;	@	;ió;[ ;"/- for multiple, use a comma-delimited list;[ ;@;To;;	@	;iò;[ ;"H- these delays will effect the properties in the same list position;[ ;@;To;;	@	;[[o;(;	@	;"
-delayo;(;	@	;"default_transition_delay;iô;[	o;;	@	;i ;;;iö;[ ;o;(;	@	;"
-delay;"transition-delay;@o;;	@	;i ;;;iõ;[ ;o;(;	@	;"
-delay;"-webkit-transition-delay;@o;;	@	;i ;;;iú;[ ;o;(;	@	;"
-delay;"-moz-transition-delay;@o;;	@	;i ;;;iù;[ ;o;(;	@	;"
-delay;"-o-transition-delay;@;"transition-delay;@o;;	@	;iü;[ ;"$Transition all-in-one shorthand;[ ;@;To;;	@	;[	[o;(;	@	;"propertieso;(;	@	;" default_transition_property[o;(;	@	;"durationo;(;	@	;" default_transition_duration[o;(;	@	;"functiono;(;	@	;" default_transition_function[o;(;	@	;"
-delayo;(;	@	;"default_transition_delay;i†;[	o;!;	@	;[o;(;	@	;"properties;i°;[ ;"transition-property;@o;!;	@	;[o;(;	@	;"duration;i¢;[ ;"transition-duration;@o;7;	@	;i£;[o;!;	@	;[o;(;	@	;"function;i§;[ ;"transition-timing-function;@;:@ñ;$o;(;	@	;"function;@o;7;	@	;i•;[o;!;	@	;[o;(;	@	;"
-delay;i¶;[ ;"transition-delay;@;:@†;$o;(;	@	;"
-delay;@;"transition;@o;;	@	;i™;[ ;"h***************************************************************************************************;[ ;@;To;;	@	;i´;[ ;"USER SELECT;[ ;@;To;;	@	;i¨;[ ;"h***************************************************************************************************;[ ;@;To;;	@	;[[o;(;	@	;"selo;);"	auto;	@	;iÆ;[o;;	@	;i ;;;iØ;[ ;o;(;	@	;"sel;"-webkit-user-select;@o;;	@	;i ;;;i∞;[ ;o;(;	@	;"sel;"-moz-user-select;@o;;	@	;i ;;;i±;[ ;o;(;	@	;"sel;"user-select;@;"user-select;@;	@	

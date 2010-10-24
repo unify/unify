@@ -1,4 +1,5 @@
-require File.join(File.dirname(__FILE__), 'functions')
+require 'sass/script/functions'
+
 module Sass
   module Script
     # A SassScript parse node representing a function call.
@@ -16,8 +17,15 @@ module Sass
       #
       # @return [Array<Script::Node>]
       attr_reader :args
-      
-      attr_reader :options
+
+      # Don't set the context for child nodes if this is `url()`,
+      # since `url()` allows quoted strings.
+      #
+      # @param context [Symbol]
+      # @see Node#context=
+      def context=(context)
+        super unless @name == "url"
+      end
 
       # @param name [String] See \{#name}
       # @param name [Array<Script::Node>] See \{#args}
@@ -25,6 +33,7 @@ module Sass
         @name = name
         @args = args
         @options = options
+        super()
       end
 
       # @return [String] A string representation of the function call
@@ -32,25 +41,9 @@ module Sass
         "#{name}(#{args.map {|a| a.inspect}.join(', ')})"
       end
 
-      # Evaluates the function call.
-      #
-      # @param environment [Sass::Environment] The environment in which to evaluate the SassScript
-      # @return [Literal] The SassScript object that is the value of the function call
-      # @raise [Sass::SyntaxError] if the function call raises an ArgumentError
-      def perform(environment)
-        environment.options[:real_filename] = @options[:filename]
-        args = self.args.map {|a| a.perform(environment)}
-        ruby_name = name.gsub('-', '_')
-        unless Haml::Util.has?(:public_instance_method, Functions, ruby_name) && ruby_name !~ /^__/
-          return Script::String.new("#{name}(#{args.map {|a| a.perform(environment)}.join(', ')})")
-        end
-
-        result = Functions::EvaluationContext.new(environment.options).send(ruby_name, *args)
-        result.options = environment.options
-        return result
-      rescue ArgumentError => e
-        raise e unless e.backtrace.any? {|t| t =~ /:in `(block in )?(#{name}|perform)'$/}
-        raise Sass::SyntaxError.new("#{e.message} for `#{name}'")
+      # @see Node#to_sass
+      def to_sass(opts = {})
+        "#{dasherize(name, opts)}(#{args.map {|a| a.to_sass(opts)}.join(', ')})"
       end
 
       # Returns the arguments to the function.
@@ -59,6 +52,27 @@ module Sass
       # @see Node#children
       def children
         @args
+      end
+
+      protected
+
+      # Evaluates the function call.
+      #
+      # @param environment [Sass::Environment] The environment in which to evaluate the SassScript
+      # @return [Literal] The SassScript object that is the value of the function call
+      # @raise [Sass::SyntaxError] if the function call raises an ArgumentError
+      def _perform(environment)
+        environment.options[:real_filename] = @options[:filename]
+        args = self.args.map {|a| a.perform(environment)}
+        ruby_name = name.gsub('-', '_')
+        unless Haml::Util.has?(:public_instance_method, Functions, ruby_name) && ruby_name !~ /^__/
+          opts(Script::String.new("#{name}(#{args.map {|a| a.perform(environment)}.join(', ')})"))
+        else
+          opts(Functions::EvaluationContext.new(environment.options).send(ruby_name, *args))
+        end
+      rescue ArgumentError => e
+        raise e unless e.backtrace.any? {|t| t =~ /:in `(block in )?(#{name}|perform)'$/}
+        raise Sass::SyntaxError.new("#{e.message} for `#{name}'")
       end
     end
   end
