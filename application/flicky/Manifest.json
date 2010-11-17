@@ -1,0 +1,34 @@
+{
+  "info" : 
+  {
+    "name" : "flicky",
+
+    "summary" : "Unify Application",
+    "description" : "Just another Unify application",
+    
+    "homepage" : "http://telekom.de/",
+
+    "license" : "Closed",
+    "authors" : 
+    [
+      {
+        "name" : "First Author (uid)",
+        "email" : "first.author@telekom.de"
+      }
+    ],
+
+    "version" : "trunk",
+    "qooxdoo-versions": ["1.3-pre-unify-1"]
+  },
+  
+  "provides" : 
+  {
+    "namespace"   : "flicky",
+    "encoding"    : "utf-8",
+    "class"       : "source/class",
+    "resource"    : "source/resource",
+    "translation" : "source/translation",
+    "type"        : "application"
+  }
+}
+
