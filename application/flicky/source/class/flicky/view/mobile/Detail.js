@@ -8,9 +8,9 @@
  ************************************************************************ */
 
 /**
- * Interesting View
+ * Recent View
  */
-qx.Class.define("flicky.view.mobile.Interesting", {
+qx.Class.define("flicky.view.mobile.Detail", {
   extend : unify.view.mobile.RemoteView,
   type : "singleton",
 
@@ -21,7 +21,7 @@ qx.Class.define("flicky.view.mobile.Interesting", {
 
     // overridden
     getTitle : function(type, param) {
-      return "Interesting";
+      return "Detail";
     },
 
     
@@ -47,32 +47,42 @@ qx.Class.define("flicky.view.mobile.Interesting", {
     
     // overridden
     _getServiceName : function() {
-      return "interesting";
+      return "info";
+    },
+    
+    
+    // overridden
+    _getServiceParams : function() 
+    {
+      return {
+        "photo" : this.getParam()
+      };
     },
     
     
     // overridden
     _getRenderVariant : function() {
-      return "interesting";
+      return this.getParam();
+    },
+    
+    
+    // overridden
+    isFullScreen : function() {
+      return true;
     },
     
     
     // overridden
     _renderData : function(data)
     {
-      var photos = data.query.results.photo;
-      var html = [];
+      var photo = data.query.results.photo;
       
-      for (var i=0, l=photos.length; i<l; i++) {
-        html.push(this.__createImage(photos[i]))
-      }
-      
-      this.__content.replace(html.join(""));
+      this.__content.replace(this.__createImage(photo));
     },
     
     __createImage : function(entry)
     {
-      var tmpl = '<a href="#detail:{$id}"><img src="http://farm{$farm}.static.flickr.com/{$server}/{$id}_{$secret}.jpg" alt="{$title}" /></a>';
+      var tmpl = '<img src="http://farm{$farm}.static.flickr.com/{$server}/{$id}_{$secret}.jpg" alt="{$title}" />';
       
       return tmpl.replace(/{\$([a-z]+)}/g, function(match, key) {
         return entry[key];
