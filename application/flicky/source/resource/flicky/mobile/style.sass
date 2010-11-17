@@ -2,15 +2,25 @@
 @import ../../../../../../framework/source/resource/unify/mobile/animation.sass
 @import ../../../../../../framework/source/resource/unify/mobile/iphoneos/style.sass
 
-#sys-info
-  +vbox
-  +padded-layer
-  .content
-    > ul
-      +keyvalue-list
-
 #start
   +padded-layer
   +vbox
   .content > ul
     +navigation-list
+
+
+
+#recent
+  +padded-layer
+  +vbox
+
+  .content > img
+    width: 80px
+    height: 80px
+    display: inline-block
+    vertical-align: top
+    margin-right: 8px
+    margin-bottom: 8px
+    border: 1px solid black
+    
+    +box-shadow(rgba(0,0,0,0.3), 2px, 2px, 1px)
