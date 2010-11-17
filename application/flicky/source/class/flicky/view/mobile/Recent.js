@@ -30,6 +30,7 @@ qx.Class.define("flicky.view.mobile.Recent", {
     {
       var layer = new unify.ui.mobile.Layer(this);
       var titlebar = new unify.ui.mobile.TitleBar(this);
+      titlebar.add({ icon : true, exec : "refresh", target : "right" });
       layer.add(titlebar);
       
       var content = this.__content = new unify.ui.mobile.Content;

@@ -30,11 +30,10 @@ qx.Class.define("flicky.view.mobile.Start", {
     {
       var layer = new unify.ui.mobile.Layer(this);
       var titlebar = new unify.ui.mobile.TitleBar(this);
-      titlebar.add({jump:'sys-info', label:'System-Info', target:'right'});
       layer.add(titlebar);
       
       var content = this.__content = new unify.ui.mobile.Content;
-      content.add("Hello World");
+      content.add("Please click on 'Recent' or 'Interesting' :)");
       layer.add(content);
 
       return layer;

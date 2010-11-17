@@ -14,12 +14,19 @@
   +padded-layer
   +vbox
 
+  .title-bar
+    [exec=refresh]
+      +tool-bar-button-icon("icons-22/gear.png")
+
   .content img
     display: inline-block
     vertical-align: top
     margin-right: 8px
     margin-bottom: 8px
     border: 1px solid black
+    +box-sizing("content-box")
+    width: 75px
+    height: 75px
     
     +box-shadow(rgba(0,0,0,0.3), 2px, 2px, 1px)
 
