@@ -35,11 +35,13 @@ qx.Class.define("flicky.application.Mobile",
       var ViewManager = unify.view.mobile.ViewManager.getInstance();
       ViewManager.add(flicky.view.mobile.Start);
       ViewManager.add(flicky.view.mobile.Recent);
+      ViewManager.add(flicky.view.mobile.Interesting);
 
       // Configure tab bar
       var TabBar = unify.ui.mobile.TabBar.getInstance();
       TabBar.add(flicky.view.mobile.Start);
       TabBar.add(flicky.view.mobile.Recent);
+      TabBar.add(flicky.view.mobile.Interesting);
       
       // Initialize navigation
       unify.view.mobile.NavigationManager.getInstance().init();   

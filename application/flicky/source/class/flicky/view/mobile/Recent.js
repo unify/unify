@@ -8,7 +8,7 @@
  ************************************************************************ */
 
 /**
- * Start View
+ * Recent View
  */
 qx.Class.define("flicky.view.mobile.Recent", {
   extend : unify.view.mobile.RemoteView,
@@ -33,7 +33,6 @@ qx.Class.define("flicky.view.mobile.Recent", {
       layer.add(titlebar);
       
       var content = this.__content = new unify.ui.mobile.Content;
-      content.add("Hello World");
       layer.add(content);
 
       return layer;
@@ -69,7 +68,6 @@ qx.Class.define("flicky.view.mobile.Recent", {
       }
       
       this.__content.replace(html.join(""));
-      
     },
     
     __createImage : function(entry)
