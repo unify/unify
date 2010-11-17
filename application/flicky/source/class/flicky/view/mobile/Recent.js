@@ -61,8 +61,24 @@ qx.Class.define("flicky.view.mobile.Recent", {
     // overridden
     _renderData : function(data)
     {
-      alert(data);
+      var photos = data.query.results.photo;
+      var html = [];
       
+      for (var i=0, l=photos.length; i<l; i++) {
+        html.push(this.__createImage(photos[i]))
+      }
+      
+      this.__content.replace(html.join(""));
+      
+    },
+    
+    __createImage : function(entry)
+    {
+      var tmpl = '<img src="http://farm{$farm}.static.flickr.com/{$server}/{$id}_{$secret}.jpg" alt="{$title}" />';
+      
+      return tmpl.replace(/{\$([a-z]+)}/g, function(match, key) {
+        return entry[key];
+      });
     }
   }
 });
