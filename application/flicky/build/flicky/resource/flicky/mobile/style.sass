@@ -1,0 +1,50 @@
+@import ../../../../../../framework/source/resource/unify/mobile/core.sass
+@import ../../../../../../framework/source/resource/unify/mobile/animation.sass
+@import ../../../../../../framework/source/resource/unify/mobile/iphoneos/style.sass
+
+#start
+  +padded-layer
+  +vbox
+  .content > ul
+    +navigation-list
+
+
+
+#recent, #interesting
+  +padded-layer
+  +vbox
+
+  .title-bar
+    [exec=refresh]
+      +tool-bar-button-icon("icons-22/gear.png")
+
+  .content img
+    display: inline-block
+    vertical-align: top
+    margin-right: 8px
+    margin-bottom: 8px
+    border: 1px solid black
+    +box-sizing("content-box")
+    width: 75px
+    height: 75px
+    
+    +box-shadow(rgba(0,0,0,0.3), 2px, 2px, 1px)
+
+
+#detail
+  background: black
+  
+  .content img
+    width: 100%
+    
+    
+
+#tab-bar
+  [goto="start"]
+    +tab-bar-button-icon('icons-32/03-loopback.png')
+
+  [goto="recent"]
+    +tab-bar-button-icon('icons-32/04-squiggle.png')
+
+  [goto="interesting"]
+    +tab-bar-button-icon('icons-32/108-badge.png')
