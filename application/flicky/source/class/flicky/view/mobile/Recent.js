@@ -72,7 +72,7 @@ qx.Class.define("flicky.view.mobile.Recent", {
     
     __createImage : function(entry)
     {
-      var tmpl = '<img src="http://farm{$farm}.static.flickr.com/{$server}/{$id}_{$secret}_s.jpg" alt="{$title}" />';
+      var tmpl = '<a href="#detail:{$id}"><img src="http://farm{$farm}.static.flickr.com/{$server}/{$id}_{$secret}_s.jpg" alt="{$title}" /></a>';
       
       return tmpl.replace(/{\$([a-z]+)}/g, function(match, key) {
         return entry[key];
