@@ -212,11 +212,11 @@
 // - Safari
 // - Firefox 3.6
 
-=linear-gradient($color_stops, $start: top, !important: false)
+=linear-gradient($color_stops, $start: top, $imp: false)
   // Firefox's gradient api is nice.
   // Webkit's gradient api sucks -- hence these backflips:
   $end: grad_opposite_position($start)
-  @if !important
+  @if $imp
     background-image: -webkit-gradient(linear, #{grad_point($start)}, #{grad_point($end)}, #{grad_color_stops($color_stops)}) !important
     background-image: -moz-linear-gradient(#{$start}, #{$color_stops}) !important
   @else
