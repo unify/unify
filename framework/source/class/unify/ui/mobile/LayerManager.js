@@ -24,6 +24,21 @@ qx.Class.define("unify.ui.mobile.LayerManager",
 
   /*
   *****************************************************************************
+     CONSTRUCTOR
+  *****************************************************************************
+  */
+  
+  construct : function(viewManager)
+  {
+    this.base(arguments);
+
+    this.__viewManager = viewManager;
+  },
+
+
+
+  /*
+  *****************************************************************************
      PROPERTIES
   *****************************************************************************
   */
@@ -98,13 +113,16 @@ qx.Class.define("unify.ui.mobile.LayerManager",
 
     /** {Element} DOM element which is currently fadeout during selection recovery */
     __selectElem : null,
+    
+    /** {unify.view.mobile.ViewManager} The connected view manager */
+    __viewManager : null,
 
 
     // property apply
     _applyLayer : function(value, old)
     {
       // Shorten class access
-      var ViewManager = unify.view.mobile.ViewManager.getInstance();
+      var ViewManager = this.__viewManager;
       var Class = qx.bom.element2.Class;
       var App = qx.core.Init.getApplication();
 

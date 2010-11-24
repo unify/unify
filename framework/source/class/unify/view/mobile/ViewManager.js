@@ -29,7 +29,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
     // Initialize storage for views
     this.__views = {};
     
-    this.__layerManager = new unify.ui.mobile.LayerManager;
+    this.__layerManager = new unify.ui.mobile.LayerManager(this);
   },
 
 
