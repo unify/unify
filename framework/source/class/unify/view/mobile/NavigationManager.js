@@ -33,12 +33,12 @@ qx.Class.define("unify.view.mobile.NavigationManager",
   *****************************************************************************
   */
 
-  construct : function(view, start)
+  construct : function(viewManager, defaultView)
   {
     this.base(arguments);
     
-    this.__viewManager = view;
-    this.__start = start;
+    this.__viewManager = viewManager;
+    this.__defaultView = defaultView;
 
     // Initialize switch data
     this.__switchData = {};
@@ -74,6 +74,15 @@ qx.Class.define("unify.view.mobile.NavigationManager",
   members :
   {
     __switchData : null,
+    
+    __viewManager : null,
+    __defaultView : null,
+    
+    
+    getViewManager : function() {
+      return this.__viewManager;
+    },
+    
 
 
     /*
@@ -110,7 +119,7 @@ qx.Class.define("unify.view.mobile.NavigationManager",
       }
 
       if (!path) {
-        path = this.__start;
+        path = this.__defaultView;
       }
 
       History.init(path);

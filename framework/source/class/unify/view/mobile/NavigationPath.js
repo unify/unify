@@ -14,6 +14,22 @@
 qx.Class.define("unify.view.mobile.NavigationPath",
 {
   extend : qx.core.Object,
+  
+  
+  /*
+  *****************************************************************************
+     CONSTRUCTOR
+  *****************************************************************************
+  */
+    
+  construct : function(manager)
+  {
+    this.base(arguments);
+    
+    this.__navigationManager = manager;
+    
+  },
+  
 
 
   /*
@@ -226,7 +242,7 @@ qx.Class.define("unify.view.mobile.NavigationPath",
 
       if (value != "")
       {
-        var ViewManager = unify.view.mobile.ViewManager.getInstance();
+        var ViewManager = this.__navigationManager.getViewManager();
         var splits = value.split("/");
         var view, segment, param, pos;
 
