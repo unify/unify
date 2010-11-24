@@ -20,7 +20,6 @@
 qx.Class.define("unify.ui.mobile.LayerManager",
 {
   extend : qx.core.Object,
-  type : "singleton",
 
 
   /*

@@ -24,7 +24,6 @@
 qx.Class.define("unify.view.mobile.NavigationManager",
 {
   extend : qx.core.Object,
-  type : "singleton",
 
 
 

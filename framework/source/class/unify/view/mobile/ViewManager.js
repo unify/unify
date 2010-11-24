@@ -13,7 +13,6 @@
 qx.Class.define("unify.view.mobile.ViewManager",
 {
   extend : qx.core.Object,
-  type : "singleton",
 
 
 
@@ -29,9 +28,8 @@ qx.Class.define("unify.view.mobile.ViewManager",
 
     // Initialize storage for views
     this.__views = {};
-
-    // Connect to NavigationManager
-    unify.view.mobile.NavigationManager.getInstance().addListener("navigate", this.__onNavigate, this);
+    
+    this.__layerManager = new unify.ui.mobile.LayerManager;
   },
 
 
@@ -66,6 +64,8 @@ qx.Class.define("unify.view.mobile.ViewManager",
   {
     /** {Map} A map with all keys (by ID) */
     __views : null,
+
+    __layerManager : null,
 
     /** {String} Mode of last view switch */
     __mode : null,
@@ -162,7 +162,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
         old.resetActive();
       }
 
-      var LayerManager = unify.ui.mobile.LayerManager.getInstance();
+      var LayerManager = this.__layerManager;
 
       if (value)
       {
@@ -181,36 +181,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
         // Hide current layer
         LayerManager.resetLayer();
       }
-    },
-
-
-    /**
-     * Event listener for navigation changes
-     *
-     * @param e {qx.event.type.Data} Navigation event
-     */
-    __onNavigate : function(e)
-    {
-      this.__mode = e.getMode();
-
-      var path = e.getPath();
-      var view = this.getById(path.getView());
-      view.setSegment(path.getSegment());
-      view.setParam(path.getParam());
-
-      this.setView(view);
     }
-  },
-
-
-
-  /*
-  *****************************************************************************
-     DESTRUCTOR
-  *****************************************************************************
-  */
-
-  destruct : function() {
-    unify.view.mobile.NavigationManager.getInstance().removeListener("navigate", this.__onNavigate, this);
   }
 });
