@@ -51,11 +51,11 @@ qx.Class.define("flicky.application.Mobile",
       // Initialize navigation
       // unify.view.mobile.NavigationManager.getInstance().init();   
       
-      var NavigationManager = new unify.view.mobile.NavigationManager(MainViewManager);
+      var NavigationManager = new unify.view.mobile.NavigationManager(MainViewManager, "start");
       
       NavigationManager.addListener("navigate", this.__onNavigate, this);
       
-      
+      NavigationManager.init();
     },
 
 
@@ -75,6 +75,7 @@ qx.Class.define("flicky.application.Mobile",
       view.setSegment(path.getSegment());
       view.setParam(path.getParam());
 
+      this.debug("Navigate: " + view);
       MainViewManager.setView(view);
     }
   }
