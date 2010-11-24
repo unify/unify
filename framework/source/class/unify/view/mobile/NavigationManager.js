@@ -37,14 +37,11 @@ qx.Class.define("unify.view.mobile.NavigationManager",
   {
     this.base(arguments);
     
-    this.__view = view;
+    this.__viewManager = view;
     this.__start = start;
 
     // Initialize switch data
     this.__switchData = {};
-
-    // Initialize path pool (two is enough, as only one is visible anytime)
-    this.__pathPool = new qx.util.ObjectPool(5);
 
     //TODO: Variant for android
     if (unify.bom.client.System.ANDROID) {
@@ -77,7 +74,6 @@ qx.Class.define("unify.view.mobile.NavigationManager",
   members :
   {
     __switchData : null,
-    __pathPool : null,
 
 
     /*
@@ -275,7 +271,7 @@ qx.Class.define("unify.view.mobile.NavigationManager",
         }
       }
 
-      var view = unify.view.mobile.ViewManager.getInstance().getView();
+      var view = this.__viewManager.getView();
       if (view && view[func]) {
         return view[func](target);
       } else if (qx.core.Variant.isSet("qx.debug", "on")) {
@@ -317,18 +313,13 @@ qx.Class.define("unify.view.mobile.NavigationManager",
         }
       }
 
-      var pool = this.__pathPool;
-
       // Create and configure clone
-      var clone = pool.getObject(unify.view.mobile.NavigationPath);
+      var clone = new unify.view.mobile.NavigationPath;
       clone.setLocation(this.__path.getLocation());
       clone.setSegment(segment);
 
       // Jump in history
       unify.bom.History.getInstance().jump(clone.toString());
-
-      // Pool clone
-      pool.poolObject(clone);
     },
 
 
@@ -347,18 +338,13 @@ qx.Class.define("unify.view.mobile.NavigationManager",
         }
       }
 
-      var pool = this.__pathPool;
-
       // Create and configure clone
-      var clone = pool.getObject(unify.view.mobile.NavigationPath);
+      var clone = new unify.view.mobile.NavigationPath;
       clone.setLocation(this.__path.getLocation());
       clone.setParam(param);
 
       // Jump in history
       unify.bom.History.getInstance().jump(clone.toString());
-
-      // Pool clone
-      pool.poolObject(clone);
     },
 
 
@@ -534,7 +520,7 @@ qx.Class.define("unify.view.mobile.NavigationManager",
     __onHistoryChange : function(e)
     {
       var History = e.getTarget();
-      var ViewManager = unify.view.mobile.ViewManager.getInstance();
+      var ViewManager = this.__viewManager;
 
       // Quick check: Don't allow empty paths
       var loc = window.decodeURI(e.getLocation());
@@ -545,11 +531,10 @@ qx.Class.define("unify.view.mobile.NavigationManager",
       }
 
       // Get path objects
-      var pool = this.__pathPool;
       var old = this.__path;
-      var path = pool.getObject(unify.view.mobile.NavigationPath);
+      var path = new unify.view.mobile.NavigationPath(this);
 
-      // Update pooled instance
+      // Update instance
       path.setLocation(loc);
 
       // Validation check for path
@@ -578,7 +563,6 @@ qx.Class.define("unify.view.mobile.NavigationManager",
           {
             // TODO: Implement via path-cloning
             History.jump(path + "." + defaultSegment);
-            pool.poolObject(path);
             return;
           }
         }
@@ -604,11 +588,6 @@ qx.Class.define("unify.view.mobile.NavigationManager",
       // Fire event
       var mode = this.__computeMode(path, old);
       this.fireEvent("navigate", unify.event.type.Navigate, [path, mode]);
-
-      // Free old object
-      if (old) {
-        pool.poolObject(old);
-      }
     }
   },
 
