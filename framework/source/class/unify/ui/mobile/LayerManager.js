@@ -122,7 +122,6 @@ qx.Class.define("unify.ui.mobile.LayerManager",
     _applyLayer : function(value, old)
     {
       // Shorten class access
-      var ViewManager = this.__viewManager;
       var Class = qx.bom.element2.Class;
       var App = qx.core.Init.getApplication();
 
@@ -143,7 +142,7 @@ qx.Class.define("unify.ui.mobile.LayerManager",
         App.getRoot().appendChild(toLayer);
       }
 
-      var mode = ViewManager.getMode();
+      var mode = this.__viewManager.getMode();
 
       // Detect animation
       if (mode == "in" || mode == "out")
