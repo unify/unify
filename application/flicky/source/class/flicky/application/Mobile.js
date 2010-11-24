@@ -34,12 +34,16 @@ qx.Class.define("flicky.application.Mobile",
       var DetailViewManager = new unify.view.mobile.ViewManager;
       DetailViewManager.add(flicky.view.mobile.Detail);
 
-      var MainViewManager = new unify.view.mobile.ViewManager(DetailViewManager);
-      MainViewManager.add(flicky.view.mobile.Start);
-      MainViewManager.add(flicky.view.mobile.Recent);
-      MainViewManager.add(flicky.view.mobile.Interesting);
+      var MasterViewManager = new unify.view.mobile.ViewManager(DetailViewManager);
+      MasterViewManager.add(flicky.view.mobile.Start);
+      MasterViewManager.add(flicky.view.mobile.Recent);
+      MasterViewManager.add(flicky.view.mobile.Interesting);
       
-      this.__mainViewManager = MainViewManager;
+      this.__masterViewManager = MasterViewManager;
+      
+      
+      var SplitViewManager = new unify.view.mobile.SplitViewManager(MasterViewManager, DetailViewManager);
+      
 
       
       // Configure tab bar
@@ -51,10 +55,8 @@ qx.Class.define("flicky.application.Mobile",
       // Initialize navigation
       // unify.view.mobile.NavigationManager.getInstance().init();   
       
-      var NavigationManager = new unify.view.mobile.NavigationManager(MainViewManager, "start");
-      
+      var NavigationManager = new unify.view.mobile.NavigationManager(MasterViewManager, "start");
       NavigationManager.addListener("navigate", this.__onNavigate, this);
-      
       NavigationManager.init();
     },
 
@@ -68,15 +70,15 @@ qx.Class.define("flicky.application.Mobile",
     {
       this.__mode = e.getMode();
       
-      var MainViewManager = this.__mainViewManager;
+      var MasterViewManager = this.__masterViewManager;
 
       var path = e.getPath();
-      var view = MainViewManager.getById(path.getView());
+      var view = MasterViewManager.getById(path.getView());
       view.setSegment(path.getSegment());
       view.setParam(path.getParam());
 
       this.debug("Navigate: " + view);
-      MainViewManager.setView(view);
+      MasterViewManager.setView(view);
     }
   }
 });

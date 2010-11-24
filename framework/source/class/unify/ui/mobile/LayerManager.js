@@ -28,6 +28,9 @@ qx.Class.define("unify.ui.mobile.LayerManager",
   *****************************************************************************
   */
   
+  /**
+   * 
+   */ 
   construct : function(viewManager)
   {
     this.base(arguments);

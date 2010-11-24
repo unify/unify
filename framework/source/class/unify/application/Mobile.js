@@ -147,11 +147,15 @@ qx.Class.define("unify.application.Mobile",
         this.warn("Application is still following...")
         return;
       }
+      
+      // FIXME
+      /*
       else if (unify.ui.mobile.LayerManager.getInstance().isRunning())
       {
         this.warn("LayerManager animation is running...")
         return;
       }
+      */
 
       var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
       if (elem)
@@ -165,8 +169,9 @@ qx.Class.define("unify.application.Mobile",
         // Whether we need to handle selection
         if (elem.hasAttribute("goto") && !elem.hasAttribute("rel"))
         {
+          // FIXME
           // Add CSS class for selection highlighting
-          unify.ui.mobile.LayerManager.getInstance().select(elem);
+          // unify.ui.mobile.LayerManager.getInstance().select(elem);
 
           // Lazy further processing
           qx.lang.Function.delay(this.__onTapFollow, 0, this, elem);
@@ -187,6 +192,11 @@ qx.Class.define("unify.application.Mobile",
      */
     __onTapFollow : function(elem)
     {
+      // unify.view.mobile.NavigationManager.getInstance().follow(elem);
+      
+      console.debug("Follow: " + elem);
+      
+      // FIXME
       unify.view.mobile.NavigationManager.getInstance().follow(elem);
 
       // Lazy further processing
@@ -218,9 +228,11 @@ qx.Class.define("unify.application.Mobile",
     {
       if (this.__following) {
         return;
-      } else if (unify.ui.mobile.LayerManager.getInstance().isRunning()) {
-        return;
-      }
+      } 
+      // FIXME
+      // else if (unify.ui.mobile.LayerManager.getInstance().isRunning()) {
+      //  return;
+      // }
 
       var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
       if (elem) {
@@ -238,9 +250,11 @@ qx.Class.define("unify.application.Mobile",
     {
       if (this.__following) {
         return;
-      } else if (unify.ui.mobile.LayerManager.getInstance().isRunning()) {
-        return;
-      }
+      } 
+      // FIXME
+      // else if (unify.ui.mobile.LayerManager.getInstance().isRunning()) {
+      //  return;
+      // }
 
       var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
       if (elem) {
