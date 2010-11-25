@@ -11,26 +11,11 @@
  * Model class for a path to define a position
  * inside a mobile Unify application.
  */
-qx.Class.define("unify.view.mobile.NavigationPath",
+qx.Class.define("unify.view.mobile.navigation.Path",
 {
   extend : qx.core.Object,
   
   
-  /*
-  *****************************************************************************
-     CONSTRUCTOR
-  *****************************************************************************
-  */
-    
-  construct : function(manager)
-  {
-    this.base(arguments);
-    
-    this.__navigationManager = manager;
-    
-  },
-  
-
 
   /*
   *****************************************************************************
@@ -71,16 +56,6 @@ qx.Class.define("unify.view.mobile.NavigationPath",
     // overridden
     toString : function() {
       return this.getLocation();
-    },
-
-
-    /**
-     * Whether the path contains valid views.
-     *
-     * @return {Boolean} <code>true</code> when the path is valid
-     */
-    isValid : function() {
-      return this.__valid;
     },
 
 
@@ -171,7 +146,6 @@ qx.Class.define("unify.view.mobile.NavigationPath",
 
     __size : 0,
     __parts : null,
-    __valid : true,
 
 
     /**
@@ -238,11 +212,9 @@ qx.Class.define("unify.view.mobile.NavigationPath",
     _applyLocation : function(value, old)
     {
       var parts = [];
-      var valid = true;
 
       if (value != "")
       {
-        var ViewManager = this.__navigationManager.getViewManager();
         var splits = value.split("/");
         var view, segment, param, pos;
 
@@ -274,13 +246,6 @@ qx.Class.define("unify.view.mobile.NavigationPath",
             param = null;
           }
 
-          // Validate view
-          if (!ViewManager.getById(view))
-          {
-            this.error("Invalid path part: " + view + "." + segment + ":" + param + " => Invalid view!");
-            valid = false;
-          }
-
           // Store data
           parts.push(
           {
@@ -293,7 +258,6 @@ qx.Class.define("unify.view.mobile.NavigationPath",
 
       this.__parts = parts;
       this.__size = parts.length;
-      this.__valid = valid;
     }
   }
 });

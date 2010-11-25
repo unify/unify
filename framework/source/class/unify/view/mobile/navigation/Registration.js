@@ -21,7 +21,7 @@
  * * Supports multiple ways of controlling the location.
  * * Support for TabView like navigation with deep inner navigation
  */
-qx.Class.define("unify.view.mobile.NavigationManager",
+qx.Class.define("unify.view.mobile.navigation.Registration",
 {
   extend : qx.core.Object,
 
@@ -33,12 +33,11 @@ qx.Class.define("unify.view.mobile.NavigationManager",
   *****************************************************************************
   */
 
-  construct : function(viewManager, defaultView)
+  construct : function()
   {
     this.base(arguments);
     
-    this.__viewManager = viewManager;
-    this.__defaultView = defaultView;
+    this.__managers = {};
 
     // Initialize switch data
     this.__switchData = {};
@@ -76,8 +75,28 @@ qx.Class.define("unify.view.mobile.NavigationManager",
   {
     __switchData : null,
     
-    __viewManager : null,
-    __defaultView : null,
+    
+
+
+    /**
+     * Event listener for navigation changes
+     *
+     * @param e {qx.event.type.Data} Navigation event
+     */
+    __onNavigate : function(e)
+    {
+      this.__mode = e.getMode();
+      
+      var MasterViewManager = this.__masterViewManager;
+
+      var path = e.getPath();
+      var view = MasterViewManager.getById(path.getView());
+      view.setSegment(path.getSegment());
+      view.setParam(path.getParam());
+
+      this.debug("Navigate: " + view);
+      MasterViewManager.setView(view);
+    },    
     
     
     getViewManager : function() {
@@ -95,7 +114,7 @@ qx.Class.define("unify.view.mobile.NavigationManager",
     /**
      * Returns the navigation path object
      *
-     * @return {unify.view.mobile.NavigationPath} The path object
+     * @return {unify.view.mobile.navigation.Path} The path object
      */
     getPath : function() {
       return this.__path || null;
@@ -324,7 +343,7 @@ qx.Class.define("unify.view.mobile.NavigationManager",
       }
 
       // Create and configure clone
-      var clone = new unify.view.mobile.NavigationPath;
+      var clone = new unify.view.mobile.navigation.Path;
       clone.setLocation(this.__path.getLocation());
       clone.setSegment(segment);
 
@@ -349,7 +368,7 @@ qx.Class.define("unify.view.mobile.NavigationManager",
       }
 
       // Create and configure clone
-      var clone = new unify.view.mobile.NavigationPath;
+      var clone = new unify.view.mobile.navigation.Path;
       clone.setLocation(this.__path.getLocation());
       clone.setParam(param);
 
@@ -471,7 +490,7 @@ qx.Class.define("unify.view.mobile.NavigationManager",
 
 
     /**
-     * Computes the differences between to {@link NavigationPath} and returns
+     * Computes the differences between to {@link Path} and returns
      * a value describing these differences.
      *
      * * equal: both path are equal
@@ -485,8 +504,8 @@ qx.Class.define("unify.view.mobile.NavigationManager",
      * * param: only the parameter of view was replaced
      * * null: other unknown change
      *
-     * @param value {NavigationPath} Current path
-     * @param old {NavigationPath} Previous path
+     * @param value {Path} Current path
+     * @param old {Path} Previous path
      * @return {String} The computed mode
      */
     __computeMode : function(value, old)
@@ -542,7 +561,7 @@ qx.Class.define("unify.view.mobile.NavigationManager",
 
       // Get path objects
       var old = this.__path;
-      var path = new unify.view.mobile.NavigationPath(this);
+      var path = new unify.view.mobile.navigation.Path;
 
       // Update instance
       path.setLocation(loc);
@@ -553,7 +572,7 @@ qx.Class.define("unify.view.mobile.NavigationManager",
         if (!this.__path)
         {
           this.warn("Path is invalid. Using default view.");
-          path.setLocation(ViewManager.getDefaultId());
+          path.setLocation(ViewManager.getDefaultView().getId());
         }
         else if (qx.core.Variant.isSet("qx.debug", "on"))
         {

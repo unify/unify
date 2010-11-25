@@ -22,9 +22,11 @@ qx.Class.define("unify.view.mobile.ViewManager",
   *****************************************************************************
   */
 
-  construct : function()
+  construct : function(defaultView)
   {
     this.base(arguments);
+
+    this.__defaultView = defaultView;
 
     // Initialize storage for views
     this.__views = {};
@@ -66,6 +68,8 @@ qx.Class.define("unify.view.mobile.ViewManager",
     __views : null,
 
     __layerManager : null,
+    
+    __defaultView : null,
 
     /** {String} Mode of last view switch */
     __mode : null,
@@ -83,13 +87,21 @@ qx.Class.define("unify.view.mobile.ViewManager",
      *
      * @param viewClass {Class} Class of the view to register
      */
-    add : function(viewClass)
+    add : function(viewClass, isDefault)
     {
       if (qx.core.Variant.isSet("qx.debug", "on"))
       {
         if (!viewClass) {
           throw new Error("Invalid view class: " + viewClass);
         }
+      }
+      
+      this.debug("Add View: " + viewObj);
+      
+      if (isDefault) 
+      {
+        this.debug("Default View: " + viewObj);
+        this.__defaultView = viewObj;
       }
 
       // TODO: Omit view instantiation
@@ -116,6 +128,11 @@ qx.Class.define("unify.view.mobile.ViewManager",
 
       return view;
     },
+    
+    
+    hasView : function(id) {
+      return !!this.__views[id];
+    },
 
 
     /**
@@ -123,13 +140,8 @@ qx.Class.define("unify.view.mobile.ViewManager",
      *
      * @return {String} ID of default view
      */
-    getDefaultId : function()
-    {
-      for (var id in this.__views) {
-        return id;
-      }
-
-      return null;
+    getDefaultView : function() {
+      return this.__defaultView;
     },
 
 
