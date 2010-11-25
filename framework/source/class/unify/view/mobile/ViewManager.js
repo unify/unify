@@ -90,7 +90,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
       
       if (isDefault) 
       {
-        this.debug("Default View: " + viewClass);
+        this.debug("Set Default View");
         this.__defaultView = viewClass;
       }
 
@@ -110,22 +110,13 @@ qx.Class.define("unify.view.mobile.ViewManager",
      * @param id {String} Identifier of the view.
      * @return {unify.view.mobile.Abstract} Instance derived from the StaticView class.
      */
-    getById : function(id)
-    {
-      var view = id && this.__views[id] || null;
-      if (qx.core.Variant.isSet("qx.debug", "on"))
-      {
-        if (!view) {
-          this.warn("Unknown view ID: " + id);
-        }
-      }
-
-      return view;
+    getById : function(id) {
+      return id && this.__views[id] || null;
     },
     
     
     hasView : function(id) {
-      return !!this.__views[id];
+      return id && !!this.__views[id];
     },
 
 

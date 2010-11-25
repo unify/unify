@@ -111,6 +111,11 @@ qx.Class.define("unify.view.mobile.StaticView",
 
     /** {unify.ui.mobile.Layer} Stores the layer instance of the view. */
     __layer : null,
+    
+    
+    getId : function() {
+      return qx.lang.String.hyphenate(this.constructor.basename).substring(1);
+    },
 
     /**
      * Parametrized views may have a default parameter which is

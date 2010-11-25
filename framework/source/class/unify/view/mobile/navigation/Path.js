@@ -15,6 +15,15 @@ qx.Class.define("unify.view.mobile.navigation.Path",
 {
   extend : qx.core.Object,
   
+  construct : function(location)
+  {
+    this.base(arguments);
+    
+    if (location != null) {
+      this.setLocation(location);
+    }
+  },
+  
   
 
   /*
@@ -47,6 +56,11 @@ qx.Class.define("unify.view.mobile.navigation.Path",
 
   members :
   {
+
+    
+    
+    
+    
     /*
     ---------------------------------------------------------------------------
       USER API

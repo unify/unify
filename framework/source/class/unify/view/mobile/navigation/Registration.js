@@ -274,7 +274,6 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
         }
       }
 
-      var view = this.__viewManager.getView();
       if (view && view[func]) {
         return view[func](target);
       } else if (qx.core.Variant.isSet("qx.debug", "on")) {
@@ -523,77 +522,94 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
     __onHistoryChange : function(e)
     {
       var History = e.getTarget();
-      var ViewManager = this.__viewManager;
 
       // Quick check: Don't allow empty paths
-      var loc = window.decodeURI(e.getLocation());
-      if (loc == "")
+      var currentLocation = decodeURI(e.getLocation());
+      if (currentLocation == "")
       {
         this.warn("Ignoring empty path");
         return;
       }
 
-      // Get path objects
-      var old = this.__path;
-      var path = new unify.view.mobile.navigation.Path;
-
-      // Update instance
-      path.setLocation(loc);
-      
-      
-      
-      this.debug("History to View: " + loc)
-      
-      return;
-      
-
-      // Fill in default segment if missing
-      if (path.getSegment() == null)
-      {
-        var view = ViewManager.getById(path.getView());
-        if (view)
-        {
-          var defaultSegment = view.getDefaultSegment();
-          if (defaultSegment != null)
-          {
-            // TODO: Implement via path-cloning
-            History.jump(path + "." + defaultSegment);
-            return;
-          }
-        }
+      var oldLocation = this.__location || "";
+      if (currentLocation == oldLocation) {
+        return;
       }
 
-
-
-      var mode = this.__computeMode(path, old);
-
-      var path = e.getPath();
-      var view = ViewManager.getById(path.getView());
-      view.setSegment(path.getSegment());
-      view.setParam(path.getParam());
-
-      this.debug("Navigate: " + view);
-      MasterViewManager.setView(view);
-      
-      
-      
-
-
-      // Store new path
-      this.__path = path;
-
-      // Store on machine as well
       if (window.localStorage)
       {
         try
         {
           // deleting first is required on iPad with OS 3.2
           delete localStorage["unify/navigationpath"];
-          localStorage["unify/navigationpath"] = window.decodeURI(loc);
+          localStorage["unify/navigationpath"] = decodeURI(currentLocation);
         }
         catch(ex) {
           this.warn("Could not store path: " + ex);
         }
+      }
+
+      this.debug("History Change: \"" + oldLocation + "\" => \"" + currentLocation + "\"");
+
+      var currentSplits = currentLocation == "" ? [] : currentLocation.split("/");
+      var oldSplits = oldLocation == "" ? [] : oldLocation.split("/");
+      
+      // Format: view.segment:param
+      var splitMatcher = /^([a-z-]+)(\.[a-z-]+)?(\:[a-zA-Z0-9_-]+)?$/;
+      var managers = this.__viewManagers;
+      
+
+      // Create new data structure mapping managers to their individual structure
+      var structure = {};
+      for (var id in managers) {
+        structure[id] = [];
+      }
+      
+      
+      // Process current path
+      for (var i=0, l=currentSplits.length; i<l; i++) 
+      {
+        var match = splitMatcher.exec(currentSplits[i]);
+        var view = RegExp.$1;
+        var segment = RegExp.$2;
+        var param = RegExp.$3;
+        
+        for (var id in managers) 
+        {
+          this.debug("Manager: " + id + " :: " + view)
+
+          var viewClass = managers[id].getById(view);
+          if (viewClass) 
+          {
+            this.debug("Add " + currentSplits[i] + " to " + id);
+            
+            structure[id].push({
+              view : view,
+              segment : segment,
+              param : param,
+              cls : viewClass,
+              manager : managers[id] 
+            });
+
+            view = null;
+            break;
+          }
+        }
+        
+        if (view) {
+          throw new Error("Unknown view: " + view);
+        }
+      }
+      
+      
+      // Update managers
+      for (var id in managers)
+      {
+        var manager = managers[id];
+        this.debug("Update views of manager: " + id);
+        
+        
+        // TODO
       }
     }
   },

@@ -32,7 +32,8 @@ qx.Class.define("flicky.application.Mobile",
       document.title = "flicky";
       
       var DetailViewManager = new unify.view.mobile.ViewManager("detail");
-      DetailViewManager.add(flicky.view.mobile.Detail, true);
+      DetailViewManager.add(flicky.view.mobile.Info, true);
+      DetailViewManager.add(flicky.view.mobile.Detail);
 
       var MasterViewManager = new unify.view.mobile.ViewManager("master");
       MasterViewManager.add(flicky.view.mobile.Start, true);
