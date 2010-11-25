@@ -24,6 +24,7 @@
 qx.Class.define("unify.view.mobile.navigation.Registration",
 {
   extend : qx.core.Object,
+  type : "singleton",
 
 
 
@@ -37,7 +38,7 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
   {
     this.base(arguments);
     
-    this.__managers = {};
+    this.__viewManagers = {};
 
     // Initialize switch data
     this.__switchData = {};
@@ -51,19 +52,6 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
 
 
 
-  /*
-  *****************************************************************************
-     EVENTS
-  *****************************************************************************
-  */
-
-  events :
-  {
-    /** Fired every time the path has changed */
-    "navigate" : "unify.event.type.Navigate"
-  },
-
-
 
   /*
   *****************************************************************************
@@ -73,37 +61,23 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
 
   members :
   {
-    __switchData : null,
-    
-    
-
-
-    /**
-     * Event listener for navigation changes
-     *
-     * @param e {qx.event.type.Data} Navigation event
-     */
-    __onNavigate : function(e)
+    add : function(viewManager)
     {
-      this.__mode = e.getMode();
-      
-      var MasterViewManager = this.__masterViewManager;
-
-      var path = e.getPath();
-      var view = MasterViewManager.getById(path.getView());
-      view.setSegment(path.getSegment());
-      view.setParam(path.getParam());
-
-      this.debug("Navigate: " + view);
-      MasterViewManager.setView(view);
-    },    
-    
-    
-    getViewManager : function() {
-      return this.__viewManager;
+      this.debug("Register ViewManager: " + viewManager.getId());
+      this.__viewManagers[viewManager.getId()] = viewManager;
     },
     
-
+    
+    
+    
+    
+    
+    
+    
+    // ***********************************************************************************
+    
+    __switchData : null,
+    
 
     /*
     ---------------------------------------------------------------------------
@@ -566,21 +540,6 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
       // Update instance
       path.setLocation(loc);
 
-      // Validation check for path
-      if (!path.isValid())
-      {
-        if (!this.__path)
-        {
-          this.warn("Path is invalid. Using default view.");
-          path.setLocation(ViewManager.getDefaultView().getId());
-        }
-        else if (qx.core.Variant.isSet("qx.debug", "on"))
-        {
-          this.debug("Path is invalid. Keeping location.");
-          return;
-        }
-      }
-
       // Fill in default segment if missing
       if (path.getSegment() == null)
       {
@@ -616,7 +575,18 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
 
       // Fire event
       var mode = this.__computeMode(path, old);
-      this.fireEvent("navigate", unify.event.type.Navigate, [path, mode]);
+
+      var MasterViewManager = this.__masterViewManager;
+
+      var path = e.getPath();
+      var view = MasterViewManager.getById(path.getView());
+      view.setSegment(path.getSegment());
+      view.setParam(path.getParam());
+
+      this.debug("Navigate: " + view);
+      MasterViewManager.setView(view);
+
+
     }
   },
 

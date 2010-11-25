@@ -31,10 +31,10 @@ qx.Class.define("flicky.application.Mobile",
       // Configure application
       document.title = "flicky";
       
-      var DetailViewManager = new unify.view.mobile.ViewManager;
+      var DetailViewManager = new unify.view.mobile.ViewManager("detail");
       DetailViewManager.add(flicky.view.mobile.Detail, true);
 
-      var MasterViewManager = new unify.view.mobile.ViewManager;
+      var MasterViewManager = new unify.view.mobile.ViewManager("master");
       MasterViewManager.add(flicky.view.mobile.Start, true);
       MasterViewManager.add(flicky.view.mobile.Recent);
       MasterViewManager.add(flicky.view.mobile.Interesting);
@@ -49,8 +49,8 @@ qx.Class.define("flicky.application.Mobile",
       
       // Intialize navigation
       var Navigation = unify.view.mobile.navigation.Registration.getInstance();
-      Navigation.addManager(MasterViewManager);
-      Navigation.addManager(DetailViewManager);
+      Navigation.add(MasterViewManager);
+      Navigation.add(DetailViewManager);
       Navigation.init();
     }
   }

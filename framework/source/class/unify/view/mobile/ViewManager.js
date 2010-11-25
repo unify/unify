@@ -22,11 +22,12 @@ qx.Class.define("unify.view.mobile.ViewManager",
   *****************************************************************************
   */
 
-  construct : function(defaultView)
+  construct : function(managerId)
   {
     this.base(arguments);
-
-    this.__defaultView = defaultView;
+    
+    this.__id = managerId || this.getHashCode();
+    this.debug("Initialize View Manager: " + this.__id);
 
     // Initialize storage for views
     this.__views = {};
@@ -107,6 +108,12 @@ qx.Class.define("unify.view.mobile.ViewManager",
 
       this.__views[id] = viewClass;
     },
+    
+    
+    getId : function() {
+      return this.__id;
+    },
+    
 
 
     /**
