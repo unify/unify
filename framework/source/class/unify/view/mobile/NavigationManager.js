@@ -43,10 +43,11 @@ qx.Class.define("unify.view.mobile.NavigationManager",
     // Initialize switch data
     this.__switchData = {};
 
-    //TODO: Variant for android
-    if (unify.bom.client.System.ANDROID) {
-      qx.event.Registration.addListener(document, "backKeyDown", this.__onAndroidBackButton, this);
-    }
+    // FIXME
+    // TODO: Variant for android
+    // if (unify.bom.client.System.ANDROID) {
+    //  qx.event.Registration.addListener(document, "backKeyDown", this.__onAndroidBackButton, this);
+    //}
   },
 
 
