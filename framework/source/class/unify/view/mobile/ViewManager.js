@@ -25,14 +25,10 @@ qx.Class.define("unify.view.mobile.ViewManager",
   construct : function(managerId)
   {
     this.base(arguments);
-    
+
+    this.__views = {};
     this.__id = managerId || this.getHashCode();
     this.debug("Initialize View Manager: " + this.__id);
-
-    // Initialize storage for views
-    this.__views = {};
-    
-    this.__layerManager = new unify.ui.mobile.LayerManager(this);
   },
 
 
@@ -161,6 +157,9 @@ qx.Class.define("unify.view.mobile.ViewManager",
       }
 
       var LayerManager = this.__layerManager;
+      if (!LayerManager) {
+        LayerManager = this.__layerManager = new unify.ui.mobile.LayerManager(this);
+      }
 
       if (value)
       {

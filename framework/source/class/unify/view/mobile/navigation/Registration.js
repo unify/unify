@@ -542,7 +542,7 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
       
       
       
-      this.debug("View: " + loc)
+      this.debug("History to View: " + loc)
       
       return;
       
