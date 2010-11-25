@@ -10,10 +10,11 @@
 /**
  * Start View
  */
-qx.Class.define("flicky.view.mobile.Start", {
+qx.Class.define("flicky.view.mobile.Start", 
+{
   extend : unify.view.mobile.StaticView,
   type : "singleton",
-
+  
   members : 
   {
     __content : null,

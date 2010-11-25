@@ -96,17 +96,16 @@ qx.Class.define("unify.view.mobile.ViewManager",
         }
       }
       
-      this.debug("Add View: " + viewObj);
+      var id = qx.lang.String.hyphenate(viewClass.basename).substring(1);
+      this.debug("Add View: " + viewClass + " as " + id);
       
       if (isDefault) 
       {
-        this.debug("Default View: " + viewObj);
-        this.__defaultView = viewObj;
+        this.debug("Default View: " + viewClass);
+        this.__defaultView = viewClass;
       }
 
-      // TODO: Omit view instantiation
-      var viewObj = viewClass.getInstance();
-      this.__views[viewObj.getId()] = viewObj;
+      this.__views[id] = viewClass;
     },
 
 
