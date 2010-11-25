@@ -539,6 +539,13 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
 
       // Update instance
       path.setLocation(loc);
+      
+      
+      
+      this.debug("View: " + loc)
+      
+      return;
+      
 
       // Fill in default segment if missing
       if (path.getSegment() == null)
@@ -556,6 +563,22 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
         }
       }
 
+
+
+      var mode = this.__computeMode(path, old);
+
+      var path = e.getPath();
+      var view = ViewManager.getById(path.getView());
+      view.setSegment(path.getSegment());
+      view.setParam(path.getParam());
+
+      this.debug("Navigate: " + view);
+      MasterViewManager.setView(view);
+      
+      
+      
+
+
       // Store new path
       this.__path = path;
 
@@ -572,21 +595,6 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
           this.warn("Could not store path: " + ex);
         }
       }
-
-      // Fire event
-      var mode = this.__computeMode(path, old);
-
-      var MasterViewManager = this.__masterViewManager;
-
-      var path = e.getPath();
-      var view = MasterViewManager.getById(path.getView());
-      view.setSegment(path.getSegment());
-      view.setParam(path.getParam());
-
-      this.debug("Navigate: " + view);
-      MasterViewManager.setView(view);
-
-
     }
   },
 

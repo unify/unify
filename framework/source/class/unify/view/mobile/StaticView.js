@@ -39,23 +39,6 @@ qx.Class.define("unify.view.mobile.StaticView",
 
   /*
   *****************************************************************************
-     CONSTRUCTOR
-  *****************************************************************************
-  */
-
-  construct : function()
-  {
-    this.base(arguments);
-
-    // Generate ID from class name
-    this.__id = qx.lang.String.hyphenate(this.basename).substring(1);
-  },
-
-
-
-
-  /*
-  *****************************************************************************
      EVENTS
   *****************************************************************************
   */
@@ -128,21 +111,6 @@ qx.Class.define("unify.view.mobile.StaticView",
 
     /** {unify.ui.mobile.Layer} Stores the layer instance of the view. */
     __layer : null,
-
-    /** {String} Unique identifier of view instance */
-    __id : null,
-
-
-    /**
-     * Returns the globally unique identifier of this view.
-     *
-      * @final
-     * @return {String} Unique ID
-     */
-    getId : function() {
-      return this.__id;
-    },
-
 
     /**
      * Parametrized views may have a default parameter which is

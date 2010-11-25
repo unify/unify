@@ -72,9 +72,8 @@ qx.Class.define("unify.view.mobile.ViewManager",
     
     __defaultView : null,
 
-    /** {String} Mode of last view switch */
-    __mode : null,
-
+    __id : null,
+    
 
 
     /*
@@ -90,15 +89,8 @@ qx.Class.define("unify.view.mobile.ViewManager",
      */
     add : function(viewClass, isDefault)
     {
-      if (qx.core.Variant.isSet("qx.debug", "on"))
-      {
-        if (!viewClass) {
-          throw new Error("Invalid view class: " + viewClass);
-        }
-      }
-      
       var id = qx.lang.String.hyphenate(viewClass.basename).substring(1);
-      this.debug("Add View: " + viewClass + " as " + id);
+      this.debug("Add View " + id);
       
       if (isDefault) 
       {
@@ -148,18 +140,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
      */
     getDefaultView : function() {
       return this.__defaultView;
-    },
-
-
-    /**
-     * Returns the last mode for a view switch.
-     *
-     * See also: {@link unify.event.type.Navigate#getMode}
-     *
-     * @return {String} Mode of last view switch.
-     */
-    getMode : function() {
-      return this.__mode;
     },
 
 
