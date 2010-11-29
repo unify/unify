@@ -187,12 +187,7 @@ qx.Class.define("unify.application.Mobile",
      */
     __onTapFollow : function(elem)
     {
-      // unify.view.mobile.NavigationManager.getInstance().follow(elem);
-      
-      console.debug("Follow: " + elem);
-      
-      // FIXME
-      unify.view.mobile.NavigationManager.getInstance().follow(elem);
+      unify.view.mobile.Navigation.getInstance().follow(elem);
 
       // Lazy further processing
       // Give the device some time for painting, garbage collection etc.
@@ -311,14 +306,18 @@ qx.Class.define("unify.application.Mobile",
   {
     var unifyTouch;
     var unifyPostitionShift;
-    if (unify.bom.client.System.ANDROID) {
+    if (unify.bom.client.System.ANDROID) 
+    {
       qx.bom.element.Class.add(document.documentElement, "android");
       unifyTouch = "wiggly";
       unifyPostitionShift = "2d";
-    } else {
+    } 
+    else
+    {
       unifyTouch = "precise";
       unifyPostitionShift = "3d";
     }
+    
     qx.core.Variant.define("unify.touch", ["precise","wiggly"], unifyTouch);
     qx.core.Variant.define("unify.postitionshift", ["3d","2d","position"], unifyPostitionShift);
   }
