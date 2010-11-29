@@ -86,11 +86,9 @@ qx.Class.define("unify.view.mobile.ViewManager",
     add : function(viewClass, isDefault)
     {
       var id = qx.lang.String.hyphenate(viewClass.basename).substring(1);
-      this.debug("Add View " + id);
+      this.debug("Adding view: " + id);
       
-      if (isDefault) 
-      {
-        this.debug("Set Default View");
+      if (isDefault) {
         this.__defaultView = viewClass;
       }
 
@@ -188,27 +186,21 @@ qx.Class.define("unify.view.mobile.ViewManager",
       }
 
       var LayerManager = this.__layerManager;
-      if (!LayerManager) {
+      if (!LayerManager) 
+      {
+        this.debug("Creating LayerManager...");
         LayerManager = this.__layerManager = new unify.ui.mobile.LayerManager(this);
       }
 
-      if (value)
-      {
-        // Resume the view
-        var now = (new Date).valueOf();
-        value.setActive(true);
-        this.debug("Activated in " + ((new Date).valueOf()-now) + "ms");
+      // Resume the view
+      var now = (new Date).valueOf();
+      value.setActive(true);
+      this.debug("Activated in " + ((new Date).valueOf()-now) + "ms");
 
-        // Switch layers
-        var now = (new Date).valueOf();
-        LayerManager.setLayer(value.getLayer());
-        this.debug("Switched in " + ((new Date).valueOf()-now) + "ms");
-      }
-      else
-      {
-        // Hide current layer
-        LayerManager.resetLayer();
-      }
+      // Switch layers
+      var now = (new Date).valueOf();
+      LayerManager.setLayer(value.getLayer());
+      this.debug("Switched in " + ((new Date).valueOf()-now) + "ms");
     }
   }
 });
