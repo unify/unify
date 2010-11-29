@@ -268,14 +268,23 @@ qx.Class.define("unify.view.mobile.ViewManager",
         }
         else
         {
-          // Mark as following (read: active)
-          this.__following = true;
+          var href = elem.getAttribute("href");
+          if (href != "" && href.charAt(0) != "#")
+          {
+            // FIXME
+            // Absolute link
+          }
+          else
+          {
+            // Mark as following (read: active)
+            this.__following = true;
 
-          // Add CSS class for selection highlighting
-          this.select(elem);
+            // Add CSS class for selection highlighting
+            this.select(elem);
 
-          // Lazy further processing
-          qx.lang.Function.delay(this.__onTapFollow, 0, this, elem);
+            // Lazy further processing
+            qx.lang.Function.delay(this.__onTapFollow, 0, this, elem);
+          }
         }
       }
     },
@@ -288,7 +297,12 @@ qx.Class.define("unify.view.mobile.ViewManager",
      */
     __onTapFollow : function(elem)
     {
-      unify.view.mobile.Navigation.getInstance().follow(elem);
+      // unify.view.mobile.Navigation.getInstance().follow(elem);
+      
+      var href = elem.getAttribute("href");
+      
+      
+      
 
       // Lazy further processing
       // Give the device some time for painting, garbage collection etc.

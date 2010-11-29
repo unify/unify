@@ -165,47 +165,34 @@ qx.Class.define("unify.view.mobile.Navigation",
       // Debug link processing time
       var start = +new Date;
 
-      try
+      // Process simple links
+      var href = link.getAttribute("href");
+      if (href)
       {
-        // Process simple links
-        var href = link.getAttribute("href");
-        if (href)
-        {
-          // this.debug("Follow HREF: " + href);
+        // this.debug("Follow HREF: " + href);
+        this.enter(href.substring(1));
+      }
+      else
+      {
+        // Do advanced processing
+        var path = link.getAttribute("goto");
+        var rel = link.getAttribute("rel");
 
-          if (href.indexOf("#") == 0) {
-            this.enter(href.substring(1));
-          } else {
-            window.open(href);
-          }
+        // this.debug("Follow GOTO: " + path);
+
+        if (rel == null)
+        {
+          this.enter(path);
         }
         else
         {
-          // Do advanced processing
-          var path = link.getAttribute("goto");
-          var rel = link.getAttribute("rel");
-
-          // this.debug("Follow GOTO: " + path);
-
-          if (rel == null)
-          {
-            this.enter(path);
-          }
-          else
-          {
-            var method = this.__followMapper[rel];
-            if (method) {
-              this[method](path);
-            } else if (qx.core.Variant.isSet("qx.debug", "on")) {
-              this.error("Unsupported 'rel' attribute: " + rel);
-            }
+          var method = this.__followMapper[rel];
+          if (method) {
+            this[method](path);
+          } else if (qx.core.Variant.isSet("qx.debug", "on")) {
+            this.error("Unsupported 'rel' attribute: " + rel);
           }
         }
-      }
-      catch(ex)
-      {
-        this.error("Could not follow link " + (href||rel));
-        this.error(ex.message);
       }
 
       this.debug("Executed in: " + (new Date - start) + "ms");
