@@ -166,6 +166,12 @@ qx.Class.define("unify.view.mobile.ViewManager",
         this.setView(view);
       }
     },
+    
+    
+    getMode : function() {
+      // FIXME
+      return null;
+    },
 
 
 
@@ -179,28 +185,20 @@ qx.Class.define("unify.view.mobile.ViewManager",
     // property apply
     _applyView : function(value, old)
     {
-      this.debug("View: " + value);
+      this.debug("Activating view: " + value);
 
       if (old) {
         old.resetActive();
       }
 
       var LayerManager = this.__layerManager;
-      if (!LayerManager) 
-      {
-        this.debug("Creating LayerManager...");
+      if (!LayerManager) {
         LayerManager = this.__layerManager = new unify.ui.mobile.LayerManager(this);
       }
 
-      // Resume the view
-      var now = (new Date).valueOf();
+      // Resume/Switch the view
       value.setActive(true);
-      this.debug("Activated in " + ((new Date).valueOf()-now) + "ms");
-
-      // Switch layers
-      var now = (new Date).valueOf();
       LayerManager.setLayer(value.getLayer());
-      this.debug("Switched in " + ((new Date).valueOf()-now) + "ms");
     }
   }
 });
