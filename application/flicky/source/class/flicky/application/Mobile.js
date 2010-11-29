@@ -50,7 +50,7 @@ qx.Class.define("flicky.application.Mobile",
       // TabBar.add(flicky.view.mobile.Interesting);
       
       // Intialize navigation
-      var Navigation = unify.view.mobile.navigation.Registration.getInstance();
+      var Navigation = unify.view.mobile.Navigation.getInstance();
       Navigation.add(MasterViewManager);
       Navigation.add(DetailViewManager);
       Navigation.init();
