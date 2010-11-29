@@ -37,7 +37,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
     }
     
     var elem = this.__element = document.createElement("div");
-    elem.className = "ViewManager";
+    elem.className = "view-manager";
     elem.id = managerId;
     
 
