@@ -516,6 +516,8 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
     __viewManagers : null,
     __defaultView : null,
     __location : null,
+    
+    __urlMatcher : /^([a-z-]+)(\.([a-z-]+))?(\:([a-zA-Z0-9_-]+))?$/,
 
 
     /**
@@ -558,22 +560,17 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
       var currentSplits = currentLocation == "" ? [] : currentLocation.split("/");
       var oldSplits = oldLocation == "" ? [] : oldLocation.split("/");
       
-      // Format: view.segment:param
-      var splitMatcher = /^([a-z-]+)(\.([a-z-]+))?(\:([a-zA-Z0-9_-]+))?$/;
-      var managers = this.__viewManagers;
-      
-
       // Create new data structure mapping managers to their individual structure
+      var managers = this.__viewManagers;
       var structure = {};
       for (var id in managers) {
         structure[id] = [];
       }
       
-      
       // Process current path
       for (var i=0, l=currentSplits.length; i<l; i++) 
       {
-        var match = splitMatcher.exec(currentSplits[i]);
+        var match = this.__urlMatcher.exec(currentSplits[i]);
         var view = RegExp.$1;
         var segment = RegExp.$3;
         var param = RegExp.$5;
