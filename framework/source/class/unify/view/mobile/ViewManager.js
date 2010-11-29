@@ -258,8 +258,9 @@ qx.Class.define("unify.view.mobile.ViewManager",
         
         // Stop further event processing
         e.stopPropagation();
+        e.preventDefault();
         
-        
+        // Analyse element and process further
         var exec = elem.getAttribute("exec");
         if (exec) 
         {
@@ -271,8 +272,8 @@ qx.Class.define("unify.view.mobile.ViewManager",
           var href = elem.getAttribute("href");
           if (href != "" && href.charAt(0) != "#")
           {
-            // FIXME
             // Absolute link
+            window.open(href);
           }
           else
           {
