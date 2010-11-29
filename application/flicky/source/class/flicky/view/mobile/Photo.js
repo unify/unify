@@ -17,11 +17,12 @@ qx.Class.define("flicky.view.mobile.Photo", {
   members : 
   {
     __content : null,
+    __title : "Loading...",
   
 
     // overridden
     getTitle : function(type, param) {
-      return "Photo: " + param;
+      return this.__title;
     },
 
     
@@ -78,11 +79,14 @@ qx.Class.define("flicky.view.mobile.Photo", {
       var results = data.query.results;
       if (results == null)
       {
+        delete this.__title;
         this.__content.replace("Unknown Image!");
       }
       else
       {
+        this.__title = results.photo.title;
         this.__content.replace(this.__createImage(results.photo));
+        this.fireEvent("changeTitle");
       }
     },
     
