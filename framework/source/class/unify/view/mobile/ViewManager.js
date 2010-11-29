@@ -161,7 +161,12 @@ qx.Class.define("unify.view.mobile.ViewManager",
         
         // Setup parent
         parent = view;
-      }      
+      }
+      
+      // Activate last view
+      if (view) {
+        this.setView(view);
+      }
     },
 
 
