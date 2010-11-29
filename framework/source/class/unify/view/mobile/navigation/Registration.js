@@ -512,6 +512,10 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
         return null;
       }
     },
+    
+    __viewManagers : null,
+    __defaultView : null,
+    __location : null,
 
 
     /**
@@ -576,13 +580,9 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
         
         for (var id in managers) 
         {
-          this.debug("Manager: " + id + " :: " + view)
-
           var viewClass = managers[id].getById(view);
           if (viewClass) 
           {
-            this.debug("Add " + currentSplits[i] + " to " + id);
-            
             structure[id].push({
               view : view,
               segment : segment,
@@ -608,8 +608,28 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
         var manager = managers[id];
         this.debug("Update views of manager: " + id);
         
+        var hierarchy = structure[id];
+        var parent = null;
         
-        // TODO
+        for (var i=0, l=hierarchy.length; i<l; i++)
+        {
+          // Create view instance, if not done yet
+          var current = hierarchy[i];
+          var view = current.cls.getInstance();
+          this.debug("Configure: " + current.view);
+
+          // Update configuration
+          parent != null ? view.setParent(parent) : view.resetParent();
+
+          var segment = current.segment;
+          segment != null ? view.setSegment(segment) : view.resetSegment();
+
+          var param = current.param;
+          param != null ? view.setParam(param) : view.resetParam();
+          
+          // Setup parent
+          parent = view;
+        }
       }
     }
   },

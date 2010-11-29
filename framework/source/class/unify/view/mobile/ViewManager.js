@@ -128,6 +128,13 @@ qx.Class.define("unify.view.mobile.ViewManager",
     getDefaultView : function() {
       return this.__defaultView;
     },
+    
+    
+    
+    update : function(config)
+    {
+      
+    },
 
 
 

@@ -65,6 +65,13 @@ qx.Class.define("unify.view.mobile.StaticView",
 
   properties :
   {
+    parent :
+    {
+      check : "unify.view.mobile.StaticView",
+      nullable : true,
+      apply : "_applyParent"
+    },
+    
     /** Whether the view is active */
     active :
     {
@@ -234,6 +241,13 @@ qx.Class.define("unify.view.mobile.StaticView",
       {
         this._pauseView();
       }
+    },
+    
+    
+    // property apply
+    _applyParent : function(value, old)
+    {
+      
     },
 
 
