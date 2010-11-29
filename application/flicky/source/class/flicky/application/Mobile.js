@@ -31,14 +31,14 @@ qx.Class.define("flicky.application.Mobile",
       // Configure application
       document.title = "flicky";
       
-      var DetailViewManager = new unify.view.mobile.ViewManager("detail");
-      DetailViewManager.add(flicky.view.mobile.Info, true);
-      DetailViewManager.add(flicky.view.mobile.Photo);
-
       var MasterViewManager = new unify.view.mobile.ViewManager("master");
       MasterViewManager.add(flicky.view.mobile.Start, true);
       MasterViewManager.add(flicky.view.mobile.Recent);
       MasterViewManager.add(flicky.view.mobile.Interesting);
+
+      var DetailViewManager = new unify.view.mobile.ViewManager("detail");
+      DetailViewManager.add(flicky.view.mobile.Info, true);
+      DetailViewManager.add(flicky.view.mobile.Photo);
       
       var SplitViewManager = new unify.view.mobile.SplitViewManager(MasterViewManager, DetailViewManager);
       this.add(SplitViewManager);
