@@ -1,2 +1,4 @@
 .project
 tool/unify-sass/.sass-cache
+
+/application/flicky/log.txt

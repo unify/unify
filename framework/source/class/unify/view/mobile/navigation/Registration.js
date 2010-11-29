@@ -584,11 +584,9 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
           if (viewClass) 
           {
             structure[id].push({
-              view : view,
+              view : viewClass,
               segment : segment,
-              param : param,
-              cls : viewClass,
-              manager : managers[id] 
+              param : param
             });
 
             view = null;
@@ -603,33 +601,8 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
       
       
       // Update managers
-      for (var id in managers)
-      {
-        var manager = managers[id];
-        this.debug("Update views of manager: " + id);
-        
-        var hierarchy = structure[id];
-        var parent = null;
-        
-        for (var i=0, l=hierarchy.length; i<l; i++)
-        {
-          // Create view instance, if not done yet
-          var current = hierarchy[i];
-          var view = current.cls.getInstance();
-          this.debug("Configure: " + current.view);
-
-          // Update configuration
-          parent != null ? view.setParent(parent) : view.resetParent();
-
-          var segment = current.segment;
-          segment != null ? view.setSegment(segment) : view.resetSegment();
-
-          var param = current.param;
-          param != null ? view.setParam(param) : view.resetParam();
-          
-          // Setup parent
-          parent = view;
-        }
+      for (var id in structure) {
+        managers[id].update(structure[id]);
       }
     }
   },

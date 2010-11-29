@@ -131,9 +131,37 @@ qx.Class.define("unify.view.mobile.ViewManager",
     
     
     
-    update : function(config)
+    /**
+     * Update given views
+     * 
+     * @param views {Map[]} List of affected views
+     * @return {}
+     */
+    update : function(views)
     {
+      this.debug("Updating views...");
       
+      var parent = null;
+      
+      for (var i=0, l=views.length; i<l; i++)
+      {
+        var config = views[i];
+
+        // Create view instance, if not done yet
+        var view = config.view.getInstance();
+
+        // Update configuration
+        parent != null ? view.setParent(parent) : view.resetParent();
+
+        var segment = config.segment;
+        segment != null ? view.setSegment(segment) : view.resetSegment();
+
+        var param = config.param;
+        param != null ? view.setParam(param) : view.resetParam();
+        
+        // Setup parent
+        parent = view;
+      }      
     },
 
 
