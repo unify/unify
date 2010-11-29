@@ -81,8 +81,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
     /** {Map} A map with all keys (by ID) */
     __views : null,
 
-    __layerManager : null,
-    
     __defaultView : null,
 
     __id : null,
@@ -152,6 +150,19 @@ qx.Class.define("unify.view.mobile.ViewManager",
     },
     
     
+
+    /**
+     * Selects the given DOM element. Automatically disables fade-out
+     * selections during layer animation.
+     *
+     * @param elem {Element} DOM element to select
+     */
+    select : function(elem)
+    {
+      this.__cleanupAnimateSelectionRecovery();
+      qx.bom.element2.Class.add(elem, "selected");
+    },    
+    
     
     /**
      * Update given views. 
@@ -194,11 +205,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
     },
     
     
-    getMode : function() {
-      // FIXME
-      return null;
-    },
-
 
 
 
@@ -217,16 +223,250 @@ qx.Class.define("unify.view.mobile.ViewManager",
         old.resetActive();
       }
 
-      var LayerManager = this.__layerManager;
-      if (!LayerManager) 
+      // Resuming the view
+      value.setActive(true);
+
+      // Cache element/view references
+      var toLayer = value && value.getElement();
+      var fromLayer = old && old.getElement();
+      var toView = value && value.getView();
+      var fromView = old && old.getView();
+
+      // FIXME
+      var mode = null;
+
+      // Detect animation
+      if (mode == "in" || mode == "out")
       {
-        LayerManager = this.__layerManager = new unify.ui.mobile.LayerManager(this);
-        this.__element.appendChild(LayerManager.getElement());
+        var animationProperty = "transform";
+
+        if (qx.core.Variant.isSet("unify.postitionshift", "3d")) {
+          var positionBottomOut = "translate3d(0,100%,0)";
+          var positionRightOut = "translate3d(100%,0,0)";
+          var positionLeftOut = "translate3d(-100%,0,0)";
+          var positionVisible = "translate3d(0,0,0)";
+        } else if (qx.core.Variant.isSet("unify.postitionshift", "2d")) {
+          var positionBottomOut = "translate(0,100%)";
+          var positionRightOut = "translate(100%,0)";
+          var positionLeftOut = "translate(-100%,0)";
+          var positionVisible = "translate(0,0)";
+        }
+
+        if (mode == "in")
+        {
+          if (toView.isModal())
+          {
+            this.__animateLayer(toLayer, animationProperty, positionBottomOut, positionVisible, true, fromLayer);
+          }
+          else
+          {
+            this.__animateLayer(toLayer, animationProperty, positionRightOut, positionVisible, true);
+            this.__animateLayer(fromLayer, animationProperty, positionVisible, positionLeftOut, false);
+          }
+        }
+        else if (mode == "out")
+        {
+          if (fromView.isModal())
+          {
+            this.__animateLayer(fromLayer, animationProperty, positionVisible, positionBottomOut, false, toLayer);
+          }
+          else
+          {
+            this.__animateLayer(toLayer, animationProperty, positionLeftOut, positionVisible, true);
+            this.__animateLayer(fromLayer, animationProperty, positionVisible, positionRightOut, false);
+            this.__animateSelectionRecovery(fromView);
+          }
+        }
+      }
+      else
+      {
+        if (old) {
+          qx.bom.element2.Class.remove(fromLayer, "current");
+        }
+
+        if (value) {
+          qx.bom.element2.Class.add(toLayer, "current");
+        }
       }
 
-      // Resume/Switch the view
-      value.setActive(true);
-      LayerManager.setLayer(value.getLayer());
-    }
+      // Fire appear/disappear events
+      if (old) {
+        fromView.fireEvent("disappear");
+      }
+
+      if (value) {
+        toView.fireEvent("appear");
+      }
+    },
+    
+    
+
+
+    /** {unify.ui.mobile.Layer} During layer animation: The previous layer */
+    __fromLayer : null,
+
+    /** {unify.ui.mobile.Layer} During layer animation: The next layer */
+    __toLayer : null,
+
+    /** {Boolean} The number of currently running animations */
+    __running : 0,
+
+    /** {Element} DOM element which is currently fadeout during selection recovery */
+    __selectElem : null,
+    
+
+
+
+    /**
+     * Recovers selection on current layer when transitioning from given view.
+     *
+     * @param fromView {unify.view.mobile.StaticView} View instance the user came from originally
+     */
+    __animateSelectionRecovery : function(fromView)
+    {
+      var Style = qx.bom.element2.Style;
+
+      // Build expression for selection
+      var fromViewId = fromView.getId();
+      var fromViewParam = fromView.getParam();
+      var target = fromViewId + (fromViewParam != null ? ":" + fromViewParam : "");
+
+      // Select element and fade out selection slowly
+      var selectElem = this.getLayer().getElement().querySelector('[goto="' + target + '"]');
+      if (selectElem)
+      {
+        var duration = Style.property("transitionDuration");
+        var selectElemStyle = selectElem.style;
+
+        selectElemStyle[duration] = "0ms";
+        qx.bom.element2.Class.add(selectElem, "selected");
+
+        selectElem.offsetWidth+1;
+        selectElemStyle[duration] = "1000ms";
+        qx.bom.element2.Class.remove(selectElem, "selected");
+
+        this.__selectElem = selectElem;
+        qx.event.Registration.addListener(selectElem, "transitionEnd", this.__cleanupAnimateSelectionRecovery, this);
+      }
+    },
+
+
+    /**
+     * Callback handler for transition function of animation created during
+     * {@link #__recoverSelection}. Clears event listeners and styles.
+     */
+    __cleanupAnimateSelectionRecovery : function()
+    {
+      var selectElem = this.__selectElem;
+      if (selectElem)
+      {
+        qx.event.Registration.removeListener(selectElem, "transitionEnd", this.__cleanupAnimateSelectionRecovery, this);
+        qx.bom.element2.Style.set(selectElem, "transitionDuration", "");
+
+        // Force rendering. Required to re-select the element instantanously when clicked on it.
+        // Otherwise it fades in again which is not what we want here.
+        selectElem.offsetWidth;
+
+        // Clear element marker
+        this.__selectElem = null;
+      }
+    },
+
+
+    /**
+     * Animates a layer property
+     *
+     * @param target {Element} DOM element of layer
+     * @param property {String} Style property to modify
+     * @param from {var} Start value
+     * @param to {var} End value
+     * @param current {Boolean?false} Whether this layer is the current layer (read: new layer)
+     * @param other {Element} DOM element of other layer (previous/next).
+     */
+    __animateLayer : function(target, property, from, to, current, other)
+    {
+      var Registration = qx.event.Registration;
+      var Class = qx.bom.element2.Class;
+      var Style = qx.bom.element2.Style;
+      var targetStyle = target.style;
+
+      // Increment running animation counter
+      this.__running++;
+
+      // Normalize cross-browser differences
+      property = Style.property(property);
+      var duration = Style.property("transitionDuration");
+
+      // Method to cleanup after transition
+      var cleanup = function()
+      {
+        // Disable transition again
+        targetStyle[duration] = "0ms";
+
+        // Remove listener
+        Registration.removeListener(target, "transitionEnd", cleanup, this);
+
+        // Hide the other layer when this is the current one
+        // Otherwise hide this layer when not the current one
+        var selectedElem;
+        if (current && other)
+        {
+          qx.bom.element2.Class.remove(other, "current");
+          selectedElem = other.querySelector(".selected");
+        }
+
+        // Make completely invisible if not current layer
+        else if (!current)
+        {
+          qx.bom.element2.Class.remove(target, "current");
+          selectedElem = target.querySelector(".selected");
+        }
+
+        // Remove selection
+        if (selectedElem) {
+          qx.bom.element2.Class.remove(selectedElem, "selected");
+        }
+
+        // Revert modifications
+        targetStyle.zIndex = "";
+        targetStyle[property] = "";
+
+        // Decrement running animation counter
+        this.__running--;
+      };
+
+      // React on transition end
+      Registration.addListener(target, "transitionEnd", cleanup, this);
+
+      // Move to top
+      targetStyle.zIndex = 1000;
+
+      // Disable transition
+      targetStyle[duration] = "0ms";
+
+      // Apply initial value
+      targetStyle[property] = from;
+
+      // Initial display when current layer
+      if (current)
+      {
+        qx.bom.element2.Class.add(target, "current");
+
+        // Force rendering
+        target.offsetWidth + target.offsetHeight;
+      }
+
+      // Or show other layer when not the current one
+      else if (other)
+      {
+        qx.bom.element2.Class.add(other, "current");
+      }
+
+      // Enable transition
+      targetStyle[duration] = "";
+
+      // Apply target value
+      targetStyle[property] = to;
+    }    
   }
 });
