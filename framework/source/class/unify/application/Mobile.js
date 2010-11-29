@@ -125,8 +125,7 @@ qx.Class.define("unify.application.Mobile",
      */
     __setupDocumentSize : function()
     {
-      var System = unify.bom.client.System;
-      if (unify.bom.client.Extension.PHONEGAP && System.IOS)
+      if (unify.bom.client.Extension.PHONEGAP && unify.bom.client.System.IOS)
       {
         // This is a client-side bugfix for this issue in PhoneGap on iPhone OS:
         // http://phonegap.lighthouseapp.com/projects/20116-iphone/tickets/51-uiwebview-viewport-larger-than-application-viewport
