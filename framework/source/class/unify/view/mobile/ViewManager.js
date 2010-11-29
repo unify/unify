@@ -247,33 +247,35 @@ qx.Class.define("unify.view.mobile.ViewManager",
     {
       if (this.__following)
       {
-        this.warn("ViewManager is still following...");
+        this.warn("Still following!");
         return;
       }
 
       var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
       if (elem)
       {
+        this.debug("Processing tap...");
+        
         // Stop further event processing
         e.stopPropagation();
-
-        // Mark as following (read: active)
-        this.__following = true;
-
-        // Whether we need to handle selection
-        if (elem.hasAttribute("goto") && !elem.hasAttribute("rel"))
+        
+        
+        var exec = elem.getAttribute("exec");
+        if (exec) 
         {
-          // FIXME
-          // Add CSS class for selection highlighting
-          // unify.ui.mobile.LayerManager.getInstance().select(elem);
-
-          // Lazy further processing
-          qx.lang.Function.delay(this.__onTapFollow, 0, this, elem);
+          // FIXME 
+          // Support executing public function on currently selected view
         }
         else
         {
-          // Directly follow
-          this.__onTapFollow(elem);
+          // Mark as following (read: active)
+          this.__following = true;
+
+          // Add CSS class for selection highlighting
+          this.select(elem);
+
+          // Lazy further processing
+          qx.lang.Function.delay(this.__onTapFollow, 0, this, elem);
         }
       }
     },

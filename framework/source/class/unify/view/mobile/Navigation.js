@@ -125,13 +125,7 @@ qx.Class.define("unify.view.mobile.Navigation",
      *
      * *General*
      *
-     * Navigation is possible using the attribute <code>goto</code> and <code>rel</code>. Executing
-     * methods on the current view is possible using the <code>exec</code>. These two special attributes
-     * are only allowed on non-link elements.
-     *
-     * To execute commands just define the name of the method to execute as the value
-     * of the <code>exec</code> attribute. The function to execute needs to be public on the
-     * current view and will be executed in context of the view, but without any parameters.
+     * Navigation is possible using the attribute <code>goto</code> and <code>rel</code>.
      *
      * These are the supported "rel" attributes:
      *
@@ -187,40 +181,30 @@ qx.Class.define("unify.view.mobile.Navigation",
         }
         else
         {
-          // Execute view commands
-          var exec = link.getAttribute("exec");
-          if (exec)
+          // Do advanced processing
+          var path = link.getAttribute("goto");
+          var rel = link.getAttribute("rel");
+
+          // this.debug("Follow GOTO: " + path);
+
+          if (rel == null)
           {
-            // this.debug("Follow EXEC: " + exec);
-            this.exec(exec, link);
+            this.enter(path);
           }
           else
           {
-            // Do advanced processing
-            var path = link.getAttribute("goto");
-            var rel = link.getAttribute("rel");
-
-            // this.debug("Follow GOTO: " + path);
-
-            if (rel == null)
-            {
-              this.enter(path);
-            }
-            else
-            {
-              var method = this.__followMapper[rel];
-              if (method) {
-                this[method](path);
-              } else if (qx.core.Variant.isSet("qx.debug", "on")) {
-                this.error("Unsupported 'rel' attribute: " + rel);
-              }
+            var method = this.__followMapper[rel];
+            if (method) {
+              this[method](path);
+            } else if (qx.core.Variant.isSet("qx.debug", "on")) {
+              this.error("Unsupported 'rel' attribute: " + rel);
             }
           }
         }
       }
       catch(ex)
       {
-        this.error("Could not follow link " + (href||exec||rel));
+        this.error("Could not follow link " + (href||rel));
         this.error(ex.message);
       }
 
@@ -255,30 +239,6 @@ qx.Class.define("unify.view.mobile.Navigation",
      */
     jump : function(path) {
       unify.bom.History.getInstance().jump(path);
-    },
-
-
-    /**
-     * Executes the given function on the current view
-     *
-     * @param func {String} Name of function to execute (needs to be a public function!)
-     * @param target {Element} DOM element which was clicked onto
-     * @return {var} Return value of function to execute
-     */
-    exec : function(func, target)
-    {
-      if (qx.core.Variant.isSet("qx.debug", "on"))
-      {
-        if (func.indexOf("_") == 0) {
-          throw new Error("Could not execute protected or private methods: " + func);
-        }
-      }
-
-      if (view && view[func]) {
-        return view[func](target);
-      } else if (qx.core.Variant.isSet("qx.debug", "on")) {
-        throw new Error("Executing " + func + "() not supported by current view!");
-      }
     },
 
 
