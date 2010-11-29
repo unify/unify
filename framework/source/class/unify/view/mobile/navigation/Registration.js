@@ -559,7 +559,7 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
       var oldSplits = oldLocation == "" ? [] : oldLocation.split("/");
       
       // Format: view.segment:param
-      var splitMatcher = /^([a-z-]+)(\.[a-z-]+)?(\:[a-zA-Z0-9_-]+)?$/;
+      var splitMatcher = /^([a-z-]+)(\.([a-z-]+))?(\:([a-zA-Z0-9_-]+))?$/;
       var managers = this.__viewManagers;
       
 
@@ -575,8 +575,8 @@ qx.Class.define("unify.view.mobile.navigation.Registration",
       {
         var match = splitMatcher.exec(currentSplits[i]);
         var view = RegExp.$1;
-        var segment = RegExp.$2;
-        var param = RegExp.$3;
+        var segment = RegExp.$3;
+        var param = RegExp.$5;
         
         for (var id in managers) 
         {
