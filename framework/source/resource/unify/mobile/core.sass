@@ -75,6 +75,26 @@ textarea
 
 a[href], [rel], [goto], [exec]
   cursor: default
+  
+  
+  
+//
+
+.SplitViewManager
+  +hbox
+  width: 100%
+  height: 100%
+  position: relative
+  border: 2px solid lime
+  
+  > div
+    width: 10%
+    height: 100%
+    +box-flex(1)
+    border: 2px solid red
+    position: relative
+  
+  
 
 // ***************************************************************************************************
 //	 SINGLETON: TAB BAR
