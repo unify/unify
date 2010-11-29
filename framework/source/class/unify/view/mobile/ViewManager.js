@@ -229,8 +229,8 @@ qx.Class.define("unify.view.mobile.ViewManager",
       // Cache element/view references
       var toLayer = value && value.getElement();
       var fromLayer = old && old.getElement();
-      var toView = value && value.getView();
-      var fromView = old && old.getView();
+      var toView = value;
+      var fromView = old;
 
       // FIXME
       var mode = null;

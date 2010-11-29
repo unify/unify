@@ -145,6 +145,12 @@ qx.Class.define("unify.view.mobile.StaticView",
     getLayer : function() {
       return this.__layer || this.create();
     },
+    
+    
+    getElement : function() {
+      // FIXME: not all views might be layers 
+      return this.getLayer().getElement();
+    },
 
 
     /**
