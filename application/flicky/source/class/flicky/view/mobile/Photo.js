@@ -10,7 +10,7 @@
 /**
  * Recent View
  */
-qx.Class.define("flicky.view.mobile.Detail", {
+qx.Class.define("flicky.view.mobile.Photo", {
   extend : unify.view.mobile.RemoteView,
   type : "singleton",
 
@@ -21,7 +21,7 @@ qx.Class.define("flicky.view.mobile.Detail", {
 
     // overridden
     getTitle : function(type, param) {
-      return "Detail";
+      return "Photo: " + param;
     },
 
     

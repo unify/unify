@@ -11,12 +11,15 @@ qx.Class.define("unify.view.mobile.SplitViewManager",
     var elem = this.__element = document.createElement("div");
     elem.className = "SplitViewManager";
 
-    
     this.__mainViewManager = mainViewManager;
     this.__detailViewManager = detailViewManager;
-    
+
     elem.appendChild(mainViewManager.getElement());
     elem.appendChild(detailViewManager.getElement());
+  },
+  
+  properties :
+  {
     
   },
   
