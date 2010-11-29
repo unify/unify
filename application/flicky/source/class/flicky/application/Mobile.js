@@ -41,6 +41,7 @@ qx.Class.define("flicky.application.Mobile",
       MasterViewManager.add(flicky.view.mobile.Interesting);
       
       var SplitViewManager = new unify.view.mobile.SplitViewManager(MasterViewManager, DetailViewManager);
+      this.add(SplitViewManager);
       
       // Configure tab bar
       // var TabBar = unify.ui.mobile.TabBar.getInstance();

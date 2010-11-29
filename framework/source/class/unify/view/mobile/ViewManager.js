@@ -22,13 +22,30 @@ qx.Class.define("unify.view.mobile.ViewManager",
   *****************************************************************************
   */
 
+  /**
+   * @param managerId {String} globally unique ID of this manager
+   */
   construct : function(managerId)
   {
     this.base(arguments);
+    
+    if (qx.core.Variant.isSet("qx.debug", "on"))
+    {
+      if (managerId == null) {
+        throw new Error("Invalid manager ID: " + managerId);
+      }
+    }
+    
+    var elem = this.__element = document.createElement("div");
+    elem.className = "ViewManager";
+    elem.id = managerId;
+    
 
-    this.__views = {};
-    this.__id = managerId || this.getHashCode();
+    this.__id = managerId;
     this.debug("Initialize View Manager: " + this.__id);
+
+    // Data structure for managed views
+    this.__views = {};
   },
 
 
@@ -70,6 +87,8 @@ qx.Class.define("unify.view.mobile.ViewManager",
 
     __id : null,
     
+    __element : null,
+    
 
 
     /*
@@ -93,6 +112,11 @@ qx.Class.define("unify.view.mobile.ViewManager",
       }
 
       this.__views[id] = viewClass;
+    },
+    
+    
+    getElement : function() {
+      return this.__element;
     },
     
     
@@ -130,7 +154,9 @@ qx.Class.define("unify.view.mobile.ViewManager",
     
     
     /**
-     * Update given views
+     * Update given views. 
+     * 
+     * The data structure should reflect the navigation structure.
      * 
      * @param views {Map[]} List of affected views
      * @return {}
@@ -192,8 +218,10 @@ qx.Class.define("unify.view.mobile.ViewManager",
       }
 
       var LayerManager = this.__layerManager;
-      if (!LayerManager) {
+      if (!LayerManager) 
+      {
         LayerManager = this.__layerManager = new unify.ui.mobile.LayerManager(this);
+        this.__element.appendChild(LayerManager.getElement());
       }
 
       // Resume/Switch the view

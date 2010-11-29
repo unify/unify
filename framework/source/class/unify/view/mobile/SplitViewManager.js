@@ -6,14 +6,26 @@ qx.Class.define("unify.view.mobile.SplitViewManager",
   {
     this.base(arguments);
     
-    this.debug("Init SplitView...");
+    this.debug("Initalizing SplitView...");
+
+    var elem = this.__element = document.createElement("div");
+    elem.className = "SplitViewManager";
+
     
     this.__mainViewManager = mainViewManager;
     this.__detailViewManager = detailViewManager;
+    
+    elem.appendChild(mainViewManager.getElement());
+    elem.appendChild(detailViewManager.getElement());
+    
   },
   
   members :
   {
+
     
+    getElement : function() {
+      return this.__element;
+    }
   }
 });

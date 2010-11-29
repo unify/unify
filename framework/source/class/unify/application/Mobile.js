@@ -83,14 +83,9 @@ qx.Class.define("unify.application.Mobile",
       PUBLIC API
     ---------------------------------------------------------------------------
     */
-
-    /**
-     * Returns the root DOM element. Normally the document's body.
-     *
-     * @return {Element} The root DOM element
-     */
-    getRoot : function() {
-      return document.body;
+    
+    add : function(viewManager) {
+      document.body.appendChild(viewManager.getElement());
     },
 
 

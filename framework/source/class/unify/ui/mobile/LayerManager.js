@@ -7,11 +7,6 @@
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
 *********************************************************************************************** */
-/* ************************************************************************
-
-#optional(unify.ui.mobile.TabBar)
-
-************************************************************************ */
 
 /**
  * Manager for {@link Layer} instances. Called by the
@@ -36,6 +31,7 @@ qx.Class.define("unify.ui.mobile.LayerManager",
     this.base(arguments);
 
     this.__viewManager = viewManager;
+    this.__element = document.createElement("div");
   },
 
 
@@ -67,6 +63,9 @@ qx.Class.define("unify.ui.mobile.LayerManager",
 
   members :
   {
+    __element : null,
+    
+    
     /*
     ---------------------------------------------------------------------------
       PUBLIC API
@@ -94,6 +93,12 @@ qx.Class.define("unify.ui.mobile.LayerManager",
     {
       this.__cleanupAnimateSelectionRecovery();
       qx.bom.element2.Class.add(elem, "selected");
+    },
+    
+    
+    getElement : function()
+    {
+      return this.__element;
     },
 
 
@@ -126,7 +131,6 @@ qx.Class.define("unify.ui.mobile.LayerManager",
     {
       // Shorten class access
       var Class = qx.bom.element2.Class;
-      var App = qx.core.Init.getApplication();
 
       // Cache element/view references
       var toLayer = value && value.getElement();
@@ -142,7 +146,7 @@ qx.Class.define("unify.ui.mobile.LayerManager",
 
       // Verify that target layer has a parent node
       if (value && !toLayer.parentNode) {
-        App.getRoot().appendChild(toLayer);
+        this.__element.appendChild(toLayer);
       }
 
       var mode = this.__viewManager.getMode();
