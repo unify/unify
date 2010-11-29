@@ -247,18 +247,9 @@ qx.Class.define("unify.view.mobile.ViewManager",
     {
       if (this.__following)
       {
-        this.warn("Application is still following...")
+        this.warn("ViewManager is still following...");
         return;
       }
-      
-      // FIXME
-      /*
-      else if (unify.ui.mobile.LayerManager.getInstance().isRunning())
-      {
-        this.warn("LayerManager animation is running...")
-        return;
-      }
-      */
 
       var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
       if (elem)
@@ -327,10 +318,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
       if (this.__following) {
         return;
       } 
-      // FIXME
-      // else if (unify.ui.mobile.LayerManager.getInstance().isRunning()) {
-      //  return;
-      // }
 
       var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
       if (elem) {
@@ -349,10 +336,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
       if (this.__following) {
         return;
       } 
-      // FIXME
-      // else if (unify.ui.mobile.LayerManager.getInstance().isRunning()) {
-      //  return;
-      // }
 
       var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
       if (elem) {
