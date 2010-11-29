@@ -39,7 +39,11 @@ qx.Class.define("unify.view.mobile.ViewManager",
     var elem = this.__element = document.createElement("div");
     elem.className = "view-manager";
     elem.id = managerId;
-    
+
+    qx.event.Registration.addListener(elem, "click", this.__onClick, this);
+    qx.event.Registration.addListener(elem, "tap", this.__onTap, this);
+    qx.event.Registration.addListener(elem, "touchhold", this.__onTouchHold, this);
+    qx.event.Registration.addListener(elem, "touchrelease", this.__onTouchRelease, this);
 
     this.__id = managerId;
     this.debug("Initialize View Manager: " + this.__id);
@@ -205,6 +209,156 @@ qx.Class.define("unify.view.mobile.ViewManager",
     },
     
     
+    
+    /*
+    ---------------------------------------------------------------------------
+      EVENT HANDLERS
+    ---------------------------------------------------------------------------
+    */
+
+    /** {Boolean} Whether the app is following a link */
+    __following : null,
+
+
+    /** {String} CSS selector with elements which are followable by the navigation manager */
+    __followable : "a[href],[rel],[goto],[exec]",
+
+
+    /**
+     * Prevents clicks from executing native behavior
+     * 
+     * @parm e {qx.event.type.Mouse} Mouse event object
+     */
+    __onClick : function(e)
+    {
+      var elem = qx.dom.Hierarchy.closest(e.getTarget(), "a[href]");
+      if (elem) {
+        e.preventDefault();
+      }
+    },
+
+
+    /**
+     * Modifies click handling to include the context of the current view
+     *
+     * @param e {qx.event.type.Touch} Touch event
+     */
+    __onTap : function(e)
+    {
+      if (this.__following)
+      {
+        this.warn("Application is still following...")
+        return;
+      }
+      
+      // FIXME
+      /*
+      else if (unify.ui.mobile.LayerManager.getInstance().isRunning())
+      {
+        this.warn("LayerManager animation is running...")
+        return;
+      }
+      */
+
+      var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
+      if (elem)
+      {
+        // Stop further event processing
+        e.stopPropagation();
+
+        // Mark as following (read: active)
+        this.__following = true;
+
+        // Whether we need to handle selection
+        if (elem.hasAttribute("goto") && !elem.hasAttribute("rel"))
+        {
+          // FIXME
+          // Add CSS class for selection highlighting
+          // unify.ui.mobile.LayerManager.getInstance().select(elem);
+
+          // Lazy further processing
+          qx.lang.Function.delay(this.__onTapFollow, 0, this, elem);
+        }
+        else
+        {
+          // Directly follow
+          this.__onTapFollow(elem);
+        }
+      }
+    },
+
+
+    /**
+     * Used for lazy execution of tap event (to render highlighting of selection first)
+     *
+     * @param elem {Element} Element which was tapped onto
+     */
+    __onTapFollow : function(elem)
+    {
+      unify.view.mobile.Navigation.getInstance().follow(elem);
+
+      // Lazy further processing
+      // Give the device some time for painting, garbage collection etc.
+      // This omits an overload and execution stop during intensive phases.
+      // Especially important on slower devices.
+      qx.lang.Function.delay(this.__onTapDone, 300, this, +new Date);
+    },
+
+
+    /**
+     * Called when tap is rendered
+     *
+     * @param start {Date} Render start time
+     */
+    __onTapDone : function(start)
+    {
+      this.debug("Painted in: " + (new Date - start - 300) + "ms");
+      this.__following = false;
+    },
+
+
+    /**
+     * Executed on every touch hold event
+     *
+     * @param e {unify.event.type.Touch} Touch event
+     */
+    __onTouchHold : function(e)
+    {
+      if (this.__following) {
+        return;
+      } 
+      // FIXME
+      // else if (unify.ui.mobile.LayerManager.getInstance().isRunning()) {
+      //  return;
+      // }
+
+      var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
+      if (elem) {
+        qx.bom.element2.Class.add(elem, "pressed");
+      }
+    },
+
+
+    /**
+     * Executed on every touch release event
+     *
+     * @param e {unify.event.type.Touch} Touch event
+     */
+    __onTouchRelease : function(e)
+    {
+      if (this.__following) {
+        return;
+      } 
+      // FIXME
+      // else if (unify.ui.mobile.LayerManager.getInstance().isRunning()) {
+      //  return;
+      // }
+
+      var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
+      if (elem) {
+        qx.bom.element2.Class.remove(elem, "pressed");
+      }
+    },    
 
 
 
