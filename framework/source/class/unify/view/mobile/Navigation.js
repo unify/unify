@@ -296,8 +296,8 @@ qx.Class.define("unify.view.mobile.Navigation",
           throw new Error("Invalid path to dive into: " + view);
         }
       }
-
-      unify.bom.History.getInstance().jump(this.__path + "/" + view);
+      
+      unify.bom.History.getInstance().jump(this.__location + "/" + view);
     },
 
 
@@ -541,6 +541,8 @@ qx.Class.define("unify.view.mobile.Navigation",
       if (currentLocation == oldLocation) {
         return;
       }
+      this.__location = currentLocation;
+      
 
       if (window.localStorage)
       {
