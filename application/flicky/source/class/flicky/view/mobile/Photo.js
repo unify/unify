@@ -75,9 +75,15 @@ qx.Class.define("flicky.view.mobile.Photo", {
     // overridden
     _renderData : function(data)
     {
-      var photo = data.query.results.photo;
-      
-      this.__content.replace(this.__createImage(photo));
+      var results = data.query.results;
+      if (results == null)
+      {
+        this.__content.replace("Unknown Image!");
+      }
+      else
+      {
+        this.__content.replace(this.__createImage(results.photo));
+      }
     },
     
     __createImage : function(entry)
