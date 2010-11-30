@@ -55,9 +55,9 @@ qx.Class.define("unify.application.Mobile",
       this.base(arguments);
 
       // Error handling
-      qx.event.GlobalError.setErrorHandler(function(ex) {
-        qx.log.Logger.error("" + ex);
-      });
+      // qx.event.GlobalError.setErrorHandler(function(ex) {
+      //  qx.log.Logger.error("" + ex);
+      // });
 
       // Display build time
       this.info("Build Time: " + new Date(qx.$$build));
