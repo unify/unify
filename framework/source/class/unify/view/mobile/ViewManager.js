@@ -429,9 +429,9 @@ qx.Class.define("unify.view.mobile.ViewManager",
       {
         this.debug("Navigate in other to: " + dest);
         
+        
+        
       }
-      
-      
       
       if (firePathChange) {
         this.debug("Fire path change!");
@@ -445,6 +445,10 @@ qx.Class.define("unify.view.mobile.ViewManager",
       qx.lang.Function.delay(this.__onTapDone, 300, this, +new Date);
     },
     
+    
+    getPath : function() {
+      return this.__path;
+    },
 
 
 
