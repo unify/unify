@@ -220,6 +220,13 @@ qx.Class.define("unify.view.mobile.ViewManager",
     __mode : null,
     
     
+    /**
+     * Go to an absolute path in this view manager with the option to
+     * delegate structure to other view managers if specific views are
+     * not known locally
+     * 
+     * @param path {Array} List of path fragments
+     */
     go : function(path)
     {
       if (path.length == 0) {
@@ -230,10 +237,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
       
       var Navigation = unify.view.mobile.Navigation.getInstance();
       var views = this.__views;
-
-
       var delegatePath = [];
-      var relevantConfig = {};
       var fragment, config, viewClass, viewObj, lastViewObj;
       for (var i=path.length-1; i>=0; i--)
       {
@@ -263,9 +267,13 @@ qx.Class.define("unify.view.mobile.ViewManager",
       }
       
       // Switch to last view in path
-      if (lastViewObj) {
+      if (lastViewObj) 
+      {
+        
         this.setView(lastViewObj);
       }
+      
+      this.fireEvent("changePath");
       
       if (delegatePath.length > 0)
       {
