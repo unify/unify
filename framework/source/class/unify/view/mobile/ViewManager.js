@@ -217,7 +217,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
     
     __path : null,
     __deep : null,
-    __mode : null,
+    __transition : null,
     
     
     /**
@@ -261,15 +261,15 @@ qx.Class.define("unify.view.mobile.ViewManager",
       }
       
       // Switch to last view in path
-      if (lastViewObj) 
-      {
-        
+      if (lastViewObj) {
         this.setView(lastViewObj);
       }
-      
+
+      // Store path and fire change event
       this.__path = path;
       this.fireEvent("changePath");
       
+      // Delegate remaining path fragments
       if (delegatePath.length > 0)
       {
         this.debug("Delegating " + delegatePath.length + " fragments to other view managers...");
@@ -388,7 +388,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
         path[path.length-1].param = param;
         firePathChange = true;
         
-        this.__mode = null;
+        this.__transition = null;
         currentViewObj.setParam(param);
       } 
       else if (rel == "segment") 
@@ -397,7 +397,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
         path[path.length-1].segment = segment;
         firePathChange = true;
 
-        this.__mode = null;
+        this.__transition = null;
         currentViewObj.setSegment(segment);
       }
       else if (rel == "up")
@@ -411,7 +411,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
         }
 
         // Finally do the switching
-        this.__mode = "out";
+        this.__transition = "out";
         this.setView(parentViewObj);
 
         // TODO: Handle this on animation stop! Via timeout?
@@ -453,7 +453,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
         viewObj.setParam(param);
         viewObj.setParent(currentViewObj.getParent());
         
-        this.__mode = "replace";
+        this.__transition = "replace";
         this.setView(viewObj);
       }
       else if (viewClass)
@@ -472,7 +472,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
         // still "switching" to the same view (which would better called a reconfiguration)
         if (viewObj != currentViewObj)
         {
-          this.__mode = "in";
+          this.__transition = "in";
           this.setView(viewObj);
         }
       }
@@ -582,9 +582,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
         this.__element.appendChild(toLayer);
       }
       
-
-      // FIXME
-      var mode = null;
+      var mode = this.__transition;
 
       // Detect animation
       if (mode == "in" || mode == "out")
