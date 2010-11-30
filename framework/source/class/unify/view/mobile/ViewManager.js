@@ -429,7 +429,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
       {
         this.debug("Navigate in other to: " + dest);
         
-        
+        unify.view.mobile.Navigation.getInstance().go([dest], this);
         
       }
       
