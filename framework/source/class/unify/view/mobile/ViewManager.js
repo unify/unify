@@ -50,6 +50,8 @@ qx.Class.define("unify.view.mobile.ViewManager",
 
     // Data structure for managed views
     this.__views = {};
+    
+    this.__path = [];
   },
 
 
@@ -318,17 +320,27 @@ qx.Class.define("unify.view.mobile.ViewManager",
 
       var viewClass = this.__views[view];
       var currentViewObj = this.getView();
+      var path = this.__path;
 
       this.debug("Destination: " + dest);
 
+      var firePathChange = false;
       
       if (rel == "param") 
       {
+        // Replace param in path
+        path[path.length-1].param = param;
+        firePathChange = true;
+        
         this.__mode = null;
         currentViewObj.setParam(param);
       } 
       else if (rel == "segment") 
       {
+        // Replace segment in path
+        path[path.length-1].segment = segment;
+        firePathChange = true;
+
         this.__mode = null;
         currentViewObj.setSegment(segment);
       }
@@ -337,15 +349,37 @@ qx.Class.define("unify.view.mobile.ViewManager",
         // Replace current view with its parent (slide out)
         // Parent should still be correctly configured (segment, param) in this case.
         
-        // FIXME: What in cases of tweet:123 => user => tweet:456 (then the parent parent tweet has wrong config when going up)
-        
         var parentViewObj = currentViewObj.getParent();
         if (!parentViewObj) {
           throw new Error("Has no parent!");
         }
-        
+
+        // Finally do the switching
         this.__mode = "out";
         this.setView(parentViewObj);
+
+        // TODO: Handle this on animation stop! Via timeout?
+        // Reconfigure 
+        // Fix cases of tweet:123 => user => tweet:456 (then the parent parent tweet has wrong config when going up)
+        var last = path.pop();
+        var lastView = last.view;
+        for (var i=path.length-1; i>=0; i--)
+        {
+          if (path[i].view == lastView)
+          {
+            this.debug("Reconfigure after loosing last");
+            currentViewObj.setSegment(path[i].segment);
+            currentViewObj.setParam(path[i].param);
+            
+            if (i == 0) {
+              currentViewObj.resetParent();
+            } else {
+              currentViewObj.setParent(this.__views[path[i-1]].getInstance());
+            }
+            
+            break
+          }
+        }
       }
       else if (rel == "parent")
       {
@@ -355,9 +389,13 @@ qx.Class.define("unify.view.mobile.ViewManager",
           throw new Error("Could not replace current view with view from another view manager: " + view);
         }
         
+        path[path.length-1] = config;
+        firePathChange = true;
+        
         var viewObj = viewClass.getInstance();
         viewObj.setSegment(segment);
         viewObj.setParam(param);
+        viewObj.setParent(currentViewObj.getParent());
         
         this.__mode = "replace";
         this.setView(viewObj);
@@ -366,9 +404,13 @@ qx.Class.define("unify.view.mobile.ViewManager",
       {
         // Dive into view in the same view manager (slide in)
         
+        path.push(config);
+        firePathChange = true;
+        
         var viewObj = viewClass.getInstance();
         viewObj.setSegment(segment);
         viewObj.setParam(param);
+        viewObj.setParent(currentViewObj);
 
         // Somehow a developer fault when giving no "rel" attribute, but
         // still "switching" to the same view (which would better called a reconfiguration)
@@ -387,6 +429,12 @@ qx.Class.define("unify.view.mobile.ViewManager",
       {
         this.debug("Navigate in other to: " + dest);
         
+      }
+      
+      
+      
+      if (firePathChange) {
+        this.debug("Fire path change!");
       }
       
       
