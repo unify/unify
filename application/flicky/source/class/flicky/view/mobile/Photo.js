@@ -33,7 +33,7 @@ qx.Class.define("flicky.view.mobile.Photo", {
       var titlebar = new unify.ui.mobile.TitleBar(this);
       layer.add(titlebar);
       
-      var content = this.__content = new unify.ui.mobile.Content;
+      var content = this.__content = new unify.ui.mobile.ScrollView;
       layer.add(content);
 
       return layer;
@@ -92,6 +92,8 @@ qx.Class.define("flicky.view.mobile.Photo", {
     
     __createImage : function(entry)
     {
+      console.debug(entry)
+      
       var tmpl = '<img src="http://farm{$farm}.static.flickr.com/{$server}/{$id}_{$secret}_b.jpg" alt="{$title}" />';
       
       return tmpl.replace(/{\$([a-z]+)}/g, function(match, key) {

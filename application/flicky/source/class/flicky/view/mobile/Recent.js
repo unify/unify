@@ -23,6 +23,12 @@ qx.Class.define("flicky.view.mobile.Recent", {
     getTitle : function(type, param) {
       return "Recent";
     },
+    
+    
+    // overridden
+    isFullScreen : function() {
+      return true;
+    },    
 
     
     // overridden
@@ -33,7 +39,8 @@ qx.Class.define("flicky.view.mobile.Recent", {
       titlebar.add({ icon : true, exec : "refresh", target : "right" });
       layer.add(titlebar);
       
-      var content = this.__content = new unify.ui.mobile.Content;
+      var content = this.__content = new unify.ui.mobile.ScrollView;
+      content.setEnableScrollX(false);
       layer.add(content);
 
       return layer;
