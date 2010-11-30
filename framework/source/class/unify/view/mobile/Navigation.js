@@ -125,9 +125,9 @@ qx.Class.define("unify.view.mobile.Navigation",
     {
       var match = this.__urlMatcher.exec(fragment);
       return {
-        view : RegExp.$1,
-        segment : RegExp.$3,
-        param : RegExp.$5
+        view : RegExp.$1 || null,
+        segment : RegExp.$3 || null,
+        param : RegExp.$5 || null
       };
     },
     
