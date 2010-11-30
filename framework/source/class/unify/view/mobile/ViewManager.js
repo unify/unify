@@ -84,6 +84,15 @@ qx.Class.define("unify.view.mobile.ViewManager",
       init : false
     }
   },
+  
+  
+  
+  
+  events :
+  {
+    changePath : "qx.event.type.Event"
+    
+  },
 
 
 
@@ -123,7 +132,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
       this.debug("Adding view: " + id);
       
       if (isDefault) {
-        this.__defaultView = viewClass;
+        this.__defaultView = id;
       }
 
       this.__views[id] = viewClass;
@@ -139,6 +148,24 @@ qx.Class.define("unify.view.mobile.ViewManager",
       return this.__id;
     },
     
+
+    init : function()
+    {
+      if (this.__defaultView && !this.getView()) 
+      {
+        var viewId = this.__defaultView;
+        
+        this.debug("Switch to defaultView: " + viewId);
+        
+        this.__path.push({
+          view : viewId
+        });
+        this.setView(this.__views[viewId].getInstance());
+        
+        this.fireEvent("changePath");
+      }
+    },
+
 
 
     /**
@@ -176,49 +203,23 @@ qx.Class.define("unify.view.mobile.ViewManager",
      */
     select : function(elem)
     {
+      return;
+      
       this.__cleanupAnimateSelectionRecovery();
       qx.bom.element2.Class.add(elem, "selected");
     },    
+
+
+    getPath : function() {
+      return this.__path;
+    },
     
     
-    /**
-     * Update given views. 
-     * 
-     * The data structure should reflect the navigation structure.
-     * 
-     * @param views {Map[]} List of affected views
-     * @return {}
-     */
-    update : function(views)
+    go : function(path)
     {
-      this.debug("Updating views...");
+      this.debug("Go: " + path)
       
-      var parent = null;
       
-      for (var i=0, l=views.length; i<l; i++)
-      {
-        var config = views[i];
-
-        // Create view instance, if not done yet
-        var view = config.view.getInstance();
-
-        // Update configuration
-        parent != null ? view.setParent(parent) : view.resetParent();
-
-        var segment = config.segment;
-        segment != null ? view.setSegment(segment) : view.resetSegment();
-
-        var param = config.param;
-        param != null ? view.setParam(param) : view.resetParam();
-        
-        // Setup parent
-        parent = view;
-      }
-      
-      // Activate last view
-      if (view) {
-        this.setView(view);
-      }
     },
     
     
@@ -282,7 +283,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
         else
         {
           var href = elem.getAttribute("href");
-          if (href != "" && href.charAt(0) != "#")
+          if (href != null && href != "" && href.charAt(0) != "#")
           {
             // Absolute link
             window.open(href);
@@ -299,8 +300,8 @@ qx.Class.define("unify.view.mobile.ViewManager",
         }
       }
     },
-
-
+    
+    
     /**
      * Used for lazy execution of tap event (to render highlighting of selection first)
      *
@@ -312,17 +313,17 @@ qx.Class.define("unify.view.mobile.ViewManager",
       var rel = elem.getAttribute("rel");
 
       var dest = href ? href.substring(1) : elem.getAttribute("goto");
+      this.debug("Destination: " + dest);
+      
       var config = unify.view.mobile.Navigation.getInstance().parseFragment(dest);
 
-      var view = config.view == null ? config.view : null;
-      var segment = config.segment == null ? config.segment : null;
-      var param = config.param == null ? config.param : null;
+      var view = config.view != null ? config.view : null;
+      var segment = config.segment != null ? config.segment : null;
+      var param = config.param != null ? config.param : null;
 
       var viewClass = this.__views[view];
       var currentViewObj = this.getView();
       var path = this.__path;
-
-      this.debug("Destination: " + dest);
 
       var firePathChange = false;
       
@@ -420,23 +421,25 @@ qx.Class.define("unify.view.mobile.ViewManager",
           this.setView(viewObj);
         }
       }
-      else if (this.getEnableDeepSwitch())
-      {
-        // TODO
-        
-      }
       else
       {
-        this.debug("Navigate in other to: " + dest);
+        var childViewManager = unify.view.mobile.Navigation.getInstance().getViewManager(view);
+        if (childViewManager == null) {
+          throw new Error("Could not find view manager for view: " + view);
+        }
         
-        unify.view.mobile.Navigation.getInstance().go([dest], this);
-        
+        if (this.getEnableDeepSwitch() && this.__deep[dest]) {
+          childViewManager.go(this.__deep[dest]);
+        } else {
+          childViewManager.go(dest)
+        }
       }
       
-      if (firePathChange) {
+      if (firePathChange) 
+      {
         this.debug("Fire path change!");
+        this.fireEvent("changePath");
       }
-      
       
       // Lazy further processing
       // Give the device some time for painting, garbage collection etc.
@@ -445,12 +448,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
       qx.lang.Function.delay(this.__onTapDone, 300, this, +new Date);
     },
     
-    
-    getPath : function() {
-      return this.__path;
-    },
-
-
 
     /**
      * Called when tap is rendered

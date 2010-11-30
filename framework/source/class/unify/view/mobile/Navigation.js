@@ -56,6 +56,9 @@ qx.Class.define("unify.view.mobile.Navigation",
     {
       this.debug("Register ViewManager: " + viewManager.getId());
       this.__viewManagers[viewManager.getId()] = viewManager;
+      
+      viewManager.addListener("changePath", this.__onSubPathChange, this);
+      
     },
     
     
@@ -81,6 +84,40 @@ qx.Class.define("unify.view.mobile.Navigation",
       }
 
       History.init(path);
+      
+      var viewManagers = this.__viewManagers;
+      for (var viewManagerId in viewManagers) {
+        this.__viewManagers[viewManagerId].init();
+      }
+    },
+    
+    
+    
+    __onSubPathChange : function(e)
+    {
+      var path = [];
+      var viewManagers = this.__viewManagers;
+      for (var viewManagerId in viewManagers) {
+        path.push.apply(path, viewManagers[viewManagerId].getPath());
+      }
+
+      // Serialize
+      var result = [];
+      for (var i=0, l=path.length; i<l; i++) 
+      {
+        part = path[i];
+        temp = part.view;
+        if (part.segment) {
+          temp += "." + part.segment;
+        }
+        if (part.param) {
+          temp += ":" + part.param;
+        }
+        result.push(temp)
+      }
+      
+      result = result.join("/");
+      this.debug("Serialized path: " + result);
     },
 
 
@@ -127,20 +164,24 @@ qx.Class.define("unify.view.mobile.Navigation",
       
     },
     
-    
-    
 
-
-
-    /*
-    ---------------------------------------------------------------------------
-      INTERNALS
-    ---------------------------------------------------------------------------
-    */
-    
     __urlMatcher : /^([a-z-]+)(\.([a-z-]+))?(\:([a-zA-Z0-9_-]+))?$/,
     
 
+    getViewManager : function(viewId)
+    {
+      var managers = this.__viewManagers;
+      var manager;
+      for (var id in managers) 
+      {
+        manager = managers[id];
+        if (manager.hasView(viewId)) {
+          return manager;
+        }
+      }
+      
+      return null;
+    },
 
 
     /**
@@ -150,6 +191,10 @@ qx.Class.define("unify.view.mobile.Navigation",
      */
     __onHistoryChange : function(e)
     {
+      // TODO
+      return;
+
+
       var History = e.getTarget();
 
       // Quick check: Don't allow empty paths
@@ -181,54 +226,6 @@ qx.Class.define("unify.view.mobile.Navigation",
       }
 
       this.debug("History Change: \"" + oldLocation + "\" => \"" + currentLocation + "\"");
-
-      var currentSplits = currentLocation == "" ? [] : currentLocation.split("/");
-      var oldSplits = oldLocation == "" ? [] : oldLocation.split("/");
-      
-      // Create new data structure mapping managers to their individual structure
-      var managers = this.__viewManagers;
-      var structure = {};
-      for (var id in managers) {
-        structure[id] = [];
-      }
-      
-      // Process current path
-      for (var i=0, l=currentSplits.length; i<l; i++) 
-      {
-        var match = this.__urlMatcher.exec(currentSplits[i]);
-        var view = RegExp.$1;
-        var segment = RegExp.$3;
-        var param = RegExp.$5;
-        
-        //var parsed = this.parseFragment(currentSplits[i]);
-        //var found = false;
-        
-        for (var id in managers) 
-        {
-          var viewClass = managers[id].getById(view);
-          if (viewClass) 
-          {
-            structure[id].push({
-              view : viewClass,
-              segment : segment,
-              param : param
-            });
-
-            view = null;
-            break;
-          }
-        }
-        
-        if (view) {
-          throw new Error("Unknown view: " + view);
-        }
-      }
-      
-      
-      // Update managers
-      for (var id in structure) {
-        managers[id].update(structure[id]);
-      }
     }
   },
 

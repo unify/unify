@@ -22,7 +22,7 @@ qx.Class.define("flicky.view.mobile.Start",
 
     // overridden
     getTitle : function(type, param) {
-      return "Start";
+      return "Flicky";
     },
 
     
@@ -34,8 +34,14 @@ qx.Class.define("flicky.view.mobile.Start",
       layer.add(titlebar);
       
       var content = this.__content = new unify.ui.mobile.Content;
-      content.add("Please click on 'Recent' or 'Interesting' :)");
       layer.add(content);
+      
+      var html = "<ul>"
+      html += "<li goto='interesting'><label>Interesting</label><hr/></li>";
+      html += "<li goto='recent'><label>Recent</label><hr/></li>";
+      html += "</ul>";
+      
+      content.add(html);
 
       return layer;
     }

@@ -54,6 +54,8 @@ qx.Class.define("flicky.application.Mobile",
       Navigation.add(MasterViewManager);
       Navigation.add(DetailViewManager);
       Navigation.init();
+      
+      
     }
   }
 });
