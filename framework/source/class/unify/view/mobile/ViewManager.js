@@ -225,31 +225,24 @@ qx.Class.define("unify.view.mobile.ViewManager",
      * delegate structure to other view managers if specific views are
      * not known locally
      * 
-     * @param path {Array} List of path fragments
+     * @param path {Map[]} Array of path fragment configs (keys: view, segment, param)
      */
     go : function(path)
     {
-      if (path.length == 0) {
-        return;
-      } else if (typeof path == "string") {
-        path = path.split("/");
-      }
-      
       var Navigation = unify.view.mobile.Navigation.getInstance();
       var views = this.__views;
       var delegatePath = [];
-      var fragment, config, viewClass, viewObj, lastViewObj;
+      var fragment, viewClass, viewObj, lastViewObj;
       for (var i=path.length-1; i>=0; i--)
       {
         fragment = path[i];
-        config = Navigation.parseFragment(fragment);
-        viewClass = views[config.view];
+        viewClass = views[fragment.view];
         
         if (viewClass)
         {
           viewObj = viewClass.getInstance();
-          viewObj.setSegment(config.segment);
-          viewObj.setParam(config.param);
+          viewObj.setSegment(fragment.segment);
+          viewObj.setParam(fragment.param);
           
           // Only process last two items
           if (lastViewObj) 
@@ -262,7 +255,8 @@ qx.Class.define("unify.view.mobile.ViewManager",
         }
         else
         {
-          delegatePath.unshift(fragment);
+          // Move fragment from local path into delegation
+          delegatePath.unshift(path.pop());
         }
       }
       
@@ -273,6 +267,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
         this.setView(lastViewObj);
       }
       
+      this.__path = path;
       this.fireEvent("changePath");
       
       if (delegatePath.length > 0)
@@ -491,7 +486,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
         if (this.getEnableDeepSwitch() && this.__deep[dest]) {
           childViewManager.go(this.__deep[dest]);
         } else {
-          childViewManager.go(dest)
+          childViewManager.go([config]);
         }
       }
       
