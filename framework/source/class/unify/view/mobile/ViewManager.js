@@ -69,6 +69,17 @@ qx.Class.define("unify.view.mobile.ViewManager",
       nullable : true,
       apply : "_applyView",
       event : "changeView"
+    },
+    
+    /** 
+     * Whether switching into views of other view managers means restoring the complete
+     * position there. This basically stores the navigation path before switching and 
+     * restores it when switching back to the same view.
+     */
+    enableDeepSwitch :
+    {
+      check : "Boolean",
+      init : false
     }
   },
 
@@ -258,7 +269,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
         
         // Stop further event processing
         e.stopPropagation();
-        e.preventDefault();
         
         // Analyse element and process further
         var exec = elem.getAttribute("exec");
@@ -277,13 +287,11 @@ qx.Class.define("unify.view.mobile.ViewManager",
           }
           else
           {
-            // Mark as following (read: active)
-            this.__following = true;
-
             // Add CSS class for selection highlighting
             this.select(elem);
 
             // Lazy further processing
+            this.__following = true;
             qx.lang.Function.delay(this.__onTapFollow, 0, this, elem);
           }
         }
@@ -298,19 +306,98 @@ qx.Class.define("unify.view.mobile.ViewManager",
      */
     __onTapFollow : function(elem)
     {
-      // unify.view.mobile.Navigation.getInstance().follow(elem);
-      
       var href = elem.getAttribute("href");
-      
-      
-      
+      var rel = elem.getAttribute("rel");
 
+      var dest = href ? href.substring(1) : elem.getAttribute("goto");
+      var config = unify.view.mobile.Navigation.getInstance().parseFragment(dest);
+
+      var view = config.view == null ? config.view : null;
+      var segment = config.segment == null ? config.segment : null;
+      var param = config.param == null ? config.param : null;
+
+      var viewClass = this.__views[view];
+      var currentViewObj = this.getView();
+
+      this.debug("Destination: " + dest);
+
+      
+      if (rel == "param") 
+      {
+        this.__mode = null;
+        currentViewObj.setParam(param);
+      } 
+      else if (rel == "segment") 
+      {
+        this.__mode = null;
+        currentViewObj.setSegment(segment);
+      }
+      else if (rel == "up")
+      {
+        // Replace current view with its parent (slide out)
+        // Parent should still be correctly configured (segment, param) in this case.
+        
+        // FIXME: What in cases of tweet:123 => user => tweet:456 (then the parent parent tweet has wrong config when going up)
+        
+        var parentViewObj = currentViewObj.getParent();
+        if (!parentViewObj) {
+          throw new Error("Has no parent!");
+        }
+        
+        this.__mode = "out";
+        this.setView(parentViewObj);
+      }
+      else if (rel == "parent")
+      {
+        // Replace current view with view in the same view manager
+        
+        if (!viewClass) {
+          throw new Error("Could not replace current view with view from another view manager: " + view);
+        }
+        
+        var viewObj = viewClass.getInstance();
+        viewObj.setSegment(segment);
+        viewObj.setParam(param);
+        
+        this.__mode = "replace";
+        this.setView(viewObj);
+      }
+      else if (viewClass)
+      {
+        // Dive into view in the same view manager (slide in)
+        
+        var viewObj = viewClass.getInstance();
+        viewObj.setSegment(segment);
+        viewObj.setParam(param);
+
+        // Somehow a developer fault when giving no "rel" attribute, but
+        // still "switching" to the same view (which would better called a reconfiguration)
+        if (viewObj != currentViewObj)
+        {
+          this.__mode = "in";
+          this.setView(viewObj);
+        }
+      }
+      else if (this.getEnableDeepSwitch())
+      {
+        // TODO
+        
+      }
+      else
+      {
+        this.debug("Navigate in other to: " + dest);
+        
+      }
+      
+      
       // Lazy further processing
       // Give the device some time for painting, garbage collection etc.
       // This omits an overload and execution stop during intensive phases.
       // Especially important on slower devices.
       qx.lang.Function.delay(this.__onTapDone, 300, this, +new Date);
     },
+    
+
 
 
     /**

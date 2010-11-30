@@ -465,6 +465,16 @@ qx.Class.define("unify.view.mobile.Navigation",
     __location : null,
     
     __urlMatcher : /^([a-z-]+)(\.([a-z-]+))?(\:([a-zA-Z0-9_-]+))?$/,
+    
+    parseFragment : function(fragment)
+    {
+      var match = this.__urlMatcher.exec(fragment);
+      return {
+        view : RegExp.$1,
+        segment : RegExp.$3,
+        param : RegExp.$5
+      };
+    },
 
 
     /**
@@ -523,6 +533,9 @@ qx.Class.define("unify.view.mobile.Navigation",
         var view = RegExp.$1;
         var segment = RegExp.$3;
         var param = RegExp.$5;
+        
+        //var parsed = this.parseFragment(currentSplits[i]);
+        //var found = false;
         
         for (var id in managers) 
         {
