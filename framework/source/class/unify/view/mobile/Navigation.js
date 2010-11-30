@@ -132,37 +132,7 @@ qx.Class.define("unify.view.mobile.Navigation",
     },
     
     
-    /**
-     * Goes to the given relative path starting with the end of the given manager's path
-     * 
-     * @param relativePath {Map[]} Array with maps with the keys view, segment and param
-     * @param parentManager {unify.view.mobile.ViewManager} View manager instance
-     * 
-     */
-    go : function(relativePath, parentManager)
-    {
-      // dest = {view, segment, param}
-      // parent = view manager instance
-      
-      var path = [];
-      var managers = this.__viewManagers;
-      for (var id in managers) 
-      {
-        manager = managers[id];
-        console.debug("PART", manager.getPath())
-        
-        path.push.apply(manager.getPath(), path);
-        if (manager == parentManager) {
-          break;
-        }
-      }
-      
-      path.push(relativePath);
-      
-      
-      this.debug("Parent Path: " + path.join("=>"));
-      
-    },
+
     
 
     __urlMatcher : /^([a-z-]+)(\.([a-z-]+))?(\:([a-zA-Z0-9_-]+))?$/,

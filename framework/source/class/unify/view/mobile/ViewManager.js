@@ -215,11 +215,63 @@ qx.Class.define("unify.view.mobile.ViewManager",
     },
     
     
+    __path : null,
+    __deep : null,
+    __mode : null,
+    
+    
     go : function(path)
     {
-      this.debug("Go: " + path)
+      if (path.length == 0) {
+        return;
+      } else if (typeof path == "string") {
+        path = path.split("/");
+      }
       
+      var Navigation = unify.view.mobile.Navigation.getInstance();
+      var views = this.__views;
+
+
+      var delegatePath = [];
+      var relevantConfig = {};
+      var fragment, config, viewClass, viewObj, lastViewObj;
+      for (var i=path.length-1; i>=0; i--)
+      {
+        fragment = path[i];
+        config = Navigation.parseFragment(fragment);
+        viewClass = views[config.view];
+        
+        if (viewClass)
+        {
+          viewObj = viewClass.getInstance();
+          viewObj.setSegment(config.segment);
+          viewObj.setParam(config.param);
+          
+          // Only process last two items
+          if (lastViewObj) 
+          {
+            lastViewObj.setParent(viewObj);
+            break;
+          }
+          
+          lastViewObj = viewObj;
+        }
+        else
+        {
+          delegatePath.unshift(fragment);
+        }
+      }
       
+      // Switch to last view in path
+      if (lastViewObj) {
+        this.setView(lastViewObj);
+      }
+      
+      if (delegatePath.length > 0)
+      {
+        this.debug("Delegating " + delegatePath.length + " fragments to other view managers...");
+        // TODO
+      }
     },
     
     
