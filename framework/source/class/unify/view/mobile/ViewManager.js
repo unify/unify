@@ -203,8 +203,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
      */
     select : function(elem)
     {
-      return;
-      
       this.__cleanupAnimateSelectionRecovery();
       qx.bom.element2.Class.add(elem, "selected");
     },    
@@ -404,12 +402,15 @@ qx.Class.define("unify.view.mobile.ViewManager",
       {
         // Replace current view with its parent (slide out)
         // Parent should still be correctly configured (segment, param) in this case.
-        
         var parentViewObj = currentViewObj.getParent();
         if (!parentViewObj) {
           throw new Error("Has no parent!");
         }
 
+        // Reduce path
+        var last = path.pop();
+        firePathChange = true;
+        
         // Finally do the switching
         this.__transition = "out";
         this.setView(parentViewObj);
@@ -417,7 +418,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
         // TODO: Handle this on animation stop! Via timeout?
         // Reconfigure 
         // Fix cases of tweet:123 => user => tweet:456 (then the parent parent tweet has wrong config when going up)
-        var last = path.pop();
         var lastView = last.view;
         for (var i=path.length-1; i>=0; i--)
         {
@@ -433,7 +433,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
               currentViewObj.setParent(this.__views[path[i-1]].getInstance());
             }
             
-            break
+            break;
           }
         }
       }
