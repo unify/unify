@@ -10,8 +10,8 @@
 /**
  * Recent View
  */
-qx.Class.define("flicky.view.mobile.Photo", {
-  extend : unify.view.mobile.RemoteView,
+qx.Class.define("flicky.view.Photo", {
+  extend : unify.view.RemoteView,
   type : "singleton",
 
   members : 
@@ -29,11 +29,11 @@ qx.Class.define("flicky.view.mobile.Photo", {
     // overridden
     _createView : function() 
     {
-      var layer = new unify.ui.mobile.Layer(this);
-      var titlebar = new unify.ui.mobile.TitleBar(this);
+      var layer = new unify.ui.Layer(this);
+      var titlebar = new unify.ui.TitleBar(this);
       layer.add(titlebar);
       
-      var content = this.__content = new unify.ui.mobile.ScrollView;
+      var content = this.__content = new unify.ui.ScrollView;
       layer.add(content);
 
       return layer;

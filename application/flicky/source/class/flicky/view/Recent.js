@@ -10,8 +10,8 @@
 /**
  * Recent View
  */
-qx.Class.define("flicky.view.mobile.Recent", {
-  extend : unify.view.mobile.RemoteView,
+qx.Class.define("flicky.view.Recent", {
+  extend : unify.view.RemoteView,
   type : "singleton",
 
   members : 
@@ -34,12 +34,12 @@ qx.Class.define("flicky.view.mobile.Recent", {
     // overridden
     _createView : function() 
     {
-      var layer = new unify.ui.mobile.Layer(this);
-      var titlebar = new unify.ui.mobile.TitleBar(this);
+      var layer = new unify.ui.Layer(this);
+      var titlebar = new unify.ui.TitleBar(this);
       titlebar.add({ icon : true, exec : "refresh", target : "right" });
       layer.add(titlebar);
       
-      var content = this.__content = new unify.ui.mobile.ScrollView;
+      var content = this.__content = new unify.ui.ScrollView;
       content.setEnableScrollX(false);
       layer.add(content);
 

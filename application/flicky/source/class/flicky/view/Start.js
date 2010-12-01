@@ -8,11 +8,11 @@
  ************************************************************************ */
 
 /**
- * Placeholder View
+ * Start View
  */
-qx.Class.define("flicky.view.mobile.Info", 
+qx.Class.define("flicky.view.Start", 
 {
-  extend : unify.view.mobile.StaticView,
+  extend : unify.view.StaticView,
   type : "singleton",
   
   members : 
@@ -22,20 +22,26 @@ qx.Class.define("flicky.view.mobile.Info",
 
     // overridden
     getTitle : function(type, param) {
-      return "Info";
+      return "Flicky";
     },
 
     
     // overridden
     _createView : function() 
     {
-      var layer = new unify.ui.mobile.Layer(this);
-      var titlebar = new unify.ui.mobile.TitleBar(this);
+      var layer = new unify.ui.Layer(this);
+      var titlebar = new unify.ui.TitleBar(this);
       layer.add(titlebar);
       
-      var content = this.__content = new unify.ui.mobile.Content;
-      content.add("No photo selected!");
+      var content = this.__content = new unify.ui.Content;
       layer.add(content);
+      
+      var html = "<ul>"
+      html += "<li goto='interesting'><label>Interesting</label><hr/></li>";
+      html += "<li goto='recent'><label>Recent</label><hr/></li>";
+      html += "</ul>";
+      
+      content.add(html);
 
       return layer;
     }
