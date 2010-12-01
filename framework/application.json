@@ -33,9 +33,7 @@
     "TESTRUNNER_PATH"   : "${QOOXDOO_PATH}/component/testrunner",
     "APPLICATION"       : "${APP_NAME}",
     
-    "QXVERSION"         : "1.0.0",
-
-    "APP_THEME"         : "${APP_NAME}.ui.desktop.theme.Theme"
+    "QXVERSION"         : "1.0.0"
   },
   
   
@@ -101,12 +99,12 @@
       
       "include" :
       [
-        "${APP_NAME}.application.Mobile"
+        "${APP_NAME}.Application"
       ],    
       
       "settings" :
       {
-        "qx.application" : "${APP_NAME}.application.Mobile"
+        "qx.application" : "${APP_NAME}.Application"
       },
       
       "variants" : 
@@ -115,27 +113,6 @@
       }
     },
 
-    "unify-target-desktop" :
-    {
-      "extend" : [ "unify-core" ],
-      
-      "include" :
-      [
-        "${APP_NAME}.application.Desktop",
-        "${APP_THEME}"
-      ],
-            
-      "settings" :
-      {
-        "qx.application" : "${APP_NAME}.application.Desktop",
-        "qx.theme"       : "${APP_THEME}"
-      },
-      
-      "variants" : 
-      {
-        "unify.platform" : [ "desktop" ]
-      }
-    },
     
     
     
@@ -275,41 +252,9 @@
       }
     },
     
-    "source-desktop" : {
-      "extend" : [ "unify-target-desktop", "unify-run-source" ]
-    },
 
-    "build-desktop" : 
-    {
-      "extend" : [ "unify-target-desktop", "unify-run-build" ],
-      "let" : {
-        "BUILD_PATH" : "build/desktop",
-        "COPY_FILES" : [ "index.html", "desktop.html" ]
-      },
-      "variants" : {
-        "qx.client" : ["webkit", "mshtml", "gecko", "opera"]
-      }
-    },
 
-    "source-widget" : {
-      "extend" : [ "unify-target-desktop", "unify-run-source" ]
-    },
 
-    "build-widget" : 
-    {
-      "extend" : [ "unify-target-desktop", "unify-run-build" ],
-      "let" : {
-        "BUILD_PATH" : "build/widget",
-        "COPY_FILES" : [ "widget.html" ]
-      },
-      "variants" : {
-        "qx.client" : ["webkit"]
-      }
-    },
-        
-  
-    
-        
     /* 
     ---------------------------------
        QOOXDOO JOB ALIASES 

@@ -21,7 +21,7 @@
 /**
  * Application class for next generation devices.
  */
-qx.Class.define("unify.application.Mobile",
+qx.Class.define("unify.Application",
 {
   extend : qx.application.Native,
 
