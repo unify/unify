@@ -215,7 +215,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
      */
     go : function(path)
     {
-      var Navigation = unify.view.mobile.Navigation.getInstance();
       var views = this.__views;
       var delegatePath = [];
       var fragment, viewClass, viewObj, lastViewObj;
@@ -575,12 +574,15 @@ qx.Class.define("unify.view.mobile.ViewManager",
       // Detect animation
       if (transition == "in" || transition == "out")
       {
-        if (qx.core.Variant.isSet("unify.postitionshift", "3d")) {
+        if (qx.core.Variant.isSet("unify.postitionshift", "3d")) 
+        {
           var positionBottomOut = "translate3d(0,100%,0)";
           var positionRightOut = "translate3d(100%,0,0)";
           var positionLeftOut = "translate3d(-100%,0,0)";
           var positionVisible = "translate3d(0,0,0)";
-        } else if (qx.core.Variant.isSet("unify.postitionshift", "2d")) {
+        } 
+        else if (qx.core.Variant.isSet("unify.postitionshift", "2d")) 
+        {
           var positionBottomOut = "translate(0,100%)";
           var positionRightOut = "translate(100%,0)";
           var positionLeftOut = "translate(-100%,0)";
@@ -652,7 +654,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
     __animateLayer : function(target, from, to, current, other)
     {
       var Registration = qx.event.Registration;
-      var Class = qx.bom.element2.Class;
       var Style = qx.bom.element2.Style;
       var targetStyle = target.style;
 
