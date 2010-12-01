@@ -152,6 +152,10 @@ qx.Class.define("unify.view.mobile.ViewManager",
     /** {String} ID of default view */
     __defaultView : null,
 
+    /** {Map} Used for storage of deep path for children e.g. used in switching of tab views */
+    __deep : null,
+
+
     /**
      * Registers a new view. All views must be registered before being used.
      *
@@ -199,6 +203,12 @@ qx.Class.define("unify.view.mobile.ViewManager",
     },
     
     
+    /**
+     * Whether the given view ID is controlled by this manager.
+     * 
+     * @param id {String} Identifier of the view.
+     * @return {Boolean} <code>true</code> when the view is controlled by this manager.
+     */
     hasView : function(id) {
       return id && !!this.__views[id];
     },
@@ -212,11 +222,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
     getDefaultView : function() {
       return this.__defaultView;
     },
-    
-    
-    
-    /** {Map} Used for storage of deep path for children e.g. used in switching of tab views */
-    __deep : null,
     
     
     /**
@@ -287,14 +292,11 @@ qx.Class.define("unify.view.mobile.ViewManager",
     /** {Boolean} Whether the app is following a link */
     __navigates : false,
 
-
     /** {String} CSS selector with elements which are followable by the navigation manager */
     __followable : "a[href],[rel],[goto],[exec]",
 
-
     /** {String} Transition of next view switch */
     __transition : null,
-
 
     /**
      * Prevents clicks from executing native behavior
@@ -702,6 +704,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
       // Enable transition and slide to target value
       targetStyle[durationProperty] = "";
       targetStyle[transformProperty] = to;
-    }    
+    }
   }
 });
