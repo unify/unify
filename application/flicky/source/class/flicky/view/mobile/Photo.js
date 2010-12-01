@@ -92,8 +92,6 @@ qx.Class.define("flicky.view.mobile.Photo", {
     
     __createImage : function(entry)
     {
-      console.debug(entry)
-      
       var tmpl = '<img src="http://farm{$farm}.static.flickr.com/{$server}/{$id}_{$secret}_b.jpg" alt="{$title}" />';
       
       return tmpl.replace(/{\$([a-z]+)}/g, function(match, key) {

@@ -33,7 +33,9 @@ qx.Class.define("unify.ui.mobile.TitleBar",
 
     // Finally listen for any changes occour after creation of the titlebar
     view.addListener("changeTitle", this.__onViewChangeTitle, this);
-    view.addListener("changeActive", this.__onViewChangeActive, this);
+    view.addListener("changeParent", this.__onViewChangeParent, this);
+    
+    this.__onViewChangeParent();
   },
 
 
@@ -65,30 +67,15 @@ qx.Class.define("unify.ui.mobile.TitleBar",
 
     __lastUpTitle : null,
 
-    /**
-     * Event listner for <code>changeActive</code> event of attached view.
-     *
-     * @param e {qx.event.type.Data} Property change event
-     */
-    __onViewChangeActive : function(e)
+    __onViewChangeParent : function(e)
     {
-      if (!e.getData()) {
-        return;
-      }
-
-      //FIXME
-      return;
-
-      var NavigationManager = unify.view.mobile.NavigationManager.getInstance();
-      var path = NavigationManager.getPath();
+      var parentView = this.getView().getParent();
       var upElem = this.query("[rel=up]");
-
-      // Whether there is a parent
-      if (path.getSize() > 1)
+      
+      if (parentView)
       {
-        var ViewManager = unify.view.mobile.ViewManager.getInstance();
-        var upTitle = ViewManager.getById(path.getView(-1)).getTitle("up", path.getParam(-1));
-
+        var upTitle = parentView.getTitle("up");
+        
         if (this.__lastUpTitle != upTitle)
         {
           if (upElem)
@@ -119,7 +106,7 @@ qx.Class.define("unify.ui.mobile.TitleBar",
         }
 
         this.__lastUpTitle = null;
-      }
+      }      
     },
 
 
@@ -149,6 +136,6 @@ qx.Class.define("unify.ui.mobile.TitleBar",
   {
     var view = this.__view
     view.removeListener("changeTitle", this.__onViewChangeTitle, this);
-    view.removeListener("changeActive", this.__onViewChangeActive, this);
+    view.removeListener("changeParent", this.__onViewChangeParent, this);    
   }
 });

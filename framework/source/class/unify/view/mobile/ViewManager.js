@@ -681,7 +681,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
       var target = fromViewId + (fromViewParam != null ? ":" + fromViewParam : "");
 
       // Select element and fade out selection slowly
-      var selectElem = this.getLayer().getElement().querySelector('[goto="' + target + '"]');
+      var selectElem = this.getElement().querySelector('[goto="' + target + '"]');
       if (selectElem)
       {
         var duration = Style.property("transitionDuration");
