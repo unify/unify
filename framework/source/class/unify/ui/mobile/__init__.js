@@ -1,3 +1,0 @@
-/** 
- * UI elements for smartphones
- */

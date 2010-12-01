@@ -19,15 +19,7 @@
 ************************************************************************ */
 
 /**
- * Application class for mobile devices.
- *
- * Includes support for:
- *
- * * Integration of view managment
- * * Dashboard Icon Configuration
- * * Activity Managment
- * * Dependency Managment with separate "run" phase of applications
- * * Loading of core CSS files
+ * Application class for next generation devices.
  */
 qx.Class.define("unify.application.Mobile",
 {

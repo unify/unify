@@ -11,9 +11,9 @@
  * Same basic control as {@link Abstract} but with additional
  * support for children managment.
  */
-qx.Class.define("unify.ui.mobile.Container",
+qx.Class.define("unify.ui.Container",
 {
-  extend : unify.ui.mobile.Abstract,
+  extend : unify.ui.Abstract,
 
 
 
@@ -60,7 +60,7 @@ qx.Class.define("unify.ui.mobile.Container",
     /**
      * Adds the given HTML string, control or DOM element.
      *
-     * @param obj {String|Element|unify.ui.mobile.Abstract} HTML, control or element to insert
+     * @param obj {String|Element|unify.ui.Abstract} HTML, control or element to insert
      */
     add : function(obj)
     {
@@ -92,7 +92,7 @@ qx.Class.define("unify.ui.mobile.Container",
      *
      * HTML strings are not supported here. Use {@link #clear} to remove the whole content.
      *
-     * @param obj {Element|unify.ui.mobile.Abstract} Control or element to remove
+     * @param obj {Element|unify.ui.Abstract} Control or element to remove
      */
     remove : function(obj)
     {
@@ -131,7 +131,7 @@ qx.Class.define("unify.ui.mobile.Container",
     /**
      * Replaces current content with given content
      *
-     * @param obj {String|Element|unify.ui.mobile.Abstract} HTML, control or element to insert
+     * @param obj {String|Element|unify.ui.Abstract} HTML, control or element to insert
      */
     replace : function(obj)
     {

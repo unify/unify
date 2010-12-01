@@ -12,9 +12,9 @@
  * available synchronously e.g. through inlining during build. The data
  * itself must not change during runtime of the application.
  */
-qx.Class.define("unify.view.mobile.ServiceView",
+qx.Class.define("unify.view.ServiceView",
 {
-  extend : unify.view.mobile.StaticView,
+  extend : unify.view.StaticView,
 
 
   /*

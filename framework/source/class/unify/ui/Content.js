@@ -10,9 +10,9 @@
 /**
  * Content holder
  */
-qx.Class.define("unify.ui.mobile.Content",
+qx.Class.define("unify.ui.Content",
 {
-  extend : unify.ui.mobile.Container,
+  extend : unify.ui.Container,
 
 
 

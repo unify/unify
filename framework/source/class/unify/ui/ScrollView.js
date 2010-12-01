@@ -31,9 +31,9 @@
  * * Animation could be disabled on slow systems
  *
  */
-qx.Class.define("unify.ui.mobile.ScrollView",
+qx.Class.define("unify.ui.ScrollView",
 {
-  extend : unify.ui.mobile.Container,
+  extend : unify.ui.Container,
 
 
 
@@ -405,7 +405,7 @@ qx.Class.define("unify.ui.mobile.ScrollView",
       this.__contentElem = contentElem;
 
       // Add scroll indicators
-      var ScrollIndicator = unify.ui.mobile.ScrollIndicator;
+      var ScrollIndicator = unify.ui.ScrollIndicator;
       var indicatorX = this.__horizontalScrollIndicator = new ScrollIndicator("horizontal");
       elem.appendChild(indicatorX.getElement());
       var indicatorY = this.__verticalScrollIndicator = new ScrollIndicator("vertical");
@@ -474,7 +474,7 @@ qx.Class.define("unify.ui.mobile.ScrollView",
         return;
       }
 
-      var ScrollIndicator = unify.ui.mobile.ScrollIndicator;
+      var ScrollIndicator = unify.ui.ScrollIndicator;
 
       // Sum of margins substracted from the client size for computing the indicator size
       var margin = ScrollIndicator.DISTANCE * 2;

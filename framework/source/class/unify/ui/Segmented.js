@@ -11,9 +11,9 @@
 /**
  * Segmented control
  */
-qx.Class.define("unify.ui.mobile.Segmented",
+qx.Class.define("unify.ui.Segmented",
 {
-  extend : unify.ui.mobile.Abstract,
+  extend : unify.ui.Abstract,
 
 
   /*

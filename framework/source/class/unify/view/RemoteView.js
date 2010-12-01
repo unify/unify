@@ -14,9 +14,9 @@
  * data loaded from remote to a minimum. It integrates activity indicators
  * to give the user feedback about server communication.
  */
-qx.Class.define("unify.view.mobile.RemoteView",
+qx.Class.define("unify.view.RemoteView",
 {
-  extend : unify.view.mobile.ServiceView,
+  extend : unify.view.ServiceView,
   type : "abstract",
 
 

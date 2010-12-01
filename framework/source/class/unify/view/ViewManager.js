@@ -11,7 +11,7 @@
 /**
  * This class manage other classes which extend from {@link StaticView}.
  */
-qx.Class.define("unify.view.mobile.ViewManager",
+qx.Class.define("unify.view.ViewManager",
 {
   extend : qx.core.Object,
 
@@ -187,7 +187,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
      * Returns the view instance stored behind the given ID.
      *
      * @param id {String} Identifier of the view.
-     * @return {unify.view.mobile.Abstract} Instance derived from the StaticView class.
+     * @return {unify.view.Abstract} Instance derived from the StaticView class.
      */
     getById : function(id) {
       return id && this.__views[id] || null;
@@ -353,7 +353,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
       var dest = href ? href.substring(1) : elem.getAttribute("goto");
       this.debug("Destination: " + dest);
       
-      var config = unify.view.mobile.Navigation.getInstance().parseFragment(dest);
+      var config = unify.view.Navigation.getInstance().parseFragment(dest);
 
       var view = config.view != null ? config.view : null;
       var segment = config.segment != null ? config.segment : null;
@@ -458,7 +458,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
       }
       else
       {
-        var childViewManager = unify.view.mobile.Navigation.getInstance().getViewManager(view);
+        var childViewManager = unify.view.Navigation.getInstance().getViewManager(view);
         if (childViewManager == null) {
           throw new Error("Could not find view manager for view: " + view);
         }
@@ -523,7 +523,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
     ---------------------------------------------------------------------------
     */
     
-    /** {unify.view.mobile.StaticView} Current view */
+    /** {unify.view.StaticView} Current view */
     __view : null,
 
     /**
@@ -552,7 +552,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
     /**
      * Internal setter method for view switching
      * 
-     * @param view {unify.view.mobile.StaticView} View instance to switch to
+     * @param view {unify.view.StaticView} View instance to switch to
      * @param transition {String?null} Transition name
      */
     __setView : function(view, transition)

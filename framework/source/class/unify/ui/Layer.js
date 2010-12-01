@@ -10,9 +10,9 @@
 /**
  * Layer control. Top level control for each view.
  */
-qx.Class.define("unify.ui.mobile.Layer",
+qx.Class.define("unify.ui.Layer",
 {
-  extend : unify.ui.mobile.Container,
+  extend : unify.ui.Container,
 
 
   /*

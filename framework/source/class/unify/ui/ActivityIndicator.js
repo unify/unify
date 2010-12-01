@@ -10,9 +10,9 @@
 /**
  * Activity indicator to show activities like loading of data
  */
-qx.Class.define("unify.ui.mobile.ActivityIndicator",
+qx.Class.define("unify.ui.ActivityIndicator",
 {
-  extend : unify.ui.mobile.Overlay,
+  extend : unify.ui.Overlay,
   type : "singleton",
 
 

@@ -12,9 +12,9 @@
  * for showing a title and offering simple navigation options. As the {@link ToolBar}
  * it might show additional buttons on the right side for navigation proposes.
  */
-qx.Class.define("unify.ui.mobile.TitleBar",
+qx.Class.define("unify.ui.TitleBar",
 {
-  extend : unify.ui.mobile.ToolBar,
+  extend : unify.ui.ToolBar,
 
 
 

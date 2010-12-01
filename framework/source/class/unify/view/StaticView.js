@@ -30,7 +30,7 @@
  * history managment, recovery, automatic transitions etc. This might not make
  * a lot of sense sense for application doing mostly fullscreen things like games.
  */
-qx.Class.define("unify.view.mobile.StaticView",
+qx.Class.define("unify.view.StaticView",
 {
   extend : qx.core.Object,
   include : [qx.locale.MTranslation],
@@ -67,7 +67,7 @@ qx.Class.define("unify.view.mobile.StaticView",
   {
     parent :
     {
-      check : "unify.view.mobile.StaticView",
+      check : "unify.view.StaticView",
       nullable : true,
       apply : "_applyParent",
       event : "changeParent"

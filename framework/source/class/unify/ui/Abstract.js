@@ -10,7 +10,7 @@
 /**
  * Basic control for low level interface creation.
  */
-qx.Class.define("unify.ui.mobile.Abstract",
+qx.Class.define("unify.ui.Abstract",
 {
   extend : qx.core.Object,
 

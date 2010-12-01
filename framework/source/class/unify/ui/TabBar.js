@@ -14,10 +14,10 @@
  * to prevent display of tab bar on this view. The default and recommended behaviour
  * is to display it on all views.
  */
-qx.Class.define("unify.ui.mobile.TabBar",
+qx.Class.define("unify.ui.TabBar",
 {
   type : "singleton",
-  extend : unify.ui.mobile.Abstract,
+  extend : unify.ui.Abstract,
 
 
 

@@ -10,9 +10,9 @@
 /**
  * Contains informations about the system and features.
  */
-qx.Class.define("unify.view.mobile.SysInfo",
+qx.Class.define("unify.view.SysInfo",
 {
-  extend : unify.view.mobile.ServiceView,
+  extend : unify.view.ServiceView,
   type : "singleton",
 
 

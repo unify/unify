@@ -11,9 +11,9 @@
  * This is the basic ToolBar class for Unify mobile interfaces. It supports
  * buttons being centered or aligned left hand and right hand side.
  */
-qx.Class.define("unify.ui.mobile.ToolBar",
+qx.Class.define("unify.ui.ToolBar",
 {
-  extend : unify.ui.mobile.Abstract,
+  extend : unify.ui.Abstract,
 
 
 
@@ -226,7 +226,7 @@ qx.Class.define("unify.ui.mobile.ToolBar",
     {
       var itemElem;
 
-      if (config instanceof unify.ui.mobile.Abstract)
+      if (config instanceof unify.ui.Abstract)
       {
         this.query(".center").appendChild(config.getElement());
         return;

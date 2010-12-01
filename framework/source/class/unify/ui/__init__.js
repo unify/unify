@@ -1,3 +1,3 @@
-/**
- * UI classes for each supported platform.
+/** 
+ * UI elements for smartphones
  */

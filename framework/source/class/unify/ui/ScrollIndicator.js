@@ -10,9 +10,9 @@
 /**
  * Used exclusively by {@link ScrollView} for displaying scroll position indicators.
  */
-qx.Class.define("unify.ui.mobile.ScrollIndicator",
+qx.Class.define("unify.ui.ScrollIndicator",
 {
-  extend : unify.ui.mobile.Abstract,
+  extend : unify.ui.Abstract,
 
 
   /*
@@ -174,7 +174,7 @@ qx.Class.define("unify.ui.mobile.ScrollIndicator",
 
         // Compute sizes based on CSS stored size of end pieces
         var scaleX=1, scaleY=1, endPosX=0, endPosY=0;
-        var endpieces = unify.ui.mobile.ScrollIndicator.ENDSIZE;
+        var endpieces = unify.ui.ScrollIndicator.ENDSIZE;
         if (this.__horizontal)
         {
           scaleX = size - (endpieces * 2);

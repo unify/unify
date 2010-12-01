@@ -11,8 +11,8 @@
 /**
  * Slide view component to have left/right sliding boxes with 100% width
  */
-qx.Class.define("unify.ui.mobile.SlideView", {
-  extend : unify.ui.mobile.ScrollView,
+qx.Class.define("unify.ui.SlideView", {
+  extend : unify.ui.ScrollView,
 
   construct : function() {
     this.base(arguments);
@@ -26,7 +26,7 @@ qx.Class.define("unify.ui.mobile.SlideView", {
     /**
      * Adds the given HTML string, control or DOM element.
      *
-     * @param obj {String|Element|unify.ui.mobile.Abstract} HTML, control or element to insert
+     * @param obj {String|Element|unify.ui.Abstract} HTML, control or element to insert
      */
     add : function(obj) {
       this.base(arguments, obj);

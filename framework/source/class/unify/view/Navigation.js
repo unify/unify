@@ -21,7 +21,7 @@
  * * Supports multiple ways of controlling the location.
  * * Support for TabView like navigation with deep inner navigation
  */
-qx.Class.define("unify.view.mobile.Navigation",
+qx.Class.define("unify.view.Navigation",
 {
   extend : qx.core.Object,
   type : "singleton",

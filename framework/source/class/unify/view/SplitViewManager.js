@@ -1,4 +1,4 @@
-qx.Class.define("unify.view.mobile.SplitViewManager",
+qx.Class.define("unify.view.SplitViewManager",
 {
   extend : qx.core.Object,
   

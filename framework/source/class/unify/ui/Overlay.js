@@ -10,9 +10,9 @@
 /**
  * Generic overlay class for dialogs, popups, activity, etc.
  */
-qx.Class.define("unify.ui.mobile.Overlay",
+qx.Class.define("unify.ui.Overlay",
 {
-  extend : unify.ui.mobile.Container,
+  extend : unify.ui.Container,
 
 
   /*
