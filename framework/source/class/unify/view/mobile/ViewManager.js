@@ -7,13 +7,13 @@
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
 *********************************************************************************************** */
+
 /**
  * This class manage other classes which extend from {@link StaticView}.
  */
 qx.Class.define("unify.view.mobile.ViewManager",
 {
   extend : qx.core.Object,
-
 
 
   /*
@@ -35,24 +35,28 @@ qx.Class.define("unify.view.mobile.ViewManager",
         throw new Error("Invalid manager ID: " + managerId);
       }
     }
+
+    // Store manager ID
+    this.__managerId = managerId;
+    this.debug("Initialize View Manager: " + this.__managerId);
     
+    // Create root element of manager (used as parent for view elements)
     var elem = this.__element = document.createElement("div");
     elem.className = "view-manager";
     elem.id = managerId;
 
+    // Register to navigation events
     qx.event.Registration.addListener(elem, "click", this.__onClick, this);
     qx.event.Registration.addListener(elem, "tap", this.__onTap, this);
     qx.event.Registration.addListener(elem, "touchhold", this.__onTouchHold, this);
     qx.event.Registration.addListener(elem, "touchrelease", this.__onTouchRelease, this);
 
-    this.__id = managerId;
-    this.debug("Initialize View Manager: " + this.__id);
-
-    // Data structure for managed views
+    // Create instance specific data structures
     this.__views = {};
-    
     this.__path = [];
+    this.__deep = {};
   },
+
 
 
 
@@ -88,11 +92,18 @@ qx.Class.define("unify.view.mobile.ViewManager",
   
   
   
+  /*
+  *****************************************************************************
+     EVENTS
+  *****************************************************************************
+  */
+    
   events :
   {
+    /** Fired whenever the view-local path was modified */
     changePath : "qx.event.type.Event"
-    
   },
+
 
 
 
@@ -104,15 +115,29 @@ qx.Class.define("unify.view.mobile.ViewManager",
 
   members :
   {
-    /** {Map} A map with all keys (by ID) */
-    __views : null,
+    /*
+    ---------------------------------------------------------------------------
+      MANAGER CORE
+    ---------------------------------------------------------------------------
+    */
 
-    __defaultView : null,
-
-    __id : null,
-    
+    __managerId : null,
     __element : null,
+    __path : null,
     
+    getElement : function() {
+      return this.__element;
+    },
+    
+    getId : function() {
+      return this.__managerId;
+    },
+    
+    getPath : function() {
+      return this.__path;
+    },
+    
+
 
 
     /*
@@ -120,6 +145,12 @@ qx.Class.define("unify.view.mobile.ViewManager",
       VIEW MANAGMENT
     ---------------------------------------------------------------------------
     */
+
+    /** {Map} A map with all keys (by ID) */
+    __views : null,
+
+    /** {String} ID of default view */
+    __defaultView : null,
 
     /**
      * Registers a new view. All views must be registered before being used.
@@ -136,16 +167,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
       }
 
       this.__views[id] = viewClass;
-    },
-    
-    
-    getElement : function() {
-      return this.__element;
-    },
-    
-    
-    getId : function() {
-      return this.__id;
     },
     
 
@@ -165,7 +186,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
         this.fireEvent("changePath");
       }
     },
-
 
 
     /**
@@ -194,16 +214,9 @@ qx.Class.define("unify.view.mobile.ViewManager",
     },
     
     
-
-
-    getPath : function() {
-      return this.__path;
-    },
     
-    
-    __path : null,
+    /** {Map} Used for storage of deep path for children e.g. used in switching of tab views */
     __deep : null,
-    __transition : null,
     
     
     /**
@@ -264,9 +277,10 @@ qx.Class.define("unify.view.mobile.ViewManager",
     
     
     
+    
     /*
     ---------------------------------------------------------------------------
-      EVENT HANDLERS
+      NAVIGATION RELATED EVENT HANDLERS
     ---------------------------------------------------------------------------
     */
 
@@ -276,6 +290,10 @@ qx.Class.define("unify.view.mobile.ViewManager",
 
     /** {String} CSS selector with elements which are followable by the navigation manager */
     __followable : "a[href],[rel],[goto],[exec]",
+
+
+    /** {String} Transition of next view switch */
+    __transition : null,
 
 
     /**
@@ -467,17 +485,23 @@ qx.Class.define("unify.view.mobile.ViewManager",
         }
       }
       
-      if (firePathChange) 
-      {
-        this.debug("Fire path change!");
+      if (firePathChange) {
         this.fireEvent("changePath");
       }
       
       // Reset event blocking flag
       this.__navigates = false;
     },
-    
 
+
+
+
+    /*
+    ---------------------------------------------------------------------------
+      PRESSED STYLE EVENT HANDLERS
+    ---------------------------------------------------------------------------
+    */
+    
     /**
      * Executed on every touch hold event
      *
@@ -503,16 +527,40 @@ qx.Class.define("unify.view.mobile.ViewManager",
       if (elem) {
         qx.bom.element2.Class.remove(elem, "pressed");
       }
-    },    
+    },
+
 
 
 
     /*
     ---------------------------------------------------------------------------
-      INTERNALS
+      LAYER LOGIC / ANIMATION
     ---------------------------------------------------------------------------
     */
 
+    /**
+     * {Map} Maps the position of the layer to the platform specific transform value.
+     */
+    __positions : qx.core.Variant.select("unify.postitionshift",
+    {
+      "3d" : 
+      {
+        bottom : "translate3d(0,100%,0)",
+        right : "translate3d(100%,0,0)",
+        left : "translate3d(-100%,0,0)",
+        center : "translate3d(0,0,0)"
+      },
+      
+      "2d" :
+      {
+        bottom : "translate(0,100%)",
+        right : "translate(100%,0)",
+        left : "translate(-100%,0)",
+        center : "translate(0,0)"
+      }
+    }),
+    
+    
     // property apply
     _applyView : function(value, old)
     {
@@ -526,89 +574,64 @@ qx.Class.define("unify.view.mobile.ViewManager",
       value.setActive(true);
 
       // Cache element/view references
-      var toView = value;
-      var fromView = old;
-      var toLayer = toView && toView.getElement();
-      var fromLayer = fromView && fromView.getElement();
+      var currentViewElement = value && value.getElement();
+      var oldViewElement = old && old.getElement();
       
-      // Check parent
-      if (toLayer.parentNode != this.__element) {
-        this.__element.appendChild(toLayer);
+      // Insert target layer into DOM
+      if (currentViewElement.parentNode != this.__element) {
+        this.__element.appendChild(currentViewElement);
       }
       
+      // Transition specific layer switch
       var transition = this.__transition;
-
-      // Detect animation
-      if (transition == "in" || transition == "out")
+      var positions = this.__positions;
+      
+      if (transition == "in")
       {
-        if (qx.core.Variant.isSet("unify.postitionshift", "3d")) 
+        if (value.isModal())
         {
-          var positionBottomOut = "translate3d(0,100%,0)";
-          var positionRightOut = "translate3d(100%,0,0)";
-          var positionLeftOut = "translate3d(-100%,0,0)";
-          var positionVisible = "translate3d(0,0,0)";
-        } 
-        else if (qx.core.Variant.isSet("unify.postitionshift", "2d")) 
-        {
-          var positionBottomOut = "translate(0,100%)";
-          var positionRightOut = "translate(100%,0)";
-          var positionLeftOut = "translate(-100%,0)";
-          var positionVisible = "translate(0,0)";
+          this.__animateLayer(currentViewElement, positions.bottom, positions.center, true, oldViewElement);
         }
-
-        if (transition == "in")
+        else
         {
-          if (toView.isModal())
-          {
-            this.__animateLayer(toLayer, positionBottomOut, positionVisible, true, fromLayer);
-          }
-          else
-          {
-            this.__animateLayer(toLayer, positionRightOut, positionVisible, true);
-            this.__animateLayer(fromLayer, positionVisible, positionLeftOut, false);
-          }
+          this.__animateLayer(currentViewElement, positions.right, positions.center, true);
+          this.__animateLayer(oldViewElement, positions.center, positions.left, false);
         }
-        else if (transition == "out")
+      }
+      else if (transition == "out")
+      {
+        if (old.isModal())
         {
-          if (fromView.isModal())
-          {
-            this.__animateLayer(fromLayer, positionVisible, positionBottomOut, false, toLayer);
-          }
-          else
-          {
-            this.__animateLayer(toLayer, positionLeftOut, positionVisible, true);
-            this.__animateLayer(fromLayer, positionVisible, positionRightOut, false);
-          }
+          this.__animateLayer(oldViewElement, positions.center, positions.bottom, false, currentViewElement);
+        }
+        else
+        {
+          this.__animateLayer(currentViewElement, positions.left, positions.center, true);
+          this.__animateLayer(oldViewElement, positions.center, positions.right, false);
         }
       }
       else
       {
-        if (old) {
-          qx.bom.element2.Class.remove(fromLayer, "current");
+        if (oldViewElement) {
+          qx.bom.element2.Class.remove(oldViewElement, "current");
         }
 
-        if (value) {
-          qx.bom.element2.Class.add(toLayer, "current");
+        if (currentViewElement) {
+          qx.bom.element2.Class.add(currentViewElement, "current");
         }
       }
 
       // Fire appear/disappear events
       if (old) {
-        fromView.fireEvent("disappear");
+        old.fireEvent("disappear");
       }
 
       if (value) {
-        toView.fireEvent("appear");
+        value.fireEvent("appear");
       }
     },
     
     
-    /** {unify.ui.mobile.Layer} During layer animation: The previous layer */
-    __fromLayer : null,
-
-    /** {unify.ui.mobile.Layer} During layer animation: The next layer */
-    __toLayer : null,
-
     /**
      * Animates a layer property
      *
@@ -620,22 +643,20 @@ qx.Class.define("unify.view.mobile.ViewManager",
      */
     __animateLayer : function(target, from, to, current, other)
     {
-      var Registration = qx.event.Registration;
-      var Style = qx.bom.element2.Style;
       var targetStyle = target.style;
 
       // Normalize cross-browser differences
-      var property = Style.property("transform");
-      var duration = Style.property("transitionDuration");
+      var transformProperty = qx.bom.element2.Style.property("transform");
+      var durationProperty = qx.bom.element2.Style.property("transitionDuration");
 
       // Method to cleanup after transition
       var cleanup = function()
       {
         // Disable transition again
-        targetStyle[duration] = "0ms";
+        targetStyle[durationProperty] = "0ms";
 
         // Remove listener
-        Registration.removeListener(target, "transitionEnd", cleanup, this);
+        qx.event.Registration.removeListener(target, "transitionEnd", cleanup, this);
         
         // Hide the other layer when this is the current one
         // Otherwise hide this layer when not the current one
@@ -652,20 +673,16 @@ qx.Class.define("unify.view.mobile.ViewManager",
 
         // Revert modifications
         targetStyle.zIndex = "";
-        targetStyle[property] = "";
+        targetStyle[transformProperty] = "";
       };
 
       // React on transition end
-      Registration.addListener(target, "transitionEnd", cleanup, this);
+      qx.event.Registration.addListener(target, "transitionEnd", cleanup, this);
 
-      // Move to top
+      // Move to top, disable transition and hard switch to initial value
       targetStyle.zIndex = 1000;
-
-      // Disable transition
-      targetStyle[duration] = "0ms";
-
-      // Apply initial value
-      targetStyle[property] = from;
+      targetStyle[durationProperty] = "0ms";
+      targetStyle[transformProperty] = from;
 
       // Initial display when current layer
       if (current)
@@ -682,11 +699,9 @@ qx.Class.define("unify.view.mobile.ViewManager",
         qx.bom.element2.Class.add(other, "current");
       }
 
-      // Enable transition
-      targetStyle[duration] = "";
-
-      // Apply target value
-      targetStyle[property] = to;
+      // Enable transition and slide to target value
+      targetStyle[durationProperty] = "";
+      targetStyle[transformProperty] = to;
     }    
   }
 });
