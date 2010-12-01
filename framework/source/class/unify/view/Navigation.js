@@ -7,6 +7,7 @@
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
 *********************************************************************************************** */
+
 /* ************************************************************************
 
 #require(unify.event.handler.Android)
@@ -27,7 +28,6 @@ qx.Class.define("unify.view.Navigation",
   type : "singleton",
 
 
-
   /*
   *****************************************************************************
      CONSTRUCTOR
@@ -38,6 +38,7 @@ qx.Class.define("unify.view.Navigation",
   {
     this.base(arguments);
     
+    // Initialize storage
     this.__viewManagers = {};
   },
 
@@ -54,12 +55,11 @@ qx.Class.define("unify.view.Navigation",
   {
     /*
     ---------------------------------------------------------------------------
-      PUBLIC API
+      VIEW MANAGER MANAGMENT
     ---------------------------------------------------------------------------
     */
     
     __viewManagers : null,
-    __location : null,
     
         
     /**
@@ -123,6 +123,17 @@ qx.Class.define("unify.view.Navigation",
       
       return null;
     },
+
+
+
+
+    /*
+    ---------------------------------------------------------------------------
+      PATH MANAGMENT
+    ---------------------------------------------------------------------------
+    */
+    
+    __path : null,
     
     
     getPath : function()
@@ -147,17 +158,7 @@ qx.Class.define("unify.view.Navigation",
       this.debug("Serialized path: " + result);      
       return result;
     },
-
-
-
-    /*
-    ---------------------------------------------------------------------------
-      INTERNALS
-    ---------------------------------------------------------------------------
-    */
-    
-    __path : null,
-    
+        
     
     /**
      *
@@ -193,13 +194,6 @@ qx.Class.define("unify.view.Navigation",
         this.warn("Ignoring empty path");
         return;
       }
-
-      var oldLocation = this.__location || "";
-      if (currentLocation == oldLocation) {
-        return;
-      }
-      this.__location = currentLocation;
-      
 
       if (window.localStorage)
       {
