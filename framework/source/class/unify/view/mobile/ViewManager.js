@@ -271,7 +271,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
     */
 
     /** {Boolean} Whether the app is following a link */
-    __following : null,
+    __navigates : false,
 
 
     /** {String} CSS selector with elements which are followable by the navigation manager */
@@ -299,12 +299,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
      */
     __onTap : function(e)
     {
-      if (this.__following)
-      {
-        this.warn("Still following!");
-        return;
-      }
-
       var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
       if (elem)
       {
@@ -320,17 +314,18 @@ qx.Class.define("unify.view.mobile.ViewManager",
         }
         else
         {
+          // Detect absolute links
           var href = elem.getAttribute("href");
           if (href != null && href != "" && href.charAt(0) != "#")
           {
-            // Absolute link
             window.open(href);
           }
-          else
+          
+          // Lazily navigate (omits navigation during activity)
+          else if (!this.__navigates)
           {
-            // Lazy further processing
-            this.__following = true;
-            qx.lang.Function.delay(this.__onTapFollow, 0, this, elem);
+            this.__navigates = true;
+            qx.lang.Function.delay(this.__onTapNavigate, 0, this, elem);
           }
         }
       }
@@ -342,7 +337,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
      *
      * @param elem {Element} Element which was tapped onto
      */
-    __onTapFollow : function(elem)
+    __onTapNavigate : function(elem)
     {
       var href = elem.getAttribute("href");
       var rel = elem.getAttribute("rel");
@@ -477,26 +472,8 @@ qx.Class.define("unify.view.mobile.ViewManager",
         this.debug("Fire path change!");
         this.fireEvent("changePath");
       }
-      
-      // Lazy further processing
-      // Give the device some time for painting, garbage collection etc.
-      // This omits an overload and execution stop during intensive phases.
-      // Especially important on slower devices.
-      qx.lang.Function.delay(this.__onTapDone, 300, this, +new Date);
     },
     
-
-    /**
-     * Called when tap is rendered
-     *
-     * @param start {Date} Render start time
-     */
-    __onTapDone : function(start)
-    {
-      this.debug("Painted in: " + (new Date - start - 300) + "ms");
-      this.__following = false;
-    },
-
 
     /**
      * Executed on every touch hold event
@@ -505,10 +482,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
      */
     __onTouchHold : function(e)
     {
-      if (this.__following) {
-        return;
-      } 
-
       var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
       if (elem) {
         qx.bom.element2.Class.add(elem, "pressed");
@@ -523,10 +496,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
      */
     __onTouchRelease : function(e)
     {
-      if (this.__following) {
-        return;
-      } 
-
       var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
       if (elem) {
         qx.bom.element2.Class.remove(elem, "pressed");
