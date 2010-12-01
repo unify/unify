@@ -308,8 +308,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
       var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
       if (elem)
       {
-        this.debug("Processing tap...");
-        
         // Stop further event processing
         e.stopPropagation();
         
@@ -317,11 +315,8 @@ qx.Class.define("unify.view.mobile.ViewManager",
         var exec = elem.getAttribute("exec");
         if (exec) 
         {
-          // FIXME 
           // Support executing public function on currently selected view
-          
-
-          
+          this.getView()[exec]();
         }
         else
         {
