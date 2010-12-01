@@ -13,6 +13,7 @@
 #recent, #interesting
   +padded-layer
   +vbox
+  background: black
 
   .title-bar
     [exec=refresh]
@@ -21,14 +22,12 @@
   .content img
     display: inline-block
     vertical-align: top
-    margin-right: 8px
-    margin-bottom: 8px
-    border: 1px solid black
+    margin: 5px
     +box-sizing("content-box")
     width: 75px
     height: 75px
-    
-    +box-shadow(rgba(0,0,0,0.3), 2px, 2px, 1px)
+    +box-shadow(rgba(255,255,255,0.4), 1px, 1px, 0px)
+    +border-radius(10px)
 
 
 #photo
