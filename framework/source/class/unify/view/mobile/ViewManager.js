@@ -570,13 +570,11 @@ qx.Class.define("unify.view.mobile.ViewManager",
         this.__element.appendChild(toLayer);
       }
       
-      var mode = this.__transition;
+      var transition = this.__transition;
 
       // Detect animation
-      if (mode == "in" || mode == "out")
+      if (transition == "in" || transition == "out")
       {
-        var animationProperty = "transform";
-
         if (qx.core.Variant.isSet("unify.postitionshift", "3d")) {
           var positionBottomOut = "translate3d(0,100%,0)";
           var positionRightOut = "translate3d(100%,0,0)";
@@ -589,28 +587,28 @@ qx.Class.define("unify.view.mobile.ViewManager",
           var positionVisible = "translate(0,0)";
         }
 
-        if (mode == "in")
+        if (transition == "in")
         {
           if (toView.isModal())
           {
-            this.__animateLayer(toLayer, animationProperty, positionBottomOut, positionVisible, true, fromLayer);
+            this.__animateLayer(toLayer, positionBottomOut, positionVisible, true, fromLayer);
           }
           else
           {
-            this.__animateLayer(toLayer, animationProperty, positionRightOut, positionVisible, true);
-            this.__animateLayer(fromLayer, animationProperty, positionVisible, positionLeftOut, false);
+            this.__animateLayer(toLayer, positionRightOut, positionVisible, true);
+            this.__animateLayer(fromLayer, positionVisible, positionLeftOut, false);
           }
         }
-        else if (mode == "out")
+        else if (transition == "out")
         {
           if (fromView.isModal())
           {
-            this.__animateLayer(fromLayer, animationProperty, positionVisible, positionBottomOut, false, toLayer);
+            this.__animateLayer(fromLayer, positionVisible, positionBottomOut, false, toLayer);
           }
           else
           {
-            this.__animateLayer(toLayer, animationProperty, positionLeftOut, positionVisible, true);
-            this.__animateLayer(fromLayer, animationProperty, positionVisible, positionRightOut, false);
+            this.__animateLayer(toLayer, positionLeftOut, positionVisible, true);
+            this.__animateLayer(fromLayer, positionVisible, positionRightOut, false);
           }
         }
       }
@@ -646,13 +644,12 @@ qx.Class.define("unify.view.mobile.ViewManager",
      * Animates a layer property
      *
      * @param target {Element} DOM element of layer
-     * @param property {String} Style property to modify
      * @param from {var} Start value
      * @param to {var} End value
      * @param current {Boolean?false} Whether this layer is the current layer (read: new layer)
      * @param other {Element} DOM element of other layer (previous/next).
      */
-    __animateLayer : function(target, property, from, to, current, other)
+    __animateLayer : function(target, from, to, current, other)
     {
       var Registration = qx.event.Registration;
       var Class = qx.bom.element2.Class;
@@ -660,7 +657,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
       var targetStyle = target.style;
 
       // Normalize cross-browser differences
-      property = Style.property(property);
+      var property = Style.property("transform");
       var duration = Style.property("transitionDuration");
 
       // Method to cleanup after transition
@@ -671,6 +668,19 @@ qx.Class.define("unify.view.mobile.ViewManager",
 
         // Remove listener
         Registration.removeListener(target, "transitionEnd", cleanup, this);
+        
+        // Hide the other layer when this is the current one
+        // Otherwise hide this layer when not the current one
+        if (current && other)
+        {
+          qx.bom.element2.Class.remove(other, "current");
+        }
+
+        // Make completely invisible if not current layer
+        else if (!current)
+        {
+          qx.bom.element2.Class.remove(target, "current");
+        }        
 
         // Revert modifications
         targetStyle.zIndex = "";
