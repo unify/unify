@@ -121,23 +121,6 @@ qx.Class.define("unify.view.Navigation",
     },
 
 
-    parseFragment : function(fragment)
-    {
-      var match = this.__urlMatcher.exec(fragment);
-      return {
-        view : RegExp.$1 || null,
-        segment : RegExp.$3 || null,
-        param : RegExp.$5 || null
-      };
-    },
-    
-    
-
-    
-
-    __urlMatcher : /^([a-z-]+)(\.([a-z-]+))?(\:([a-zA-Z0-9_-]+))?$/,
-    
-
     getViewManager : function(viewId)
     {
       var managers = this.__viewManagers;

@@ -313,19 +313,17 @@ qx.Class.define("unify.view.ViewManager",
         // Stop further event processing
         e.stopPropagation();
         
-        // Analyse element and process further
+        // Support executing public function on currently selected view
         var exec = elem.getAttribute("exec");
         if (exec) 
         {
-          // Support executing public function on currently selected view
           this.__view[exec]();
         }
         else
         {
           // Detect absolute links
           var href = elem.getAttribute("href");
-          if (href != null && href != "" && href.charAt(0) != "#")
-          {
+          if (href != null && href != "" && href.charAt(0) != "#") {
             window.open(href);
           }
           
@@ -353,11 +351,11 @@ qx.Class.define("unify.view.ViewManager",
       var dest = href ? href.substring(1) : elem.getAttribute("goto");
       this.debug("Destination: " + dest);
       
-      var config = unify.view.Navigation.getInstance().parseFragment(dest);
+      var config = unify.view.Path.parseFragment(dest);
 
-      var view = config.view != null ? config.view : null;
-      var segment = config.segment != null ? config.segment : null;
-      var param = config.param != null ? config.param : null;
+      var view = config.view;
+      var segment = config.segment;
+      var param = config.param;
 
       var viewClass = this.__views[view];
       var currentViewObj = this.__view;
