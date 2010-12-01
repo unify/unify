@@ -636,24 +636,11 @@ qx.Class.define("unify.view.mobile.ViewManager",
     },
     
     
-
-
     /** {unify.ui.mobile.Layer} During layer animation: The previous layer */
     __fromLayer : null,
 
     /** {unify.ui.mobile.Layer} During layer animation: The next layer */
     __toLayer : null,
-
-    /** {Boolean} The number of currently running animations */
-    __running : 0,
-
-    
-
-
-
-    /**
-
-
 
     /**
      * Animates a layer property
@@ -672,9 +659,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
       var Style = qx.bom.element2.Style;
       var targetStyle = target.style;
 
-      // Increment running animation counter
-      this.__running++;
-
       // Normalize cross-browser differences
       property = Style.property(property);
       var duration = Style.property("transitionDuration");
@@ -691,9 +675,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
         // Revert modifications
         targetStyle.zIndex = "";
         targetStyle[property] = "";
-
-        // Decrement running animation counter
-        this.__running--;
       };
 
       // React on transition end
