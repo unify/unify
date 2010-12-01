@@ -8,7 +8,7 @@
 
 *********************************************************************************************** */
 /**
- * This is the basic ToolBar class for Unify mobile interfaces. It supports
+ * This is the basic ToolBar class for Unify interfaces. It supports
  * buttons being centered or aligned left hand and right hand side.
  */
 qx.Class.define("unify.ui.ToolBar",
@@ -24,7 +24,7 @@ qx.Class.define("unify.ui.ToolBar",
   */
 
   /**
-   * @param view {unify.view.mobile.StaticView} View to connect to
+   * @param view {unify.view.StaticView} View to connect to
    */
   construct : function(view)
   {
@@ -32,7 +32,7 @@ qx.Class.define("unify.ui.ToolBar",
 
     if (qx.core.Variant.isSet("qx.debug", "on"))
     {
-      if (!view || !(view instanceof unify.view.mobile.StaticView)) {
+      if (!view || !(view instanceof unify.view.StaticView)) {
         throw new Error("Invalid view: " + view);
       }
     }
@@ -69,7 +69,7 @@ qx.Class.define("unify.ui.ToolBar",
     /**
      * Returns the attached view instance
      *
-     * @return {unify.view.mobile.StaticView} The view instance
+     * @return {unify.view.StaticView} The view instance
      */
     getView : function() {
       return this.__view || null;

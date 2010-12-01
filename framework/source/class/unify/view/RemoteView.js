@@ -75,7 +75,7 @@ qx.Class.define("unify.view.RemoteView",
 
       this.__requestId = this._getBusinessObject().get(this._getServiceName(), this._getServiceParams());
       if (this.__requestId !== false) {
-        unify.ui.mobile.ActivityIndicator.getInstance().show();
+        unify.ui.ActivityIndicator.getInstance().show();
       }
     },
 
@@ -180,7 +180,7 @@ qx.Class.define("unify.view.RemoteView",
       }
 
       delete this.__requestId;
-      unify.ui.mobile.ActivityIndicator.getInstance().hide();
+      unify.ui.ActivityIndicator.getInstance().hide();
 
       if (e.isErrornous()) {
         this._errorHandler("communication", e.getRequest().getStatusCode());

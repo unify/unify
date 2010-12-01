@@ -22,7 +22,7 @@ qx.Class.define("unify.ui.Layer",
   */
 
   /**
-   * @param view {unify.view.mobile.StaticView} View instance to connect to
+   * @param view {unify.view.StaticView} View instance to connect to
     */
   construct : function(view)
   {
@@ -32,7 +32,7 @@ qx.Class.define("unify.ui.Layer",
     {
       if (!view) {
         throw new Error(this.toString() + ": Constructor misses view instance!");
-      } else if (!(view instanceof unify.view.mobile.StaticView)) {
+      } else if (!(view instanceof unify.view.StaticView)) {
         throw new Error(this.toString() + ": Constructor got invalid view instance: " + view);
       }
     }
@@ -57,7 +57,7 @@ qx.Class.define("unify.ui.Layer",
     /**
      * Returns view of leyer.
      *
-     * @return {unify.view.mobile.StaticView} View of layer
+     * @return {unify.view.StaticView} View of layer
      */
     getView : function() {
       return this.__view;

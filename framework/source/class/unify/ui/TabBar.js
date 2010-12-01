@@ -10,7 +10,7 @@
 /**
  * The TabBar is an singleton element of the ui. If it is enabled by adding
  * buttons to it, the tab bar is displayed on all views. It is possible to
- * set a view to "full screen" (@see unify.view.mobile.StaticView#isFullScreen)
+ * set a view to "full screen" (@see unify.view.StaticView#isFullScreen)
  * to prevent display of tab bar on this view. The default and recommended behaviour
  * is to display it on all views.
  */
@@ -31,10 +31,10 @@ qx.Class.define("unify.ui.TabBar",
   {
     this.base(arguments);
 
-    var ViewManager = unify.view.mobile.ViewManager.getInstance();
+    var ViewManager = unify.view.ViewManager.getInstance();
     ViewManager.addListener("changeView", this.__onChangeView, this);
 
-    var NavigationManager = unify.view.mobile.NavigationManager.getInstance();
+    var NavigationManager = unify.view.NavigationManager.getInstance();
     NavigationManager.addListener("navigate", this.__onNavigationChange, this);
   },
 
@@ -74,7 +74,7 @@ qx.Class.define("unify.ui.TabBar",
      * Adds a view to the tab bar. The buttons are displayed in the order of
      * execution of this function.
      *
-     * @param viewClass {Class} Class of the view to register (@see unify.view.mobile.StaticView)
+     * @param viewClass {Class} Class of the view to register (@see unify.view.StaticView)
      */
     add : function(viewClass)
     {
@@ -165,7 +165,7 @@ qx.Class.define("unify.ui.TabBar",
     */
 
     /**
-     * Event handler for changeView event of {@link unify.view.mobile.ViewManager}.
+     * Event handler for changeView event of {@link unify.view.ViewManager}.
      *
      * @param e {qx.event.type.Data} Property change event
      */
@@ -230,10 +230,10 @@ qx.Class.define("unify.ui.TabBar",
 
   destruct : function()
   {
-    var ViewManager = unify.view.mobile.ViewManager.getInstance();
+    var ViewManager = unify.view.ViewManager.getInstance();
     ViewManager.removeListener("changeView", this.__onChangeView, this);
 
-    var NavigationManager = unify.view.mobile.NavigationManager.getInstance();
+    var NavigationManager = unify.view.NavigationManager.getInstance();
     NavigationManager.removeListener("navigate", this.__onNavigationChange, this);
   }
 });

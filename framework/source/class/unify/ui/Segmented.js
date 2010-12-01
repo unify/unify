@@ -23,7 +23,7 @@ qx.Class.define("unify.ui.Segmented",
   */
 
   /**
-   * @param view {unify.view.mobile.Static} View to connect to
+   * @param view {unify.view.Static} View to connect to
    */
   construct : function(view)
   {
@@ -31,7 +31,7 @@ qx.Class.define("unify.ui.Segmented",
 
     if (qx.core.Variant.isSet("qx.debug", "on"))
     {
-      if (!view || !(view instanceof unify.view.mobile.StaticView)) {
+      if (!view || !(view instanceof unify.view.StaticView)) {
         throw new Error("Invalid view: " + view);
       }
     }
@@ -79,7 +79,7 @@ qx.Class.define("unify.ui.Segmented",
 
   members :
   {
-    /** {unify.view.mobile.StaticView} Attached view instance */
+    /** {unify.view.StaticView} Attached view instance */
     __view : null,
 
 

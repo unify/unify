@@ -12,10 +12,10 @@
  * a controller for the UI and the UI itself. It creates the UI logic
  * and binds it into the application logic / business layer.
  *
- * Each view consists at least of a {@link unify.ui.mobile.Layer} which
+ * Each view consists at least of a {@link unify.ui.Layer} which
  * creates and manages the top level DOM element of each view. A view might
- * be fullscreen or add different numbers of bars e.g. {@link unify.ui.mobile.Tabbar},
- * {@link unify.ui.mobile.Titlebar}, {@link unify.ui.mobile.Toolbar}, etc.
+ * be fullscreen or add different numbers of bars e.g. {@link unify.ui.Tabbar},
+ * {@link unify.ui.Titlebar}, {@link unify.ui.Toolbar}, etc.
  *
  * A view is controlled by the {@link Manager} which toggles the visibility
  * of the layers and manage their insertion to the DOM.
@@ -23,7 +23,7 @@
  * The instance of the view is created as soon as needed in a lazy pattern.
  * Each view is a singleton which may be used at different positions in navigation
  * e.g. list->entry->user->list->entry. Each view is identified in history by
- * the hyphenated class name e.g. myapp.view.mobile.MailList => "mail-list".
+ * the hyphenated class name e.g. myapp.view.MailList => "mail-list".
  *
  * Applications using this view-controller based Unify architecture got a lot
  * of functionality of typical iPhone application with automatic navigation paths,
@@ -117,7 +117,7 @@ qx.Class.define("unify.view.StaticView",
     ---------------------------------------------------------------------------
     */
 
-    /** {unify.ui.mobile.Layer} Stores the layer instance of the view. */
+    /** {unify.ui.Layer} Stores the layer instance of the view. */
     __layer : null,
     
     
@@ -141,7 +141,7 @@ qx.Class.define("unify.view.StaticView",
      * Returns the layer of this view. Dynamically creates it if not yet happened.
      *
      * @final
-     * @return {unify.ui.mobile.Layer} Layer instance
+     * @return {unify.ui.Layer} Layer instance
      */
     getLayer : function() {
       return this.__layer || this.create();
@@ -271,7 +271,7 @@ qx.Class.define("unify.view.StaticView",
      * needed.
      *
      * @abstract
-     * @return {unify.ui.mobile.Layer} Return the layer instance of this view.
+     * @return {unify.ui.Layer} Return the layer instance of this view.
      */
     _createView : function()
     {
