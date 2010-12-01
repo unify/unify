@@ -472,6 +472,9 @@ qx.Class.define("unify.view.mobile.ViewManager",
         this.debug("Fire path change!");
         this.fireEvent("changePath");
       }
+      
+      // Reset event blocking flag
+      this.__navigates = false;
     },
     
 
