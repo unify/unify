@@ -195,18 +195,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
     
     
 
-    /**
-     * Selects the given DOM element. Automatically disables fade-out
-     * selections during layer animation.
-     *
-     * @param elem {Element} DOM element to select
-     */
-    select : function(elem)
-    {
-      this.__cleanupAnimateSelectionRecovery();
-      qx.bom.element2.Class.add(elem, "selected");
-    },    
-
 
     getPath : function() {
       return this.__path;
@@ -332,6 +320,9 @@ qx.Class.define("unify.view.mobile.ViewManager",
         {
           // FIXME 
           // Support executing public function on currently selected view
+          
+
+          
         }
         else
         {
@@ -343,9 +334,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
           }
           else
           {
-            // Add CSS class for selection highlighting
-            this.select(elem);
-
             // Lazy further processing
             this.__following = true;
             qx.lang.Function.delay(this.__onTapFollow, 0, this, elem);
@@ -356,7 +344,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
     
     
     /**
-     * Used for lazy execution of tap event (to render highlighting of selection first)
+     * Used for lazy execution of tap event
      *
      * @param elem {Element} Element which was tapped onto
      */
@@ -623,7 +611,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
           {
             this.__animateLayer(toLayer, animationProperty, positionLeftOut, positionVisible, true);
             this.__animateLayer(fromLayer, animationProperty, positionVisible, positionRightOut, false);
-            this.__animateSelectionRecovery(fromView);
           }
         }
       }
@@ -660,66 +647,12 @@ qx.Class.define("unify.view.mobile.ViewManager",
     /** {Boolean} The number of currently running animations */
     __running : 0,
 
-    /** {Element} DOM element which is currently fadeout during selection recovery */
-    __selectElem : null,
     
 
 
 
     /**
-     * Recovers selection on current layer when transitioning from given view.
-     *
-     * @param fromView {unify.view.mobile.StaticView} View instance the user came from originally
-     */
-    __animateSelectionRecovery : function(fromView)
-    {
-      var Style = qx.bom.element2.Style;
 
-      // Build expression for selection
-      var fromViewId = fromView.getId();
-      var fromViewParam = fromView.getParam();
-      var target = fromViewId + (fromViewParam != null ? ":" + fromViewParam : "");
-
-      // Select element and fade out selection slowly
-      var selectElem = this.getElement().querySelector('[goto="' + target + '"]');
-      if (selectElem)
-      {
-        var duration = Style.property("transitionDuration");
-        var selectElemStyle = selectElem.style;
-
-        selectElemStyle[duration] = "0ms";
-        qx.bom.element2.Class.add(selectElem, "selected");
-
-        selectElem.offsetWidth+1;
-        selectElemStyle[duration] = "1000ms";
-        qx.bom.element2.Class.remove(selectElem, "selected");
-
-        this.__selectElem = selectElem;
-        qx.event.Registration.addListener(selectElem, "transitionEnd", this.__cleanupAnimateSelectionRecovery, this);
-      }
-    },
-
-
-    /**
-     * Callback handler for transition function of animation created during
-     * {@link #__recoverSelection}. Clears event listeners and styles.
-     */
-    __cleanupAnimateSelectionRecovery : function()
-    {
-      var selectElem = this.__selectElem;
-      if (selectElem)
-      {
-        qx.event.Registration.removeListener(selectElem, "transitionEnd", this.__cleanupAnimateSelectionRecovery, this);
-        qx.bom.element2.Style.set(selectElem, "transitionDuration", "");
-
-        // Force rendering. Required to re-select the element instantanously when clicked on it.
-        // Otherwise it fades in again which is not what we want here.
-        selectElem.offsetWidth;
-
-        // Clear element marker
-        this.__selectElem = null;
-      }
-    },
 
 
     /**
@@ -754,27 +687,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
 
         // Remove listener
         Registration.removeListener(target, "transitionEnd", cleanup, this);
-
-        // Hide the other layer when this is the current one
-        // Otherwise hide this layer when not the current one
-        var selectedElem;
-        if (current && other)
-        {
-          qx.bom.element2.Class.remove(other, "current");
-          selectedElem = other.querySelector(".selected");
-        }
-
-        // Make completely invisible if not current layer
-        else if (!current)
-        {
-          qx.bom.element2.Class.remove(target, "current");
-          selectedElem = target.querySelector(".selected");
-        }
-
-        // Remove selection
-        if (selectedElem) {
-          qx.bom.element2.Class.remove(selectedElem, "selected");
-        }
 
         // Revert modifications
         targetStyle.zIndex = "";
