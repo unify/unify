@@ -52,13 +52,24 @@ qx.Class.define("unify.view.Navigation",
 
   members :
   {
+    /*
+    ---------------------------------------------------------------------------
+      PUBLIC API
+    ---------------------------------------------------------------------------
+    */
+        
+    /**
+     * Adds a view manager to the global navigation. All views
+     * of this view manager will be globally accessible by their name.
+     * 
+     * @param viewManager {unify.view.ViewManager} View manager instance
+     */
     add : function(viewManager)
     {
       this.debug("Register ViewManager: " + viewManager.getId());
       this.__viewManagers[viewManager.getId()] = viewManager;
       
       viewManager.addListener("changePath", this.__onSubPathChange, this);
-      
     },
     
     
@@ -92,7 +103,39 @@ qx.Class.define("unify.view.Navigation",
     },
     
     
+    /**
+     * Returns the view manager which controls the given view
+     * 
+     * @param viewId {String} ID of view
+     * @return {unify.view.ViewManager} Instance of view manager
+     */
+    getViewManager : function(viewId)
+    {
+      var managers = this.__viewManagers;
+      var manager;
+      for (var id in managers) 
+      {
+        manager = managers[id];
+        if (manager.hasView(viewId)) {
+          return manager;
+        }
+      }
+      
+      return null;
+    },
+
+
+
+    /*
+    ---------------------------------------------------------------------------
+      INTERNALS
+    ---------------------------------------------------------------------------
+    */
     
+    /**
+     *
+     * 
+     */
     __onSubPathChange : function(e)
     {
       var path = [];
@@ -118,22 +161,6 @@ qx.Class.define("unify.view.Navigation",
       
       result = result.join("/");
       this.debug("Serialized path: " + result);
-    },
-
-
-    getViewManager : function(viewId)
-    {
-      var managers = this.__viewManagers;
-      var manager;
-      for (var id in managers) 
-      {
-        manager = managers[id];
-        if (manager.hasView(viewId)) {
-          return manager;
-        }
-      }
-      
-      return null;
     },
 
 
