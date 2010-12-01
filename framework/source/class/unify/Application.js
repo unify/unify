@@ -46,10 +46,13 @@ qx.Class.define("unify.Application",
       // Call super class
       this.base(arguments);
 
-      // Error handling
-      // qx.event.GlobalError.setErrorHandler(function(ex) {
-      //  qx.log.Logger.error("" + ex);
-      // });
+      // Global error handling (otherwise we see nothing in PhoneGap)
+      if (unify.bom.client.Extension.PHONEGAP)
+      {
+        qx.event.GlobalError.setErrorHandler(function(ex) {
+          qx.log.Logger.error("" + ex);
+        });
+      }
 
       // Display build time
       this.info("Build Time: " + new Date(qx.$$build));
