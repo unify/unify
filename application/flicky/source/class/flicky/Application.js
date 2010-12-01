@@ -16,9 +16,9 @@
 /**
  * Flickr Browser
  */
-qx.Class.define("flicky.application.Mobile", 
+qx.Class.define("flicky.Application", 
 {
-  extend : unify.application.Mobile,
+  extend : unify.Application,
 
   members : 
   {
@@ -47,8 +47,6 @@ qx.Class.define("flicky.application.Mobile",
       Navigation.add(MasterViewManager);
       Navigation.add(DetailViewManager);
       Navigation.init();
-      
-      
     }
   }
 });
