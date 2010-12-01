@@ -26,9 +26,12 @@
     +box-sizing("content-box")
     width: 75px
     height: 75px
-    +box-shadow(rgba(255,255,255,0.4), 1px, 1px, 0px)
+    -webkit-background-clip: padding-box
     +border-radius(10px)
-
+    border: 1px solid black
+    
+    &.pressed
+      border: 1px solid white
 
 #photo
   +vbox

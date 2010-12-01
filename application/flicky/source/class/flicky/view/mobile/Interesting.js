@@ -80,7 +80,7 @@ qx.Class.define("flicky.view.mobile.Interesting", {
     
     __createImage : function(entry)
     {
-      var tmpl = '<a href="#photo:{$id}"><img src="http://farm{$farm}.static.flickr.com/{$server}/{$id}_{$secret}_s.jpg" alt="{$title}" /></a>';
+      var tmpl = '<img goto="photo:{$id}" src="http://farm{$farm}.static.flickr.com/{$server}/{$id}_{$secret}_s.jpg" alt="{$title}" />';
       
       return tmpl.replace(/{\$([a-z]+)}/g, function(match, key) {
         return entry[key];
