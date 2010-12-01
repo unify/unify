@@ -68,15 +68,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
 
   properties :
   {
-    /** The active view */
-    view :
-    {
-      check : "unify.view.mobile.StaticView",
-      nullable : true,
-      apply : "_applyView",
-      event : "changeView"
-    },
-    
     /** 
      * Whether switching into views of other view managers means restoring the complete
      * position there. This basically stores the navigation path before switching and 
@@ -176,7 +167,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
 
     init : function()
     {
-      if (this.__defaultView && !this.getView()) 
+      if (this.__defaultView && !this.__view) 
       {
         var viewId = this.__defaultView;
         
@@ -185,7 +176,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
         this.__path.push({
           view : viewId
         });
-        this.setView(this.__views[viewId].getInstance());
+        this.__setView(this.__views[viewId].getInstance());
         
         this.fireEvent("changePath");
       }
@@ -265,7 +256,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
       
       // Switch to last view in path
       if (lastViewObj) {
-        this.setView(lastViewObj);
+        this.__setView(lastViewObj);
       }
 
       // Store path and fire change event
@@ -294,9 +285,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
 
     /** {String} CSS selector with elements which are followable by the navigation manager */
     __followable : "a[href],[rel],[goto],[exec]",
-
-    /** {String} Transition of next view switch */
-    __transition : null,
 
     /**
      * Prevents clicks from executing native behavior
@@ -330,7 +318,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
         if (exec) 
         {
           // Support executing public function on currently selected view
-          this.getView()[exec]();
+          this.__view[exec]();
         }
         else
         {
@@ -372,7 +360,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
       var param = config.param != null ? config.param : null;
 
       var viewClass = this.__views[view];
-      var currentViewObj = this.getView();
+      var currentViewObj = this.__view;
       var path = this.__path;
 
       var firePathChange = false;
@@ -383,7 +371,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
         path[path.length-1].param = param;
         firePathChange = true;
         
-        this.__transition = null;
         currentViewObj.setParam(param);
       } 
       else if (rel == "segment") 
@@ -392,7 +379,6 @@ qx.Class.define("unify.view.mobile.ViewManager",
         path[path.length-1].segment = segment;
         firePathChange = true;
 
-        this.__transition = null;
         currentViewObj.setSegment(segment);
       }
       else if (rel == "up")
@@ -409,8 +395,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
         firePathChange = true;
         
         // Finally do the switching
-        this.__transition = "out";
-        this.setView(parentViewObj);
+        this.__setView(parentViewObj, "out");
 
         // TODO: Handle this on animation stop! Via timeout?
         // Reconfigure 
@@ -450,8 +435,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
         viewObj.setParam(param);
         viewObj.setParent(currentViewObj.getParent());
         
-        this.__transition = "replace";
-        this.setView(viewObj);
+        this.__setView(viewObj);
       }
       else if (viewClass)
       {
@@ -469,8 +453,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
         // still "switching" to the same view (which would better called a reconfiguration)
         if (viewObj != currentViewObj)
         {
-          this.__transition = "in";
-          this.setView(viewObj);
+          this.__setView(viewObj, "in");
         }
       }
       else
@@ -539,6 +522,9 @@ qx.Class.define("unify.view.mobile.ViewManager",
       LAYER LOGIC / ANIMATION
     ---------------------------------------------------------------------------
     */
+    
+    /** {unify.view.mobile.StaticView} Current view */
+    __view : null,
 
     /**
      * {Map} Maps the position of the layer to the platform specific transform value.
@@ -563,21 +549,32 @@ qx.Class.define("unify.view.mobile.ViewManager",
     }),
     
     
-    // property apply
-    _applyView : function(value, old)
+    /**
+     * Internal setter method for view switching
+     * 
+     * @param view {unify.view.mobile.StaticView} View instance to switch to
+     * @param transition {String?null} Transition name
+     */
+    __setView : function(view, transition)
     {
-      this.debug("Activating view: " + value);
-
-      if (old) {
-        old.resetActive();
+      var oldView = this.__view;
+      if (view == oldView) {
+        return;
       }
 
+      if (oldView) {
+        oldView.resetActive();
+      }
+      
+      // Store current view
+      this.__view = view;
+
       // Resuming the view
-      value.setActive(true);
+      view.setActive(true);
 
       // Cache element/view references
-      var currentViewElement = value && value.getElement();
-      var oldViewElement = old && old.getElement();
+      var currentViewElement = view && view.getElement();
+      var oldViewElement = oldView && oldView.getElement();
       
       // Insert target layer into DOM
       if (currentViewElement.parentNode != this.__element) {
@@ -585,12 +582,11 @@ qx.Class.define("unify.view.mobile.ViewManager",
       }
       
       // Transition specific layer switch
-      var transition = this.__transition;
       var positions = this.__positions;
       
       if (transition == "in")
       {
-        if (value.isModal())
+        if (view.isModal())
         {
           this.__animateLayer(currentViewElement, positions.bottom, positions.center, true, oldViewElement);
         }
@@ -602,7 +598,7 @@ qx.Class.define("unify.view.mobile.ViewManager",
       }
       else if (transition == "out")
       {
-        if (old.isModal())
+        if (oldView.isModal())
         {
           this.__animateLayer(oldViewElement, positions.center, positions.bottom, false, currentViewElement);
         }
@@ -624,12 +620,12 @@ qx.Class.define("unify.view.mobile.ViewManager",
       }
 
       // Fire appear/disappear events
-      if (old) {
-        old.fireEvent("disappear");
+      if (oldView) {
+        oldView.fireEvent("disappear");
       }
 
-      if (value) {
-        value.fireEvent("appear");
+      if (view) {
+        view.fireEvent("appear");
       }
     },
     

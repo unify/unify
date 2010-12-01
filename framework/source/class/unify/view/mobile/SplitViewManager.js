@@ -6,8 +6,6 @@ qx.Class.define("unify.view.mobile.SplitViewManager",
   {
     this.base(arguments);
     
-    this.debug("Initalizing SplitView...");
-
     var elem = this.__element = document.createElement("div");
     elem.className = "split-view";
 
