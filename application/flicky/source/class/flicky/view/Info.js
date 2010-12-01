@@ -34,7 +34,7 @@ qx.Class.define("flicky.view.Info",
       layer.add(titlebar);
       
       var content = this.__content = new unify.ui.Content;
-      content.add("No photo selected!");
+      content.add("<p>No photo selected!</p>");
       layer.add(content);
 
       return layer;
