@@ -57,6 +57,10 @@ qx.Class.define("unify.view.Navigation",
       PUBLIC API
     ---------------------------------------------------------------------------
     */
+    
+    __viewManagers : null,
+    __location : null,
+    
         
     /**
      * Adds a view manager to the global navigation. All views
@@ -90,10 +94,6 @@ qx.Class.define("unify.view.Navigation",
         path = localStorage["unify/navigationpath"];
       }
 
-      if (!path) {
-        path = this.__defaultView;
-      }
-
       History.init(path);
       
       var viewManagers = this.__viewManagers;
@@ -123,29 +123,13 @@ qx.Class.define("unify.view.Navigation",
       
       return null;
     },
-
-
-
-    /*
-    ---------------------------------------------------------------------------
-      INTERNALS
-    ---------------------------------------------------------------------------
-    */
     
-    /**
-     *
-     * 
-     */
-    __onSubPathChange : function(e)
+    
+    getPath : function()
     {
-      var path = [];
-      var viewManagers = this.__viewManagers;
-      for (var viewManagerId in viewManagers) {
-        path.push.apply(path, viewManagers[viewManagerId].getPath());
-      }
-
-      // Serialize
+      var path = this.__path;
       var result = [];
+      var part, temp;
       for (var i=0, l=path.length; i<l; i++) 
       {
         part = path[i];
@@ -160,7 +144,35 @@ qx.Class.define("unify.view.Navigation",
       }
       
       result = result.join("/");
-      this.debug("Serialized path: " + result);
+      this.debug("Serialized path: " + result);      
+      return result;
+    },
+
+
+
+    /*
+    ---------------------------------------------------------------------------
+      INTERNALS
+    ---------------------------------------------------------------------------
+    */
+    
+    __path : null,
+    
+    
+    /**
+     *
+     * 
+     */
+    __onSubPathChange : function(e)
+    {
+      var path = [];
+      var viewManagers = this.__viewManagers;
+      for (var viewManagerId in viewManagers) {
+        path.push.apply(path, viewManagers[viewManagerId].getPath());
+      }
+      
+      this.__path = path;
+      this.getPath();
     },
 
 
@@ -173,9 +185,6 @@ qx.Class.define("unify.view.Navigation",
     {
       // TODO
       return;
-
-
-      var History = e.getTarget();
 
       // Quick check: Don't allow empty paths
       var currentLocation = decodeURI(e.getLocation());
