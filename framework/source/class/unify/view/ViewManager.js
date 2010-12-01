@@ -349,8 +349,6 @@ qx.Class.define("unify.view.ViewManager",
       var rel = elem.getAttribute("rel");
 
       var dest = href ? href.substring(1) : elem.getAttribute("goto");
-      this.debug("Destination: " + dest);
-      
       var config = unify.view.Path.parseFragment(dest);
 
       var view = config.view;
