@@ -28,7 +28,6 @@ qx.Class.define("flicky.Application",
       // Call super class
       this.base(arguments);
 
-      // Configure application
       document.title = "flicky";
       
       var MasterViewManager = new unify.view.ViewManager("master");
@@ -39,7 +38,7 @@ qx.Class.define("flicky.Application",
       var DetailViewManager = new unify.view.ViewManager("detail");
       DetailViewManager.add(flicky.view.Info, true);
       DetailViewManager.add(flicky.view.Photo);
-      
+
       var SplitViewManager = new unify.view.SplitViewManager(MasterViewManager, DetailViewManager);
       this.add(SplitViewManager);
       

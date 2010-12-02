@@ -6,27 +6,28 @@ qx.Class.define("unify.view.SplitViewManager",
   {
     this.base(arguments);
     
-    var elem = this.__element = document.createElement("div");
-    elem.className = "split-view";
-
     this.__mainViewManager = mainViewManager;
     this.__detailViewManager = detailViewManager;
-
-    elem.appendChild(mainViewManager.getElement());
-    elem.appendChild(detailViewManager.getElement());
-  },
-  
-  properties :
-  {
-    
   },
   
   members :
   {
+    getElement : function() 
+    {
+      var elem = this.__element;
+      if (!elem)
+      {
+        var elem = this.__element = document.createElement("div");
+        elem.className = "split-view";
 
-    
-    getElement : function() {
-      return this.__element;
+        var main = this.__mainViewManager;
+        var detail = this.__detailViewManager;
+
+        elem.appendChild(main.getElement());
+        elem.appendChild(detail.getElement());
+      }
+      
+      return elem;
     }
   }
 });

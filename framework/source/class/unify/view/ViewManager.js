@@ -38,7 +38,7 @@ qx.Class.define("unify.view.ViewManager",
 
     // Store manager ID
     this.__managerId = managerId;
-    this.debug("Initialize View Manager: " + this.__managerId);
+    this.debug("Initializing: " + this.__managerId);
     
     // Create root element of manager (used as parent for view elements)
     var elem = this.__element = document.createElement("div");
@@ -53,7 +53,6 @@ qx.Class.define("unify.view.ViewManager",
 
     // Create instance specific data structures
     this.__views = {};
-    this.__path = [];
     this.__deep = {};
   },
 
@@ -128,6 +127,61 @@ qx.Class.define("unify.view.ViewManager",
       return this.__path;
     },
     
+    
+    /**
+     * Initializes the manager and selects the default view if no other
+     * view was yet set.
+     */
+    init : function() 
+    {
+      if (!this.__initialized) 
+      {
+        // First set flag to true to omit recursions
+        this.__initialized = true;
+
+        // But only reset here if there is no other path set already
+        if (!this.__path) {
+          this.__reset();
+        }
+      }
+    },
+
+    
+    /**
+     * Resets the view manager to the defaultView if it is not already selected.
+     */
+    reset : function()
+    {
+      // Check whether we are already at default view
+      var path = this.__path;
+      var defaultViewId = this.__defaultViewId;
+      if (path != null && path.length == 1 && path[0].view == defaultViewId) {
+        return;
+      }
+
+      this.__reset();
+    },
+    
+    
+    /**
+     * Internal helper to reset state of view and jump to the default view.
+     * 
+     */
+    __reset : function()
+    {
+      var defaultViewId = this.__defaultViewId;
+      var viewObj = this.__views[defaultViewId].getInstance();
+      this.__path = [{
+        view : defaultViewId,
+        segment : null,
+        param : null
+      }];      
+      this.__setView(viewObj);
+      this.fireEvent("changePath");      
+    },
+
+    
+    
 
 
 
@@ -141,7 +195,7 @@ qx.Class.define("unify.view.ViewManager",
     __views : null,
 
     /** {String} ID of default view */
-    __defaultView : null,
+    __defaultViewId : null,
 
     /** {Map} Used for storage of deep path for children e.g. used in switching of tab views */
     __deep : null,
@@ -155,34 +209,14 @@ qx.Class.define("unify.view.ViewManager",
     add : function(viewClass, isDefault)
     {
       var id = qx.lang.String.hyphenate(viewClass.basename).substring(1);
-      this.debug("Adding view: " + id);
-      
       if (isDefault) {
-        this.__defaultView = id;
+        this.__defaultViewId = id;
       }
 
       this.__views[id] = viewClass;
     },
     
-
-    init : function()
-    {
-      if (this.__defaultView && !this.__view) 
-      {
-        var viewId = this.__defaultView;
-        
-        this.debug("Switch to defaultView: " + viewId);
-        
-        this.__path.push({
-          view : viewId
-        });
-        this.__setView(this.__views[viewId].getInstance());
-        
-        this.fireEvent("changePath");
-      }
-    },
-
-
+    
     /**
      * Returns the view instance stored behind the given ID.
      *
@@ -211,7 +245,7 @@ qx.Class.define("unify.view.ViewManager",
      * @return {String} ID of default view
      */
     getDefaultView : function() {
-      return this.__defaultView;
+      return this.__defaultViewId;
     },
     
     

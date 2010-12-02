@@ -70,9 +70,7 @@ qx.Class.define("unify.view.Navigation",
      */
     add : function(viewManager)
     {
-      this.debug("Register ViewManager: " + viewManager.getId());
       this.__viewManagers[viewManager.getId()] = viewManager;
-      
       viewManager.addListener("changePath", this.__onSubPathChange, this);
     },
     
@@ -94,11 +92,13 @@ qx.Class.define("unify.view.Navigation",
         path = localStorage["unify/navigationpath"];
       }
 
+      // Call history to initialize application
       History.init(path);
       
-      var viewManagers = this.__viewManagers;
-      for (var viewManagerId in viewManagers) {
-        this.__viewManagers[viewManagerId].init();
+      // Be sure that every view manager which is part of the navigation is correctly initialized
+      var managers = this.__viewManagers;
+      for (var id in managers) {
+        managers[id].init();
       }
     },
     
@@ -160,17 +160,43 @@ qx.Class.define("unify.view.Navigation",
     },
         
     
+    __path : null,
+    
+    
     /**
      *
      * 
      */
     __onSubPathChange : function(e)
     {
+      var changed = e.getTarget();
+      var reset = false;
+      var resetAgenda = [];
+
       var path = [];
       var viewManagers = this.__viewManagers;
-      for (var viewManagerId in viewManagers) {
-        path.push.apply(path, viewManagers[viewManagerId].getPath());
+      for (var id in viewManagers) 
+      {
+        var manager = viewManagers[id];
+        
+        if (reset)
+        {
+          manager.reset(path);
+          break;
+        }
+        else
+        {
+          path.push.apply(path, manager.getPath());
+
+          if (manager == changed) {
+            this.debug("Changed manager was: " + manager.getId())
+            reset = true;
+          }
+        }
       }
+      
+      
+      
       
       this.__path = path;
       this.getPath();
