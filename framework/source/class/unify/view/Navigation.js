@@ -63,8 +63,11 @@ qx.Class.define("unify.view.Navigation",
     ---------------------------------------------------------------------------
     */
     
+    /** 
+     * {Map} Maps ID of viewManager to the viewManager instance. IDs must be unique
+     * in each navigation object.
+     */
     __viewManagers : null,
-    
         
     /**
      * Adds a view manager to the global navigation. All views
@@ -74,7 +77,16 @@ qx.Class.define("unify.view.Navigation",
      */
     add : function(viewManager)
     {
-      this.__viewManagers[viewManager.getId()] = viewManager;
+      var managerId = viewManager.getId();
+      
+      if (qx.core.Variant.isSet("qx.debug", "on"))
+      {
+        if (this.__viewManagers[managerId]) {
+          throw new Error("ViewManager ID is already used: " + managerId);
+        }
+      }
+      
+      this.__viewManagers[managerId] = viewManager;
       viewManager.addListener("changePath", this.__onSubPathChange, this);
     },
     
