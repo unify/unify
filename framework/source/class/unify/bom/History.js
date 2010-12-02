@@ -126,7 +126,7 @@ qx.Class.define("unify.bom.History",
     {
       if (location.hash) {
         this.setLocation(location.hash.substring(1));
-      } else {
+      } else if (defaultPath) {
         this.jump(defaultPath);
       }
     },
