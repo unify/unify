@@ -152,6 +152,29 @@ qx.Class.define("unify.view.Navigation",
     /** {Map[]} List of maps with the keys: view, segment and param */
     __path : null,
     
+    /**
+     * Delegates the given path to the manager which could handle the first
+     * fragment (which then delegates it back for further processing as needed).
+     * 
+     * @param path {Map[]} List of path fragments (with the keys: view, segment and param)
+     */
+    delegatePath : function(path)
+    {
+      var firstFragment = path[0];
+      var viewManager = this.getViewManager(firstFragment.view);
+      
+      if (qx.core.Variant.isSet("qx.debug", "on"))
+      {
+        if (!viewManager) {
+          throw new Error("The view '" + firstFragment.view + "' is not globally accessible.");
+        }
+      }
+
+      if (viewManager) {
+        viewManager.go(path);
+      }
+    },
+    
     
     /**
      * Syncs the current path with the browser environment (for bookmarking, etc.)
@@ -230,6 +253,8 @@ qx.Class.define("unify.view.Navigation",
         return;
       }
 
+      // Find the first registered manager. This one should be
+      // asked for starting with processing of the path object.
       var viewManagers = this.__viewManagers;
       for (var managerId in viewManagers) {
         var manager = viewManagers[managerId];

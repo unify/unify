@@ -351,8 +351,8 @@ qx.Class.define("unify.view.ViewManager",
       // Delegate remaining path fragments
       if (delegatePath.length > 0)
       {
-        this.debug("Delegating " + delegatePath.length + " fragments to other view managers...");
-        // TODO
+        this.debug("Delegating " + delegatePath.length + " path fragments to other view managers...");
+        unify.view.Navigation.getInstance().delegatePath(delegatePath);
       }
     },
     
