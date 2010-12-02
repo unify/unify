@@ -19,12 +19,8 @@ qx.Class.define("unify.view.SplitViewManager",
       {
         var elem = this.__element = document.createElement("div");
         elem.className = "split-view";
-
-        var main = this.__mainViewManager;
-        var detail = this.__detailViewManager;
-
-        elem.appendChild(main.getElement());
-        elem.appendChild(detail.getElement());
+        elem.appendChild(this.__mainViewManager.getElement());
+        elem.appendChild(this.__detailViewManager.getElement());
       }
       
       return elem;
