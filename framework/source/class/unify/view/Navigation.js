@@ -38,6 +38,10 @@ qx.Class.define("unify.view.Navigation",
   {
     this.base(arguments);
     
+    // App ID is used e.g. for storage of navigation
+    var app = qx.core.Setting.get("qx.application");
+    this.__appId = app.substring(0, app.indexOf("."));
+    
     // Initialize storage
     this.__viewManagers = {};
   },
@@ -136,7 +140,10 @@ qx.Class.define("unify.view.Navigation",
     __path : null,
     
     
-    syncPath : function()
+    /**
+     * Syncs the current path with the browser environment (for bookmarking, etc.)
+     */
+    __syncPath : function()
     {
       var path = this.__path;
       var result = [];
@@ -154,48 +161,44 @@ qx.Class.define("unify.view.Navigation",
         result.push(temp)
       }
       
-      result = result.join("/");
-      this.debug("Serialized path: " + result);      
-      return result;
+      var joined = result.join("/");
+      location.hash = "#" + joined;
+      
+      // TODO: Store under app specific name
+      if (window.localStorage) {
+        localStorage[this.__appId + "/navigationpath"] = joined;
+      }      
     },
         
     
-    __path : null,
-    
-    
     /**
-     *
+     * Reacts on (local) path changes of all registered view managers
      * 
+     * @param e {qx.event.type.Event} Event object
      */
     __onSubPathChange : function(e)
     {
       var changed = e.getTarget();
       var reset = false;
-      var path = [];
+      var path = this.__path = [];
+      
       var viewManagers = this.__viewManagers;
-      for (var id in viewManagers) 
+      for (var id in viewManagers)
       {
         var manager = viewManagers[id];
-        
-        if (reset)
-        {
+        if (reset) {
           manager.reset();
-          path.push.apply(path, manager.getPath());          
-          break;
         }
-        else
-        {
-          path.push.apply(path, manager.getPath());
-
-          if (manager == changed) 
-          {
-            reset = true;
-            this.__path = path;
-          }
+        
+        path.push.apply(path, manager.getPath());
+        
+        // Reset all managers after the changed one
+        if (manager == changed) {
+          reset = true;
         }
       }
       
-      this.syncPath();
+      this.__syncPath();
     },
 
 
