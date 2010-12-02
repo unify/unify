@@ -111,9 +111,16 @@ qx.Class.define("unify.view.ViewManager",
     ---------------------------------------------------------------------------
     */
 
+    /** {String} ID of this manager */
     __managerId : null,
+    
+    /** {Element} Root element used for all views of this manager */
     __element : null,
+    
+    /** {Map[]} List of maps storing the local path (keys: view, segment, param) */
     __path : null,
+    
+    /** {Boolean} Whether the view manager is correctly initialized */
     __initialized : false,
     
     
@@ -230,7 +237,6 @@ qx.Class.define("unify.view.ViewManager",
 
 
 
-
     /*
     ---------------------------------------------------------------------------
       VIEW MANAGMENT
@@ -245,7 +251,6 @@ qx.Class.define("unify.view.ViewManager",
 
     /** {Map} Used for storage of deep path for children e.g. used in switching of tab views */
     __deep : null,
-
 
     /**
      * Registers a new view. All views must be registered before being used.
@@ -290,7 +295,7 @@ qx.Class.define("unify.view.ViewManager",
      *
      * @return {String} ID of default view
      */
-    getDefaultView : function() {
+    getDefaultViewId : function() {
       return this.__defaultViewId;
     },
     
