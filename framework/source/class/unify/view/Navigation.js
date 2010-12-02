@@ -136,7 +136,7 @@ qx.Class.define("unify.view.Navigation",
     __path : null,
     
     
-    getPath : function()
+    syncPath : function()
     {
       var path = this.__path;
       var result = [];
@@ -171,8 +171,6 @@ qx.Class.define("unify.view.Navigation",
     {
       var changed = e.getTarget();
       var reset = false;
-      var resetAgenda = [];
-
       var path = [];
       var viewManagers = this.__viewManagers;
       for (var id in viewManagers) 
@@ -181,25 +179,23 @@ qx.Class.define("unify.view.Navigation",
         
         if (reset)
         {
-          manager.reset(path);
+          manager.reset();
+          path.push.apply(path, manager.getPath());          
           break;
         }
         else
         {
           path.push.apply(path, manager.getPath());
 
-          if (manager == changed) {
-            this.debug("Changed manager was: " + manager.getId())
+          if (manager == changed) 
+          {
             reset = true;
+            this.__path = path;
           }
         }
       }
       
-      
-      
-      
-      this.__path = path;
-      this.getPath();
+      this.syncPath();
     },
 
 

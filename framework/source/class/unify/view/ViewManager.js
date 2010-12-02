@@ -114,20 +114,48 @@ qx.Class.define("unify.view.ViewManager",
     __managerId : null,
     __element : null,
     __path : null,
+    __initialized : false,
     
+    
+    /**
+     * Returns the root element of the view manager (this is used as
+     * a parent element for all added view instances)
+     * 
+     * @return {Element} DOM element of view manager
+     */
     getElement : function() {
       return this.__element;
     },
     
+    
+    /**
+     * Returns the ID of the view manager
+     * 
+     * @return {String} The ID
+     */
     getId : function() {
       return this.__managerId;
     },
     
+    
+    /**
+     * Returns the local path of the view manager
+     * 
+     * @return {Map[]} List of dictonaries (with keys view, segment and param)
+     */
     getPath : function() {
       return this.__path;
     },
     
     
+    
+    
+    /*
+    ---------------------------------------------------------------------------
+      INITIALIZATION / RESET
+    ---------------------------------------------------------------------------
+    */
+        
     /**
      * Initializes the manager and selects the default view if no other
      * view was yet set.
@@ -141,9 +169,19 @@ qx.Class.define("unify.view.ViewManager",
 
         // But only reset here if there is no other path set already
         if (!this.__path) {
-          this.__reset();
+          this.__resetHelper();
         }
       }
+    },
+    
+    
+    /**
+     * Whether the view manager is initialized
+     * 
+     * @return {Boolean} <code>true</code> if initialized
+     */
+    isInitialized : function() {
+      return this.__initialized;
     },
 
     
@@ -152,36 +190,44 @@ qx.Class.define("unify.view.ViewManager",
      */
     reset : function()
     {
+      if (!this.__initialized) {
+        return;
+      }
+      
       // Check whether we are already at default view
       var path = this.__path;
       var defaultViewId = this.__defaultViewId;
-      if (path != null && path.length == 1 && path[0].view == defaultViewId) {
+      if (path.length == 1 && path[0].view == defaultViewId) {
         return;
       }
 
-      this.__reset();
+      this.__resetHelper();
     },
     
     
     /**
-     * Internal helper to reset state of view and jump to the default view.
+     * Internal helper to reset state of view and jump to the 
+     * default view (with its default segment).
      * 
      */
-    __reset : function()
+    __resetHelper : function()
     {
       var defaultViewId = this.__defaultViewId;
       var viewObj = this.__views[defaultViewId].getInstance();
       this.__path = [{
         view : defaultViewId,
-        segment : null,
+        segment : viewObj.getDefaultSegment(),
         param : null
       }];      
+
+      viewObj.setSegment(viewObj.getDefaultSegment());
+      viewObj.resetParam();
       this.__setView(viewObj);
+
       this.fireEvent("changePath");      
     },
 
-    
-    
+
 
 
 
