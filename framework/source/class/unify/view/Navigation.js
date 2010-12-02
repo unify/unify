@@ -105,7 +105,7 @@ qx.Class.define("unify.view.Navigation",
       // Restore path from storage or use default view
       var path;
       if (window.localStorage) {
-        path = localStorage["unify/navigationpath"];
+        path = localStorage[this.__appId + "/navigationpath"];
       }
 
       // Call history to initialize application
@@ -222,9 +222,6 @@ qx.Class.define("unify.view.Navigation",
      */
     __onHistoryChange : function(e)
     {
-      // TODO
-      return;
-
       // Quick check: Don't allow empty paths
       var currentLocation = decodeURI(e.getLocation());
       if (currentLocation == "")
@@ -233,20 +230,27 @@ qx.Class.define("unify.view.Navigation",
         return;
       }
 
-      if (window.localStorage)
+      var viewManagers = this.__viewManagers;
+      for (var managerId in viewManagers) {
+        var manager = viewManagers[managerId];
+        break;
+      }
+
+      if (qx.core.Variant.isSet("qx.debug", "on")) 
       {
-        try
-        {
-          // deleting first is required on iPad with OS 3.2
-          delete localStorage["unify/navigationpath"];
-          localStorage["unify/navigationpath"] = decodeURI(currentLocation);
-        }
-        catch(ex) {
-          this.warn("Could not store path: " + ex);
+        if (!manager) {
+          throw new Error("No managers registered. Could not react on history change!");
         }
       }
 
-      this.debug("History Change: \"" + oldLocation + "\" => \"" + currentLocation + "\"");
+      var fragments = currentLocation.split("/");
+      var path = [];
+      
+      for (var i=0, l=fragments.length; i<l; i++) {
+        path.push(unify.view.Path.parseFragment(fragments[i]));
+      }
+      
+      manager.go(path);
     }
   },
 
