@@ -288,13 +288,7 @@ qx.Class.define("unify.view.Navigation",
         return;
       }
       
-      var fragments = currentLocation.split("/");
-      var path = new unify.view.Path;
-      for (var i=0, l=fragments.length; i<l; i++) {
-        path.push(unify.view.Path.parseFragment(fragments[i]));
-      }
-      
-      this.navigate(path);
+      this.navigate(unify.view.Path.fromString(currentLocation));
     }
   },
 
