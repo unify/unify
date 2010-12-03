@@ -450,6 +450,14 @@ qx.Class.define("unify.view.ViewManager",
 
       // Support legacy "rel" attributes
       var rel = elem.getAttribute("rel");
+      if (rel == "up") {
+        return this.navigate(this.__path.slice(0, -1));
+      }
+      
+      if (dest == null) {
+        throw new Error("Invalid destination: " + dest);
+      }
+    
       if (rel == "param") {
         dest = ":" + dest;
       } else if (rel == "segment") {
@@ -460,7 +468,7 @@ qx.Class.define("unify.view.ViewManager",
       var view = config.view;
       if (view && !this.__views[view])
       {
-        unify.view.Navigation.getInstance().navigate(new unify.view.Path(config))
+        unify.view.Navigation.getInstance().navigate(new unify.view.Path(config));
       }
       else
       {
@@ -471,14 +479,12 @@ qx.Class.define("unify.view.ViewManager",
         var clone = path.concat();
 
         // Process "rel" attributes
-        if (rel == "up") {
-          clone.pop();
-        } else if (rel == "parent") {
+        if (rel == "parent") {
           clone[clone.length] = config;
         } else {
           clone.push(config);
         }
-
+        
         // Finally do the navigate
         this.navigate(clone);
       }
