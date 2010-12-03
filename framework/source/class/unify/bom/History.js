@@ -83,7 +83,7 @@ qx.Class.define("unify.bom.History",
     /**
      * Change hash to the given hash. Completely replaces current location.
      *
-     * @param location {String} A valid URL hash without leading "#".
+     * @param value {String} A valid URL hash without leading "#".
      */
     setLocation : function(value)
     {

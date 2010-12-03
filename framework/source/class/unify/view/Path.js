@@ -1,3 +1,21 @@
+/* ***********************************************************************************************
+
+    Unify Project
+
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
+
+*********************************************************************************************** */
+
+/**
+ * Class to manage an in-application path.
+ * 
+ * A Path is basically an array which is somewhat comparable to a typical Unix path. It uses
+ * "/" for dividing path fragments. Each fragments might contain information about a view
+ * (the class you look at), a segment (a e.g. tab selected inside the view) and a param (the
+ * selected email ID etc.).
+ */
 qx.Class.define("unify.view.Path",
 {
   extend : qx.type.BaseArray,

@@ -301,8 +301,9 @@ qx.Class.define("unify.view.ViewManager",
     
     
     /**
-     * Navigates to the given local path
+     * Navigates to the given path
      * 
+     * @param path {unify.view.Path} Path object
      */
     navigate : function(path)
     {
