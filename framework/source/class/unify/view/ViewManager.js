@@ -256,6 +256,7 @@ qx.Class.define("unify.view.ViewManager",
      * Registers a new view. All views must be registered before being used.
      *
      * @param viewClass {Class} Class of the view to register
+     * @param isDefault {Boolean?false} Whether the added view functions as the default view for this manager.
      */
     add : function(viewClass, isDefault)
     {
@@ -388,7 +389,7 @@ qx.Class.define("unify.view.ViewManager",
     /**
      * Prevents clicks from executing native behavior
      * 
-     * @parm e {qx.event.type.Mouse} Mouse event object
+     * @param e {qx.event.type.Mouse} Mouse event object
      */
     __onClick : function(e)
     {

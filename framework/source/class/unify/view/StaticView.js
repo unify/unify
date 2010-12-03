@@ -122,9 +122,15 @@ qx.Class.define("unify.view.StaticView",
     __layer : null,
     
     
+    /**
+     * Returns the ID of the view. This ID is constructed by its classname
+     * 
+     * @return {String} View ID
+     */
     getId : function() {
       return qx.lang.String.hyphenate(this.constructor.basename).substring(1);
     },
+    
 
     /**
      * Parametrized views may have a default parameter which is
@@ -149,8 +155,12 @@ qx.Class.define("unify.view.StaticView",
     },
     
     
+    /**
+     * Returns the DOM element of this view.
+     * 
+     * @return {Element} DOM element of the view (root element)
+     */
     getElement : function() {
-      // FIXME: not all views might be layers 
       return this.getLayer().getElement();
     },
 
