@@ -221,11 +221,11 @@ qx.Class.define("unify.view.ViewManager",
     {
       var defaultViewId = this.__defaultViewId;
       var viewObj = this.__views[defaultViewId].getInstance();
-      this.__path = [{
+      this.__path = new unify.view.Path({
         view : defaultViewId,
         segment : viewObj.getDefaultSegment(),
         param : null
-      }];      
+      });
 
       viewObj.setSegment(viewObj.getDefaultSegment());
       viewObj.resetParam();
@@ -306,8 +306,11 @@ qx.Class.define("unify.view.ViewManager",
      */
     navigate : function(path)
     {
-      this.debug("Navigate: ...");
-
+      if (!(path instanceof unify.view.Path)) {
+        this.trace()
+        throw new Error("Invalid path to navigate() to: " + path);
+      }
+      
       var length = path.length;
       var oldPath = this.__path;
       var oldLength = oldPath ? oldPath.length : 0;
@@ -357,6 +360,10 @@ qx.Class.define("unify.view.ViewManager",
       currentViewObj.setSegment(currentFragment.segment);
       currentViewObj.setParam(currentFragment.param);
       this.__setView(currentViewObj, layerTransition);
+      
+      // Save path
+      this.__path = path;
+      this.fireEvent("changePath");
     },    
     
     

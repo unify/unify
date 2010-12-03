@@ -160,7 +160,9 @@ qx.Class.define("unify.view.Navigation",
     
     navigate : function(path)
     {
-      console.debug(JSON.stringify(path));
+      if (!(path instanceof unify.view.Path)) {
+        throw new Error("Invalid path to navigate() to: " + path);
+      }
       
       var usedManagers = {};
       var lastManagerId = null;
@@ -202,7 +204,7 @@ qx.Class.define("unify.view.Navigation",
           managers[lastManagerId].navigate(managerPath);
 
           // Reset manager path
-          managerPath = [fragment];
+          managerPath = new unify.view.Path(fragment);
 
           // Remember all used managers (for validity analysis)
           usedManagers[managerId] = true;
@@ -256,7 +258,7 @@ qx.Class.define("unify.view.Navigation",
     {
       var changed = e.getTarget();
       var reset = false;
-      var path = this.__path = [];
+      var path = this.__path = new unify.view.Path;
       
       var viewManagers = this.__viewManagers;
       for (var id in viewManagers)
@@ -266,7 +268,19 @@ qx.Class.define("unify.view.Navigation",
           manager.reset();
         }
         
-        path.push.apply(path, manager.getPath());
+        if (manager.getPath() instanceof unify.view.Path) {
+          //path.push.apply(path, manager.getPath());
+        } else if (manager.getPath() != null){
+          throw new Error("Invalid path: " + manager.getPath())
+        }
+        
+        var localPath = manager.getPath();
+        if (localPath != null)
+        {
+          for (var i=0, l=localPath.length; i<l; i++) {
+            path.push(localPath[i])
+          }
+        }
         
         // Reset all managers after the changed one
         if (manager == changed) {
@@ -294,7 +308,7 @@ qx.Class.define("unify.view.Navigation",
       }
 
       var fragments = currentLocation.split("/");
-      var path = [];
+      var path = new unify.view.Path;
       for (var i=0, l=fragments.length; i<l; i++) {
         path.push(unify.view.Path.parseFragment(fragments[i]));
       }
