@@ -200,7 +200,6 @@ qx.Class.define("unify.view.Navigation",
       var joined = result.join("/");
       location.hash = "#" + joined;
       
-      // TODO: Store under app specific name
       if (window.localStorage) {
         localStorage[this.__appId + "/navigationpath"] = joined;
       }      
