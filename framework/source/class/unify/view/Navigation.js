@@ -158,6 +158,12 @@ qx.Class.define("unify.view.Navigation",
     __path : null,
     
     
+    /**
+     * Navigates to the given path. Automatically distributes sub paths
+     * to the responsible view managers.
+     * 
+     * @param path {unify.view.Path} Path object
+     */
     navigate : function(path)
     {
       if (qx.core.Variant.isSet("qx.debug", "on"))
@@ -261,11 +267,8 @@ qx.Class.define("unify.view.Navigation",
         }
       }
       
-      var joined = path.serialize();
-      var hash = "#" + joined;
-      if (hash != location.hash) {
-        location.hash = hash;
-      }
+      var joined = this.__serializedPath = path.serialize();
+      unify.bom.History.getInstance().setLocation(joined);
       
       if (window.localStorage) {
         localStorage[this.__appId + "/navigationpath"] = joined;
@@ -280,14 +283,11 @@ qx.Class.define("unify.view.Navigation",
      */
     __onHistoryChange : function(e)
     {
-      // Quick check: Don't allow empty paths
       var currentLocation = decodeURI(e.getLocation());
-      if (currentLocation == "")
-      {
-        this.warn("Ignoring empty path");
+      if (currentLocation == "" || currentLocation == this.__serializedPath) {
         return;
       }
-
+      
       var fragments = currentLocation.split("/");
       var path = new unify.view.Path;
       for (var i=0, l=fragments.length; i<l; i++) {

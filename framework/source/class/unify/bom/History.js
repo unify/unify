@@ -34,9 +34,14 @@ qx.Class.define("unify.bom.History",
     // HTML5 hashchange supported by IE>=8, Firefox>=3.6, Webkit (!Safari 4)
     // See also: https://bugs.webkit.org/show_bug.cgi?id=21605
     // https://developer.mozilla.org/en/DOM/window.onhashchange
-    if (qx.bom.Event.supportsEvent(window, "hashchange")) {
+    if (qx.bom.Event.supportsEvent(window, "hashchange")) 
+    {
+      this.debug("Using HTML5 hashchange");
       qx.bom.Event.addNativeListener(window, "hashchange", this.__onCallbackWrapped);
-    } else {
+    } 
+    else
+    {
+      this.debug("Using interval");
       this.__intervalHandler = window.setInterval(this.__onCallbackWrapped, 100);
     }
   },
@@ -59,37 +64,20 @@ qx.Class.define("unify.bom.History",
 
   /*
   *****************************************************************************
-     PROPERTIES
-  *****************************************************************************
-  */
-
-  properties :
-  {
-    /** The current location */
-    location :
-    {
-      check : "String",
-      nullable : true,
-      apply : "_applyLocation"
-    }
-  },
-
-
-
-
-  /*
-  *****************************************************************************
      MEMBERS
   *****************************************************************************
   */
 
   members :
   {
-    /** {Timer} Handle for timeout */
-    __intervalHandler : null,
-
-    /** {Function} Wrapped callback method */
-    __onCallbackWrapped : null,
+    /**
+     * Returns the current location
+     * 
+     * @return {String} Current location without leading "#"
+     */
+    getLocation : function() {
+      return this.__location;
+    },
 
 
     /**
@@ -97,19 +85,14 @@ qx.Class.define("unify.bom.History",
      *
      * @param location {String} A valid URL hash without leading "#".
      */
-    jump : function(location)
+    setLocation : function(value)
     {
-      location = window.encodeURI(location);
-
-      // Apply property first, to ignore browser hash change afterwards
-      this.setLocation(location);
-
-      // Verify that we are still at the same location.
-      // This might be different already because setLocation fires
-      // an event and might result in a post modification of the
-      // location.
-      if (location == this.getLocation()) {
-        window.location.hash = "#" + location;
+      var old = this.__location;
+      if (value != old)
+      {
+        this.__location = value;
+        this.fireEvent("change", unify.event.type.History, [value, old]);
+        location.hash = "#" + encodeURI(value);
       }
     },
 
@@ -125,9 +108,9 @@ qx.Class.define("unify.bom.History",
     init : function(defaultPath)
     {
       if (location.hash) {
-        this.setLocation(location.hash.substring(1));
-      } else if (defaultPath) {
-        this.jump(defaultPath);
+        this.setLocation(decodeURI(location.hash.substring(1)));
+      } else if (defaultPath != null) {
+        this.setLocation(defaultPath);
       }
     },
 
@@ -139,12 +122,15 @@ qx.Class.define("unify.bom.History",
       INTERNALS
     ---------------------------------------------------------------------------
     */
+    
+    /** {Timer} Handle for timeout */
+    __intervalHandler : null,
 
-    // property apply method
-    _applyLocation : function(value, old) {
-      this.fireEvent("change", unify.event.type.History, [value, old]);
-    },
-
+    /** {Function} Wrapped callback method */
+    __onCallbackWrapped : null,    
+    
+    /** {String} Internal storage field for current location */
+    __location : "",
 
     /**
      * Internal listener for interval. Used to check for history changes. Converts
@@ -154,11 +140,13 @@ qx.Class.define("unify.bom.History",
      */
     __onCallback : function(e)
     {
-      var current = location.hash.substring(1);
-      if (current !== this.getLocation())
+      var value = decodeURI(location.hash.substring(1));
+      var old = this.__location;
+      
+      if (value != old) 
       {
-        this.debug("Native Changed: '" + current + "'");
-        this.setLocation(current);
+        this.__location = value;
+        this.fireEvent("change", unify.event.type.History, [value, old]);
       }
     }
   },
@@ -175,7 +163,7 @@ qx.Class.define("unify.bom.History",
   {
     if (this.__intervalHandler)
     {
-      window.clearInterval(this.__intervalHandler);
+      clearInterval(this.__intervalHandler);
       this.__intervalHandler = null;
     }
   }
