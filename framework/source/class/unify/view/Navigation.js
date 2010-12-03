@@ -154,7 +154,7 @@ qx.Class.define("unify.view.Navigation",
     ---------------------------------------------------------------------------
     */
     
-    /** {Map[]} List of maps with the keys: view, segment and param */
+    /** {unify.view.Path} Array like path object */
     __path : null,
     
     

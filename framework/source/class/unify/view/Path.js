@@ -2,10 +2,21 @@ qx.Class.define("unify.view.Path",
 {
   extend : qx.type.BaseArray,
   
+  
+  
+  /*
+  *****************************************************************************
+     MEMBERS
+  *****************************************************************************
+  */
+    
   members : 
   {
-    __modified : false,
-    
+    /**
+     * Deep clones a Path instance.
+     * 
+     * @return {unify.view.Path} Returns the deeply cloned Path instance.
+     */
     clone : function()
     {
       var clone = new unify.view.Path;
@@ -23,6 +34,13 @@ qx.Class.define("unify.view.Path",
       return clone;
     },
     
+    
+    /**
+     * Serializes a Path object into a location string. The result
+     * can be re-used for {@link unify.view.Path.fromString}.
+     * 
+     * @return {String} Location string
+     */
     serialize : function()
     {
       var result = [];
@@ -44,8 +62,25 @@ qx.Class.define("unify.view.Path",
     }
   },
   
+  
+  
+  /*
+  *****************************************************************************
+     STATICS
+  *****************************************************************************
+  */
+    
   statics :
   {
+    /**
+     * Converts a location string into a path object.
+     * 
+     * Format is "fragment1/fragment2/fragment3".
+     * Each fragment has the format "view.segment:param".
+     * 
+     * @param str {String} A location string with supported special charaters
+     * @return {unify.view.Path} Returns the path object
+     */
     fromString : function(str)
     {
       var obj = new unify.view.Path;
@@ -62,11 +97,26 @@ qx.Class.define("unify.view.Path",
     },
     
     
+    /** {RegExp} Matches location fragments */
     __fragmentMatcher : /^([a-z-]+)?(\.([a-z-]+))?(\:([a-zA-Z0-9_-]+))?$/,
     
+    
+    /** 
+     * Parses a location fragment into a object with the keys "view", "segment" and "param".
+     * 
+     * @param fragment {String} Location fragment to parse
+     * @return {Map} The parsed fragment.
+     */
     parseFragment : function(fragment)
     {
-      this.__fragmentMatcher.exec(fragment);
+      var match = this.__fragmentMatcher.exec(fragment);
+      if (qx.core.Variant.isSet("qx.debug", "on")) 
+      {
+        if (!match) {
+          throw new Error("Invalid location fragment: " + fragment);
+        }
+      }
+      
       return {
         view : RegExp.$1 || null,
         segment : RegExp.$3 || null,

@@ -74,6 +74,11 @@ qx.Class.define("unify.Application",
     ---------------------------------------------------------------------------
     */
     
+    /**
+     * Adds a view manager to the root element of the application.
+     * 
+     * @param viewManager {Object} Any object with a method "getElement" which returns a DOM element
+     */
     add : function(viewManager) {
       document.body.appendChild(viewManager.getElement());
     },

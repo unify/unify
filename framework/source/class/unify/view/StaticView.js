@@ -65,6 +65,7 @@ qx.Class.define("unify.view.StaticView",
 
   properties :
   {
+    /** The parent of the view. This is normally managed automatically by the ViewManager */
     parent :
     {
       check : "unify.view.StaticView",
