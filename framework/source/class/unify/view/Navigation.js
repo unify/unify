@@ -284,11 +284,9 @@ qx.Class.define("unify.view.Navigation",
     __onHistoryChange : function(e)
     {
       var currentLocation = decodeURI(e.getLocation());
-      if (currentLocation == "" || currentLocation == this.__serializedPath) {
-        return;
+      if (currentLocation != "" && currentLocation != this.__serializedPath) {
+        this.navigate(unify.view.Path.fromString(currentLocation));
       }
-      
-      this.navigate(unify.view.Path.fromString(currentLocation));
     }
   },
 
