@@ -306,9 +306,11 @@ qx.Class.define("unify.view.ViewManager",
      */
     navigate : function(path)
     {
-      if (!(path instanceof unify.view.Path)) {
-        this.trace()
-        throw new Error("Invalid path to navigate() to: " + path);
+      if (qx.core.Variant.isSet("qx.debug", "on"))
+      {
+        if (!(path instanceof unify.view.Path)) {
+          throw new Error("Invalid path to navigate() to: " + path);
+        }
       }
       
       var length = path.length;

@@ -160,8 +160,11 @@ qx.Class.define("unify.view.Navigation",
     
     navigate : function(path)
     {
-      if (!(path instanceof unify.view.Path)) {
-        throw new Error("Invalid path to navigate() to: " + path);
+      if (qx.core.Variant.isSet("qx.debug", "on"))
+      {      
+        if (!(path instanceof unify.view.Path)) {
+          throw new Error("Invalid path to navigate() to: " + path);
+        }
       }
       
       var usedManagers = {};
@@ -182,8 +185,11 @@ qx.Class.define("unify.view.Navigation",
           }
         }
         
-        if (!viewObj) {
-          throw new Error("Could not find view: " + fragment.view);
+        if (qx.core.Variant.isSet("qx.debug", "on"))
+        {
+          if (!viewObj) {
+            throw new Error("Could not find view: " + fragment.view);
+          }
         }
 
         if (!lastManagerId) {
@@ -196,8 +202,11 @@ qx.Class.define("unify.view.Navigation",
         }
         else
         {
-          if (managerId in usedManagers) {
-            throw new Error("View manager was re-used in two different path. Invalid segment!");
+          if (qx.core.Variant.isSet("qx.debug", "on"))
+          {
+            if (managerId in usedManagers) {
+              throw new Error("View manager was re-used in two different path. Invalid segment!");
+            }
           }
           
           // Update last manager
