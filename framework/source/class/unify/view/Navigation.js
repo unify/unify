@@ -233,24 +233,11 @@ qx.Class.define("unify.view.Navigation",
      */
     __syncPath : function()
     {
-      var path = this.__path;
-      var result = [];
-      var part, temp;
-      for (var i=0, l=path.length; i<l; i++) 
-      {
-        part = path[i];
-        temp = part.view;
-        if (part.segment) {
-          temp += "." + part.segment;
-        }
-        if (part.param) {
-          temp += ":" + part.param;
-        }
-        result.push(temp)
+      var joined = this.__path.serialize();
+      var hash = "#" + joined;
+      if (hash != location.hash) {
+        location.hash = hash;
       }
-      
-      var joined = result.join("/");
-      location.hash = "#" + joined;
       
       if (window.localStorage) {
         localStorage[this.__appId + "/navigationpath"] = joined;

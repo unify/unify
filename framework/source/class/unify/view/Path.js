@@ -23,12 +23,25 @@ qx.Class.define("unify.view.Path",
       return clone;
     },
     
-    setSegment : function(segment, pos, clone)
+    serialize : function()
     {
+      var result = [];
+      var part, temp;
+      for (var i=0, l=this.length; i<l; i++) 
+      {
+        part = this[i];
+        temp = part.view;
+        if (part.segment) {
+          temp += "." + part.segment;
+        }
+        if (part.param) {
+          temp += ":" + part.param;
+        }
+        result.push(temp)
+      }
       
+      return result.join("/");
     }
-    
-    
   },
   
   statics :
