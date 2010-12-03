@@ -440,10 +440,6 @@ qx.Class.define("unify.view.ViewManager",
       // Read element's attributes
       var href = elem.getAttribute("href");
       var dest = href ? href.substring(1) : elem.getAttribute("goto");
-      var rel = elem.getAttribute("rel");
-      
-      // Read current path
-      var path = this.__path;
       
       // Valid Paths (leading with a "#" in href attributes):
       // localView.segment:param (in transition)
@@ -453,6 +449,7 @@ qx.Class.define("unify.view.ViewManager",
       // :param (switch param, no transition)
 
       // Support legacy "rel" attributes
+      var rel = elem.getAttribute("rel");
       if (rel == "param") {
         dest = ":" + dest;
       } else if (rel == "segment") {
@@ -467,6 +464,9 @@ qx.Class.define("unify.view.ViewManager",
       }
       else
       {
+        // Read current path
+        var path = this.__path;
+
         // Make non-deep copy of path
         var clone = path.concat();
 
