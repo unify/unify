@@ -117,7 +117,7 @@ qx.Class.define("unify.view.ViewManager",
     /** {Element} Root element used for all views of this manager */
     __element : null,
     
-    /** {Map[]} List of maps storing the local path (keys: view, segment, param) */
+    /** {unify.view.Path} Path object (covering only manager local path) */
     __path : null,
     
     /** {Boolean} Whether the view manager is correctly initialized */

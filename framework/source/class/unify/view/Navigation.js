@@ -154,9 +154,8 @@ qx.Class.define("unify.view.Navigation",
     ---------------------------------------------------------------------------
     */
     
-    /** {unify.view.Path} Array like path object */
+    /** {unify.view.Path} Path object which stores the complete application path */
     __path : null,
-    
     
     /**
      * Navigates to the given path. Automatically distributes sub paths
