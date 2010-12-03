@@ -114,7 +114,9 @@ qx.Class.define("unify.view.Navigation",
       }
 
       // Call history to initialize application
+      this.__historyInit = true;
       History.init(path);
+      delete this.__historyInit;
       
       // Be sure that every view manager which is part of the navigation is correctly initialized
       var managers = this.__viewManagers;
@@ -240,6 +242,11 @@ qx.Class.define("unify.view.Navigation",
      */
     __onSubPathChange : function(e)
     {
+      // Do not react on useless changes during initialization phase
+      if (this.__historyInit) {
+        return;
+      }
+      
       var changed = e.getTarget();
       var reset = false;
       var path = this.__path = new unify.view.Path;
