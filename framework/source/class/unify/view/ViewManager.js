@@ -274,7 +274,7 @@ qx.Class.define("unify.view.ViewManager",
      * @param id {String} Identifier of the view.
      * @return {unify.view.Abstract} Instance derived from the StaticView class.
      */
-    getById : function(id) {
+    getView : function(id) {
       return id && this.__views[id] || null;
     },
     
@@ -301,60 +301,64 @@ qx.Class.define("unify.view.ViewManager",
     
     
     /**
-     * Go to an absolute path in this view manager with the option to
-     * delegate structure to other view managers if specific views are
-     * not known locally
+     * Navigates to the given local path
      * 
-     * @param path {Map[]} Array of path fragment configs (keys: view, segment, param)
      */
-    go : function(path)
+    navigate : function(path)
     {
-      var views = this.__views;
-      var delegatePath = [];
-      var fragment, viewClass, viewObj, lastViewObj;
-      for (var i=path.length-1; i>=0; i--)
+      this.debug("Navigate: ...");
+
+      var length = path.length;
+      var oldPath = this.__path;
+      var oldLength = oldPath ? oldPath.length : 0;
+      var layerTransition = null;
+
+      // Detect transition
+      if (oldLength > 0)
       {
-        fragment = path[i];
-        viewClass = views[fragment.view];
-        
-        if (viewClass)
-        {
-          viewObj = viewClass.getInstance();
-          viewObj.setSegment(fragment.segment);
-          viewObj.setParam(fragment.param);
-          
-          // Only process last two items
-          if (lastViewObj) 
-          {
-            lastViewObj.setParent(viewObj);
-            break;
-          }
-          
-          lastViewObj = viewObj;
-        }
-        else
-        {
-          // Move fragment from local path into delegation
-          delegatePath.unshift(path.pop());
+        if (length > oldLength) {
+          layerTransition = "in";
+        } else if (length < oldLength) {
+          layerTransition = "out";
         }
       }
       
-      // Switch to last view in path
-      if (lastViewObj) {
-        this.__setView(lastViewObj);
+      // Find current view object
+      var views = this.__views;
+      var currentFragment = path[length-1];
+      var currentViewCls = views[currentFragment.view];
+      if (qx.core.Variant.isSet("qx.debug", "on"))
+      {
+        if (!currentViewCls) {
+          throw new Error("Invalid view: " + currentFragment.view + " in view manager " + this.getId());
+        }
+      }
+      var currentViewObj = currentViewCls.getInstance();
+
+      // Verify that parent is correctly configured 
+      // This is required for correct back titles and smooth back animation
+      var parentFragment = path[length-2];
+      if (parentFragment)
+      {
+        var parentViewCls = views[parentFragment.view];
+        if (!parentViewCls) {
+          throw new Error("Invalid view: " + parentFragment.view + " in view manager " + this.getId());
+        } else if (parentViewCls === currentViewCls) {
+          throw new Error("Parent view class could not be identical to current view class!");
+        }
+                
+        var parentViewObj = parentViewCls.getInstance();
+        parentViewObj.setSegment(parentFragment.segment);
+        parentViewObj.setParam(parentFragment.param);
+        currentViewObj.setParent(parentViewObj);
       }
 
-      // Store path and fire change event
-      this.__path = path;
-      this.fireEvent("changePath");
-      
-      // Delegate remaining path fragments
-      if (delegatePath.length > 0)
-      {
-        this.debug("Delegating " + delegatePath.length + " path fragments to other view managers...");
-        unify.view.Navigation.getInstance().delegatePath(delegatePath);
-      }
-    },
+      // Now update the current view and switch to it
+      currentViewObj.setSegment(currentFragment.segment);
+      currentViewObj.setParam(currentFragment.param);
+      this.__setView(currentViewObj, layerTransition);
+    },    
+    
     
     
     
@@ -430,133 +434,54 @@ qx.Class.define("unify.view.ViewManager",
      */
     __onTapNavigate : function(elem)
     {
+      // Reset event blocking flag
+      this.__navigates = false;
+            
+      // Read element's attributes
       var href = elem.getAttribute("href");
-      var rel = elem.getAttribute("rel");
-
       var dest = href ? href.substring(1) : elem.getAttribute("goto");
-      var config = unify.view.Path.parseFragment(dest);
-
-      var view = config.view;
-      var segment = config.segment;
-      var param = config.param;
-
-      var viewClass = this.__views[view];
-      var currentViewObj = this.__view;
-      var path = this.__path;
-
-      var firePathChange = false;
+      var rel = elem.getAttribute("rel");
       
-      if (rel == "param") 
-      {
-        // Replace param in path
-        path[path.length-1].param = param;
-        firePathChange = true;
-        
-        currentViewObj.setParam(param);
-      } 
-      else if (rel == "segment") 
-      {
-        // Replace segment in path
-        path[path.length-1].segment = segment;
-        firePathChange = true;
+      // Read current path
+      var path = this.__path;
+      
+      // Valid Paths (leading with a "#" in href attributes):
+      // localView.segment:param (in transition)
+      // otherView.segment:param (globally known view => delegate to navigation)
+      // .segment:param (switch segment and param, no transition)
+      // .segment (switch segment, no transition)
+      // :param (switch param, no transition)
 
-        currentViewObj.setSegment(segment);
+      // Support legacy "rel" attributes
+      if (rel == "param") {
+        dest = ":" + dest;
+      } else if (rel == "segment") {
+        dest = "." + dest;
       }
-      else if (rel == "up")
-      {
-        // Replace current view with its parent (slide out)
-        // Parent should still be correctly configured (segment, param) in this case.
-        var parentViewObj = currentViewObj.getParent();
-        if (!parentViewObj) {
-          throw new Error("Has no parent!");
-        }
 
-        // Reduce path
-        var last = path.pop();
-        firePathChange = true;
-        
-        // Finally do the switching
-        this.__setView(parentViewObj, "out");
-
-        // TODO: Handle this on animation stop! Via timeout?
-        // Reconfigure 
-        // Fix cases of tweet:123 => user => tweet:456 (then the parent parent tweet has wrong config when going up)
-        var lastView = last.view;
-        for (var i=path.length-1; i>=0; i--)
-        {
-          if (path[i].view == lastView)
-          {
-            this.debug("Reconfigure after loosing last");
-            currentViewObj.setSegment(path[i].segment);
-            currentViewObj.setParam(path[i].param);
-            
-            if (i == 0) {
-              currentViewObj.resetParent();
-            } else {
-              currentViewObj.setParent(this.__views[path[i-1]].getInstance());
-            }
-            
-            break;
-          }
-        }
-      }
-      else if (rel == "parent")
+      var config = unify.view.Path.parseFragment(dest);
+      var view = config.view;
+      if (view && !this.__views[view])
       {
-        // Replace current view with view in the same view manager
-        
-        if (!viewClass) {
-          throw new Error("Could not replace current view with view from another view manager: " + view);
-        }
-        
-        path[path.length-1] = config;
-        firePathChange = true;
-        
-        var viewObj = viewClass.getInstance();
-        viewObj.setSegment(segment);
-        viewObj.setParam(param);
-        viewObj.setParent(currentViewObj.getParent());
-        
-        this.__setView(viewObj);
-      }
-      else if (viewClass)
-      {
-        // Dive into view in the same view manager (slide in)
-        
-        path.push(config);
-        firePathChange = true;
-        
-        var viewObj = viewClass.getInstance();
-        viewObj.setSegment(segment);
-        viewObj.setParam(param);
-        viewObj.setParent(currentViewObj);
-
-        // Somehow a developer fault when giving no "rel" attribute, but
-        // still "switching" to the same view (which would better called a reconfiguration)
-        if (viewObj != currentViewObj)
-        {
-          this.__setView(viewObj, "in");
-        }
+        unify.view.Navigation.getInstance().navigate(new unify.view.Path(config))
       }
       else
       {
-        var childViewManager = unify.view.Navigation.getInstance().getViewManager(view);
-        if (childViewManager == null) {
-          throw new Error("Could not find view manager for view: " + view);
-        }
-        
-        if (this.getEnableDeepSwitch() && this.__deep[dest]) {
-          childViewManager.go(this.__deep[dest]);
+        // Make non-deep copy of path
+        var clone = path.concat();
+
+        // Process "rel" attributes
+        if (rel == "up") {
+          clone.pop();
+        } else if (rel == "parent") {
+          clone[clone.length] = config;
         } else {
-          childViewManager.go([config]);
+          clone.push(config);
         }
+
+        // Finally do the navigate
+        this.navigate(clone);
       }
-      
-      if (firePathChange) {
-        this.fireEvent("changePath");
-      }
-      
-      // Reset event blocking flag
-      this.__navigates = false;
     },
 
 

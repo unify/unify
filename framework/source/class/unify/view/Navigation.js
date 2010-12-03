@@ -57,6 +57,11 @@ qx.Class.define("unify.view.Navigation",
 
   members :
   {
+    /** {String} Unique name of the application */
+    __appId : null,
+    
+    
+    
     /*
     ---------------------------------------------------------------------------
       VIEW MANAGER MANAGMENT
@@ -152,27 +157,63 @@ qx.Class.define("unify.view.Navigation",
     /** {Map[]} List of maps with the keys: view, segment and param */
     __path : null,
     
-    /**
-     * Delegates the given path to the manager which could handle the first
-     * fragment (which then delegates it back for further processing as needed).
-     * 
-     * @param path {Map[]} List of path fragments (with the keys: view, segment and param)
-     */
-    delegatePath : function(path)
+    
+    navigate : function(path)
     {
-      var firstFragment = path[0];
-      var viewManager = this.getViewManager(firstFragment.view);
+      console.debug(JSON.stringify(path));
       
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      var usedManagers = {};
+      var lastManagerId = null;
+      var managers = this.__viewManagers;
+      var managerPath = new unify.view.Path;
+      
+      for (var i=0, l=path.length; i<l; i++)
       {
-        if (!viewManager) {
-          throw new Error("The view '" + firstFragment.view + "' is not globally accessible.");
+        var fragment = path[i];
+        
+        for (var managerId in managers) 
+        {
+          var viewManager = managers[managerId];
+          var viewObj = viewManager.getView(fragment.view);
+          if (viewObj) {
+            break;
+          }
+        }
+        
+        if (!viewObj) {
+          throw new Error("Could not find view: " + fragment.view);
+        }
+
+        if (!lastManagerId) {
+          lastManagerId = managerId;
+        }
+        
+        if (managerId == lastManagerId)
+        {
+          managerPath.push(fragment);
+        }
+        else
+        {
+          if (managerId in usedManagers) {
+            throw new Error("View manager was re-used in two different path. Invalid segment!");
+          }
+          
+          // Update last manager
+          managers[lastManagerId].navigate(managerPath);
+
+          // Reset manager path
+          managerPath = [fragment];
+
+          // Remember all used managers (for validity analysis)
+          usedManagers[managerId] = true;
+          
+          // Rotate variable
+          lastManagerId = managerId;
         }
       }
-
-      if (viewManager) {
-        viewManager.go(path);
-      }
+      
+      // Process with last one
+      viewManager.navigate(managerPath);
     },
     
     
@@ -252,29 +293,13 @@ qx.Class.define("unify.view.Navigation",
         return;
       }
 
-      // Find the first registered manager. This one should be
-      // asked for starting with processing of the path object.
-      var viewManagers = this.__viewManagers;
-      for (var managerId in viewManagers) {
-        var manager = viewManagers[managerId];
-        break;
-      }
-
-      if (qx.core.Variant.isSet("qx.debug", "on")) 
-      {
-        if (!manager) {
-          throw new Error("No managers registered. Could not react on history change!");
-        }
-      }
-
       var fragments = currentLocation.split("/");
       var path = [];
-      
       for (var i=0, l=fragments.length; i<l; i++) {
         path.push(unify.view.Path.parseFragment(fragments[i]));
       }
       
-      manager.go(path);
+      this.navigate(path);
     }
   },
 
