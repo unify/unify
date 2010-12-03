@@ -229,23 +229,6 @@ qx.Class.define("unify.view.Navigation",
     
     
     /**
-     * Syncs the current path with the browser environment (for bookmarking, etc.)
-     */
-    __syncPath : function()
-    {
-      var joined = this.__path.serialize();
-      var hash = "#" + joined;
-      if (hash != location.hash) {
-        location.hash = hash;
-      }
-      
-      if (window.localStorage) {
-        localStorage[this.__appId + "/navigationpath"] = joined;
-      }      
-    },
-        
-    
-    /**
      * Reacts on (local) path changes of all registered view managers
      * 
      * @param e {qx.event.type.Event} Event object
@@ -264,12 +247,6 @@ qx.Class.define("unify.view.Navigation",
           manager.reset();
         }
         
-        if (manager.getPath() instanceof unify.view.Path) {
-          //path.push.apply(path, manager.getPath());
-        } else if (manager.getPath() != null){
-          throw new Error("Invalid path: " + manager.getPath())
-        }
-        
         var localPath = manager.getPath();
         if (localPath != null)
         {
@@ -284,7 +261,15 @@ qx.Class.define("unify.view.Navigation",
         }
       }
       
-      this.__syncPath();
+      var joined = path.serialize();
+      var hash = "#" + joined;
+      if (hash != location.hash) {
+        location.hash = hash;
+      }
+      
+      if (window.localStorage) {
+        localStorage[this.__appId + "/navigationpath"] = joined;
+      }
     },
 
 
