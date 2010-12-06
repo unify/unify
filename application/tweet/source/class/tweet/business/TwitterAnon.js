@@ -18,8 +18,12 @@ qx.Class.define("tweet.business.TwitterAnon",
   construct : function()
   {
     this.base(arguments);
+    
+    this.setEnableProxy(false);
+    
+    var user = localStorage["tweet/username"];
 
-    this._addService("updates", {url: "http://twitter.com/statuses/friends_timeline.json", keep: 60*10}); // 10 minutes
+    this._addService("updates", {url: "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20twitter.user.timeline%20where%20screen_name%3D%40screen_name&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=&screen_name=wpbasti", keep: 60*10}); // 10 minutes
     this._addService("sent", {url: "http://twitter.com/statuses/user_timeline.json", keep: 60*10}); // 10 minutes
     this._addService("friends", {url: "http://twitter.com/statuses/friends.json", keep: 60*10}); // 10 minutes
     this._addService("followers", {url: "http://twitter.com/statuses/followers.json", keep: 60*10}); // 10 minutes

@@ -99,9 +99,9 @@ qx.Class.define("tweet.view.Timeline",
     // overridden
     _renderData : function(data)
     {
-      console.debug("DATA", data);
+      console.debug("Render data: ", data);
       
-      var html = data.map(this._renderItem, this).join("");
+      var html = data.query.results.statuses.status.map(this._renderItem, this).join("");
       this.__content.replace("<ul>" + html + "</ul>");
     },    
     
