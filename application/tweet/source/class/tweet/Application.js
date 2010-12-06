@@ -14,11 +14,11 @@
 ************************************************************************ */
 
 /**
- * Twitter application class for hero mobile devices.
+ * Twitter application class
  */
-qx.Class.define("tweet.application.Mobile",
+qx.Class.define("tweet.Application",
 {
-  extend : unify.application.Mobile,
+  extend : unify.Application,
 
 
 

@@ -10,9 +10,9 @@
 /**
  * Shows Twitter timelines e.g. the friends or user timeline.
  */
-qx.Class.define("tweet.view.mobile.Timeline",
+qx.Class.define("tweet.view.Timeline",
 {
-  extend : unify.view.mobile.RemoteView,
+  extend : unify.view.RemoteView,
   type : "singleton",
 
   members :

@@ -15,9 +15,9 @@
 /**
  * Allows the user to write new status updates.
  */
-qx.Class.define("tweet.view.mobile.Compose",
+qx.Class.define("tweet.view.Compose",
 {
-  extend : unify.view.mobile.StaticView,
+  extend : unify.view.StaticView,
   type : "singleton",
 
   members :

@@ -10,9 +10,9 @@
 /**
  * Displays details of Twitter users.
  */
-qx.Class.define("tweet.view.mobile.Search", 
+qx.Class.define("tweet.view.Search", 
 {
-  extend : unify.view.mobile.RemoteView,
+  extend : unify.view.RemoteView,
   type : "singleton",
 
   members : 

@@ -10,9 +10,9 @@
 /**
  * List of all people who the current user is following or are following her/him.
  */
-qx.Class.define("tweet.view.mobile.Userlist",
+qx.Class.define("tweet.view.Userlist",
 {
-  extend : unify.view.mobile.RemoteView,
+  extend : unify.view.RemoteView,
   type : "singleton",
 
   members :

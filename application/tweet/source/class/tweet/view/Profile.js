@@ -10,9 +10,9 @@
 /**
  * Profile screen
  */
-qx.Class.define("tweet.view.mobile.Profile",
+qx.Class.define("tweet.view.Profile",
 {
-  extend : unify.view.mobile.StaticView,
+  extend : unify.view.StaticView,
   type : "singleton",
 
   members :
