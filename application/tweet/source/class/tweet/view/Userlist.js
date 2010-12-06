@@ -80,7 +80,7 @@ qx.Class.define("tweet.view.Userlist",
     
     // overridden
     _getBusinessObject : function() {
-      return tweet.business.TwitterAuth.getInstance();
+      return tweet.business.TwitterAnon.getInstance();
     },
     
     

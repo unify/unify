@@ -80,7 +80,7 @@ qx.Class.define("tweet.view.Timeline",
     
     // overridden
     _getBusinessObject : function() {
-      return tweet.business.TwitterAuth.getInstance();
+      return tweet.business.TwitterAnon.getInstance();
     },
     
     
@@ -99,6 +99,8 @@ qx.Class.define("tweet.view.Timeline",
     // overridden
     _renderData : function(data)
     {
+      console.debug("DATA", data);
+      
       var html = data.map(this._renderItem, this).join("");
       this.__content.replace("<ul>" + html + "</ul>");
     },    

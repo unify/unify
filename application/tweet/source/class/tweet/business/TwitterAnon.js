@@ -18,6 +18,11 @@ qx.Class.define("tweet.business.TwitterAnon",
   construct : function()
   {
     this.base(arguments);
+
+    this._addService("updates", {url: "http://twitter.com/statuses/friends_timeline.json", keep: 60*10}); // 10 minutes
+    this._addService("sent", {url: "http://twitter.com/statuses/user_timeline.json", keep: 60*10}); // 10 minutes
+    this._addService("friends", {url: "http://twitter.com/statuses/friends.json", keep: 60*10}); // 10 minutes
+    this._addService("followers", {url: "http://twitter.com/statuses/followers.json", keep: 60*10}); // 10 minutes
     
     this._addService("search", {url:"http://search.twitter.com/search.json?q=%query%", keep: 60}); // 1 minute
     this._addService("status", {url:"http://twitter.com/statuses/show/%id%.json", keep: 60*60*24*30}); // 30 days
