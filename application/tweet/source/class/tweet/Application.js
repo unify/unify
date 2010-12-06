@@ -42,11 +42,6 @@ qx.Class.define("tweet.Application",
       // Call super class
       this.base(arguments);
 
-      // Initialize Twitter business object
-      var TwitterAuth = tweet.business.TwitterAuth.getInstance();
-      TwitterAuth.setUser("telekomria");
-      TwitterAuth.setPassword("32u8AH555wKdQvhqgZZ9");
-      
       // Set up
       document.title = "Tweet";
 

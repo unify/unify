@@ -19,6 +19,11 @@ qx.Class.define("tweet.business.TwitterAuth",
   {
     this.base(arguments);
     
+    this.debug("Logging in as: " + localStorage["tweet/username"]);
+    
+    this.setUser(localStorage["tweet/username"]);
+    this.setPassword(localStorage["tweet/password"]);    
+    
     // Activate authentification
     this.setAuthMethod("basic");
     
