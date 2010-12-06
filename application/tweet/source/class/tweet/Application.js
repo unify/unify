@@ -52,6 +52,8 @@ qx.Class.define("tweet.Application",
       MasterViewManager.add(tweet.view.Userlist);
       MasterViewManager.add(tweet.view.User);
       MasterViewManager.add(tweet.view.Search);
+      
+      this.add(MasterViewManager);
 
       // Configure tab bar
       // var TabBar = unify.ui.TabBar.getInstance();
