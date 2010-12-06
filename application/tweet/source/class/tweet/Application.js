@@ -51,22 +51,21 @@ qx.Class.define("tweet.Application",
       document.title = "Tweet";
 
       var MasterViewManager = new unify.view.ViewManager("master");
-      MasterViewManager.add(tweet.view.mobile.Timeline, true);
-      MasterViewManager.add(tweet.view.mobile.Status);
-      MasterViewManager.add(tweet.view.mobile.Compose);
-      MasterViewManager.add(tweet.view.mobile.Userlist);
-      MasterViewManager.add(tweet.view.mobile.User);
-      MasterViewManager.add(tweet.view.mobile.Search);
+      MasterViewManager.add(tweet.view.Timeline, true);
+      MasterViewManager.add(tweet.view.Status);
+      MasterViewManager.add(tweet.view.Compose);
+      MasterViewManager.add(tweet.view.Userlist);
+      MasterViewManager.add(tweet.view.User);
+      MasterViewManager.add(tweet.view.Search);
 
       // Configure tab bar
-      // var TabBar = unify.ui.mobile.TabBar.getInstance();
-      // TabBar.add(tweet.view.mobile.Timeline);
-      // TabBar.add(tweet.view.mobile.Userlist);
-      // TabBar.add(tweet.view.mobile.Search);
+      // var TabBar = unify.ui.TabBar.getInstance();
+      // TabBar.add(tweet.view.Timeline);
+      // TabBar.add(tweet.view.Userlist);
+      // TabBar.add(tweet.view.Search);
 
       var Navigation = unify.view.Navigation.getInstance();
       Navigation.add(MasterViewManager);
-      Navigation.add(DetailViewManager);
       Navigation.init();
     }
   }
