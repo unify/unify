@@ -39,18 +39,18 @@ qx.Class.define("tweet.view.Search",
     // overridden
     _createView : function() 
     {
-      var layer = new unify.ui.mobile.Layer(this);
-      layer.add(new unify.ui.mobile.TitleBar(this));
+      var layer = new unify.ui.Layer(this);
+      layer.add(new unify.ui.TitleBar(this));
 
       // Create search pane
-      var control = this.__control = new unify.ui.mobile.Content;
+      var control = this.__control = new unify.ui.Content;
       control.add('<div class="search"><input type="search"/><button exec="search">Submit</button></div>');
       layer.add(control);
       this.__query = control.query("input");
       this.__button = control.query("button");
 
       // Create list
-      var scrollview = this.__list = new unify.ui.mobile.ScrollView();
+      var scrollview = this.__list = new unify.ui.ScrollView;
       scrollview.setEnableScrollX(false);
       layer.add(scrollview);
 

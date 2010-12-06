@@ -51,18 +51,18 @@ qx.Class.define("tweet.view.Userlist",
     // overridden
     _createView : function() 
     {
-      var layer = new unify.ui.mobile.Layer(this);
+      var layer = new unify.ui.Layer(this);
 
-      var toolbar = new unify.ui.mobile.ToolBar(this);
+      var toolbar = new unify.ui.ToolBar(this);
       toolbar.add({ icon : true, exec : "refresh", target : "left" });
       layer.add(toolbar);
 
-      var segmented = new unify.ui.mobile.Segmented(this);
+      var segmented = new unify.ui.Segmented(this);
       segmented.add({ label : "Friends", segment : "friends" });
       segmented.add({ label : "Followers", segment : "followers" });
       toolbar.add(segmented);      
       
-      var scrollview = this.__content = new unify.ui.mobile.ScrollView();
+      var scrollview = this.__content = new unify.ui.ScrollView;
       scrollview.setEnableScrollX(false);
       layer.add(scrollview);
       

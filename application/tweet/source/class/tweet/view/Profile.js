@@ -31,12 +31,12 @@ qx.Class.define("tweet.view.Profile",
     // overridden
     _createView : function() 
     {
-      var layer = new unify.ui.mobile.Layer(this);      
+      var layer = new unify.ui.Layer(this);      
 
-      var titlebar = new unify.ui.mobile.TitleBar(this);
+      var titlebar = new unify.ui.TitleBar(this);
       layer.add(titlebar);
       
-      var content = new unify.ui.mobile.Content;
+      var content = new unify.ui.Content;
       layer.add(content);
 
       var html = '';

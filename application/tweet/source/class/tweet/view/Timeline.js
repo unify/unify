@@ -50,20 +50,20 @@ qx.Class.define("tweet.view.Timeline",
     // overridden
     _createView : function()
     {
-      var layer = new unify.ui.mobile.Layer(this);
+      var layer = new unify.ui.Layer(this);
 
-      var toolbar = new unify.ui.mobile.ToolBar(this);
+      var toolbar = new unify.ui.ToolBar(this);
       toolbar.add({ icon : true, exec : "refresh", target : "left" });
       toolbar.add({ label : "New", jump : "compose", target : "right" });
       
-      var segmented = new unify.ui.mobile.Segmented(this);
+      var segmented = new unify.ui.Segmented(this);
       segmented.add({ label : "Updates", segment : "updates" });
       segmented.add({ label : "Sent", segment : "sent" });
       toolbar.add(segmented);      
 
       layer.add(toolbar);
       
-      var scrollview = this.__content = new unify.ui.mobile.ScrollView();
+      var scrollview = this.__content = new unify.ui.ScrollView();
       scrollview.setEnableScrollX(false);
       layer.add(scrollview);
       

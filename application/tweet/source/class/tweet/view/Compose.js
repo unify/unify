@@ -51,13 +51,13 @@ qx.Class.define("tweet.view.Compose",
     // overridden
     _createView : function() 
     {
-      var layer = new unify.ui.mobile.Layer(this);
+      var layer = new unify.ui.Layer(this);
 
-      var titlebar = new unify.ui.mobile.TitleBar(this);
+      var titlebar = new unify.ui.TitleBar(this);
       titlebar.add({ label : "Send", exec : "send", target : "right" });
       layer.add(titlebar);
       
-      var content = this.__content = new unify.ui.mobile.Content;
+      var content = this.__content = new unify.ui.Content;
       content.add('<textarea/><span class="countdown">140</span>');
       layer.add(content);
       

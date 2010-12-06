@@ -36,15 +36,15 @@ qx.Class.define("tweet.view.Status",
     // overridden
     _createView : function() 
     {
-      var layer = new unify.ui.mobile.Layer(this);
+      var layer = new unify.ui.Layer(this);
 
-      var titlebar = new unify.ui.mobile.TitleBar(this);
+      var titlebar = new unify.ui.TitleBar(this);
       layer.add(titlebar);
       
-      var content = this.__content = new unify.ui.mobile.Content;
+      var content = this.__content = new unify.ui.Content;
       layer.add(content);
 
-      var toolbar = new unify.ui.mobile.ToolBar(this);
+      var toolbar = new unify.ui.ToolBar(this);
       toolbar.add({ icon : true, exec : "favorite", target : "left" });
       toolbar.add({  label : "Retweet", exec : "retweet", target : "right" });
       layer.add(toolbar);

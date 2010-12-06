@@ -40,14 +40,14 @@ qx.Class.define("tweet.view.User",
     // overridden
     _createView : function() 
     {
-      var layer = new unify.ui.mobile.Layer(this);
-      layer.add(new unify.ui.mobile.TitleBar(this));
+      var layer = new unify.ui.Layer(this);
+      layer.add(new unify.ui.TitleBar(this));
       
-      var scrollview = this.__content = new unify.ui.mobile.ScrollView();
+      var scrollview = this.__content = new unify.ui.ScrollView;
       scrollview.setEnableScrollX(false);
       layer.add(scrollview);
 
-      var toolbar = new unify.ui.mobile.ToolBar(this);
+      var toolbar = new unify.ui.ToolBar(this);
       toolbar.add({ label : "Follow", exec : "follow" });
       toolbar.add({ label : "Block", exec : "block" });
       layer.add(toolbar);
