@@ -26,6 +26,45 @@ qx.Class.define("feedreader.view.Answers",
     _getBusinessObject : function() {
       return feedreader.business.Answers.getInstance();
     },
+    
+    _getServiceName : function() {
+      return "answers";
+    },
+    
+    _errorHandler : function(kind) {
+      alert("Error: " + kind);
+    },
+    
+    _getServiceParams : function() 
+    {
+      var field = document.getElementById("answersSearch");
+      if (!field) {
+        return;
+      }
+      
+      return {
+        query : "'" + field.value + "'"
+      };
+    },
+    
+    
+    _hasServiceRequestParams : function()
+    {
+      var field = document.getElementById("answersSearch");
+      return field && field.value.length > 0;
+    },
+    
+    
+    _renderData : function(data)
+    {
+      var questions = data.query.results.Question;
+      var entries = questions.map(function(entry) {
+        return "<li>" + entry.Subject + " (" + entry.NumAnswers + " answers)</li>"; 
+      });
+      document.getElementById("answerResults").innerHTML = "<ul>" + entries + "</ul>";
+      
+    },
+    
 
     
     // overridden
@@ -36,7 +75,7 @@ qx.Class.define("feedreader.view.Answers",
       layer.add(titlebar);
       
       var content = new unify.ui.Content;
-      content.add("Answers");
+      content.add("<h3>Answers</h3><input type='search' id='answersSearch'/><div class='button' exec='refresh'>Refresh</div><div id='answerResults'></div>");
       layer.add(content);
 
       return layer;
