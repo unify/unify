@@ -75,7 +75,7 @@ qx.Class.define("unify.view.TabViewManager",
      * Adds a view to the tab bar. The buttons are displayed in the order of
      * execution of this function.
      *
-     * @param viewClass {Class} Class of the view to register (@see unify.view.StaticView)
+     * @param viewClass {Class} Class of the view to register {@see unify.view.StaticView}
      */
     add : function(viewClass)
     {
