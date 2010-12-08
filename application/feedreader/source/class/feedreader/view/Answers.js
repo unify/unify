@@ -75,7 +75,7 @@ qx.Class.define("feedreader.view.Answers",
       layer.add(titlebar);
       
       var content = new unify.ui.Content;
-      content.add("<h3>Answers</h3><input type='search' id='answersSearch'/><div class='button' exec='refresh'>Refresh</div><div id='answerResults'></div>");
+      content.add("<div class='searchPane'><input type='text' id='answersSearch'/><div class='button' exec='refresh'>Refresh</div></div> <div id='answerResults'></div>");
       layer.add(content);
 
       return layer;
