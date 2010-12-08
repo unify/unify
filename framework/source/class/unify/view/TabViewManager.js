@@ -19,6 +19,20 @@ qx.Class.define("unify.view.TabViewManager",
 {
   extend : qx.core.Object,
 
+  construct : function(viewManager)
+  {
+    this.base(arguments);
+    
+    if (qx.core.Variant.isSet("qx.debug", "on"))
+    {
+      if (viewManager == null) {
+        throw new Error("TabViewManager needs a ViewManager at construction time!");
+      }
+    }
+    
+    this.__viewManager = viewManager;
+  },
+
 
 
   /*
@@ -29,6 +43,13 @@ qx.Class.define("unify.view.TabViewManager",
 
   members :
   {
+    __viewManager : null,
+    __element : null,
+    __bar : null,
+    __pane : null,
+    
+    
+    
     getElement : function()
     {
       var elem = this.__element;
@@ -36,6 +57,14 @@ qx.Class.define("unify.view.TabViewManager",
       {
         var elem = this.__element = document.createElement("div");
         elem.className = "tab-view";
+        
+        var pane = this.__pane = document.createElement("div");
+        pane.className = "pane";
+        elem.appendChild(pane);
+        
+        var bar = this.__bar = document.createElement("div");
+        bar.className = "bar";
+        elem.appendChild(bar);
       }
 
       return elem;
@@ -50,15 +79,16 @@ qx.Class.define("unify.view.TabViewManager",
      */
     add : function(viewClass)
     {
+      var root = this.getElement();
       var viewInstance = viewClass.getInstance();
 
       var elem = document.createElement("div");
       elem.className = "tab-bar-element";
       elem.setAttribute("goto", viewInstance.getId());
-      elem.setAttribute("rel", "swap");
       elem.innerHTML = "<div class='tab-bar-element-image'></div>" + viewInstance.getTitle("tab-bar");
 
-      this.getElement().appendChild(elem);
+      this.__bar.appendChild(elem);
+      this.__pane.appendChild(viewInstance.getElement());
     }
   }
 });

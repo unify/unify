@@ -33,12 +33,12 @@ qx.Class.define("feedreader.Application",
 
       // Master view
       var MasterViewManager = new unify.view.ViewManager("master");
-      MasterViewManager.add(feedreader.view.Start);
+      MasterViewManager.add(feedreader.view.Start, true);
       
       
       // Configure tab view
-      var TabView = new unify.view.TabViewManager;
-      TabView.add(MasterViewManager);
+      var TabView = new unify.view.TabViewManager(MasterViewManager);
+      TabView.add(feedreader.view.Start);
       this.add(TabView);
       
 

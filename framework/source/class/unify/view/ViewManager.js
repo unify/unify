@@ -220,6 +220,13 @@ qx.Class.define("unify.view.ViewManager",
     __resetHelper : function()
     {
       var defaultViewId = this.__defaultViewId;
+      if (qx.core.Variant.isSet("qx.debug", "on"))
+      {
+        if (defaultViewId == null) {
+          throw new Error("Missing default view ID!");
+        }
+      }
+      
       var viewObj = this.__views[defaultViewId].getInstance();
       this.__path = new unify.view.Path({
         view : defaultViewId,
