@@ -27,7 +27,6 @@ qx.Class.define("${Namespace}.view.Start", {
     {
       var layer = new unify.ui.Layer(this);
       var titlebar = new unify.ui.TitleBar(this);
-      titlebar.add({jump:'sys-info', label:'System-Info', target:'right'});
       layer.add(titlebar);
       
       var content = new unify.ui.Content;

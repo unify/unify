@@ -35,12 +35,17 @@ qx.Class.define("${Namespace}.Application",
       var MasterViewManager = new unify.view.ViewManager("master");
       
       // Register your view classes...
-      MasterViewManager.add(${Namespace}.Start);
+      MasterViewManager.add(${Namespace}.view.Start);
       
       // Add TabViews or SplitViews...
 
       // Add view manager (or SplitView or TabView) to the root
       this.add(MasterViewManager);
+      
+      // Add at least one view manager to the navigation managment
+      var Navigation = unify.view.Navigation.getInstance();
+      Navigation.add(MasterViewManager);
+      Navigation.init();      
     }
   }
 });
