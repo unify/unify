@@ -201,17 +201,6 @@ qx.Class.define("unify.view.StaticView",
     },
 
 
-    /**
-     * Whether the view is rendered in full screen (without a
-     * global tabbar for example).
-     *
-     * @return {Boolean} Whether the view is rendered in fullscreen.
-     */
-    isFullScreen : function() {
-      return false;
-    },
-
-
 
 
     /*

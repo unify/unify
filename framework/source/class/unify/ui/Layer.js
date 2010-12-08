@@ -38,7 +38,6 @@ qx.Class.define("unify.ui.Layer",
     }
 
     this.__view = view;
-    view.addListener("changeActive", this.__onViewChangeActive, this);
   },
 
 
@@ -79,46 +78,6 @@ qx.Class.define("unify.ui.Layer",
       elem.className = "layer";
 
       return elem;
-    },
-
-
-    /*
-    ---------------------------------------------------------------------------
-      INTERNALS
-    ---------------------------------------------------------------------------
-    */
-
-
-    /**
-     * Event handler for change active view.
-     *
-     * @param e {qx.event.type.Data} Change view event
-     */
-    __onViewChangeActive : function(e)
-    {
-      if (!e.getData()) {
-        return;
-      }
-
-      var Class = qx.bom.element2.Class;
-      var elem = this.getElement();
-      var view = this.__view;
-
-      // Update TabBar display
-      view.isModal() || view.isFullScreen() ? Class.remove(elem, "has-tabbar") : Class.add(elem, "has-tabbar");
     }
-  },
-
-
-  /*
-  *****************************************************************************
-     DESTRUCTOR
-  *****************************************************************************
-  */
-
-  destruct : function()
-  {
-    this.__view.removeListener("changeActive", this.__onViewChangeActive, this);
-    this.__view = null;
   }
 });

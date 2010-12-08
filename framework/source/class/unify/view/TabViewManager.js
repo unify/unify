@@ -58,12 +58,11 @@ qx.Class.define("unify.view.TabViewManager",
         var elem = this.__element = document.createElement("div");
         elem.className = "tab-view";
         
-        var pane = this.__pane = document.createElement("div");
-        pane.className = "pane";
+        var pane = this.__viewManager.getElement();
         elem.appendChild(pane);
         
         var bar = this.__bar = document.createElement("div");
-        bar.className = "bar";
+        bar.className = "tab-bar";
         elem.appendChild(bar);
       }
 
@@ -88,7 +87,6 @@ qx.Class.define("unify.view.TabViewManager",
       elem.innerHTML = "<div class='tab-bar-element-image'></div>" + viewInstance.getTitle("tab-bar");
 
       this.__bar.appendChild(elem);
-      this.__pane.appendChild(viewInstance.getElement());
     }
   }
 });
