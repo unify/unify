@@ -16,20 +16,20 @@
 /**
  * Flickr Browser
  */
-qx.Class.define("flicky.Application", 
+qx.Class.define("flicky.Application",
 {
   extend : unify.Application,
 
-  members : 
+  members :
   {
     // overridden
-    main : function() 
+    main : function()
     {
       // Call super class
       this.base(arguments);
 
       document.title = "flicky";
-      
+
       var MasterViewManager = new unify.view.ViewManager("master");
       MasterViewManager.add(flicky.view.Start, true);
       MasterViewManager.add(flicky.view.Recent);
@@ -41,7 +41,7 @@ qx.Class.define("flicky.Application",
 
       var SplitViewManager = new unify.view.SplitViewManager(MasterViewManager, DetailViewManager);
       this.add(SplitViewManager);
-      
+
       var Navigation = unify.view.Navigation.getInstance();
       Navigation.add(MasterViewManager);
       Navigation.add(DetailViewManager);
