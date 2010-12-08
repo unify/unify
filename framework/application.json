@@ -205,7 +205,7 @@
       "extend" : [ "unify-run-common", "unify-run-build" ],
       "let" : {
         "BUILD_PATH" : "build/mobile",
-        "COPY_FILES" : [ "index.html", "resource/${APP_NAME}/mobile" ]
+        "COPY_FILES" : [ "index.html", "resource/${APP_NAME}" ]
       },
       "variants" : {
         "qx.client" : ["webkit", "gecko", "opera"]
@@ -221,7 +221,7 @@
       "extend" : [ "unify-run-common", "unify-run-build" ],
       "let" : {
         "BUILD_PATH" : "build/phonegap",
-        "COPY_FILES" : [ "phonegap.html", "resource/${APP_NAME}/mobile" ]
+        "COPY_FILES" : [ "phonegap.html", "resource/${APP_NAME}" ]
       },
       "variants" : {
         "qx.client" : ["webkit"]
