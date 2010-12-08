@@ -17,6 +17,6 @@
     "CACHE"             : "${Cache}",
 
     "APP_NAME"          : "${Namespace}",
-    "APP_LOCALES"       : [ "de" ]
+    "APP_LOCALES"       : [ "en" ]
   }
 }
