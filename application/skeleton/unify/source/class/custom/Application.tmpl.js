@@ -32,7 +32,7 @@ qx.Class.define("${Namespace}.Application",
       document.title = "${Name}";
 
       // Create view managers
-      var MasterViewManager = new unify.view.ViewManager;
+      var MasterViewManager = new unify.view.ViewManager("master");
       
       // Register your view classes...
       MasterViewManager.add(${Namespace}.Start);
