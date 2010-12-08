@@ -25,7 +25,7 @@
       {
         var elem = document.createElement("script");
         var source = location.pathname.indexOf("/source/") > 0;
-        var variant = source ? "mobile" : (engine + "-" + (location.search.substring(1) == "debug" ? "on" : "off"));
+        var variant = source ? "source" : (engine + "-" + (location.search.substring(1) == "debug" ? "on" : "off"));
         
         elem.type = "text/javascript";
         elem.src = "script/${Namespace}-" + variant + ".js";
