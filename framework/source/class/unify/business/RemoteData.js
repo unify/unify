@@ -94,7 +94,7 @@ qx.Class.define("unify.business.RemoteData",
     enableProxy :
     {
       check : "Boolean",
-      init : true
+      init : false
     },
 
     /**
@@ -511,11 +511,11 @@ qx.Class.define("unify.business.RemoteData",
             continue;
           }
 
-          url = url.replace("%" + key + "%", params[key]);
+          url = url.replace("{" + key + "}", params[key]);
         }
       }
 
-      if (url.indexOf("%") > 0)
+      if (url.indexOf("{") > 0)
       {
         // FIXME: Don't use templates via % sign because of special characters using the same!
         this.warn("Unresolved params in URL: " + url);

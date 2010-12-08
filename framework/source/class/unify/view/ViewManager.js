@@ -333,7 +333,7 @@ qx.Class.define("unify.view.ViewManager",
       // Find current view object
       var views = this.__views;
       var currentFragment = path[length-1];
-      var currentViewCls = views[currentFragment.view];
+      var currentViewCls = views[currentFragment.view || this.__view.getId()];
       if (qx.core.Variant.isSet("qx.debug", "on"))
       {
         if (!currentViewCls) {
