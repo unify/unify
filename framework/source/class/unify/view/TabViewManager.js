@@ -17,7 +17,6 @@
  */
 qx.Class.define("unify.view.TabViewManager",
 {
-  type : "singleton",
   extend : qx.core.Object,
 
 
@@ -30,6 +29,19 @@ qx.Class.define("unify.view.TabViewManager",
 
   members :
   {
+    getElement : function()
+    {
+      var elem = this.__element;
+      if (!elem)
+      {
+        var elem = this.__element = document.createElement("div");
+        elem.className = "tab-view";
+      }
+
+      return elem;
+    },
+        
+    
     /**
      * Adds a view to the tab bar. The buttons are displayed in the order of
      * execution of this function.
