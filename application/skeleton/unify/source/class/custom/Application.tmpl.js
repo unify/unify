@@ -9,16 +9,16 @@
 
 /* ************************************************************************
 
-#asset(${NamespacePath}/mobile/*)
+#asset(${NamespacePath}/*)
 
 ************************************************************************ */
 
 /**
- * Unify application class for mobile devices.
+ * Unify application class
  */
-qx.Class.define("${Namespace}.application.Mobile", 
+qx.Class.define("${Namespace}.Application", 
 {
-  extend : unify.application.Mobile,
+  extend : unify.Application,
 
   members : 
   {
@@ -31,13 +31,16 @@ qx.Class.define("${Namespace}.application.Mobile",
       // Configure application
       document.title = "${Name}";
 
-      // Register views
-      var ViewManager = unify.view.mobile.ViewManager.getInstance();
-      ViewManager.add(${Namespace}.view.mobile.Start);
-      ViewManager.add(unify.view.mobile.SysInfo);
+      // Create view managers
+      var MasterViewManager = new unify.view.ViewManager;
+      
+      // Register your view classes...
+      MasterViewManager.add(${Namespace}.Start);
+      
+      // Add TabViews or SplitViews...
 
-      // Initialize navigation
-      unify.view.mobile.NavigationManager.getInstance().init();   
+      // Add view manager (or SplitView or TabView) to the root
+      this.add(MasterViewManager);
     }
   }
 });
