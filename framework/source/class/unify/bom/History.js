@@ -34,11 +34,11 @@ qx.Class.define("unify.bom.History",
     // HTML5 hashchange supported by IE>=8, Firefox>=3.6, Webkit (!Safari 4)
     // See also: https://bugs.webkit.org/show_bug.cgi?id=21605
     // https://developer.mozilla.org/en/DOM/window.onhashchange
-    if (qx.bom.Event.supportsEvent(window, "hashchange")) 
+    if (qx.bom.Event.supportsEvent(window, "hashchange"))
     {
       this.debug("Using HTML5 hashchange");
       qx.bom.Event.addNativeListener(window, "hashchange", this.__onCallbackWrapped);
-    } 
+    }
     else
     {
       this.debug("Using interval");
@@ -72,7 +72,7 @@ qx.Class.define("unify.bom.History",
   {
     /**
      * Returns the current location
-     * 
+     *
      * @return {String} Current location without leading "#"
      */
     getLocation : function() {
@@ -122,13 +122,13 @@ qx.Class.define("unify.bom.History",
       INTERNALS
     ---------------------------------------------------------------------------
     */
-    
+
     /** {Timer} Handle for timeout */
     __intervalHandler : null,
 
     /** {Function} Wrapped callback method */
-    __onCallbackWrapped : null,    
-    
+    __onCallbackWrapped : null,
+
     /** {String} Internal storage field for current location */
     __location : "",
 
@@ -142,8 +142,8 @@ qx.Class.define("unify.bom.History",
     {
       var value = decodeURI(location.hash.substring(1));
       var old = this.__location;
-      
-      if (value != old) 
+
+      if (value != old)
       {
         this.__location = value;
         this.fireEvent("change", unify.event.type.History, [value, old]);

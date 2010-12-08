@@ -98,9 +98,9 @@ qx.Class.define("unify.business.RemoteData",
     },
 
     /**
-     * Option for GET request to allow the request to be successful only, if the response 
+     * Option for GET request to allow the request to be successful only, if the response
      * has changed since the last request. This is done by checking the Last-Modified header.
-     */    
+     */
     enableCacheRefresh :
     {
       check : "Boolean",
@@ -554,26 +554,26 @@ qx.Class.define("unify.business.RemoteData",
      * Adds custom request headers to the request
      *
      * @param req {qx.io.HttpRequest} Request object to modify
-     */        
+     */
     __addRequestHeaders : function(req)
     {
       var headers = this.__headers;
-      for (var name in headers) 
+      for (var name in headers)
       {
         req.setRequestHeader(name, headers[name]);
         this.debug(""+name+"-"+headers[name]+"");
       }
     },
-        
+
     /**
      * Sets custom request headers
      *
      * @param name {String} Name of header
      * @param value {String} Value of header
-     */    
+     */
     setRequestHeader : function(name, value)
     {
-      this.__headers[name] = value;              
+      this.__headers[name] = value;
     },
 
 

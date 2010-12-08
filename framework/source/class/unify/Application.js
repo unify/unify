@@ -73,10 +73,10 @@ qx.Class.define("unify.Application",
       PUBLIC API
     ---------------------------------------------------------------------------
     */
-    
+
     /**
      * Adds a view manager to the root element of the application.
-     * 
+     *
      * @param viewManager {Object} Any object with a method "getElement" which returns a DOM element
      */
     add : function(viewManager) {
@@ -148,18 +148,18 @@ qx.Class.define("unify.Application",
   {
     var unifyTouch;
     var unifyPostitionShift;
-    if (unify.bom.client.System.ANDROID) 
+    if (unify.bom.client.System.ANDROID)
     {
       qx.bom.element.Class.add(document.documentElement, "android");
       unifyTouch = "wiggly";
       unifyPostitionShift = "2d";
-    } 
+    }
     else
     {
       unifyTouch = "precise";
       unifyPostitionShift = "3d";
     }
-    
+
     qx.core.Variant.define("unify.touch", ["precise","wiggly"], unifyTouch);
     qx.core.Variant.define("unify.postitionshift", ["3d","2d","position"], unifyPostitionShift);
   }

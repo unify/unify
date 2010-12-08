@@ -28,7 +28,7 @@ qx.Class.define("unify.view.ViewManager",
   construct : function(managerId)
   {
     this.base(arguments);
-    
+
     if (qx.core.Variant.isSet("qx.debug", "on"))
     {
       if (managerId == null) {
@@ -39,7 +39,7 @@ qx.Class.define("unify.view.ViewManager",
     // Store manager ID
     this.__managerId = managerId;
     this.debug("Initializing: " + this.__managerId);
-    
+
     // Create root element of manager (used as parent for view elements)
     var elem = this.__element = document.createElement("div");
     elem.className = "view-manager";
@@ -67,9 +67,9 @@ qx.Class.define("unify.view.ViewManager",
 
   properties :
   {
-    /** 
+    /**
      * Whether switching into views of other view managers means restoring the complete
-     * position there. This basically stores the navigation path before switching and 
+     * position there. This basically stores the navigation path before switching and
      * restores it when switching back to the same view.
      */
     enableDeepSwitch :
@@ -78,16 +78,16 @@ qx.Class.define("unify.view.ViewManager",
       init : false
     }
   },
-  
-  
-  
-  
+
+
+
+
   /*
   *****************************************************************************
      EVENTS
   *****************************************************************************
   */
-    
+
   events :
   {
     /** Fired whenever the view-local path was modified */
@@ -113,63 +113,63 @@ qx.Class.define("unify.view.ViewManager",
 
     /** {String} ID of this manager */
     __managerId : null,
-    
+
     /** {Element} Root element used for all views of this manager */
     __element : null,
-    
+
     /** {unify.view.Path} Path object (covering only manager local path) */
     __path : null,
-    
+
     /** {Boolean} Whether the view manager is correctly initialized */
     __initialized : false,
-    
-    
+
+
     /**
      * Returns the root element of the view manager (this is used as
      * a parent element for all added view instances)
-     * 
+     *
      * @return {Element} DOM element of view manager
      */
     getElement : function() {
       return this.__element;
     },
-    
-    
+
+
     /**
      * Returns the ID of the view manager
-     * 
+     *
      * @return {String} The ID
      */
     getId : function() {
       return this.__managerId;
     },
-    
-    
+
+
     /**
      * Returns the local path of the view manager
-     * 
+     *
      * @return {Map[]} List of dictonaries (with keys view, segment and param)
      */
     getPath : function() {
       return this.__path;
     },
-    
-    
-    
-    
+
+
+
+
     /*
     ---------------------------------------------------------------------------
       INITIALIZATION / RESET
     ---------------------------------------------------------------------------
     */
-        
+
     /**
      * Initializes the manager and selects the default view if no other
      * view was yet set.
      */
-    init : function() 
+    init : function()
     {
-      if (!this.__initialized) 
+      if (!this.__initialized)
       {
         // First set flag to true to omit recursions
         this.__initialized = true;
@@ -180,18 +180,18 @@ qx.Class.define("unify.view.ViewManager",
         }
       }
     },
-    
-    
+
+
     /**
      * Whether the view manager is initialized
-     * 
+     *
      * @return {Boolean} <code>true</code> if initialized
      */
     isInitialized : function() {
       return this.__initialized;
     },
 
-    
+
     /**
      * Resets the view manager to the defaultView if it is not already selected.
      */
@@ -200,7 +200,7 @@ qx.Class.define("unify.view.ViewManager",
       if (!this.__initialized) {
         return;
       }
-      
+
       // Check whether we are already at default view
       var path = this.__path;
       var defaultViewId = this.__defaultViewId;
@@ -210,12 +210,12 @@ qx.Class.define("unify.view.ViewManager",
 
       this.__resetHelper();
     },
-    
-    
+
+
     /**
-     * Internal helper to reset state of view and jump to the 
+     * Internal helper to reset state of view and jump to the
      * default view (with its default segment).
-     * 
+     *
      */
     __resetHelper : function()
     {
@@ -231,7 +231,7 @@ qx.Class.define("unify.view.ViewManager",
       viewObj.resetParam();
       this.__setView(viewObj);
 
-      this.fireEvent("changePath");      
+      this.fireEvent("changePath");
     },
 
 
@@ -267,8 +267,8 @@ qx.Class.define("unify.view.ViewManager",
 
       this.__views[id] = viewClass;
     },
-    
-    
+
+
     /**
      * Returns the view instance stored behind the given ID.
      *
@@ -278,11 +278,11 @@ qx.Class.define("unify.view.ViewManager",
     getView : function(id) {
       return id && this.__views[id] || null;
     },
-    
-    
+
+
     /**
      * Whether the given view ID is controlled by this manager.
-     * 
+     *
      * @param id {String} Identifier of the view.
      * @return {Boolean} <code>true</code> when the view is controlled by this manager.
      */
@@ -299,11 +299,11 @@ qx.Class.define("unify.view.ViewManager",
     getDefaultViewId : function() {
       return this.__defaultViewId;
     },
-    
-    
+
+
     /**
      * Navigates to the given path
-     * 
+     *
      * @param path {unify.view.Path} Path object
      */
     navigate : function(path)
@@ -314,7 +314,7 @@ qx.Class.define("unify.view.ViewManager",
           throw new Error("Invalid path to navigate() to: " + path);
         }
       }
-      
+
       var length = path.length;
       var oldPath = this.__path;
       var oldLength = oldPath ? oldPath.length : 0;
@@ -329,7 +329,7 @@ qx.Class.define("unify.view.ViewManager",
           layerTransition = "out";
         }
       }
-      
+
       // Find current view object
       var views = this.__views;
       var currentFragment = path[length-1];
@@ -342,7 +342,7 @@ qx.Class.define("unify.view.ViewManager",
       }
       var currentViewObj = currentViewCls.getInstance();
 
-      // Verify that parent is correctly configured 
+      // Verify that parent is correctly configured
       // This is required for correct back titles and smooth back animation
       var parentFragment = path[length-2];
       if (parentFragment)
@@ -353,7 +353,7 @@ qx.Class.define("unify.view.ViewManager",
         } else if (parentViewCls === currentViewCls) {
           throw new Error("Parent view class could not be identical to current view class!");
         }
-                
+
         var parentViewObj = parentViewCls.getInstance();
         parentViewObj.setSegment(parentFragment.segment);
         parentViewObj.setParam(parentFragment.param);
@@ -364,16 +364,16 @@ qx.Class.define("unify.view.ViewManager",
       currentViewObj.setSegment(currentFragment.segment);
       currentViewObj.setParam(currentFragment.param);
       this.__setView(currentViewObj, layerTransition);
-      
+
       // Save path
       this.__path = path;
       this.fireEvent("changePath");
-    },    
-    
-    
-    
-    
-    
+    },
+
+
+
+
+
     /*
     ---------------------------------------------------------------------------
       NAVIGATION RELATED EVENT HANDLERS
@@ -388,7 +388,7 @@ qx.Class.define("unify.view.ViewManager",
 
     /**
      * Prevents clicks from executing native behavior
-     * 
+     *
      * @param e {qx.event.type.Mouse} Mouse event object
      */
     __onClick : function(e)
@@ -412,10 +412,10 @@ qx.Class.define("unify.view.ViewManager",
       {
         // Stop further event processing
         e.stopPropagation();
-        
+
         // Support executing public function on currently selected view
         var exec = elem.getAttribute("exec");
-        if (exec) 
+        if (exec)
         {
           this.__view[exec]();
         }
@@ -426,7 +426,7 @@ qx.Class.define("unify.view.ViewManager",
           if (href != null && href != "" && href.charAt(0) != "#") {
             window.open(href);
           }
-          
+
           // Lazily navigate (omits navigation during activity)
           else if (!this.__navigates)
           {
@@ -436,8 +436,8 @@ qx.Class.define("unify.view.ViewManager",
         }
       }
     },
-    
-    
+
+
     /**
      * Used for lazy execution of tap event
      *
@@ -447,11 +447,11 @@ qx.Class.define("unify.view.ViewManager",
     {
       // Reset event blocking flag
       this.__navigates = false;
-            
+
       // Read element's attributes
       var href = elem.getAttribute("href");
       var dest = href ? href.substring(1) : elem.getAttribute("goto");
-      
+
       // Valid Paths (leading with a "#" in href attributes):
       // localView.segment:param (in transition)
       // otherView.segment:param (globally known view => delegate to navigation)
@@ -464,11 +464,11 @@ qx.Class.define("unify.view.ViewManager",
       if (rel == "up") {
         return this.navigate(this.__path.slice(0, -1));
       }
-      
+
       if (dest == null) {
         throw new Error("Invalid destination: " + dest);
       }
-    
+
       if (rel == "param") {
         dest = ":" + dest;
       } else if (rel == "segment") {
@@ -495,7 +495,7 @@ qx.Class.define("unify.view.ViewManager",
         } else {
           clone.push(config);
         }
-        
+
         // Finally do the navigate
         this.navigate(clone);
       }
@@ -509,7 +509,7 @@ qx.Class.define("unify.view.ViewManager",
       PRESSED STYLE EVENT HANDLERS
     ---------------------------------------------------------------------------
     */
-    
+
     /**
      * Executed on every touch hold event
      *
@@ -545,7 +545,7 @@ qx.Class.define("unify.view.ViewManager",
       LAYER LOGIC / ANIMATION
     ---------------------------------------------------------------------------
     */
-    
+
     /** {unify.view.StaticView} Current view */
     __view : null,
 
@@ -554,14 +554,14 @@ qx.Class.define("unify.view.ViewManager",
      */
     __positions : qx.core.Variant.select("unify.postitionshift",
     {
-      "3d" : 
+      "3d" :
       {
         bottom : "translate3d(0,100%,0)",
         right : "translate3d(100%,0,0)",
         left : "translate3d(-100%,0,0)",
         center : "translate3d(0,0,0)"
       },
-      
+
       "2d" :
       {
         bottom : "translate(0,100%)",
@@ -570,11 +570,11 @@ qx.Class.define("unify.view.ViewManager",
         center : "translate(0,0)"
       }
     }),
-    
-    
+
+
     /**
      * Internal setter method for view switching
-     * 
+     *
      * @param view {unify.view.StaticView} View instance to switch to
      * @param transition {String?null} Transition name
      */
@@ -588,7 +588,7 @@ qx.Class.define("unify.view.ViewManager",
       if (oldView) {
         oldView.resetActive();
       }
-      
+
       // Store current view
       this.__view = view;
 
@@ -598,15 +598,15 @@ qx.Class.define("unify.view.ViewManager",
       // Cache element/view references
       var currentViewElement = view && view.getElement();
       var oldViewElement = oldView && oldView.getElement();
-      
+
       // Insert target layer into DOM
       if (currentViewElement.parentNode != this.__element) {
         this.__element.appendChild(currentViewElement);
       }
-      
+
       // Transition specific layer switch
       var positions = this.__positions;
-      
+
       if (transition == "in")
       {
         if (view.isModal())
@@ -651,8 +651,8 @@ qx.Class.define("unify.view.ViewManager",
         view.fireEvent("appear");
       }
     },
-    
-    
+
+
     /**
      * Animates a layer property
      *
@@ -678,7 +678,7 @@ qx.Class.define("unify.view.ViewManager",
 
         // Remove listener
         qx.event.Registration.removeListener(target, "transitionEnd", cleanup, this);
-        
+
         // Hide the other layer when this is the current one
         // Otherwise hide this layer when not the current one
         if (current && other)
@@ -690,7 +690,7 @@ qx.Class.define("unify.view.ViewManager",
         else if (!current)
         {
           qx.bom.element2.Class.remove(target, "current");
-        }        
+        }
 
         // Revert modifications
         targetStyle.zIndex = "";

@@ -45,8 +45,8 @@ qx.Class.define("unify.view.SysInfo",
     getDefaultSegment : function() {
       return "basics";
     },
-    
-    
+
+
     // overridden
     isFullScreen : function() {
       return true;

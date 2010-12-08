@@ -37,11 +37,11 @@ qx.Class.define("unify.view.Navigation",
   construct : function()
   {
     this.base(arguments);
-    
+
     // App ID is used e.g. for storage of navigation
     var app = qx.core.Setting.get("qx.application");
     this.__appId = app.substring(0, app.indexOf("."));
-    
+
     // Initialize storage
     this.__viewManagers = {};
   },
@@ -59,43 +59,43 @@ qx.Class.define("unify.view.Navigation",
   {
     /** {String} Unique name of the application */
     __appId : null,
-    
-    
-    
+
+
+
     /*
     ---------------------------------------------------------------------------
       VIEW MANAGER MANAGMENT
     ---------------------------------------------------------------------------
     */
-    
-    /** 
+
+    /**
      * {Map} Maps ID of viewManager to the viewManager instance. IDs must be unique
      * in each navigation object.
      */
     __viewManagers : null,
-        
+
     /**
      * Adds a view manager to the global navigation. All views
      * of this view manager will be globally accessible by their name.
-     * 
+     *
      * @param viewManager {unify.view.ViewManager} View manager instance
      */
     add : function(viewManager)
     {
       var managerId = viewManager.getId();
-      
+
       if (qx.core.Variant.isSet("qx.debug", "on"))
       {
         if (this.__viewManagers[managerId]) {
           throw new Error("ViewManager ID is already used: " + managerId);
         }
       }
-      
+
       this.__viewManagers[managerId] = viewManager;
       viewManager.addListener("changePath", this.__onSubPathChange, this);
     },
-    
-    
+
+
     /**
      * Initialized previous state from history or client-side storage.
      *
@@ -117,18 +117,18 @@ qx.Class.define("unify.view.Navigation",
       this.__historyInit = true;
       History.init(path);
       delete this.__historyInit;
-      
+
       // Be sure that every view manager which is part of the navigation is correctly initialized
       var managers = this.__viewManagers;
       for (var id in managers) {
         managers[id].init();
       }
     },
-    
-    
+
+
     /**
      * Returns the view manager which controls the given view
-     * 
+     *
      * @param viewId {String} ID of view
      * @return {unify.view.ViewManager} Instance of view manager
      */
@@ -136,14 +136,14 @@ qx.Class.define("unify.view.Navigation",
     {
       var managers = this.__viewManagers;
       var manager;
-      for (var id in managers) 
+      for (var id in managers)
       {
         manager = managers[id];
         if (manager.hasView(viewId)) {
           return manager;
         }
       }
-      
+
       return null;
     },
 
@@ -155,35 +155,35 @@ qx.Class.define("unify.view.Navigation",
       PATH MANAGMENT
     ---------------------------------------------------------------------------
     */
-    
+
     /** {unify.view.Path} Path object which stores the complete application path */
     __path : null,
-    
+
     /**
      * Navigates to the given path. Automatically distributes sub paths
      * to the responsible view managers.
-     * 
+     *
      * @param path {unify.view.Path} Path object
      */
     navigate : function(path)
     {
       if (qx.core.Variant.isSet("qx.debug", "on"))
-      {      
+      {
         if (!(path instanceof unify.view.Path)) {
           throw new Error("Invalid path to navigate() to: " + path);
         }
       }
-      
+
       var usedManagers = {};
       var lastManagerId = null;
       var managers = this.__viewManagers;
       var managerPath = new unify.view.Path;
-      
+
       for (var i=0, l=path.length; i<l; i++)
       {
         var fragment = path[i];
-        
-        for (var managerId in managers) 
+
+        for (var managerId in managers)
         {
           var viewManager = managers[managerId];
           var viewObj = viewManager.getView(fragment.view);
@@ -191,7 +191,7 @@ qx.Class.define("unify.view.Navigation",
             break;
           }
         }
-        
+
         if (qx.core.Variant.isSet("qx.debug", "on"))
         {
           if (!viewObj) {
@@ -202,7 +202,7 @@ qx.Class.define("unify.view.Navigation",
         if (!lastManagerId) {
           lastManagerId = managerId;
         }
-        
+
         if (managerId == lastManagerId)
         {
           managerPath.push(fragment);
@@ -215,7 +215,7 @@ qx.Class.define("unify.view.Navigation",
               throw new Error("View manager was re-used in two different path. Invalid segment!");
             }
           }
-          
+
           // Update last manager
           managers[lastManagerId].navigate(managerPath);
 
@@ -224,20 +224,20 @@ qx.Class.define("unify.view.Navigation",
 
           // Remember all used managers (for validity analysis)
           usedManagers[managerId] = true;
-          
+
           // Rotate variable
           lastManagerId = managerId;
         }
       }
-      
+
       // Process with last one
       viewManager.navigate(managerPath);
     },
-    
-    
+
+
     /**
      * Reacts on (local) path changes of all registered view managers
-     * 
+     *
      * @param e {qx.event.type.Event} Event object
      */
     __onSubPathChange : function(e)
@@ -246,11 +246,11 @@ qx.Class.define("unify.view.Navigation",
       if (this.__historyInit) {
         return;
       }
-      
+
       var changed = e.getTarget();
       var reset = false;
       var path = this.__path = new unify.view.Path;
-      
+
       var viewManagers = this.__viewManagers;
       for (var id in viewManagers)
       {
@@ -258,7 +258,7 @@ qx.Class.define("unify.view.Navigation",
         if (reset) {
           manager.reset();
         }
-        
+
         var localPath = manager.getPath();
         if (localPath != null)
         {
@@ -266,16 +266,16 @@ qx.Class.define("unify.view.Navigation",
             path.push(localPath[i])
           }
         }
-        
+
         // Reset all managers after the changed one
         if (manager == changed) {
           reset = true;
         }
       }
-      
+
       var joined = this.__serializedPath = path.serialize();
       unify.bom.History.getInstance().setLocation(joined);
-      
+
       if (window.localStorage) {
         localStorage[this.__appId + "/navigationpath"] = joined;
       }

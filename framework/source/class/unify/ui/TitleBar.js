@@ -34,7 +34,7 @@ qx.Class.define("unify.ui.TitleBar",
     // Finally listen for any changes occour after creation of the titlebar
     view.addListener("changeTitle", this.__onViewChangeTitle, this);
     view.addListener("changeParent", this.__onViewChangeParent, this);
-    
+
     this.__onViewChangeParent();
   },
 
@@ -71,11 +71,11 @@ qx.Class.define("unify.ui.TitleBar",
     {
       var parentView = this.getView().getParent();
       var upElem = this.query("[rel=up]");
-      
+
       if (parentView)
       {
         var upTitle = parentView.getTitle("up");
-        
+
         if (this.__lastUpTitle != upTitle)
         {
           if (upElem)
@@ -106,7 +106,7 @@ qx.Class.define("unify.ui.TitleBar",
         }
 
         this.__lastUpTitle = null;
-      }      
+      }
     },
 
 
@@ -136,6 +136,6 @@ qx.Class.define("unify.ui.TitleBar",
   {
     var view = this.__view
     view.removeListener("changeTitle", this.__onViewChangeTitle, this);
-    view.removeListener("changeParent", this.__onViewChangeParent, this);    
+    view.removeListener("changeParent", this.__onViewChangeParent, this);
   }
 });

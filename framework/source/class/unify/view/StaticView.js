@@ -73,7 +73,7 @@ qx.Class.define("unify.view.StaticView",
       apply : "_applyParent",
       event : "changeParent"
     },
-    
+
     /** Whether the view is active */
     active :
     {
@@ -120,17 +120,17 @@ qx.Class.define("unify.view.StaticView",
 
     /** {unify.ui.Layer} Stores the layer instance of the view. */
     __layer : null,
-    
-    
+
+
     /**
      * Returns the ID of the view. This ID is constructed by its classname
-     * 
+     *
      * @return {String} View ID
      */
     getId : function() {
       return qx.lang.String.hyphenate(this.constructor.basename).substring(1);
     },
-    
+
 
     /**
      * Parametrized views may have a default parameter which is
@@ -153,11 +153,11 @@ qx.Class.define("unify.view.StaticView",
     getLayer : function() {
       return this.__layer || this.create();
     },
-    
-    
+
+
     /**
      * Returns the DOM element of this view.
-     * 
+     *
      * @return {Element} DOM element of the view (root element)
      */
     getElement : function() {
@@ -260,8 +260,8 @@ qx.Class.define("unify.view.StaticView",
         this._pauseView();
       }
     },
-    
-    
+
+
     // property apply
     _applyParent : function(value, old)
     {

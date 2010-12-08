@@ -86,18 +86,18 @@ qx.Class.define("unify.view.RemoteView",
       INTERNALS
     ---------------------------------------------------------------------------
     */
-    
-    
+
+
     /**
      * Whether the view has all required parameters to send a request to
      * the server.
-     * 
+     *
      * @return {Boolean} Whether the view has all required request data
      */
     _hasServiceRequestParams : function() {
       return true;
     },
-    
+
 
     /**
      * Applies updates to the view
@@ -120,7 +120,7 @@ qx.Class.define("unify.view.RemoteView",
       var business = this._getBusinessObject();
       var service = this._getServiceName();
       var params = this._getServiceParams();
-      
+
       var renderVariant = this._getRenderVariant();
       if (renderVariant !== this.__appliedVariant)
       {
