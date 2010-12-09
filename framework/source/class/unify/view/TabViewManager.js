@@ -43,13 +43,18 @@ qx.Class.define("unify.view.TabViewManager",
 
   members :
   {
+    /** {unify.view.ViewManager} Instance of attached view manager */
     __viewManager : null,
     __element : null,
     __bar : null,
     __pane : null,
     
     
-    
+    /**
+     * Returns the tab view element
+     * 
+     * @return {Element} Root DOM element of tab view
+     */
     getElement : function()
     {
       var elem = this.__element;
@@ -64,6 +69,7 @@ qx.Class.define("unify.view.TabViewManager",
         var bar = this.__bar = document.createElement("div");
         bar.className = "tab-bar";
         elem.appendChild(bar);
+        qx.event.Registration.addListener(bar, "tap", this.__onTap, this);
       }
 
       return elem;
@@ -87,6 +93,23 @@ qx.Class.define("unify.view.TabViewManager",
       elem.innerHTML = "<div class='tab-bar-element-image'></div>" + viewInstance.getTitle("tab-bar");
 
       this.__bar.appendChild(elem);
+    },
+    
+    
+    /**
+     * Reacts on tabbing on the tabbar buttons.
+     * 
+     * @param e {unify.event.type.Touch} Touch event
+     */
+    __onTap : function(e) 
+    {
+      var elem = qx.dom.Hierarchy.closest(e.getTarget(), "div[goto]");
+      if (elem)
+      {
+        var dest = elem.getAttribute("goto");
+        var config = unify.view.Path.parseFragment(dest);
+        this.__viewManager.navigate(new unify.view.Path(config));
+      }
     }
   }
 });
