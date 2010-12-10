@@ -23,18 +23,25 @@ qx.Class.define("feedreader.view.Answers",
     },
     
     
+    // overridden
     _getBusinessObject : function() {
       return feedreader.business.Answers.getInstance();
     },
     
+
+    // overridden
     _getServiceName : function() {
       return "answers";
     },
     
+
+    // overridden
     _errorHandler : function(kind) {
-      alert("Error: " + kind);
+      this.error("Error: " + kind);
     },
     
+
+    // overridden
     _getServiceParams : function() 
     {
       var field = document.getElementById("answersSearch");
@@ -48,24 +55,13 @@ qx.Class.define("feedreader.view.Answers",
     },
     
     
+    // overridden
     _hasServiceRequestParams : function()
     {
       var field = document.getElementById("answersSearch");
       return field && field.value.length > 0;
     },
     
-    
-    _renderData : function(data)
-    {
-      var questions = data.query.results.Question;
-      var entries = questions.map(function(entry) {
-        return "<li>" + entry.Subject + " (" + entry.NumAnswers + " answers)</li>"; 
-      });
-      document.getElementById("answerResults").innerHTML = "<ul>" + entries + "</ul>";
-      
-    },
-    
-
     
     // overridden
     _createView : function() 
@@ -79,6 +75,25 @@ qx.Class.define("feedreader.view.Answers",
       layer.add(content);
 
       return layer;
-    }
+    },
+    
+    
+    // overridden
+    _renderData : function(data)
+    {
+      var results = data.query.results;
+      if (results) 
+      {
+        var entries = results.Question.map(function(entry) {
+          return "<li>" + entry.Subject + " (" + entry.NumAnswers + " answers)</li>"; 
+        }).join("");
+      }
+      else
+      {
+        var entries = "<li>No results</li>";
+      }
+      
+      document.getElementById("answerResults").innerHTML = "<ul>" + entries + "</ul>";
+    }    
   }
 });
