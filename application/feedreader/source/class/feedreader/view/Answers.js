@@ -19,7 +19,7 @@ qx.Class.define("feedreader.view.Answers",
   {
     // overridden
     getTitle : function(type, param) {
-      return "Answers";
+      return "Translate";
     },
     
     
@@ -31,7 +31,7 @@ qx.Class.define("feedreader.view.Answers",
 
     // overridden
     _getServiceName : function() {
-      return "answers";
+      return "translate";
     },
     
 
@@ -44,13 +44,14 @@ qx.Class.define("feedreader.view.Answers",
     // overridden
     _getServiceParams : function() 
     {
-      var field = document.getElementById("answersSearch");
+      var field = document.getElementById("translateText");
       if (!field) {
         return;
       }
       
       return {
-        query : "'" + field.value + "'"
+        text : field.value,
+        lang : "de"
       };
     },
     
@@ -58,7 +59,7 @@ qx.Class.define("feedreader.view.Answers",
     // overridden
     _hasServiceRequestParams : function()
     {
-      var field = document.getElementById("answersSearch");
+      var field = document.getElementById("translateText");
       return field && field.value.length > 0;
     },
     
@@ -71,7 +72,7 @@ qx.Class.define("feedreader.view.Answers",
       layer.add(titlebar);
       
       var content = new unify.ui.Content;
-      content.add("<div class='searchPane'><input type='text' id='answersSearch'/><div class='button' exec='refresh'>Refresh</div></div> <div id='answerResults'></div>");
+      content.add("<div class='searchPane'><input type='text' id='translateText'/><div class='button' exec='refresh'>Translate</div></div><div id='translated'></div>");
       layer.add(content);
 
       return layer;
@@ -84,16 +85,14 @@ qx.Class.define("feedreader.view.Answers",
       var results = data.query.results;
       if (results) 
       {
-        var entries = results.Question.map(function(entry) {
-          return "<li>" + entry.Subject + " (" + entry.NumAnswers + " answers)</li>"; 
-        }).join("");
+        var translation = results.translatedText;
       }
       else
       {
-        var entries = "<li>No results</li>";
+        var translation = "<em>No results</em>";
       }
       
-      document.getElementById("answerResults").innerHTML = "<ul>" + entries + "</ul>";
+      document.getElementById("translated").innerHTML = "<p>" + translation + "</p>";
     }    
   }
 });
