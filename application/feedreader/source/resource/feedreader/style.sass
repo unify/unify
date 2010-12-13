@@ -16,26 +16,47 @@
     +navigation-list
 
 
-#answers
+#translate
+  +vbox
+  
   .content
-    .searchPane
-      background: #eee
-      border-bottom: 1px solid black
-      padding: 20px
-      
-      .button
-        +content-button
-      
-      input
-        display: block
-        margin: 8px
-        font-size: 24px
+    +vbox
+    +box-flex(1)
+    padding: 0 10px
+    
+    .button
+      +content-button
+    
+    textarea
+      display: block
+      font-size: 20px
+      width: 100%
+      padding: 10px
+      margin: 8px 0
+      +box-flex(1)
+        
+    #inputText
+      font-size: 20px
+      padding: 10px
+      +border-radius(4px)
+      border: 1px solid #888
+      +box-flex(1)
+      margin: 8px 0
+      background-color: #e8e8e8
+            
+    #resultText
+      font-size: 20px
+      padding: 10px
+      +border-radius(4px)
+      border: 1px solid #888
+      margin: 8px 0
+      background-color: #e8e8e8
 
 
 .tab-view
   [goto=start]
     +tab-bar-button-icon("icons-32/111-user.png")
 
-  [goto=answers]
+  [goto=translate]
     +tab-bar-button-icon("icons-32/09-chat2.png")
     

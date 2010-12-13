@@ -10,7 +10,7 @@
 /**
  * Answers View
  */
-qx.Class.define("feedreader.view.Answers", 
+qx.Class.define("feedreader.view.Translate", 
 {
   extend : unify.view.RemoteView,
   type : "singleton",
@@ -25,7 +25,7 @@ qx.Class.define("feedreader.view.Answers",
     
     // overridden
     _getBusinessObject : function() {
-      return feedreader.business.Answers.getInstance();
+      return feedreader.business.Yql.getInstance();
     },
     
 
@@ -44,14 +44,15 @@ qx.Class.define("feedreader.view.Answers",
     // overridden
     _getServiceParams : function() 
     {
-      var field = document.getElementById("translateText");
+      var field = document.getElementById("inputText");
       if (!field) {
         return;
       }
       
       return {
         text : field.value,
-        lang : "de"
+        source : "de",
+        target : "en"
       };
     },
     
@@ -59,7 +60,7 @@ qx.Class.define("feedreader.view.Answers",
     // overridden
     _hasServiceRequestParams : function()
     {
-      var field = document.getElementById("translateText");
+      var field = document.getElementById("inputText");
       return field && field.value.length > 0;
     },
     
@@ -72,7 +73,7 @@ qx.Class.define("feedreader.view.Answers",
       layer.add(titlebar);
       
       var content = new unify.ui.Content;
-      content.add("<div class='searchPane'><input type='text' id='translateText'/><div class='button' exec='refresh'>Translate</div></div><div id='translated'></div>");
+      content.add("<textarea rows='3' cols='60' id='inputText'/><div class='button' exec='refresh'>Translate</div><textarea rows='3' cols='60' id='resultText'/>");
       layer.add(content);
 
       return layer;
@@ -83,16 +84,9 @@ qx.Class.define("feedreader.view.Answers",
     _renderData : function(data)
     {
       var results = data.query.results;
-      if (results) 
-      {
-        var translation = results.translatedText;
-      }
-      else
-      {
-        var translation = "<em>No results</em>";
-      }
+      var translation = results ? results.translatedText : "";
       
-      document.getElementById("translated").innerHTML = "<p>" + translation + "</p>";
+      document.getElementById("resultText").value = translation;
     }    
   }
 });
