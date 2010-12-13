@@ -29,21 +29,20 @@ qx.Class.define("feedreader.Application",
       this.base(arguments);
 
       // Configure application
-      document.title = "feedreader";
+      document.title = "Web Tool";
 
       // Master view
       var MasterViewManager = new unify.view.ViewManager("master");
       MasterViewManager.add(feedreader.view.Start, true);
       MasterViewManager.add(feedreader.view.Translate);
-      
+      MasterViewManager.add(feedreader.view.Search);
       
       // Configure tab view
       var TabView = new unify.view.TabViewManager(MasterViewManager);
       TabView.add(feedreader.view.Start);
       TabView.add(feedreader.view.Translate);
+      TabView.add(feedreader.view.Search);
       this.add(TabView);
-      
-
       
       // Add at least one view manager to the navigation managment
       var Navigation = unify.view.Navigation.getInstance();

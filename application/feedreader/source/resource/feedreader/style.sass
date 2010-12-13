@@ -51,6 +51,42 @@
       border: 1px solid #888
       margin: 8px 0
       background-color: #e8e8e8
+      
+      
+#search
+  +vbox
+  
+  .content
+    +vbox
+    +box-flex(1)
+    
+    input
+      display: block
+      font-size: 20px
+      width: 100%
+      padding: 16px
+      border: 0 none
+      
+    .button
+      +content-button
+      
+    ul
+      width: 100%
+      
+      li
+        padding: 8px 12px
+        border-top: 1px solid #e6e6e6
+        border-bottom: 1px solid #f1f1f1
+        +linear-gradient(color-stops(#ececec, #e6e6e6))
+        white-space: nowrap
+        text-overflow: ellipsis
+        overflow: hidden
+        width: 100%
+        
+        a
+          text-decoration: none
+          font-size: 17px
+    
 
 
 .tab-view
@@ -59,4 +95,7 @@
 
   [goto=translate]
     +tab-bar-button-icon("icons-32/09-chat2.png")
+    
+  [goto=search]
+    +tab-bar-button-icon("icons-32/06-magnifying-glass.png")
     
