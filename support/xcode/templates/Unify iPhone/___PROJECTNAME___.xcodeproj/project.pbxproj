@@ -360,13 +360,13 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-Obj-C",
 				);
 				PREBINDING = NO;
-				SDKROOT = iphoneos4.1;
+				SDKROOT = iphoneos4.2;
 				USER_HEADER_SEARCH_PATHS = "$(WORKSPACE)/phonegap-iphone/PhoneGapLib/Classes";
 			};
 			name = Debug;
@@ -379,13 +379,13 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-Obj-C",
 				);
 				PREBINDING = NO;
-				SDKROOT = iphoneos4.1;
+				SDKROOT = iphoneos4.2;
 				USER_HEADER_SEARCH_PATHS = "$(WORKSPACE)/phonegap-iphone/PhoneGapLib/Classes";
 			};
 			name = Release;
