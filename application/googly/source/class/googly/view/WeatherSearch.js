@@ -93,10 +93,11 @@ qx.Class.define("googly.view.WeatherSearch",
       if (results)
       {
         document.getElementById("citySearchFeedback").innerHTML = "Redirecting...";
+        
+        var self = this;
         window.setTimeout(function() {
-          var path = unify.view.Path.fromString("weather");
-          unify.view.Navigation.getInstance().navigate(path);
-        }, 100);
+          self.close();
+        }, 500);
       }
       else
       {

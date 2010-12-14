@@ -64,21 +64,16 @@ qx.Class.define("googly.view.Weather",
       var segmented = new unify.ui.Segmented(this);
       segmented.add({segment:"current", label:"Currently"});
       segmented.add({segment:"forecast", label:"Forecast"});
-      segmented.add({segment:"info", label:"Info"});
       
       var toolbar = new unify.ui.ToolBar(this);
       toolbar.add({jump:"weather-search", label:"Search", target:"right"});
       toolbar.add(segmented);
       layer.add(toolbar);
       
-      var content = new unify.ui.Content;
-      content.add("<div id='weatherDisplay'></div>");
-      layer.add(content);
+      var weatherDisplay = this.__weatherDisplay = document.createElement("div");
+      weatherDisplay.className = "content";
+      layer.add(weatherDisplay);
 
-      var infobar = new unify.ui.ToolBar(this);
-      infobar.add({label : "Selected City"});
-      layer.add(infobar);
-      
       return layer;
     },
     
@@ -96,29 +91,25 @@ qx.Class.define("googly.view.Weather",
       else
       {
         var results = data.query.results.xml_api_reply.weather;
-        
-        console.debug("Results", results);
-        
         var info = results.forecast_information;
         var currently = results.current_conditions;
         var forecast = results.forecast_conditions;
         
         var markup = "";
 
-        //document.getElementById("cityDisplay").innerHTML = info.city.data;
+        markup += "<h3>" + info.city.data + "</h3>";
         
         var segment = this.getSegment();
         if (segment == "current")
         {
+          markup += "<div class='cell'>";
+          markup += "<h4>Now</h4>"
           markup += "<img src='http://www.google.com" + currently.icon.data + "'/>";
           markup += "<p><strong>Condition</strong>: " + currently.condition.data + "</p>";
           markup += "<p><strong>Humidity</strong>: " + currently.humidity.data + "</p>";
           markup += "<p><strong>Temp</strong>: " + currently.temp_c.data + "</p>";
-        }
-        else if (segment == "info")
-        {
-          markup += "<p><strong>Currently Date</strong>: " + info.current_date_time.data + "</p>";
-          markup += "<p><strong>Forecast Date</strong>: " + info.forecast_date.data + "</p>";
+          markup += "</div>";
+          markup += "<p>Updated: " + info.current_date_time.data + "</p>";
         }
         else
         {
@@ -132,10 +123,10 @@ qx.Class.define("googly.view.Weather",
             markup += "<p><strong>Temp</strong>: " + entry.low.data + " - " + entry.high.data + "</p>";
             markup += "</div>";
           }
+          markup += "<p>Updated: " + info.forecast_date.data + "</p>";
         }
         
-        var display = document.getElementById("weatherDisplay");
-        display.innerHTML = markup;
+        this.__weatherDisplay.innerHTML = markup;
       }
     }
   }
