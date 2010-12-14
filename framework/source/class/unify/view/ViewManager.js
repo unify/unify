@@ -203,6 +203,7 @@ qx.Class.define("unify.view.ViewManager",
       }
       
       var viewObj = this.__views[defaultViewId].getInstance();
+      viewObj.setManager(this);
       this.__path = new unify.view.Path({
         view : defaultViewId,
         segment : viewObj.getDefaultSegment(),
@@ -321,6 +322,7 @@ qx.Class.define("unify.view.ViewManager",
       }
       
       var currentViewObj = currentViewCls.getInstance();
+      currentViewObj.setManager(this);
 
       // Automatically fill segment if its empty
       // - 1. via currently selected segment
@@ -354,6 +356,7 @@ qx.Class.define("unify.view.ViewManager",
         }
 
         var parentViewObj = parentViewCls.getInstance();
+        parentViewObj.setManager(this);
         parentViewObj.setSegment(parentFragment.segment);
         parentViewObj.setParam(parentFragment.param);
         currentViewObj.setParent(parentViewObj);
@@ -447,6 +450,12 @@ qx.Class.define("unify.view.ViewManager",
       // Reset event blocking flag
       this.__navigates = false;
 
+      // Check up-navigation request first
+      var rel = elem.getAttribute("rel");
+      if (rel == "up") {
+        return this.navigate(this.__path.slice(0, -1));
+      }
+
       // Read element's attributes
       var href = elem.getAttribute("href");
       var dest = href ? href.substring(1) : elem.getAttribute("goto");
@@ -460,11 +469,6 @@ qx.Class.define("unify.view.ViewManager",
       // .segment:param (switch segment and param, no transition)
       // .segment (switch segment, no transition)
       // :param (switch param, no transition)
-
-      var rel = elem.getAttribute("rel");
-      if (rel == "up") {
-        return this.navigate(this.__path.slice(0, -1));
-      }
 
       if (qx.core.Variant.isSet("qx.debug", "on"))
       {
@@ -484,11 +488,12 @@ qx.Class.define("unify.view.ViewManager",
         // Read current path and make non-deep copy of path
         var path = this.__path;
         var clone = path.concat();
+        var cloneLast = clone.length-1;
         
         // Select right modification point
         if (rel == "parent") 
         {
-          clone[clone.length-1] = config;
+          clone[cloneLast] = config;
         } 
         else if (config.view) 
         {
@@ -497,11 +502,11 @@ qx.Class.define("unify.view.ViewManager",
         else 
         {
           if (config.segment) {
-            clone[clone.length-1].segment = config.segment;
+            clone[cloneLast].segment = config.segment;
           }
 
           if (config.param) {
-            clone[clone.length-1].param = config.param;
+            clone[cloneLast].param = config.param;
           }
         }
 

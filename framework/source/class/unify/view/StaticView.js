@@ -65,6 +65,13 @@ qx.Class.define("unify.view.StaticView",
 
   properties :
   {
+    /** Attached view manager instance */
+    manager : 
+    {
+      check : "unify.view.ViewManager",
+      nullable : true
+    },
+    
     /** The parent of the view. This is normally managed automatically by the ViewManager */
     parent :
     {
