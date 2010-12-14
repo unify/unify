@@ -111,10 +111,10 @@ qx.Class.define("unify.ui.Segmented",
     _applySelected : function(value, old)
     {
       var Class = qx.bom.element2.Class;
-
+      
       if (old)
       {
-        var oldElem = this.query("[goto=" + old + "]");
+        var oldElem = this.query("[goto=." + old + "]");
         if (oldElem) {
           Class.remove(oldElem, "selected");
         }
@@ -122,7 +122,7 @@ qx.Class.define("unify.ui.Segmented",
 
       if (value)
       {
-        var newElem = this.query("[goto=" + value + "]");
+        var newElem = this.query("[goto=." + value + "]");
         if (newElem) {
           Class.add(newElem, "selected");
         }
