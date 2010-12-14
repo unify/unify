@@ -158,8 +158,8 @@ qx.Class.define("unify.ui.Segmented",
       var elem = this.getElement();
 
       var buttonElem = document.createElement("div");
-      buttonElem.setAttribute("goto", config.segment);
-      buttonElem.setAttribute("rel", "segment");
+      buttonElem.setAttribute("goto", "." + config.segment);
+      //buttonElem.setAttribute("rel", "segment");
 
       if (config.label) {
         buttonElem.innerHTML = config.label;

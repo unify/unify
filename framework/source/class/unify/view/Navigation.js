@@ -8,19 +8,8 @@
 
 *********************************************************************************************** */
 
-/* ************************************************************************
-
-#require(unify.event.handler.Android)
-
-************************************************************************ */
-
 /**
  * Manager for navigation of typical iPhone-like applications.
- *
- * * Integrates with browser's history managment
- * * Structures the location using "/" as divider for views and ":" for separating parameters.
- * * Supports multiple ways of controlling the location.
- * * Support for TabView like navigation with deep inner navigation
  */
 qx.Class.define("unify.view.Navigation",
 {
