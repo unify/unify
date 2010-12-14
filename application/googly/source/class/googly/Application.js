@@ -29,7 +29,7 @@ qx.Class.define("googly.Application",
       this.base(arguments);
 
       // Configure application
-      document.title = "Web Tool";
+      document.title = "Googly";
 
       // Master view
       var MasterViewManager = new unify.view.ViewManager("master");

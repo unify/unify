@@ -18,7 +18,7 @@ qx.Class.define("googly.view.Start", {
   {
     // overridden
     getTitle : function(type, param) {
-      return "Start";
+      return "Googly";
     },
 
     
@@ -30,7 +30,7 @@ qx.Class.define("googly.view.Start", {
       layer.add(titlebar);
       
       var content = new unify.ui.Content;
-      content.add("Hello World");
+      content.add("Welcome to Googly - The Ultimate Google Experience");
       layer.add(content);
 
       return layer;
