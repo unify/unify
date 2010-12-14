@@ -9,11 +9,7 @@
 *********************************************************************************************** */
 
 /**
- * The TabBar is an singleton element of the ui. If it is enabled by adding
- * buttons to it, the tab bar is displayed on all views. It is possible to
- * set a view to "full screen" (@see unify.view.StaticView#isFullScreen)
- * to prevent display of tab bar on this view. The default and recommended behaviour
- * is to display it on all views.
+ * TODO
  */
 qx.Class.define("unify.view.TabViewManager",
 {
@@ -26,6 +22,9 @@ qx.Class.define("unify.view.TabViewManager",
   *****************************************************************************
   */
 
+  /**
+   * @param viewManager {unify.view.ViewManager} ViewManager to attach to
+   */
   construct : function(viewManager)
   {
     this.base(arguments);
@@ -37,6 +36,10 @@ qx.Class.define("unify.view.TabViewManager",
       }
     }
     
+    // Maps root views to full path objects
+    this.__paths = {};
+    
+    // Remember view manager and react on changes of its path
     this.__viewManager = viewManager;
     viewManager.addListener("changePath", this.__onViewManagerChangePath, this);
   },
@@ -73,8 +76,14 @@ qx.Class.define("unify.view.TabViewManager",
   {
     /** {unify.view.ViewManager} Instance of attached view manager */
     __viewManager : null,
+    
+    /** {Element} Container of "bar" and "pane" */
     __element : null,
+    
+    /** {Element} Root element which is used for the button bar */
     __bar : null,
+    
+    /** {Element} Root element of the attached view manager */
     __pane : null,
     
     
@@ -147,8 +156,6 @@ qx.Class.define("unify.view.TabViewManager",
     // property apply
     _applySelected : function(value, old)
     {
-      this.debug("View: " + value);
-      
       var Class = qx.bom.element2.Class;
       var bar = this.__bar;
       var children = bar.childNodes;
@@ -176,8 +183,28 @@ qx.Class.define("unify.view.TabViewManager",
       var elem = qx.dom.Hierarchy.closest(e.getTarget(), "div[view]");
       if (elem)
       {
-        var path = unify.view.Path.fromString(elem.getAttribute("view"));
-        this.__viewManager.navigate(path);
+        var viewManager = this.__viewManager;
+        var oldPath = viewManager.getPath();
+        var oldRootView = oldPath[0].view;
+        
+        var newRootView = elem.getAttribute("view");
+        
+        // If root view has not changed we force jump to root of the view and not
+        // using the stored deep path. This results into the intented behavior to
+        // jump to top on the second click on the same button.
+        
+        if (oldRootView != newRootView) {
+          var newPath = this.__paths[newRootView];
+        }
+        
+        if (!newPath) {
+          newPath = unify.view.Path.fromString(newRootView);
+        }
+        
+        this.__viewManager.navigate(newPath);
+        
+        // Store path for old view
+        this.__paths[oldRootView] = oldPath;
       }
     }
   }
