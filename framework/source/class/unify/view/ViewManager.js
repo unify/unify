@@ -91,7 +91,7 @@ qx.Class.define("unify.view.ViewManager",
   events :
   {
     /** Fired whenever the view-local path was modified */
-    changePath : "qx.event.type.Event"
+    changePath : "qx.event.type.Data"
   },
 
 
@@ -238,7 +238,7 @@ qx.Class.define("unify.view.ViewManager",
       viewObj.resetParam();
       this.__setView(viewObj);
 
-      this.fireEvent("changePath");
+      this.fireDataEvent("changePath", self.__path);
     },
 
 
@@ -374,7 +374,7 @@ qx.Class.define("unify.view.ViewManager",
 
       // Save path
       this.__path = path;
-      this.fireEvent("changePath");
+      this.fireDataEvent("changePath", this.__path);
     },
 
 
