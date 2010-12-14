@@ -8,20 +8,53 @@
 
 *********************************************************************************************** */
 
+/**
+ * A manager for a so-called split screen.
+ *
+ */
 qx.Class.define("unify.view.SplitViewManager",
 {
   extend : qx.core.Object,
 
-  construct : function(mainViewManager, detailViewManager)
+  /*
+  *****************************************************************************
+     CONSTRUCTOR
+  *****************************************************************************
+  */
+  
+  /**
+   * @param masterViewManager {unify.view.ViewManager} The master view manager 
+   * @param detailViewManager {unify.view.ViewManager} The detail view manager
+   */
+  construct : function(masterViewManager, detailViewManager)
   {
     this.base(arguments);
 
-    this.__mainViewManager = mainViewManager;
+    this.__masterViewManager = masterViewManager;
     this.__detailViewManager = detailViewManager;
   },
+  
 
+
+  /*
+  *****************************************************************************
+     MEMBERS
+  *****************************************************************************
+  */
+  
   members :
   {
+    /** {unify.view.ViewManager} The master view manager */
+    __masterViewManager : null,
+
+    /** {unify.view.ViewManager} The detail view manager */
+    __detailViewManager : null,
+    
+    /**
+     * Returns the root element of the split screen
+     *
+     * @return {Element} DOM element of split screen
+     */
     getElement : function()
     {
       var elem = this.__element;
@@ -29,7 +62,7 @@ qx.Class.define("unify.view.SplitViewManager",
       {
         var elem = this.__element = document.createElement("div");
         elem.className = "split-view";
-        elem.appendChild(this.__mainViewManager.getElement());
+        elem.appendChild(this.__masterViewManager.getElement());
         elem.appendChild(this.__detailViewManager.getElement());
       }
 

@@ -67,6 +67,11 @@ qx.Class.define("unify.ui.TitleBar",
 
     __lastUpTitle : null,
 
+    /**
+     * Event listener for parent changes
+     *
+     * @param e {qx.event.type.Data} Data event
+     */
     __onViewChangeParent : function(e)
     {
       var parentView = this.getView().getParent();

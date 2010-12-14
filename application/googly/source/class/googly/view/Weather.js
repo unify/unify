@@ -79,6 +79,12 @@ qx.Class.define("googly.view.Weather",
     },
     
     
+    /**
+     * Converts temperature from Fahrenheit to Celsius
+     *
+     * @param fahrenheit {Number} Temperature in Fahrenheit
+     * @return {Number} Temperature in Celsius
+     */
     __fahrenheitToCelsius : function(fahrenheit) {
       return Math.round((5/9) * (fahrenheit-32));
     },
