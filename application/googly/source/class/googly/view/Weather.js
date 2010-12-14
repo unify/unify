@@ -40,6 +40,15 @@ qx.Class.define("googly.view.Weather",
       return "weather";
     },
     
+    
+    // overridden
+    _getServiceParams : function() 
+    {
+      return {
+        city : googly.view.WeatherSearch.getInstance().getCity()
+      };
+    },
+    
 
     // overridden
     _getRenderVariant : function() {
@@ -67,7 +76,7 @@ qx.Class.define("googly.view.Weather",
       layer.add(content);
 
       var infobar = new unify.ui.ToolBar(this);
-      infobar.add("<div id='cityDisplay'>City</div>");
+      infobar.add({label : "Selected City"});
       layer.add(infobar);
       
       return layer;
@@ -78,14 +87,7 @@ qx.Class.define("googly.view.Weather",
     // overridden
     _renderData : function(data)
     {
-      console.debug("RENDER DATA:", data)
-      return;
-      
-      var Yql = googly.business.Yql.getInstance();
-      var WeatherSearch = googly.view.WeatherSearch.getInstance();
-      
-      var city = WeatherSearch.getCity();
-      if (city == null)
+      if (data == null)
       {
         window.setTimeout(function() {
           unify.view.Navigation.getInstance().navigate(unify.view.Path.fromString("weather-search"));
@@ -93,8 +95,9 @@ qx.Class.define("googly.view.Weather",
       }
       else
       {
-        var cached = Yql.getCachedEntry("weather", {city:city});
-        var results = cached.data.query.results.xml_api_reply.weather;
+        var results = data.query.results.xml_api_reply.weather;
+        
+        console.debug("Results", results);
         
         var info = results.forecast_information;
         var currently = results.current_conditions;
@@ -102,7 +105,7 @@ qx.Class.define("googly.view.Weather",
         
         var markup = "";
 
-        document.getElementById("cityDisplay").innerHTML = info.city.data;
+        //document.getElementById("cityDisplay").innerHTML = info.city.data;
         
         var segment = this.getSegment();
         if (segment == "current")
@@ -111,7 +114,6 @@ qx.Class.define("googly.view.Weather",
           markup += "<p><strong>Condition</strong>: " + currently.condition.data + "</p>";
           markup += "<p><strong>Humidity</strong>: " + currently.humidity.data + "</p>";
           markup += "<p><strong>Temp</strong>: " + currently.temp_c.data + "</p>";
-          markup += "<p><strong>Wind</strong>: " + currently.wind_condition.data + "</p>";
         }
         else if (segment == "info")
         {

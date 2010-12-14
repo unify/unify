@@ -160,11 +160,8 @@ qx.Class.define("unify.view.ServiceView",
       if (variant !== this.__renderedVariant)
       {
         var data = this._getBusinessObject().read(this._getServiceName(), this._getServiceParams());
-        if (data != null)
-        {
-          this._wrappedRenderData(data);
-          this.__renderedVariant = variant;
-        }
+        this.__renderedVariant = variant;
+        this._wrappedRenderData(data);
       }
     },
 

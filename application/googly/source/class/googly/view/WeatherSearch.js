@@ -55,16 +55,11 @@ qx.Class.define("googly.view.WeatherSearch",
         return;
       }
       
+      unify.storage.Simple.setItem("weather/city", field.value);
+      
       return {
         city : field.value
       };
-    },
-    
-    
-    getCity : function() 
-    {
-      var searchField = document.getElementById("citySearch");
-      return searchField && searchField.value;
     },
     
     
@@ -97,7 +92,6 @@ qx.Class.define("googly.view.WeatherSearch",
       var results = data.query.results;
       if (results)
       {
-        
         document.getElementById("citySearchFeedback").innerHTML = "Redirecting...";
         window.setTimeout(function() {
           var path = unify.view.Path.fromString("weather");
@@ -108,6 +102,14 @@ qx.Class.define("googly.view.WeatherSearch",
       {
         document.getElementById("citySearchFeedback").innerHTML = "Could not find searched location!";
       }
-    }    
+    },
+    
+    
+    /**
+     * Returns the selected city
+     */
+    getCity : function() {
+      return unify.storage.Simple.getItem("weather/city");
+    }
   }
 });
