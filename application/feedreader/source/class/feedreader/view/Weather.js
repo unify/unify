@@ -28,18 +28,20 @@ qx.Class.define("feedreader.view.Weather",
       return "current";
     },
     
-    
-    
+
+    // overridden
     _getBusinessObject : function() {
       return feedreader.business.Yql.getInstance();
     },
     
-    
+
+    // overridden
     _getServiceName : function() {
       return "weather";
     },
     
-    
+
+    // overridden
     _getRenderVariant : function() {
       return this.getSegment();
     },
@@ -63,20 +65,22 @@ qx.Class.define("feedreader.view.Weather",
       var content = new unify.ui.Content;
       content.add("<div id='weatherDisplay'></div>");
       layer.add(content);
+
+      var infobar = new unify.ui.ToolBar(this);
+      infobar.add("<div id='cityDisplay'>City</div>");
+      layer.add(infobar);
       
       return layer;
     },
     
     
+
     // overridden
-    _resumeView : function()
+    _renderData : function(data)
     {
-      this._renderWeather();
-    },
-    
-    
-    _renderWeather : function()
-    {
+      console.debug("RENDER DATA:", data)
+      return;
+      
       var Yql = feedreader.business.Yql.getInstance();
       var WeatherSearch = feedreader.view.WeatherSearch.getInstance();
       
@@ -97,7 +101,8 @@ qx.Class.define("feedreader.view.Weather",
         var forecast = results.forecast_conditions;
         
         var markup = "";
-        markup += "<h3>" + info.city.data + "</h3>";
+
+        document.getElementById("cityDisplay").innerHTML = info.city.data;
         
         var segment = this.getSegment();
         if (segment == "current")
