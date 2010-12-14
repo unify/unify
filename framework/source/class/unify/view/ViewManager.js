@@ -347,7 +347,27 @@ qx.Class.define("unify.view.ViewManager",
           throw new Error("Invalid view: " + currentFragment.view + " in view manager " + this.getId());
         }
       }
+      
       var currentViewObj = currentViewCls.getInstance();
+
+      // Automatically fill segment if its empty
+      // - 1. via currently selected segment
+      // - 2. via default segment (if available)
+      // Note: This hot-patches the path object after parsing
+      if (currentFragment.segment == null)
+      {
+        var selectedSegment = currentViewObj.getSegment();
+        if (selectedSegment) {
+          currentFragment.segment = selectedSegment;
+        }
+        else
+        {
+          var defaultSegment = currentViewObj.getDefaultSegment();
+          if (defaultSegment) {
+            currentFragment.segment = defaultSegment;
+          }
+        }
+      }
 
       // Verify that parent is correctly configured
       // This is required for correct back titles and smooth back animation
