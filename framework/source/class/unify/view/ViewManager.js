@@ -293,6 +293,9 @@ qx.Class.define("unify.view.ViewManager",
           throw new Error("Invalid path to navigate() to: " + path);
         }
       }
+      
+      console.debug("IN-PATH: ", path.serialize())
+      
 
       var length = path.length;
       var oldPath = this.__path;
@@ -450,6 +453,9 @@ qx.Class.define("unify.view.ViewManager",
       // Read element's attributes
       var href = elem.getAttribute("href");
       var dest = href ? href.substring(1) : elem.getAttribute("goto");
+      if (dest == null) {
+        throw new Error("Invalid destination: " + dest);
+      }
 
       // Valid Paths (leading with a "#" in href attributes):
       // localView.segment:param (in transition)
@@ -458,22 +464,18 @@ qx.Class.define("unify.view.ViewManager",
       // .segment (switch segment, no transition)
       // :param (switch param, no transition)
 
-      // Support legacy "rel" attributes
       var rel = elem.getAttribute("rel");
       if (rel == "up") {
         return this.navigate(this.__path.slice(0, -1));
       }
 
-      if (dest == null) {
-        throw new Error("Invalid destination: " + dest);
+      if (qx.core.Variant.isSet("qx.debug", "on"))
+      {
+        if (rel && rel != "parent") {
+          throw new Error("Invalid rel attribute: " + rel);
+        }
       }
-
-      if (rel == "param") {
-        dest = ":" + dest;
-      } else if (rel == "segment") {
-        dest = "." + dest;
-      }
-
+      
       var config = unify.view.Path.parseFragment(dest);
       var view = config.view;
       if (view && !this.__views[view])
@@ -482,20 +484,31 @@ qx.Class.define("unify.view.ViewManager",
       }
       else
       {
-        // Read current path
+        // Read current path and make non-deep copy of path
         var path = this.__path;
-
-        // Make non-deep copy of path
         var clone = path.concat();
-
-        // Process "rel" attributes
-        if (rel == "parent") {
-          clone[clone.length] = config;
-        } else {
+        
+        // Select right modification point
+        if (rel == "parent") 
+        {
+          clone[clone.length-1] = config;
+        } 
+        else if (config.view) 
+        {
           clone.push(config);
+        } 
+        else 
+        {
+          if (config.segment) {
+            clone[clone.length-1].segment = config.segment;
+          }
+
+          if (config.param) {
+            clone[clone.length-1].param = config.param;
+          }
         }
 
-        // Finally do the navigate
+        // Finally do the navigate()
         this.navigate(clone);
       }
     },
