@@ -1,6 +1,6 @@
 /* ************************************************************************
 
-   feedreader
+   googly
 
    Copyright:
      2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -9,14 +9,14 @@
 
 /* ************************************************************************
 
-#asset(feedreader/*)
+#asset(googly/*)
 
 ************************************************************************ */
 
 /**
  * Unify application class
  */
-qx.Class.define("feedreader.Application", 
+qx.Class.define("googly.Application", 
 {
   extend : unify.Application,
 
@@ -33,18 +33,18 @@ qx.Class.define("feedreader.Application",
 
       // Master view
       var MasterViewManager = new unify.view.ViewManager("master");
-      MasterViewManager.add(feedreader.view.Start, true);
-      MasterViewManager.add(feedreader.view.Translate);
-      MasterViewManager.add(feedreader.view.Search);
-      MasterViewManager.add(feedreader.view.Weather);
-      MasterViewManager.add(feedreader.view.WeatherSearch);
+      MasterViewManager.add(googly.view.Start, true);
+      MasterViewManager.add(googly.view.Translate);
+      MasterViewManager.add(googly.view.Search);
+      MasterViewManager.add(googly.view.Weather);
+      MasterViewManager.add(googly.view.WeatherSearch);
       
       // Configure tab view
       var TabView = new unify.view.TabViewManager(MasterViewManager);
-      TabView.add(feedreader.view.Start);
-      TabView.add(feedreader.view.Translate);
-      TabView.add(feedreader.view.Search);
-      TabView.add(feedreader.view.Weather);
+      TabView.add(googly.view.Start);
+      TabView.add(googly.view.Translate);
+      TabView.add(googly.view.Search);
+      TabView.add(googly.view.Weather);
       this.add(TabView);
       
       // Add at least one view manager to the navigation managment

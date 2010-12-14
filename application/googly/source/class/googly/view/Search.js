@@ -1,6 +1,6 @@
 /* ************************************************************************
 
-  feedreader
+  googly
 
   Copyright:
     2009 Deutsche Telekom AG, Germany, http://telekom.com
@@ -10,7 +10,7 @@
 /**
  * Answers View
  */
-qx.Class.define("feedreader.view.Translate", 
+qx.Class.define("googly.view.Search", 
 {
   extend : unify.view.RemoteView,
   type : "singleton",
@@ -19,19 +19,19 @@ qx.Class.define("feedreader.view.Translate",
   {
     // overridden
     getTitle : function(type, param) {
-      return "Translate";
+      return "Search";
     },
     
     
     // overridden
     _getBusinessObject : function() {
-      return feedreader.business.Yql.getInstance();
+      return googly.business.Yql.getInstance();
     },
     
 
     // overridden
     _getServiceName : function() {
-      return "translate";
+      return "search";
     },
     
 
@@ -44,15 +44,13 @@ qx.Class.define("feedreader.view.Translate",
     // overridden
     _getServiceParams : function() 
     {
-      var field = document.getElementById("inputText");
+      var field = document.getElementById("searchText");
       if (!field) {
         return;
       }
       
       return {
-        text : field.value,
-        source : "de",
-        target : "en"
+        q : field.value
       };
     },
     
@@ -60,7 +58,7 @@ qx.Class.define("feedreader.view.Translate",
     // overridden
     _hasServiceRequestParams : function()
     {
-      var field = document.getElementById("inputText");
+      var field = document.getElementById("searchText");
       return field && field.value.length > 0;
     },
     
@@ -73,7 +71,11 @@ qx.Class.define("feedreader.view.Translate",
       layer.add(titlebar);
       
       var content = new unify.ui.Content;
-      content.add("<textarea rows='3' cols='60' id='inputText'/><div class='button' exec='refresh'>Translate</div><textarea rows='3' cols='60' id='resultText'/>");
+      content.add("<input type='text' id='searchText'/><div class='button' exec='refresh'>Search</div>");
+      var scrollView = new unify.ui.ScrollView;
+      scrollView.setEnableScrollX(false);
+      content.add(scrollView);
+      scrollView.add("<ul id='resultList'></ul>");
       layer.add(content);
 
       return layer;
@@ -84,9 +86,20 @@ qx.Class.define("feedreader.view.Translate",
     _renderData : function(data)
     {
       var results = data.query.results;
-      var translation = results ? results.translatedText : "";
+      var markup = "";
       
-      document.getElementById("resultText").value = translation;
+      if (results)
+      {
+        var entry;
+        results = results.results;
+        for (var i=0, l=results.length; i<l; i++)
+        {
+          entry = results[i];
+          markup += "<li><a href='" + entry.url + "'>" + entry.titleNoFormatting + "<br/>" + entry.visibleUrl + "</a></li>";
+        }
+      }
+      
+      document.getElementById("resultList").innerHTML = markup;
     }    
   }
 });

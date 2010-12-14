@@ -1,6 +1,6 @@
 /* ************************************************************************
 
-  feedreader
+  googly
 
   Copyright:
     2009 Deutsche Telekom AG, Germany, http://telekom.com
@@ -10,7 +10,7 @@
 /**
  * Answers View
  */
-qx.Class.define("feedreader.view.Weather", 
+qx.Class.define("googly.view.Weather", 
 {
   extend : unify.view.ServiceView,
   type : "singleton",
@@ -31,7 +31,7 @@ qx.Class.define("feedreader.view.Weather",
 
     // overridden
     _getBusinessObject : function() {
-      return feedreader.business.Yql.getInstance();
+      return googly.business.Yql.getInstance();
     },
     
 
@@ -81,8 +81,8 @@ qx.Class.define("feedreader.view.Weather",
       console.debug("RENDER DATA:", data)
       return;
       
-      var Yql = feedreader.business.Yql.getInstance();
-      var WeatherSearch = feedreader.view.WeatherSearch.getInstance();
+      var Yql = googly.business.Yql.getInstance();
+      var WeatherSearch = googly.view.WeatherSearch.getInstance();
       
       var city = WeatherSearch.getCity();
       if (city == null)

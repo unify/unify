@@ -1,6 +1,6 @@
 /* ************************************************************************
 
-  feedreader
+  googly
 
   Copyright:
     2009 Deutsche Telekom AG, Germany, http://telekom.com
@@ -10,7 +10,7 @@
 /**
  * Answers View
  */
-qx.Class.define("feedreader.view.Search", 
+qx.Class.define("googly.view.Translate", 
 {
   extend : unify.view.RemoteView,
   type : "singleton",
@@ -19,19 +19,19 @@ qx.Class.define("feedreader.view.Search",
   {
     // overridden
     getTitle : function(type, param) {
-      return "Search";
+      return "Translate";
     },
     
     
     // overridden
     _getBusinessObject : function() {
-      return feedreader.business.Yql.getInstance();
+      return googly.business.Yql.getInstance();
     },
     
 
     // overridden
     _getServiceName : function() {
-      return "search";
+      return "translate";
     },
     
 
@@ -44,13 +44,15 @@ qx.Class.define("feedreader.view.Search",
     // overridden
     _getServiceParams : function() 
     {
-      var field = document.getElementById("searchText");
+      var field = document.getElementById("inputText");
       if (!field) {
         return;
       }
       
       return {
-        q : field.value
+        text : field.value,
+        source : "de",
+        target : "en"
       };
     },
     
@@ -58,7 +60,7 @@ qx.Class.define("feedreader.view.Search",
     // overridden
     _hasServiceRequestParams : function()
     {
-      var field = document.getElementById("searchText");
+      var field = document.getElementById("inputText");
       return field && field.value.length > 0;
     },
     
@@ -71,11 +73,7 @@ qx.Class.define("feedreader.view.Search",
       layer.add(titlebar);
       
       var content = new unify.ui.Content;
-      content.add("<input type='text' id='searchText'/><div class='button' exec='refresh'>Search</div>");
-      var scrollView = new unify.ui.ScrollView;
-      scrollView.setEnableScrollX(false);
-      content.add(scrollView);
-      scrollView.add("<ul id='resultList'></ul>");
+      content.add("<textarea rows='3' cols='60' id='inputText'/><div class='button' exec='refresh'>Translate</div><textarea rows='3' cols='60' id='resultText'/>");
       layer.add(content);
 
       return layer;
@@ -86,20 +84,9 @@ qx.Class.define("feedreader.view.Search",
     _renderData : function(data)
     {
       var results = data.query.results;
-      var markup = "";
+      var translation = results ? results.translatedText : "";
       
-      if (results)
-      {
-        var entry;
-        results = results.results;
-        for (var i=0, l=results.length; i<l; i++)
-        {
-          entry = results[i];
-          markup += "<li><a href='" + entry.url + "'>" + entry.titleNoFormatting + "<br/>" + entry.visibleUrl + "</a></li>";
-        }
-      }
-      
-      document.getElementById("resultList").innerHTML = markup;
+      document.getElementById("resultText").value = translation;
     }    
   }
 });

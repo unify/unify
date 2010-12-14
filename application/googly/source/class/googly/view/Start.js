@@ -1,6 +1,6 @@
 /* ************************************************************************
 
-  feedreader
+  googly
 
   Copyright:
     2009 Deutsche Telekom AG, Germany, http://telekom.com
@@ -10,7 +10,7 @@
 /**
  * Start View
  */
-qx.Class.define("feedreader.view.Start", {
+qx.Class.define("googly.view.Start", {
   extend : unify.view.StaticView,
   type : "singleton",
 

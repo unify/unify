@@ -1,4 +1,4 @@
-qx.Class.define("feedreader.business.Yql",
+qx.Class.define("googly.business.Yql",
 {
   extend : unify.business.RemoteData,
   type : "singleton",

@@ -1,5 +1,5 @@
 {
-  "name"    : "feedreader",
+  "name"    : "googly",
 
   "include" :
   [
@@ -16,7 +16,7 @@
 
     "CACHE"             : "${TMPDIR}/cache",
 
-    "APP_NAME"          : "feedreader",
+    "APP_NAME"          : "googly",
     "APP_LOCALES"       : [ "en" ]
   }
 }

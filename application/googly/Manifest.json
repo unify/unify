@@ -1,7 +1,7 @@
 {
   "info" : 
   {
-    "name" : "feedreader",
+    "name" : "googly",
 
     "summary" : "Unify Application",
     "description" : "Just another Unify application",
@@ -23,7 +23,7 @@
   
   "provides" : 
   {
-    "namespace"   : "feedreader",
+    "namespace"   : "googly",
     "encoding"    : "utf-8",
     "class"       : "source/class",
     "resource"    : "source/resource",
