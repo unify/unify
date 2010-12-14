@@ -53,32 +53,7 @@ qx.Class.define("unify.view.ViewManager",
 
     // Create instance specific data structures
     this.__views = {};
-    this.__deep = {};
   },
-
-
-
-
-  /*
-  *****************************************************************************
-     PROPERTIES
-  *****************************************************************************
-  */
-
-  properties :
-  {
-    /**
-     * Whether switching into views of other view managers means restoring the complete
-     * position there. This basically stores the navigation path before switching and
-     * restores it when switching back to the same view.
-     */
-    enableDeepSwitch :
-    {
-      check : "Boolean",
-      init : false
-    }
-  },
-
 
 
 
@@ -255,9 +230,6 @@ qx.Class.define("unify.view.ViewManager",
 
     /** {String} ID of default view */
     __defaultViewId : null,
-
-    /** {Map} Used for storage of deep path for children e.g. used in switching of tab views */
-    __deep : null,
 
     /**
      * Registers a new view. All views must be registered before being used.
