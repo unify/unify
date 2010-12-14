@@ -7,6 +7,7 @@
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
 *********************************************************************************************** */
+
 qx.Class.define("unify.storage.Simple",
 {
   statics :
@@ -21,23 +22,13 @@ qx.Class.define("unify.storage.Simple",
      *
      *
      */
-    registerSynchronous : function(clazz)
-    {
-      if (!clazz.isSupported()) {
-        return;
-      }
-
-      this.__backends[clazz.classname] = clazz;
-    },
-
-
     register : function(clazz)
     {
       if (!clazz.isSupported()) {
         return;
       }
 
-
+      this.__backends[clazz.classname] = clazz;
     },
 
 
@@ -62,7 +53,7 @@ qx.Class.define("unify.storage.Simple",
       }
 
       if (backend) {
-        this.__backend = backend;
+        return this.__backend = backend.getInstance();
       } else if (qx.core.Variant.isSet("qx.debug", "on")) {
         throw new Error("No storage backend found!");
       }
