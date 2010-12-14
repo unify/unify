@@ -12,14 +12,14 @@
  */
 qx.Class.define("googly.view.WeatherSearch", 
 {
-  extend : unify.view.RemoteView,
+  extend : unify.view.StaticView,
   type : "singleton",
 
   members : 
   {
     // overridden
     getTitle : function(type, param) {
-      return "Weather Search";
+      return "Search";
     },
     
     
@@ -30,56 +30,17 @@ qx.Class.define("googly.view.WeatherSearch",
     
     
     // overridden
-    _getBusinessObject : function() {
-      return googly.business.Yql.getInstance();
-    },
-    
-
-    // overridden
-    _getServiceName : function() {
-      return "weather";
-    },
-    
-
-    // overridden
-    _errorHandler : function(kind) {
-      this.error("Error: " + kind);
-    },
-    
-
-    // overridden
-    _getServiceParams : function() 
-    {
-      var field = document.getElementById("citySearch");
-      if (!field) {
-        return;
-      }
-      
-      unify.storage.Simple.setItem("weather/city", field.value);
-      
-      return {
-        city : field.value
-      };
-    },
-    
-    
-    // overridden
-    _hasServiceRequestParams : function()
-    {
-      var field = document.getElementById("citySearch");
-      return field && field.value.length > 0;
-    },
-    
-    
-    // overridden
     _createView : function() 
     {
       var layer = new unify.ui.Layer(this);
       var titlebar = new unify.ui.TitleBar(this);
       layer.add(titlebar);
-      
+
       var content = new unify.ui.Content;
-      content.add("<input type='text' id='citySearch'/><div class='button' exec='refresh'>Search</div><div id='citySearchFeedback'></div>");
+
+      var searchField = this.__searchField = document.createElement("input");
+      searchField.type = "text";
+      content.add(searchField);
       layer.add(content);
 
       return layer;
@@ -87,30 +48,20 @@ qx.Class.define("googly.view.WeatherSearch",
     
     
     // overridden
-    _renderData : function(data)
+    _resumeView : function()
     {
-      var results = data.query.results;
-      if (results)
-      {
-        document.getElementById("citySearchFeedback").innerHTML = "Redirecting...";
-        
-        var self = this;
-        window.setTimeout(function() {
-          self.close();
-        }, 500);
-      }
-      else
-      {
-        document.getElementById("citySearchFeedback").innerHTML = "Could not find searched location!";
-      }
+      this.base(arguments);
+      
+      this.__searchField.value = unify.storage.Simple.getItem("weather/city");
     },
     
     
-    /**
-     * Returns the selected city
-     */
-    getCity : function() {
-      return unify.storage.Simple.getItem("weather/city");
+    // overridden
+    _pauseView : function() 
+    {
+      this.base(arguments);
+      
+      unify.storage.Simple.setItem("weather/city", this.__searchField.value);
     }
   }
 });

@@ -12,7 +12,7 @@
  */
 qx.Class.define("googly.view.Weather", 
 {
-  extend : unify.view.ServiceView,
+  extend : unify.view.RemoteView,
   type : "singleton",
 
   members : 
@@ -45,7 +45,7 @@ qx.Class.define("googly.view.Weather",
     _getServiceParams : function() 
     {
       return {
-        city : googly.view.WeatherSearch.getInstance().getCity()
+        city : unify.storage.Simple.getItem("weather/city")
       };
     },
     
@@ -78,10 +78,13 @@ qx.Class.define("googly.view.Weather",
     },
     
     
-
     // overridden
     _renderData : function(data)
     {
+      if (data) {
+        data = data.query.results;
+      }
+      
       if (data == null)
       {
         window.setTimeout(function() {
