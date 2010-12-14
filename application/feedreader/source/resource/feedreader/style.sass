@@ -85,8 +85,48 @@
         
         a
           text-decoration: none
-          font-size: 17px
+          font-size: 14px
+
+
+#weather
+  +vbox
+  
+  
+  .cell
+    width: 180px
+    border: 1px solid #555
+    font-size: 12px
+    float: left
+    margin: 20px
     
+    h4
+      padding: 6px 12px
+      background-color: #888
+      color: white
+      font-weight: bold
+      font-size: 17px
+
+
+#weather-search
+  +vbox
+
+  .content
+    +vbox
+    +box-flex(1)
+  
+    input
+      display: block
+      font-size: 20px
+      width: 100%
+      padding: 16px
+      border: 0 none
+    
+    .button
+      +content-button
+      
+    #citySearchFeedback
+      padding: 20px
+      font-size: 17px
 
 
 .tab-view
@@ -98,4 +138,8 @@
     
   [goto=search]
     +tab-bar-button-icon("icons-32/06-magnifying-glass.png")
+    
+  [goto=weather]
+    +tab-bar-button-icon("icons-32/25-weather.png")
+  
     

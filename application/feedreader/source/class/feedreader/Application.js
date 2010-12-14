@@ -36,12 +36,15 @@ qx.Class.define("feedreader.Application",
       MasterViewManager.add(feedreader.view.Start, true);
       MasterViewManager.add(feedreader.view.Translate);
       MasterViewManager.add(feedreader.view.Search);
+      MasterViewManager.add(feedreader.view.Weather);
+      MasterViewManager.add(feedreader.view.WeatherSearch);
       
       // Configure tab view
       var TabView = new unify.view.TabViewManager(MasterViewManager);
       TabView.add(feedreader.view.Start);
       TabView.add(feedreader.view.Translate);
       TabView.add(feedreader.view.Search);
+      TabView.add(feedreader.view.Weather);
       this.add(TabView);
       
       // Add at least one view manager to the navigation managment

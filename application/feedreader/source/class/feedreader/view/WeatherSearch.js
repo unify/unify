@@ -24,7 +24,7 @@ qx.Class.define("feedreader.view.WeatherSearch",
     
     
     // overridden
-    getModal : function() {
+    isModal : function() {
       return true;
     },
     
@@ -56,8 +56,15 @@ qx.Class.define("feedreader.view.WeatherSearch",
       }
       
       return {
-        q : field.value
+        city : field.value
       };
+    },
+    
+    
+    getCity : function() 
+    {
+      var searchField = document.getElementById("citySearch");
+      return searchField && searchField.value;
     },
     
     
@@ -88,9 +95,19 @@ qx.Class.define("feedreader.view.WeatherSearch",
     _renderData : function(data)
     {
       var results = data.query.results;
-      var markup = results ? "Found" : "Failed";
-
-      document.getElementById("citySearchFeedback").innerHTML = markup;
+      if (results)
+      {
+        
+        document.getElementById("citySearchFeedback").innerHTML = "Redirecting...";
+        window.setTimeout(function() {
+          var path = unify.view.Path.fromString("weather");
+          unify.view.Navigation.getInstance().navigate(path);
+        }, 100);
+      }
+      else
+      {
+        document.getElementById("citySearchFeedback").innerHTML = "Could not find searched location!";
+      }
     }    
   }
 });

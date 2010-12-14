@@ -95,7 +95,7 @@ qx.Class.define("feedreader.view.Search",
         for (var i=0, l=results.length; i<l; i++)
         {
           entry = results[i];
-          markup += "<li><a href='" + entry.url + "'>" + entry.titleNoFormatting + "</a></li>";
+          markup += "<li><a href='" + entry.url + "'>" + entry.titleNoFormatting + "<br/>" + entry.visibleUrl + "</a></li>";
         }
       }
       

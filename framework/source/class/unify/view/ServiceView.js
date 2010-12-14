@@ -7,6 +7,7 @@
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
 *********************************************************************************************** */
+
 /**
  * View class for simple services which have all the data
  * available synchronously e.g. through inlining during build. The data

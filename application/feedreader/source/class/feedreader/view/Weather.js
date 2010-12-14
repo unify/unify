@@ -12,7 +12,7 @@
  */
 qx.Class.define("feedreader.view.Weather", 
 {
-  extend : unify.view.RemoteView,
+  extend : unify.view.ServiceView,
   type : "singleton",
 
   members : 
@@ -24,42 +24,24 @@ qx.Class.define("feedreader.view.Weather",
     
     
     // overridden
+    getDefaultSegment : function() {
+      return "current";
+    },
+    
+    
+    
     _getBusinessObject : function() {
       return feedreader.business.Yql.getInstance();
     },
     
-
-    // overridden
+    
     _getServiceName : function() {
       return "weather";
     },
     
-
-    // overridden
-    _errorHandler : function(kind) {
-      this.error("Error: " + kind);
-    },
     
-
-    // overridden
-    _getServiceParams : function() 
-    {
-      var field = document.getElementById("citySearch");
-      if (!field) {
-        return;
-      }
-      
-      return {
-        q : field.value
-      };
-    },
-    
-    
-    // overridden
-    _hasServiceRequestParams : function()
-    {
-      var field = document.getElementById("citySearch");
-      return field && field.value.length > 0;
+    _getRenderVariant : function() {
+      return this.getSegment();
     },
     
     
@@ -67,34 +49,87 @@ qx.Class.define("feedreader.view.Weather",
     _createView : function() 
     {
       var layer = new unify.ui.Layer(this);
-      var titlebar = new unify.ui.TitleBar(this);
-      layer.add(titlebar);
+      
+      var segmented = new unify.ui.Segmented(this);
+      segmented.add({segment:"current", label:"Currently"});
+      segmented.add({segment:"forecast", label:"Forecast"});
+      segmented.add({segment:"info", label:"Info"});
+      
+      var toolbar = new unify.ui.ToolBar(this);
+      toolbar.add({jump:"weather-search", label:"Search", target:"right"});
+      toolbar.add(segmented);
+      layer.add(toolbar);
       
       var content = new unify.ui.Content;
-      content.add("<input type='text' id='citySearch'/><div class='button' exec='refresh'>Search</div>");
-      var scrollView = new unify.ui.ScrollView;
-      scrollView.setEnableScrollX(false);
-      content.add(scrollView);
-      scrollView.add("<ul id='resultList'></ul>");
+      content.add("<div id='weatherDisplay'></div>");
       layer.add(content);
-
+      
       return layer;
     },
     
     
     // overridden
-    _renderData : function(data)
+    _resumeView : function()
     {
-      var results = data.query.results;
-      var markup = "";
+      this._renderWeather();
+    },
+    
+    
+    _renderWeather : function()
+    {
+      var Yql = feedreader.business.Yql.getInstance();
+      var WeatherSearch = feedreader.view.WeatherSearch.getInstance();
       
-      if (results)
+      var city = WeatherSearch.getCity();
+      if (city == null)
       {
-        console.debug(results);
-        
+        window.setTimeout(function() {
+          unify.view.Navigation.getInstance().navigate(unify.view.Path.fromString("weather-search"));
+        }, 100);
       }
-
-      document.getElementById("resultList").innerHTML = markup;
-    }    
+      else
+      {
+        var cached = Yql.getCachedEntry("weather", {city:city});
+        var results = cached.data.query.results.xml_api_reply.weather;
+        
+        var info = results.forecast_information;
+        var currently = results.current_conditions;
+        var forecast = results.forecast_conditions;
+        
+        var markup = "";
+        markup += "<h3>" + info.city.data + "</h3>";
+        
+        var segment = this.getSegment();
+        if (segment == "current")
+        {
+          markup += "<img src='http://www.google.com" + currently.icon.data + "'/>";
+          markup += "<p><strong>Condition</strong>: " + currently.condition.data + "</p>";
+          markup += "<p><strong>Humidity</strong>: " + currently.humidity.data + "</p>";
+          markup += "<p><strong>Temp</strong>: " + currently.temp_c.data + "</p>";
+          markup += "<p><strong>Wind</strong>: " + currently.wind_condition.data + "</p>";
+        }
+        else if (segment == "info")
+        {
+          markup += "<p><strong>Currently Date</strong>: " + info.current_date_time.data + "</p>";
+          markup += "<p><strong>Forecast Date</strong>: " + info.forecast_date.data + "</p>";
+        }
+        else
+        {
+          for (var i=0, l=forecast.length; i<l; i++)
+          {
+            var entry = forecast[i];
+            markup += "<div class='cell'>";
+            markup += "<h4>" + entry.day_of_week.data + "</h4>";
+            markup += "<img src='http://www.google.com" + entry.icon.data + "'/>";
+            markup += "<p><strong>Condition</strong>: " + entry.condition.data + "</p>";
+            markup += "<p><strong>Temp</strong>: " + entry.low.data + " - " + entry.high.data + "</p>";
+            markup += "</div>";
+          }
+        }
+        
+        var display = document.getElementById("weatherDisplay");
+        display.innerHTML = markup;
+      }
+    }
   }
 });
