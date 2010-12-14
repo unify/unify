@@ -66,7 +66,8 @@ qx.Class.define("googly.view.Weather",
       segmented.add({segment:"forecast", label:"Forecast"});
       
       var toolbar = new unify.ui.ToolBar(this);
-      toolbar.add({jump:"weather-search", label:"Search", target:"right"});
+      toolbar.add({jump:"weather-search", label:"Select City", target:"right"});
+      toolbar.add({exec:"refresh", label:"Refresh", target:"right"});
       toolbar.add(segmented);
       layer.add(toolbar);
       
@@ -78,6 +79,11 @@ qx.Class.define("googly.view.Weather",
     },
     
     
+    __fahrenheitToCelsius : function(fahrenheit) {
+      return Math.round((5/9) * (fahrenheit-32));
+    },
+    
+    
     // overridden
     _renderData : function(data)
     {
@@ -85,21 +91,19 @@ qx.Class.define("googly.view.Weather",
         data = data.query.results;
       }
       
+      var markup = "";
+
       if (data == null)
       {
-        window.setTimeout(function() {
-          unify.view.Navigation.getInstance().navigate(unify.view.Path.fromString("weather-search"));
-        }, 100);
+        markup = "<h3>Could not find city: \"" + unify.storage.Simple.getItem("weather/city") + "\"</h3>";
       }
       else
       {
-        var results = data.query.results.xml_api_reply.weather;
+        var results = data.xml_api_reply.weather;
         var info = results.forecast_information;
         var currently = results.current_conditions;
         var forecast = results.forecast_conditions;
         
-        var markup = "";
-
         markup += "<h3>" + info.city.data + "</h3>";
         
         var segment = this.getSegment();
@@ -110,7 +114,7 @@ qx.Class.define("googly.view.Weather",
           markup += "<img src='http://www.google.com" + currently.icon.data + "'/>";
           markup += "<p><strong>Condition</strong>: " + currently.condition.data + "</p>";
           markup += "<p><strong>Humidity</strong>: " + currently.humidity.data + "</p>";
-          markup += "<p><strong>Temp</strong>: " + currently.temp_c.data + "</p>";
+          markup += "<p><strong>Temp</strong>: " + this.__fahrenheitToCelsius(currently.temp_f.data) + "</p>";
           markup += "</div>";
           markup += "<p>Updated: " + info.current_date_time.data + "</p>";
         }
@@ -123,14 +127,14 @@ qx.Class.define("googly.view.Weather",
             markup += "<h4>" + entry.day_of_week.data + "</h4>";
             markup += "<img src='http://www.google.com" + entry.icon.data + "'/>";
             markup += "<p><strong>Condition</strong>: " + entry.condition.data + "</p>";
-            markup += "<p><strong>Temp</strong>: " + entry.low.data + " - " + entry.high.data + "</p>";
+            markup += "<p><strong>Temp</strong>: " + this.__fahrenheitToCelsius(entry.low.data) + " to " + this.__fahrenheitToCelsius(entry.high.data) + "</p>";
             markup += "</div>";
           }
           markup += "<p>Updated: " + info.forecast_date.data + "</p>";
         }
-        
-        this.__weatherDisplay.innerHTML = markup;
       }
+      
+      this.__weatherDisplay.innerHTML = markup;
     }
   }
 });
