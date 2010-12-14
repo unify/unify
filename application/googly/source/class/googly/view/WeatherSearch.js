@@ -1,6 +1,6 @@
 /* ************************************************************************
 
-  googly
+  Googly
 
   Copyright:
     2009 Deutsche Telekom AG, Germany, http://telekom.com
@@ -8,7 +8,7 @@
  ************************************************************************ */
 
 /**
- * Answers View
+ * Search for a name of a city to lookup weather for.
  */
 qx.Class.define("googly.view.WeatherSearch", 
 {
@@ -61,7 +61,11 @@ qx.Class.define("googly.view.WeatherSearch",
     {
       this.base(arguments);
       
-      unify.storage.Simple.setItem("weather/city", this.__searchField.value);
+      if (this.__searchField.value != unify.storage.Simple.getItem("weather/city"))
+      {
+        unify.storage.Simple.setItem("weather/city", this.__searchField.value);
+        googly.view.Weather.getInstance().refresh();
+      }
     }
   }
 });

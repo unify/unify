@@ -1,6 +1,6 @@
 /* ************************************************************************
 
-  googly
+  Googly
 
   Copyright:
     2009 Deutsche Telekom AG, Germany, http://telekom.com

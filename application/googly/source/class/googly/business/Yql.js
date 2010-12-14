@@ -1,3 +1,17 @@
+/* ************************************************************************
+
+  Googly
+
+  Copyright:
+    2009 Deutsche Telekom AG, Germany, http://telekom.com
+
+************************************************************************ */
+ 
+/**
+ * YQL interface connector for some Google services. 
+ *
+ * Currently supported: translate, search, weather.
+ */
 qx.Class.define("googly.business.Yql",
 {
   extend : unify.business.RemoteData,
