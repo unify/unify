@@ -294,9 +294,6 @@ qx.Class.define("unify.view.ViewManager",
         }
       }
       
-      console.debug("IN-PATH: ", path.serialize())
-      
-
       var length = path.length;
       var oldPath = this.__path;
       var oldLength = oldPath ? oldPath.length : 0;

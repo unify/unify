@@ -116,7 +116,7 @@ qx.Class.define("unify.ui.Segmented",
       {
         var oldElem = this.query("[goto=" + old + "]");
         if (oldElem) {
-          Class.remove(oldElem, "checked");
+          Class.remove(oldElem, "selected");
         }
       }
 
@@ -124,7 +124,7 @@ qx.Class.define("unify.ui.Segmented",
       {
         var newElem = this.query("[goto=" + value + "]");
         if (newElem) {
-          Class.add(newElem, "checked");
+          Class.add(newElem, "selected");
         }
       }
     },
@@ -169,7 +169,7 @@ qx.Class.define("unify.ui.Segmented",
       elem.appendChild(buttonElem);
 
       if (this.getSelected() == config.segment) {
-        buttonElem.className = "checked";
+        buttonElem.className = "selected";
       }
 
       return buttonElem;
