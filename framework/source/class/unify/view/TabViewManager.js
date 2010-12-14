@@ -144,6 +144,7 @@ qx.Class.define("unify.view.TabViewManager",
     },
     
     
+    // property apply
     _applySelected : function(value, old)
     {
       this.debug("View: " + value);
@@ -172,7 +173,7 @@ qx.Class.define("unify.view.TabViewManager",
      */
     __onTap : function(e) 
     {
-      var elem = qx.dom.Hierarchy.closest(e.getTarget(), "div[goto]");
+      var elem = qx.dom.Hierarchy.closest(e.getTarget(), "div[view]");
       if (elem)
       {
         var path = unify.view.Path.fromString(elem.getAttribute("view"));
