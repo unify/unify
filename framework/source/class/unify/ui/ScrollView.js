@@ -700,7 +700,7 @@ qx.Class.define("unify.ui.ScrollView",
 
       // Stop native event behavior when touching inside the ScrollView
       ev.preventDefault();
-
+      
       // Immediately stop of types of animation/transition
       this.__isDecelerating = false;
       window.clearTimeout(this.__decelTimer);
@@ -872,6 +872,14 @@ qx.Class.define("unify.ui.ScrollView",
         // Start deceleration
         if (this.getAnimated() && (ev.getTimeStamp() - this.__lastTouchMove) <= this.__maxTrackingTime) {
           this.__startAnimation(ev);
+        }
+      }
+      else
+      {
+        // Click on natively focusable element
+        var target = ev.getTarget();
+        if (document.activeElement != target && target.tabIndex == 0) {
+          target.focus();
         }
       }
 
