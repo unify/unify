@@ -70,13 +70,10 @@ qx.Class.define("googly.view.Search",
       var titlebar = new unify.ui.TitleBar(this);
       layer.add(titlebar);
       
-      var content = new unify.ui.Content;
-      content.add("<input type='text' id='searchText'/><div class='button' exec='refresh'>Submit</div>");
       var scrollView = new unify.ui.ScrollView;
+      layer.add(scrollView);
       scrollView.setEnableScrollX(false);
-      content.add(scrollView);
-      scrollView.add("<ul id='resultList'></ul>");
-      layer.add(content);
+      scrollView.add("<input type='text' id='searchText'/><div class='button' exec='refresh'>Submit</div><ul id='resultList'></ul>");
 
       return layer;
     },
