@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Loading flicky...</title>
+    <title>Loading Flicky...</title>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-touch-fullscreen" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -25,10 +25,13 @@
       {
         var elem = document.createElement("script");
         var source = location.pathname.indexOf("/source/") > 0;
-        var variant = source ? "mobile" : (engine + "-" + (location.search.substring(1) == "debug" ? "on" : "off"));
+        var variant = "flicky";
+        if (!source) {
+          variant += "-" + engine + "-" + (location.search.substring(1) == "debug" ? "on" : "off")
+        }
         
         elem.type = "text/javascript";
-        elem.src = "script/flicky-" + variant + ".js";
+        elem.src = "script/" + variant + ".js";
         
         document.getElementsByTagName("head")[0].appendChild(elem);
       }, false);    
