@@ -16,6 +16,7 @@
 qx.Class.define("unify.view.ServiceView",
 {
   extend : unify.view.StaticView,
+  type : "abstract",
 
 
   /*
