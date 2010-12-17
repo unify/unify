@@ -45,7 +45,7 @@ qx.Class.define("googly.view.Weather",
     _getServiceParams : function() 
     {
       return {
-        city : unify.storage.Simple.getItem("weather/city")
+        city : unify.bom.Storage.get("weather/city")
       };
     },
     
@@ -101,7 +101,7 @@ qx.Class.define("googly.view.Weather",
 
       if (data == null)
       {
-        markup = "<h3>Could not find city: \"" + unify.storage.Simple.getItem("weather/city") + "\"</h3>";
+        markup = "<h3>Could not find city: \"" + unify.bom.Storage.get("weather/city") + "\"</h3>";
       }
       else
       {

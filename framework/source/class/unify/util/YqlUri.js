@@ -11,7 +11,7 @@
 /**
  * A class to help with building URLs for YQL (Yahoo Query Language)
  */
-qx.Class.define("unify.io.YqlUri",
+qx.Class.define("unify.util.YqlUri",
 {
   extend : Object,
   

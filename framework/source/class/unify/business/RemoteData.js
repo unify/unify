@@ -10,7 +10,7 @@
 /**
  * Remote data business object with intelligent cache managment.
  *
- * * Supports localStorage for storing data between application runs.
+ * * Uses qx.bom.Storage for storing data between application runs.
  * * Supports HTTP-proxying for cross-domain communication
  * * Supports basic HTTP authentification
  * * Make use of modification dates to optimize data loading via GET
@@ -39,7 +39,7 @@ qx.Class.define("unify.business.RemoteData",
     this.__headers = {};
 
     /** {String} Prefix used for storage */
-    var prefix = "unify/" + qx.lang.String.hyphenate(this.basename).substring(1);
+    var prefix = qx.lang.String.hyphenate(this.basename).substring(1);
     this.__storageDataPrefix = prefix + "/data/";
     this.__storageMetaPrefix = prefix + "/meta/";
 
@@ -251,7 +251,7 @@ qx.Class.define("unify.business.RemoteData",
     isCached : function(service, params)
     {
       var cacheId = this.__getCacheId(service, params);
-      return !!(this.__cache[cacheId] || (window.localStorage && this.getEnableStorage() && localStorage[this.__storageMetaPrefix + cacheId]))
+      return !!(this.__cache[cacheId] || (this.getEnableStorage() && qx.bom.Storage.get(this.__storageMetaPrefix + cacheId)));
     },
 
 
@@ -273,9 +273,9 @@ qx.Class.define("unify.business.RemoteData",
         return entry[field] || null;
       }
 
-      if (window.localStorage && this.getEnableStorage())
+      if (this.getEnableStorage())
       {
-        var meta = localStorage[this.__storageMetaPrefix + cacheId];
+        var meta = qx.bom.Storage.get(this.__storageMetaPrefix + cacheId);
         if (meta !== undefined)
         {
           meta = qx.lang.Json.parse(meta);
@@ -307,15 +307,15 @@ qx.Class.define("unify.business.RemoteData",
       var cacheId = this.__getCacheId(service, params);
       var cache = this.__cache;
       var entry = cache[cacheId] || null;
-      if (!entry && window.localStorage && this.getEnableStorage())
+      if (!entry && this.getEnableStorage())
       {
-        entry = localStorage[this.__storageMetaPrefix + cacheId];
+        entry = qx.bom.Storage.get(this.__storageMetaPrefix + cacheId);
         if (entry)
         {
           entry = qx.lang.Json.parse(entry);
 
           // Recover json/xml data
-          var data = localStorage[this.__storageDataPrefix + cacheId];
+          var data = qx.bom.Storage.get(this.__storageDataPrefix + cacheId);
           var start;
           if (entry.type === "application/json")
           {
@@ -358,10 +358,10 @@ qx.Class.define("unify.business.RemoteData",
       var cacheId = this.__getCacheId(service, params);
       delete this.__cache[cacheId];
 
-      if (window.localStorage && this.getEnableStorage())
+      if (this.getEnableStorage())
       {
-        delete localStorage[this.__storageMetaPrefix + cacheId];
-        delete localStorage[this.__storageDataPrefix + cacheId];
+        qx.bom.Storage.remove(this.__storageMetaPrefix + cacheId);
+        qx.bom.Storage.remove(this.__storageDataPrefix + cacheId);
       }
     },
 
@@ -777,7 +777,7 @@ qx.Class.define("unify.business.RemoteData",
         }
 
         // Store additionally in local storage
-        if (window.localStorage && this.getEnableStorage())
+        if (this.getEnableStorage())
         {
           // We split the storage of the time from the other stuff for faster access
           // without parsing the whole data into objects
@@ -798,24 +798,23 @@ qx.Class.define("unify.business.RemoteData",
 
             try
             {
-              delete localStorage[storageMetaId];
-              localStorage[storageMetaId] = storeData;
+              qx.bom.Storage.remove(storageMetaId);
+              qx.bom.Storage.set(storageMetaId, storeData);
             }
             catch(ex) {
               this.warn("Could not store data: " + ex);
             }
 
-            // We always store the text as complex objects are not supported by localStorage
             var storageDataId = this.__storageDataPrefix + cacheId;
-            localStorage[storageDataId] = text;
+            qx.bom.Storage.set(storageDataId, text);
             this.debug("Stored in: " + (new Date - start) + "ms");
           }
           else
           {
             // Parse meta data, update time field, and store again
-            var meta = Json.parse(localStorage[storageMetaId]);
+            var meta = Json.parse(qx.bom.Storage.get(storageMetaId));
             meta.checked = now;
-            localStorage[storageMetaId] = Json.stringify(meta);
+            qx.bom.Storage.set(storageMetaId, Json.stringify(meta));
           }
         }
       }

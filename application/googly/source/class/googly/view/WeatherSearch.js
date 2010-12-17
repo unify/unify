@@ -52,7 +52,7 @@ qx.Class.define("googly.view.WeatherSearch",
     {
       this.base(arguments);
       
-      this.__searchField.value = unify.storage.Simple.getItem("weather/city");
+      this.__searchField.value = unify.bom.Storage.get("weather/city");
     },
     
     
@@ -61,9 +61,9 @@ qx.Class.define("googly.view.WeatherSearch",
     {
       this.base(arguments);
       
-      if (this.__searchField.value != unify.storage.Simple.getItem("weather/city"))
+      if (this.__searchField.value != unify.bom.Storage.get("weather/city"))
       {
-        unify.storage.Simple.setItem("weather/city", this.__searchField.value);
+        unify.bom.Storage.set("weather/city", this.__searchField.value);
         googly.view.Weather.getInstance().refresh();
       }
     }

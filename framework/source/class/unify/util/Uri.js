@@ -10,7 +10,7 @@
 /**
  * URI parser and builder class.
  */
-qx.Class.define("unify.io.Uri",
+qx.Class.define("unify.util.Uri",
 {
   extend : Object,
 

@@ -27,10 +27,6 @@ qx.Class.define("unify.view.Navigation",
   {
     this.base(arguments);
 
-    // App ID is used e.g. for storage of navigation
-    var app = qx.core.Setting.get("qx.application");
-    this.__appId = app.substring(0, app.indexOf("."));
-
     // Initialize storage
     this.__viewManagers = {};
   },
@@ -46,11 +42,6 @@ qx.Class.define("unify.view.Navigation",
 
   members :
   {
-    /** {String} Unique name of the application */
-    __appId : null,
-
-
-
     /*
     ---------------------------------------------------------------------------
       VIEW MANAGER MANAGMENT
@@ -97,10 +88,7 @@ qx.Class.define("unify.view.Navigation",
       History.addListener("change", this.__onHistoryChange, this);
 
       // Restore path from storage or use default view
-      var path;
-      if (window.localStorage) {
-        path = localStorage[this.__appId + "/navigationpath"];
-      }
+      var path = qx.bom.Storage.get("navigation-path");
 
       // Call history to initialize application
       this.__historyInit = true;
@@ -264,10 +252,7 @@ qx.Class.define("unify.view.Navigation",
 
       var joined = this.__serializedPath = path.serialize();
       unify.bom.History.getInstance().setLocation(joined);
-
-      if (window.localStorage) {
-        localStorage[this.__appId + "/navigationpath"] = joined;
-      }
+      unify.bom.Storage.set("navigation-path", joined);
     },
 
 
