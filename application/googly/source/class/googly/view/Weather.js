@@ -45,7 +45,7 @@ qx.Class.define("googly.view.Weather",
     _getServiceParams : function() 
     {
       return {
-        city : unify.bom.Storage.get("weather/city")
+        city : unify.bom.Storage.get("weather/city") || "Darmstadt"
       };
     },
     
