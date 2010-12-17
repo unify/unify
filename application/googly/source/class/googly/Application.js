@@ -38,6 +38,7 @@ qx.Class.define("googly.Application",
       MasterViewManager.add(googly.view.Search);
       MasterViewManager.add(googly.view.Weather);
       MasterViewManager.add(googly.view.WeatherSearch);
+      MasterViewManager.add(unify.view.SysInfo);
       
       // Configure tab view
       var TabView = new unify.view.TabViewManager(MasterViewManager);
@@ -45,6 +46,7 @@ qx.Class.define("googly.Application",
       TabView.add(googly.view.Translate);
       TabView.add(googly.view.Search);
       TabView.add(googly.view.Weather);
+      TabView.add(unify.view.SysInfo);
       this.add(TabView);
       
       // Add at least one view manager to the navigation managment
