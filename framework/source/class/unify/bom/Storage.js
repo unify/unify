@@ -54,7 +54,7 @@ qx.Class.define("unify.bom.Storage",
     remove : function(key) 
     {
       if (this.__localStorage) {
-        localStorage.remove(this.__prefix + key);
+        localStorage.removeItem(this.__prefix + key);
       } else {
         qx.bom.Cookie.del(this.__prefix + key);
       }

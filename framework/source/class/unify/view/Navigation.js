@@ -88,7 +88,7 @@ qx.Class.define("unify.view.Navigation",
       History.addListener("change", this.__onHistoryChange, this);
 
       // Restore path from storage or use default view
-      var path = qx.bom.Storage.get("navigation-path");
+      var path = unify.bom.Storage.get("navigation-path");
 
       // Call history to initialize application
       this.__historyInit = true;
