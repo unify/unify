@@ -1,9 +1,9 @@
 /* ************************************************************************
 
-  flicky
+  Flicky
 
   Copyright:
-    2009 Deutsche Telekom AG, Germany, http://telekom.com
+    2010-2011 Deutsche Telekom AG, Germany, http://telekom.com
 
  ************************************************************************ */
 

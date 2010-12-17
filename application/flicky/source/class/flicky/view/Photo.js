@@ -1,11 +1,11 @@
 /* ************************************************************************
 
-  flicky
+  Flicky
 
   Copyright:
-    2009 Deutsche Telekom AG, Germany, http://telekom.com
+    2010-2011 Deutsche Telekom AG, Germany, http://telekom.com
 
- ************************************************************************ */
+************************************************************************* */
 
 /**
  * Recent View
@@ -68,12 +68,6 @@ qx.Class.define("flicky.view.Photo", {
 
 
     // overridden
-    isFullScreen : function() {
-      return true;
-    },
-
-
-    // overridden
     _renderData : function(data)
     {
       var results = data.query.results;
@@ -90,6 +84,13 @@ qx.Class.define("flicky.view.Photo", {
       }
     },
 
+
+    /**
+     * Converts a data entry into a HTML fragment for an image element
+     *
+     * @param entry {Map} Data structure
+     * @return {String} HTML string
+     */
     __createImage : function(entry)
     {
       var tmpl = '<img src="http://farm{$farm}.static.flickr.com/{$server}/{$id}_{$secret}_b.jpg" alt="{$title}" />';

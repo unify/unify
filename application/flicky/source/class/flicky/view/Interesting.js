@@ -1,16 +1,17 @@
 /* ************************************************************************
 
-  flicky
+  Flicky
 
   Copyright:
-    2009 Deutsche Telekom AG, Germany, http://telekom.com
+    2010-2011 Deutsche Telekom AG, Germany, http://telekom.com
 
- ************************************************************************ */
+************************************************************************* */
 
 /**
  * Interesting View
  */
-qx.Class.define("flicky.view.Interesting", {
+qx.Class.define("flicky.view.Interesting", 
+{
   extend : unify.view.RemoteView,
   type : "singleton",
 
@@ -42,12 +43,6 @@ qx.Class.define("flicky.view.Interesting", {
 
 
     // overridden
-    isFullScreen : function() {
-      return true;
-    },
-
-
-    // overridden
     _getBusinessObject : function() {
       return flicky.business.Flickr.getInstance();
     },
@@ -55,12 +50,6 @@ qx.Class.define("flicky.view.Interesting", {
 
     // overridden
     _getServiceName : function() {
-      return "interesting";
-    },
-
-
-    // overridden
-    _getRenderVariant : function() {
       return "interesting";
     },
 
@@ -78,6 +67,13 @@ qx.Class.define("flicky.view.Interesting", {
       this.__content.replace(html.join(""));
     },
 
+
+    /**
+     * Converts a data entry into a HTML fragment for an image element
+     *
+     * @param entry {Map} Data structure
+     * @return {String} HTML string
+     */
     __createImage : function(entry)
     {
       var tmpl = '<img goto="photo:{$id}" src="http://farm{$farm}.static.flickr.com/{$server}/{$id}_{$secret}_s.jpg" alt="{$title}" />';
