@@ -72,6 +72,14 @@ qx.Class.define("unify.view.StaticView",
       nullable : true
     },
     
+    /** Reference to master view manager (this view can not be registered there) */
+    master : 
+    {
+      check : "unify.view.ViewManager",
+      nullable : true,
+      apply : "_applyMaster"
+    },
+    
     /** The parent of the view. This is normally managed automatically by the ViewManager */
     parent :
     {
@@ -302,6 +310,11 @@ qx.Class.define("unify.view.StaticView",
       PROPERTY APPLY
     ---------------------------------------------------------------------------
     */
+    
+    // property apply
+    _applyMaster : function(value, old) {
+      this.debug("MASTER " + value)
+    },
 
     // property apply
     _applyParam : function() {

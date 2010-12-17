@@ -73,7 +73,8 @@ qx.Class.define("unify.view.SplitViewManager",
       
       var orient = e.getOrientation();
       var PopOverManager = this.getPopOverManager();
-      var masterElem = this.__masterViewManager.getElement();
+      var masterViewManager = this.__masterViewManager;
+      var detailViewManager = this.__detailViewManager;
       
       // Portrait shows only detail view manager
       if (orient == 0 || orient == 180) 
@@ -83,8 +84,9 @@ qx.Class.define("unify.view.SplitViewManager",
           this.debug("Switching to portrait layout");
           
           elem.setAttribute("orient", "portrait");
-          elem.removeChild(masterElem);
-          PopOverManager.setViewManager(this.__masterViewManager);
+          elem.removeChild(masterViewManager.getElement());
+          PopOverManager.setViewManager(masterViewManager);
+          detailViewManager.setMaster(masterViewManager);
         }
       } 
       else
@@ -95,12 +97,17 @@ qx.Class.define("unify.view.SplitViewManager",
           
           elem.setAttribute("orient", "landscape");
           PopOverManager.resetViewManager();
-          elem.insertBefore(masterElem, elem.firstChild);
+          elem.insertBefore(masterViewManager.getElement(), elem.firstChild);
+          detailViewManager.resetMaster();
         }
       }
     },
     
     
+    /**
+     * 
+     *
+     */
     getPopOverManager : function()
     {
       var popOverManager = this.__popOverManager;
@@ -128,10 +135,15 @@ qx.Class.define("unify.view.SplitViewManager",
         elem.className = "split-view";
         elem.setAttribute("orient", orient == 90 || orient == 270 ? "landscape" : "portrait");
         
-        if (orient == 90 || orient == 270) {
+        if (orient == 90 || orient == 270) 
+        {
           elem.appendChild(this.__masterViewManager.getElement());
-        } else {
+          this.__detailViewManager.resetMaster();
+        } 
+        else 
+        {
           this.getPopOverManager().setViewManager(this.__masterViewManager);
+          this.__detailViewManager.setMaster(this.__masterViewManager);
         }
         
         elem.appendChild(this.__detailViewManager.getElement());
