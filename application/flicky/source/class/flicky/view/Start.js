@@ -21,7 +21,7 @@ qx.Class.define("flicky.view.Start",
 
 
     // overridden
-    getTitle : function(type, param) {
+    getTitle : function(type) {
       return "Flicky";
     },
 

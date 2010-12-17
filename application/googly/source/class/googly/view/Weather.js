@@ -18,7 +18,7 @@ qx.Class.define("googly.view.Weather",
   members : 
   {
     // overridden
-    getTitle : function(type, param) {
+    getTitle : function(type) {
       return "Weather";
     },
     

@@ -21,7 +21,7 @@ qx.Class.define("flicky.view.Recent",
 
 
     // overridden
-    getTitle : function(type, param) {
+    getTitle : function(type) {
       return "Recent";
     },
 

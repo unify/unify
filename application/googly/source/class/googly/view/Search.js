@@ -18,7 +18,7 @@ qx.Class.define("googly.view.Search",
   members : 
   {
     // overridden
-    getTitle : function(type, param) {
+    getTitle : function(type) {
       return "Search";
     },
     

@@ -21,7 +21,7 @@ qx.Class.define("flicky.view.Photo", {
 
 
     // overridden
-    getTitle : function(type, param) {
+    getTitle : function(type) {
       return this.__title;
     },
 

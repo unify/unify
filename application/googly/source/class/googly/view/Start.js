@@ -17,7 +17,7 @@ qx.Class.define("googly.view.Start", {
   members : 
   {
     // overridden
-    getTitle : function(type, param) {
+    getTitle : function(type) {
       return "Googly";
     },
 
