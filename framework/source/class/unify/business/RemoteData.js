@@ -42,17 +42,6 @@ qx.Class.define("unify.business.RemoteData",
     var prefix = qx.lang.String.hyphenate(this.basename).substring(1);
     this.__storageDataPrefix = prefix + "/data/";
     this.__storageMetaPrefix = prefix + "/meta/";
-
-    // Detect requirement of cross domain proxy
-    if (unify.bom.client.Extension.PHONEGAP) {
-      this.setEnableProxy(false);
-    }
-
-    // Safari supports cross-domain requests when the document is loaded from file system
-    // Not supported in other Webkit browsers like Chrome or browsers with other engines
-    else if (location.protocol == "file:" && qx.bom.client.Browser.NAME == "safari") {
-      //this.setEnableProxy(false);
-    }
   },
 
 
@@ -152,7 +141,7 @@ qx.Class.define("unify.business.RemoteData",
     /** Which authentication method is needed for all services */
     authMethod :
     {
-      check : ["basic","xauth","oauth"],
+      check : ["basic"],
       nullable : true
     },
 
@@ -550,6 +539,7 @@ qx.Class.define("unify.business.RemoteData",
       req.setRequestHeader(key, value);
     },
 
+
     /**
      * Adds custom request headers to the request
      *
@@ -558,10 +548,8 @@ qx.Class.define("unify.business.RemoteData",
     __addRequestHeaders : function(req)
     {
       var headers = this.__headers;
-      for (var name in headers)
-      {
+      for (var name in headers) {
         req.setRequestHeader(name, headers[name]);
-        this.debug(""+name+"-"+headers[name]+"");
       }
     },
 
@@ -571,8 +559,7 @@ qx.Class.define("unify.business.RemoteData",
      * @param name {String} Name of header
      * @param value {String} Value of header
      */
-    setRequestHeader : function(name, value)
-    {
+    setRequestHeader : function(name, value) {
       this.__headers[name] = value;
     },
 
