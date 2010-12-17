@@ -1,3 +1,12 @@
+/* ************************************************************************
+
+   Flicky
+
+   Copyright:
+     2010-2011 Deutsche Telekom AG, Germany, http://telekom.com
+
+************************************************************************ */
+
 /**
  * Business layer for anonymous Flickr APIs
  */

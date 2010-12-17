@@ -1,11 +1,11 @@
 /* ************************************************************************
 
-  Googly
+   Googly
 
-  Copyright:
-    2009 Deutsche Telekom AG, Germany, http://telekom.com
+   Copyright:
+     2010-2011 Deutsche Telekom AG, Germany, http://telekom.com
 
- ************************************************************************ */
+************************************************************************ */
 
 /**
  * Search for a name of a city to lookup weather for.
