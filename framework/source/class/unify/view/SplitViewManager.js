@@ -39,6 +39,10 @@ qx.Class.define("unify.view.SplitViewManager",
     this.__masterViewManager = masterViewManager;
     this.__detailViewManager = detailViewManager;
     
+    // Configure view manager relation
+    detailViewManager.setMaster(masterViewManager);
+    
+    // Attach to rotate event to control view manager visibility
     qx.event.Registration.addListener(window, "rotate", this.__onRotate, this);
   },
   
@@ -75,6 +79,7 @@ qx.Class.define("unify.view.SplitViewManager",
       var PopOverManager = this.getPopOverManager();
       var masterViewManager = this.__masterViewManager;
       var detailViewManager = this.__detailViewManager;
+      var masterElem = masterViewManager.getElement();
       
       // Portrait shows only detail view manager
       if (orient == 0 || orient == 180) 
@@ -84,9 +89,9 @@ qx.Class.define("unify.view.SplitViewManager",
           this.debug("Switching to portrait layout");
           
           elem.setAttribute("orient", "portrait");
-          elem.removeChild(masterViewManager.getElement());
+          elem.removeChild(masterElem);
           PopOverManager.setViewManager(masterViewManager);
-          detailViewManager.setMaster(masterViewManager);
+          detailViewManager.setStandalone(true);
         }
       } 
       else
@@ -97,8 +102,8 @@ qx.Class.define("unify.view.SplitViewManager",
           
           elem.setAttribute("orient", "landscape");
           PopOverManager.resetViewManager();
-          elem.insertBefore(masterViewManager.getElement(), elem.firstChild);
-          detailViewManager.resetMaster();
+          elem.insertBefore(masterElem, elem.firstChild);
+          detailViewManager.resetStandalone();
         }
       }
     },

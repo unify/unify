@@ -68,6 +68,38 @@ qx.Class.define("unify.view.ViewManager",
     /** Fired whenever the view-local path was modified */
     changePath : "qx.event.type.Data"
   },
+  
+  
+  
+  /*
+  *****************************************************************************
+     PROPERTIES
+  *****************************************************************************
+  */
+  
+  properties :
+  {
+    /** 
+     * Related view manager which functions as a master (controller) for this view manager 
+     */
+    master : 
+    {
+      check : "unify.view.ViewManager",
+      nullable : true,
+      apply : "_applyMaster"
+    },
+    
+    /** 
+     * Whether this view manager's view controller is displayed standalone e.g. 
+     * the master view manager is not visible at the moment 
+     */
+    standalone :
+    {
+      check : "Boolean",
+      init : false,
+      apply : "_applyStandalone"
+    }
+  },
 
 
 
@@ -215,6 +247,32 @@ qx.Class.define("unify.view.ViewManager",
       this.__setView(viewObj);
 
       this.fireDataEvent("changePath", self.__path);
+    },
+    
+    
+    
+    
+    /*
+    ---------------------------------------------------------------------------
+      MASTER MANAGMENT
+    ---------------------------------------------------------------------------
+    */
+        
+    _applyMaster : function(value, old) {
+      // Nothing to do here
+    },
+    
+    
+    _applyStandalone : function(value, old)
+    {
+      this.debug("STANDALONE: " + value);
+      
+      var view = this.__view;
+      if (view) 
+      {
+        var master = this.getMaster();
+        value && master ? view.setMaster(master) : view.resetMaster();
+      }      
     },
 
 

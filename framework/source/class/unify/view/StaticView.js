@@ -313,9 +313,10 @@ qx.Class.define("unify.view.StaticView",
     
     // property apply
     _applyMaster : function(value, old) {
-      this.debug("MASTER " + value)
+      this.debug("MASTER XXX: " + value);
     },
-
+    
+    
     // property apply
     _applyParam : function() {
       // nothing to do here
