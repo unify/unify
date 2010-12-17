@@ -265,7 +265,7 @@ qx.Class.define("unify.view.ViewManager",
       {
         var master = this.getMaster();
         value && master ? view.setMaster(master) : view.resetMaster();
-      }      
+      }
     },
 
 

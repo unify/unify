@@ -143,12 +143,12 @@ qx.Class.define("unify.view.SplitViewManager",
         if (orient == 90 || orient == 270) 
         {
           elem.appendChild(this.__masterViewManager.getElement());
-          this.__detailViewManager.resetMaster();
+          this.__detailViewManager.resetStandalone();
         } 
         else 
         {
           this.getPopOverManager().setViewManager(this.__masterViewManager);
-          this.__detailViewManager.setMaster(this.__masterViewManager);
+          this.__detailViewManager.setStandalone(true);
         }
         
         elem.appendChild(this.__detailViewManager.getElement());
