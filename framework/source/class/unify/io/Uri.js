@@ -12,7 +12,7 @@
  */
 qx.Class.define("unify.io.Uri",
 {
-  extend : qx.core.Object,
+  extend : Object,
 
 
 
