@@ -4,7 +4,13 @@
 
     Homepage: unify-project.org
     License: MIT + Apache (V2)
-    Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
+    Copyright: 2009-2011 Deutsche Telekom AG, Germany, http://telekom.com
+
+*********************************************************************************************** */
+
+/* ***********************************************************************************************
+
+#require(unify.event.handler.Orientation)
 
 *********************************************************************************************** */
 
@@ -33,7 +39,7 @@ qx.Class.define("unify.view.SplitViewManager",
     this.__masterViewManager = masterViewManager;
     this.__detailViewManager = detailViewManager;
     
-    
+    qx.event.Registration.addListener(window, "rotate", this.__onRotate, this);
   },
   
 
@@ -52,6 +58,60 @@ qx.Class.define("unify.view.SplitViewManager",
     /** {unify.view.ViewManager} The detail view manager */
     __detailViewManager : null,
     
+    
+    /**
+     * Reacts on rotate event of window
+     *
+     * @param e {unify.event.type.Orientation} Event object
+     */
+    __onRotate : function(e)
+    {
+      var elem = this.__element;
+      if (!elem) {
+        return;
+      }
+      
+      var orient = e.getOrientation();
+      var PopOverManager = this.getPopOverManager();
+      var masterElem = this.__masterViewManager.getElement();
+      
+      // Portrait shows only detail view manager
+      if (orient == 0 || orient == 180) 
+      {
+        if (masterElem.parentNode == elem)
+        {
+          this.debug("Switching to portrait layout");
+          
+          elem.setAttribute("orient", "portrait");
+          elem.removeChild(masterElem);
+          PopOverManager.setViewManager(this.__masterViewManager);
+        }
+      } 
+      else
+      {
+        if (masterElem.parentNode != elem)
+        {
+          this.debug("Switching to landscape layout");
+          
+          elem.setAttribute("orient", "landscape");
+          PopOverManager.resetViewManager();
+          elem.insertBefore(masterElem, elem.firstChild);
+        }
+      }
+    },
+    
+    
+    getPopOverManager : function()
+    {
+      var popOverManager = this.__popOverManager;
+      if (!popOverManager) {
+        popOverManager = this.__popOverManager = new unify.view.PopOverManager;
+      } 
+      
+      return popOverManager;
+    },
+    
+    
     /**
      * Returns the root element of the split screen
      *
@@ -62,9 +122,18 @@ qx.Class.define("unify.view.SplitViewManager",
       var elem = this.__element;
       if (!elem)
       {
+        var orient = qx.bom.Viewport.getOrientation();
+
         var elem = this.__element = document.createElement("div");
         elem.className = "split-view";
-        elem.appendChild(this.__masterViewManager.getElement());
+        elem.setAttribute("orient", orient == 90 || orient == 270 ? "landscape" : "portrait");
+        
+        if (orient == 90 || orient == 270) {
+          elem.appendChild(this.__masterViewManager.getElement());
+        } else {
+          this.getPopOverManager().setViewManager(this.__masterViewManager);
+        }
+        
         elem.appendChild(this.__detailViewManager.getElement());
       }
 

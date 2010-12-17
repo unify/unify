@@ -93,14 +93,19 @@ a[href], [rel], [goto], [exec]
     position: relative
     overflow: hidden
     
-    &:first-child
-      width: 30%
-      border-right: 1px solid black
+  &[orient=portrait]
+    > div
+      &:first-child
+        width: 100%
 
-    &:last-child
-      width: 60%
+  &[orient=landscape]
+    > div 
+      &:first-child
+        width: 30%
+        border-right: 1px solid black
 
-      
+      &:last-child
+        width: 60%
   
   
 
