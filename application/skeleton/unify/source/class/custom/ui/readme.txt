@@ -1,1 +1,1 @@
-Custom dom based ui elements
+Custom DOM based UI components
