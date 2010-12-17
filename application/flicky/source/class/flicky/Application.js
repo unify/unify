@@ -28,8 +28,10 @@ qx.Class.define("flicky.Application",
       // Call super class
       this.base(arguments);
 
-      document.title = "flicky";
+      // Configure application
+      document.title = "Flicky";
 
+      // Create views
       var MasterViewManager = new unify.view.ViewManager("master");
       MasterViewManager.add(flicky.view.Start, true);
       MasterViewManager.add(flicky.view.Recent);
