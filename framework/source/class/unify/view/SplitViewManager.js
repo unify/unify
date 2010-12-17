@@ -32,6 +32,8 @@ qx.Class.define("unify.view.SplitViewManager",
 
     this.__masterViewManager = masterViewManager;
     this.__detailViewManager = detailViewManager;
+    
+    
   },
   
 

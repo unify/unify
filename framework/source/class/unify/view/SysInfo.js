@@ -36,7 +36,7 @@ qx.Class.define("unify.view.SysInfo",
     */
 
     // overridden
-    getTitle : function(type, param) {
+    getTitle : function(type) {
       return "System Info";
     },
 

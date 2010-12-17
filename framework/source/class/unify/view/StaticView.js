@@ -77,7 +77,6 @@ qx.Class.define("unify.view.StaticView",
     {
       check : "unify.view.StaticView",
       nullable : true,
-      apply : "_applyParent",
       event : "changeParent"
     },
 
@@ -176,10 +175,9 @@ qx.Class.define("unify.view.StaticView",
      * Returns the title of the view
      *
      * @param type {String} One of "short", "title-bar", "tab-bar", "up", etc. Support depends on view.
-     * @param param {String} Any allowed parameter. Has higher priority than local property.
      * @return {String} Title of the view
      */
-    getTitle : function(type, param) {
+    getTitle : function(type) {
       return "Default";
     },
 
@@ -257,12 +255,6 @@ qx.Class.define("unify.view.StaticView",
       }
     },
 
-
-    // property apply
-    _applyParent : function(value, old)
-    {
-      this.debug("Change Parent: " + value)
-    },
 
 
 
