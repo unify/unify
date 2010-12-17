@@ -85,8 +85,7 @@ qx.Class.define("unify.view.ViewManager",
     master : 
     {
       check : "unify.view.ViewManager",
-      nullable : true,
-      apply : "_applyMaster"
+      nullable : true
     },
     
     /** 
@@ -258,15 +257,9 @@ qx.Class.define("unify.view.ViewManager",
     ---------------------------------------------------------------------------
     */
         
-    _applyMaster : function(value, old) {
-      // Nothing to do here
-    },
-    
-    
+    // property apply
     _applyStandalone : function(value, old)
     {
-      this.debug("STANDALONE: " + value);
-      
       var view = this.__view;
       if (view) 
       {
