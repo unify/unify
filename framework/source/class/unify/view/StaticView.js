@@ -85,6 +85,7 @@ qx.Class.define("unify.view.StaticView",
     {
       check : "unify.view.StaticView",
       nullable : true,
+      apply : "_applyParent",
       event : "changeParent"
     },
 
@@ -312,12 +313,22 @@ qx.Class.define("unify.view.StaticView",
     */
     
     // property apply
+    _applyParent : function(value, old)
+    {
+      if (value) {
+        this.debug("Show button for ParentView: " + value);
+      } else {
+        this.debug("Hide button for ParentView: " + old);
+      }
+    },
+    
+    
+    // property apply
     _applyMaster : function(value, old) 
     {
       if (value) {
         this.debug("Show button for MasterViewManager: " + value);
-      }
-      else {
+      } else {
         this.debug("Hide button for MasterViewManager: " + old);
       }
     },
