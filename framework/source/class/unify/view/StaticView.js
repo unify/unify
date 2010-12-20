@@ -312,8 +312,14 @@ qx.Class.define("unify.view.StaticView",
     */
     
     // property apply
-    _applyMaster : function(value, old) {
-      this.debug("MASTER XXX: " + value);
+    _applyMaster : function(value, old) 
+    {
+      if (value) {
+        this.debug("Show button for MasterViewManager: " + value);
+      }
+      else {
+        this.debug("Hide button for MasterViewManager: " + old);
+      }
     },
     
     
