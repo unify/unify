@@ -75,7 +75,7 @@ qx.Class.define("unify.ui.TitleBar",
     __onViewChangeParent : function(e)
     {
       var parentView = this.getView().getParent();
-      var upElem = this.query("[rel=up]");
+      var upElem = this.query("[rel=parent]");
 
       if (parentView)
       {
@@ -94,7 +94,7 @@ qx.Class.define("unify.ui.TitleBar",
             {
               label : upTitle,
               target : "left",
-              rel : "up"
+              rel : "parent"
             });
           }
 

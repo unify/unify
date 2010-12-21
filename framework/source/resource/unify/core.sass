@@ -180,21 +180,22 @@ a[href], [rel], [goto], [exec]
     display: none !important
 
   // The same logic applies here for visible buttons
-  &:not(.show-master)
+  &:not(.has-master)
     [rel=master]
       display: none !important
 
-  &:not(.show-parent)
-    [rel=up]
+  &:not(.has-parent)
+    [rel=parent]
       display: none !important
 
-  &:not(.show-child)
-    [rel=down]
+  &:not(.is-modal)
+    [rel=close]
       display: none !important
       
-  &:not(.show-close)
-    [rel=close]
-      display: none !important      
+  &.is-modal
+    [rel=parent]
+      display: none !important
+  
 
 
 .android .layer

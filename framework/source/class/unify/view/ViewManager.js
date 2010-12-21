@@ -504,7 +504,7 @@ qx.Class.define("unify.view.ViewManager",
 
       // Check up-navigation request first
       var rel = elem.getAttribute("rel");
-      if (rel == "up") {
+      if (rel == "parent") {
         return this.navigate(this.__path.slice(0, -1));
       }
 
@@ -543,7 +543,7 @@ qx.Class.define("unify.view.ViewManager",
         var cloneLast = clone.length-1;
         
         // Select right modification point
-        if (rel == "parent") 
+        if (rel == "same") 
         {
           clone[cloneLast] = config;
         } 
