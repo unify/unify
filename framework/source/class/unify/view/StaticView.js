@@ -410,7 +410,12 @@ qx.Class.define("unify.view.StaticView",
   *****************************************************************************
   */
 
-  destruct : function() {
-    this.__layer = null;
+  destruct : function() 
+  {
+    if (this.__layer)
+    {
+      this.__layer.dispose();
+      this.__layer = null;
+    }
   }
 });
