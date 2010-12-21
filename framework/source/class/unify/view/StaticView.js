@@ -35,6 +35,21 @@ qx.Class.define("unify.view.StaticView",
   extend : qx.core.Object,
   include : [qx.locale.MTranslation],
   type : "abstract",
+  
+  
+  /*
+  *****************************************************************************
+     CONSTRUCTOR
+  *****************************************************************************
+  */  
+  
+  construct : function()
+  {
+    this.base(arguments);
+    
+    this.__id = qx.lang.String.hyphenate(this.constructor.basename).substring(1);
+  },
+  
 
 
   /*
@@ -78,6 +93,14 @@ qx.Class.define("unify.view.StaticView",
       check : "unify.view.ViewManager",
       nullable : true,
       apply : "_applyMaster"
+    },
+    
+    /** Whether the view should be display modal */
+    modal : 
+    {
+      check : "Boolean",
+      init : false,
+      apply : "_applyModal"
     },
     
     /** The parent of the view. This is normally managed automatically by the ViewManager */
@@ -135,6 +158,9 @@ qx.Class.define("unify.view.StaticView",
 
     /** {unify.ui.Layer} Stores the layer instance of the view. */
     __layer : null,
+    
+    /** {String} View ID */
+    __id : null,
 
 
     /**
@@ -143,7 +169,7 @@ qx.Class.define("unify.view.StaticView",
      * @return {String} View ID
      */
     getId : function() {
-      return qx.lang.String.hyphenate(this.constructor.basename).substring(1);
+      return this.__id;
     },
 
 
@@ -201,18 +227,6 @@ qx.Class.define("unify.view.StaticView",
       return !!this.__layer;
     },
 
-
-    /**
-     * Whether the view is rendered modally.
-     *
-     * This is useful for dialog to create items, complex
-     * selections (date, time, ...), etc.
-     *
-     * @return {Boolean} Whether the view is modal.
-     */
-    isModal : function() {
-      return false;
-    },
 
 
 
@@ -313,21 +327,24 @@ qx.Class.define("unify.view.StaticView",
     */
     
     // property apply
+    _applyModal : function(value, old)
+    {
+      
+    },
+    
+    
+    // property apply
     _applyParent : function(value, old)
     {
-      if (value) {
-        this.debug("Show button for ParentView: " + value);
-      } else {
-        this.debug("Hide button for ParentView: " + old);
-      }
-      
-      if (!!old != !!value) 
+      var layer = this.__layer;
+      if (layer && !!old != !!value) 
       {
-        var layerElem = this.getLayer().getElement();
+        var Class = qx.bom.element2.Class;
+        var layerElem = layer.getElement();
         if (value) {
-          qx.bom.element2.Class.add(layerElem, "show-parent");
+          Class.add(layerElem, "show-parent");
         } else {
-          qx.bom.element2.Class.remove(layerElem, "show-parent");
+          Class.remove(layerElem, "show-parent");
         }
       }      
     },
@@ -336,19 +353,15 @@ qx.Class.define("unify.view.StaticView",
     // property apply
     _applyMaster : function(value, old) 
     {
-      if (value) {
-        this.debug("Show button for MasterViewManager: " + value);
-      } else {
-        this.debug("Hide button for MasterViewManager: " + old);
-      }
-      
-      if (!!old != !!value) 
+      var layer = this.__layer;
+      if (layer && !!old != !!value) 
       {
-        var layerElem = this.getLayer().getElement();
+        var Class = qx.bom.element2.Class;
+        var layerElem = layer.getElement();
         if (value) {
-          qx.bom.element2.Class.add(layerElem, "show-master");
+          Class.add(layerElem, "show-master");
         } else {
-          qx.bom.element2.Class.remove(layerElem, "show-master");
+          Class.remove(layerElem, "show-master");
         }
       }
     },
