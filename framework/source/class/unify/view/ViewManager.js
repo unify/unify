@@ -292,6 +292,13 @@ qx.Class.define("unify.view.ViewManager",
      */
     add : function(viewClass, isDefault)
     {
+      if (qx.core.Variant.isSet("qx.debug", "on"))
+      {
+        if (!viewClass) {
+          throw new Error("Invalid view class to add(): " + viewClass);
+        }
+      }
+      
       var id = qx.lang.String.hyphenate(viewClass.basename).substring(1);
       if (isDefault) {
         this.__defaultViewId = id;
