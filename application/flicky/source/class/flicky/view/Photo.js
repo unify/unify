@@ -10,7 +10,8 @@
 /**
  * Recent View
  */
-qx.Class.define("flicky.view.Photo", {
+qx.Class.define("flicky.view.Photo", 
+{
   extend : unify.view.RemoteView,
   type : "singleton",
 

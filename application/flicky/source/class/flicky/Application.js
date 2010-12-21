@@ -40,7 +40,10 @@ qx.Class.define("flicky.Application",
       var DetailViewManager = new unify.view.ViewManager("detail");
       DetailViewManager.add(flicky.view.Info, true);
       DetailViewManager.add(flicky.view.Photo);
-      DetailViewManager.add(flicky.view.Meta);
+      
+      var OverlayViewManager = new unify.view.ViewManager("overlay");
+      OverlayViewManager.add(flicky.view.Meta);
+      this.add(OverlayViewManager);
 
       var SplitViewManager = new unify.view.SplitViewManager(MasterViewManager, DetailViewManager);
       this.add(SplitViewManager);
@@ -48,6 +51,7 @@ qx.Class.define("flicky.Application",
       var Navigation = unify.view.Navigation.getInstance();
       Navigation.add(MasterViewManager);
       Navigation.add(DetailViewManager);
+      Navigation.add(OverlayViewManager);
       Navigation.init();
     }
   }
