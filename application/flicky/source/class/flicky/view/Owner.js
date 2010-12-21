@@ -8,22 +8,12 @@
 ************************************************************************ */
 
 /**
- * Shows meta data of selected photo
+ * Shows owner details of the selected photo
  */
-qx.Class.define("flicky.view.Meta",
+qx.Class.define("flicky.view.Owner",
 {
   extend : unify.view.ServiceView,
   type : "singleton",
-
-  properties :
-  {
-    // overridden
-    modal : 
-    {
-      refine : true,
-      init : true
-    }
-  },
 
   members :
   {
@@ -33,7 +23,7 @@ qx.Class.define("flicky.view.Meta",
     
     // overridden
     getTitle : function(type) {
-      return "Meta Data";
+      return "Owner";
     },
 
 
@@ -42,7 +32,6 @@ qx.Class.define("flicky.view.Meta",
     {
       var layer = new unify.ui.Layer(this);
       var titlebar = new unify.ui.TitleBar(this);
-      titlebar.add({label:"Done", rel:"close", target:"right"});
       layer.add(titlebar);
 
       var content = this.__content = new unify.ui.Content;
@@ -86,19 +75,15 @@ qx.Class.define("flicky.view.Meta",
       if (!template)
       {
         var html = "<ul>";
-        html += "<li><label>Title</label><span>{title}</span></li>";
-        html += "<li><label>ID</label><span>{id}</span></li>";
-        html += "<li goto=\"owner\"><label>Owner</label><hr/></li>";
-        html += "<li goto=\"location\"><label>Location</label><hr/></li>";
-        html += "<li><label>Description</label><span>{description}</span></li>";
-        html += "<li><label>Comments</label><span>{comments}</span></li>";
+        html += "<li><label>Name</label><span>{realname}</span></li>";
+        html += "<li><label>Nick</label><span>{username}</span></li>";
         html += "</ul>";
         
         template = this.__template = new qx.util.Template(html);
       }
       
-      var photo = data.query.results.photo;
-      this.__content.replace(template.run(photo));
+      var owner = data.query.results.photo.owner;
+      this.__content.replace(template.run(owner));
     }    
   }
 });
