@@ -320,6 +320,16 @@ qx.Class.define("unify.view.StaticView",
       } else {
         this.debug("Hide button for ParentView: " + old);
       }
+      
+      if (!!old != !!value) 
+      {
+        var layerElem = this.getLayer().getElement();
+        if (value) {
+          qx.bom.element2.Class.add(layerElem, "show-parent");
+        } else {
+          qx.bom.element2.Class.remove(layerElem, "show-parent");
+        }
+      }      
     },
     
     
@@ -331,7 +341,20 @@ qx.Class.define("unify.view.StaticView",
       } else {
         this.debug("Hide button for MasterViewManager: " + old);
       }
+      
+      if (!!old != !!value) 
+      {
+        var layerElem = this.getLayer().getElement();
+        if (value) {
+          qx.bom.element2.Class.add(layerElem, "show-master");
+        } else {
+          qx.bom.element2.Class.remove(layerElem, "show-master");
+        }
+      }
     },
+    
+
+    
     
     
     // property apply
