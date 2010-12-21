@@ -136,13 +136,13 @@ qx.Class.define("unify.util.Uri",
   statics :
   {
     /**
-     * Converts a URI to a {@link unify.io.Uri} instance.
+     * Converts a URI to a {@link unify.util.Uri} instance.
      *
      * @param str {Object} URI string
-     * @return {unify.io.Uri} Instance of this class.
+     * @return {unify.util.Uri} Instance of this class.
      */
     fromString : function(str) {
-      return new unify.io.Uri(str);
+      return new unify.util.Uri(str);
     }
   },
 
@@ -162,7 +162,7 @@ qx.Class.define("unify.util.Uri",
     /**
      * Clones the URI object
      *
-     * @return {unify.io.Uri} URI Object
+     * @return {unify.util.Uri} URI Object
      */
     clone : function()
     {
@@ -181,7 +181,7 @@ qx.Class.define("unify.util.Uri",
      *
      * @param name {String} Name of the parameter
      * @param value {String} Value of the parameter
-     * @return {unify.io.Uri} This instance - for chaining proposes.
+     * @return {unify.util.Uri} This instance - for chaining proposes.
      */
     addParam : function(name, value)
     {
@@ -206,7 +206,7 @@ qx.Class.define("unify.util.Uri",
      * Removes a given parameter from the URI
      *
      * @param name {String} Name of the parameter
-     * @return {unify.io.Uri} This instance - for chaining proposes.
+     * @return {unify.util.Uri} This instance - for chaining proposes.
      */
     removeParam : function(name)
     {
