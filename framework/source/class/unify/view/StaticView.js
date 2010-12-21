@@ -156,12 +156,8 @@ qx.Class.define("unify.view.StaticView",
     ---------------------------------------------------------------------------
     */
 
-    /** {unify.ui.Layer} Stores the layer instance of the view. */
-    __layer : null,
-    
     /** {String} View ID */
     __id : null,
-
 
     /**
      * Returns the ID of the view. This ID is constructed by its classname
@@ -185,6 +181,9 @@ qx.Class.define("unify.view.StaticView",
     },
 
 
+    /** {unify.ui.Layer} Stores the layer instance of the view. */
+    __layer : null,
+    
     /**
      * Returns the layer of this view. Dynamically creates it if not yet happened.
      *
@@ -230,7 +229,6 @@ qx.Class.define("unify.view.StaticView",
 
 
 
-
     /*
     ---------------------------------------------------------------------------
       LIFE CYCLE
@@ -254,6 +252,20 @@ qx.Class.define("unify.view.StaticView",
       // Create and store layer reference
       var now = (new Date).valueOf();
       var layer = this.__layer = this._createView();
+      
+      // Configure CSS classes
+      var layerElem = layer.getElement();
+      var Class = qx.bom.element2.Class;
+      if (this.getModal()) {
+        Class.add(layerElem, "is-modal");
+      }
+      if (this.getParent()) {
+        Class.add(layerElem, "has-parent");
+      }
+      if (this.getMaster()) {
+        Class.add(layerElem, "hasMaster");
+      }
+
       this.debug("Created in: " + ((new Date).valueOf() - now) + "ms");
 
       return layer;
@@ -329,7 +341,17 @@ qx.Class.define("unify.view.StaticView",
     // property apply
     _applyModal : function(value, old)
     {
-      
+      var layer = this.__layer;
+      if (layer && !!old != !!value) 
+      {
+        var Class = qx.bom.element2.Class;
+        var layerElem = layer.getElement();
+        if (value) {
+          Class.add(layerElem, "is-modal");
+        } else {
+          Class.remove(layerElem, "is-modal");
+        }
+      }      
     },
     
     
@@ -342,9 +364,9 @@ qx.Class.define("unify.view.StaticView",
         var Class = qx.bom.element2.Class;
         var layerElem = layer.getElement();
         if (value) {
-          Class.add(layerElem, "show-parent");
+          Class.add(layerElem, "has-parent");
         } else {
-          Class.remove(layerElem, "show-parent");
+          Class.remove(layerElem, "has-parent");
         }
       }      
     },
@@ -359,23 +381,20 @@ qx.Class.define("unify.view.StaticView",
         var Class = qx.bom.element2.Class;
         var layerElem = layer.getElement();
         if (value) {
-          Class.add(layerElem, "show-master");
+          Class.add(layerElem, "has-master");
         } else {
-          Class.remove(layerElem, "show-master");
+          Class.remove(layerElem, "has-master");
         }
       }
     },
-    
-
-    
     
     
     // property apply
     _applyParam : function() {
       // nothing to do here
     },
-
-
+    
+    
     // property apply
     _applySegment : function() {
       // nothing to do here
