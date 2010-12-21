@@ -65,6 +65,12 @@ qx.Class.define("flicky.view.Meta",
     
     
     // overridden
+    _getRenderVariant : function() {
+      return flicky.view.Photo.getInstance().getParam();
+    },
+    
+    
+    // overridden
     _getServiceParams : function() 
     {
       return {
