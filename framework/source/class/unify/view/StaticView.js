@@ -263,7 +263,7 @@ qx.Class.define("unify.view.StaticView",
         Class.add(layerElem, "has-parent");
       }
       if (this.getMaster()) {
-        Class.add(layerElem, "hasMaster");
+        Class.add(layerElem, "has-master");
       }
 
       this.debug("Created in: " + ((new Date).valueOf() - now) + "ms");
