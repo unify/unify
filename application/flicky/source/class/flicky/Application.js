@@ -40,6 +40,7 @@ qx.Class.define("flicky.Application",
       var DetailViewManager = new unify.view.ViewManager("detail");
       DetailViewManager.add(flicky.view.Info, true);
       DetailViewManager.add(flicky.view.Photo);
+      DetailViewManager.add(flicky.view.Meta);
 
       var SplitViewManager = new unify.view.SplitViewManager(MasterViewManager, DetailViewManager);
       this.add(SplitViewManager);

@@ -32,7 +32,7 @@ qx.Class.define("flicky.view.Photo", {
       var layer = new unify.ui.Layer(this);
       var titlebar = new unify.ui.TitleBar(this);
       titlebar.add({label:"Navi", rel:"master", target:"left"});
-      titlebar.add({label:"Info", target:"right"});
+      titlebar.add({label:"Info", jump:"meta", target:"right"});
       layer.add(titlebar);
 
       var content = this.__content = new unify.ui.ScrollView;
