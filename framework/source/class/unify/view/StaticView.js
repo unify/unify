@@ -303,7 +303,11 @@ qx.Class.define("unify.view.StaticView",
     },
 
 
-    // property apply
+    /**
+     * Property apply
+     *
+     * @final
+     */
     _applyActive : function(value, old)
     {
       if (value)
