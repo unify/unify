@@ -42,6 +42,7 @@ qx.Class.define("flicky.view.Meta",
     {
       var layer = new unify.ui.Layer(this);
       var titlebar = new unify.ui.TitleBar(this);
+      titlebar.add({label:"Fertig", rel:"close", target:"right"});
       layer.add(titlebar);
 
       var content = this.__content = new unify.ui.Content;
@@ -72,6 +73,7 @@ qx.Class.define("flicky.view.Meta",
     },
     
     
+    // overridden
     _renderData : function(data) 
     {
       var template = this.__template;
