@@ -504,7 +504,7 @@ qx.Class.define("unify.view.ViewManager",
 
       // Check up-navigation request first
       var rel = elem.getAttribute("rel");
-      if (rel == "parent") {
+      if (rel == "parent" || rel == "close") {
         return this.navigate(this.__path.slice(0, -1));
       }
 
@@ -524,7 +524,7 @@ qx.Class.define("unify.view.ViewManager",
 
       if (qx.core.Variant.isSet("qx.debug", "on"))
       {
-        if (rel && rel != "parent") {
+        if (rel) {
           throw new Error("Invalid rel attribute: " + rel);
         }
       }
