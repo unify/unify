@@ -7,17 +7,16 @@
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
 *********************************************************************************************** */
+
 /**
  * A view is basically a combination two parts from the typical MVC model:
  * a controller for the UI and the UI itself. It creates the UI logic
  * and binds it into the application logic / business layer.
  *
  * Each view consists at least of a {@link unify.ui.Layer} which
- * creates and manages the top level DOM element of each view. A view might
- * be fullscreen or add different numbers of bars e.g. {@link unify.ui.Tabbar},
- * {@link unify.ui.Titlebar}, {@link unify.ui.Toolbar}, etc.
+ * creates and manages the top level DOM element of each view.
  *
- * A view is controlled by the {@link Manager} which toggles the visibility
+ * Each view is controlled by the {@link ViewManager} which toggles the visibility
  * of the layers and manage their insertion to the DOM.
  *
  * The instance of the view is created as soon as needed in a lazy pattern.
@@ -80,14 +79,26 @@ qx.Class.define("unify.view.StaticView",
 
   properties :
   {
-    /** Attached view manager instance */
+    /*
+    ---------------------------------------------------------------------------
+      INTERNALLY CONFIGURED
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Attached view manager instance.
+     * (This is automatically set up through the {@link ViewManager}) 
+     */
     manager : 
     {
       check : "unify.view.ViewManager",
       nullable : true
     },
-    
-    /** Reference to master view manager (this view can not be registered there) */
+            
+    /** 
+     * Reference to master view manager 
+     * (This is automatically set up through the {@link ViewManager}) 
+     */
     master : 
     {
       check : "unify.view.ViewManager",
@@ -95,15 +106,10 @@ qx.Class.define("unify.view.StaticView",
       apply : "_applyMaster"
     },
     
-    /** Whether the view should be display modal */
-    modal : 
-    {
-      check : "Boolean",
-      init : false,
-      apply : "_applyModal"
-    },
-    
-    /** The parent of the view. This is normally managed automatically by the ViewManager */
+    /** 
+     * The parent of the view 
+     * (This is automatically set up through the {@link ViewManager})  
+     */
     parent :
     {
       check : "unify.view.StaticView",
@@ -111,8 +117,11 @@ qx.Class.define("unify.view.StaticView",
       apply : "_applyParent",
       event : "changeParent"
     },
-
-    /** Whether the view is active */
+    
+    /** 
+     * Whether the view is active 
+     * (This is automatically set up through the {@link ViewManager}) 
+     */
     active :
     {
       check : "Boolean",
@@ -121,7 +130,10 @@ qx.Class.define("unify.view.StaticView",
       event : "changeActive"
     },
 
-    /** The current param of this view (for dynamic content) */
+    /** 
+     * The current param of this view (for dynamic content) 
+     * (This is automatically set up through the {@link ViewManager}) 
+     */
     param :
     {
       check : "String",
@@ -129,13 +141,32 @@ qx.Class.define("unify.view.StaticView",
       apply : "_applyParam"
     },
 
-    /** Support for segment switches in the view */
+    /** 
+     * Support for segment switches in the view 
+     * (This is automatically set up through the {@link ViewManager}) 
+     */
     segment :
     {
       check : "String",
       nullable : true,
       apply : "_applySegment",
       event : "changeSegment"
+    },
+    
+    
+    
+    /*
+    ---------------------------------------------------------------------------
+      PUBLIC PROPERTIES
+    ---------------------------------------------------------------------------
+    */
+        
+    /** Whether the view should be display modal */
+    modal : 
+    {
+      check : "Boolean",
+      init : false,
+      apply : "_applyModal"
     }
   },
 
