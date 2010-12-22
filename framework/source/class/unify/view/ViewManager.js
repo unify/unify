@@ -500,13 +500,15 @@ qx.Class.define("unify.view.ViewManager",
     hide : function()
     {
       var elem = this.__element;
-      elem.style.display = "none";
+      if (elem) {
+        elem.style.display = "none";
+      }
     },
     
     
     show : function()
     {
-      var elem = this.__element;
+      var elem = this.getElement();
       elem.style.display = "";
     },
 
