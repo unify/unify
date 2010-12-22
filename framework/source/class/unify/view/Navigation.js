@@ -171,7 +171,10 @@ qx.Class.define("unify.view.Navigation",
 
         if (qx.core.Variant.isSet("qx.debug", "on"))
         {
-          if (!viewObj) {
+          if (!viewObj) 
+          {
+            // Navigate to valid path before throwing an exception
+            viewManager.navigate(managerPath);
             throw new Error("Could not find view: " + fragment.view);
           }
         }
