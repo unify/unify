@@ -163,6 +163,11 @@ qx.Class.define("unify.view.ViewManager",
     __initialized : false,
 
 
+    isCreated : function() {
+      return !!this.__element;
+    },
+
+
     /**
      * Returns the root element of the view manager (this is used as
      * a parent element for all added view instances)

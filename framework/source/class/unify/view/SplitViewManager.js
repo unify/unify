@@ -76,32 +76,29 @@ qx.Class.define("unify.view.SplitViewManager",
       }
       
       var orient = e.getOrientation();
-      var masterViewManager = this.__masterViewManager;
-      var detailViewManager = this.__detailViewManager;
-      var masterElem = masterViewManager.getElement();
+      var master = this.__masterViewManager;
+      var detail = this.__detailViewManager;
+      var masterElem = master.getElement();
+      var PopOverManager = unify.view.PopOverManager.getInstance();
+      var oldOrient = elem.getAttribute("orient");
       
       // Portrait shows only detail view manager
-      if (orient == 0 || orient == 180) 
+      if ((orient == 0 || orient == 180) & oldOrient != "portrait") 
       {
-        if (masterElem.parentNode == elem)
-        {
-          this.debug("Switching to portrait layout");
-          
-          elem.setAttribute("orient", "portrait");
-          elem.removeChild(masterElem);
-          detailViewManager.setStandalone(true);
-        }
+        this.debug("Switching to portrait layout");
+
+        elem.setAttribute("orient", "portrait");
+        detail.setStandalone(true);
+        PopOverManager.add(master);
       } 
-      else
+      else if (oldOrient != "landscape")
       {
-        if (masterElem.parentNode != elem)
-        {
-          this.debug("Switching to landscape layout");
-          
-          elem.setAttribute("orient", "landscape");
-          elem.insertBefore(masterElem, elem.firstChild);
-          detailViewManager.resetStandalone();
-        }
+        this.debug("Switching to landscape layout");
+        
+        PopOverManager.remove(master);
+        elem.setAttribute("orient", "landscape");
+        elem.insertBefore(masterElem, elem.firstChild);
+        detail.resetStandalone();
       }
     },
     
@@ -122,17 +119,26 @@ qx.Class.define("unify.view.SplitViewManager",
         elem.className = "split-view";
         elem.setAttribute("orient", orient == 90 || orient == 270 ? "landscape" : "portrait");
         
+        var PopOverManager = unify.view.PopOverManager.getInstance();
+        var master = this.__masterViewManager;
+        var detail = this.__detailViewManager;
+        
         if (orient == 90 || orient == 270) 
         {
-          elem.appendChild(this.__masterViewManager.getElement());
-          this.__detailViewManager.resetStandalone();
+          if (PopOverManager.has(master)) {
+            PopOverManager.remove(master);
+          }
+          
+          elem.appendChild(master.getElement());
+          detail.resetStandalone();
         } 
         else 
         {
-          this.__detailViewManager.setStandalone(true);
+          detail.setStandalone(true);
+          PopOverManager.add(master);
         }
         
-        elem.appendChild(this.__detailViewManager.getElement());
+        elem.appendChild(detail.getElement());
       }
 
       return elem;
