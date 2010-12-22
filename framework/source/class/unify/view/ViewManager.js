@@ -35,6 +35,16 @@ qx.Class.define("unify.view.ViewManager",
         throw new Error("Invalid manager ID: " + managerId);
       }
     }
+    
+    // Add to registry
+    var registry = unify.view.ViewManager.__managers;
+    if (qx.core.Variant.isSet("qx.debug", "on"))
+    {
+      if (registry[managerId]) {
+        throw new Error("Manager ID is already in use by: " + registry[managerId]);
+      }
+    }
+    registry[managerId] = this;
 
     // Store manager ID
     this.__managerId = managerId;
@@ -55,6 +65,34 @@ qx.Class.define("unify.view.ViewManager",
     this.__views = {};
   },
 
+
+
+  /*
+  *****************************************************************************
+     STATICS
+  *****************************************************************************
+  */
+  
+  statics :
+  {
+    __managers : {},
+    
+    
+    get : function(managerId)
+    {
+      var mgr = this.__managers[managerId];
+      if (qx.core.Variant.isSet("qx.debug", "on"))
+      {
+        if (!mgr) {
+          throw new Error("Unknown view manager: " + managerId);
+        }
+      }
+      
+      return mgr;
+    }
+  },
+  
+  
 
 
   /*
@@ -554,7 +592,8 @@ qx.Class.define("unify.view.ViewManager",
       var show = elem.getAttribute("show");
       if (show != null)
       {
-        this.debug("Show ViewManager: " + show);
+        var showViewManager = unify.view.ViewManager.get(show);
+        showViewManager.show();
         return;
       }
 
