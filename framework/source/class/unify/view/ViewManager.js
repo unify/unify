@@ -355,6 +355,12 @@ qx.Class.define("unify.view.ViewManager",
       }
       
       var length = path.length;
+      if (length == 0) 
+      {
+        this.warn("Empty path!");
+        return;
+      }
+      
       var oldPath = this.__path;
       var oldLength = oldPath ? oldPath.length : 0;
       var layerTransition = null;
