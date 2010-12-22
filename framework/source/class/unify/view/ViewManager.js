@@ -35,6 +35,9 @@ qx.Class.define("unify.view.ViewManager",
         throw new Error("Invalid manager ID: " + managerId);
       }
     }
+
+    // Store manager ID
+    this.__managerId = managerId;
     
     // Add to registry
     var registry = unify.view.ViewManager.__managers;
@@ -45,22 +48,7 @@ qx.Class.define("unify.view.ViewManager",
       }
     }
     registry[managerId] = this;
-
-    // Store manager ID
-    this.__managerId = managerId;
-    this.debug("Initializing: " + this.__managerId);
-
-    // Create root element of manager (used as parent for view elements)
-    var elem = this.__element = document.createElement("div");
-    elem.className = "view-manager";
-    elem.id = managerId;
-
-    // Register to navigation events
-    qx.event.Registration.addListener(elem, "click", this.__onClick, this);
-    qx.event.Registration.addListener(elem, "tap", this.__onTap, this);
-    qx.event.Registration.addListener(elem, "touchhold", this.__onTouchHold, this);
-    qx.event.Registration.addListener(elem, "touchrelease", this.__onTouchRelease, this);
-
+    
     // Create instance specific data structures
     this.__views = {};
   },
@@ -75,9 +63,16 @@ qx.Class.define("unify.view.ViewManager",
   
   statics :
   {
+    /** {Map} Maps the manager IDs to their instances */
     __managers : {},
     
     
+    /**
+     * Returns the manager with the given ID
+     *
+     * @param managerId {String} The ID of the view manager
+     * @return {unify.view.ViewManager} The view manager instance
+     */
     get : function(managerId)
     {
       var mgr = this.__managers[managerId];
@@ -174,8 +169,24 @@ qx.Class.define("unify.view.ViewManager",
      *
      * @return {Element} DOM element of view manager
      */
-    getElement : function() {
-      return this.__element;
+    getElement : function() 
+    {
+      var elem = this.__element;
+      if (!elem)
+      {
+        // Create root element of manager (used as parent for view elements)
+        elem = this.__element = document.createElement("div");
+        elem.className = "view-manager";
+        elem.id = this.__managerId;
+
+        // Register to navigation events
+        qx.event.Registration.addListener(elem, "click", this.__onClick, this);
+        qx.event.Registration.addListener(elem, "tap", this.__onTap, this);
+        qx.event.Registration.addListener(elem, "touchhold", this.__onTouchHold, this);
+        qx.event.Registration.addListener(elem, "touchrelease", this.__onTouchRelease, this);      
+      }
+      
+      return elem;
     },
 
 
@@ -588,7 +599,7 @@ qx.Class.define("unify.view.ViewManager",
         return;
       }
       
-      
+      // Support for showing another view manager (without a specific view e.g. a pop over)
       var show = elem.getAttribute("show");
       if (show != null)
       {

@@ -53,7 +53,6 @@ qx.Class.define("flicky.Application",
       var Navigation = unify.view.Navigation.getInstance();
       Navigation.add(MasterViewManager);
       Navigation.add(DetailViewManager);
-      Navigation.add(MetaViewManager);
       Navigation.init();
     }
   }
