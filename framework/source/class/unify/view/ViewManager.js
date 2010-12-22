@@ -441,6 +441,28 @@ qx.Class.define("unify.view.ViewManager",
 
 
 
+
+    /*
+    ---------------------------------------------------------------------------
+      VISIBILITY HANDLING
+    ---------------------------------------------------------------------------
+    */
+    
+    hide : function()
+    {
+      var elem = this.__element;
+      elem.style.display = "none";
+    },
+    
+    
+    show : function()
+    {
+      var elem = this.__element;
+      elem.style.display = "";
+    },
+
+
+
     /*
     ---------------------------------------------------------------------------
       NAVIGATION RELATED EVENT HANDLERS
@@ -451,7 +473,7 @@ qx.Class.define("unify.view.ViewManager",
     __navigates : false,
 
     /** {String} CSS selector with elements which are followable by the navigation manager */
-    __followable : "a[href],[rel],[goto],[exec]",
+    __followable : "a[href],[rel],[goto],[exec],[show]",
 
     /**
      * Prevents clicks from executing native behavior
@@ -517,15 +539,30 @@ qx.Class.define("unify.view.ViewManager",
 
       // Check up-navigation request first
       var rel = elem.getAttribute("rel");
-      if (rel == "parent" || rel == "close") {
-        return this.navigate(this.__path.slice(0, -1));
+      if (rel == "parent" || rel == "close") 
+      {
+        if(this.__path.length == 1) {
+          this.hide();
+        } else {
+          this.navigate(this.__path.slice(0, -1));
+        }
+
+        return;
+      }
+      
+      
+      var show = elem.getAttribute("show");
+      if (show != null)
+      {
+        this.debug("Show ViewManager: " + show);
+        return;
       }
 
-      // Read element's attributes
+      // Read attributes
       var href = elem.getAttribute("href");
       var dest = href ? href.substring(1) : elem.getAttribute("goto");
       if (dest == null) {
-        throw new Error("Invalid destination: " + dest);
+        throw new Error("Empty destination found!");
       }
 
       // Valid Paths (leading with a "#" in href attributes):
@@ -538,7 +575,7 @@ qx.Class.define("unify.view.ViewManager",
       if (qx.core.Variant.isSet("qx.debug", "on"))
       {
         if (rel) {
-          throw new Error("Invalid rel attribute: " + rel);
+          throw new Error("Invalid 'rel' attribute: " + rel);
         }
       }
       

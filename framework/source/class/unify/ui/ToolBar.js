@@ -245,7 +245,7 @@ qx.Class.define("unify.ui.ToolBar",
           itemElem.setAttribute("rel", config.rel);
         }
       }
-      else if (config.rel || config.jump || config.exec)
+      else if (config.rel || config.jump || config.exec || config.show)
       {
         itemElem = document.createElement("div");
 
@@ -255,8 +255,10 @@ qx.Class.define("unify.ui.ToolBar",
 
         if (config.jump) {
           itemElem.setAttribute("goto", config.jump);
-        }  else if (config.exec) {
+        } else if (config.exec) {
           itemElem.setAttribute("exec", config.exec);
+        } else if (config.show) {
+          itemElem.setAttribute("show", config.show);
         }
       }
       else
