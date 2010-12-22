@@ -45,7 +45,6 @@ qx.Class.define("flicky.Application",
       MetaViewManager.add(flicky.view.Meta, true);
       MetaViewManager.add(flicky.view.Owner);
       MetaViewManager.add(flicky.view.Location);
-      this.add(MetaViewManager);
 
       var SplitViewManager = new unify.view.SplitViewManager(MasterViewManager, DetailViewManager);
       this.add(SplitViewManager);

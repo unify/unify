@@ -76,7 +76,6 @@ qx.Class.define("unify.view.SplitViewManager",
       }
       
       var orient = e.getOrientation();
-      var PopOverManager = this.getPopOverManager();
       var masterViewManager = this.__masterViewManager;
       var detailViewManager = this.__detailViewManager;
       var masterElem = masterViewManager.getElement();
@@ -90,7 +89,6 @@ qx.Class.define("unify.view.SplitViewManager",
           
           elem.setAttribute("orient", "portrait");
           elem.removeChild(masterElem);
-          PopOverManager.setViewManager(masterViewManager);
           detailViewManager.setStandalone(true);
         }
       } 
@@ -101,29 +99,13 @@ qx.Class.define("unify.view.SplitViewManager",
           this.debug("Switching to landscape layout");
           
           elem.setAttribute("orient", "landscape");
-          PopOverManager.resetViewManager();
           elem.insertBefore(masterElem, elem.firstChild);
           detailViewManager.resetStandalone();
         }
       }
     },
     
-    
-    /**
-     * 
-     *
-     */
-    getPopOverManager : function()
-    {
-      var popOverManager = this.__popOverManager;
-      if (!popOverManager) {
-        popOverManager = this.__popOverManager = new unify.view.PopOverManager;
-      } 
-      
-      return popOverManager;
-    },
-    
-    
+  
     /**
      * Returns the root element of the split screen
      *
@@ -147,7 +129,6 @@ qx.Class.define("unify.view.SplitViewManager",
         } 
         else 
         {
-          this.getPopOverManager().setViewManager(this.__masterViewManager);
           this.__detailViewManager.setStandalone(true);
         }
         
