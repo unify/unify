@@ -11,6 +11,7 @@
 qx.Class.define("unify.view.PopOverManager",
 {
   extend : qx.core.Object,
+  type : "singleton",
   
   
   /*
@@ -27,46 +28,7 @@ qx.Class.define("unify.view.PopOverManager",
   },
   
   
-  
-  /*
-  *****************************************************************************
-     PROPERTIES
-  *****************************************************************************
-  */  
-  
-  properties : 
-  {
-    visible : 
-    {
-      check : "Boolean",
-      init : false,
-      apply : "_applyVisible"
-    },
-    
-    viewManager : 
-    {
-      check : "unify.view.ViewManager",
-      apply : "_applyViewManager",
-      nullable : true
-    }
-  },
-  
 
-
-  /*
-  *****************************************************************************
-     STATICS
-  *****************************************************************************
-  */
-  
-  statics : 
-  {
-    
-  },
-  
-  
-  
-  
   /*
   *****************************************************************************
      MEMBERS
@@ -75,50 +37,6 @@ qx.Class.define("unify.view.PopOverManager",
     
   members :
   {
-    _applyViewManager : function(value, old)
-    {
-      if (old) {
-        this.getElement().removeChild(old.getElement());
-      }
 
-      if (value) {
-        this.getElement().appendChild(value.getElement());
-      }
-    },
-    
-    _applyVisible : function(value, old)
-    {
-      var elem = this.__element;
-      if (value)
-      {
-        if (!elem) {
-          elem = this.getElement();
-        }
-        
-        elem.style.display = "";
-      }
-      else if (elem)
-      {
-        elem.style.display = "none";
-      }
-    },
-    
-    getElement : function()
-    {
-      var elem = this.__element;
-      if (!elem) 
-      {
-        elem = this.__element = document.createElement("div");
-        elem.className = "pop-over";
-        elem.style.display = "none";
-        document.body.appendChild(elem);
-      }
-      
-      return elem;
-    },
-    
-    hasViewManager : function() {
-      return !!this.getViewManager();
-    }
   }
 })
