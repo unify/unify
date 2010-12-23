@@ -507,19 +507,36 @@ qx.Class.define("unify.view.ViewManager",
     ---------------------------------------------------------------------------
     */
     
+    /**
+     * Hides the view manager and pauses active view
+     */
     hide : function()
     {
       var elem = this.__element;
       if (elem) {
         elem.style.display = "none";
       }
+
+      var view = this.__view;
+      if (view) {
+        view.setActive(false);
+      }
     },
     
     
+    /**
+     * Shows the view manager and resumes selected view
+     */
     show : function()
     {
       var elem = this.getElement();
       elem.style.display = "";
+      
+      this.init();
+      var view = this.__view;
+      if (view) {
+        view.setActive(true);
+      }
     },
 
 
