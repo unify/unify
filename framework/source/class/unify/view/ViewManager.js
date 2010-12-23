@@ -218,6 +218,11 @@ qx.Class.define("unify.view.ViewManager",
     getPath : function() {
       return this.__path;
     },
+    
+    
+    getCurrentView : function() {
+      return this.__currentView;
+    },
 
 
 
@@ -319,9 +324,12 @@ qx.Class.define("unify.view.ViewManager",
     // property apply
     _applyStandalone : function(value, old)
     {
-      var view = this.__view;
+      this.debug("STANDALONE: " + value + " :: " + this.getMaster() + " :: " + this.__currentView);
+      
+      var view = this.__currentView;
       if (view) 
       {
+        
         var master = this.getMaster();
         value && master ? view.setMaster(master) : view.resetMaster();
       }
@@ -436,7 +444,7 @@ qx.Class.define("unify.view.ViewManager",
       // Find current view object
       var views = this.__views;
       var currentFragment = path[length-1];
-      var currentViewCls = views[currentFragment.view || this.__view.getId()];
+      var currentViewCls = views[currentFragment.view || this.__currentView.getId()];
       if (qx.core.Variant.isSet("qx.debug", "on"))
       {
         if (!currentViewCls) {
@@ -516,7 +524,7 @@ qx.Class.define("unify.view.ViewManager",
         elem.style.display = "none";
       }
 
-      var view = this.__view;
+      var view = this.__currentView;
       if (view) {
         view.setActive(false);
       }
@@ -535,7 +543,7 @@ qx.Class.define("unify.view.ViewManager",
       this.init();
       
       // Re-activate view (normally only useful if it was paused before)
-      var view = this.__view;
+      var view = this.__currentView;
       if (view) {
         view.setActive(true);
       }
@@ -586,7 +594,7 @@ qx.Class.define("unify.view.ViewManager",
         var exec = elem.getAttribute("exec");
         if (exec)
         {
-          this.__view[exec]();
+          this.__currentView[exec]();
         }
         else
         {
@@ -756,7 +764,7 @@ qx.Class.define("unify.view.ViewManager",
     */
 
     /** {unify.view.StaticView} Current view */
-    __view : null,
+    __currentView : null,
 
     /**
      * {Map} Maps the position of the layer to the platform specific transform value.
@@ -789,17 +797,26 @@ qx.Class.define("unify.view.ViewManager",
      */
     __setView : function(view, transition)
     {
-      var oldView = this.__view;
+      var oldView = this.__currentView;
       if (view == oldView) {
         return;
       }
 
-      if (oldView) {
+      if (oldView) 
+      {
         oldView.resetActive();
+        oldView.resetMaster();
       }
-
+      
       // Store current view
-      this.__view = view;
+      this.__currentView = view;
+      
+      // Sync master to new view
+      if (this.getStandalone()) 
+      {
+        var master = this.getMaster();
+        master ? view.setMaster(master) : view.resetMaster();
+      }
 
       // Resuming the view
       view.setActive(true);
