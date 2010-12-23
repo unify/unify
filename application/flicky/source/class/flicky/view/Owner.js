@@ -34,7 +34,8 @@ qx.Class.define("flicky.view.Owner",
       var titlebar = new unify.ui.TitleBar(this);
       layer.add(titlebar);
 
-      var content = this.__content = new unify.ui.Content;
+      var content = this.__content = new unify.ui.ScrollView;
+      content.setEnableScrollX(false);
       layer.add(content);
 
       return layer;

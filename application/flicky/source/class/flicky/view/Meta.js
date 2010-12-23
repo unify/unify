@@ -45,7 +45,8 @@ qx.Class.define("flicky.view.Meta",
       titlebar.add({label:"Done", rel:"close", target:"right"});
       layer.add(titlebar);
 
-      var content = this.__content = new unify.ui.Content;
+      var content = this.__content = new unify.ui.ScrollView;
+      content.setEnableScrollX(false);
       layer.add(content);
 
       return layer;
