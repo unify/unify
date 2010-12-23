@@ -30,12 +30,11 @@ qx.Class.define("unify.view.PopOverManager",
     
     this.__root = document.body;
     this.__viewManagers = {};
+    this.__visibleViewManagers = [];
     
     var blocker = this.__blocker = document.createElement("div");
     blocker.id = "blocker";
     this.__root.appendChild(blocker);
-    
-    this.__visible = [];
   },
   
   
@@ -57,7 +56,7 @@ qx.Class.define("unify.view.PopOverManager",
      */
     __sortPopOvers : function()
     {
-      var visible = this.__visible;
+      var visible = this.__visibleViewManagers;
       for (var i=0, l=visible.length; i<l; i++) {
         visible[i].getElement().style.zIndex = 1000 + i;
       }
@@ -152,7 +151,7 @@ qx.Class.define("unify.view.PopOverManager",
 
       viewManager.show();
       
-      this.__visible.push(viewManager);
+      this.__visibleViewManagers.push(viewManager);
       this.__sortPopOvers();
     },
     
@@ -174,12 +173,12 @@ qx.Class.define("unify.view.PopOverManager",
         }
       }
       
-      if (this.__visible.indexOf(viewManager) != -1) {
+      if (this.__visibleViewManagers.indexOf(viewManager) != -1) {
         throw new Error("View Manager with ID '" + id + "' is not visible!");
       }
       
       viewManager.hide();
-      qx.lang.Array.remove(this.__visible, viewManager);
+      qx.lang.Array.remove(this.__visibleViewManagers, viewManager);
       this.__sortPopOvers();
     }
   },
