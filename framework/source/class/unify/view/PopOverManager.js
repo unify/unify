@@ -24,6 +24,7 @@ qx.Class.define("unify.view.PopOverManager",
   {
     this.base(arguments);
     
+    this.__root = document.body;
     this.__viewManagers = {};
   },
   
@@ -48,8 +49,11 @@ qx.Class.define("unify.view.PopOverManager",
       var registry = this.__viewManagers;
       var id = viewManager.getId();
       
-      if (registry[id]) {
-        throw new Error("Already registered: " + id);
+      if (qx.core.Variant.isSet("qx.debug", "on"))
+      {
+        if (registry[id]) {
+          throw new Error("Already registered: " + id);
+        }
       }
       
       this.debug("Register ViewManager: " + viewManager);
@@ -57,9 +61,8 @@ qx.Class.define("unify.view.PopOverManager",
       
       // Move to root
       if (viewManager.isCreated()) {
-        document.body.appendChild(viewManager.getElement());
-      }
-      
+        this.__root.appendChild(viewManager.getElement());
+      }      
     },
     
     remove : function(viewManager)
@@ -67,15 +70,58 @@ qx.Class.define("unify.view.PopOverManager",
       var registry = this.__viewManagers;
       var id = viewManager.getId();
       
-      if (!registry[id]) {
-        throw new Error("Unknown view manager: " + id);
+      if (qx.core.Variant.isSet("qx.debug", "on"))
+      {
+        if (!registry[id]) {
+          throw new Error("Unknown view manager: " + id);
+        }
       }
       
       this.debug("Unregister ViewManager: " + viewManager);
       delete registry[id];
       
       if (viewManager.isCreated()) {
-        document.body.removeChild(viewManager.getElement());
+        this.__root.removeChild(viewManager.getElement());
+      }
+    },
+    
+    
+    show : function(id)
+    {
+      var registry = this.__viewManagers;
+      var viewManager = registry[id];
+      
+      if (qx.core.Variant.isSet("qx.debug", "on"))
+      {
+        if (!viewManager) {
+          throw new Error("Unknown view manager: " + id);
+        }
+      }
+      
+      var elem = viewManager.getElement();
+      if (elem.parentNode != this.__root) {
+        this.__root.appendChild(elem);
+      }
+      
+      elem.style.display = "block";
+    },
+    
+    hide : function(id)
+    {
+      var registry = this.__viewManagers;
+      var viewManager = registry[id];
+      
+      if (qx.core.Variant.isSet("qx.debug", "on"))
+      {
+        if (!viewManager) {
+          throw new Error("Unknown view manager: " + id);
+        }
+      }
+      
+      if (viewManager.isCreated())
+      {
+        var elem = viewManager.getElement();
+        elem.style.display = "none";      
       }
     }
   }

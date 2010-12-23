@@ -48,6 +48,9 @@ qx.Class.define("flicky.Application",
 
       var SplitViewManager = new unify.view.SplitViewManager(MasterViewManager, DetailViewManager);
       this.add(SplitViewManager);
+      
+      var PopOverManager = unify.view.PopOverManager.getInstance();
+      PopOverManager.add(MetaViewManager);
 
       var Navigation = unify.view.Navigation.getInstance();
       Navigation.add(MasterViewManager);

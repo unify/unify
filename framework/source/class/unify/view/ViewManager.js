@@ -163,6 +163,11 @@ qx.Class.define("unify.view.ViewManager",
     __initialized : false,
 
 
+    /**
+     * Returns whether the DOM element is created.
+     *
+     * @return {Boolean} Whether the DOM element is created
+     */
     isCreated : function() {
       return !!this.__element;
     },
@@ -610,8 +615,8 @@ qx.Class.define("unify.view.ViewManager",
       var show = elem.getAttribute("show");
       if (show != null)
       {
-        var showViewManager = unify.view.ViewManager.get(show);
-        showViewManager.show();
+        // TODO: Are there other kinds of view managers which might be shown here (not just popups)?
+        unify.view.PopOverManager.getInstance().show(show);
         return;
       }
 
