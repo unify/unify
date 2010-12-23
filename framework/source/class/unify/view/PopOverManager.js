@@ -8,6 +8,10 @@
 
 *********************************************************************************************** */
 
+/**
+ * Manager for view managers which functions as a so-called pop over.
+ *
+ */
 qx.Class.define("unify.view.PopOverManager",
 {
   extend : qx.core.Object,
@@ -45,7 +49,7 @@ qx.Class.define("unify.view.PopOverManager",
     /**
      * Whether the given view manager is registered
      *
-     * @param {unify.view.ViewManager} The view manager to query for
+     * @param viewManager {unify.view.ViewManager} The view manager to query for
      * @return {Boolean} Whether the view manager is registered
      */
     has : function(viewManager) {
