@@ -220,6 +220,11 @@ qx.Class.define("unify.view.ViewManager",
     },
     
     
+    /**
+     * Returns the currently selected view instance
+     *
+     * @return {unify.view.StaticView} View instance which is currently selected
+     */
     getCurrentView : function() {
       return this.__currentView;
     },
@@ -324,8 +329,6 @@ qx.Class.define("unify.view.ViewManager",
     // property apply
     _applyStandalone : function(value, old)
     {
-      this.debug("STANDALONE: " + value + " :: " + this.getMaster() + " :: " + this.__currentView);
-      
       var view = this.__currentView;
       if (view) 
       {
