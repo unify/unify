@@ -32,7 +32,6 @@ qx.Class.define("flicky.view.Photo",
     {
       var layer = new unify.ui.Layer(this);
       var titlebar = new unify.ui.TitleBar(this);
-      titlebar.add({label:"Navi", rel:"master", target:"left"});
       titlebar.add({label:"Info", show:"mmeta", target:"right"});
       layer.add(titlebar);
 

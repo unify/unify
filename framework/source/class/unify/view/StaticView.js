@@ -103,7 +103,8 @@ qx.Class.define("unify.view.StaticView",
     {
       check : "unify.view.ViewManager",
       nullable : true,
-      apply : "_applyMaster"
+      apply : "_applyMaster",
+      event : "changeMaster"
     },
     
     /** 

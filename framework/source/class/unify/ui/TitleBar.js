@@ -34,8 +34,10 @@ qx.Class.define("unify.ui.TitleBar",
     // Finally listen for any changes occour after creation of the titlebar
     view.addListener("changeTitle", this.__onViewChangeTitle, this);
     view.addListener("changeParent", this.__onViewChangeParent, this);
+    view.addListener("changeMaster", this.__onViewChangeMaster, this);
 
     this.__onViewChangeParent();
+    this.__onViewChangeMaster();
   },
 
 
@@ -65,7 +67,8 @@ qx.Class.define("unify.ui.TitleBar",
     ---------------------------------------------------------------------------
     */
 
-    __lastUpTitle : null,
+    __lastParentTitle : null,
+    __lastMasterTitle : null,
 
     /**
      * Event listener for parent changes
@@ -75,40 +78,81 @@ qx.Class.define("unify.ui.TitleBar",
     __onViewChangeParent : function(e)
     {
       var parentView = this.getView().getParent();
-      var upElem = this.query("[rel=parent]");
+      var parentButtonElem = this.query("[rel=parent]");
 
       if (parentView)
       {
-        var upTitle = parentView.getTitle("up");
+        var parentTitle = parentView.getTitle("parent");
 
-        if (this.__lastUpTitle != upTitle)
+        if (this.__lastParentTitle != parentTitle)
         {
-          if (upElem)
+          if (parentButtonElem)
           {
-            upElem.innerHTML = upTitle;
-            upElem.style.display = "";
+            parentButtonElem.innerHTML = parentTitle;
+            parentButtonElem.style.display = "";
           }
           else
           {
             this.add(
             {
-              label : upTitle,
+              label : parentTitle,
               target : "left",
               rel : "parent"
             });
           }
 
-          this.__lastUpTitle = upTitle;
+          this.__lastParentTitle = parentTitle;
         }
       }
       else
       {
-        if (upElem) {
-          upElem.style.display = "none";
+        if (parentButtonElem) {
+          parentButtonElem.style.display = "none";
         }
 
-        this.__lastUpTitle = null;
+        this.__lastParentTitle = null;
       }
+    },
+
+
+    __onViewChangeMaster : function(e)
+    {
+      var masterViewManager = this.getView().getMaster();
+      var masterButtonElem = this.query("[rel=master]");
+
+      if (masterViewManager)
+      {
+        var masterView = masterViewManager.getCurrentView();
+        var masterTitle = masterView.getTitle("master");
+
+        if (this.__lastMasterTitle != masterTitle)
+        {
+          if (masterButtonElem)
+          {
+            masterButtonElem.innerHTML = masterTitle;
+            masterButtonElem.style.display = "";
+          }
+          else
+          {
+            this.add(
+            {
+              label : masterTitle,
+              target : "left",
+              rel : "master"
+            });
+          }
+
+          this.__lastMasterTitle = masterTitle;
+        }
+      }
+      else
+      {
+        if (masterButtonElem) {
+          masterButtonElem.style.display = "none";
+        }
+
+        this.__lastMasterTitle = null;
+      }      
     },
 
 
@@ -119,7 +163,7 @@ qx.Class.define("unify.ui.TitleBar",
      */
     __onViewChangeTitle : function(e)
     {
-      this.query(".center").innerHTML = this.getView().getTitle();
+      this.query(".center").innerHTML = this.getView().getTitle("titlebar");
     }
   },
 
