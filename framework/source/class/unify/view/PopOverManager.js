@@ -121,8 +121,12 @@ qx.Class.define("unify.view.PopOverManager",
       this.debug("Unregister ViewManager: " + viewManager);
       delete registry[id];
       
-      if (viewManager.isCreated()) {
-        this.__root.removeChild(viewManager.getElement());
+      if (viewManager.isCreated()) 
+      {
+        var viewManagerElem = viewManager.getElement();
+        if (viewManagerElem.parentNode == this.__root) {
+          this.__root.removeChild(viewManagerElem);
+        }
       }
     },
     

@@ -115,6 +115,11 @@ qx.Class.define("unify.ui.TitleBar",
     },
 
 
+    /**
+     * Event listener for master changes
+     *
+     * @param e {qx.event.type.Data} Data event
+     */
     __onViewChangeMaster : function(e)
     {
       var masterViewManager = this.getView().getMaster();
