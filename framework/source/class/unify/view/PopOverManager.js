@@ -38,12 +38,26 @@ qx.Class.define("unify.view.PopOverManager",
     
   members :
   {
-    __viewManagers : {},
+    /** {Map} ID to view manager registry */
+    __viewManagers : null,
     
+    
+    /**
+     * Whether the given view manager is registered
+     *
+     * @param {unify.view.ViewManager} The view manager to query for
+     * @return {Boolean} Whether the view manager is registered
+     */
     has : function(viewManager) {
       return !!this.__viewManagers[viewManager.getId()];
     },
     
+    
+    /**
+     * Adds a view manager to the registry
+     *
+     * @param viewManager {unify.view.ViewManager} View manager to add
+     */
     add : function(viewManager)
     {
       var registry = this.__viewManagers;
@@ -65,6 +79,12 @@ qx.Class.define("unify.view.PopOverManager",
       }      
     },
     
+    
+    /**
+     * Removes a view manager to the registry
+     *
+     * @param viewManager {unify.view.ViewManager} View manager to remove
+     */
     remove : function(viewManager)
     {
       var registry = this.__viewManagers;
@@ -86,6 +106,11 @@ qx.Class.define("unify.view.PopOverManager",
     },
     
     
+    /**
+     * Shows the view manager with the given ID.
+     *
+     * @param id {String} ID of view manager
+     */
     show : function(id)
     {
       var registry = this.__viewManagers;
@@ -106,6 +131,12 @@ qx.Class.define("unify.view.PopOverManager",
       elem.style.display = "block";
     },
     
+    
+    /**
+     * Hides the view manager with the given ID.
+     *
+     * @param id {String} ID of view manager
+     */
     hide : function(id)
     {
       var registry = this.__viewManagers;
@@ -124,5 +155,17 @@ qx.Class.define("unify.view.PopOverManager",
         elem.style.display = "none";      
       }
     }
-  }
+  },
+  
+  
+  
+  /*
+  *****************************************************************************
+     DESTRUCTOR
+  *****************************************************************************
+  */
+    
+  destruct : function() {
+    this.__root = this.__viewManager = null;
+  } 
 })
