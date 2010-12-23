@@ -99,9 +99,6 @@ qx.Class.define("unify.ui.TitleBar",
           }
 
           this.__lastUpTitle = upTitle;
-
-          // Send update request to ToolBar
-          this._syncLayout("left");
         }
       }
       else
@@ -123,9 +120,6 @@ qx.Class.define("unify.ui.TitleBar",
     __onViewChangeTitle : function(e)
     {
       this.query(".center").innerHTML = this.getView().getTitle();
-
-      // Send update request to ToolBar
-      this._syncLayout("center");
     }
   },
 

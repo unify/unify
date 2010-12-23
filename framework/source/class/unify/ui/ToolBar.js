@@ -39,12 +39,6 @@ qx.Class.define("unify.ui.ToolBar",
 
     // Remember attached view
     this.__view = view;
-
-    // Connect to view events
-    view.addListener("appear", this.__onViewAppear, this);
-
-    // Connect to global events
-    qx.event.Registration.addListener(window, "resize", this.__onWindowResize, this);
   },
 
 
@@ -94,117 +88,6 @@ qx.Class.define("unify.ui.ToolBar",
       elem.className = this._cssClassName;
 
       return elem;
-    },
-
-
-
-    /*
-    ---------------------------------------------------------------------------
-      INTERNALS
-    ---------------------------------------------------------------------------
-    */
-
-    __hasChanges : true,
-
-    /**
-     * Dynamic sizing of the center component of the bar
-     *
-     * @param context {String?null} Hint of change when something has changed
-     */
-    _syncLayout : function(context)
-    {
-      if (context) {
-        this.__hasChanges = true;
-      }
-
-      if (!this.__view.isActive() || !this.__hasChanges) {
-        return;
-      }
-
-      // Detect available width
-      // ClientWidth check is faster than the function call which is needed,
-      // but helps to find out quickly whether the element is visible
-      var elem = this.getElement();
-      if (elem.clientWidth == 0) {
-        return;
-      }
-
-      var availWidth = qx.bom.element2.Dimension.getContentWidth(elem);
-
-      // Important to reset this flag after the size has been computed successfully
-      this.__hasChanges = false;
-
-      // Lay out out center element for easy query/modify
-      var centerElem = this.query(".center");
-      var centerStyle = centerElem.style;
-
-      // Reset old modifications
-      centerStyle.marginRight = centerStyle.marginLeft = 0;
-      centerStyle.width = "auto";
-
-      // Measure cells
-      var leftWidth = this.query(".left").offsetWidth;
-      var centerWidth = centerElem.offsetWidth;
-      var rightWidth = this.query(".right").offsetWidth;
-
-      // Check whether the center can be shown completely
-      var centerMaxWidth = availWidth - leftWidth - rightWidth;
-      if (centerMaxWidth > centerWidth)
-      {
-        var maxColWidth = Math.max(leftWidth, rightWidth);
-        var perfectWidth = availWidth - (maxColWidth * 2);
-
-        if (perfectWidth > centerWidth)
-        {
-          // this.debug("Width correction to: " + perfectWidth);
-          centerStyle.width = perfectWidth + "px";
-
-          if (leftWidth < maxColWidth) {
-            centerStyle.marginLeft = (maxColWidth - leftWidth) + "px";
-          } else {
-            centerStyle.marginRight = (maxColWidth - rightWidth) + "px";
-          }
-        }
-        else
-        {
-          var correction = availWidth - centerWidth - leftWidth - rightWidth;
-          // this.debug("Margin correction: " + correction);
-
-          if (leftWidth < rightWidth) {
-            centerStyle.marginLeft = correction + "px";
-          } else {
-            centerStyle.marginRight = correction + "px";
-          }
-        }
-      }
-      else
-      {
-        centerStyle.width = centerMaxWidth + "px";
-      }
-    },
-
-
-
-
-    /*
-    ---------------------------------------------------------------------------
-      EVENT HANDLER
-    ---------------------------------------------------------------------------
-    */
-
-    /**
-     * Event listner for appear event of attached view
-     */
-    __onViewAppear : function() {
-      this._syncLayout();
-    },
-
-
-    /**
-     * Event listner for window resize event
-     */
-    __onWindowResize : function() {
-      this._syncLayout("resize");
     },
 
 
@@ -284,9 +167,6 @@ qx.Class.define("unify.ui.ToolBar",
 
       targetElem.appendChild(itemElem);
 
-      // Schedule layout sync
-      this._syncLayout(target);
-
       return itemElem;
     }
   },
@@ -301,9 +181,6 @@ qx.Class.define("unify.ui.ToolBar",
 
   destruct : function()
   {
-    this.__view.removeListener("appear", this.__onViewAppear, this);
     this.__view = null;
-
-    qx.event.Registration.removeListener(window, "resize", this.__onWindowResize, this);
   }
 });

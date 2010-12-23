@@ -531,7 +531,10 @@ qx.Class.define("unify.view.ViewManager",
       var elem = this.getElement();
       elem.style.display = "";
       
+      // Be sure that we show a view (if possible)
       this.init();
+      
+      // Re-activate view (normally only useful if it was paused before)
       var view = this.__view;
       if (view) {
         view.setActive(true);
