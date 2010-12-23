@@ -322,7 +322,6 @@ qx.Class.define("unify.view.ViewManager",
       var view = this.__view;
       if (view) 
       {
-        this.debug("Standalone: " + !!value);
         var master = this.getMaster();
         value && master ? view.setMaster(master) : view.resetMaster();
       }
@@ -625,6 +624,18 @@ qx.Class.define("unify.view.ViewManager",
           this.navigate(this.__path.slice(0, -1));
         }
 
+        return;
+      }
+      
+      // Support auto popup of master view manager
+      if (rel == "master")
+      {
+        var masterViewManager = this.getMaster();
+        if (!masterViewManager) {
+          throw new Error("There is no master view manager!");
+        }
+        
+        unify.view.PopOverManager.getInstance().show(masterViewManager.getId());
         return;
       }
       
