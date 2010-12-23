@@ -128,6 +128,10 @@ qx.Class.define("unify.view.PopOverManager",
         this.__root.appendChild(elem);
       }
       
+      if (!viewManager.isInitialized()) {
+        viewManager.init();
+      }
+      
       elem.style.display = "block";
     },
     
