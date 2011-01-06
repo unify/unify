@@ -102,7 +102,10 @@ qx.Class.define("unify.ui.ScrollView",
     }
   },
 
-
+  events :
+  {
+    scroll: "qx.event.type.Event"
+  },
 
   /*
   *****************************************************************************
