@@ -84,7 +84,6 @@ qx.Class.define("unify.ui.ToolBar",
     _createElement : function()
     {
       var elem = document.createElement("div");
-      elem.innerHTML = '<div class="left"></div><div class="center"></div><div class="right"></div>';
       elem.className = this._cssClassName;
 
       return elem;
@@ -98,28 +97,12 @@ qx.Class.define("unify.ui.ToolBar",
       PUBLIC API
     ---------------------------------------------------------------------------
     */
-
-    /**
-     * Adds the given element
-     *
-     * @param config {Map} Configuration for element to add
-     * @return {Element} Created DOM element
-     */
-    add : function(config)
+    
+    __createItemElement : function(config)
     {
       var itemElem;
-
-      if (config instanceof unify.ui.Abstract)
-      {
-        this.query(".center").appendChild(config.getElement());
-        return;
-      }
-
-      if (config.elem)
-      {
-        itemElem = config.elem;
-      }
-      else if (config.href)
+      
+      if (config.href)
       {
         itemElem = document.createElement("a");
         itemElem.href = config.href;
@@ -149,25 +132,38 @@ qx.Class.define("unify.ui.ToolBar",
         itemElem = document.createElement("div");
       }
 
-      itemElem.className += " tool-button";
 
+      if (item.style) {
+        itemElem.className += " " + item.style;
+      }
+      
       if (config.label) {
         itemElem.innerHTML = config.label;
       } else if (config.icon) {
         itemElem.innerHTML = "<div/>";
       }
+      
+      return itemElem;
+    },
+    
 
-      var target = config.target || "center";
-      var targetElem = this.query("." + target);
-      if (!targetElem)
-      {
-        this.error("Unsupported target: " + config.target);
-        return;
+    /**
+     * Adds the given element
+     *
+     * @param config {Map} Configuration for element to add
+     * @return {Element} Created DOM element
+     */
+    add : function(config)
+    {
+      var itemElem;
+
+      if (config instanceof unify.ui.Abstract) {
+        itemElem = config.getElement();
+      } else {
+        itemElem = this.__createItemElement(config)
       }
 
-      targetElem.appendChild(itemElem);
-
-      return itemElem;
+      this.getElement().appendChild(itemElem);
     }
   },
 
