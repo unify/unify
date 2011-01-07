@@ -7,52 +7,70 @@
   background-color: rgb(203, 210, 216)
   .content
     padding: 10px
+    
     > *:first-child
       margin-top: 0 !important
+      
     > *:last-child
       margin-bottom: 0 !important
+      
     > p, > ul, > div
       margin: 15px 0px 17px
+      
     > h2
       text-shadow: rgb(255, 255, 255) 0 1px 1px
       color: rgb(77, 87, 107)
       margin: 15px 11px 0px 11px
       font-size: 17px
       font-weight: bold
+      
     > p, > ul > li
       padding: 10px
       border: 1px solid $border_color
       background-color: white
+      
     > p
       +border-radius($border_radius)
       font-size: 15px
+      
     > ul > li
       border-bottom-style: none
+      
       &:first-child
         +border-top-radius($border_radius)
+        
       &:last-child
         +border-bottom-radius($border_radius)
         border-bottom-style: solid
+        
+        
+        
 
 // ***************************************************************************************************
-//	 MIXIN: KEY-VALUE LIST
+//   MIXIN: KEY-VALUE LIST
 // ***************************************************************************************************
 
 =keyvalue-list
   li
     +hbox
     font-size: 17px
+    
     > *
       display: block
+      
     > label
       font-weight: bold
+      
     > span
       color: rgb(56, 84, 135)
       text-align: right
       +box-flex(1)
-
+      
+      
+      
+      
 // ***************************************************************************************************
-//	 MIXIN: NAVIGATION LIST
+//   MIXIN: NAVIGATION LIST
 // ***************************************************************************************************
 
 /*
@@ -71,13 +89,16 @@
     +hbox
     font-weight: bold
     font-size: 17px
+    
     > *
       display: block
+      
     > label
       +box-flex(1)
       +text-overflow
       white-space: nowrap
       width: 10px
+      
     > em
       +border-radius(9px)
       background: $count
@@ -85,25 +106,32 @@
       padding: 2px 10px
       font-size: 13px
       font-style: normal
+      
     > hr
       margin-left: 8px
       border: none
       &:after
         content: inline_image(unquote("list/arrow.png"))
+        
     &.selected, &.pressed
       +linear-gradient(color-stops($selection_start, $selection_end))
       color: white
+      
       > em
         // maybe we can tweak this gradient further by using CSS background-clip:text
         // http://webkit.org/blog/164/background-clip-text/
         background: white
         color: ($selection_start + $selection_end) / 2
+        
       > hr
         after:
           content: inline_image(unquote("list/arrow-selected.png"))
 
+
+
+
 // ***************************************************************************************************
-//	 MIXIN: BUTTON
+//   MIXIN: BUTTON
 // ***************************************************************************************************
 
 =content-button
@@ -118,8 +146,11 @@
   +border-radius(12px)
   +linear-gradient(color-stops(rgba(255, 255, 255, 0.61), rgba(255, 255, 255, 0.45) 5%, rgba(255, 255, 255, 0.27) 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0)))
 
+
+
+
 // ***************************************************************************************************
-//	 TAGS
+//   TAGS
 // ***************************************************************************************************
 
 body
@@ -129,8 +160,11 @@ body
   color: black
   background: white
 
+
+
+
 // ***************************************************************************************************
-//	 SINGLETON: ACTIVITY INDICATOR
+//   SINGLETON: ACTIVITY INDICATOR
 // ***************************************************************************************************
 
 #activity
@@ -146,37 +180,50 @@ body
   font-weight: bold
   font-size: 16px
   text-align: center
+  
   &.out
     +scale(0.3)
+    
   &.in
     +scale(1.5)
     
     
-    
+
+
+// ***************************************************************************************************
+//   CLASS: VIEW MANAGER
+// ***************************************************************************************************
+
 .view-manager
   overflow: hidden
   position: relative
-    
-    
+
+
+
 
 // ***************************************************************************************************
-//	 CLASS: LAYER
+//   CLASS: LAYER
 // ***************************************************************************************************
 
 .layer
   background: white
 
+
+
+
 // ***************************************************************************************************
-//	 CLASS: TITLEBAR & TOOLBAR
+//   CLASS: TITLEBAR & TOOLBAR
 // ***************************************************************************************************
 
 =tool-bar-button-icon($source)
   $size: 20px
   $width: image_width($source)
   $height: image_height($source)
+  
   > div:empty
     width: $size
     height: $size
+    
     &:after
       width: $width
       height: $height
@@ -199,57 +246,68 @@ body
   line-height: 20px
   margin-top: 2px
 
-.title-bar
-  > .center
-    font-size: 20px
-    color: white
-    text-shadow: rgba(0, 0, 0, 0.4) 0px -1px 0
-    font-weight: bold
-
-.title-bar,
 .tool-bar
   height: 44px
+
   +hbox
+
   padding: 0 3px
   background: inline_image(unquote("tool-bar/background.png"))
   border-bottom: 1px solid rgb(43, 53, 76)
+
   &:last-child
     border-bottom: 0px none
     border-top: 1px solid rgb(43, 53, 76)
+
+  > h1
+    font-size: 20px
+    color: white
+    text-shadow: rgba(0, 0, 0, 0.4) 0px -1px 0
+    font-weight: bold    
+
   > div
     text-align: center
+
   > .left
     text-align: left
     > *
       margin-left: 3px
+
   > .right
     text-align: right
     > *
       margin-right: 3px
+
   > .center
     padding: 0 3px
     > *
       margin-right: 3px
     > *:last-child
       margin-right: 0
-  .tool-button
+      
+  .button
     +tool-bar-button-core
     padding: 4px
     cursor: default
     border-width: 1px 5px
     -webkit-border-image: inline_image(unquote("tool-bar/button.png")) + unquote(" 1 5 1 5")
+    
     &.pressed, &.selected
       -webkit-border-image: inline_image(unquote("tool-bar/button-pressed.png")) + unquote(" 1 5 1 5")
+      
     &[rel=parent]
       border-left-width: 12px
       padding-left: 0
       -webkit-border-image: inline_image(unquote("tool-bar/upwards.png")) + unquote(" 1 5 1 12")
+      
       &.pressed
         -webkit-border-image: inline_image(unquote("tool-bar/upwards-pressed.png")) + unquote(" 1 5 1 12")
 
 
+
+
 // ***************************************************************************************************
-//	 CLASS: SEGMENTED
+//   CLASS: SEGMENTED
 // ***************************************************************************************************
 
 .segmented
@@ -263,40 +321,51 @@ body
     position: absolute
     top: 0
     height: 30px
+    
   > div
     +tool-bar-button-core
     position: relative
     padding: 5px 12px
     background-image: inline_image(unquote("segment/blue/middle.png"))
+
     &.selected
       background-position: 0 30px
+
     // rounded corners are 4 pixel wide
     &:first-child:before,
     &:last-child:before
       width: 4px
+
     // place left rounded corner to the left edge
     &:first-child:before
       left: 0
       background-position: 0px 0
     &.selected:first-child:before
       background-position: -8px 0
+
     // place right rounded corner to the right edge
     &:last-child:before
       right: 0
       background-position: -4px 0
+
     &.selected:last-child:before
       background-position: -12px 0
+      
     // position and size separators
     &+div:after
       width: 1px
       background-position: -16px 0
       left: 0
+      
     &.selected+div:after,
     &+div.selected:after
       background-position: -17px 0
+      
+      
+      
 
 // ***************************************************************************************************
-//	 CLASS: TABBAR
+//   CLASS: TABBAR
 // ***************************************************************************************************
 
 =tab-bar-button-icon($source)
@@ -321,6 +390,7 @@ body
       weight: bold
       size: 10px
     color: #9a9a9a
+    
     .tab-bar-element
       display: block
       height: 44px
@@ -332,15 +402,18 @@ body
       border: 0
       +border-radius(3px)
       position: relative
+      
       &.selected
         color: white
         +linear-gradient(color-stops(#494949, #353535 50%, #252525 50%, #252525))
         .tab-bar-element-image:after
           +linear-gradient(color-stops(#c7e8fb, #3673c1), top, true)
+          
     .tab-bar-element-image
       margin:
         left: auto
         right: auto
+        
       &:after
         content: ""
         display: inline-block
