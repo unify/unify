@@ -3,6 +3,7 @@
 // ***************************************************************************************************
 //   RESET
 // ***************************************************************************************************
+
 // Structural CSS reset - only the basics
 
 *
@@ -36,6 +37,9 @@ img, body, fieldset
 
 a, input:focus, textarea:focus, select:focus
   outline: none
+
+
+
 
 // ***************************************************************************************************
 //   TAGS
@@ -75,10 +79,13 @@ textarea
 
 a[href], [rel], [goto], [exec]
   cursor: default
-  
-  
-  
-//
+
+
+
+
+// ***************************************************************************************************
+//   CLASS: SPLIT VIEW
+// ***************************************************************************************************
 
 .split-view
   +hbox
@@ -108,9 +115,10 @@ a[href], [rel], [goto], [exec]
         width: 60%
   
   
+  
 
 // ***************************************************************************************************
-//   SINGLETON: TAB VIEW
+//   CLASS: TAB VIEW
 // ***************************************************************************************************
 
 .tab-view
@@ -136,6 +144,8 @@ a[href], [rel], [goto], [exec]
       text-align: center
 
 
+
+
 // ***************************************************************************************************
 //   SINGLETON: ACTIVITY INDICATOR
 // ***************************************************************************************************
@@ -156,6 +166,9 @@ a[href], [rel], [goto], [exec]
     opacity: 0
   &.animate
     +transition(unquote("-webkit-transform, -moz-transform, -o-transform, opacity"), 200ms, ease, 100ms)
+
+
+
 
 // ***************************************************************************************************
 //   CLASS: LAYER
@@ -203,6 +216,9 @@ a[href], [rel], [goto], [exec]
   -webkit-transition-duration: 150ms
   -webkit-transition-timing-function: linear
 
+
+
+
 // ***************************************************************************************************
 //   CLASS: SCROLL VIEW
 // ***************************************************************************************************
@@ -211,6 +227,7 @@ a[href], [rel], [goto], [exec]
   overflow: hidden
   position: relative
   +box-flex(1)
+
   > .content
     -webkit-transform: translate3d(0, 0, 0)
     position: absolute
@@ -218,6 +235,19 @@ a[href], [rel], [goto], [exec]
     top: 0
     min-width: 100%
     min-height: 100%
+
+
+
+
+// ***************************************************************************************************
+//   CLASS: SLIDE VIEW
+// ***************************************************************************************************
+
+.slide-view > .content
+  +hbox
+
+
+
 
 // ***************************************************************************************************
 //   CLASS: SCROLL INDICATOR
@@ -230,20 +260,24 @@ a[href], [rel], [goto], [exec]
   z-index: 10
   -webkit-transition-property: opacity
   -webkit-transition-duration: 0.25s
+  
   > div
     background: rgba(0, 0, 0, 0.5)
     position: absolute
     top: 0
     left: 0
     -webkit-transform: translate3d(0, 0, 0)
+    
   > div:nth-of-type(2)
     /* scale from left top not from center
     -webkit-transform-origin: left top
+    
   &.horizontal
     bottom: 2px
     height: 5px
     /* default position is outside of viewport
     +translate3d(0, 10px, 0)
+    
     > div
       width: 3px
       height: 5px
@@ -254,11 +288,13 @@ a[href], [rel], [goto], [exec]
       +border-left-radius(2px)
     > div:last-child
       +border-right-radius(2px)
+      
   &.vertical
     right: 2px
     width: 5px
     /* default position is outside of viewport
     +translate3d(10px, 0, 0)
+    
     > div
       width: 5px
       height: 3px
@@ -269,32 +305,3 @@ a[href], [rel], [goto], [exec]
       +border-top-radius(2px)
     > div:last-child
       +border-bottom-radius(2px)
-
-// ***************************************************************************************************
-//   CLASS: DIALOG
-// ***************************************************************************************************
-
-.dialog,
-.infodialog
-  z-index: 6001
-  position: absolute
-  &-mask
-    z-index: 6000
-    position: absolute
-  *
-    z-index: 6003
-    position: relative
-  &-background
-    z-index: 6002
-    position: absolute
-    left: 0
-    top: 0
-    right: 0
-    bottom: 0
-
-// ***************************************************************************************************
-//   CLASS: SLIDE VIEW
-// ***************************************************************************************************
-
-.slide-view > .content
-  +hbox
