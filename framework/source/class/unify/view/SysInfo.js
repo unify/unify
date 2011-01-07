@@ -110,6 +110,7 @@ qx.Class.define("unify.view.SysInfo",
       }
 
       this.__content.replace(html);
+      this.__content.scrollTo(0, 0, false);
     }
   }
 });
