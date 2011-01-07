@@ -132,9 +132,8 @@ qx.Class.define("unify.ui.ToolBar",
         itemElem = document.createElement("div");
       }
 
-
-      if (item.style) {
-        itemElem.className += " " + item.style;
+      if (config.style) {
+        itemElem.className += " " + config.style;
       }
       
       if (config.label) {
