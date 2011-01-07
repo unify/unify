@@ -148,6 +148,8 @@ qx.Class.define("unify.view.PopOverManager",
         }
       }
       
+      this.debug("Show: " + id);
+      
       var elem = viewManager.getElement();
       if (elem.parentNode != this.__root) {
         this.__root.appendChild(elem);

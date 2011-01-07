@@ -332,7 +332,6 @@ qx.Class.define("unify.view.ViewManager",
       var view = this.__currentView;
       if (view) 
       {
-        
         var master = this.getMaster();
         value && master ? view.setMaster(master) : view.resetMaster();
       }
@@ -547,6 +546,7 @@ qx.Class.define("unify.view.ViewManager",
       
       // Re-activate view (normally only useful if it was paused before)
       var view = this.__currentView;
+      this.debug("Show with: " + view);
       if (view) {
         view.setActive(true);
       }

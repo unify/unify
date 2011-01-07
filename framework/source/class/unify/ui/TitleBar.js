@@ -7,6 +7,7 @@
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
 *********************************************************************************************** */
+
 /**
  * The TitleBar may be used as the first control of the {@link Layer}
  * for showing a title and offering simple navigation options. As the {@link ToolBar}
@@ -96,7 +97,6 @@ qx.Class.define("unify.ui.TitleBar",
             this.add(
             {
               label : parentTitle,
-              target : "left",
               rel : "parent"
             });
           }
@@ -142,7 +142,6 @@ qx.Class.define("unify.ui.TitleBar",
             this.add(
             {
               label : masterTitle,
-              target : "left",
               rel : "master"
             });
           }

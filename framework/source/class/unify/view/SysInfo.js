@@ -7,6 +7,7 @@
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
 *********************************************************************************************** */
+
 /**
  * Contains informations about the system and features.
  */
@@ -25,7 +26,6 @@ qx.Class.define("unify.view.SysInfo",
   members :
   {
     __content : null,
-
 
 
 
