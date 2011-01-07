@@ -44,6 +44,24 @@ qx.Class.define("unify.ui.ToolBar",
 
 
 
+  /*
+  *****************************************************************************
+     PROPERTIES
+  *****************************************************************************
+  */
+  
+  properties :
+  {
+    title :
+    {
+      check : "String",
+      apply : "_applyTitle",
+      nullable : true
+    }
+  },
+
+
+
 
   /*
   *****************************************************************************
@@ -78,14 +96,11 @@ qx.Class.define("unify.ui.ToolBar",
     ---------------------------------------------------------------------------
     */
 
-    /** {String} CSS class name to apply */
-    _cssClassName : "tool-bar",
-
     // overridden
     _createElement : function()
     {
       var elem = document.createElement("div");
-      elem.className = this._cssClassName;
+      elem.className = "tool-bar";
 
       return elem;
     },
