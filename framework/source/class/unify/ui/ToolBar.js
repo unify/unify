@@ -20,32 +20,6 @@ qx.Class.define("unify.ui.ToolBar",
 
   /*
   *****************************************************************************
-     CONSTRUCTOR
-  *****************************************************************************
-  */
-
-  /**
-   * @param view {unify.view.StaticView} View to connect to
-   */
-  construct : function(view)
-  {
-    this.base(arguments);
-
-    if (qx.core.Variant.isSet("qx.debug", "on"))
-    {
-      if (!view || !(view instanceof unify.view.StaticView)) {
-        throw new Error("Invalid view: " + view);
-      }
-    }
-
-    // Remember attached view
-    this.__view = view;
-  },
-
-
-
-  /*
-  *****************************************************************************
      PROPERTIES
   *****************************************************************************
   */
@@ -55,8 +29,22 @@ qx.Class.define("unify.ui.ToolBar",
     title :
     {
       check : "String",
-      apply : "_applyTitle",
-      nullable : true
+      nullable : true,
+      apply : "_applyTitle"
+    },
+    
+    parent : 
+    {
+      check : "unify.view.StaticView",
+      nullable : true,
+      apply : "_applyParent"
+    },
+    
+    master :
+    {
+      check : "unify.view.StaticView",
+      nullable : true,
+      apply : "_applyMaster"
     }
   },
 
@@ -73,25 +61,6 @@ qx.Class.define("unify.ui.ToolBar",
   {
     /*
     ---------------------------------------------------------------------------
-      USER API
-    ---------------------------------------------------------------------------
-    */
-
-    __view : null,
-
-    /**
-     * Returns the attached view instance
-     *
-     * @return {unify.view.StaticView} The view instance
-     */
-    getView : function() {
-      return this.__view || null;
-    },
-
-
-
-    /*
-    ---------------------------------------------------------------------------
       OVERRIDEABLE METHODS
     ---------------------------------------------------------------------------
     */
@@ -103,6 +72,29 @@ qx.Class.define("unify.ui.ToolBar",
       elem.className = "tool-bar";
 
       return elem;
+    },
+    
+    
+    _applyTitle : function(value, old)
+    {
+      var titleElem = this.__titleElem;
+      
+      if (value)
+      {
+        if (!titleElem) 
+        {
+          titleElem = this.__titleElem = document.createElement("h1");
+          this.add(titleElem);
+        }
+        
+        titleElem.innerHTML = value;
+        titleElem.style.display = "block";
+      }
+      else if (titleElem)
+      {
+        titleElem.innerHTML = "";
+        titleElem.style.display = "none";
+      }
     },
 
 
@@ -118,7 +110,11 @@ qx.Class.define("unify.ui.ToolBar",
     {
       var itemElem;
       
-      if (config.href)
+      if (config.nodeType == 1)
+      {
+        itemElem = config;
+      }
+      else if (config.href)
       {
         itemElem = document.createElement("a");
         itemElem.href = config.href;
@@ -148,7 +144,7 @@ qx.Class.define("unify.ui.ToolBar",
         itemElem = document.createElement("div");
       }
 
-      if (config.style) {
+      if (typeof config.style == "string") {
         itemElem.className += " " + config.style;
       }
       
@@ -180,18 +176,5 @@ qx.Class.define("unify.ui.ToolBar",
 
       this.getElement().appendChild(itemElem);
     }
-  },
-
-
-
-  /*
-  *****************************************************************************
-     DESTRUCTOR
-  *****************************************************************************
-  */
-
-  destruct : function()
-  {
-    this.__view = null;
   }
 });
