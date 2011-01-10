@@ -26,8 +26,9 @@ qx.Class.define("googly.view.Start", {
     _createView : function() 
     {
       var layer = new unify.ui.Layer(this);
-      var titlebar = new unify.ui.TitleBar(this);
-      layer.add(titlebar);
+      var toolbar = new unify.ui.ToolBar(this);
+      toolbar.setTitle("Googly");
+      layer.add(toolbar);
       
       var content = new unify.ui.Content;
       content.add("Welcome to Googly - The Ultimate Google Experience");

@@ -69,8 +69,9 @@ qx.Class.define("googly.view.Translate",
     _createView : function() 
     {
       var layer = new unify.ui.Layer(this);
-      var titlebar = new unify.ui.TitleBar(this);
-      layer.add(titlebar);
+      var toolbar = new unify.ui.ToolBar(this);
+      toolbar.setTitle("Translate");
+      layer.add(toolbar);
       
       var content = new unify.ui.Content;
       content.add("<textarea rows='3' cols='60' id='inputText'/><div class='button' exec='refresh'>Translate</div><textarea rows='3' cols='60' id='resultText'/>");
