@@ -244,14 +244,13 @@ body
   color: white
   vertical-align: middle
   line-height: 20px
-  margin-top: 2px
 
 .tool-bar
   height: 44px
-  padding: 0 3px
   background: inline_image(unquote("tool-bar/background.png"))
   border-bottom: 1px solid rgb(43, 53, 76)
   text-align: center
+  position: relative
 
   // bottom positioned tool bar
   &:last-child
@@ -265,20 +264,22 @@ body
     font-weight: bold
     line-height: 43px
     
+  > *
+    margin-left: 3px
+    margin-right: 3px
+    
   > .segmented
     display: inline-block
-    padding: 5px 
-    
+    padding-top: 7px 
+    padding-bottom: 6px
 
   > .left
-    text-align: left
-    > *
-      margin-left: 3px
+    position: absolute
+    left: 0px
+    top: 0px
 
-  > .right
-    text-align: right
-    > *
-      margin-right: 3px
+  > .righttt
+    float: right
 
   .button
     +tool-bar-button-core

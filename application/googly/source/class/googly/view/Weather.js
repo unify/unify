@@ -66,8 +66,8 @@ qx.Class.define("googly.view.Weather",
       segmented.add({segment:"forecast", label:"Forecast"});
       
       var toolbar = new unify.ui.ToolBar(this);
-      toolbar.add({jump:"weather-search", label:"Select City", target:"right"});
-      toolbar.add({exec:"refresh", label:"Refresh", target:"right"});
+      toolbar.add({jump:"weather-search", label:"Select City", style:"button right"});
+      toolbar.add({exec:"refresh", label:"Refresh", style:"button left"});
       toolbar.add(segmented);
       layer.add(toolbar);
       
