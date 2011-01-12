@@ -32,8 +32,11 @@ qx.Class.define("unify.ui.NavigationBar",
   {
     this.base(arguments);
 
-    // Configure titlebar on current configuration of view
-    this.query(".center").innerHTML = view.getTitle("titlebar");
+    if (!view || !(view instanceof unify.view.StaticView)) {
+      throw new Error("Invalid view! NavigationBar must be attached to a view!")
+    }
+    
+    this.__view = view;
 
     // Finally listen for any changes occour after creation of the titlebar
     view.addListener("changeTitle", this.__onViewChangeTitle, this);
@@ -51,9 +54,21 @@ qx.Class.define("unify.ui.NavigationBar",
      MEMBERS
   *****************************************************************************
   */
-
+  
   members :
   {
+    _createElement : function()
+    {
+      var elem = document.createElement("div");
+      elem.className = "navigation-bar";
+      elem.innerHTML = this.__view.getTitle();
+
+      return elem;      
+    },
+    
+    
+    
+    
     /*
     ---------------------------------------------------------------------------
       EVENT LISTENER
@@ -70,7 +85,9 @@ qx.Class.define("unify.ui.NavigationBar",
      */
     __onViewChangeParent : function(e)
     {
-      var parentView = this.getView().getParent();
+      return;
+      
+      var parentView = this.__view.getParent();
       var parentButtonElem = this.query("[rel=parent]");
 
       if (parentView)
@@ -114,6 +131,8 @@ qx.Class.define("unify.ui.NavigationBar",
      */
     __onViewChangeMaster : function(e)
     {
+      return;
+      
       var masterViewManager = this.getView().getMaster();
       var masterButtonElem = this.query("[rel=master]");
 
@@ -159,6 +178,8 @@ qx.Class.define("unify.ui.NavigationBar",
      */
     __onViewChangeTitle : function(e)
     {
+      return;
+      
       this.query(".center").innerHTML = this.getView().getTitle("titlebar");
     }
   },
