@@ -60,15 +60,41 @@ qx.Class.define("googly.view.Weather",
     _createView : function() 
     {
       var layer = new unify.ui.Layer(this);
-      
-      var segmented = new unify.ui.Segmented(this);
-      segmented.add({segment:"current", label:"Currently"});
-      segmented.add({segment:"forecast", label:"Forecast"});
-      
-      var toolbar = new unify.ui.ToolBar(this);
-      toolbar.add({jump:"weather-search", label:"Select City", style:"button right"});
-      toolbar.add({exec:"refresh", label:"Refresh", style:"button left"});
-      toolbar.add(segmented);
+
+      var toolbar = new unify.ui.ToolBar;
+      toolbar.setItems(
+      [
+        {
+          kind : "button",
+          jump : "weather-search", 
+          label : "Select City"
+        },
+        {
+          kind : "spacer"
+        },
+        {
+          kind : "segmented",
+          buttons : 
+          [
+            {
+              segment: "current", 
+              label: "Currently"
+            },
+            {
+              segment: "forecast", 
+              label: "Forecast"
+            }
+          ]
+        },
+        {
+          kind : "spacer"
+        },        
+        {
+          kind : "button",
+          exec : "refresh", 
+          label : "Refresh"
+        }
+      ]);
       layer.add(toolbar);
       
       var weatherDisplay = this.__weatherDisplay = document.createElement("div");

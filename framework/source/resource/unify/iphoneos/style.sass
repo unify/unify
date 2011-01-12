@@ -264,22 +264,33 @@ body
     font-weight: bold
     line-height: 43px
     
-  > *
-    margin-left: 3px
-    margin-right: 3px
-    
-  > .segmented
+  > div
+    height: 43px
     display: inline-block
-    padding-top: 7px 
-    padding-bottom: 6px
+    
+    &.left
+      position: absolute
+      top: 0
+      left: 0
+      height: 43px
+      
+    &.right
+      position: absolute
+      top: 0
+      right: 0
+      height: 43px
+    
+    > *
+      margin-left: 3px
+      margin-right: 3px
+    
 
-  > .left
-    position: absolute
-    left: 0px
-    top: 0px
+    > .segmented
+      display: inline-block
+      
+      > *
+        margin: 0
 
-  > .righttt
-    float: right
 
   .button
     +tool-bar-button-core

@@ -17,6 +17,21 @@ qx.Class.define("unify.ui.ToolBar",
   extend : unify.ui.Abstract,
 
 
+  /*
+  *****************************************************************************
+     PROPERTIES
+  *****************************************************************************
+  */
+  
+  construct : function(items)
+  {
+    this.base(arguments);
+    
+    this.__items = items;
+    
+  },
+
+
 
   /*
   *****************************************************************************
@@ -106,13 +121,37 @@ qx.Class.define("unify.ui.ToolBar",
     ---------------------------------------------------------------------------
     */
     
+    __createSegmentButtonElement : function(config)
+    {
+      var buttonElem = document.createElement("div");
+      buttonElem.setAttribute("goto", "." + config.segment);
+
+      if (config.label) {
+        buttonElem.innerHTML = config.label;
+      } else if (config.icon) {
+        buttonElem.innerHTML = "<div/>";
+      }
+      
+      return buttonElem;
+    },
+    
+    
     __createItemElement : function(config)
     {
       var itemElem;
       
-      if (config.nodeType == 1)
+      if (config.kind == "spacer")
       {
-        itemElem = config;
+        itemElem = document.createElement("div");
+      }
+      else if (config.kind == "segmented")
+      {
+        itemElem = document.createElement("div");
+        
+        var buttons = config.buttons;
+        for (var i=0, l=buttons.length; i<l; i++) {
+          itemElem.appendChild(this.__createSegmentButtonElement(buttons[i]));
+        }
       }
       else if (config.href)
       {
@@ -144,8 +183,13 @@ qx.Class.define("unify.ui.ToolBar",
         itemElem = document.createElement("div");
       }
 
-      if (typeof config.style == "string") {
-        itemElem.className += " " + config.style;
+      // Add kind as CSS class
+      if (config.kind) {
+        qx.bom.element2.Class.add(itemElem, config.kind);
+      }
+
+      if (config.style) {
+        qx.bom.element2.Class.add(itemElem, config.style);
       }
       
       if (config.label) {
@@ -159,22 +203,21 @@ qx.Class.define("unify.ui.ToolBar",
     
 
     /**
-     * Adds the given element
+     * Defines the items to show inside the toolbar
      *
-     * @param config {Map} Configuration for element to add
-     * @return {Element} Created DOM element
+     * @param items {Map[]} List of single item configurations
      */
-    add : function(config)
+    setItems : function(items)
     {
+      var elem = this.getElement();
       var itemElem;
 
-      if (config instanceof unify.ui.Abstract) {
-        itemElem = config.getElement();
-      } else {
-        itemElem = this.__createItemElement(config)
+      for (var i=0, l=items.length; i<l; i++)
+      {
+        itemElem = this.__createItemElement(items[i]);
+        elem.appendChild(itemElem);
       }
-
-      this.getElement().appendChild(itemElem);
+      
     }
   }
 });
