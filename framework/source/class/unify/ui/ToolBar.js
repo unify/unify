@@ -125,6 +125,7 @@ qx.Class.define("unify.ui.ToolBar",
     {
       var buttonElem = document.createElement("div");
       buttonElem.setAttribute("goto", "." + config.segment);
+      buttonElem.className = "button";
 
       if (config.label) {
         buttonElem.innerHTML = config.label;
@@ -217,7 +218,6 @@ qx.Class.define("unify.ui.ToolBar",
         itemElem = this.__createItemElement(items[i]);
         elem.appendChild(itemElem);
       }
-      
     }
   }
 });

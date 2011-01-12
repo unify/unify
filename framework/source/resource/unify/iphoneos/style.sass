@@ -212,7 +212,7 @@ body
 
 
 // ***************************************************************************************************
-//   CLASS: TITLEBAR & TOOLBAR
+//   CLASS: NAVIGATION BAR + TOOL BAR
 // ***************************************************************************************************
 
 =tool-bar-button-icon($source)
@@ -234,17 +234,8 @@ body
       display: inline-block
       vertical-align: top
 
-=tool-bar-button-core
-  font-size: 12px
-  font-weight: bold
-  text-decoration: none
-  white-space: nowrap
-  display: inline-block
-  text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
-  color: white
-  vertical-align: middle
-  line-height: 20px
 
+.navigation-bar,
 .tool-bar
   height: 44px
   background: inline_image(unquote("tool-bar/background.png"))
@@ -252,124 +243,114 @@ body
   text-align: center
   position: relative
 
-  // bottom positioned tool bar
-  &:last-child
-    border-bottom: 0px none
-    border-top: 1px solid rgb(43, 53, 76)
+  > div
+    margin-left: 3px
+    margin-right: 3px
+
+  .button
+    font-size: 12px
+    font-weight: bold
+    text-decoration: none
+    white-space: nowrap
+    display: inline-block
+    text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
+    color: white
+    vertical-align: middle
+    line-height: 20px
+    padding: 4px
+    cursor: default
+    
+  // Direct button elements - no childs of e.g. segmentation control
+  > .button
+    border-width: 1px 5px
+    -webkit-border-image: inline_image(unquote("tool-bar/button.png")) + unquote(" 1 5 1 5")
+
+    &.pressed, &.selected
+      -webkit-border-image: inline_image(unquote("tool-bar/button-pressed.png")) + unquote(" 1 5 1 5")
+
+
+.navigation-bar
+  > div
+    display: inline-block
 
   > h1
     font-size: 20px
     color: white
     text-shadow: rgba(0, 0, 0, 0.4) 0px -1px 0
     font-weight: bold
-    line-height: 43px
+    line-height: 43px  
+
+  > .button[rel=parent]
+    border-left-width: 12px
+    padding-left: 0
+    -webkit-border-image: inline_image(unquote("tool-bar/upwards.png")) + unquote(" 1 5 1 12")
+
+    &.pressed
+      -webkit-border-image: inline_image(unquote("tool-bar/upwards-pressed.png")) + unquote(" 1 5 1 12")
+
+
+.tool-bar
+  +hbox
+
+  // bottom positioned tool bar
+  &:last-child
+    border-bottom: 0px none
     
-  > div
-    height: 43px
-    display: inline-block
+  .spacer
+    +box-flex(1)
     
-    &.left
+  .segmented
+    // insert helper elements for rounded corners (first two selectors) and separators
+    div:first-child:before,
+    div:last-child:before,
+    div+div:after
+      content: ""
+      background-image: inline_image(unquote("segment/blue/button.png"))
+      background-repeat: no-repeat
       position: absolute
       top: 0
-      left: 0
-      height: 43px
-      
-    &.right
-      position: absolute
-      top: 0
-      right: 0
-      height: 43px
-    
-    > *
-      margin-left: 3px
-      margin-right: 3px
-    
+      height: 30px
 
-    > .segmented
-      display: inline-block
-      
-      > *
-        margin: 0
+    > div
+      position: relative
+      padding: 5px 12px
+      background-image: inline_image(unquote("segment/blue/middle.png"))
+
+      &.selected
+        background-position: 0 30px
+
+      // rounded corners are 4 pixel wide
+      &:first-child:before,
+      &:last-child:before
+        width: 4px
+
+      // place left rounded corner to the left edge
+      &:first-child:before
+        left: 0
+        background-position: 0px 0
+      &.selected:first-child:before
+        background-position: -8px 0
+
+      // place right rounded corner to the right edge
+      &:last-child:before
+        right: 0
+        background-position: -4px 0
+
+      &.selected:last-child:before
+        background-position: -12px 0
+
+      // position and size separators
+      &+div:after
+        width: 1px
+        background-position: -16px 0
+        left: 0
+
+      &.selected+div:after,
+      &+div.selected:after
+        background-position: -17px 0  
 
 
-  .button
-    +tool-bar-button-core
-    padding: 4px
-    cursor: default
-    border-width: 1px 5px
-    -webkit-border-image: inline_image(unquote("tool-bar/button.png")) + unquote(" 1 5 1 5")
-    
-    &.pressed, &.selected
-      -webkit-border-image: inline_image(unquote("tool-bar/button-pressed.png")) + unquote(" 1 5 1 5")
-      
-    &[rel=parent]
-      border-left-width: 12px
-      padding-left: 0
-      -webkit-border-image: inline_image(unquote("tool-bar/upwards.png")) + unquote(" 1 5 1 12")
-      
-      &.pressed
-        -webkit-border-image: inline_image(unquote("tool-bar/upwards-pressed.png")) + unquote(" 1 5 1 12")
 
-
-
-
-// ***************************************************************************************************
-//   CLASS: SEGMENTED
-// ***************************************************************************************************
-
-.segmented
-  // insert helper elements for rounded corners (first two selectors) and separators
-  div:first-child:before,
-  div:last-child:before,
-  div+div:after
-    content: ""
-    background-image: inline_image(unquote("segment/blue/button.png"))
-    background-repeat: no-repeat
-    position: absolute
-    top: 0
-    height: 30px
-    
-  > div
-    +tool-bar-button-core
-    position: relative
-    padding: 5px 12px
-    background-image: inline_image(unquote("segment/blue/middle.png"))
-
-    &.selected
-      background-position: 0 30px
-
-    // rounded corners are 4 pixel wide
-    &:first-child:before,
-    &:last-child:before
-      width: 4px
-
-    // place left rounded corner to the left edge
-    &:first-child:before
-      left: 0
-      background-position: 0px 0
-    &.selected:first-child:before
-      background-position: -8px 0
-
-    // place right rounded corner to the right edge
-    &:last-child:before
-      right: 0
-      background-position: -4px 0
-
-    &.selected:last-child:before
-      background-position: -12px 0
-      
-    // position and size separators
-    &+div:after
-      width: 1px
-      background-position: -16px 0
-      left: 0
-      
-    &.selected+div:after,
-    &+div.selected:after
-      background-position: -17px 0
-      
-      
-      
 
 // ***************************************************************************************************
 //   CLASS: TABBAR
