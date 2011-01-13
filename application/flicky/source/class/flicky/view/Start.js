@@ -30,8 +30,8 @@ qx.Class.define("flicky.view.Start",
     _createView : function()
     {
       var layer = new unify.ui.Layer(this);
-      var titlebar = new unify.ui.TitleBar(this);
-      layer.add(titlebar);
+      var navigationBar = new unify.ui.NavigationBar(this);
+      layer.add(navigationBar);
 
       var content = this.__content = new unify.ui.Content;
       layer.add(content);
