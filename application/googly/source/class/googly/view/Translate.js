@@ -69,8 +69,7 @@ qx.Class.define("googly.view.Translate",
     _createView : function() 
     {
       var layer = new unify.ui.Layer(this);
-      var toolbar = new unify.ui.ToolBar(this);
-      toolbar.setTitle("Translate");
+      var toolbar = new unify.ui.NavigationBar(this);
       layer.add(toolbar);
       
       var content = new unify.ui.Content;

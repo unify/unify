@@ -67,8 +67,7 @@ qx.Class.define("googly.view.Search",
     _createView : function() 
     {
       var layer = new unify.ui.Layer(this);
-      var toolbar = new unify.ui.ToolBar(this);
-      toolbar.setTitle("Search");
+      var toolbar = new unify.ui.NavigationBar(this);
       layer.add(toolbar);
       
       var scrollView = new unify.ui.ScrollView;

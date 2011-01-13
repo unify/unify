@@ -10,7 +10,8 @@
 /**
  * Start View
  */
-qx.Class.define("googly.view.Start", {
+qx.Class.define("googly.view.Start", 
+{
   extend : unify.view.StaticView,
   type : "singleton",
 
