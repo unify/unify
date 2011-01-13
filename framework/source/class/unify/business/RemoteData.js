@@ -629,7 +629,7 @@ qx.Class.define("unify.business.RemoteData",
       if (method == "POST")
       {
         var reqType = this.getRequestType();
-        if (reqType === "application/json" && typeof data != "string") {
+        if (reqType == "application/json" && typeof data != "string") {
           data = qx.lang.Json.stringify(data);
         }
         
