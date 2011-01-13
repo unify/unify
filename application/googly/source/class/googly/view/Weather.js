@@ -74,6 +74,7 @@ qx.Class.define("googly.view.Weather",
         },
         {
           kind : "segmented",
+          view : this,
           buttons : 
           [
             {

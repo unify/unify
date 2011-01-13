@@ -34,9 +34,8 @@ qx.Class.define("googly.view.WeatherSearch",
     {
       var layer = new unify.ui.Layer(this);
 
-      var toolbar = new unify.ui.ToolBar;
-      toolbar.setTitle("Search");
-      layer.add(toolbar);
+      var navigationBar = new unify.ui.NavigationBar(this);
+      layer.add(navigationBar);
 
       var content = new unify.ui.Content;
 
