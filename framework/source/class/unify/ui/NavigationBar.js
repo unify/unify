@@ -82,13 +82,13 @@ qx.Class.define("unify.ui.NavigationBar",
       var elem = doc.createElement("div");
       elem.className = "navigation-bar";
       
-      var titleElem = this.__titleElem = doc.createElement("h1");
-      titleElem.innerHTML = this.__view.getTitle();
-      elem.appendChild(titleElem);
-      
       var leftElem = this.__leftElem = doc.createElement("div");
       leftElem.className = "left";
       elem.appendChild(leftElem);
+
+      var titleElem = this.__titleElem = doc.createElement("h1");
+      titleElem.innerHTML = this.__view.getTitle();
+      elem.appendChild(titleElem);
       
       var rightElem = this.__rightElem = doc.createElement("div");
       rightElem.className = "right";

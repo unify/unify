@@ -266,26 +266,20 @@ body
 
 
 .navigation-bar
+  +hbox
   position: relative
   white-space: nowrap
 
+  > *
+    height: 42px
+
   > .left,
   > .right
-    display: block
-    border: 1px solid red
-    position: absolute
-    top: 0
-    height: 42px
     max-width: 50%
     overflow: hidden
     width: 24%
+    +box-flex(1)
     +hbox
-
-  > .left
-    left: 0
-    
-  > .right
-    right: 0
 
   > h1
     font-size: 20px
@@ -294,13 +288,9 @@ body
     font-weight: bold
     text-align: center
     line-height: 42px 
-    position: absolute
-    top: 0
-    left: 25%
-    width: 50%
-    outline: 1px solid red
     text-overflow: ellipsis
     overflow: hidden
+    width: 50%
     
   .button[rel=parent]
     border-left-width: 12px
