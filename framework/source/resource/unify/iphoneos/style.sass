@@ -3,7 +3,7 @@
 // ***************************************************************************************************
 
 =padded-layer($border_color: #b4b4b4, $border_radius: 8px)
-  background-image: inline_image(unquote("pinstripes.png"))
+  background-image: inline_image("pinstripes.png")
   background-color: rgb(203, 210, 216)
   .content
     padding: 10px
@@ -73,13 +73,12 @@
 //   MIXIN: NAVIGATION LIST
 // ***************************************************************************************************
 
-/*
- * Allows arbitrary sub elements
- * Uses a horizontal box layout for layouting children
- * Icon is supported in front of text using a "img" element
- * Text needs to be wrapped by a "label" element
- * Supports additional infos using "em" element
- * May show an arrow to indicate sub content using (self-closed) "hr" element
+// Allows arbitrary sub elements
+// Uses a horizontal box layout for layouting children
+// Icon is supported in front of text using a "img" element
+// Text needs to be wrapped by a "label" element
+// Supports additional infos using "em" element
+// May show an arrow to indicate sub content using (self-closed) "hr" element
 
 =navigation-list
   $selection_start: rgb(66, 134, 245)
@@ -111,7 +110,7 @@
       margin-left: 8px
       border: none
       &:after
-        content: inline_image(unquote("list/arrow.png"))
+        content: inline_image("list/arrow.png")
         
     &.selected, &.pressed
       +linear-gradient(color-stops($selection_start, $selection_end))
@@ -125,7 +124,7 @@
         
       > hr
         after:
-          content: inline_image(unquote("list/arrow-selected.png"))
+          content: inline_image("list/arrow-selected.png")
 
 
 
@@ -169,7 +168,7 @@ body
 
 #activity
   background-color: rgb(12, 12, 12)
-  background-image: inline_image(unquote("ajax-loader.gif"))
+  background-image: inline_image("ajax-loader.gif")
   background-repeat: no-repeat
   background-position: center
   opacity: 0.85
@@ -238,16 +237,19 @@ body
 .navigation-bar,
 .tool-bar
   height: 44px
-  background: inline_image(unquote("tool-bar/background.png"))
+  background: inline_image("tool-bar/background.png")
   border-bottom: 1px solid rgb(43, 53, 76)
-  text-align: center
+  border-top: 1px solid rgb(205,213,223)
   position: relative
   padding-left: 2px
   padding-right: 2px
+  white-space: nowrap
+  vertical-align: middle
 
   > div
     margin-left: 3px
     margin-right: 3px
+    vertical-align: middle
 
   // Shared button class. Used by segmentation control and top-level buttons
   .button
@@ -262,34 +264,50 @@ body
     line-height: 20px
     padding: 4px
     cursor: default
-    
-  // Direct button elements - no childs of e.g. segmentation control
-  > .button
     border-width: 1px 5px
-    -webkit-border-image: inline_image(unquote("tool-bar/button.png")) + unquote(" 1 5 1 5")
+    -webkit-border-image: inline_image("tool-bar/button.png") + unquote(" 1 5 1 5")
 
     &.pressed, &.selected
-      -webkit-border-image: inline_image(unquote("tool-bar/button-pressed.png")) + unquote(" 1 5 1 5")
+      -webkit-border-image: inline_image("tool-bar/button-pressed.png") + unquote(" 1 5 1 5")
 
 
 .navigation-bar
-  > div
-    display: inline-block
+  > .left,
+  > .right
+    display: block
+    border: 1px solid red
+    position: absolute
+    top: 0
+    height: 42px
+    max-width: 50%
+    overflow: hidden
+    width: 25%
+
+  > .left
+    left: 0
+    
+  > .right
+    right: 0
 
   > h1
     font-size: 20px
     color: white
     text-shadow: rgba(0, 0, 0, 0.4) 0px -1px 0
     font-weight: bold
-    line-height: 43px  
+    text-align: center
+    line-height: 42px 
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
 
-  > .button[rel=parent]
+  .button[rel=parent]
     border-left-width: 12px
     padding-left: 0
-    -webkit-border-image: inline_image(unquote("tool-bar/upwards.png")) + unquote(" 1 5 1 12")
+    -webkit-border-image: inline_image("tool-bar/upwards.png") + unquote(" 1 5 1 12")
 
     &.pressed
-      -webkit-border-image: inline_image(unquote("tool-bar/upwards-pressed.png")) + unquote(" 1 5 1 12")
+      -webkit-border-image: inline_image("tool-bar/upwards-pressed.png") + unquote(" 1 5 1 12")
 
 
 .tool-bar
@@ -308,16 +326,19 @@ body
     div:last-child:before,
     div+div:after
       content: ""
-      background-image: inline_image(unquote("segment/blue/button.png"))
+      background-image: inline_image("segment/blue/button.png")
       background-repeat: no-repeat
       position: absolute
       top: 0
       height: 30px
 
-    > div
+    > .button
+      -webkit-border-image: none
+      border-width: 0px
+      
       position: relative
       padding: 5px 12px
-      background-image: inline_image(unquote("segment/blue/middle.png"))
+      background-image: inline_image("segment/blue/middle.png")
 
       &.selected
         background-position: 0 30px

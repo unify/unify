@@ -101,9 +101,6 @@ qx.Class.define("unify.ui.NavigationBar",
     ---------------------------------------------------------------------------
     */
 
-    __lastParentTitle : null,
-    __lastMasterTitle : null,
-
     /**
      * Event listener for parent changes
      *
@@ -111,42 +108,18 @@ qx.Class.define("unify.ui.NavigationBar",
      */
     __onViewChangeParent : function(e)
     {
-      return;
+      var parentElem = this.__parentElem;
+      if (!parentElem) 
+      {
+        parentElem = this.__parentElem = document.createElement("div");
+        parentElem.setAttribute("rel", "parent");
+        parentElem.className = "button";
+        this.__leftElem.appendChild(parentElem);
+      }
       
-      var parentView = this.__view.getParent();
-      var parentButtonElem = this.query("[rel=parent]");
-
-      if (parentView)
-      {
-        var parentTitle = parentView.getTitle("parent");
-
-        if (this.__lastParentTitle != parentTitle)
-        {
-          if (parentButtonElem)
-          {
-            parentButtonElem.innerHTML = parentTitle;
-            parentButtonElem.style.display = "";
-          }
-          else
-          {
-            this.add(
-            {
-              label : parentTitle,
-              rel : "parent"
-            });
-          }
-
-          this.__lastParentTitle = parentTitle;
-        }
-      }
-      else
-      {
-        if (parentButtonElem) {
-          parentButtonElem.style.display = "none";
-        }
-
-        this.__lastParentTitle = null;
-      }
+      var parent = this.__view.getParent();
+      parentElem.innerHTML = parent ? parent.getTitle("parent") : "";
+      parentElem.style.display = parent ? "" : "none";
     },
 
 
