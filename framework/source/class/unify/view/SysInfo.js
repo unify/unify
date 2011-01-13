@@ -60,6 +60,7 @@ qx.Class.define("unify.view.SysInfo",
         },
         {
           kind : "segmented",
+          view : this,
           buttons :
           [
             { label : "Basics", segment : "basics" },

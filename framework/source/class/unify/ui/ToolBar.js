@@ -41,13 +41,6 @@ qx.Class.define("unify.ui.ToolBar",
   
   properties :
   {
-    title :
-    {
-      check : "String",
-      nullable : true,
-      apply : "_applyTitle"
-    },
-    
     parent : 
     {
       check : "unify.view.StaticView",
@@ -90,42 +83,32 @@ qx.Class.define("unify.ui.ToolBar",
     },
     
     
-    _applyTitle : function(value, old)
+    __onChangeSegment : function(e)
     {
-      var titleElem = this.__titleElem;
+      var view = e.getTarget();
+      var data = e.getData();
+      var segmentedElem = view.getElement().querySelector(".segmented");
       
-      if (value)
+      if (segmentedElem)
       {
-        if (!titleElem) 
-        {
-          titleElem = this.__titleElem = document.createElement("h1");
-          this.add(titleElem);
+        var old = segmentedElem.querySelector(".selected");
+        if (old) {
+          qx.bom.element2.Class.remove(old, "selected");
         }
         
-        titleElem.innerHTML = value;
-        titleElem.style.display = "block";
-      }
-      else if (titleElem)
-      {
-        titleElem.innerHTML = "";
-        titleElem.style.display = "none";
+        var next = segmentedElem.querySelector("[goto='." + data + "']");
+        if (next) {
+          qx.bom.element2.Class.add(next, "selected");
+        }
       }
     },
-
-
-
-
-    /*
-    ---------------------------------------------------------------------------
-      PUBLIC API
-    ---------------------------------------------------------------------------
-    */
     
-    __createSegmentButtonElement : function(config)
+    
+    __createSegmentButtonElement : function(config, selected)
     {
       var buttonElem = document.createElement("div");
       buttonElem.setAttribute("goto", "." + config.segment);
-      buttonElem.className = "button";
+      buttonElem.className = config.segment == selected ? "button selected" : "button";
 
       if (config.label) {
         buttonElem.innerHTML = config.label;
@@ -148,11 +131,16 @@ qx.Class.define("unify.ui.ToolBar",
       else if (config.kind == "segmented")
       {
         itemElem = document.createElement("div");
+
+        var view = config.view;
+        var segment = view.getSegment();
         
         var buttons = config.buttons;
         for (var i=0, l=buttons.length; i<l; i++) {
-          itemElem.appendChild(this.__createSegmentButtonElement(buttons[i]));
+          itemElem.appendChild(this.__createSegmentButtonElement(buttons[i], segment));
         }
+        
+        view.addListener("changeSegment", this.__onChangeSegment, this);
       }
       else if (config.href)
       {
