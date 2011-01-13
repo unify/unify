@@ -234,10 +234,13 @@ body
       vertical-align: top
 
 
+$toolbar-theme: blue
+$toolbar-path: "tool-bar/" + $toolbar-theme + "/"
+
 .navigation-bar,
 .tool-bar
   height: 44px
-  background: inline_image("tool-bar/background.png")
+  background: inline_image($toolbar-path + "background.png")
   border-bottom: 1px solid rgb(43, 53, 76)
   border-top: 1px solid rgb(205,213,223)
   padding-left: 2px
@@ -259,10 +262,10 @@ body
     padding: 4px
     cursor: default
     border-width: 1px 5px
-    -webkit-border-image: inline_image("tool-bar/button.png") + unquote(" 1 5 1 5")
+    -webkit-border-image: inline_image($toolbar-path + "button.png") + unquote(" 1 5 1 5")
 
     &.pressed, &.selected
-      -webkit-border-image: inline_image("tool-bar/button-pressed.png") + unquote(" 1 5 1 5")
+      -webkit-border-image: inline_image($toolbar-path + "button-pressed.png") + unquote(" 1 5 1 5")
 
 
 .navigation-bar
@@ -298,18 +301,18 @@ body
   .button[rel=parent]
     border-left-width: 12px
     padding-left: 0
-    -webkit-border-image: inline_image("tool-bar/upwards.png") + unquote(" 1 5 1 12")
+    -webkit-border-image: inline_image($toolbar-path + "upwards.png") + unquote(" 1 5 1 12")
 
     &.pressed
-      -webkit-border-image: inline_image("tool-bar/upwards-pressed.png") + unquote(" 1 5 1 12")
+      -webkit-border-image: inline_image($toolbar-path + "upwards-pressed.png") + unquote(" 1 5 1 12")
 
   .button[rel=down]
     border-right-width: 12px
     padding-right: 0
-    -webkit-border-image: inline_image("tool-bar/downwards.png") + unquote(" 1 12 1 5")
+    -webkit-border-image: inline_image($toolbar-path + "downwards.png") + unquote(" 1 12 1 5")
 
     &.pressed
-      -webkit-border-image: inline_image("tool-bar/downwards-pressed.png") + unquote(" 1 12 1 5")
+      -webkit-border-image: inline_image($toolbar-path + "downwards-pressed.png") + unquote(" 1 12 1 5")
 
 
 .tool-bar
