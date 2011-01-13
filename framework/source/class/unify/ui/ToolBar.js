@@ -83,22 +83,57 @@ qx.Class.define("unify.ui.ToolBar",
     },
     
     
+
+
+
+    /*
+    ---------------------------------------------------------------------------
+      PUBLIC API
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Defines the items to show inside the toolbar
+     *
+     * @param items {Map[]} List of single item configurations
+     */
+    setItems : function(items)
+    {
+      var elem = this.getElement();
+      var itemElem;
+
+      for (var i=0, l=items.length; i<l; i++)
+      {
+        itemElem = this.__createItemElement(items[i]);
+        elem.appendChild(itemElem);
+      }
+    },
+    
+    
+    
+    
+    
+    /*
+    ---------------------------------------------------------------------------
+      PRIVATE METHODS
+    ---------------------------------------------------------------------------
+    */
+        
     __onChangeSegment : function(e)
     {
-      var view = e.getTarget();
-      var data = e.getData();
-      var segmentedElem = view.getElement().querySelector(".segmented");
+      var segmented = e.getTarget().getElement().querySelector(".segmented");
+      var Class = qx.bom.element2.Class;
       
-      if (segmentedElem)
+      if (segmented)
       {
-        var old = segmentedElem.querySelector(".selected");
+        var old = segmented.querySelector(".selected");
         if (old) {
-          qx.bom.element2.Class.remove(old, "selected");
+          Class.remove(old, "selected");
         }
         
-        var next = segmentedElem.querySelector("[goto='." + data + "']");
+        var next = segmented.querySelector("[goto='." + e.getData() + "']");
         if (next) {
-          qx.bom.element2.Class.add(next, "selected");
+          Class.add(next, "selected");
         }
       }
     },
@@ -188,24 +223,6 @@ qx.Class.define("unify.ui.ToolBar",
       }
       
       return itemElem;
-    },
-    
-
-    /**
-     * Defines the items to show inside the toolbar
-     *
-     * @param items {Map[]} List of single item configurations
-     */
-    setItems : function(items)
-    {
-      var elem = this.getElement();
-      var itemElem;
-
-      for (var i=0, l=items.length; i<l; i++)
-      {
-        itemElem = this.__createItemElement(items[i]);
-        elem.appendChild(itemElem);
-      }
     }
   }
 });
