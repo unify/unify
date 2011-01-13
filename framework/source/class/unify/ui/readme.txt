@@ -1,3 +1,3 @@
 /** 
- * UI elements for smartphones
+ * UI Components
  */
