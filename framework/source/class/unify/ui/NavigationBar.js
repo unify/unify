@@ -116,7 +116,7 @@ qx.Class.define("unify.ui.NavigationBar",
       return elem;      
     },
     
-    
+
     
     __createItem : function(config)
     {
@@ -164,7 +164,13 @@ qx.Class.define("unify.ui.NavigationBar",
     
     _applyLeftItem : function(value, old)
     {
-
+      var leftElem = this.__leftElem;
+      if (leftElem) 
+      {
+        console.debug("LEFT-ITEM", value);
+        
+        
+      }
     },
     
     _applyRightItem : function(value, old)
@@ -172,6 +178,8 @@ qx.Class.define("unify.ui.NavigationBar",
       var rightElem = this.__rightElem;
       if (rightElem) 
       {
+        console.debug("RIGHT-ITEM", value)
+
         if (old) {
           //rightElem.removeChild(old)
         }
