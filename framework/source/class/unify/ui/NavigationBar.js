@@ -42,9 +42,6 @@ qx.Class.define("unify.ui.NavigationBar",
     view.addListener("changeTitle", this.__onViewChangeTitle, this);
     view.addListener("changeParent", this.__onViewChangeParent, this);
     view.addListener("changeMaster", this.__onViewChangeMaster, this);
-
-    this.__onViewChangeParent();
-    this.__onViewChangeMaster();
   },
 
 
@@ -88,6 +85,9 @@ qx.Class.define("unify.ui.NavigationBar",
       var rightElem = this.__rightElem = doc.createElement("div");
       rightElem.className = "right";
       elem.appendChild(rightElem);
+      
+      this.__onViewChangeParent();
+      this.__onViewChangeMaster();
       
       return elem;      
     },
@@ -202,11 +202,8 @@ qx.Class.define("unify.ui.NavigationBar",
      *
      * @param e {qx.event.type.Data} Property change event
      */
-    __onViewChangeTitle : function(e)
-    {
-      return;
-      
-      this.query(".center").innerHTML = this.getView().getTitle("titlebar");
+    __onViewChangeTitle : function(e) {
+      this.__titleElem.innerHTML = this.__view.getTitle();
     }
   },
 
