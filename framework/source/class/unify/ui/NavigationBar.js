@@ -48,7 +48,7 @@ qx.Class.define("unify.ui.NavigationBar",
 
   /*
   *****************************************************************************
-     MEMBERS
+     PROPERTIES
   *****************************************************************************
   */
   
@@ -65,6 +65,14 @@ qx.Class.define("unify.ui.NavigationBar",
     }
   },
   
+  
+  
+  /*
+  *****************************************************************************
+     MEMBERS
+  *****************************************************************************
+  */
+    
   members :
   {
     _createElement : function()
@@ -130,43 +138,18 @@ qx.Class.define("unify.ui.NavigationBar",
      */
     __onViewChangeMaster : function(e)
     {
-      return;
-      
-      var masterViewManager = this.getView().getMaster();
-      var masterButtonElem = this.query("[rel=master]");
-
-      if (masterViewManager)
+      var masterElem = this.__masterElem;
+      if (!masterElem) 
       {
-        var masterView = masterViewManager.getCurrentView();
-        var masterTitle = masterView.getTitle("master");
-
-        if (this.__lastMasterTitle != masterTitle)
-        {
-          if (masterButtonElem)
-          {
-            masterButtonElem.innerHTML = masterTitle;
-            masterButtonElem.style.display = "";
-          }
-          else
-          {
-            this.add(
-            {
-              label : masterTitle,
-              rel : "master"
-            });
-          }
-
-          this.__lastMasterTitle = masterTitle;
-        }
+        masterElem = this.__masterElem = document.createElement("div");
+        masterElem.setAttribute("rel", "master");
+        masterElem.className = "button";
+        this.__leftElem.appendChild(masterElem);
       }
-      else
-      {
-        if (masterButtonElem) {
-          masterButtonElem.style.display = "none";
-        }
-
-        this.__lastMasterTitle = null;
-      }      
+      
+      var master = this.__view.getParent();
+      masterElem.innerHTML = master ? master.getTitle("master") : "";
+      masterElem.style.display = master ? "" : "none";     
     },
 
 
