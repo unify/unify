@@ -54,14 +54,27 @@ qx.Class.define("unify.ui.NavigationBar",
   
   properties :
   {
+    /**
+     * A custom bar item displayed on the left of the navigation bar when 
+     * this item is the top item.
+     */
     leftItem : 
     {
-      nullable : true
+      check : "Object",
+      nullable : true,
+      apply : "_applyLeftItem"
     },
     
+    
+    /** 
+     * A custom bar item displayed on the right of the navigation bar when 
+     * this item is the top item.
+     */
     rightItem :
     {
-      nullable : true
+      check : "Object",
+      nullable : true,
+      apply : "_applyRightItem"
     }
   },
   
@@ -97,7 +110,76 @@ qx.Class.define("unify.ui.NavigationBar",
       this.__onViewChangeParent();
       this.__onViewChangeMaster();
       
+      this._applyLeftItem(this.getLeftItem());
+      this._applyRightItem(this.getRightItem());
+      
       return elem;      
+    },
+    
+    
+    
+    __createItem : function(config)
+    {
+      var itemElem;
+      
+      if (config.rel || config.jump || config.exec || config.show)
+      {
+        itemElem = document.createElement("div");
+
+        if (config.rel) {
+          itemElem.setAttribute("rel", config.rel);
+        }
+
+        if (config.jump) {
+          itemElem.setAttribute("goto", config.jump);
+        } else if (config.exec) {
+          itemElem.setAttribute("exec", config.exec);
+        } else if (config.show) {
+          itemElem.setAttribute("show", config.show);
+        }
+      }
+      else
+      {
+        itemElem = document.createElement("div");
+      }
+      
+      // Add kind as CSS class
+      if (config.kind) {
+        qx.bom.element2.Class.add(itemElem, config.kind);
+      }
+
+      if (config.style) {
+        qx.bom.element2.Class.add(itemElem, config.style);
+      }
+      
+      if (config.label) {
+        itemElem.innerHTML = config.label;
+      } else if (config.icon) {
+        itemElem.innerHTML = "<div/>";
+      }      
+      
+      return itemElem;
+    },
+    
+    
+    _applyLeftItem : function(value, old)
+    {
+
+    },
+    
+    _applyRightItem : function(value, old)
+    {
+      var rightElem = this.__rightElem;
+      if (rightElem) 
+      {
+        if (old) {
+          //rightElem.removeChild(old)
+        }
+        
+        if (value) {
+          rightElem.appendChild(this.__createItem(value));
+        }
+      }
     },
     
     
