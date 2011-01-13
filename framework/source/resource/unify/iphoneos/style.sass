@@ -240,27 +240,21 @@ body
   background: inline_image("tool-bar/background.png")
   border-bottom: 1px solid rgb(43, 53, 76)
   border-top: 1px solid rgb(205,213,223)
-  position: relative
   padding-left: 2px
   padding-right: 2px
   white-space: nowrap
-  vertical-align: middle
 
   > div
     margin-left: 3px
     margin-right: 3px
-    vertical-align: middle
 
   // Shared button class. Used by segmentation control and top-level buttons
   .button
     font-size: 12px
     font-weight: bold
     text-decoration: none
-    white-space: nowrap
-    display: inline-block
     text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
     color: white
-    vertical-align: middle
     line-height: 20px
     padding: 4px
     cursor: default
@@ -272,6 +266,9 @@ body
 
 
 .navigation-bar
+  position: relative
+  white-space: nowrap
+
   > .left,
   > .right
     display: block
@@ -282,6 +279,7 @@ body
     max-width: 50%
     overflow: hidden
     width: 25%
+    +hbox
 
   > .left
     left: 0
@@ -300,7 +298,7 @@ body
     top: 0
     left: 0
     width: 100%
-
+    
   .button[rel=parent]
     border-left-width: 12px
     padding-left: 0
@@ -344,6 +342,7 @@ body
       -webkit-border-image: none
       border-width: 0px
       
+      display: inline-block
       position: relative
       padding: 5px 12px
       background-image: inline_image("segment/blue/middle.png")
