@@ -309,6 +309,14 @@ body
     &.pressed
       -webkit-border-image: inline_image("tool-bar/upwards-pressed.png") + unquote(" 1 5 1 12")
 
+  .button[rel=down]
+    border-right-width: 12px
+    padding-right: 0
+    -webkit-border-image: inline_image("tool-bar/downwards.png") + unquote(" 1 12 1 5")
+
+    &.pressed
+      -webkit-border-image: inline_image("tool-bar/downwards-pressed.png") + unquote(" 1 12 1 5")
+
 
 .tool-bar
   +hbox
