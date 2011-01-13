@@ -629,13 +629,12 @@ qx.Class.define("unify.business.RemoteData",
       if (method == "POST")
       {
         var reqType = this.getRequestType();
-
-        req.setRequestType(reqType);
         if (reqType === "application/json" && typeof data != "string") {
-          req.setData(qx.lang.Json.stringify(data));
-        } else {
-          req.setData(data);
+          data = qx.lang.Json.stringify(data);
         }
+        
+        req.setRequestType(reqType);
+        req.setData(data);
       }
 
       // Add listeners
