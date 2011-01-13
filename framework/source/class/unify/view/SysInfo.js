@@ -52,15 +52,27 @@ qx.Class.define("unify.view.SysInfo",
     {
       var layer = new unify.ui.Layer(this);
 
-      var toolbar = new unify.ui.ToolBar(this);
+      var toolbar = new unify.ui.ToolBar;
+      toolbar.setItems(
+      [
+        {
+          kind : "spacer"
+        },
+        {
+          kind : "segmented",
+          buttons :
+          [
+            { label : "Basics", segment : "basics" },
+            { label : "Environment", segment : "env" },
+            { label : "Features", segment : "features" }
+          ]
+        },
+        {
+          kind : "spacer"
+        }
+      ]);
       layer.add(toolbar);
       
-      var segmented = new unify.ui.Segmented(this);
-      segmented.add({ label : "Basics", segment : "basics" });
-      segmented.add({ label : "Environment", segment : "env" });
-      segmented.add({ label : "Features", segment : "features" });
-      toolbar.add(segmented);
-
       var scrollview = this.__content = new unify.ui.ScrollView(this);
       scrollview.setEnableScrollX(false);
       layer.add(scrollview);
