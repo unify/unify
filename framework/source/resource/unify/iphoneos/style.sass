@@ -263,10 +263,10 @@ $toolbar-path: "toolbar/" + $toolbar-theme + "/"
     padding: 4px
     cursor: default
     border-width: 0px 5px
-    -webkit-border-image: inline_image($toolbar-path + "button-normal.png") + unquote(" 0 5 30 5")
+    -webkit-border-image: inline_image($toolbar-path + "button-normal.png") 0 5 30 5
 
     &.pressed, &.selected
-      -webkit-border-image: inline_image($toolbar-path + "button-normal.png") + unquote(" 30 5 0 5")
+      -webkit-border-image: inline_image($toolbar-path + "button-normal.png") 30 5 0 5
 
 
 .navigation-bar
@@ -302,10 +302,10 @@ $toolbar-path: "toolbar/" + $toolbar-theme + "/"
   .button[rel=parent]
     border-left-width: 12px
     padding-left: 0
-    -webkit-border-image: inline_image($toolbar-path + "button-back.png") + unquote(" 0 5 30 12")
+    -webkit-border-image: inline_image($toolbar-path + "button-back.png") 0 5 30 12
 
     &.pressed
-      -webkit-border-image: inline_image($toolbar-path + "button-back.png") + unquote(" 30 5 0 12")
+      -webkit-border-image: inline_image($toolbar-path + "button-back.png") 30 5 0 12
 
 
 
