@@ -234,7 +234,7 @@ body
       vertical-align: top
 
 
-$toolbar-theme: "black"
+$toolbar-theme: "blue"
 $toolbar-path: "toolbar/" + $toolbar-theme + "/"
 
 
@@ -319,59 +319,28 @@ $toolbar-path: "toolbar/" + $toolbar-theme + "/"
   .spacer
     +box-flex(1)
     
+    
   .segmented
-    // insert helper elements for rounded corners (first two selectors) and separators
-    div:first-child:before,
-    div:last-child:before,
-    div+div:after
-      content: ""
-      background-image: inline_image("segment/blue/button.png")
-      background-repeat: no-repeat
-      position: absolute
-      top: 0
-      height: 30px
-
+    border-width: 0px 5px
+    -webkit-border-image: inline_image($toolbar-path + "segmented-frame.png") 0 5 0 5
+    
     > .button
-      -webkit-border-image: none
       border-width: 0px
-      
+      -webkit-border-image: none
+    
       display: inline-block
       position: relative
       padding: 5px 12px
-      background-image: inline_image("segment/blue/middle.png")
-
+      
+      
       &.selected
-        background-position: 0 30px
+        -webkit-border-image: inline_image($toolbar-path + "segmented.png") 0 5 0 5
+      
+      &:not(:last-child)
+        border-right: 1px solid rgb(93, 112, 139)
 
-      // rounded corners are 4 pixel wide
-      &:first-child:before,
-      &:last-child:before
-        width: 4px
-
-      // place left rounded corner to the left edge
-      &:first-child:before
-        left: 0
-        background-position: 0px 0
-      &.selected:first-child:before
-        background-position: -8px 0
-
-      // place right rounded corner to the right edge
-      &:last-child:before
-        right: 0
-        background-position: -4px 0
-
-      &.selected:last-child:before
-        background-position: -12px 0
-
-      // position and size separators
-      &+div:after
-        width: 1px
-        background-position: -16px 0
-        left: 0
-
-      &.selected+div:after,
-      &+div.selected:after
-        background-position: -17px 0  
+  
+  
 
 
 
