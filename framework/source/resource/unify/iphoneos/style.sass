@@ -391,7 +391,7 @@ $toolbar-path: "toolbar/" + $toolbar-theme + "/"
         color: white
         +linear-gradient(color-stops(#494949, #353535 50%, #252525 50%, #252525))
         .tab-bar-element-image:after
-          +linear-gradient(color-stops(#c7e8fb, #3673c1), top, true)
+          background-image: inline_image("tabbar/mask.png") !important
           
     .tab-bar-element-image
       margin:
@@ -403,4 +403,5 @@ $toolbar-path: "toolbar/" + $toolbar-theme + "/"
         display: inline-block
         vertical-align: top
         +linear-gradient(color-stops(#b0b0b0, #545454), top, true)
+        background-size: 100% 100%
 
