@@ -177,6 +177,10 @@ qx.Class.define("unify.ui.ToolBar",
         
         view.addListener("changeSegment", this.__onChangeSegment, this);
       }
+      else if (config.kind == "header")
+      {
+        itemElem = document.createElement("h1");
+      }
       else if (config.rel || config.jump || config.exec || config.show)
       {
         itemElem = document.createElement("div");

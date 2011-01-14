@@ -234,7 +234,7 @@ body
       vertical-align: top
 
 
-$toolbar-theme: gray
+$toolbar-theme: "black"
 $toolbar-path: "toolbar/" + $toolbar-theme + "/"
 
 
@@ -243,9 +243,7 @@ $toolbar-path: "toolbar/" + $toolbar-theme + "/"
 .navigation-bar,
 .tool-bar
   height: 44px
-  background: inline_image($toolbar-path + "toolbar.png")
-  border-bottom: 1px solid rgb(43, 53, 76)
-  border-top: 1px solid rgb(205,213,223)
+  background: inline_image($toolbar-path + "navigationbar.png")
   padding-left: 2px
   padding-right: 2px
   white-space: nowrap
@@ -264,8 +262,8 @@ $toolbar-path: "toolbar/" + $toolbar-theme + "/"
     line-height: 20px
     padding: 4px
     cursor: default
-    border-width: 1px 5px
-    -webkit-border-image: inline_image($toolbar-path + "button-normal.png") + unquote(" 0 5 0 5")
+    border-width: 0px 5px
+    -webkit-border-image: inline_image($toolbar-path + "button-normal.png") + unquote(" 0 5 30 5")
 
     &.pressed, &.selected
       -webkit-border-image: inline_image($toolbar-path + "button-normal.png") + unquote(" 30 5 0 5")
@@ -304,10 +302,10 @@ $toolbar-path: "toolbar/" + $toolbar-theme + "/"
   .button[rel=parent]
     border-left-width: 12px
     padding-left: 0
-    -webkit-border-image: inline_image($toolbar-path + "button-back.png") + unquote(" 0 5 0 12")
+    -webkit-border-image: inline_image($toolbar-path + "button-back.png") + unquote(" 0 5 30 12")
 
     &.pressed
-      -webkit-border-image: inline_image($toolbar-path + "button-back.png") + unquote(" 0 5 0 12")
+      -webkit-border-image: inline_image($toolbar-path + "button-back.png") + unquote(" 30 5 0 12")
 
 
 
