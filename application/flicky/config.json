@@ -17,6 +17,6 @@
     "CACHE"             : "${TMPDIR}/cache",
 
     "APP_NAME"          : "flicky",
-    "APP_LOCALES"       : [ "de" ]
+    "APP_LOCALES"       : [ "en" ]
   }
 }

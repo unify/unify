@@ -10,7 +10,7 @@
 /**
  * Remote data business object with intelligent cache managment.
  *
- * * Supports localStorage for storing data between application runs.
+ * * Uses unify.bom.Storage for storing data between application runs.
  * * Supports HTTP-proxying for cross-domain communication
  * * Supports basic HTTP authentification
  * * Make use of modification dates to optimize data loading via GET
@@ -39,20 +39,9 @@ qx.Class.define("unify.business.RemoteData",
     this.__headers = {};
 
     /** {String} Prefix used for storage */
-    var prefix = "unify/" + qx.lang.String.hyphenate(this.basename).substring(1);
+    var prefix = qx.lang.String.hyphenate(this.basename).substring(1);
     this.__storageDataPrefix = prefix + "/data/";
     this.__storageMetaPrefix = prefix + "/meta/";
-
-    // Detect requirement of cross domain proxy
-    if (unify.bom.client.Extension.PHONEGAP) {
-      this.setEnableProxy(false);
-    }
-
-    // Safari supports cross-domain requests when the document is loaded from file system
-    // Not supported in other Webkit browsers like Chrome or browsers with other engines
-    else if (location.protocol == "file:" && qx.bom.client.Browser.NAME == "safari") {
-      //this.setEnableProxy(false);
-    }
   },
 
 
@@ -94,13 +83,13 @@ qx.Class.define("unify.business.RemoteData",
     enableProxy :
     {
       check : "Boolean",
-      init : true
+      init : false
     },
 
     /**
-     * Option for GET request to allow the request to be successful only, if the response 
+     * Option for GET request to allow the request to be successful only, if the response
      * has changed since the last request. This is done by checking the Last-Modified header.
-     */    
+     */
     enableCacheRefresh :
     {
       check : "Boolean",
@@ -152,7 +141,7 @@ qx.Class.define("unify.business.RemoteData",
     /** Which authentication method is needed for all services */
     authMethod :
     {
-      check : ["basic","xauth","oauth"],
+      check : ["basic"],
       nullable : true
     },
 
@@ -236,7 +225,7 @@ qx.Class.define("unify.business.RemoteData",
      * @return {Boolean} Whether cached data is available and valid
      */
     isCacheValid : function(service, params) {
-      return this.getCacheStatus(service, params) === 3;
+      return this.getCacheStatus(service, params) == 3;
     },
 
 
@@ -251,7 +240,7 @@ qx.Class.define("unify.business.RemoteData",
     isCached : function(service, params)
     {
       var cacheId = this.__getCacheId(service, params);
-      return !!(this.__cache[cacheId] || (window.localStorage && this.getEnableStorage() && localStorage[this.__storageMetaPrefix + cacheId]))
+      return !!(this.__cache[cacheId] || (this.getEnableStorage() && unify.bom.Storage.get(this.__storageMetaPrefix + cacheId)));
     },
 
 
@@ -273,10 +262,10 @@ qx.Class.define("unify.business.RemoteData",
         return entry[field] || null;
       }
 
-      if (window.localStorage && this.getEnableStorage())
+      if (this.getEnableStorage())
       {
-        var meta = localStorage[this.__storageMetaPrefix + cacheId];
-        if (meta !== undefined)
+        var meta = unify.bom.Storage.get(this.__storageMetaPrefix + cacheId);
+        if (meta != null)
         {
           meta = qx.lang.Json.parse(meta);
           return meta[field] || null;
@@ -307,23 +296,23 @@ qx.Class.define("unify.business.RemoteData",
       var cacheId = this.__getCacheId(service, params);
       var cache = this.__cache;
       var entry = cache[cacheId] || null;
-      if (!entry && window.localStorage && this.getEnableStorage())
+      if (!entry && this.getEnableStorage())
       {
-        entry = localStorage[this.__storageMetaPrefix + cacheId];
+        entry = unify.bom.Storage.get(this.__storageMetaPrefix + cacheId);
         if (entry)
         {
           entry = qx.lang.Json.parse(entry);
 
           // Recover json/xml data
-          var data = localStorage[this.__storageDataPrefix + cacheId];
+          var data = unify.bom.Storage.get(this.__storageDataPrefix + cacheId);
           var start;
-          if (entry.type === "application/json")
+          if (entry.type == "application/json")
           {
             start = new Date;
             data = qx.lang.Json.parse(data);
             this.debug("Restored JSON in: " + (new Date - start) + "ms");
           }
-          else if (entry.type === "application/xml")
+          else if (entry.type == "application/xml")
           {
             start = new Date;
             data = qx.xml.Document.fromString(data);
@@ -358,10 +347,10 @@ qx.Class.define("unify.business.RemoteData",
       var cacheId = this.__getCacheId(service, params);
       delete this.__cache[cacheId];
 
-      if (window.localStorage && this.getEnableStorage())
+      if (this.getEnableStorage())
       {
-        delete localStorage[this.__storageMetaPrefix + cacheId];
-        delete localStorage[this.__storageDataPrefix + cacheId];
+        unify.bom.Storage.remove(this.__storageMetaPrefix + cacheId);
+        unify.bom.Storage.remove(this.__storageDataPrefix + cacheId);
       }
     },
 
@@ -511,15 +500,12 @@ qx.Class.define("unify.business.RemoteData",
             continue;
           }
 
-          url = url.replace("%" + key + "%", params[key]);
+          url = url.replace("{" + key + "}", params[key]);
         }
       }
 
-      if (url.indexOf("%") > 0)
-      {
-        // FIXME: Don't use templates via % sign because of special characters using the same!
-        this.warn("Unresolved params in URL: " + url);
-        //return;
+      if (url.indexOf("{") > 0) {
+        throw new Error("Unresolved params in template URL: " + url);
       }
 
       if (this.getEnableProxy())
@@ -550,30 +536,28 @@ qx.Class.define("unify.business.RemoteData",
       req.setRequestHeader(key, value);
     },
 
+
     /**
      * Adds custom request headers to the request
      *
      * @param req {qx.io.HttpRequest} Request object to modify
-     */        
+     */
     __addRequestHeaders : function(req)
     {
       var headers = this.__headers;
-      for (var name in headers) 
-      {
+      for (var name in headers) {
         req.setRequestHeader(name, headers[name]);
-        this.debug(""+name+"-"+headers[name]+"");
       }
     },
-        
+
     /**
      * Sets custom request headers
      *
      * @param name {String} Name of header
      * @param value {String} Value of header
-     */    
-    setRequestHeader : function(name, value)
-    {
-      this.__headers[name] = value;              
+     */
+    setRequestHeader : function(name, value) {
+      this.__headers[name] = value;
     },
 
 
@@ -611,7 +595,7 @@ qx.Class.define("unify.business.RemoteData",
       req.setTimeout(this.getTimeout());
 
       // Enable load cache
-      if (method === "GET")
+      if (method == "GET")
       {
         req.setCache(true);
         if (this.getEnableCacheRefresh()) {
@@ -634,7 +618,7 @@ qx.Class.define("unify.business.RemoteData",
 
       // Support for authentification methods
       var auth = this.getAuthMethod();
-      if (auth === "basic") {
+      if (auth == "basic") {
         this.__addBasicAuth(req);
       }
 
@@ -644,7 +628,12 @@ qx.Class.define("unify.business.RemoteData",
       // Add post data
       if (method == "POST")
       {
-        req.setRequestMimeType(this.getRequestMimeType());
+        var reqType = this.getRequestType();
+        if (reqType == "application/json" && typeof data != "string") {
+          data = qx.lang.Json.stringify(data);
+        }
+        
+        req.setRequestType(reqType);
         req.setData(data);
       }
 
@@ -777,7 +766,7 @@ qx.Class.define("unify.business.RemoteData",
         }
 
         // Store additionally in local storage
-        if (window.localStorage && this.getEnableStorage())
+        if (this.getEnableStorage())
         {
           // We split the storage of the time from the other stuff for faster access
           // without parsing the whole data into objects
@@ -798,24 +787,23 @@ qx.Class.define("unify.business.RemoteData",
 
             try
             {
-              delete localStorage[storageMetaId];
-              localStorage[storageMetaId] = storeData;
+              unify.bom.Storage.remove(storageMetaId);
+              unify.bom.Storage.set(storageMetaId, storeData);
             }
             catch(ex) {
               this.warn("Could not store data: " + ex);
             }
 
-            // We always store the text as complex objects are not supported by localStorage
             var storageDataId = this.__storageDataPrefix + cacheId;
-            localStorage[storageDataId] = text;
+            unify.bom.Storage.set(storageDataId, text);
             this.debug("Stored in: " + (new Date - start) + "ms");
           }
           else
           {
             // Parse meta data, update time field, and store again
-            var meta = Json.parse(localStorage[storageMetaId]);
+            var meta = Json.parse(unify.bom.Storage.get(storageMetaId));
             meta.checked = now;
-            localStorage[storageMetaId] = Json.stringify(meta);
+            unify.bom.Storage.set(storageMetaId, Json.stringify(meta));
           }
         }
       }

@@ -107,7 +107,7 @@ qx.Class.define("unify.business.SysInfo",
 
     /**
      * Reads values from constants of the given class.
-     * 
+     *
      * @param clazz {Class} Class to read from
      * @return {Map} Map of all constants
      */

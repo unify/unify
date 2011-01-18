@@ -1,0 +1,87 @@
+@import ../../../../../framework/source/resource/unify/core.sass
+@import ../../../../../framework/source/resource/unify/animation.sass
+@import ../../../../../framework/source/resource/unify/iphoneos/style.sass
+
+#mmeta
+  z-index: 1000
+  width: 350px
+  height: 350px
+  position: absolute
+  top: 50px
+  right: 7px
+  border: 12px solid black
+  
+  
+  
+
+#start
+  +padded-layer
+  +vbox
+  .content > ul
+    +navigation-list
+
+
+#info
+  +vbox
+  
+  .content
+    text-align: center
+  
+  p
+    padding: 20px 30px
+    border: 1px solid #aaa
+    background: #ececec
+    color: #888
+    font-weight: bold
+    font-size: 20px
+    display: inline-block
+    margin-top: 200px
+    +border-radius(10px)
+    +box-shadow(rgba(0,0,0,0.5), 0px, 1px, 1px)
+
+
+#recent, #interesting
+  +padded-layer
+  +vbox
+  background: black
+
+  .title-bar
+    [exec=refresh]
+      +tool-bar-button-icon("icons-22/gear.png")
+
+  .content img
+    display: inline-block
+    vertical-align: top
+    margin: 5px
+    +box-sizing("content-box")
+    width: 75px
+    height: 75px
+    -webkit-background-clip: padding-box
+    +border-radius(10px)
+    border: 1px solid black
+    
+    &.pressed
+      border: 1px solid white
+
+#photo
+  +vbox
+  
+    
+#meta, #owner, #location
+  +vbox
+  +padded-layer
+  .content
+    > ul
+      +keyvalue-list
+    
+    
+
+#tab-bar
+  [goto="start"]
+    +tab-bar-button-icon('icons-32/03-loopback.png')
+
+  [goto="recent"]
+    +tab-bar-button-icon('icons-32/04-squiggle.png')
+
+  [goto="interesting"]
+    +tab-bar-button-icon('icons-32/108-badge.png')

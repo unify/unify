@@ -23,8 +23,10 @@ qx.Class.define("unify.bom.Uri",
     ---------------------------------------------------------------------------
     */
 
+    /** {Array} List of all URL segments */
     __keys : ["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","querystr","anchor"],
 
+    /** {Map} Contains different URL parsers (differ in validity) */
     __urlParsers :
     {
       strict: /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*):?([^:@]*))?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,
@@ -33,7 +35,6 @@ qx.Class.define("unify.bom.Uri",
 
     __queryParser : /(?:^|&)([^&=]*)=?([^&]*)/g,
     __querySpace : /%20/g,
-
 
 
     /**
