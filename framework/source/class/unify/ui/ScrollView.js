@@ -112,7 +112,8 @@ qx.Class.define("unify.ui.ScrollView",
   
   events :
   {
-    scroll: "qx.event.type.Event"
+    scroll: "qx.event.type.Event",
+    snap: "qx.event.type.Event"
   },
   
   
@@ -392,6 +393,9 @@ qx.Class.define("unify.ui.ScrollView",
 
     /** {Boolean} Whether there is a listener for scroll events */
     __hasScrollListener : false,
+    
+    /** {Boolean} Whether there is a listener for snap events */
+    __hasSnapListener : false,
 
     /** {Boolean} Whether both scroll indicators are enabled */
     __twoAxisScroll : true,
@@ -740,6 +744,11 @@ qx.Class.define("unify.ui.ScrollView",
       // This is detected only once in a drag session to not
       // call the quite massive event system when not required
       this.__hasScrollListener = this.hasListener("scroll");
+      
+      // Whether snap event is needed
+      // This is detected only once in a drag session to not
+      // call the quite massive event system when not required
+      this.__hasSnapListener = this.hasListener("snap");
 
       // Do an initial correction, in most cases does not modify anything
       this.__snapIntoBounds(false);
@@ -930,6 +939,11 @@ qx.Class.define("unify.ui.ScrollView",
       if (this.__hasScrollListener) {
         this.fireEvent("scroll");
       }
+      
+      // fire snap event
+      if (this.__hasSnapListener) {
+        this.fireEvent("snap");
+      }
     },
 
 
@@ -1112,12 +1126,16 @@ qx.Class.define("unify.ui.ScrollView",
           // Directly hide scroll indicators
           this.__horizontalScrollIndicator.setVisible(false);
           this.__verticalScrollIndicator.setVisible(false);
-
+          
           // Detect whether it's still worth to continue animating steps
           // If we are already slow enough to not being user perceivable anymore, we stop the whole process here.
           if (absVelocityX <= this.__minVelocity && absVelocityY <= this.__minVelocity)
           {
             this.__isDecelerating = false;
+            // fire snap event
+            if (this.__hasSnapListener) {
+              this.fireEvent("snap");
+            }
             return;
           }
         }

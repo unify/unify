@@ -125,7 +125,7 @@ qx.Class.define("unify.ui.ScrollIndicator",
       this.__middleElem = elem.appendChild(doc.createElement("div"));
       this.__endElem = elem.appendChild(doc.createElement("div"));
 
-      // Listener for animation proposes
+      // Listener for animation purposes
       qx.event.Registration.addListener(elem, "transitionEnd", this.__onTransitionEnd, this, false);
 
       return elem;
