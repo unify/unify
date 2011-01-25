@@ -238,8 +238,6 @@ $toolbar-theme: "black"
 $toolbar-path: "toolbar/" + $toolbar-theme + "/"
 
 
-
-
 .navigation-bar,
 .tool-bar
   height: 44px
@@ -322,26 +320,49 @@ $toolbar-path: "toolbar/" + $toolbar-theme + "/"
     
   .segmented
     border-width: 0px 5px
-    -webkit-border-image: inline_image($toolbar-path + "segmented-frame.png") 0 5 0 5
-    
+    -webkit-border-image: inline_image($toolbar-path + "segmented-all.png") 0 5 120 5
+
     > .button
-      border-width: 0px
-      -webkit-border-image: none
-    
+      border-width: 0px 1px
+      -webkit-border-image: inline_image($toolbar-path + "segmented-all.png") 30 5 90 5
       display: inline-block
       position: relative
       padding: 5px 12px
+      margin-left: -1px
+      z-index: 5
       
+      @if $toolbar-theme == "silver"
+        color: #4f5459
+        text-shadow: none
+      @else if $toolbar-theme == "blue"
+        color: #4f5459
+        text-shadow: none
+      @else if $toolbar-theme == "black"
+        color: white
+        text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
       
+      &:first-child
+        border-left-width: 0
+        margin-left: 0
+        
+      &:last-child
+        border-right-width: 0
+        
       &.selected
-        -webkit-border-image: inline_image($toolbar-path + "segmented.png") 0 5 0 5
-      
-      &:not(:last-child)
-        border-right: 1px solid rgb(93, 112, 139)
-
-  
-  
-
+        -webkit-border-image: inline_image($toolbar-path + "segmented-all.png") 60 5 60 5
+        z-index: 6
+        color: white
+        text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
+        
+        &:first-child
+          -webkit-border-image: inline_image($toolbar-path + "segmented-all.png") 90 5 30 5
+          border-left-width: 5px
+          margin-left: -5px
+        
+        &:last-child
+          -webkit-border-image: inline_image($toolbar-path + "segmented-all.png") 120 5 0 5
+          border-right-width: 5px
+          margin-right: -5px
 
 
 

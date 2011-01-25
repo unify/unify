@@ -168,7 +168,13 @@ qx.Class.define("unify.ui.NavigationBar",
       if (leftElem) 
       {
         console.debug("LEFT-ITEM", value);
+        if (old) {
+          //leftElem.removeChild(old)
+        }
         
+        if (value) {
+          leftElem.appendChild(this.__createItem(value));
+        }
         
       }
     },
