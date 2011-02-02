@@ -266,6 +266,20 @@ $toolbar-path: "toolbar/" + $toolbar-theme + "/"
     &.pressed, &.selected
       -webkit-border-image: inline_image($toolbar-path + "button-normal.png") 30 5 0 5
 
+    &.inactive
+      color: lightGrey
+
+    &.action
+      -webkit-border-image: inline_image($toolbar-path + "button-red.png") 0 5 30 5
+
+    &.action.pressed
+      -webkit-border-image: inline_image($toolbar-path + "button-red.png") 30 5 0 5
+
+    &.cancel
+      -webkit-border-image: inline_image($toolbar-path + "button-blue.png") 0 5 30 5
+
+    &.cancel.pressed
+      -webkit-border-image: inline_image($toolbar-path + "button-blue.png") 30 5 0 5
 
 .navigation-bar
   +hbox

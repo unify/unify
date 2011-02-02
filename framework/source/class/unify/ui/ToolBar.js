@@ -206,7 +206,12 @@ qx.Class.define("unify.ui.ToolBar",
       if (config.kind) {
         qx.bom.element2.Class.add(itemElem, config.kind);
       }
-
+      
+      // add additional CSS class
+      if (config.addclass) {
+        qx.bom.element2.Class.add(itemElem, config.addclass);
+      }
+      
       if (config.style) {
         qx.bom.element2.Class.add(itemElem, config.style);
       }

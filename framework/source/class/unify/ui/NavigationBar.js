@@ -167,7 +167,7 @@ qx.Class.define("unify.ui.NavigationBar",
       var leftElem = this.__leftElem;
       if (leftElem) 
       {
-        console.debug("LEFT-ITEM", value);
+        this.debug("LEFT-ITEM", value);
         if (old) {
           //leftElem.removeChild(old)
         }
@@ -184,7 +184,7 @@ qx.Class.define("unify.ui.NavigationBar",
       var rightElem = this.__rightElem;
       if (rightElem) 
       {
-        console.debug("RIGHT-ITEM", value)
+        this.debug("RIGHT-ITEM", value)
 
         if (old) {
           //rightElem.removeChild(old)

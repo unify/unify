@@ -120,7 +120,7 @@ qx.Class.define("unify.ui.SlideIndicator",
      */
     renderComplete : function(totalDots, activeDot)
     {
-      //console.debug('SlideIndicator::renderComplete() reached, totalDots, activeDot = ', totalDots, activeDot);
+      //this.debug('SlideIndicator::renderComplete() reached, totalDots, activeDot = ', totalDots, activeDot);
       
       // Update internal fields for totalDots and activeDot
       if(this.__totalDots !== totalDots)
@@ -141,7 +141,7 @@ qx.Class.define("unify.ui.SlideIndicator",
           this.__allDots[i] = doc.createElement("div");
           this.__dotContainer.appendChild(this.__allDots[i]);
         }
-        //console.debug('SlideIndicator::renderComplete() total dots drawn: ', totalDots);
+        //this.debug('SlideIndicator::renderComplete() total dots drawn: ', totalDots);
         
         // set active dot
         this.__allDots[activeDot].className = 'activedot';
@@ -149,7 +149,7 @@ qx.Class.define("unify.ui.SlideIndicator",
       }
       else
       {
-        //console.debug('SlideIndicator::renderComplete() just updating active dot, activeDot = ', activeDot);
+        //this.debug('SlideIndicator::renderComplete() just updating active dot, activeDot = ', activeDot);
         
         // just update active dot via render()
         this.render(activeDot);
@@ -164,7 +164,7 @@ qx.Class.define("unify.ui.SlideIndicator",
      */
     render : function(activeDot)
     {
-      //console.debug('SlideIndicator::render() reached, activeDot = ', activeDot);
+      //this.debug('SlideIndicator::render() reached, activeDot = ', activeDot);
       
       if(this.__activeDot !== activeDot)
       {

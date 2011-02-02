@@ -89,7 +89,7 @@ qx.Class.define("unify.ui.SlideView",
      */
     scrollToPage : function(pageIndex) 
     {
-      //console.debug('SlideView::scrollToPage(pageIndex)', pageIndex, qx.bom.Document.getWidth(), this);
+      //this.debug('SlideView::scrollToPage(pageIndex)', pageIndex, qx.bom.Document.getWidth(), this);
       this.scrollTo(-pageIndex * qx.bom.Document.getWidth());
       this.__updateSlideIndicator(pageIndex);
     },
@@ -131,13 +131,13 @@ qx.Class.define("unify.ui.SlideView",
         //console.log('SlideView::__updateSlideIndicator() slide indicator inactive');
         return;
       }
-      //console.debug('SlideView::__updateSlideIndicator(pageIndex, redoTotals)', pageIndex, redoTotals);
+      //this.debug('SlideView::__updateSlideIndicator(pageIndex, redoTotals)', pageIndex, redoTotals);
       
       if(pageIndex === undefined || pageIndex === null)
       {
         // find pageIndex by calculation
         pageIndex = Math.round((-this.getScrollLeft() + 10) / qx.bom.Document.getWidth());
-        //console.debug('SlideView::__updateSlideIndicator() calculated pageIndex = ', pageIndex);
+        //this.debug('SlideView::__updateSlideIndicator() calculated pageIndex = ', pageIndex);
       }
       
       // set current page index
@@ -148,7 +148,7 @@ qx.Class.define("unify.ui.SlideView",
       {
         // how many pages do we have in total?
         var totalChilds = this.getContentElement().childNodes.length;
-        //console.debug('SlideView::__updateSlideIndicator() totalChilds = ', totalChilds);
+        //this.debug('SlideView::__updateSlideIndicator() totalChilds = ', totalChilds);
         
         // update page count
         if(this.__totalPages !== totalChilds)
@@ -156,7 +156,7 @@ qx.Class.define("unify.ui.SlideView",
           this.__totalPages = totalChilds;
           this.setTotalPages(totalChilds);
           
-          //console.debug('SlideView::__updateSlideIndicator() this.__totalPages = ', this.__totalPages);
+          //this.debug('SlideView::__updateSlideIndicator() this.__totalPages = ', this.__totalPages);
         }
         
         // render complete SlideIndicator element (including inactive dots)
@@ -164,7 +164,7 @@ qx.Class.define("unify.ui.SlideView",
       }
       else
       {
-        //console.debug('SlideView::__updateSlideIndicator() using this.__totalPages = ', this.__totalPages);
+        //this.debug('SlideView::__updateSlideIndicator() using this.__totalPages = ', this.__totalPages);
         
         // set active dot on SlideIndicator element
         this.__slideIndicator.render(this.__currentPageIndex);

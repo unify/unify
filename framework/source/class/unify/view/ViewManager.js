@@ -597,7 +597,7 @@ qx.Class.define("unify.view.ViewManager",
         var exec = elem.getAttribute("exec");
         if (exec)
         {
-          this.__currentView[exec]();
+          this.__currentView[exec](elem);
         }
         else
         {
