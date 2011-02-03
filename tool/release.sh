@@ -3,7 +3,7 @@
 root=`dirname $0`
 echo ">>> Path: $root"
 cd $root || exit 1
-version=`cat version.txt`
+version=`cat ../version.txt`
 
 echo ">>> Version: $version"
 echo ">>> If there is an error tagging the project you might to increment the version counter"
