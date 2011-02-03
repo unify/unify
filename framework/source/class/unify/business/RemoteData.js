@@ -730,11 +730,7 @@ qx.Class.define("unify.business.RemoteData",
           }
         }
 
-        if (isMalformed)
-        {
-          // pass: invalid data or timeout
-        }
-        else if (this.getEnableNoContent() && req.getStatusCode() == 204)
+        if (this.getEnableNoContent() && req.getStatusCode() == 204)
         {
           // pass: not modified + no content
         }
