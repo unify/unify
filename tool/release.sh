@@ -22,7 +22,7 @@ mkdir ../qts-release/unify-$version || exit 1
 cd ../qts-release/unify-$version || exit 1
 
 echo ">>> Downloading archive unify-$version.zip..."
-wget -O unify-$version.zip http://github.com/unify/unify/zipball/$version || exit 1
+wget --no-check-certificate -O unify-$version.zip http://github.com/unify/unify/zipball/$version || exit 1
 
 echo ">>> Tagging unify $version in SVN..."
 cd .. || exit 1
