@@ -670,8 +670,8 @@ qx.Class.define("unify.business.RemoteData",
       // Read event data
       var req = e.getTarget();
       var eventType = e.getType();
-      var isErrornous = eventType=="error" || eventType=="timeout";
-      var isMalformed = false;
+      var isErrornous = eventType == "error" || eventType == "timeout";
+      var isMalformed = eventType == "timeout";
 
       // Read request specific data
       var id = req.getUserData("id");
@@ -688,7 +688,7 @@ qx.Class.define("unify.business.RemoteData",
       var start;
 
       // Prepare data (Parse JSON/XML)
-      var isModified = req.isModified();
+      var isModified = !isMalformed && req.isModified();
       if (isModified)
       {
         if (qx.core.Variant.isSet("qx.debug", "on")) {
@@ -732,7 +732,7 @@ qx.Class.define("unify.business.RemoteData",
 
         if (this.getEnableNoContent() && req.getStatusCode() == 204)
         {
-          // pass
+          // pass: not modified + no content
         }
         else if (!data)
         {
