@@ -19,7 +19,7 @@
 qx.Class.define("${Namespace}.Application", 
 {
   extend : unify.Application,
-
+  
   members : 
   {
     // overridden
@@ -27,25 +27,27 @@ qx.Class.define("${Namespace}.Application",
     {
       // Call super class
       this.base(arguments);
-
+      
       // Configure application
       document.title = "${Name}";
-
+      
       // Create view managers
       var MasterViewManager = new unify.view.ViewManager("master");
       
       // Register your view classes...
-      MasterViewManager.add(${Namespace}.view.Start);
+      MasterViewManager.add(${Namespace}.view.Start, true);
       
       // Add TabViews or SplitViews...
-
+      var TabView = new unify.view.TabViewManager(MasterViewManager);
+      TabView.add(${Namespace}.view.Start);
+      
       // Add view manager (or SplitView or TabView) to the root
-      this.add(MasterViewManager);
+      this.add(TabView);
       
       // Add at least one view manager to the navigation managment
       var Navigation = unify.view.Navigation.getInstance();
       Navigation.add(MasterViewManager);
-      Navigation.init();      
+      Navigation.init();
     }
   }
 });
