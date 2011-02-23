@@ -550,6 +550,7 @@ qx.Class.define("unify.business.RemoteData",
       req.setRequestHeader(key, value);
     },
 
+
     /**
      * Adds custom request headers to the request
      *
@@ -558,12 +559,11 @@ qx.Class.define("unify.business.RemoteData",
     __addRequestHeaders : function(req)
     {
       var headers = this.__headers;
-      for (var name in headers) 
-      {
+      for (var name in headers) {
         req.setRequestHeader(name, headers[name]);
-        this.debug(""+name+"-"+headers[name]+"");
       }
     },
+    
         
     /**
      * Sets custom request headers
@@ -571,8 +571,7 @@ qx.Class.define("unify.business.RemoteData",
      * @param name {String} Name of header
      * @param value {String} Value of header
      */    
-    setRequestHeader : function(name, value)
-    {
+    setRequestHeader : function(name, value) {
       this.__headers[name] = value;              
     },
 
