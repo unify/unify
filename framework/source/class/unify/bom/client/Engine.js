@@ -57,6 +57,10 @@ qx.Bootstrap.define("unify.bom.client.Engine",
   {
     // Doing some object detection magic to find out the engine without
     // relying on the user agent string which is modifyable by the user.
+    
+    // Opera Mini Detection
+    // Object.prototype.toString.call(window.operamini) == "[object OperaMini]"
+    
     var engine;
     if (window.opera && Object.prototype.toString.call(window.opera) == "[object Opera]") {
       engine = "presto";
