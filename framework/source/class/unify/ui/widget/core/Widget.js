@@ -296,7 +296,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     
     /**
      * Checks if widget has children
-     * @return {bool} Widget has children
+     * @return {Boolean} Widget has children
      */
     _hasChildren : function() {
       var childs = this.__widgetChildren;
