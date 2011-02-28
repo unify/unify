@@ -159,11 +159,11 @@ qx.Class.define("unify.ui.widget.qx.queue.Visibility",
           this.__computeVisible(widget);
         }
 
-        // Check for updates required to the appearance.
+        /*// Check for updates required to the appearance.
         // Hint: Invisible widgets are ignored inside appearance flush
         if (data[hash] && data[hash] != oldData[hash]) {
           widget.checkAppearanceNeeds();
-        }
+        }*/
       }
 
       // Recreate the map is cheaper compared to keep a holey map over time

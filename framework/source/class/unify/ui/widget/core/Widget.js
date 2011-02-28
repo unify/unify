@@ -1,6 +1,23 @@
+/* ***********************************************************************************************
+
+    Unify Project
+
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2010, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+
+*********************************************************************************************** */
+
+/**
+ * Generic widget that depends on a slighly modified qooxdoo LayoutItem
+ * This is the base of every widget in the unify widget system
+ */
 qx.Class.define("unify.ui.widget.core.Widget", {
   extend : unify.ui.widget.qx.LayoutItem,
   
+  /**
+   * @param layout {qx.ui.layout.Abstract} Layout of widget
+   */
   construct : function(layout) {
     this.base(arguments);
     
@@ -10,6 +27,16 @@ qx.Class.define("unify.ui.widget.core.Widget", {
   },
   
   properties : {
+    /**
+     * Controls the visibility. Valid values are:
+     *
+     * <ul>
+     *   <li><b>visible</b>: Render the widget</li>
+     *   <li><b>hidden</b>: Hide the widget but don't relayout the widget's parent.</li>
+     *   <li><b>excluded</b>: Hide the widget and relayout the parent as if the
+     *     widget was not a child of its parent.</li>
+     * </ul>
+     */
     visibility : {
       check : ["visible", "hidden", "excluded"],
       init : "visible",
@@ -24,6 +51,14 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       return this.__layoutManager;
     },
     
+    /**
+     * Set a layout manager for the widget. A a layout manager can only be connected
+     * with one widget. Reset the connection with a previous widget first, if you
+     * like to use it in another widget instead.
+     *
+     * @param layout {qx.ui.layout.Abstract} The new layout or
+     *     <code>null</code> to reset the layout.
+     */
     _setLayout : function(layout) {
       if (qx.core.Variant.isSet("qx.debug", "on")) {
         if (layout) {
@@ -43,6 +78,11 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       unify.ui.widget.qx.queue.Layout.add(this);
     },
     
+    /**
+     * Returns the recommended / natural dimension of the widget's content
+     *
+     * @return {Map} '
+     */
     _getContentHint : function() {
       var layout = this.__layoutManager;
       if (layout) {
@@ -100,6 +140,9 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       }
     },
     
+    /**
+     * Renders all children of this widget
+     */
     renderChildren : function() {
       var children = this._getChildren();
       console.log("Render children ", this.$$hash, children);
@@ -214,15 +257,14 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     },
     
     isExcluded : function() {
-      return false; //this.getVisibility() === "excluded";
-    },
-    
-    checkAppearanceNeeds : function() {
-    
+      return this.getVisibility() === "excluded";
     },
     
     __element : null,
     
+    /**
+     * Returns the DOM element this widget creates
+     */
     getElement : function() {
       var element = this.__element;
       if (!element) {
@@ -244,10 +286,18 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     
     __widgetChildren : null,
     
+    /**
+     * Returns children of widget
+     * @return {unify.ui.widget.core.Widget[]} Child widgets
+     */
     _getChildren : function() {
       return this.__widgetChildren;
     },
     
+    /**
+     * Checks if widget has children
+     * @return {bool} Widget has children
+     */
     _hasChildren : function() {
       var childs = this.__widgetChildren;
       return !! (childs && childs.length > 0)
@@ -557,10 +607,6 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       if (this._afterRemoveChild) {
         this._afterRemoveChild(child);
       }
-    },
-    
-    syncWidget : function() {
-      console.log("syncWidget", this.$$hash)
     }
   }
 });

@@ -116,7 +116,7 @@ qx.Class.define("unify.ui.widget.qx.queue.Manager",
           if (jobs.appearance)
           {
             delete jobs.appearance;
-            unify.ui.widget.qx.queue.Appearance.flush();
+            //unify.ui.widget.qx.queue.Appearance.flush();
           }
           
           if (jobs.inheritance)
