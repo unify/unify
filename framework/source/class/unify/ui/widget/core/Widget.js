@@ -13,7 +13,7 @@
  * This is the base of every widget in the unify widget system
  */
 qx.Class.define("unify.ui.widget.core.Widget", {
-  extend : unify.ui.widget.qx.LayoutItem,
+  extend : qx.ui.core.LayoutItem, //unify.ui.widget.qx.LayoutItem,
   
   /**
    * @param layout {qx.ui.layout.Abstract} Layout of widget
@@ -75,7 +75,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       }
       
       this.__layoutManager = layout;
-      unify.ui.widget.qx.queue.Layout.add(this);
+      qx.ui.core.queue.Layout.add(this);
     },
     
     /**
@@ -109,6 +109,10 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         };
       }
     },
+
+    checkAppearanceNeeds : function() {
+    
+    },
     
     renderLayout : function(left, top, width, height) {
       this.base(arguments, left, top, width, height);
@@ -119,9 +123,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         width: width + "px",
         height: height + "px"
       });
-      
-      console.log("Render Layout ", this.getElement().outerHTML, this.$$hash, left, top, width, height);
-      
+
       if (this._hasChildren()) {
         var innerWidth = width;
         var innerHeight = height;
@@ -129,7 +131,6 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         if (this.__layoutManager && this.hasLayoutChildren()) {
           this.__layoutManager.renderLayout(innerWidth, innerHeight);
         } else if (this.hasLayoutChildren()) {
-          console.log(this.$$hash, this.__layoutManager);
           throw new Error("No layout in " + this.$$hash);
           /*throw new Error("At least one child in control " +
             this._findTopControl() +
@@ -145,15 +146,12 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      */
     renderChildren : function() {
       var children = this._getChildren();
-      console.log("Render children ", this.$$hash, children);
       var element = this.getElement();
       if (children) {
         for (var i=0,ii=children.length; i<ii; i++) {
-          console.log("Render child ", i);
           var child = children[i];
           child.renderChildren();
           element.appendChild(child.getElement());
-          console.log("Render child ", i, "done");
         }
       }
     },
@@ -197,7 +195,6 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      */
     getLayoutChildren : function()
     {
-      console.log("getLayoutChildren: ", this.$$hash);
       var children = this.__widgetChildren;
       if (!children) {
         return this.__emptyChildren;
@@ -490,7 +487,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         this.__removeHelper(children[i]);
       }
 
-      unify.ui.widget.qx.queue.Layout.add(this);
+      qx.ui.core.queue.Layout.add(this);
     },
 
 
@@ -541,7 +538,8 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     {
       if (qx.core.Variant.isSet("qx.debug", "on"))
       {
-        this.assertInstance(child, unify.ui.widget.qx.LayoutItem, "Invalid widget to add: " + child);
+        //this.assertInstance(child, unify.ui.widget.qx.LayoutItem, "Invalid widget to add: " + child);
+        this.assertInstance(child, qx.ui.core.LayoutItem, "Invalid widget to add: " + child);
         this.assertNotIdentical(child, this, "Could not add widget to itself: " + child);
 
         if (options != null) {
@@ -558,7 +556,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       // Remember parent
       child.setLayoutParent(this);
 
-      unify.ui.widget.qx.queue.Visibility.add(this);
+      qx.ui.core.queue.Visibility.add(this);
 
       // Import options: This call will
       //  - clear the layout's children cache as well and
@@ -601,7 +599,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       }
 
       // Add to layout queue
-      unify.ui.widget.qx.queue.Layout.add(this);
+      qx.ui.core.queue.Layout.add(this);
 
       // call the template method
       if (this._afterRemoveChild) {
