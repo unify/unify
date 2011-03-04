@@ -81,7 +81,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     /**
      * Returns the recommended / natural dimension of the widget's content
      *
-     * @return {Map} '
+     * @return {Map} Size hint
      */
     _getContentHint : function() {
       var layout = this.__layoutManager;
@@ -131,14 +131,18 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         if (this.__layoutManager && this.hasLayoutChildren()) {
           this.__layoutManager.renderLayout(innerWidth, innerHeight);
         } else if (this.hasLayoutChildren()) {
-          throw new Error("No layout in " + this.$$hash);
-          /*throw new Error("At least one child in control " +
-            this._findTopControl() +
-            " requires a layout, but no one was defined!");*/
+          throw new Error("No layout in " + this);
         }
-        
-        //unify.ui.widget.qx.queue.Manager.scheduleFlush("element");
       }
+    },
+
+    /**
+     * Returns content element to add children to
+     *
+     * @return {Element} DOM element
+     */
+    getContentElement : function() {
+      return this.getElement();
     },
     
     /**
@@ -146,7 +150,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      */
     renderChildren : function() {
       var children = this._getChildren();
-      var element = this.getElement();
+      var element = this.getContentElement();
       if (children) {
         for (var i=0,ii=children.length; i<ii; i++) {
           var child = children[i];
