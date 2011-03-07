@@ -13,7 +13,7 @@
  * This is the base of every widget in the unify widget system
  */
 qx.Class.define("unify.ui.widget.core.Widget", {
-  extend : qx.ui.core.LayoutItem, //unify.ui.widget.qx.LayoutItem,
+  extend : qx.ui.core.LayoutItem,
   
   /**
    * @param layout {qx.ui.layout.Abstract} Layout of widget
@@ -131,13 +131,8 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         if (this.__layoutManager && this.hasLayoutChildren()) {
           this.__layoutManager.renderLayout(innerWidth, innerHeight);
         } else if (this.hasLayoutChildren()) {
-          throw new Error("No layout in " + this.$$hash);
-          /*throw new Error("At least one child in control " +
-            this._findTopControl() +
-            " requires a layout, but no one was defined!");*/
+          throw new Error("No layout in " + this);
         }
-        
-        //unify.ui.widget.qx.queue.Manager.scheduleFlush("element");
       }
     },
     
@@ -146,13 +141,16 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      */
     renderChildren : function() {
       var children = this._getChildren();
-      var element = this.getElement();
+      
       if (children) {
+        var fragment = document.createDocumentFragment();
         for (var i=0,ii=children.length; i<ii; i++) {
           var child = children[i];
           child.renderChildren();
-          element.appendChild(child.getElement());
+          fragment.appendChild(child.getElement());
         }
+        
+        this.getElement().appendChild(fragment);
       }
     },
     
@@ -244,6 +242,36 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     
 
 
+    __style : null,
+
+    /**
+     * Set style to the element
+     * @param name {String|Map} Style name or Map of styles/values to apply
+     * @param value {String?null} Style value
+     */
+    setStyle : function(name, value) {
+      if (this._hasElement()) {
+        qx.bom.element2.Style.set(this.getElement(), name, value);
+      } else {
+        var style = this.__style;
+        if (!style) {
+          this.__style = [[name, value]];
+        } else {
+          style.push([name, value]);
+        }
+      }
+    },
+    
+    /**
+     * Get style of element
+     * @param name {String} Style name to return
+     * @param computed {Boolean?false} Value should be computed
+     */
+    getStyle : function(name, computed) {
+      if (this._hasElement()) {
+        return qx.bom.element2.Style.get(this.getElement(), name, computed);
+      }
+    },
 
 
 
@@ -270,8 +298,22 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         qx.bom.element2.Style.set(element, {
           position: "absolute"
         });
+        
+        var style = this.__style;
+        while (style && style.length > 0) {
+          var s = style.pop();
+          qx.bom.element2.Style.set(element, s[0], s[1]);
+        }
       }
       return element;
+    },
+    
+    /**
+     * Returns if the DOM element is created or not
+     * @return {Boolean} DOM element is created
+     */
+    _hasElement : function() {
+      return !!this.__element;
     },
     
     /**
