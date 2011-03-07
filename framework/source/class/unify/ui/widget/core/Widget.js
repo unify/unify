@@ -81,7 +81,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     /**
      * Returns the recommended / natural dimension of the widget's content
      *
-     * @return {Map} '
+     * @return {Map} Size hint
      */
     _getContentHint : function() {
       var layout = this.__layoutManager;
@@ -135,13 +135,21 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         }
       }
     },
+
+    /**
+     * Returns content element to add children to
+     *
+     * @return {Element} DOM element
+     */
+    getContentElement : function() {
+      return this.getElement();
+    },
     
     /**
      * Renders all children of this widget
      */
     renderChildren : function() {
       var children = this._getChildren();
-      
       if (children) {
         var fragment = document.createDocumentFragment();
         for (var i=0,ii=children.length; i<ii; i++) {
@@ -150,7 +158,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
           fragment.appendChild(child.getElement());
         }
         
-        this.getElement().appendChild(fragment);
+        this.getContentElement().appendChild(fragment);
       }
     },
     
