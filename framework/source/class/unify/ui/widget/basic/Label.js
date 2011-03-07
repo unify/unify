@@ -19,29 +19,58 @@ qx.Class.define("unify.ui.widget.basic.Label", {
    * @param text {String} Text content to use 
    */
   construct : function(text) {
-    this.setText(text);
+    if (text) {
+      this.setValue(text);
+    }
   },
   
   properties : {
     /** Contains the label content */
-    text : {
+    value : {
       check: "String",
-      apply: "_applyText"
+      apply: "_applyValue",
+      event: "changeValue",
+      nullable: true
+    },
+    
+    html : {
+      check: "Boolean",
+      init: false,
+      event: "changeHtml"
+    },
+    
+    // overridden
+    allowGrowX : {
+      refine : true,
+      init : false
+    },
+
+
+    // overridden
+    allowGrowY : {
+      refine : true,
+      init : false
+    },
+
+    // overridden
+    allowShrinkY : {
+      refine : true,
+      init : false
     }
   },
   
   members : {
     // overridden
     _createElement : function() {
-      return document.createElement("div");
+      return qx.bom.Label.create(this.getValue(), this.getHtml());
     },
     
     /**
      * Applies text to element
      * @param value {String} New value to set
      */
-    _applyText : function(value) {
-      this.getElement().innerHTML = value;
+    _applyValue : function(value) {
+      qx.bom.Label.setValue(this.getElement(), value);
     }
   }
 });
