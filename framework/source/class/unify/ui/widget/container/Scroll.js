@@ -48,6 +48,7 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
   },
   
   destruct : function() {
+    this.__scrollView.dispose();
     this.__scrollView = null;
   }
 });
