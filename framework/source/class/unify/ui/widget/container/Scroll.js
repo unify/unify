@@ -12,7 +12,7 @@
  * Generic composite container widget
  */
 qx.Class.define("unify.ui.widget.container.Scroll", {
-  extend : unify.ui.widget.basic.Content,
+  extend : unify.ui.widget.core.Widget,
   
   include : [
     qx.ui.core.MChildrenHandling
