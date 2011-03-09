@@ -114,22 +114,21 @@ qx.Class.define("unify.view.SplitViewManager",
       if (!elem)
       {
         var orient = qx.bom.Viewport.getOrientation();
-
+        var isLandscape=orient == 90 || orient == 270;
         var elem = this.__element = document.createElement("div");
         elem.className = "split-view";
-        elem.setAttribute("orient", orient == 90 || orient == 270 ? "landscape" : "portrait");
+        elem.setAttribute("orient", isLandscape ? "landscape" : "portrait");
         
         var PopOverManager = unify.view.PopOverManager.getInstance();
         var master = this.__masterViewManager;
         var detail = this.__detailViewManager;
         
-        if (orient == 90 || orient == 270) 
+        if (isLandscape)
         {
           if (PopOverManager.has(master)) {
             PopOverManager.remove(master);
           }
-          
-          elem.appendChild(master.getElement());
+          elem.insertBefore(master.getElement(), elem.firstChild);
           detail.resetStandalone();
         } 
         else 

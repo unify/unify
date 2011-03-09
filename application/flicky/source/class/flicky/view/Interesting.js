@@ -31,7 +31,7 @@ qx.Class.define("flicky.view.Interesting",
     {
       var layer = new unify.ui.Layer(this);
       var navigationBar = new unify.ui.NavigationBar(this);
-      navigationBar.setRightItem({ icon : true, exec : "refresh", target : "right" });
+      navigationBar.setItems([{ icon : true, exec : "refresh"}]);
       layer.add(navigationBar);
 
       var content = this.__content = new unify.ui.ScrollView;
