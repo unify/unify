@@ -1,5 +1,8 @@
 .project
 tool/unify-sass/.sass-cache
 
+application/widgets/api
+application/widgets/source/script
+
 /application/flicky/log.txt
 .DS_Store
