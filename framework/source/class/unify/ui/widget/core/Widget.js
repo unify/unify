@@ -656,5 +656,13 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         this._afterRemoveChild(child);
       }
     }
+  },
+  
+  destruct : function() {
+    this._disposeArray("__widgetChildren");
+    this._disposeObjects(
+      "__layoutManager",
+      "__element"
+    );
   }
 });

@@ -22,18 +22,19 @@ qx.Class.define("unify.ui.widget.core.Layer", {
   ],
   
   /**
-   * @param layer {unify.ui.Layer} Base layer for widget system
+   * @param layer {unify.view.StaticView} Base view for widget system
    */
-  construct : function(layer) {
+  construct : function(view) {
     this.base(arguments);
     
     this._setLayout(new qx.ui.layout.Basic());
     
-    this.__layer = layer;
+    this.__view = view;
+    this.__layer = view.getLayer();
     this.__elem = layer.getContentElement();
     
-    layer.getView().addListener("appear", this.__viewAppear, this);
-    layer.getView().addListener("disappear", this.__viewDisappear, this);
+    view.addListener("appear", this.__viewAppear, this);
+    view.addListener("disappear", this.__viewDisappear, this);
   },
   
   members: {
@@ -76,7 +77,11 @@ qx.Class.define("unify.ui.widget.core.Layer", {
   },
   
   destruct : function() {
-    this.__layer.getView().removeListener("appear", this.__viewAppear);
-    this.__layer.getView().removeListener("disappear", this.__viewDisappear);
+    this.__view.removeListener("appear", this.__viewAppear);
+    this.__view.removeListener("disappear", this.__viewDisappear);
+    
+    this.__elem = null
+    this.__layer = null;
+    this.__view = null;
   }
 });

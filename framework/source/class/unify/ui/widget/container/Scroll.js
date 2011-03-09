@@ -45,5 +45,9 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
 
       return contentElement;
     }
+  },
+  
+  destruct : function() {
+    this.__scrollView = null;
   }
 });
