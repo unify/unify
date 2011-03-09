@@ -829,8 +829,9 @@ qx.Class.define("unify.view.ViewManager",
       var oldViewElement = oldView && oldView.getElement();
 
       // Insert target layer into DOM
-      if (currentViewElement.parentNode != this.__element) {
-        this.__element.appendChild(currentViewElement);
+      var elem=this.getElement();//use getElement is important, __element might not be initialized here
+      if (currentViewElement.parentNode != elem) {
+        elem.appendChild(currentViewElement);
       }
 
       // Transition specific layer switch

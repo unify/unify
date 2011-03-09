@@ -93,11 +93,11 @@ qx.Class.define("unify.view.PopOverManager",
       
       this.debug("Register ViewManager: " + viewManager);
       registry[id] = viewManager;
-      
+
       // Move to root
       if (viewManager.isCreated()) {
         this.__root.appendChild(viewManager.getElement());
-      }      
+      }
     },
     
     
@@ -200,4 +200,4 @@ qx.Class.define("unify.view.PopOverManager",
   destruct : function() {
     this.__root = this.__viewManager = null;
   } 
-})
+});

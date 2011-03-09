@@ -32,7 +32,7 @@ qx.Class.define("flicky.view.Photo",
     {
       var layer = new unify.ui.Layer(this);
       var navigationBar = new unify.ui.NavigationBar(this);
-      navigationBar.setRightItem({label:"Info", show:"mmeta", kind:"button"});
+      navigationBar.setItems([{label:"Info", show:"mmeta", kind:"button"}]);
       layer.add(navigationBar);
 
       var content = this.__content = new unify.ui.ScrollView;
