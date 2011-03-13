@@ -27,12 +27,24 @@ qx.Class.define("googly.view.Start",
     _createView : function() 
     {
       var layer = new unify.ui.Layer(this);
-      var navigationBar = new unify.ui.NavigationBar(this);
-      layer.add(navigationBar);
+      var layerWidget = new unify.ui.widget.core.Layer(layer);
       
-      var content = new unify.ui.Content;
-      content.add("Welcome to Googly - The Ultimate Google Experience");
-      layer.add(content);
+      /*var navigationBar = new unify.ui.NavigationBar(this);
+      layer.add(navigationBar);*/
+      var navigationBar = new unify.ui.widget.container.NavigationBar(this);
+      layerWidget.add(navigationBar);
+      
+      var text = "Welcome to Googly - The Ultimate Google Experience";
+      /*var content = new unify.ui.Content;
+      content.add(text);
+      layer.add(content);*/
+      
+      var content = new unify.ui.widget.basic.Label(text);
+      layerWidget.add(content);
+      content.set({
+        width: 500,
+        height: 50
+      });
 
       return layer;
     }

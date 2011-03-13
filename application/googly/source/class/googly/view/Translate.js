@@ -69,12 +69,38 @@ qx.Class.define("googly.view.Translate",
     _createView : function() 
     {
       var layer = new unify.ui.Layer(this);
-      var toolbar = new unify.ui.NavigationBar(this);
+      /*var toolbar = new unify.ui.NavigationBar(this);
       layer.add(toolbar);
       
       var content = new unify.ui.Content;
-      content.add("<textarea rows='3' cols='60' id='inputText'/><div class='button' exec='refresh'>Translate</div><textarea rows='3' cols='60' id='resultText'/>");
-      layer.add(content);
+      content.add("<textarea rows='3' cols='60' id='inputText'/>");
+      content.add("<div class='button' exec='refresh'>Translate</div>");
+      content.add("<textarea rows='3' cols='60' id='resultText'/>");
+      layer.add(content);*/
+      
+      var layerWidget = new unify.ui.widget.core.Layer(layer);
+      var navigationBar = new unify.ui.widget.container.NavigationBar(this);
+      layerWidget.add(navigationBar);
+      
+      var inputText = this.__inputText = new unify.ui.widget.basic.Content();
+      inputText.setHeight(150);
+      inputText.getElement().innerHTML = "<textarea rows='3' cols='60' id='inputText'/>";
+      
+      var resultText = this.__resultText = new unify.ui.widget.basic.Content();
+      resultText.setHeight(150);
+      resultText.getElement().innerHTML = "<textarea rows='3' cols='60' id='resultText'/>";
+      
+      var button = new unify.ui.widget.form.Button("Translate");
+      button.set({
+        width: 100,
+        height: 30
+      });
+      button.setExecute("refresh");
+      qx.bom.element2.Class.add(button.getElement(), "button");
+      
+      layerWidget.add(inputText);
+      layerWidget.add(button);
+      layerWidget.add(resultText);
 
       return layer;
     },
