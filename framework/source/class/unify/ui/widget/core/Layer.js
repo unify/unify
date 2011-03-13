@@ -24,13 +24,13 @@ qx.Class.define("unify.ui.widget.core.Layer", {
   /**
    * @param layer {unify.view.StaticView} Base view for widget system
    */
-  construct : function(view) {
+  construct : function(layer) {
     this.base(arguments);
     
-    this._setLayout(new qx.ui.layout.Basic());
+    this._setLayout(new qx.ui.layout.VBox());
     
-    this.__view = view;
-    this.__layer = view.getLayer();
+    var view = this.__view = layer.getView();
+    this.__layer = layer;
     this.__elem = layer.getContentElement();
     
     view.addListener("appear", this.__viewAppear, this);
