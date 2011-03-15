@@ -87,10 +87,11 @@ qx.Class.define("unify.view.SplitViewManager",
       if(isLandscape){
         if(oldOrient != "landscape"){
           this.debug("Switching to landscape layout");
-
-          PopOverManager.remove(master);
+          PopOverManager.hide(master.getId());
           elem.setAttribute("orient", "landscape");
           elem.insertBefore(masterElem, elem.firstChild);
+          master.setDisplayMode('default');
+          master.show();
           detail.resetStandalone();
         }
       } else {
@@ -99,7 +100,8 @@ qx.Class.define("unify.view.SplitViewManager",
 
           elem.setAttribute("orient", "portrait");
           detail.setStandalone(true);
-          PopOverManager.add(master);
+          master.setDisplayMode('popover');
+
         }
       }
     },
@@ -127,16 +129,13 @@ qx.Class.define("unify.view.SplitViewManager",
         
         if (isLandscape)
         {
-          if (PopOverManager.has(master)) {
-            PopOverManager.remove(master);
-          }
           elem.insertBefore(master.getElement(), elem.firstChild);
           detail.resetStandalone();
         } 
         else 
         {
           detail.setStandalone(true);
-          PopOverManager.add(master);
+          master.setDisplayMode('popover');
         }
         
         elem.appendChild(detail.getElement());

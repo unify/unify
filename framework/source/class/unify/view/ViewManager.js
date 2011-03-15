@@ -130,6 +130,20 @@ qx.Class.define("unify.view.ViewManager",
       check : "Boolean",
       init : false,
       apply : "_applyStandalone"
+    },
+
+    /**
+     * how this view manager is displayed
+     * allowed values:
+     *
+     *   default: shares space with other ViewManagers
+     *   popover: pop over all other ViewManagers with a blocking pane that closes the pop over on tap
+     *   modal: shows over all other ViewManagers with a blocking pane that does nothing
+     */
+    displayMode : {
+      check : "String",
+      init: "default",
+      apply: "_applyDisplayMode"
     }
   },
 
@@ -186,7 +200,9 @@ qx.Class.define("unify.view.ViewManager",
       {
         // Create root element of manager (used as parent for view elements)
         elem = this.__element = document.createElement("div");
-        elem.className = "view-manager";
+        var Class = qx.bom.element2.Class;
+        Class.add(elem,"view-manager");
+        Class.add(elem,"display-mode-"+this.getDisplayMode());
         elem.id = this.__managerId;
 
         // Register to navigation events
@@ -250,7 +266,7 @@ qx.Class.define("unify.view.ViewManager",
         this.__initialized = true;
 
         // But only reset here if there is no other path set already
-        if (!this.__path) {
+        if (!this.__path && this.getDisplayMode()=='default') {
           this.__resetHelper();
         }
       }
@@ -279,7 +295,7 @@ qx.Class.define("unify.view.ViewManager",
       // Check whether we are already at default view
       var path = this.__path;
       var defaultViewId = this.__defaultViewId;
-      if (path.length == 1 && path[0].view == defaultViewId) {
+      if (path==null||path.length == 1 && path[0].view == defaultViewId) {
         return;
       }
 
@@ -313,11 +329,8 @@ qx.Class.define("unify.view.ViewManager",
       viewObj.setSegment(viewObj.getDefaultSegment());
       viewObj.resetParam();
       this.__setView(viewObj);
-
-      this.fireDataEvent("changePath", self.__path);
+      this.fireDataEvent("changePath", this.__path);
     },
-    
-    
     
     
     /*
@@ -337,6 +350,14 @@ qx.Class.define("unify.view.ViewManager",
       }
     },
 
+    _applyDisplayMode : function(value,old){
+      var elem = this.__element;
+      if(elem){
+        var Class = qx.bom.element2.Class;
+        Class.remove(elem,"display-mode-"+old);
+        Class.add(elem,"display-mode-"+value);
+      }
+    },
 
 
 
@@ -499,15 +520,14 @@ qx.Class.define("unify.view.ViewManager",
       currentViewObj.setSegment(currentFragment.segment);
       currentViewObj.setParam(currentFragment.param);
       this.__setView(currentViewObj, layerTransition);
-
+      var mode=this.getDisplayMode();
+      if(mode=='modal'){
+        unify.view.PopOverManager.getInstance().show(this.getId());
+      }
       // Save path
       this.__path = path;
       this.fireDataEvent("changePath", this.__path);
     },
-
-
-
-
 
 
     /*
@@ -530,6 +550,12 @@ qx.Class.define("unify.view.ViewManager",
       if (view) {
         view.setActive(false);
       }
+      var mode=this.getDisplayMode();
+      if(mode=='modal'){
+        this.__path=null;
+        this.fireDataEvent("changePath", this.__path);
+      }
+
     },
     
     
@@ -538,6 +564,10 @@ qx.Class.define("unify.view.ViewManager",
      */
     show : function()
     {
+       var mode=this.getDisplayMode();
+      if((mode!='default') && this.__path==null){
+        this.__resetHelper();
+      }
       var elem = this.getElement();
       elem.style.display = "";
       
@@ -564,7 +594,7 @@ qx.Class.define("unify.view.ViewManager",
     __navigates : false,
 
     /** {String} CSS selector with elements which are followable by the navigation manager */
-    __followable : "a[href],[rel],[goto],[exec],[show]",
+    __followable : "a[href],[rel],[goto],[exec],[show],[hide]",
 
     /**
      * Prevents clicks from executing native behavior
@@ -637,28 +667,22 @@ qx.Class.define("unify.view.ViewManager",
         } else {
           this.navigate(this.__path.slice(0, -1));
         }
-
         return;
       }
       
-      // Support auto popup of master view manager
-      if (rel == "master")
-      {
-        var masterViewManager = this.getMaster();
-        if (!masterViewManager) {
-          throw new Error("There is no master view manager!");
-        }
-        
-        unify.view.PopOverManager.getInstance().show(masterViewManager.getId());
-        return;
-      }
-      
-      // Support for showing another view manager (without a specific view e.g. a pop over)
+      // Support for showing/hiding another view manager (without a specific view e.g. a pop over)
+      // TODO: Are there other kinds of view managers which might be shown here (not just popups)?
       var show = elem.getAttribute("show");
       if (show != null)
       {
-        // TODO: Are there other kinds of view managers which might be shown here (not just popups)?
         unify.view.PopOverManager.getInstance().show(show);
+        return;
+      }
+
+      var hide = elem.getAttribute("hide");
+      if (hide != null)
+      {
+        unify.view.PopOverManager.getInstance().hide(hide);
         return;
       }
 

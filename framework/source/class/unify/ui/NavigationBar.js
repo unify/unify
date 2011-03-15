@@ -201,14 +201,18 @@ qx.Class.define("unify.ui.NavigationBar",
       if (!masterElem)
       {
         masterElem = this.__masterElem = document.createElement("div");
-        masterElem.setAttribute("rel", "master");
         masterElem.className = "button";
         this.__leftElem.appendChild(masterElem);
       }
-
       var master = this.__view.getMaster();
-      masterElem.innerHTML = master && (v=master.getCurrentView())?v.getTitle("parent") : "";
-      masterElem.style.display = master ? "" : "none";
+      if(master){
+        masterElem.setAttribute("show", master.getId());
+        var currentMasterView=master.getCurrentView();
+        masterElem.innerHTML = currentMasterView?currentMasterView.getTitle("parent") : "";
+        masterElem.style.display = "";
+      } else {
+        masterElem.style.display="none";
+      }
     },
 
 
