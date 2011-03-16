@@ -83,6 +83,7 @@ qx.Class.define("flicky.view.Photo",
         this.__title = results.photo.title;
         this.__content.replace(this.__createImage(results.photo));
         this.fireEvent("changeTitle");
+        unify.view.ViewManager.get('mmeta').reset();
       }
     },
 

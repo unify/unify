@@ -45,12 +45,10 @@ qx.Class.define("flicky.Application",
       MetaViewManager.add(flicky.view.Meta, true);
       MetaViewManager.add(flicky.view.Owner);
       MetaViewManager.add(flicky.view.Location);
+      MetaViewManager.setDisplayMode('popover');
 
       var SplitViewManager = new unify.view.SplitViewManager(MasterViewManager, DetailViewManager);
       this.add(SplitViewManager);
-      
-      var PopOverManager = unify.view.PopOverManager.getInstance();
-      PopOverManager.add(MetaViewManager);
 
       var Navigation = unify.view.Navigation.getInstance();
       Navigation.add(MasterViewManager);

@@ -295,7 +295,7 @@ qx.Class.define("unify.view.ViewManager",
       // Check whether we are already at default view
       var path = this.__path;
       var defaultViewId = this.__defaultViewId;
-      if (path==null||path.length == 1 && path[0].view == defaultViewId) {
+      if (path==null||(path.length == 1 && path[0].view == defaultViewId)) {
         return;
       }
 
@@ -663,7 +663,11 @@ qx.Class.define("unify.view.ViewManager",
       if (rel == "parent" || rel == "close") 
       {
         if(this.__path.length == 1) {
-          this.hide();
+          if(this.getDisplayMode()=='default'){
+            this.hide();
+          } else {
+            unify.view.PopOverManager.getInstance().hide(this.getId());
+          }
         } else {
           this.navigate(this.__path.slice(0, -1));
         }
