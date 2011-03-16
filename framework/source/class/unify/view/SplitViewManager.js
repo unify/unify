@@ -81,24 +81,28 @@ qx.Class.define("unify.view.SplitViewManager",
       var masterElem = master.getElement();
       var PopOverManager = unify.view.PopOverManager.getInstance();
       var oldOrient = elem.getAttribute("orient");
-      
-      // Portrait shows only detail view manager
-      if ((orient == 0 || orient == 180) & oldOrient != "portrait") 
-      {
-        this.debug("Switching to portrait layout");
 
-        elem.setAttribute("orient", "portrait");
-        detail.setStandalone(true);
-        PopOverManager.add(master);
-      } 
-      else if (oldOrient != "landscape")
-      {
-        this.debug("Switching to landscape layout");
-        
-        PopOverManager.remove(master);
-        elem.setAttribute("orient", "landscape");
-        elem.insertBefore(masterElem, elem.firstChild);
-        detail.resetStandalone();
+      var isLandscape=(orient == 90 || orient == 270 || orient == -90 || orient == -270);
+
+      if(isLandscape){
+        if(oldOrient != "landscape"){
+          this.debug("Switching to landscape layout");
+          PopOverManager.hide(master.getId());
+          elem.setAttribute("orient", "landscape");
+          elem.insertBefore(masterElem, elem.firstChild);
+          master.setDisplayMode('default');
+          master.show();
+          detail.resetStandalone();
+        }
+      } else {
+        if(oldOrient != "portrait"){
+          this.debug("Switching to portrait layout");
+
+          elem.setAttribute("orient", "portrait");
+          detail.setStandalone(true);
+          master.setDisplayMode('popover');
+
+        }
       }
     },
     
@@ -114,28 +118,24 @@ qx.Class.define("unify.view.SplitViewManager",
       if (!elem)
       {
         var orient = qx.bom.Viewport.getOrientation();
-
+        var isLandscape=(orient == 90 || orient == 270 || orient == -90 || orient == -270);
         var elem = this.__element = document.createElement("div");
         elem.className = "split-view";
-        elem.setAttribute("orient", orient == 90 || orient == 270 ? "landscape" : "portrait");
+        elem.setAttribute("orient", isLandscape ? "landscape" : "portrait");
         
         var PopOverManager = unify.view.PopOverManager.getInstance();
         var master = this.__masterViewManager;
         var detail = this.__detailViewManager;
         
-        if (orient == 90 || orient == 270) 
+        if (isLandscape)
         {
-          if (PopOverManager.has(master)) {
-            PopOverManager.remove(master);
-          }
-          
-          elem.appendChild(master.getElement());
+          elem.insertBefore(master.getElement(), elem.firstChild);
           detail.resetStandalone();
         } 
         else 
         {
           detail.setStandalone(true);
-          PopOverManager.add(master);
+          master.setDisplayMode('popover');
         }
         
         elem.appendChild(detail.getElement());

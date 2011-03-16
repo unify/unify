@@ -9,9 +9,10 @@
 *********************************************************************************************** */
 
 /**
- * The TitleBar may be used as the first control of the {@link Layer}
- * for showing a title and offering simple navigation options. As the {@link ToolBar}
+ * The NavigationBar may be used as the first control of the {@link Layer}
+ * for showing a title and offering simple navigation options. Like a {@link ToolBar}
  * it might show additional buttons on the right side for navigation proposes.
+ * The left side is used for a backward navigation
  */
 qx.Class.define("unify.ui.NavigationBar",
 {
@@ -54,27 +55,17 @@ qx.Class.define("unify.ui.NavigationBar",
   
   properties :
   {
-    /**
-     * A custom bar item displayed on the left of the navigation bar when 
-     * this item is the top item.
-     */
-    leftItem : 
-    {
-      check : "Object",
-      nullable : true,
-      apply : "_applyLeftItem"
-    },
     
     
     /** 
-     * A custom bar item displayed on the right of the navigation bar when 
+     * custom bar items displayed on the right of the navigation bar when
      * this item is the top item.
      */
-    rightItem :
+    items :
     {
-      check : "Object",
+      check : "Array",
       nullable : true,
-      apply : "_applyRightItem"
+      apply : "_applyItems"
     }
   },
   
@@ -109,15 +100,11 @@ qx.Class.define("unify.ui.NavigationBar",
       
       this.__onViewChangeParent();
       this.__onViewChangeMaster();
-      
-      this._applyLeftItem(this.getLeftItem());
-      this._applyRightItem(this.getRightItem());
-      
+
+      this._applyItems(this.getItems());
       return elem;      
     },
-    
 
-    
     __createItem : function(config)
     {
       var itemElem;
@@ -160,42 +147,18 @@ qx.Class.define("unify.ui.NavigationBar",
       
       return itemElem;
     },
-    
-    
-    _applyLeftItem : function(value, old)
-    {
-      var leftElem = this.__leftElem;
-      if (leftElem) 
-      {
-        this.debug("LEFT-ITEM", value);
-        if (old) {
-          //leftElem.removeChild(old)
-        }
-        
-        if (value) {
-          leftElem.appendChild(this.__createItem(value));
-        }
-        
-      }
-    },
-    
-    _applyRightItem : function(value, old)
-    {
-      var rightElem = this.__rightElem;
-      if (rightElem) 
-      {
-        this.debug("RIGHT-ITEM", value)
 
-        if (old) {
-          //rightElem.removeChild(old)
-        }
-        
-        if (value) {
-          rightElem.appendChild(this.__createItem(value));
+    _applyItems: function(items) {
+      var elem = this.__rightElem;
+      if (elem) {
+        elem.innerHTML = '';
+        if (items) {
+          for (var i = 0,ii = items.length; i < ii; i++) {
+            elem.appendChild(this.__createItem(items[i]));
+          }
         }
       }
     },
-    
     
     
     
@@ -235,17 +198,21 @@ qx.Class.define("unify.ui.NavigationBar",
     __onViewChangeMaster : function(e)
     {
       var masterElem = this.__masterElem;
-      if (!masterElem) 
+      if (!masterElem)
       {
         masterElem = this.__masterElem = document.createElement("div");
-        masterElem.setAttribute("rel", "master");
         masterElem.className = "button";
         this.__leftElem.appendChild(masterElem);
       }
-      
-      var master = this.__view.getParent();
-      masterElem.innerHTML = master ? master.getTitle("master") : "";
-      masterElem.style.display = master ? "" : "none";     
+      var master = this.__view.getMaster();
+      if(master){
+        masterElem.setAttribute("show", master.getId());
+        var currentMasterView=master.getCurrentView();
+        masterElem.innerHTML = currentMasterView?currentMasterView.getTitle("parent") : "";
+        masterElem.style.display = "";
+      } else {
+        masterElem.style.display="none";
+      }
     },
 
 
@@ -272,5 +239,6 @@ qx.Class.define("unify.ui.NavigationBar",
     var view = this.__view
     view.removeListener("changeTitle", this.__onViewChangeTitle, this);
     view.removeListener("changeParent", this.__onViewChangeParent, this);
+    view.removeListener("changeMaster", this.__onViewChangeMaster, this);
   }
 });
