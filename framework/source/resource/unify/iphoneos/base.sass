@@ -233,62 +233,42 @@ body
       display: inline-block
       vertical-align: top
 
-
-$toolbar-theme: "black"
-$toolbar-path: "toolbar/" + $toolbar-theme + "/"
-
-
+// basic navigation-bar and tool-bar styles
+// colors for these are set in ./navigation-bar/colors.sass and ./tool-bar/colors.sass
 .navigation-bar,
 .tool-bar
   height: 44px
-  background: inline_image($toolbar-path + "navigationbar.png")
   padding-left: 2px
   padding-right: 2px
   white-space: nowrap
-
+  
+  > h1
+    font-size: 20px
+    font-weight: bold
+    line-height: 42px
+    
   > div
     margin-left: 3px
     margin-right: 3px
-
+    
   // Shared button class. Used by segmentation control and top-level buttons
   .button
     font-size: 12px
     font-weight: bold
     text-decoration: none
-    text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
-    color: white
     line-height: 20px
     padding: 4px
     cursor: default
     border-width: 0px 5px
-    -webkit-border-image: inline_image($toolbar-path + "button-normal.png") 0 5 30 5
-
-    &.pressed, &.selected
-      -webkit-border-image: inline_image($toolbar-path + "button-normal.png") 30 5 0 5
-
-    &.inactive
-      color: lightGrey
-
-    &.action
-      -webkit-border-image: inline_image($toolbar-path + "button-red.png") 0 5 30 5
-
-    &.action.pressed
-      -webkit-border-image: inline_image($toolbar-path + "button-red.png") 30 5 0 5
-
-    &.cancel
-      -webkit-border-image: inline_image($toolbar-path + "button-blue.png") 0 5 30 5
-
-    &.cancel.pressed
-      -webkit-border-image: inline_image($toolbar-path + "button-blue.png") 30 5 0 5
-
+    
 .navigation-bar
   +hbox
   position: relative
   white-space: nowrap
-
+  
   > *
     height: 42px
-
+    
   > .left,
   > .right
     max-width: 50%
@@ -299,7 +279,7 @@ $toolbar-path: "toolbar/" + $toolbar-theme + "/"
     
   > .right
     +box-pack(end)
-
+    
   > h1
     font-size: 20px
     color: white
@@ -314,13 +294,7 @@ $toolbar-path: "toolbar/" + $toolbar-theme + "/"
   .button[rel=parent]
     border-left-width: 12px
     padding-left: 0
-    -webkit-border-image: inline_image($toolbar-path + "button-back.png") 0 5 30 12
-
-    &.pressed
-      -webkit-border-image: inline_image($toolbar-path + "button-back.png") 30 5 0 12
-
-
-
+    
 .tool-bar
   +hbox
 
@@ -331,29 +305,16 @@ $toolbar-path: "toolbar/" + $toolbar-theme + "/"
   .spacer
     +box-flex(1)
     
-    
   .segmented
     border-width: 0px 5px
-    -webkit-border-image: inline_image($toolbar-path + "segmented-all.png") 0 5 120 5
-
+    
     > .button
       border-width: 0px 1px
-      -webkit-border-image: inline_image($toolbar-path + "segmented-all.png") 30 5 90 5
       display: inline-block
       position: relative
       padding: 5px 12px
       margin-left: -1px
       z-index: 5
-      
-      @if $toolbar-theme == "silver"
-        color: #4f5459
-        text-shadow: none
-      @else if $toolbar-theme == "blue"
-        color: #4f5459
-        text-shadow: none
-      @else if $toolbar-theme == "black"
-        color: grey
-        text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
       
       &:first-child
         border-left-width: 0
@@ -363,21 +324,16 @@ $toolbar-path: "toolbar/" + $toolbar-theme + "/"
         border-right-width: 0
         
       &.selected
-        -webkit-border-image: inline_image($toolbar-path + "segmented-all.png") 60 5 60 5
         z-index: 6
-        color: white
-        text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
         
         &:first-child
-          -webkit-border-image: inline_image($toolbar-path + "segmented-all.png") 90 5 30 5
           border-left-width: 5px
           margin-left: -5px
         
         &:last-child
-          -webkit-border-image: inline_image($toolbar-path + "segmented-all.png") 120 5 0 5
           border-right-width: 5px
           margin-right: -5px
-
+          
 
 
 // ***************************************************************************************************
@@ -400,7 +356,7 @@ $toolbar-path: "toolbar/" + $toolbar-theme + "/"
 
 .tab-view
   > .tab-bar
-    height: 50px
+    height: 49px
     +box-pack(center)
     +linear-gradient(color-stops(#434343, #2e2e2e 2%, #151515 50%, black 50%, black 100%))
     border-top: 1px solid black
@@ -413,7 +369,7 @@ $toolbar-path: "toolbar/" + $toolbar-theme + "/"
       display: block
       height: 44px
       background: transparent
-      margin-top: 2px
+      margin-top: 1px
       margin-left: 2px
       margin-right: 2px
       padding: 0

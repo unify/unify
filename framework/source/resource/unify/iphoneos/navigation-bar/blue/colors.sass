@@ -1,0 +1,17 @@
+.navigation-bar
+  background: inline_image("navigationbar.png")
+  
+  > h1
+    color: white
+    text-shadow: rgba(26, 34, 44, 0.398438) 0px -1px 0px
+    
+  .button
+    color: white
+    text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
+    -webkit-border-image: inline_image("../../tool-bar/blue/button-normal.png") 0 5 30 5
+    
+  .button[rel=parent]
+    -webkit-border-image: inline_image("../../tool-bar/blue/button-back.png") 0 5 30 12
+    
+    &.pressed
+      -webkit-border-image: inline_image("../../tool-bar/blue/button-back.png") 30 5 0 12
