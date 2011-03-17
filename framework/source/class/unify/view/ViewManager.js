@@ -553,6 +553,7 @@ qx.Class.define("unify.view.ViewManager",
       var mode=this.getDisplayMode();
       if(mode=='modal'){
         this.__path=null;
+        this.__currentView=null;
         this.fireDataEvent("changePath", this.__path);
       }
 

@@ -58,14 +58,23 @@ qx.Class.define("unify.ui.NavigationBar",
     
     
     /** 
-     * custom bar items displayed on the right of the navigation bar when
-     * this item is the top item.
+     * custom bar items displayed on the right of the navigation bar
      */
-    items :
+    rightItems :
     {
       check : "Array",
       nullable : true,
-      apply : "_applyItems"
+      apply : "_applyRightItems"
+    },
+
+    /**
+     * custom bar items displayed on the left of the navigation bar
+     */
+    leftItems :
+    {
+      check : "Array",
+      nullable : true,
+      apply : "_applyLeftItems"
     }
   },
   
@@ -100,8 +109,8 @@ qx.Class.define("unify.ui.NavigationBar",
       
       this.__onViewChangeParent();
       this.__onViewChangeMaster();
-
-      this._applyItems(this.getItems());
+      this._applyLeftItems(this.getLeftItems());
+      this._applyRightItems(this.getRightItems());
       return elem;      
     },
 
@@ -148,7 +157,27 @@ qx.Class.define("unify.ui.NavigationBar",
       return itemElem;
     },
 
-    _applyItems: function(items) {
+    _applyLeftItems: function(items) {
+      var elem = this.__leftElem;
+      if (elem) {
+        elem.innerHTML = '';
+        var parentElem= this.__parentElem;
+        if(parentElem){
+          elem.appendChild(parentElem);
+        }
+        var masterElem= this.__masterElem;
+        if(masterElem){
+          elem.appendChild(masterElem);
+        }
+        if (items) {
+          for (var i = 0,ii = items.length; i < ii; i++) {
+            elem.appendChild(this.__createItem(items[i]));
+          }
+        }
+      }
+    },
+
+    _applyRightItems: function(items) {
       var elem = this.__rightElem;
       if (elem) {
         elem.innerHTML = '';
@@ -236,7 +265,8 @@ qx.Class.define("unify.ui.NavigationBar",
 
   destruct : function()
   {
-    var view = this.__view
+    this.__parentElem=this.__masterElem=this.__titleElem=this.__leftElem=this.__rightElem=null;
+    var view = this.__view;
     view.removeListener("changeTitle", this.__onViewChangeTitle, this);
     view.removeListener("changeParent", this.__onViewChangeParent, this);
     view.removeListener("changeMaster", this.__onViewChangeMaster, this);
