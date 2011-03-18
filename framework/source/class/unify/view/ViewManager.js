@@ -565,12 +565,9 @@ qx.Class.define("unify.view.ViewManager",
      */
     show : function()
     {
-       var mode=this.getDisplayMode();
-      if((mode!='default') && this.__path==null){
-        this.__resetHelper();
-      }
+      var mode=this.getDisplayMode();
       var elem = this.getElement();
-      elem.style.display = "";
+      elem.style.display = mode=='default'?"":"block";
       
       // Be sure that we show a view (if possible)
       this.init();
