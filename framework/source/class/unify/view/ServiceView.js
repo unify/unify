@@ -119,7 +119,7 @@ qx.Class.define("unify.view.ServiceView",
      * Returns a unique identifier for the variant to render at the moment.
      *
      * Used to identifiy complete content changes. Override this method to
-     * not use the <code>param</code> property, but instead some other information.
+     * use the <code>param</code> property for example, or some other information.
      *
      * @return {String} Unique ID for current rendered output
      */

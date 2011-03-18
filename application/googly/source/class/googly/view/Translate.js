@@ -83,6 +83,10 @@ qx.Class.define("googly.view.Translate",
     // overridden
     _renderData : function(data)
     {
+      if(!data){
+        document.getElementById("resultText").value='';
+          return;
+      }
       var results = data.query.results;
       var translation = results ? results.translatedText : "";
       

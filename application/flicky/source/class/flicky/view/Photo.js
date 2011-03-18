@@ -72,6 +72,10 @@ qx.Class.define("flicky.view.Photo",
     // overridden
     _renderData : function(data)
     {
+      if(!data){
+        this.__content.clear();
+        return;
+      }
       var results = data.query.results;
       if (results == null)
       {
