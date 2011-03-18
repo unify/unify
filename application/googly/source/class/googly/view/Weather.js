@@ -120,7 +120,10 @@ qx.Class.define("googly.view.Weather",
     // overridden
     _renderData : function(data)
     {
-      if (data) {
+      if (!data){
+        this.__weatherDisplay.innerHTML='';
+        return;
+      } else {
         data = data.query.results;
       }
       

@@ -83,6 +83,10 @@ qx.Class.define("flicky.view.Meta",
     // overridden
     _renderData : function(data) 
     {
+      if(!data){
+        this.__content.clear();
+        return;
+      }
       var template = this.__template;
       if (!template)
       {

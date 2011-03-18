@@ -57,6 +57,10 @@ qx.Class.define("flicky.view.Interesting",
     // overridden
     _renderData : function(data)
     {
+      if(!data){
+        this.__content.clear();
+        return;
+      }
       var photos = data.query.results.photo;
       var html = [];
 

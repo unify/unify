@@ -72,6 +72,10 @@ qx.Class.define("flicky.view.Owner",
     // overridden
     _renderData : function(data) 
     {
+      if(!data){
+        this.__content.clear();
+        return;
+      }
       var template = this.__template;
       if (!template)
       {
