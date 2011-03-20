@@ -41,10 +41,20 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       check : ["visible", "hidden", "excluded"],
       init : "visible",
       event : "changeVisibility"
+    },
+    
+    appearance : {
+      init : null,
+      apply : "_applyAppearance"
     }
   },
   
   members: {
+    _applyAppearance : function(value) {
+      this.debug("Get styles for key " + value);
+      this.setStyle(unify.ui.widget.styling.StyleManager.getInstance().getTheme().getStyles(value));
+    },
+  
     __layoutManager : null,
     
     _getLayout : function() {
@@ -125,9 +135,9 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       });
 
       if (this._hasChildren()) {
-        var innerWidth = width;
-        var innerHeight = height;
-        
+        var innerWidth = width - this.__widthInset;
+        var innerHeight = height - this.__heightInset;
+
         if (this.__layoutManager && this.hasLayoutChildren()) {
           this.__layoutManager.renderLayout(innerWidth, innerHeight);
         } else if (this.hasLayoutChildren()) {
@@ -247,36 +257,76 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     },
 
 
-    
 
 
     __style : null,
+    __widthInset : 0,
+    __heightInset : 0,
 
     /**
-     * Set style to the element
-     * @param name {String|Map} Style name or Map of styles/values to apply
-     * @param value {String?null} Style value
+     * Set styles to the element
+     * @param map {Map} Map of styles/values to apply
      */
-    setStyle : function(name, value) {
-      if (this._hasElement()) {
-        qx.bom.element2.Style.set(this.getElement(), name, value);
-      } else {
-        var style = this.__style;
-        if (!style) {
-          this.__style = [[name, value]];
+    setStyle : function(map) {
+      console.log("SET STYLE", map);
+      var disallowedStyles = [
+        "border", // use borderLeft etc.
+        "padding", // use paddingRight etc.
+        
+        "margin",
+        "marginLeft",
+        "marginTop",
+        "marginBottom",
+        "marginRight",
+        "left",
+        "top",
+        "bottom",
+        "right",
+        "position",
+        "width",
+        "height",
+        "visibility"
+      ];
+
+      var keys = qx.lang.Object.getKeys(map);
+      var style = this.__style || {};
+
+      for (var i=0,ii=keys.length; i<ii; i++) {
+        var key = keys[i];
+
+        if (!qx.lang.Array.contains(disallowedStyles, key)) {
+          style[key] = map[key];
         } else {
-          style.push([name, value]);
+          this.error("Widget style type " + key + " is not allowed");
         }
       }
+
+      var left   = (parseInt(style["borderLeft"], 10)   || 0) + (parseInt(style["paddingLeft"], 10)   || 0);
+      var top    = (parseInt(style["borderTop"], 10)    || 0) + (parseInt(style["paddingTop"], 10)    || 0);
+      var right  = (parseInt(style["borderRight"], 10)  || 0) + (parseInt(style["paddingRight"], 10)  || 0);
+      var bottom = (parseInt(style["borderBottom"], 10) || 0) + (parseInt(style["paddingBottom"], 10) || 0);
+
+      this.__style = style;
+      this.__widthInset = left + right;
+      this.__heightInset =  top + bottom;
+
+      if (this._hasElement()) {
+        qx.bom.element2.Style.set(this.getElement(), map);
+      }
     },
-    
+
     /**
      * Get style of element
      * @param name {String} Style name to return
      * @param computed {Boolean?false} Value should be computed
      */
     getStyle : function(name, computed) {
-      if (this._hasElement()) {
+      var style = this.__style;
+      var value = (style && style[name]);
+      
+      if (value) {
+        return value;
+      } else if (this._hasElement()) {
         return qx.bom.element2.Style.get(this.getElement(), name, computed);
       }
     },
@@ -308,9 +358,8 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         });
         
         var style = this.__style;
-        while (style && style.length > 0) {
-          var s = style.pop();
-          qx.bom.element2.Style.set(element, s[0], s[1]);
+        if (style) {
+          qx.bom.element2.Style.set(element, style);
         }
       }
       return element;
