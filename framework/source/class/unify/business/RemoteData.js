@@ -705,7 +705,12 @@ qx.Class.define("unify.business.RemoteData",
           {
             case "application/json":
               start = new Date;
-              data = Json.parse(text);
+              try{
+                data = Json.parse(text);
+              } catch(ex){
+                this.error("failed to parse json: "+ex);
+                isMalformed=true;
+              }
               this.debug("Parsed JSON in: " + (new Date - start) + "ms");
               break;
 
@@ -736,7 +741,7 @@ qx.Class.define("unify.business.RemoteData",
         }
         else if (!data)
         {
-          this.error("Malformed data returned. Do not validates as: " + type);
+          this.error("Malformed data returned. Does not validate as: " + type);
           isMalformed = true;
         }
       }

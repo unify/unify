@@ -67,12 +67,6 @@ qx.Class.define("unify.view.RemoteView",
      */
     refresh : function()
     {
-      if (this.__requestId)
-      {
-        this.warn("Request is already running!");
-        return;
-      }
-
       this.__requestId = this._getBusinessObject().get(this._getServiceName(), this._getServiceParams());
       if (this.__requestId !== false) {
         unify.ui.ActivityIndicator.getInstance().show();
@@ -126,20 +120,21 @@ qx.Class.define("unify.view.RemoteView",
       {
         // this.debug("New render variant: " + renderVariant);
 
+        this.__appliedVariant = renderVariant;
+
         var cachedEntry = business.getCachedEntry(service, params);
-        if (cachedEntry != null)
+        if (cachedEntry == null || !business.isCacheValid(service, params))
         {
-          // this.debug("Render cache value (ignoring age)...")
-          this.__appliedVariant = renderVariant;
-          this.__appliedVersion = cachedEntry.created;
-
-          this._wrappedRenderData(cachedEntry.data);
-        }
-
-        if (!cachedEntry || !business.isCacheValid(service, params))
-        {
-          // this.debug("Cache was " + (cachedEntry ? "old" : "empty") + ". Loading data...");
+          delete this.__appliedVersion;
+          this._wrappedRenderData(null);
           this.refresh();
+        }
+        else
+        {
+          delete this.__requestId;
+          unify.ui.ActivityIndicator.getInstance().hide();
+          this.__appliedVersion = cachedEntry.created;
+          this._wrappedRenderData(cachedEntry.data);
         }
       }
       else
@@ -187,6 +182,14 @@ qx.Class.define("unify.view.RemoteView",
       } else if (e.isMalformed()) {
         this._errorHandler("data");
       } else if (e.isModified()) {
+
+        var business = this._getBusinessObject();
+        var service = this._getServiceName();
+        var params = this._getServiceParams();
+        var cachedEntry=business.getCachedEntry(service, params);
+        if(cachedEntry){
+          this.__appliedVersion = cachedEntry.created;
+        }
         this._wrappedRenderData(e.getData());
       } else if (qx.core.Variant.isSet("qx.debug", "on")) {
         this.debug("Data was not modified!");

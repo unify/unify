@@ -42,7 +42,7 @@ qx.Class.define("flicky.view.Meta",
     {
       var layer = new unify.ui.Layer(this);
       var navigationBar = new unify.ui.NavigationBar(this);
-      navigationBar.setItems([{label:"Done", rel:"close", kind:"button"}]);
+      navigationBar.setRightItems([{label:"Done", rel:"close", kind:"button"}]);
       layer.add(navigationBar);
 
       var content = this.__content = new unify.ui.ScrollView;
@@ -83,6 +83,10 @@ qx.Class.define("flicky.view.Meta",
     // overridden
     _renderData : function(data) 
     {
+      if(!data){
+        this.__content.clear();
+        return;
+      }
       var template = this.__template;
       if (!template)
       {

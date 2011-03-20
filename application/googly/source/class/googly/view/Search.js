@@ -82,6 +82,10 @@ qx.Class.define("googly.view.Search",
     // overridden
     _renderData : function(data)
     {
+      if(!data){
+        document.getElementById("resultList").innerHTML = "";
+        return;
+      }
       var results = data.query.results;
       var markup = "";
       
@@ -95,7 +99,7 @@ qx.Class.define("googly.view.Search",
           markup += "<li><a href='" + entry.url + "'>" + entry.titleNoFormatting + "<br/>" + entry.visibleUrl + "</a></li>";
         }
       }
-      
+
       document.getElementById("resultList").innerHTML = markup;
     }    
   }

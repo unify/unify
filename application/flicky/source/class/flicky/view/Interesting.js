@@ -31,7 +31,7 @@ qx.Class.define("flicky.view.Interesting",
     {
       var layer = new unify.ui.Layer(this);
       var navigationBar = new unify.ui.NavigationBar(this);
-      navigationBar.setItems([{ icon : true, exec : "refresh"}]);
+      navigationBar.setRightItems([{ icon : true, exec : "refresh"}]);
       layer.add(navigationBar);
 
       var content = this.__content = new unify.ui.ScrollView;
@@ -57,6 +57,10 @@ qx.Class.define("flicky.view.Interesting",
     // overridden
     _renderData : function(data)
     {
+      if(!data){
+        this.__content.clear();
+        return;
+      }
       var photos = data.query.results.photo;
       var html = [];
 

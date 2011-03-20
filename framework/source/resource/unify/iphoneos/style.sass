@@ -445,20 +445,53 @@ $toolbar-path: "toolbar/" + $toolbar-theme + "/"
 //   CLASS: POPOVER MANAGER
 // ***************************************************************************************************
 
-.popover
-  position: absolute
-  width: 40%
-  top: 5%
-  left: 10px
-  bottom: 10px
-  display: none
 
-.popover-blocker
+
+
+#popover-blocker,
+#modal-blocker
   position: absolute
   width: 100%
   height: 100%
   top: 0px
   left: 0px
-  opacity: 0.1
-  background-color: black
   display: none
+
+#modal-blocker
+  background-color: black
+  opacity: 0.5
+
+.popover-indicator
+  width: 0
+  height: 0
+  border-left: 20px solid transparent
+  border-right: 20px solid transparent
+  border-bottom: 20px solid black
+  border-top: 0
+  position: absolute
+  top: -20px
+  left: 0px
+
+.popover-wrapper
+  position: absolute
+  border: 5px solid black
+  +border-radius(10px)
+
+.view-manager.display-mode-modal,
+.view-manager.display-mode-popover
+  position: absolute
+  width: 100%
+  height: 100%
+  top: 0px
+  left: 0px
+
+.view-manager.display-mode-modal
+  display: none
+  &[orient=landscape]
+    left: 5%
+    width: 90%
+
+
+
+
+
