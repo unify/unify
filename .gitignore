@@ -4,5 +4,7 @@ tool/unify-sass/.sass-cache
 application/widgets/api
 application/widgets/source/script
 
+style.css
+
 /application/flicky/log.txt
 .DS_Store
