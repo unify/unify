@@ -31,7 +31,9 @@ qx.Class.define("unify.ui.widget.core.Layer", {
     
     var view = this.__view = layer.getView();
     this.__layer = layer;
-    this.__elem = layer.getContentElement();
+    var elem = this.__elem = layer.getContentElement();
+    
+    qx.bom.element2.Style.set(elem, "boxSizing", "border-box")
     
     view.addListener("appear", this.__viewAppear, this);
     view.addListener("disappear", this.__viewDisappear, this);
