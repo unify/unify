@@ -21,37 +21,45 @@ qx.Class.define("widgets.view.Start", {
       return "Start";
     },
 
-    
     // overridden
     _createView : function() 
     {
       var layer = new unify.ui.Layer(this);
-      
+
       //var titlebar = new unify.ui.ToolBar(this);
       //layer.add(titlebar);
-      
-      /*var content = new unify.ui.Content;
-      content.add("Hello World");
-      layer.add(content);*/
-      
+
       var layerWidget = new unify.ui.widget.core.Layer(layer);
-      /*var cont = new unify.ui.widget.basic.Label("Das ist ein Test");
-      layerWidget.add(cont, {
-        left: 50,
-        top: 10
+
+      var titleBar = new unify.ui.widget.container.NavigationBar(this);
+      layerWidget.add(titleBar);
+
+      var c1 = new unify.ui.widget.container.Composite(new qx.ui.layout.HBox());
+      layerWidget.add(c1);
+      c1.set({
+        appearance: "test",
+        height: 300
       });
-      cont.set({
-        width: 100,
-        height: 50
-      });*/
+      var c2 = new unify.ui.widget.container.Composite(new qx.ui.layout.Basic());
+      c2.setAppearance("test.test1");
+      c2.setStyle({
+        borderRightWidth: "5px",
+        borderRightStyle: "solid",
+        borderTopWidth: "10px",
+        borderTopStyle: "solid"
+      });
+      var c3 = new unify.ui.widget.container.Composite(new qx.ui.layout.Basic());
+      c3.setAppearance("test.test2");
+      c1.add(c2, {
+        width: "40%"
+      });
+      c1.add(c3, {
+        width: "40%"
+      });
 
       var scroller = new unify.ui.widget.container.Scroll();
-      layerWidget.add(scroller, {
-        left: 50,
-        top: 50
-      });
+      layerWidget.add(scroller);
       scroller.set({
-        width: 300,
         height: 300
       });
 
