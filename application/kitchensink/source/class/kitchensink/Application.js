@@ -1,17 +1,11 @@
 /* ************************************************************************
 
-   kitchensink
+   kitchensink - unify demo app
 
    Copyright:
      2010 Deutsche Telekom AG, Germany, http://telekom.com
 
  ************************************************************************ */
-
-/* ************************************************************************
-
-#asset(kitchensink/*)
-
-************************************************************************ */
 
 /**
  * Unify application class
@@ -36,10 +30,53 @@ qx.Class.define("kitchensink.Application",
       
       // Register your view classes...
       MasterViewManager.add(kitchensink.view.Start, true);
+      MasterViewManager.add(kitchensink.view.Uicomponents);
+      MasterViewManager.add(unify.view.SysInfo);
+      /* 
+      ==========
+      | AGENDA |
+      ==========
+      
+      Underlying Concepts
+      -------------------
+      - qooxdoo
+      - build system
+      - class structure and inheritance
+      - MVP structure and event circulation
+      - i18n
+      - Unify DOM handling
+      - basic application structure
+      
+      UI concepts
+      -----------
+      - view managers (tabview, splitview, popover, remoteview)
+      - navigation, URL and history management
+      - touch and gesture handling
+      - CSS3 and animations
+      - styling with SASS, predefined mixins etc.
+      - theming
+      - UI events (appear, _resumeView etc.)
+      
+      UI components
+      -------------
+      - Containers, Views and Popovers
+      - Forms and Buttons
+      - Templates
+      
+      Data handling
+      -------------
+      - business and data objects
+      - remote data, caching and remoteviews
+      - storage
+      - XML to JSON
+      - Yql
+      
+      */
       
       // Add TabViews or SplitViews...
       var TabView = new unify.view.TabViewManager(MasterViewManager);
       TabView.add(kitchensink.view.Start);
+      TabView.add(unify.view.SysInfo);
       
       // Add view manager (or SplitView or TabView) to the root
       this.add(TabView);

@@ -4,13 +4,14 @@
   > h1
     color: white
     text-shadow: rgba(26, 34, 44, 0.398438) 0px -1px 0px
-  
+    
   .button
     color: white
     text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
     -webkit-border-image: inline_image("button-normal.png") 0 5 30 5
     
-    &.pressed, &.selected
+    &.pressed, 
+    &.selected
       -webkit-border-image: inline_image("button-normal.png") 30 5 0 5
       
     &.inactive

@@ -1,7 +1,7 @@
 .navigation-bar
   background: inline_image("navigationbar.png")
   
-  > h1
+  > .center > h1
     color: white
     text-shadow: rgba(26, 34, 44, 0.398438) 0px -1px 0px
     
@@ -10,8 +10,31 @@
     text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
     -webkit-border-image: inline_image("../../tool-bar/blue/button-normal.png") 0 5 30 5
     
+    &.pressed
+      -webkit-border-image: inline_image("../../tool-bar/blue/button-normal.png") 30 5 0 5
+      
   .button[rel=parent]
     -webkit-border-image: inline_image("../../tool-bar/blue/button-back.png") 0 5 30 12
     
     &.pressed
       -webkit-border-image: inline_image("../../tool-bar/blue/button-back.png") 30 5 0 12
+      
+  .segmented
+    -webkit-border-image: inline_image("../../tool-bar/blue/segmented-all.png") 0 5 120 5
+    
+    > .button
+      color: #4f5459
+      text-shadow: rgba(255, 255, 255, 0.5) 0px 1px 0
+      -webkit-border-image: inline_image("../../tool-bar/blue/segmented-all.png") 30 5 90 5
+      
+      &.selected
+        color: white
+        text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
+        -webkit-border-image: inline_image("../../tool-bar/blue/segmented-all.png") 60 5 60 5
+        
+        &:first-child
+          -webkit-border-image: inline_image("../../tool-bar/blue/segmented-all.png") 90 5 30 5
+          
+        &:last-child
+          -webkit-border-image: inline_image("../../tool-bar/blue/segmented-all.png") 120 5 0 5
+          

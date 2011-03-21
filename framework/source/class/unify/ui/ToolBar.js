@@ -1,11 +1,11 @@
 /* ***********************************************************************************************
-
+    
     Unify Project
-
+    
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
-
+    
 *********************************************************************************************** */
 
 /**
@@ -15,11 +15,12 @@
 qx.Class.define("unify.ui.ToolBar",
 {
   extend : unify.ui.Abstract,
-
-
+  
+  
+  
   /*
   *****************************************************************************
-     PROPERTIES
+     CONSTRUCTOR
   *****************************************************************************
   */
   
@@ -30,68 +31,40 @@ qx.Class.define("unify.ui.ToolBar",
     this.__items = items;
     
   },
-
-
-
-  /*
-  *****************************************************************************
-     PROPERTIES
-  *****************************************************************************
-  */
   
-  properties :
-  {
-    parent : 
-    {
-      check : "unify.view.StaticView",
-      nullable : true,
-      apply : "_applyParent"
-    },
-    
-    master :
-    {
-      check : "unify.view.StaticView",
-      nullable : true,
-      apply : "_applyMaster"
-    }
-  },
-
-
-
-
+  
+  
   /*
   *****************************************************************************
      MEMBERS
   *****************************************************************************
   */
-
+  
   members :
   {
+    
+    
     /*
     ---------------------------------------------------------------------------
       OVERRIDEABLE METHODS
     ---------------------------------------------------------------------------
     */
-
-    // overridden
+    
     _createElement : function()
     {
       var elem = document.createElement("div");
       elem.className = "tool-bar";
-
+      
       return elem;
     },
     
     
-
-
-
     /*
     ---------------------------------------------------------------------------
       PUBLIC API
     ---------------------------------------------------------------------------
     */
-
+    
     /**
      * Defines the items to show inside the toolbar
      *
@@ -101,7 +74,7 @@ qx.Class.define("unify.ui.ToolBar",
     {
       var elem = this.getElement();
       var itemElem;
-
+      
       for (var i=0, l=items.length; i<l; i++)
       {
         itemElem = this.__createItemElement(items[i]);
@@ -110,32 +83,36 @@ qx.Class.define("unify.ui.ToolBar",
     },
     
     
-    
-    
-    
     /*
     ---------------------------------------------------------------------------
       PRIVATE METHODS
     ---------------------------------------------------------------------------
     */
-        
+    
     __onChangeSegment : function(e)
     {
-      var segmented = e.getTarget().getElement().querySelector(".segmented");
-      var Class = qx.bom.element2.Class;
-      
-      if (segmented)
-      {
-        var old = segmented.querySelector(".selected");
-        if (old) {
-          Class.remove(old, "selected");
-        }
+      var 
+        Class = qx.bom.element2.Class,
+        allSegmented = e.getTarget().getElement().querySelectorAll(".segmented");
         
-        var next = segmented.querySelector("[goto='." + e.getData() + "']");
-        if (next) {
-          Class.add(next, "selected");
+      for (var i = 0, l =  allSegmented.length; i < l; i += 1) 
+      {
+        if (allSegmented[i])
+        {
+          var old = allSegmented[i].querySelector(".selected");
+          if (old) 
+          {
+            Class.remove(old, "selected");
+          }
+
+          var next = allSegmented[i].querySelector("[goto='." + e.getData() + "']");
+          if (next) 
+          {
+            Class.add(next, "selected");
+          }
         }
       }
+      
     },
     
     
@@ -144,7 +121,7 @@ qx.Class.define("unify.ui.ToolBar",
       var buttonElem = document.createElement("div");
       buttonElem.setAttribute("goto", "." + config.segment);
       buttonElem.className = config.segment == selected ? "button selected" : "button";
-
+      
       if (config.label) {
         buttonElem.innerHTML = config.label;
       } else if (config.icon) {
@@ -159,14 +136,12 @@ qx.Class.define("unify.ui.ToolBar",
     {
       var itemElem;
       
-      if (config.kind == "spacer")
+      // create base element
+      itemElem = document.createElement(config.kind == "header" ? "h1" : "div");
+      
+      // special segment handling
+      if (config.kind == "segmented")
       {
-        itemElem = document.createElement("div");
-      }
-      else if (config.kind == "segmented")
-      {
-        itemElem = document.createElement("div");
-
         var view = config.view;
         var segment = view.getSegment();
         
@@ -174,40 +149,29 @@ qx.Class.define("unify.ui.ToolBar",
         for (var i=0, l=buttons.length; i<l; i++) {
           itemElem.appendChild(this.__createSegmentButtonElement(buttons[i], segment));
         }
-        
         view.addListener("changeSegment", this.__onChangeSegment, this);
       }
-      else if (config.kind == "header")
-      {
-        itemElem = document.createElement("h1");
+      
+      // rel is independently usable
+      if (config.rel) {
+        itemElem.setAttribute("rel", config.rel);
       }
-      else if (config.rel || config.jump || config.exec || config.show)
-      {
-        itemElem = document.createElement("div");
-
-        if (config.rel) {
-          itemElem.setAttribute("rel", config.rel);
-        }
-
-        if (config.jump) {
-          itemElem.setAttribute("goto", config.jump);
-        } else if (config.exec) {
-          itemElem.setAttribute("exec", config.exec);
-        } else if (config.show) {
-          itemElem.setAttribute("show", config.show);
-        }
+      
+      // there can be only one of [jump, exec, show]
+      if (config.jump) {
+        itemElem.setAttribute("goto", config.jump);
+      } else if (config.exec) {
+        itemElem.setAttribute("exec", config.exec);
+      } else if (config.show) {
+        itemElem.setAttribute("show", config.show);
       }
-      else
-      {
-        itemElem = document.createElement("div");
-      }
-
-      // Add kind as CSS class
+      
+      // add kind as CSS class
       if (config.kind) {
         qx.bom.element2.Class.add(itemElem, config.kind);
       }
       
-      // add additional CSS class
+      // add additional classes
       if (config.addclass) {
         qx.bom.element2.Class.add(itemElem, config.addclass);
       }
@@ -216,6 +180,7 @@ qx.Class.define("unify.ui.ToolBar",
         qx.bom.element2.Class.add(itemElem, config.style);
       }
       
+      // add label or icon container
       if (config.label) {
         itemElem.innerHTML = config.label;
       } else if (config.icon) {

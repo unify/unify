@@ -5,6 +5,7 @@
 =padded-layer($border_color: #b4b4b4, $border_radius: 8px)
   background-image: inline_image("pinstripes.png")
   background-color: rgb(203, 210, 216)
+  
   .content
     padding: 10px
     
@@ -43,8 +44,14 @@
         +border-bottom-radius($border_radius)
         border-bottom-style: solid
         
-        
-        
+
+// ***************************************************************************************************
+//   MIXIN: SCROLLVIEW BACKGROUND TEXTURE
+// ***************************************************************************************************
+
+=scrollview-texture
+  background-image: inline_image("scrollviewbgtexture.png")
+
 
 // ***************************************************************************************************
 //   MIXIN: KEY-VALUE LIST
@@ -112,7 +119,8 @@
       &:after
         content: inline_image("list/arrow.png")
         
-    &.selected, &.pressed
+    &.pressed,
+    &.selected
       +linear-gradient(color-stops($selection_start, $selection_end))
       color: white
       
@@ -241,17 +249,17 @@ body
   padding-left: 2px
   padding-right: 2px
   white-space: nowrap
-  
+
   > h1
     font-size: 20px
     font-weight: bold
     line-height: 42px
     
-  > div
-    margin-left: 3px
-    margin-right: 3px
-    
-  // Shared button class. Used by segmentation control and top-level buttons
+// left, center and right
+.navigation-bar > div, 
+.tool-bar
+  
+  // shared button class - used by segmentation control and top-level buttons
   .button
     font-size: 12px
     font-weight: bold
@@ -261,50 +269,12 @@ body
     cursor: default
     border-width: 0px 5px
     
-.navigation-bar
-  +hbox
-  position: relative
-  white-space: nowrap
-  
-  > *
-    height: 42px
-    
-  > .left,
-  > .right
-    max-width: 50%
-    overflow: hidden
-    width: 24%
-    +box-flex(1)
-    +hbox
-    
-  > .right
-    +box-pack(end)
-    
-  > h1
-    font-size: 20px
-    color: white
-    text-shadow: rgba(0, 0, 0, 0.4) 0px -1px 0
-    font-weight: bold
-    text-align: center
-    line-height: 42px 
-    text-overflow: ellipsis
-    overflow: hidden
-    width: 50%
-    
-  .button[rel=parent]
-    border-left-width: 12px
-    padding-left: 0
-    
-.tool-bar
-  +hbox
-
-  // bottom positioned tool bar
-  &:last-child
-    border-bottom: 0px none
-    
   .spacer
     +box-flex(1)
     
+.navigation-bar > .center,
+.tool-bar
+  
   .segmented
     border-width: 0px 5px
     
@@ -329,11 +299,65 @@ body
         &:first-child
           border-left-width: 5px
           margin-left: -5px
-        
+          
         &:last-child
           border-right-width: 5px
           margin-right: -5px
           
+.navigation-bar
+  +hbox
+  position: relative
+  white-space: nowrap
+  
+  > *
+    height: 42px
+    
+  > .left,
+  > .center,
+  > .right
+    max-width: 50%
+    overflow: hidden
+    width: 40%
+    +box-flex(1)
+    +hbox
+    
+    > div
+      margin-left: 6px
+      margin-right: 4px
+      
+  > .center
+    width: 20%
+    
+    > h1
+      width: 100%
+      text-align: center
+      font-size: 20px
+      color: white
+      text-shadow: rgba(0, 0, 0, 0.4) 0px -1px 0
+      font-weight: bold
+      text-align: center
+      line-height: 42px 
+      text-overflow: ellipsis
+      overflow: hidden
+      
+      
+  > .right
+    +box-pack(end)
+    
+  .button[rel=parent]
+    border-left-width: 12px
+    
+.tool-bar
+  +hbox
+  
+  > div
+    margin-left: 6px
+    margin-right: 4px
+    
+  // bottom positioned tool bar
+  &:last-child
+    border-bottom: 0px none
+    
 
 
 // ***************************************************************************************************
