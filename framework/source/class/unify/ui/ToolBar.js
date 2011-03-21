@@ -166,6 +166,11 @@ qx.Class.define("unify.ui.ToolBar",
         itemElem.setAttribute("show", config.show);
       }
       
+      // spacer sizing
+      if (config.size) {
+        itemElem.setAttribute("style", 'max-width: ' + config.size + '; min-width: ' + config.size + ';');
+      }
+      
       // add kind as CSS class
       if (config.kind) {
         qx.bom.element2.Class.add(itemElem, config.kind);

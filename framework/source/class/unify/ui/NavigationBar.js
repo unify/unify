@@ -84,6 +84,15 @@ qx.Class.define("unify.ui.NavigationBar",
       check : "Array",
       nullable : true,
       apply : "_applyRightItems"
+    },
+    
+    /*
+     * used to store the heading
+     */
+    centerHeading :
+    {
+      check : "String",
+      nullable : true
     }
     
   },
@@ -112,10 +121,11 @@ qx.Class.define("unify.ui.NavigationBar",
       
       var centerElem = this.__centerElem = doc.createElement("div");
       centerElem.className = "center";
-      // use title in center
+      // put title in center
       var titleElem = this.__titleElem = doc.createElement("h1");
-      titleElem.innerHTML = this.__view.getTitle();
       centerElem.appendChild(titleElem);
+      
+      titleElem.innerHTML = this.__view.getTitle();
       elem.appendChild(centerElem);
       
       var rightElem = this.__rightElem = doc.createElement("div");
@@ -127,10 +137,9 @@ qx.Class.define("unify.ui.NavigationBar",
       this._applyLeftItems(this.getLeftItems());
       this._applyCenterItem(this.getCenterItem());
       this._applyRightItems(this.getRightItems());
-      return elem;      
+      return elem;
     },
     
-    // new method
     _applyLeftItems: function(items) {
       var elem = this.__leftElem;
       if (elem) {
@@ -154,15 +163,17 @@ qx.Class.define("unify.ui.NavigationBar",
     _applyCenterItem: function(item) {
       var elem = this.__centerElem;
       if (elem) {
-        // only fill center if there are item (otherwise heding is shown)
-        if (item) {
+        // only fill center if this is a "segmented" item (otherwise heding is shown)
+        if (item && item.kind === 'segmented') {
+          this.setCenterHeading(elem.innerHTML);
           elem.innerHTML = '';
           elem.appendChild(this.__createItemElement(item));
+        } else if(this.getCenterHeading() !== null) {
+          elem.innerHTML = this.getCenterHeading();
         }
       }
     },
     
-    // new method
     _applyRightItems: function(items) {
       var elem = this.__rightElem;
       if (elem) {

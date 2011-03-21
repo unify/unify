@@ -30,7 +30,7 @@ qx.Class.define("kitchensink.view.Uicomponents", {
         mainLayer = new unify.ui.Layer(this),
         
         // a navigation bar on top
-        navBar = new unify.ui.NavigationBar(this),
+        navBar = this.__navBar = new unify.ui.NavigationBar(this),
         
         // a scrollable view below the navigation bar
         mainScrollContent = new unify.ui.ScrollView(),
@@ -92,16 +92,31 @@ qx.Class.define("kitchensink.view.Uicomponents", {
         }
       );
       
-      
       navBar.setRightItems(
         [
           { 
             kind : "button",
             icon : true,
-            exec : "refresh"
+            exec : "_hideSegment"
           }
         ]
       );
+      
+      /*
+       * general items can only be "searchbar" or "activity"
+       */
+      navBar.setItems(
+        [
+          {
+            kind : "searchbar",
+            exec : "_hideSegment"
+          },
+          { 
+            kind : "activity"
+          }
+        ]
+      );
+      
       
       
       // fill main scroller - h2 is pre-styled
@@ -150,7 +165,8 @@ qx.Class.define("kitchensink.view.Uicomponents", {
             kind : "button"
           },
           {
-            kind : 'spacer'
+            kind : 'spacer',
+            size : '50px'
           },
           {
             icon : true,
@@ -170,6 +186,12 @@ qx.Class.define("kitchensink.view.Uicomponents", {
       
       // the _createView method returns the main layer as the view
       return mainLayer;
+    },
+    
+    _hideSegment : function()
+    {
+      // empty center area
+      this.__navBar.setCenterItem({});
     }
   }
 });
