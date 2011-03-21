@@ -159,7 +159,6 @@ qx.Class.define("unify.view.PopOverManager",
       this.__visibleViewManagers.push(viewManager);
       this.__sortPopOvers();
       viewManager.show();
-      elem.style.display='block';
     },
     
     
@@ -188,7 +187,6 @@ qx.Class.define("unify.view.PopOverManager",
       }
 
       elem.style.zIndex='';
-      elem.style.display='';//hides element because popover class defaults to display: none
       viewManager.hide();
       qx.lang.Array.remove(this.__visibleViewManagers, viewManager);
       this.__sortPopOvers();
