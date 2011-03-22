@@ -42,7 +42,12 @@ qx.Class.define("unify.ui.NavigationBar",
     // listen for any changes to occour after creation of the nav bar
     view.addListener("changeTitle", this.__onViewChangeTitle, this);
     view.addListener("changeParent", this.__onViewChangeParent, this);
-    view.addListener("changeMaster", this.__onViewChangeMaster, this);
+    var master=view.getManager().getMaster();
+    if(master){
+      master.addListener("changeView",this.__onViewChangeMaster,this);
+      master.addListener("changeDisplayMode",this.__onViewChangeMaster,this);
+    }
+
   },
   
   
@@ -211,8 +216,13 @@ qx.Class.define("unify.ui.NavigationBar",
       }
       
       var parent = this.__view.getParent();
-      parentElem.innerHTML = parent ? parent.getTitle("parent") : "";
-      parentElem.style.display = parent ? "" : "none";
+      if(parent){
+        parentElem.innerHTML = parent.getTitle("parent");
+        parentElem.style.display = "";
+      } else {
+        parentElem.innerHTML =  "";
+        parentElem.style.display = "none";
+      }
     },
     
     
@@ -230,13 +240,14 @@ qx.Class.define("unify.ui.NavigationBar",
         masterElem.className = "button";
         this.__leftElem.appendChild(masterElem);
       }
-      var master = this.__view.getMaster();
-      if(master){
+      var master = this.__view.getManager().getMaster();
+      if(master && master.getDisplayMode()=='popover'){
         masterElem.setAttribute("show", master.getId());
         var currentMasterView=master.getCurrentView();
-        masterElem.innerHTML = currentMasterView?currentMasterView.getTitle("parent") : "";
+        masterElem.innerHTML = currentMasterView?currentMasterView.getTitle("parent") : "missing title";
         masterElem.style.display = "";
       } else {
+        masterElem.innerHTML ="";
         masterElem.style.display="none";
       }
     },
@@ -262,10 +273,14 @@ qx.Class.define("unify.ui.NavigationBar",
   
   destruct : function()
   {
-    this.__parentElem = this.__masterElem = this.__titleElem = this.__leftElem  =this.__rightElem = null;
+    this.__parentElem = this.__masterElem = this.__centerElem = this.titleElem = this.__leftElem = this.__rightElem = null;
     var view = this.__view;
     view.removeListener("changeTitle", this.__onViewChangeTitle, this);
     view.removeListener("changeParent", this.__onViewChangeParent, this);
-    view.removeListener("changeMaster", this.__onViewChangeMaster, this);
+    var master=view.getManager().getMaster();
+    if(master){
+      master.removeListener("changeView",this.__onViewChangeMaster,this);
+      master.removeListener("changeDisplayMode",this.__onViewChangeMaster,this);
+    }
   }
 });

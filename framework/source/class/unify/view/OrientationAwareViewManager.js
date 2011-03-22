@@ -76,6 +76,5 @@ qx.Class.define("unify.view.OrientationAwareViewManager",
   },
   destruct : function(){
     qx.event.Registration.removeListener(window, "rotate", this.__onRotate, this);
-    this.base(arguments);
   }
 });
