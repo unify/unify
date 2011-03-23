@@ -25,7 +25,7 @@ qx.Class.define("unify.ui.widget.container.NavigationBar", {
     });
     
     this.setStyle({
-      background: "url(" + qx.util.ResourceManager.getInstance().toUri("unify/iphoneos/toolbar/black/navigationbar.png") + ")"
+      background: "url(" + qx.util.ResourceManager.getInstance().toUri("unify/iphoneos/navigation-bar/black/navigationbar.png") + ")"
     });
     
     // Finally listen for any changes occour after creation of the titlebar
