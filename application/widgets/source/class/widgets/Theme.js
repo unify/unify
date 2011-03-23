@@ -5,7 +5,7 @@ qx.Class.define("widgets.Theme", {
     var styles = {
       "test" : {
         backgroundColor: "yellow",
-        borderColor: "green green green green",
+        borderColor: "green green green green"
       },
       "test.test1" : {
         backgroundColor : "orange"
@@ -14,7 +14,7 @@ qx.Class.define("widgets.Theme", {
         backgroundColor : "purple"
       },
       "toolbar.navigationbar": {
-         background: "url(" + qx.util.ResourceManager.getInstance().toUri("unify/iphoneos/toolbar/black/navigationbar.png") + ")"
+         background: "url(" + qx.util.ResourceManager.getInstance().toUri("unify/iphoneos/tool-bar/black/navigationbar.png") + ")"
       },
       "toolbar.navigationbar.label" : {
         font: "Arial 20px bold",
