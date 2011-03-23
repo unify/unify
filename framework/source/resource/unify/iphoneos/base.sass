@@ -242,7 +242,7 @@ body
       vertical-align: top
 
 // basic navigation-bar and tool-bar styles
-// colors for these are set in ./navigation-bar/colors.sass and ./tool-bar/colors.sass
+// colors for these are set in theme.sass
 .navigation-bar,
 .tool-bar
   height: 44px
@@ -441,7 +441,8 @@ body
   height: 0
   border-left: 20px solid transparent
   border-right: 20px solid transparent
-  border-bottom: 20px solid black
+  border-width: 20px
+  border-style: solid
   border-top: 0
   position: absolute
   top: -20px
@@ -449,7 +450,8 @@ body
   
 .popover-wrapper
   position: absolute
-  border: 5px solid black
+  border-width: 5px
+  border-style: solid
   +border-radius(10px)
   
 .view-manager.display-mode-modal,
