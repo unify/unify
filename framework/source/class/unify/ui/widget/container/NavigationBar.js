@@ -14,9 +14,18 @@ qx.Class.define("unify.ui.widget.container.NavigationBar", {
     this.__view = view;
     
     var title = this.__title = new unify.ui.widget.basic.Label();
-    title.setAppearance("toolbar.navigationbar.label");
+    title.setStyle({
+      font: "Arial 20px bold",
+      color: "white",
+      textShadow: "rgba(0, 0, 0, 0.4) 0px -1px 0",
+      textOverflow: "ellipsis"
+    });
     this._add(title, {
       position: "title"
+    });
+    
+    this.setStyle({
+      background: "url(" + qx.util.ResourceManager.getInstance().toUri("unify/iphoneos/toolbar/black/navigationbar.png") + ")"
     });
     
     // Finally listen for any changes occour after creation of the titlebar
