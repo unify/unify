@@ -159,7 +159,7 @@ qx.Class.define("unify.ui.NavigationBar",
         }
         if (items) {
           for (var i = 0,ii = items.length; i < ii; i++) {
-            elem.appendChild(this.__createItemElement(items[i]));
+            elem.appendChild(this._createItemElement(items[i]));
           }
         }
       }
@@ -172,7 +172,7 @@ qx.Class.define("unify.ui.NavigationBar",
         if (item && item.kind === 'segmented') {
           this.setCenterHeading(elem.innerHTML);
           elem.innerHTML = '';
-          elem.appendChild(this.__createItemElement(item));
+          elem.appendChild(this._createItemElement(item));
         } else if(this.getCenterHeading() !== null) {
           elem.innerHTML = this.getCenterHeading();
         }
@@ -185,7 +185,7 @@ qx.Class.define("unify.ui.NavigationBar",
         elem.innerHTML = '';
         if (items) {
           for (var i = 0,ii = items.length; i < ii; i++) {
-            elem.appendChild(this.__createItemElement(items[i]));
+            elem.appendChild(this._createItemElement(items[i]));
           }
         }
       }

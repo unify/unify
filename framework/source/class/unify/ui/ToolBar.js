@@ -77,7 +77,7 @@ qx.Class.define("unify.ui.ToolBar",
       
       for (var i=0, l=items.length; i<l; i++)
       {
-        itemElem = this.__createItemElement(items[i]);
+        itemElem = this._createItemElement(items[i]);
         elem.appendChild(itemElem);
       }
     },
@@ -132,7 +132,7 @@ qx.Class.define("unify.ui.ToolBar",
     },
     
     
-    __createItemElement : function(config)
+    _createItemElement : function(config)
     {
       var itemElem;
       
