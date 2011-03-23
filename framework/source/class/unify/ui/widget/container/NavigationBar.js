@@ -15,7 +15,7 @@ qx.Class.define("unify.ui.widget.container.NavigationBar", {
     
     var title = this.__title = new unify.ui.widget.basic.Label();
     title.setStyle({
-      font: "Arial 20px bold",
+      font: "20px bold",
       color: "white",
       textShadow: "rgba(0, 0, 0, 0.4) 0px -1px 0",
       textOverflow: "ellipsis"
@@ -43,7 +43,7 @@ qx.Class.define("unify.ui.widget.container.NavigationBar", {
     },
     height: {
       refine: true,
-      init: 42
+      init: 44
     },
     
     appearance : {
