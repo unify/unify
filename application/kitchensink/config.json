@@ -1,0 +1,22 @@
+{
+  "name"    : "kitchensink",
+
+  "include" :
+  [
+    {
+      "path" : "${UNIFY_PATH}/framework/application.json"
+    }
+  ],
+
+  "let" :
+  {
+    "QOOXDOO_PATH"      : "../../../qooxdoo/qooxdoo",
+    "UNIFY_PATH"        : "../../../qooxdoo/qooxdoo/../../unify",
+    "APP_PATH"          : ".",
+
+    "CACHE"             : "${TMPDIR}/qx${QOOXDOO_VERSION}/cache",
+
+    "APP_NAME"          : "kitchensink",
+    "APP_LOCALES"       : [ "en" ]
+  }
+}

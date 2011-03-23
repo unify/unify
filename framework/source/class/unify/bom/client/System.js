@@ -159,6 +159,10 @@ qx.Bootstrap.define("unify.bom.client.System",
           // device names
           if (/(iPad|iPhone|iPod)/.test(agent)) {
             name = "ios";
+            var match=/OS (\d+\.\d+)(?:(?:\.\d+)+)? like/.exec(agent);
+            if(match){
+              version=parseFloat(match[1],10);
+            }
           } else {
             // Fallback
             // Opera as of Version 10.01 has no information about the detailed

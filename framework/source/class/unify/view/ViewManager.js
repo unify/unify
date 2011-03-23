@@ -99,7 +99,8 @@ qx.Class.define("unify.view.ViewManager",
   events :
   {
     /** Fired whenever the view-local path was modified */
-    changePath : "qx.event.type.Data"
+    changePath : "qx.event.type.Data",
+    changeView : "qx.event.type.Event"
   },
   
   
@@ -120,17 +121,6 @@ qx.Class.define("unify.view.ViewManager",
       check : "unify.view.ViewManager",
       nullable : true
     },
-    
-    /** 
-     * Whether this view manager's view controller is displayed standalone e.g. 
-     * the master view manager is not visible at the moment 
-     */
-    standalone :
-    {
-      check : "Boolean",
-      init : false,
-      apply : "_applyStandalone"
-    },
 
     /**
      * how this view manager is displayed
@@ -143,7 +133,8 @@ qx.Class.define("unify.view.ViewManager",
     displayMode : {
       check : "String",
       init: "default",
-      apply: "_applyDisplayMode"
+      apply: "_applyDisplayMode",
+      event: "changeDisplayMode"
     }
   },
 
@@ -266,7 +257,7 @@ qx.Class.define("unify.view.ViewManager",
         this.__initialized = true;
 
         // But only reset here if there is no other path set already
-        if (!this.__path && this.getDisplayMode()=='default') {
+        if (!this.__path && this.getDisplayMode()!='modal') {
           this.__resetHelper();
         }
       }
@@ -330,24 +321,6 @@ qx.Class.define("unify.view.ViewManager",
       viewObj.resetParam();
       this.__setView(viewObj);
       this.fireDataEvent("changePath", this.__path);
-    },
-    
-    
-    /*
-    ---------------------------------------------------------------------------
-      MASTER MANAGMENT
-    ---------------------------------------------------------------------------
-    */
-        
-    // property apply
-    _applyStandalone : function(value, old)
-    {
-      var view = this.__currentView;
-      if (view) 
-      {
-        var master = this.getMaster();
-        value && master ? view.setMaster(master) : view.resetMaster();
-      }
     },
 
     _applyDisplayMode : function(value,old){
@@ -658,7 +631,7 @@ qx.Class.define("unify.view.ViewManager",
 
       // Check up-navigation request first
       var rel = elem.getAttribute("rel");
-      if (rel == "parent" || rel == "close") 
+      if (rel == "parent" || rel == "close")
       {
         if(this.__path.length == 1) {
           if(this.getDisplayMode()=='default'){
@@ -834,18 +807,11 @@ qx.Class.define("unify.view.ViewManager",
       if (oldView) 
       {
         oldView.resetActive();
-        oldView.resetMaster();
       }
       
       // Store current view
       this.__currentView = view;
-      
-      // Sync master to new view
-      if (this.getStandalone()) 
-      {
-        var master = this.getMaster();
-        master ? view.setMaster(master) : view.resetMaster();
-      }
+
 
       // Resuming the view
       view.setActive(true);
@@ -906,6 +872,7 @@ qx.Class.define("unify.view.ViewManager",
       if (view) {
         view.fireEvent("appear");
       }
+      this.fireEvent("changeView");
     },
 
 

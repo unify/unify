@@ -1,0 +1,34 @@
+{
+  "info" : 
+  {
+    "name" : "kitchensink",
+
+    "summary" : "Unify Application",
+    "description" : "Just another Unify application",
+    
+    "homepage" : "http://telekom.de/",
+
+    "license" : "Closed",
+    "authors" : 
+    [
+      {
+        "name" : "First Author (uid)",
+        "email" : "first.author@telekom.de"
+      }
+    ],
+
+    "version" : "trunk",
+    "qooxdoo-versions": ["1.4-pre-unify7"]
+  },
+  
+  "provides" : 
+  {
+    "namespace"   : "kitchensink",
+    "encoding"    : "utf-8",
+    "class"       : "source/class",
+    "resource"    : "source/resource",
+    "translation" : "source/translation",
+    "type"        : "application"
+  }
+}
+

@@ -16,37 +16,42 @@
  */
 qx.Class.define("unify.ui.NavigationBar",
 {
-  extend : unify.ui.Abstract,
-
-
-
+  extend : unify.ui.ToolBar,
+  
+  
+  
   /*
   *****************************************************************************
      CONSTRUCTOR
   *****************************************************************************
   */
-
+  
   /**
    * @param view {unify.view.Static} View controller to connect to
    */
   construct : function(view)
   {
     this.base(arguments);
-
+    
     if (!view || !(view instanceof unify.view.StaticView)) {
-      throw new Error("Invalid view! NavigationBar must be attached to a view!")
+      throw new Error("Invalid view! NavigationBar must be attached to a view!");
     }
     
     this.__view = view;
-
-    // Finally listen for any changes occour after creation of the titlebar
+    
+    // listen for any changes to occour after creation of the nav bar
     view.addListener("changeTitle", this.__onViewChangeTitle, this);
     view.addListener("changeParent", this.__onViewChangeParent, this);
-    view.addListener("changeMaster", this.__onViewChangeMaster, this);
+    var master=view.getManager().getMaster();
+    if(master){
+      master.addListener("changeView",this.__onViewChangeMaster,this);
+      master.addListener("changeDisplayMode",this.__onViewChangeMaster,this);
+    }
+
   },
-
-
-
+  
+  
+  
   /*
   *****************************************************************************
      PROPERTIES
@@ -56,6 +61,25 @@ qx.Class.define("unify.ui.NavigationBar",
   properties :
   {
     
+    /**
+     * custom bar items displayed on the left of the navigation bar
+     */
+    leftItems :
+    {
+      check : "Array",
+      nullable : true,
+      apply : "_applyLeftItems"
+    },
+    
+    /** 
+     * custom bar items displayed in the center of the navigation bar
+     */
+    centerItem :
+    {
+      check : "Object",
+      nullable : true,
+      apply : "_applyCenterItem"
+    },
     
     /** 
      * custom bar items displayed on the right of the navigation bar
@@ -66,16 +90,16 @@ qx.Class.define("unify.ui.NavigationBar",
       nullable : true,
       apply : "_applyRightItems"
     },
-
-    /**
-     * custom bar items displayed on the left of the navigation bar
+    
+    /*
+     * used to store the heading
      */
-    leftItems :
+    centerHeading :
     {
-      check : "Array",
-      nullable : true,
-      apply : "_applyLeftItems"
+      check : "String",
+      nullable : true
     }
+    
   },
   
   
@@ -88,6 +112,7 @@ qx.Class.define("unify.ui.NavigationBar",
     
   members :
   {
+    // overridden - also handles parent handling
     _createElement : function()
     {
       var doc = document;
@@ -98,10 +123,15 @@ qx.Class.define("unify.ui.NavigationBar",
       var leftElem = this.__leftElem = doc.createElement("div");
       leftElem.className = "left";
       elem.appendChild(leftElem);
-
+      
+      var centerElem = this.__centerElem = doc.createElement("div");
+      centerElem.className = "center";
+      // put title in center
       var titleElem = this.__titleElem = doc.createElement("h1");
+      centerElem.appendChild(titleElem);
+      
       titleElem.innerHTML = this.__view.getTitle();
-      elem.appendChild(titleElem);
+      elem.appendChild(centerElem);
       
       var rightElem = this.__rightElem = doc.createElement("div");
       rightElem.className = "right";
@@ -110,53 +140,11 @@ qx.Class.define("unify.ui.NavigationBar",
       this.__onViewChangeParent();
       this.__onViewChangeMaster();
       this._applyLeftItems(this.getLeftItems());
+      this._applyCenterItem(this.getCenterItem());
       this._applyRightItems(this.getRightItems());
-      return elem;      
+      return elem;
     },
-
-    __createItem : function(config)
-    {
-      var itemElem;
-      
-      if (config.rel || config.jump || config.exec || config.show)
-      {
-        itemElem = document.createElement("div");
-
-        if (config.rel) {
-          itemElem.setAttribute("rel", config.rel);
-        }
-
-        if (config.jump) {
-          itemElem.setAttribute("goto", config.jump);
-        } else if (config.exec) {
-          itemElem.setAttribute("exec", config.exec);
-        } else if (config.show) {
-          itemElem.setAttribute("show", config.show);
-        }
-      }
-      else
-      {
-        itemElem = document.createElement("div");
-      }
-      
-      // Add kind as CSS class
-      if (config.kind) {
-        qx.bom.element2.Class.add(itemElem, config.kind);
-      }
-
-      if (config.style) {
-        qx.bom.element2.Class.add(itemElem, config.style);
-      }
-      
-      if (config.label) {
-        itemElem.innerHTML = config.label;
-      } else if (config.icon) {
-        itemElem.innerHTML = "<div/>";
-      }      
-      
-      return itemElem;
-    },
-
+    
     _applyLeftItems: function(items) {
       var elem = this.__leftElem;
       if (elem) {
@@ -171,19 +159,33 @@ qx.Class.define("unify.ui.NavigationBar",
         }
         if (items) {
           for (var i = 0,ii = items.length; i < ii; i++) {
-            elem.appendChild(this.__createItem(items[i]));
+            elem.appendChild(this._createItemElement(items[i]));
           }
         }
       }
     },
-
+    
+    _applyCenterItem: function(item) {
+      var elem = this.__centerElem;
+      if (elem) {
+        // only fill center if this is a "segmented" item (otherwise heding is shown)
+        if (item && item.kind === 'segmented') {
+          this.setCenterHeading(elem.innerHTML);
+          elem.innerHTML = '';
+          elem.appendChild(this._createItemElement(item));
+        } else if(this.getCenterHeading() !== null) {
+          elem.innerHTML = this.getCenterHeading();
+        }
+      }
+    },
+    
     _applyRightItems: function(items) {
       var elem = this.__rightElem;
       if (elem) {
         elem.innerHTML = '';
         if (items) {
           for (var i = 0,ii = items.length; i < ii; i++) {
-            elem.appendChild(this.__createItem(items[i]));
+            elem.appendChild(this._createItemElement(items[i]));
           }
         }
       }
@@ -196,7 +198,7 @@ qx.Class.define("unify.ui.NavigationBar",
       EVENT LISTENER
     ---------------------------------------------------------------------------
     */
-
+    
     /**
      * Event listener for parent changes
      *
@@ -214,11 +216,16 @@ qx.Class.define("unify.ui.NavigationBar",
       }
       
       var parent = this.__view.getParent();
-      parentElem.innerHTML = parent ? parent.getTitle("parent") : "";
-      parentElem.style.display = parent ? "" : "none";
+      if(parent){
+        parentElem.innerHTML = parent.getTitle("parent");
+        parentElem.style.display = "";
+      } else {
+        parentElem.innerHTML =  "";
+        parentElem.style.display = "none";
+      }
     },
-
-
+    
+    
     /**
      * Event listener for master changes
      *
@@ -233,18 +240,19 @@ qx.Class.define("unify.ui.NavigationBar",
         masterElem.className = "button";
         this.__leftElem.appendChild(masterElem);
       }
-      var master = this.__view.getMaster();
-      if(master){
+      var master = this.__view.getManager().getMaster();
+      if(master && master.getDisplayMode()=='popover'){
         masterElem.setAttribute("show", master.getId());
         var currentMasterView=master.getCurrentView();
-        masterElem.innerHTML = currentMasterView?currentMasterView.getTitle("parent") : "";
+        masterElem.innerHTML = currentMasterView?currentMasterView.getTitle("parent") : "missing title";
         masterElem.style.display = "";
       } else {
+        masterElem.innerHTML ="";
         masterElem.style.display="none";
       }
     },
-
-
+    
+    
     /**
      * Event listner for <code>changeTitle</code> event of attached view.
      *
@@ -254,21 +262,25 @@ qx.Class.define("unify.ui.NavigationBar",
       this.__titleElem.innerHTML = this.__view.getTitle();
     }
   },
-
-
-
+  
+  
+  
   /*
   *****************************************************************************
      DESTRUCTOR
   *****************************************************************************
   */
-
+  
   destruct : function()
   {
-    this.__parentElem=this.__masterElem=this.__titleElem=this.__leftElem=this.__rightElem=null;
+    this.__parentElem = this.__masterElem = this.__centerElem = this.titleElem = this.__leftElem = this.__rightElem = null;
     var view = this.__view;
     view.removeListener("changeTitle", this.__onViewChangeTitle, this);
     view.removeListener("changeParent", this.__onViewChangeParent, this);
-    view.removeListener("changeMaster", this.__onViewChangeMaster, this);
+    var master=view.getManager().getMaster();
+    if(master){
+      master.removeListener("changeView",this.__onViewChangeMaster,this);
+      master.removeListener("changeDisplayMode",this.__onViewChangeMaster,this);
+    }
   }
 });

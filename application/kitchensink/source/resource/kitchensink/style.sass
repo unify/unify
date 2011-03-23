@@ -1,0 +1,60 @@
+@import ../../../../../../qooxdoo/qooxdoo/../../unify/framework/source/resource/unify/core.sass
+@import ../../../../../../qooxdoo/qooxdoo/../../unify/framework/source/resource/unify/animation.sass
+
+// we are using the silver color
+// there's a "black", "blue" and "silver" one
+// "blue" is default iPhone, there's no "silver" here usually
+// "silver" is default iPad, there's no "blue" here usually
+// "black" is the alternative color set on both iPhone and iPad
+$default-theme: "silver"
+// this loads the iOS base styles for various UI elements
+@import ../../../../../../qooxdoo/qooxdoo/../../unify/framework/source/resource/unify/iphoneos/style.sass
+
+
+
+
+#start,
+#uicomponents
+  // this is a layer with some default styling such as paddings
+  +padded-layer
+  // we also add the scrollview texture from the iPad
+  +scrollview-texture
+  
+  // contents (boxes) in here are stacked vertically
+  +vbox
+  
+  // styling the content area - white background
+  .content
+    background: white
+    
+    // assign navigation-list style to unordered lists in the .content container
+    > ul
+      +navigation-list
+      
+
+#sys-info
+  +vbox
+  +padded-layer
+  
+  .content > ul
+    +keyvalue-list
+
+// here we style the tab view elements - icons with an activity mask
+.tab-view
+  [view=start]
+    +tab-bar-button-icon("icons-32/28-star.png")
+    
+  [view=sys-info]
+    +tab-bar-button-icon("icons-32/104-index-cards.png")
+    
+  [goto=settings]
+    +tool-bar-button-icon("icons-22/gear.png")
+    
+  [goto=clock]
+    +tool-bar-button-icon("icons-22/clock.png")
+    
+  [goto=puzzle]
+    +tool-bar-button-icon("icons-22/puzzle.png")
+  
+  [exec=_hideSegment]
+    +tool-bar-button-icon("icons-22/gear.png")
