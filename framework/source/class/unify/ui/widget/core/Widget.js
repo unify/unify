@@ -367,16 +367,12 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       var disallowedStyles = [
         "border", // use borderLeft etc.
         "padding", // use paddingRight etc.
+        "margin", // use marginBottom etc.
         
         "fontSize",
         "fontWeight",
         "fontFamily",
         
-        "margin",
-        "marginLeft",
-        "marginTop",
-        "marginBottom",
-        "marginRight",
         "left",
         "top",
         "bottom",
@@ -394,7 +390,18 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         var key = keys[i];
 
         if (!qx.lang.Array.contains(disallowedStyles, key)) {
-          style[key] = map[key];
+          // Margin handling by LayoutItem
+          if (key == "marginLeft") {
+            this.setMarginLeft(parseInt(map[key], 10));
+          } else if (key == "marginTop") {
+            this.setMarginTop(parseInt(map[key], 10));
+          } else if (key == "marginRight") {
+            this.setMarginRight(parseInt(map[key], 10));
+          } else if (key == "marginBottom") {
+            this.setMarginBottom(parseInt(map[key], 10));
+          } else {
+            style[key] = map[key];
+          }
         } else {
           this.error("Widget style type " + key + " is not allowed");
         }
