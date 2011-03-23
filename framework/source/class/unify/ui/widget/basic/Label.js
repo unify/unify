@@ -19,6 +19,7 @@ qx.Class.define("unify.ui.widget.basic.Label", {
    * @param text {String} Text content to use 
    */
   construct : function(text) {
+    this.base(arguments);
     if (text) {
       this.setValue(text);
     }
@@ -76,11 +77,6 @@ qx.Class.define("unify.ui.widget.basic.Label", {
         contentSize = this.__contentSize = this.__computeContentSize();
       }
 
-      console.log("CONTENT SIZE: ",{
-        width : contentSize.width,
-        height : contentSize.height
-      });
-
       return {
         width : contentSize.width,
         height : contentSize.height
@@ -96,8 +92,7 @@ qx.Class.define("unify.ui.widget.basic.Label", {
     {
       var Label = qx.bom.Label;
 
-      var styles = this.getFont();
-      console.log("x", styles);
+      var styles = this.getFont().getStyles();
       var content = this.getValue() || "A";
 
       return Label.getTextSize(content, styles);
