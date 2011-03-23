@@ -423,7 +423,8 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     },
     
     getFont : function() {
-      return this.__font || qx.bom.Font.getDefaultStyles();
+      var font = this.__font;
+      return font ? font.getStyles() : qx.bom.Font.getDefaultStyles();
     },
 
     /**
