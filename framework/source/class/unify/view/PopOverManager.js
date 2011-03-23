@@ -202,7 +202,7 @@ qx.Class.define("unify.view.PopOverManager",
   */
     
   destruct : function() {
-    qx.event.Registration.removeListener(this.__pblocker,'tap',this.__tapBlocker,this);
+    qx.event.Registration.removeListener(this.__pblocker,'tap',this.__onTapBlocker,this);
     this.__root.removeChild(this.__pblocker);
     this.__root.removeChild(this.__mblocker);
     this.__root = this.__pblocker= this.__mblocker=this.__viewManager = null;

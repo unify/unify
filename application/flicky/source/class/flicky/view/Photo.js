@@ -74,6 +74,8 @@ qx.Class.define("flicky.view.Photo",
     {
       if(!data){
         this.__content.clear();
+        delete this.__title;
+        this.fireEvent("changeTitle");
         return;
       }
       var results = data.query.results;

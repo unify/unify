@@ -94,19 +94,7 @@ qx.Class.define("unify.view.StaticView",
       check : "unify.view.ViewManager",
       nullable : true
     },
-            
-    /** 
-     * Reference to master view manager 
-     * (This is automatically set up through the {@link ViewManager}) 
-     */
-    master : 
-    {
-      check : "unify.view.ViewManager",
-      nullable : true,
-      apply : "_applyMaster",
-      event : "changeMaster"
-    },
-    
+
     /** 
      * The parent of the view 
      * (This is automatically set up through the {@link ViewManager})  
@@ -294,9 +282,6 @@ qx.Class.define("unify.view.StaticView",
       if (this.getParent()) {
         Class.add(layerElem, "has-parent");
       }
-      if (this.getMaster()) {
-        Class.add(layerElem, "has-master");
-      }
 
       this.debug("Created in: " + ((new Date).valueOf() - now) + "ms");
 
@@ -405,23 +390,6 @@ qx.Class.define("unify.view.StaticView",
           Class.remove(layerElem, "has-parent");
         }
       }      
-    },
-    
-    
-    // property apply
-    _applyMaster : function(value, old) 
-    {
-      var layer = this.__layer;
-      if (layer && !!old != !!value) 
-      {
-        var Class = qx.bom.element2.Class;
-        var layerElem = layer.getElement();
-        if (value) {
-          Class.add(layerElem, "has-master");
-        } else {
-          Class.remove(layerElem, "has-master");
-        }
-      }
     },
     
     

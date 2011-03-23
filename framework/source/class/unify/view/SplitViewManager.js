@@ -92,16 +92,12 @@ qx.Class.define("unify.view.SplitViewManager",
           elem.insertBefore(masterElem, elem.firstChild);
           master.setDisplayMode('default');
           master.show();
-          detail.resetStandalone();
         }
       } else {
         if(oldOrient != "portrait"){
           this.debug("Switching to portrait layout");
-
           elem.setAttribute("orient", "portrait");
-          detail.setStandalone(true);
           master.setDisplayMode('popover');
-
         }
       }
     },
@@ -130,11 +126,9 @@ qx.Class.define("unify.view.SplitViewManager",
         if (isLandscape)
         {
           elem.insertBefore(master.getElement(), elem.firstChild);
-          detail.resetStandalone();
         } 
         else 
         {
-          detail.setStandalone(true);
           master.setDisplayMode('popover');
         }
         

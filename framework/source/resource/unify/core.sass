@@ -191,23 +191,6 @@ a[href], [rel], [goto], [exec]
   // when it has not the current class.
   &:not(.current)
     display: none !important
-
-  // The same logic applies here for visible buttons
-  &:not(.has-master)
-    [rel=master]
-      display: none !important
-
-  &:not(.has-parent)
-    [rel=parent]
-      display: none !important
-
-  &:not(.is-modal)
-    [rel=close]
-      display: none !important
-      
-  &.is-modal
-    [rel=parent]
-      display: none !important
   
 
 
