@@ -24,6 +24,8 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     if (layout) {
       this._setLayout(layout);
     }
+    
+    this._applyAppearance(this.getAppearance());
   },
   
   properties : {
@@ -51,8 +53,11 @@ qx.Class.define("unify.ui.widget.core.Widget", {
   
   members: {
     _applyAppearance : function(value) {
-      this.debug("Get styles for key " + value);
-      this.setStyle(unify.ui.widget.styling.StyleManager.getInstance().getTheme().getStyles(value));
+      if (value) {
+        this.debug("Get styles for key " + value);
+        console.log(this, unify.ui.widget.styling.StyleManager.getInstance().getTheme().getStyles(value));
+        this.setStyle(unify.ui.widget.styling.StyleManager.getInstance().getTheme().getStyles(value));
+      }
     },
   
     __layoutManager : null,
@@ -99,11 +104,17 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         if (this.hasLayoutChildren()) {
           var hint = layout.getSizeHint();
           
-          if (qx.core.Variant.isSet("qx.debug", "on")) {
+          if (!hint) {
+            return {
+              width: 0,
+              height: 0
+            };
+          }
+          /*if (qx.core.Variant.isSet("qx.debug", "on")) {
             var msg = "The layout " + layout.toString() + " of the widget " + this.toString() + " returned an invalid size hint!";
             this.assetInteger(hint.width, "Wrong width value. " + msg);
             this.assetInteger(hint.height, "Wrong height value. " + msg);
-          }
+          }*/
           
           return hint;
         } else {
@@ -119,9 +130,92 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         };
       }
     },
+    
+    // overridden
+    _computeSizeHint : function()
+    {
+      // Start with the user defined values
+      var width = this.getWidth();
+      var minWidth = this.getMinWidth();
+      var maxWidth = this.getMaxWidth();
+
+      var height = this.getHeight();
+      var minHeight = this.getMinHeight();
+      var maxHeight = this.getMaxHeight();
+
+      if (qx.core.Variant.isSet("qx.debug", "on"))
+      {
+        if (minWidth !== null && maxWidth !== null) {
+          this.assert(minWidth <= maxWidth, "minWidth is larger than maxWidth!");
+        }
+        if (minHeight !== null && maxHeight !== null) {
+          this.assert(minHeight <= maxHeight, "minHeight is larger than maxHeight!");
+        }
+      }
+
+      // Ask content
+      var contentHint = this._getContentHint();
+
+      var insetX = this.__widthInset;
+      var insetY = this.__heightInset;
+
+      if (width == null) {
+        width = contentHint.width + insetX;
+      }
+
+      if (height == null) {
+        height = contentHint.height + insetY;
+      }
+
+      if (minWidth == null)
+      {
+        minWidth = insetX;
+
+        if (contentHint.minWidth != null) {
+          minWidth += contentHint.minWidth;
+        }
+      }
+
+      if (minHeight == null)
+      {
+        minHeight = insetY;
+
+        if (contentHint.minHeight != null) {
+          minHeight += contentHint.minHeight;
+        }
+      }
+
+      if (maxWidth == null)
+      {
+        if (contentHint.maxWidth == null) {
+          maxWidth = Infinity;
+        } else {
+          maxWidth = contentHint.maxWidth + insetX;
+        }
+      }
+
+      if (maxHeight == null)
+      {
+        if (contentHint.maxHeight == null) {
+          maxHeight = Infinity;
+        } else {
+          maxHeight = contentHint.maxHeight + insetY;
+        }
+      }
+
+
+      // Build size hint and return
+      return {
+        width : width,
+        minWidth : minWidth,
+        maxWidth : maxWidth,
+        height : height,
+        minHeight : minHeight,
+        maxHeight : maxHeight
+      };
+    },
 
     checkAppearanceNeeds : function() {
-    
     },
     
     renderLayout : function(left, top, width, height) {
@@ -159,6 +253,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      * Renders all children of this widget
      */
     renderChildren : function() {
+      this.debug("Render children");
       var children = this._getChildren();
       if (children) {
         var fragment = document.createDocumentFragment();
@@ -260,6 +355,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
 
 
     __style : null,
+    __font : null,
     __widthInset : 0,
     __heightInset : 0,
 
@@ -268,10 +364,13 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      * @param map {Map} Map of styles/values to apply
      */
     setStyle : function(map) {
-      console.log("SET STYLE", map);
       var disallowedStyles = [
         "border", // use borderLeft etc.
         "padding", // use paddingRight etc.
+        
+        "fontSize",
+        "fontWeight",
+        "fontFamily",
         
         "margin",
         "marginLeft",
@@ -301,18 +400,30 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         }
       }
 
-      var left   = (parseInt(style["borderLeft"], 10)   || 0) + (parseInt(style["paddingLeft"], 10)   || 0);
-      var top    = (parseInt(style["borderTop"], 10)    || 0) + (parseInt(style["paddingTop"], 10)    || 0);
-      var right  = (parseInt(style["borderRight"], 10)  || 0) + (parseInt(style["paddingRight"], 10)  || 0);
-      var bottom = (parseInt(style["borderBottom"], 10) || 0) + (parseInt(style["paddingBottom"], 10) || 0);
+      var left   = (parseInt(style.borderLeft, 10)   || 0) + (parseInt(style.paddingLeft, 10)   || 0);
+      var top    = (parseInt(style.borderTop, 10)    || 0) + (parseInt(style.paddingTop, 10)    || 0);
+      var right  = (parseInt(style.borderRight, 10)  || 0) + (parseInt(style.paddingRight, 10)  || 0);
+      var bottom = (parseInt(style.borderBottom, 10) || 0) + (parseInt(style.paddingBottom, 10) || 0);
 
+      var font = style.font;
+      if (font) {
+        font = qx.bom.Font.fromString(font);
+        delete style.font;
+        qx.lang.Object.merge(style, font.getStyles());
+        qx.ui.core.queue.Layout.add(this);
+      }
+      
       this.__style = style;
       this.__widthInset = left + right;
       this.__heightInset =  top + bottom;
 
       if (this._hasElement()) {
-        qx.bom.element2.Style.set(this.getElement(), map);
+        qx.bom.element2.Style.set(this.getElement(), style);
       }
+    },
+    
+    getFont : function() {
+      return this.__font || qx.bom.Font.getDefaultStyles();
     },
 
     /**
