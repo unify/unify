@@ -25,7 +25,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       this._setLayout(layout);
     }
     
-    this._applyAppearance(this.getAppearance());
+    //this._applyAppearance(this.getAppearance());
   },
   
   properties : {
@@ -53,11 +53,11 @@ qx.Class.define("unify.ui.widget.core.Widget", {
   
   members: {
     _applyAppearance : function(value) {
-      if (value) {
+      /*if (value) {
         this.debug("Get styles for key " + value);
         console.log(this, unify.ui.widget.styling.StyleManager.getInstance().getTheme().getStyles(value));
         this.setStyle(unify.ui.widget.styling.StyleManager.getInstance().getTheme().getStyles(value));
-      }
+      }*/
     },
   
     __layoutManager : null,
