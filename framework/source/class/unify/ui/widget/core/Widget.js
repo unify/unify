@@ -407,7 +407,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
 
       var font = style.font;
       if (font) {
-        font = qx.bom.Font.fromString(font);
+        this.__font = font = qx.bom.Font.fromString(font);
         delete style.font;
         qx.lang.Object.merge(style, font.getStyles());
         qx.ui.core.queue.Layout.add(this);
