@@ -92,7 +92,7 @@ qx.Class.define("unify.ui.widget.basic.Label", {
     {
       var Label = qx.bom.Label;
 
-      var styles = this.getFont().getStyles();
+      var styles = this.getFont();
       var content = this.getValue() || "A";
 
       return Label.getTextSize(content, styles);
