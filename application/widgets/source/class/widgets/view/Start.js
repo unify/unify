@@ -62,18 +62,34 @@ qx.Class.define("widgets.view.Start", {
       scroller.set({
         height: 300
       });
-
+      
       var label = new unify.ui.widget.basic.Label("Das ist ein Test");
-      scroller.add(label, {
-        left: 50,
-        top: 10
-      });
       label.set({
-        width: 100,
+        width: 800,
         height: 50
       });
-
-      return layer;
+      label.setStyle({
+        background: 'white'
+      });
+      scroller.add(label, {
+        left: 0,
+        top: 0
+      });
+      
+      var content1 = new unify.ui.widget.basic.Content();
+      content1.set({
+        width: 800,
+        height: 400
+      });
+      content1.setStyle({
+        background: 'yellow'
+      });
+      scroller.add(content1, {
+        left: 0,
+        top: 50
+      });
+      
+      return layerWidget;
     }
   }
 });
