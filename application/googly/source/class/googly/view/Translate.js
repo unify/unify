@@ -99,14 +99,14 @@ qx.Class.define("googly.view.Translate",
       inputText.set({
         allowGrowY: true
       });
-      inputText.setHeight(150);
+      //inputText.setHeight(150);
       inputText.setStyle(inputStyles);
       
       var resultText = this.__resultText = new unify.ui.widget.form.Input();
       resultText.set({
         allowGrowY: true
       });
-      resultText.setHeight(150);
+      //resultText.setHeight(150);
       resultText.setStyle(inputStyles);
       
       var button = new unify.ui.widget.form.Button("Translate");
@@ -136,9 +136,13 @@ qx.Class.define("googly.view.Translate",
       button.setExecute("refresh");
       qx.bom.element2.Class.add(button.getElement(), "button");
       
-      layerWidget.add(inputText);
+      layerWidget.add(inputText, {
+        flex: 1
+      });
       layerWidget.add(button);
-      layerWidget.add(resultText);
+      layerWidget.add(resultText, {
+        flex: 1
+      });
 
       return layer;
     },
