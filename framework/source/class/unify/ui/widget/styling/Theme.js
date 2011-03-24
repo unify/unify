@@ -21,24 +21,9 @@ qx.Class.define("unify.ui.widget.styling.Theme", {
     __style : null,
     
     getStyles : function(key) {
-      var args = key.split(".");
-      
       var styles = this.__style;
-      var widgetStyle = {};
-      
-      for (var i=0,ii=args.length; styles && (i<ii); i++) {
-        var arg = args[i];
-        styles = styles[arg];
-        if (!styles) {
-          break;
-        }
-        
-        qx.lang.Object.merge(widgetStyle, styles, true);
-        styles = styles.children;
-      }
-      
-      delete widgetStyle.children;
-      
+      var widgetStyle = styles[key];
+
       return widgetStyle;
     }
   },

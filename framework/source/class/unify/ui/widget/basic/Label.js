@@ -19,6 +19,7 @@ qx.Class.define("unify.ui.widget.basic.Label", {
    * @param text {String} Text content to use 
    */
   construct : function(text) {
+    this.base(arguments);
     if (text) {
       this.setValue(text);
     }
@@ -60,9 +61,41 @@ qx.Class.define("unify.ui.widget.basic.Label", {
   },
   
   members : {
+    __contentSize : null,
+  
     // overridden
     _createElement : function() {
       return qx.bom.Label.create(this.getValue(), this.getHtml());
+    },
+    
+    // overridden
+    _getContentHint : function()
+    {
+      var contentSize = this.__contentSize;
+      if (!contentSize)
+      {
+        contentSize = this.__contentSize = this.__computeContentSize();
+      }
+
+      return {
+        width : contentSize.width,
+        height : contentSize.height
+      };
+    },
+    
+    /**
+     * Internal utility to compute the content dimensions.
+     *
+     * @return {Map} Content size
+     */
+    __computeContentSize : function()
+    {
+      var Label = qx.bom.Label;
+
+      var styles = this.getFont();
+      var content = this.getValue() || "A";
+
+      return Label.getTextSize(content, styles);
     },
     
     /**
@@ -70,6 +103,7 @@ qx.Class.define("unify.ui.widget.basic.Label", {
      * @param value {String} New value to set
      */
     _applyValue : function(value) {
+      this.__contentSize = null;
       qx.bom.Label.setValue(this.getElement(), value);
     }
   }

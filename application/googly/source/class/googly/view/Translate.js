@@ -44,13 +44,13 @@ qx.Class.define("googly.view.Translate",
     // overridden
     _getServiceParams : function() 
     {
-      var field = document.getElementById("inputText");
+      var field = this.__inputText;
       if (!field) {
         return;
       }
       
       return {
-        text : field.value,
+        text : field.getValue(),
         source : "de",
         target : "en"
       };
@@ -60,8 +60,8 @@ qx.Class.define("googly.view.Translate",
     // overridden
     _hasServiceRequestParams : function()
     {
-      var field = document.getElementById("inputText");
-      return field && field.value.length > 0;
+      var field = this.__inputText;
+      return field && field.getValue().length > 0;
     },
     
     
@@ -69,31 +69,69 @@ qx.Class.define("googly.view.Translate",
     _createView : function() 
     {
       var layer = new unify.ui.Layer(this);
-      /*var toolbar = new unify.ui.NavigationBar(this);
-      layer.add(toolbar);
-      
-      var content = new unify.ui.Content;
-      content.add("<textarea rows='3' cols='60' id='inputText'/>");
-      content.add("<div class='button' exec='refresh'>Translate</div>");
-      content.add("<textarea rows='3' cols='60' id='resultText'/>");
-      layer.add(content);*/
       
       var layerWidget = new unify.ui.widget.core.Layer(layer);
+      layerWidget.set({
+        allowGrowY: true
+      });
       var navigationBar = new unify.ui.widget.container.NavigationBar(this);
       layerWidget.add(navigationBar);
       
-      var inputText = this.__inputText = new unify.ui.widget.basic.Content();
-      inputText.setHeight(150);
-      inputText.getElement().innerHTML = "<textarea rows='3' cols='60' id='inputText'/>";
+      var inputStyles = {
+        font: "20px",
+        paddingLeft: "10px",
+        paddingTop: "10px",
+        paddingRight: "10px",
+        paddingBottom: "10px",
+        borderRadius: "4px",
+        borderLeft: "1px solid #3A3A3A",
+        borderTop: "1px solid #3A3A3A",
+        borderRight: "1px solid #3A3A3A",
+        borderBottom: "1px solid #888",
+        marginTop: "8px",
+        marginBottom: "8px",
+        marginLeft: "10px",
+        marginRight: "10px",
+        backgroundColor: "#e8e8e8"
+      };
       
-      var resultText = this.__resultText = new unify.ui.widget.basic.Content();
+      var inputText = this.__inputText = new unify.ui.widget.form.Input();
+      inputText.set({
+        allowGrowY: true
+      });
+      inputText.setHeight(150);
+      inputText.setStyle(inputStyles);
+      
+      var resultText = this.__resultText = new unify.ui.widget.form.Input();
+      resultText.set({
+        allowGrowY: true
+      });
       resultText.setHeight(150);
-      resultText.getElement().innerHTML = "<textarea rows='3' cols='60' id='resultText'/>";
+      resultText.setStyle(inputStyles);
       
       var button = new unify.ui.widget.form.Button("Translate");
+      button.setStyle({
+        font: "20px bold",
+        color: "white",
+        backgroundImage: "-webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, rgba(255, 255, 255, 0.61)), color-stop(5%, rgba(255, 255, 255, 0.45)), color-stop(50%, rgba(255, 255, 255, 0.27)), color-stop(50%, rgba(255, 255, 255, 0.2)), color-stop(100%, rgba(255, 255, 255, 0)))",
+        borderLeft: "3px solid #3A3A3A",
+        borderTop: "3px solid #3A3A3A",
+        borderRight: "3px solid #3A3A3A",
+        borderBottom: "3px solid #3A3A3A",
+        backgroundColor: "#242424",
+        borderRadius: "12px",
+        textAlign: "center",
+        marginLeft: "10px",
+        marginRight: "10px",
+        paddingLeft: "10px",
+        paddingTop: "10px",
+        paddingRigth: "10px",
+        paddingBottom: "10px"
+      });
       button.set({
-        width: 100,
-        height: 30
+        width: 500,
+        height: 54,
+        allowGrowX: true
       });
       button.setExecute("refresh");
       qx.bom.element2.Class.add(button.getElement(), "button");
@@ -110,13 +148,13 @@ qx.Class.define("googly.view.Translate",
     _renderData : function(data)
     {
       if(!data){
-        document.getElementById("resultText").value='';
-          return;
+        this.__resultText.setValue("");
+        return;
       }
       var results = data.query.results;
       var translation = results ? results.translatedText : "";
       
-      document.getElementById("resultText").value = translation;
+      this.__resultText.setValue(translation);
     }    
   }
 });
