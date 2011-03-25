@@ -118,8 +118,7 @@ qx.Class.define("unify.view.SplitViewManager",
         var elem = this.__element = document.createElement("div");
         elem.className = "split-view";
         elem.setAttribute("orient", isLandscape ? "landscape" : "portrait");
-        
-        var PopOverManager = unify.view.PopOverManager.getInstance();
+
         var master = this.__masterViewManager;
         var detail = this.__detailViewManager;
         

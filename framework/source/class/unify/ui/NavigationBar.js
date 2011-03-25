@@ -136,7 +136,7 @@ qx.Class.define("unify.ui.NavigationBar",
       var rightElem = this.__rightElem = doc.createElement("div");
       rightElem.className = "right";
       elem.appendChild(rightElem);
-      
+
       this.__onViewChangeParent();
       this.__onViewChangeMaster();
       this._applyLeftItems(this.getLeftItems());
@@ -168,7 +168,7 @@ qx.Class.define("unify.ui.NavigationBar",
     _applyCenterItem: function(item) {
       var elem = this.__centerElem;
       if (elem) {
-        // only fill center if this is a "segmented" item (otherwise heding is shown)
+        // only fill center if this is a "segmented" item (otherwise heading is shown)
         if (item && item.kind === 'segmented') {
           this.setCenterHeading(elem.innerHTML);
           elem.innerHTML = '';
@@ -209,23 +209,22 @@ qx.Class.define("unify.ui.NavigationBar",
       var parentElem = this.__parentElem;
       if (!parentElem) 
       {
-        parentElem = this.__parentElem = document.createElement("div");
-        parentElem.setAttribute("rel", "parent");
-        parentElem.className = "button";
-        this.__leftElem.appendChild(parentElem);
+        parentElem = this.__parentElem = this._createItemElement({rel:"parent",kind:"button"});
       }
       
       var parent = this.__view.getParent();
       if(parent){
-        parentElem.innerHTML = parent.getTitle("parent");
+        this._setItemLabel(parentElem,parent.getTitle("parent"));
         parentElem.style.display = "";
       } else {
-        parentElem.innerHTML =  "";
+        this._setItemLabel(parentElem,"");
         parentElem.style.display = "none";
       }
     },
-    
-    
+
+    _setItemLabel : function(itemElem,text){
+        itemElem.innerHTML=text;
+    },
     /**
      * Event listener for master changes
      *
@@ -236,18 +235,16 @@ qx.Class.define("unify.ui.NavigationBar",
       var masterElem = this.__masterElem;
       if (!masterElem)
       {
-        masterElem = this.__masterElem = document.createElement("div");
-        masterElem.className = "button";
-        this.__leftElem.appendChild(masterElem);
+        masterElem = this.__masterElem =this._createItemElement({rel:"master",kind:"button"});
       }
       var master = this.__view.getManager().getMaster();
       if(master && master.getDisplayMode()=='popover'){
         masterElem.setAttribute("show", master.getId());
         var currentMasterView=master.getCurrentView();
-        masterElem.innerHTML = currentMasterView?currentMasterView.getTitle("parent") : "missing title";
+        this._setItemLabel(masterElem,currentMasterView?currentMasterView.getTitle("parent") : "missing title");
         masterElem.style.display = "";
       } else {
-        masterElem.innerHTML ="";
+        this._setItemLabel(masterElem,"");
         masterElem.style.display="none";
       }
     },
