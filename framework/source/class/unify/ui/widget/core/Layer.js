@@ -24,13 +24,14 @@ qx.Class.define("unify.ui.widget.core.Layer", {
   /**
    * @param layer {unify.view.StaticView} Base view for widget system
    */
-  construct : function(layer) {
+  construct : function(view) {
     this.base(arguments);
     
     this._setLayout(new qx.ui.layout.VBox());
     
-    var view = this.__view = layer.getView();
-    this.__layer = layer;
+    var layer = this.__layer = new unify.ui.Layer(view);
+    this.__view = layer.getView();
+
     var elem = this.__elem = layer.getContentElement();
     
     qx.bom.element2.Style.set(elem, "boxSizing", "border-box")
@@ -42,6 +43,10 @@ qx.Class.define("unify.ui.widget.core.Layer", {
   members: {
     __elem : null,
     __layer : null,
+    
+    getUILayer: function() {
+      return this.__layer;
+    },
     
     // overridden
     isRootWidget : function() {
