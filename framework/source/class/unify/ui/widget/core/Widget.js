@@ -48,6 +48,13 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     appearance : {
       init : null,
       apply : "_applyAppearance"
+    },
+    
+    /**
+     * Parent's inset to apply to child
+     */
+    parentInset : {
+      init : null
     }
   },
   
@@ -221,6 +228,11 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     renderLayout : function(left, top, width, height) {
       this.base(arguments, left, top, width, height);
       
+      var parentInset = this.getParentInset();
+      if(parentInset) {
+        left += parentInset[0];
+        top += parentInset[1];
+      }
       qx.bom.element2.Style.set(this.getElement(), {
         left: left + "px",
         top: top + "px",
@@ -231,6 +243,13 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       if (this._hasChildren()) {
         var innerWidth = width - this.__widthInset;
         var innerHeight = height - this.__heightInset;
+
+        var children = this._getChildren();
+        if (children) {
+          for (var i=0,ii=children.length; i<ii; i++) {
+            children[i].setParentInset([this.__leftInset, this.__topInset]);
+          }
+        }
 
         if (this.__layoutManager && this.hasLayoutChildren()) {
           this.__layoutManager.renderLayout(innerWidth, innerHeight);
@@ -358,6 +377,8 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     __font : null,
     __widthInset : 0,
     __heightInset : 0,
+    __leftInset : 0,
+    __topInset : 0,
 
     /**
      * Set styles to the element
@@ -423,6 +444,8 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       this.__style = style;
       this.__widthInset = left + right;
       this.__heightInset =  top + bottom;
+      this.__leftInset = left;
+      this.__topInset = top;
 
       if (this._hasElement()) {
         qx.bom.element2.Style.set(this.getElement(), style);
