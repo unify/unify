@@ -12,21 +12,29 @@
  * Generic composite container widget
  */
 qx.Class.define("unify.ui.widget.container.Scroll", {
-  extend : unify.ui.widget.core.Widget,
+  extend : unify.ui.widget.container.Composite,
   
-  include : [
-    qx.ui.core.MChildrenHandling
-  ],
-
-  construct : function() {
-    this.base(arguments, new qx.ui.layout.Basic());
+  construct : function(layout) {
+    this.base(arguments, layout || new qx.ui.layout.Basic());
   },
 
   members: {
     __scrollView : null,
+    
+    __enableScrollX : null,
+    __enableScrollY : null,
   
     _createElement : function() {
       var scrollView = this.__scrollView = new unify.ui.ScrollView();
+      var enableScrollX = this.__enableScrollX;
+      var enableScrollY = this.__enableScrollY;
+      
+      if (enableScrollX != null) {
+        scrollView.setEnableScrollX(enableScrollX);
+      }
+      if (enableScrollY != null) {
+        scrollView.setEnableScrollY(enableScrollY);
+      }
       return scrollView.getElement();
     },
 
@@ -44,6 +52,24 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
       }
 
       return contentElement;
+    },
+    
+    setEnableScrollX : function(value) {
+      var scrollView = this.__scrollView;
+      
+      if (scrollView) {
+        scrollView.setEnableScrollX(value);
+      }
+      this.__enableScrollX = value;
+    },
+    
+    setEnableScrollY : function(value) {
+      var scrollView = this.__scrollView;
+      
+      if (scrollView) {
+        scrollView.setEnableScrollY(value);
+      }
+      this.__enableScrollY = value;
     }
   },
   
