@@ -58,6 +58,32 @@ qx.Class.define("unify.Application",
       this.info("Build Time: " + new Date(qx.$$build));
 
       // Configure document
+      var Style = qx.bom.element2.Style;
+      // <body>
+      Style.set(document.body, {
+        WebkitUserSelect : "none",
+        WebkitTextSizeAdjust : "none",
+        WebkitPerspective : "800",
+        WebkitTransformStyle : "preserve-3d",
+        width : "100%",
+        height : "100%",
+        overflow : "hidden",
+        border : 0,
+        padding : 0,
+        boxSizing : "borderBox",
+        fontFamily : "Helvetica,sans-serif",
+        fontSize: "14px",
+        lineHeight : "1.4",
+        color : "black",
+        background : "white"
+      });
+      // <html>
+      Style.set(document.body.parentNode, {
+        width : "100%",
+        height : "100%",
+        overflow : "hidden",
+        padding : 0
+      });
       this.__setupDocumentSize();
 
       // Event listeners
