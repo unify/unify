@@ -23,6 +23,11 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
     
     __enableScrollX : null,
     __enableScrollY : null,
+
+    renderLayout : function(left, top, width, height) {
+      this.base(arguments, left, top, width, height);
+      this.__scrollView.reflow();
+    },
   
     _createElement : function() {
       var scrollView = this.__scrollView = new unify.ui.ScrollView();
