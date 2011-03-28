@@ -94,19 +94,19 @@ a[href], [rel], [goto], [exec]
   position: relative
   background: black
   
-  > div
+  > .view-manager
     height: 100%
     +box-flex(1)
     position: relative
     overflow: hidden
     
   &[orient=portrait]
-    > div
+    > .view-manager
       &:first-child
         width: 100%
 
   &[orient=landscape]
-    > div 
+    > .view-manager
       &:first-child
         width: 30%
         border-right: 1px solid black
