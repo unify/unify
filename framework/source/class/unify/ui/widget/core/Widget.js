@@ -437,6 +437,14 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      * @param map {Map} Map of styles/values to apply
      */
     setStyle : function(map) {
+      this._setStyle(map);
+    },
+
+    /**
+     * Set styles to the element
+     * @param map {Map} Map of styles/values to apply
+     */
+    _setStyle : function(map) {
       var disallowedStyles = [
         "border", // use borderLeft etc.
         "padding", // use paddingRight etc.
@@ -515,6 +523,15 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      * @param computed {Boolean?false} Value should be computed
      */
     getStyle : function(name, computed) {
+      return this._getStyle(name, computed);
+    },
+
+    /**
+     * Get style of element
+     * @param name {String} Style name to return
+     * @param computed {Boolean?false} Value should be computed
+     */
+    _getStyle : function(name, computed) {
       var style = this.__style;
       var value = (style && style[name]);
       
