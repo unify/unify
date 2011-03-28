@@ -102,10 +102,6 @@ qx.Class.define("unify.ui.ScrollView",
     }
   },
 
-  events :
-  {
-    scroll : "qx.event.type.Event" 
-  },
 
   /*
   *****************************************************************************
@@ -642,9 +638,13 @@ qx.Class.define("unify.ui.ScrollView",
     reflow : function()
     {
       var elem = this.getElement();
-
+      var contentElem = this.__contentElem;
       this.__clientWidth = elem.clientWidth;
       this.__clientHeight = elem.clientHeight;
+      this.__contentWidth = Math.max(this.__clientWidth, contentElem.offsetWidth);
+      this.__contentHeight = Math.max(this.__clientHeight, contentElem.offsetHeight);
+      this.__minScrollLeft = this.__clientWidth - this.__contentWidth;
+      this.__minScrollTop = this.__clientHeight - this.__contentHeight;
 
       this.__snapIntoBounds(false);
     },
