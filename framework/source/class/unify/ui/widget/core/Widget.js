@@ -48,10 +48,69 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     appearance : {
       init : null,
       apply : "_applyAppearance"
+    },
+    
+    /**
+     * Parent's inset to apply to child
+     */
+    parentInset : {
+      init : null
+    },
+    
+    navigation : {
+      apply : "_applyNavigation",
+      init : null
+    }
+  },
+  
+  statics : {
+    /**
+     * Returns the widget, which contains the given DOM element.
+     *
+     * @param element {Element} The DOM element to search the widget for.
+     * @param considerAnonymousState {Boolean?false} If true, anonymous widget
+     *   will not be returned.
+     * @return {qx.ui.core.Widget} The widget containing the element.
+     */
+    getByElement : function(element, considerAnonymousState) {
+      while(element) {
+        var widgetKey = element.$$widget;
+
+        // dereference "weak" reference to the widget.
+        if (widgetKey != null) {
+          var widget = qx.core.ObjectRegistry.fromHashCode(widgetKey);
+          // check for anonymous widgets
+          if (!considerAnonymousState || !widget.getAnonymous()) {
+            return widget;
+          }
+        }
+
+        // Fix for FF, which occasionally breaks (BUG#3525)
+        try {
+          element = element.parentNode;
+        } catch (e) {
+          return null;
+        }
+      }
+      return null;
     }
   },
   
   members: {
+     _applyNavigation : function(value) {
+      if (value && this._hasElement()) {
+        this.__applyNavigation(this.getElement(), value);
+      }
+    },
+    
+    __applyNavigation : function(element, map) {
+      for (var key in map) {
+        var value = map[key];
+        element.setAttribute(key, value);
+      }
+    },
+    
+    
     _applyAppearance : function(value) {
       /*if (value) {
         this.debug("Get styles for key " + value);
@@ -221,6 +280,11 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     renderLayout : function(left, top, width, height) {
       this.base(arguments, left, top, width, height);
       
+      var parentInset = this.getParentInset();
+      if(parentInset) {
+        left += parentInset[0];
+        top += parentInset[1];
+      }
       qx.bom.element2.Style.set(this.getElement(), {
         left: left + "px",
         top: top + "px",
@@ -231,6 +295,13 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       if (this._hasChildren()) {
         var innerWidth = width - this.__widthInset;
         var innerHeight = height - this.__heightInset;
+
+        var children = this._getChildren();
+        if (children) {
+          for (var i=0,ii=children.length; i<ii; i++) {
+            children[i].setParentInset([this.__leftInset, this.__topInset]);
+          }
+        }
 
         if (this.__layoutManager && this.hasLayoutChildren()) {
           this.__layoutManager.renderLayout(innerWidth, innerHeight);
@@ -358,12 +429,22 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     __font : null,
     __widthInset : 0,
     __heightInset : 0,
+    __leftInset : 0,
+    __topInset : 0,
 
     /**
      * Set styles to the element
      * @param map {Map} Map of styles/values to apply
      */
     setStyle : function(map) {
+      this._setStyle(map);
+    },
+
+    /**
+     * Set styles to the element
+     * @param map {Map} Map of styles/values to apply
+     */
+    _setStyle : function(map) {
       var disallowedStyles = [
         "border", // use borderLeft etc.
         "padding", // use paddingRight etc.
@@ -423,6 +504,8 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       this.__style = style;
       this.__widthInset = left + right;
       this.__heightInset =  top + bottom;
+      this.__leftInset = left;
+      this.__topInset = top;
 
       if (this._hasElement()) {
         qx.bom.element2.Style.set(this.getElement(), style);
@@ -440,6 +523,15 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      * @param computed {Boolean?false} Value should be computed
      */
     getStyle : function(name, computed) {
+      return this._getStyle(name, computed);
+    },
+
+    /**
+     * Get style of element
+     * @param name {String} Style name to return
+     * @param computed {Boolean?false} Value should be computed
+     */
+    _getStyle : function(name, computed) {
       var style = this.__style;
       var value = (style && style[name]);
       
@@ -471,7 +563,9 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       var element = this.__element;
       if (!element) {
         this.__element = element = this._createElement();
-
+        
+        element.$$widget = this.toHashCode();
+        
         qx.bom.element2.Style.set(element, {
           position: "absolute"
         });
@@ -479,6 +573,11 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         var style = this.__style;
         if (style) {
           qx.bom.element2.Style.set(element, style);
+        }
+        
+        var navigation = this.getNavigation();
+        if (navigation) {
+          this.__applyNavigation(element, navigation);
         }
       }
       return element;
@@ -507,6 +606,28 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      */
     _getChildren : function() {
       return this.__widgetChildren;
+    },
+    
+    /**
+     * Recursively adds all children to the given queue
+     *
+     * @param queue {Map} The queue to add widgets to
+     */
+    addChildrenToQueue : function(queue)
+    {
+      var children = this.__widgetChildren;
+      if (!children) {
+        return;
+      }
+
+      var child;
+      for (var i=0, l=children.length; i<l; i++)
+      {
+        child = children[i];
+        queue[child.$$hash] = child;
+
+        child.addChildrenToQueue(queue);
+      }
     },
     
     /**
@@ -770,6 +891,12 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       if (parent && parent != this) {
         parent._remove(child);
       }
+      
+      if (this._hasElement()) {
+        var element = child.getElement();
+        child.renderChildren();
+        this.getContentElement().appendChild(element);
+      }
 
       // Remember parent
       child.setLayoutParent(this);
@@ -807,6 +934,9 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       if (child.getLayoutParent() !== this) {
         throw new Error("Remove Error: " + child + " is not a child of this widget!");
       }
+
+      var element = child.getElement();
+      this.getContentElement().removeChild(element);
 
       // Clear parent connection
       child.setLayoutParent(null);
