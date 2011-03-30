@@ -521,7 +521,10 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       if (font) {
         this.__font = font = qx.bom.Font.fromString(font);
         delete style.font;
-        qx.lang.Object.merge(style, font.getStyles());
+        var fontStyle = font.getStyles();
+        fontStyle.color = fontStyle.textColor;
+        delete fontStyle.textColor;
+        style = qx.lang.Object.merge(fontStyle, style);
         qx.ui.core.queue.Layout.add(this);
       }
       
