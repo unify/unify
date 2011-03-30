@@ -1,6 +1,10 @@
 qx.Class.define("unify.ui.widget.form.Button", {
   extend: unify.ui.widget.basic.Label,
 
+  events : {
+    "execute" : "qx.event.type.Event"
+  },
+
   properties: {
     execute: {
       init: null,
@@ -36,6 +40,8 @@ qx.Class.define("unify.ui.widget.form.Button", {
   members: {
     getElement : function() {
       var element = this.base(arguments);
+      
+      qx.event.Registration.addListener(element, "tap", this.__onTap, this);
       
       var exec = this.getExecute();
       if (exec) {
@@ -73,6 +79,11 @@ qx.Class.define("unify.ui.widget.form.Button", {
           this.getContentElement().removeAttribute("exec");
         }
       }
+    },
+    
+    __onTap : function(e) {
+      e.stop();
+      this.fireEvent("execute");
     },
     
     _applyHyperreference : function(value) {
