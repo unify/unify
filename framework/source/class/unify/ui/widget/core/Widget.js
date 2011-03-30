@@ -14,6 +14,7 @@
  */
 qx.Class.define("unify.ui.widget.core.Widget", {
   extend : qx.ui.core.LayoutItem,
+  include : [qx.locale.MTranslation],
   
   /**
    * @param layout {qx.ui.layout.Abstract} Layout of widget
@@ -445,6 +446,46 @@ qx.Class.define("unify.ui.widget.core.Widget", {
 
       qx.ui.core.queue.Layout.add(this);
     },
+
+
+
+
+
+
+
+    /*
+    ---------------------------------------------------------------------------
+      FOCUS SYSTEM USER ACCESS
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Focus this widget.
+     *
+     * @return {void}
+     */
+    focus : function()
+    {
+      this.getContentElement().focus();
+    },
+
+
+    /**
+     * Remove focus from this widget.
+     *
+     * @return {void}
+     */
+    blur : function()
+    {
+      this.getContentElement().blur();
+    },
+    
+    
+    
+
+
+
+
 
 
 
