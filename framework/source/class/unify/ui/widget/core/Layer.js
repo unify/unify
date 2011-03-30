@@ -37,7 +37,6 @@ qx.Class.define("unify.ui.widget.core.Layer", {
     qx.bom.element2.Style.set(elem, "boxSizing", "border-box")
     
     view.addListener("appear", this.__viewAppear, this);
-    view.addListener("disappear", this.__viewDisappear, this);
   },
   
   members: {
@@ -75,11 +74,6 @@ qx.Class.define("unify.ui.widget.core.Layer", {
       };
       
       return ret;
-    },
-   
-    /** Handler for disappearance of layer */
-    __viewDisappear : function() {
-      this.setVisibility("hidden");
     }
   },
   
