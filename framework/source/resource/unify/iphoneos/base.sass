@@ -62,7 +62,8 @@
     +hbox
     font-size: 17px
     
-    > *
+    > label,
+    > span
       display: block
       
     > label
@@ -96,7 +97,10 @@
     font-weight: bold
     font-size: 17px
     
-    > *
+    > img,
+    > label,
+    > em,
+    > hr
       display: block
       
     > label
@@ -308,13 +312,11 @@ body
   +hbox
   position: relative
   white-space: nowrap
-  
-  > *
-    height: 42px
-    
+
   > .left,
   > .center,
   > .right
+    height: 42px
     overflow: hidden
     width: 33%
     +box-flex(1)
@@ -461,10 +463,10 @@ body
   height: 100%
   top: 0px
   left: 0px
-  
+
 .view-manager.display-mode-modal
   display: none
-  
+
   &[orient=landscape]
     left: 5%
     width: 90%
