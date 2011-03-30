@@ -31,6 +31,8 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
     var scrollIndicatorX = this.__horizontalScrollIndicator = new unify.ui.widget.container.scroll.Indicator("horizontal");
     var scrollIndicatorY = this.__verticalScrollIndicator = new unify.ui.widget.container.scroll.Indicator("vertical");
 
+    var distance = unify.ui.widget.container.scroll.Indicator.DISTANCE;
+
     this._add(contentWidget, {
       left :0,
       top: 0,
@@ -41,12 +43,12 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
     this._add(scrollIndicatorX, {
       left: 0,
       right: 0,
-      bottom: 0
+      bottom: distance
     });
     scrollIndicatorY.setWidth(3);
     this._add(scrollIndicatorY, {
       top: 0,
-      right: 0,
+      right: distance,
       bottom: 0
     });
 
