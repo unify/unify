@@ -2,7 +2,7 @@
 #asset(unify/*)
 */
 qx.Class.define("unify.ui.widget.container.NavigationBar", {
-  extend: unify.ui.widget.container.Composite,
+  extend: unify.ui.widget.container.ToolBar,
   
   construct : function(view) {
     this.base(arguments, new unify.ui.widget.layout.NavigationBar());
@@ -31,9 +31,15 @@ qx.Class.define("unify.ui.widget.container.NavigationBar", {
     // Finally listen for any changes occour after creation of the titlebar
     view.addListener("changeTitle", this.__onViewChangeTitle, this);
     view.addListener("changeParent", this.__onViewChangeParent, this);
-    view.addListener("changeMaster", this.__onViewChangeMaster, this);
+    var master=view.getManager().getMaster();
+    if(master){
+      master.addListener("changeView",this.__onViewChangeMaster,this);
+      master.addListener("changeDisplayMode",this.__onViewChangeMaster,this);
+    }
     
     this.__onViewChangeTitle();
+    this.__onViewChangeParent();
+    this.__onViewChangeMaster();
   },
   
   properties : {
@@ -71,22 +77,26 @@ qx.Class.define("unify.ui.widget.container.NavigationBar", {
      */
     __onViewChangeParent : function(e)
     {
-      var parent = this.__view.getParent();
-      
-      var parentButton = this.__parentButton;
-      if (parent && !parentButton) {
-        parentButton = this.__parentButton = new unify.ui.widget.form.Button();
-        parentButton.setRelation("parent");
-        this._addAt(parentButton, 0, {
+      var parentElem = this.__parentElem;
+      if (!parentElem) 
+      {
+        parentElem = this.__parentElem = this._createItemElement({rel:"parent",kind:"button"});
+        parentElem.setStyle(unify.ui.widget.styling.StaticTheme.navigationBarButtonParent);
+        parentElem.setHeight(28);
+        parentElem.setAllowGrowY(false);
+        parentElem.setAllowShrinkY(false);
+        this._add(parentElem, {
           position: "left"
         });
       }
       
-      if (parent) {
-        parentButton.setValue(parent.getTitle("parent"));
-        parentButton.setVisibility("visible");
-      } else if (parentButton) {
-        parentButton.setVisibility("excluded");
+      var parent = this.__view.getParent();
+      if(parent){
+        parentElem.setValue(parent.getTitle("parent"));
+        parentElem.setVisibility("visible");
+      } else {
+        parentElem.setVisibility("excluded");
+        parentElem.setValue("");
       }
     },
 
@@ -98,24 +108,30 @@ qx.Class.define("unify.ui.widget.container.NavigationBar", {
      */
     __onViewChangeMaster : function(e)
     {
-      var master = this.__view.getMaster();
-      var masterButton = this.__masterButton;
-      
-      if (!masterButton && masterButton) {
-        masterButton = this.__masterButton = new unify.ui.widget.form.Button();
-        masterButton.setRelation("parent");
-        this._addAt(masterButton, 0, {
+      var masterElem = this.__masterElem;
+      if (!masterElem)
+      {
+        masterElem = this.__masterElem =this._createItemElement({rel:"master",kind:"button"});
+        masterElem.setHeight(28);
+        masterElem.setAllowGrowY(false);
+        masterElem.setAllowShrinkY(false);
+        masterElem.setStyle(unify.ui.widget.styling.StaticTheme.navigationBarButtonParent);
+        this._add(masterElem, {
           position: "left"
         });
       }
+      var master = this.__view.getManager().getMaster();
       
-      if (master) {
-        masterButton.setShow(master.getId());
+      if(master && master.getDisplayMode()=='popover'){
+        masterElem.setNavigation({
+          show: master.getId()
+        });
         var currentMasterView=master.getCurrentView();
-        masterButton.setValue(currentMasterView?currentMasterView.getTitle("parent") : "");
-        masterButton.setVisibility("visible");
-      } else if (masterButton) {
-        masterButton.setVisibility("excluded");
+        masterElem.setValue(currentMasterView?currentMasterView.getTitle("parent") : "missing title");
+        masterElem.setVisibility("visible");
+      } else {
+        masterElem.setVisibility("excluded");
+        masterElem.setValue("");
       }
     },
 
