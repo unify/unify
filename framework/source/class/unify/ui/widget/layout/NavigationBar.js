@@ -2,7 +2,7 @@ qx.Class.define("unify.ui.widget.layout.NavigationBar", {
   extend : qx.ui.layout.Abstract,
   
   statics : {
-    SPACER : 6,
+    SPACER : 6
   },
   
   members : {
@@ -38,13 +38,9 @@ qx.Class.define("unify.ui.widget.layout.NavigationBar", {
       
       var availTitleWidth = rightx - leftx;
       hint = title.getSizeHint();
-      var titleTop = Math.floor((availHeight / 2) - (hint.height / 2));
-      if (hint.width > availTitleWidth) {
-        title.renderLayout(leftx, titleTop, availTitleWidth, hint.height);
-      } else {
-        leftx = Math.floor((availTitleWidth / 2) - (hint.width / 2));
-        title.renderLayout(leftx, titleTop, hint.width, hint.height);
-      }
+      var titleTop = Math.floor(availHeight / 2 - hint.height / 2);
+      var titleLeft = Math.floor(availWidth / 2 - hint.width / 2);
+      title.renderLayout(titleLeft, titleTop, hint.width, hint.height);
     },
     
     __rebuildCache : function() {
