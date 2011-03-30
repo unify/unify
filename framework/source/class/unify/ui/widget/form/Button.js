@@ -82,7 +82,6 @@ qx.Class.define("unify.ui.widget.form.Button", {
     },
     
     __onTap : function(e) {
-      e.stop();
       this.fireEvent("execute");
     },
     
