@@ -2,8 +2,8 @@ qx.Class.define("unify.ui.widget.styling.StaticTheme", {
   type : "static",
 
   statics : {
-    navigationBarButton : {
-      
+    layer : {
+      background : "#eee"
     },
 
     navigationBarButtonParent : {
