@@ -42,6 +42,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     visibility : {
       check : ["visible", "hidden", "excluded"],
       init : "visible",
+      apply : "_applyVisibility",
       event : "changeVisibility"
     },
     
@@ -97,7 +98,30 @@ qx.Class.define("unify.ui.widget.core.Widget", {
   },
   
   members: {
-     _applyNavigation : function(value) {
+    // property apply
+    _applyVisibility : function(value, old)
+    {
+      var container = this.getElement();
+      var Style = qx.bom.element2.Style;
+      
+
+      if (value === "visible") {
+        Style.set(container, "display", "block"); // TODO: Block right? or simply null?
+      } else {
+        Style.set(container, "display", "none");
+      }
+
+      // only force a layout update if visibility change from/to "exclude"
+      var parent = this.$$parent;
+      if (parent && (old == null || value == null || old === "excluded" || value === "excluded")) {
+        parent.invalidateLayoutChildren();
+      }
+
+      // Update visibility cache
+      qx.ui.core.queue.Visibility.add(this);
+    },
+    
+    _applyNavigation : function(value) {
       if (value && this._hasElement()) {
         this.__applyNavigation(this.getElement(), value);
       }
