@@ -137,6 +137,9 @@ qx.Class.define("unify.view.PopOverManager",
           throw new Error("Unknown view manager: " + id);
         }
       }
+      if (this.__visibleViewManagers.indexOf(viewManager) >-1) {
+        return;//already visible
+      }
       
       this.debug("Show: " + id);
       
@@ -182,18 +185,21 @@ qx.Class.define("unify.view.PopOverManager",
       }
 
       var elem=viewManager.getElement();
-      if(viewManager.getDisplayMode()=='popover'){
+      var mode=viewManager.getDisplayMode();
+      if(mode=='popover'){
         this.__root.removeChild(elem.parentNode);
       }
-
-      elem.style.zIndex='';
-      viewManager.hide();
-      qx.lang.Array.remove(this.__visibleViewManagers, viewManager);
-      this.__sortPopOvers();
+      var self=this;
+      var hideCallback=function(){
+        elem.style.zIndex='';
+        elem.style.display='none';
+        qx.lang.Array.remove(self.__visibleViewManagers, viewManager);
+        self.__sortPopOvers();
+      };
+      viewManager.hide(hideCallback);
     }
   },
-  
-  
+
   
   /*
   *****************************************************************************
