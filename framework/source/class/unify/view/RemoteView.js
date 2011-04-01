@@ -180,7 +180,7 @@ qx.Class.define("unify.view.RemoteView",
       if (e.isErrornous()) {
         this._errorHandler("communication", e.getRequest().getStatusCode());
       } else if (e.isMalformed()) {
-        this._errorHandler("data");
+        this._errorHandler("data",e.getData());
       } else if (e.isModified()) {
 
         var business = this._getBusinessObject();

@@ -69,7 +69,10 @@ qx.Bootstrap.define("unify.bom.client.System",
     WEBOS : false,
 
     /** {Boolean} Whether the device runs Nokia Maemo */
-    MAEMO : false
+    MAEMO : false,
+
+    /** {Boolean} Whether the device runs BlackBerry Tablet OS */
+    RIM_TABLET_OS : false
   },
 
 
@@ -83,7 +86,7 @@ qx.Bootstrap.define("unify.bom.client.System",
 
   defer : function(statics)
   {
-    var Platform = qx.bom.client.Platform;
+    var Platform = unify.bom.client.Platform; //qx.bom.client.Platform;
     var agent = navigator.userAgent.replace(/_/g, ".");
     var match, title, version, name;
 
@@ -217,9 +220,18 @@ qx.Bootstrap.define("unify.bom.client.System",
         name = "unix";
       }
     }
+    else if (Platform.QNX) {
+      if (agent.indexOf("RIM Tablet OS") != -1) {
+        name = "rim tablet os";
+        match = /RIM Tablet OS ([\.0-9]+)/.exec(agent);
+        if (match) {
+          version = parseFloat(match[1]);
+        }
+      }
+    }
 
     statics.NAME = name;
-    statics[name.toUpperCase()] = true;
+    statics[name.toUpperCase().replace(/\s/g, "_")] = true;
     statics.VERSION = version == null ? 0.0 : version;
     statics.TITLE = title || (name + " " + version);
     statics.UNKNOWN = false;
