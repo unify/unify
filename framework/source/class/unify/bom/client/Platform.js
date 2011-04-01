@@ -37,6 +37,9 @@ qx.Bootstrap.define("unify.bom.client.Platform",
     /** {Boolean} Flag to detect if the client system is running Unix, Linux, BSD, Symbian, etc */
     UNIX : false,
 
+    /** {Boolean} Flag to detect if the client system is running Unix, Linux, BSD, Symbian, etc */
+    QNX : false,
+
     /** {Boolean} Flag to detect if the client system is unknown */
     UNKNOWN : true
   },
@@ -52,7 +55,8 @@ qx.Bootstrap.define("unify.bom.client.Platform",
 
   defer : function(statics)
   {
-    var input = navigator.platform || navigator.userAgent;
+    var userAgent = navigator.userAgent;
+    var input = navigator.platform || userAgent;
     var name;
 
     if (/Windows|Win32|Win64/.exec(input)) {
@@ -61,6 +65,8 @@ qx.Bootstrap.define("unify.bom.client.Platform",
       name = "mac";
     } else if (/X11|Linux|BSD|Sun OS|Maemo|Android|SymbianOS|webOS/.exec(input)) {
       name = "unix";
+    } else if (/RIM Tablet OS/.exec(userAgent)) {
+      name = "qnx";
     }
 
     if (name)

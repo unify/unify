@@ -508,15 +508,18 @@ qx.Class.define("unify.view.ViewManager",
       VISIBILITY HANDLING
     ---------------------------------------------------------------------------
     */
-    
+
     /**
      * Hides the view manager and pauses active view
+     *
+     * @param callback {Function} optional callback to execute after hidianimationng is done
      */
-    hide : function()
+    hide : function(callback)
     {
       var elem = this.__element;
-      if (elem) {
-        elem.style.display = "none";
+
+      if (!elem) {
+        return;//nothing to hide
       }
 
       var view = this.__currentView;
@@ -528,11 +531,17 @@ qx.Class.define("unify.view.ViewManager",
         this.__path=null;
         this.__currentView=null;
         this.fireDataEvent("changePath", this.__path);
+        var pos=this.__positions;
+        this.__animateModal(view.getElement(),pos.center,pos.bottom,false,callback);
+      } else {
+        elem.style.display='none';
+        if(callback){
+          callback();
+        }
       }
-
     },
-    
-    
+
+
     /**
      * Shows the view manager and resumes selected view
      */
@@ -540,16 +549,22 @@ qx.Class.define("unify.view.ViewManager",
     {
       var mode=this.getDisplayMode();
       var elem = this.getElement();
-      elem.style.display = mode=='default'?"":"block";
-      
+
       // Be sure that we show a view (if possible)
       this.init();
-      
+
       // Re-activate view (normally only useful if it was paused before)
       var view = this.__currentView;
       this.debug("Show with: " + view);
       if (view) {
         view.setActive(true);
+      }
+
+      if(mode=='modal'){
+        var pos=this.__positions;
+        this.__animateModal(view.getElement(),pos.bottom,pos.center,true);
+      } else {
+         elem.style.display = mode=='default'?"":"block";
       }
     },
 
@@ -831,27 +846,13 @@ qx.Class.define("unify.view.ViewManager",
 
       if (transition == "in")
       {
-        if (view.isModal())
-        {
-          this.__animateLayer(currentViewElement, positions.bottom, positions.center, true, oldViewElement);
-        }
-        else
-        {
-          this.__animateLayer(currentViewElement, positions.right, positions.center, true);
-          this.__animateLayer(oldViewElement, positions.center, positions.left, false);
-        }
+        this.__animateLayer(currentViewElement, positions.right, positions.center, true);
+        this.__animateLayer(oldViewElement, positions.center, positions.left, false);
       }
       else if (transition == "out")
       {
-        if (oldView.isModal())
-        {
-          this.__animateLayer(oldViewElement, positions.center, positions.bottom, false, currentViewElement);
-        }
-        else
-        {
-          this.__animateLayer(currentViewElement, positions.left, positions.center, true);
-          this.__animateLayer(oldViewElement, positions.center, positions.right, false);
-        }
+        this.__animateLayer(currentViewElement, positions.left, positions.center, true);
+        this.__animateLayer(oldViewElement, positions.center, positions.right, false);
       }
       else
       {
@@ -916,15 +917,13 @@ qx.Class.define("unify.view.ViewManager",
         }
 
         // Revert modifications
-        targetStyle.zIndex = "";
         targetStyle[transformProperty] = "";
       };
 
       // React on transition end
       qx.event.Registration.addListener(target, "transitionEnd", cleanup, this);
 
-      // Move to top, disable transition and hard switch to initial value
-      targetStyle.zIndex = 1000;
+      //disable transition and hard switch to initial value
       targetStyle[durationProperty] = "0ms";
       targetStyle[transformProperty] = from;
 
@@ -946,6 +945,67 @@ qx.Class.define("unify.view.ViewManager",
       // Enable transition and slide to target value
       targetStyle[durationProperty] = "";
       targetStyle[transformProperty] = to;
-    }
+    },
+
+    /**
+     * Animates a layer property in display-mode modal
+     *
+     * //TODO show animation sometimes has an ugly flick. Investigate further and fix it
+     *
+     * @param target {Element} DOM element of layer
+     * @param from {var} Start value
+     * @param to {var} End value
+     * @param current {Boolean?false} Whether this layer is the current layer (read: new layer)
+     * @param callback {Function} optional callback to execute after animation
+     */
+    __animateModal: function(target,from,to,current,callback){
+      var targetStyle = target.style;
+      var managerStyle=this.__element.style;
+      // Normalize cross-browser differences
+      var transformProperty = qx.bom.element2.Style.property("transform");
+      var durationProperty = qx.bom.element2.Style.property("transitionDuration");
+
+      // Method to cleanup after transition
+      var cleanup = function()
+      {
+        if(!current){
+          qx.bom.element2.Class.remove(target, "current");
+        }
+        // Remove listener
+        qx.event.Registration.removeListener(target, "transitionEnd", cleanup, this);
+
+        // Disable transition again
+        targetStyle[durationProperty] = "0ms";
+
+        // Revert modifications
+        targetStyle[transformProperty] = "";
+
+        if(callback){
+          callback();
+        }
+
+      };
+
+      // React on transition end
+      qx.event.Registration.addListener(target, "transitionEnd", cleanup, this);
+
+      // disable transition and hard switch to initial value
+      targetStyle[durationProperty] = "0ms";
+      targetStyle[transformProperty] = from;
+
+      if(current){
+        managerStyle.display='block';
+      }
+      // Force rendering
+      target.offsetWidth + target.offsetHeight;
+
+      // Enable transition and slide to target value
+      targetStyle[durationProperty] = "";
+      targetStyle[transformProperty] = to;
+
+      if(current){
+        qx.bom.element2.Class.add(target, "current");
+      }
+   }
   }
 });

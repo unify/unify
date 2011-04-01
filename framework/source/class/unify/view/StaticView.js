@@ -140,22 +140,6 @@ qx.Class.define("unify.view.StaticView",
       nullable : true,
       apply : "_applySegment",
       event : "changeSegment"
-    },
-    
-    
-    
-    /*
-    ---------------------------------------------------------------------------
-      PUBLIC PROPERTIES
-    ---------------------------------------------------------------------------
-    */
-        
-    /** Whether the view should be display modal */
-    modal : 
-    {
-      check : "Boolean",
-      init : false,
-      apply : "_applyModal"
     }
   },
 
@@ -276,9 +260,7 @@ qx.Class.define("unify.view.StaticView",
       // Configure CSS classes
       var layerElem = layer.getElement();
       var Class = qx.bom.element2.Class;
-      if (this.getModal()) {
-        Class.add(layerElem, "is-modal");
-      }
+
       if (this.getParent()) {
         Class.add(layerElem, "has-parent");
       }
@@ -358,22 +340,7 @@ qx.Class.define("unify.view.StaticView",
       PROPERTY APPLY
     ---------------------------------------------------------------------------
     */
-    
-    // property apply
-    _applyModal : function(value, old)
-    {
-      var layer = this.__layer;
-      if (layer && !!old != !!value) 
-      {
-        var Class = qx.bom.element2.Class;
-        var layerElem = layer.getElement();
-        if (value) {
-          Class.add(layerElem, "is-modal");
-        } else {
-          Class.remove(layerElem, "is-modal");
-        }
-      }      
-    },
+
     
     
     // property apply
