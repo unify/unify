@@ -302,7 +302,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     checkAppearanceNeeds : function() {
     },
     
-    renderLayout : function(left, top, width, height) {
+    renderLayout : function(left, top, width, height, preventSize) {
       this.base(arguments, left, top, width, height);
       
       var parentInset = this.getParentInset();
@@ -310,12 +310,14 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         left += parentInset[0];
         top += parentInset[1];
       }
-      qx.bom.element2.Style.set(this.getElement(), {
-        left: left + "px",
-        top: top + "px",
-        width: width + "px",
-        height: height + "px"
-      });
+      if (!preventSize) {
+        qx.bom.element2.Style.set(this.getElement(), {
+          left: left + "px",
+          top: top + "px",
+          width: width + "px",
+          height: height + "px"
+        });
+      }
 
       if (this._hasChildren()) {
         var innerWidth = width - this.__widthInset;
