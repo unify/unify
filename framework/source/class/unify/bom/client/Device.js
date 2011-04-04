@@ -60,11 +60,19 @@ qx.Bootstrap.define("unify.bom.client.Device",
     {
       var agent = navigator.userAgent;
 
+      if (agent.match(/RIM Tablet OS/i)) {
+        category = "tablet";
+      }
+
       // Mozilla Fennec, Opera Mobile
       // or Webkit-based clients which have a Mobile/ or Bolt/ string in them
       // Bolt is a server-side rendering client based on Webkit
-      if (agent.match(/Fennec|Opera Mobi/i) || (agent.match(/AppleWebKit\/5/i) && agent.match(/Mobile\b/i) && !agent.match(/Bolt\//i))) {
+      else if (agent.match(/Fennec|Opera Mobi/i) || (agent.match(/AppleWebKit\/5/i) && agent.match(/Mobile\b/i) && !agent.match(/Bolt\//i))) {
         category = "mobile";
+
+        if (navigator.platform == "iPad") {
+          category = "tablet";
+        }
       }
 
       // Not so powerful mobile devices with basic or thin client browsers
@@ -72,10 +80,6 @@ qx.Bootstrap.define("unify.bom.client.Device",
       else if (agent.match(/IEMobile|Mobile|BlackBerry|Netfront|Bolt|Mini|Palm|Windows CE|CLDC|MIDP/i)) {
         category = "basic";
       }
-    }
-
-    if (category == "mobile" && navigator.platform == "iPad") {
-      category = "tablet";
     }
 
     statics[category.toUpperCase()] = true;
