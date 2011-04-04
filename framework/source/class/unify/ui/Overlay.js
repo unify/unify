@@ -174,11 +174,11 @@ qx.Class.define("unify.ui.Overlay",
       if (this.__out)
       {
         elem.style.display = "none";
-        this.fireEvent("fadeIn");
+        this.fireEvent("fadeOut");
       }
       else if (this.__in)
       {
-        this.fireEvent("fadeOut");
+        this.fireEvent("fadeIn");
       }
 
       this.__in = this.__out = null;

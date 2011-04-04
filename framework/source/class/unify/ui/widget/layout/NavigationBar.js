@@ -1,6 +1,10 @@
 qx.Class.define("unify.ui.widget.layout.NavigationBar", {
   extend : qx.ui.layout.Abstract,
   
+  statics : {
+    SPACER : 6
+  },
+  
   members : {
     renderLayout : function(availWidth, availHeight) {
       if (this._invalidChildrenCache) {
@@ -11,33 +15,32 @@ qx.Class.define("unify.ui.widget.layout.NavigationBar", {
       var right = this.__right;
       var title = this.__title;
       
-      var i,ii,e,hint,leftx=0,rightx=availWidth;
+      var SPACER = this.self(arguments).SPACER;
+      var i,ii,e,hint,leftx=SPACER,rightx=availWidth-SPACER,top;
       
       for (i=0,ii=left.length;i<ii;i++) {
         e = left[i];
         hint = e.getSizeHint();
-        
-        e.renderLayout(leftx, 0, hint.width, availHeight);
-        leftx += hint.width;
+
+        top = availHeight / 2 - hint.height / 2;
+        e.renderLayout(leftx, top, hint.width, hint.height);
+        leftx += hint.width + SPACER;
       }
       
       for (i=right.length-1;i>=0;i--) {
         e = right[i];
         hint = e.getSizeHint();
         
-        rightx -= hint.width;
-        e.renderLayout(rightx, 0, hint.width, availHeight);
+        rightx -= hint.width + SPACER;
+        top = availHeight / 2 - hint.height / 2;
+        e.renderLayout(rightx, top, hint.width, hint.height);
       }
       
       var availTitleWidth = rightx - leftx;
       hint = title.getSizeHint();
-      var titleTop = Math.floor((availHeight / 2) - (hint.height / 2));
-      if (hint.width > availTitleWidth) {
-        title.renderLayout(leftx, titleTop, availTitleWidth, hint.height);
-      } else {
-        leftx = Math.floor((availTitleWidth / 2) - (hint.width / 2));
-        title.renderLayout(leftx, titleTop, hint.width, hint.height);
-      }
+      var titleTop = Math.floor(availHeight / 2 - hint.height / 2);
+      var titleLeft = Math.floor(availWidth / 2 - hint.width / 2);
+      title.renderLayout(titleLeft, titleTop, hint.width, hint.height);
     },
     
     __rebuildCache : function() {

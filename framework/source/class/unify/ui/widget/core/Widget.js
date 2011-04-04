@@ -14,6 +14,7 @@
  */
 qx.Class.define("unify.ui.widget.core.Widget", {
   extend : qx.ui.core.LayoutItem,
+  include : [qx.locale.MTranslation],
   
   /**
    * @param layout {qx.ui.layout.Abstract} Layout of widget
@@ -42,6 +43,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     visibility : {
       check : ["visible", "hidden", "excluded"],
       init : "visible",
+      apply : "_applyVisibility",
       event : "changeVisibility"
     },
     
@@ -97,7 +99,30 @@ qx.Class.define("unify.ui.widget.core.Widget", {
   },
   
   members: {
-     _applyNavigation : function(value) {
+    // property apply
+    _applyVisibility : function(value, old)
+    {
+      var container = this.getElement();
+      var Style = qx.bom.element2.Style;
+      
+
+      if (value === "visible") {
+        Style.set(container, "display", "block"); // TODO: Block right? or simply null?
+      } else {
+        Style.set(container, "display", "none");
+      }
+
+      // only force a layout update if visibility change from/to "exclude"
+      var parent = this.$$parent;
+      if (parent && (old == null || value == null || old === "excluded" || value === "excluded")) {
+        parent.invalidateLayoutChildren();
+      }
+
+      // Update visibility cache
+      qx.ui.core.queue.Visibility.add(this);
+    },
+    
+    _applyNavigation : function(value) {
       if (value && this._hasElement()) {
         this.__applyNavigation(this.getElement(), value);
       }
@@ -277,7 +302,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     checkAppearanceNeeds : function() {
     },
     
-    renderLayout : function(left, top, width, height) {
+    renderLayout : function(left, top, width, height, preventSize) {
       this.base(arguments, left, top, width, height);
       
       var parentInset = this.getParentInset();
@@ -285,12 +310,14 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         left += parentInset[0];
         top += parentInset[1];
       }
-      qx.bom.element2.Style.set(this.getElement(), {
-        left: left + "px",
-        top: top + "px",
-        width: width + "px",
-        height: height + "px"
-      });
+      if (!preventSize) {
+        qx.bom.element2.Style.set(this.getElement(), {
+          left: left + "px",
+          top: top + "px",
+          width: width + "px",
+          height: height + "px"
+        });
+      }
 
       if (this._hasChildren()) {
         var innerWidth = width - this.__widthInset;
@@ -425,6 +452,46 @@ qx.Class.define("unify.ui.widget.core.Widget", {
 
 
 
+
+
+
+    /*
+    ---------------------------------------------------------------------------
+      FOCUS SYSTEM USER ACCESS
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Focus this widget.
+     *
+     * @return {void}
+     */
+    focus : function()
+    {
+      this.getContentElement().focus();
+    },
+
+
+    /**
+     * Remove focus from this widget.
+     *
+     * @return {void}
+     */
+    blur : function()
+    {
+      this.getContentElement().blur();
+    },
+    
+    
+    
+
+
+
+
+
+
+
+
     __style : null,
     __font : null,
     __widthInset : 0,
@@ -497,7 +564,10 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       if (font) {
         this.__font = font = qx.bom.Font.fromString(font);
         delete style.font;
-        qx.lang.Object.merge(style, font.getStyles());
+        var fontStyle = font.getStyles();
+        fontStyle.color = fontStyle.textColor;
+        delete fontStyle.textColor;
+        style = qx.lang.Object.merge(fontStyle, style);
         qx.ui.core.queue.Layout.add(this);
       }
       
