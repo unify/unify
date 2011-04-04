@@ -33,6 +33,7 @@ qx.Class.define("unify.view.RemoteView",
 
     // Connect business object
     this._getBusinessObject().addListener("completed", this.__onBusinessObjectCompleted, this);
+    this.__activityIndicator=unify.ui.ActivityIndicator.getInstance();
   },
 
 
@@ -54,13 +55,15 @@ qx.Class.define("unify.view.RemoteView",
     /** {Integer} ID of request. Used to identify requests in completed events */
     __requestId : null,
 
-
+    /** {Object} Activity Indicator. Used to signal running requests*/
+    __activityIndicator: null,
 
     /*
     ---------------------------------------------------------------------------
       PUBLIC API
     ---------------------------------------------------------------------------
     */
+
 
     /**
      * Reloads the data of the view
@@ -69,7 +72,7 @@ qx.Class.define("unify.view.RemoteView",
     {
       this.__requestId = this._getBusinessObject().get(this._getServiceName(), this._getServiceParams());
       if (this.__requestId !== false) {
-        unify.ui.ActivityIndicator.getInstance().show();
+        this.__activityIndicator.show();
       }
     },
 
@@ -81,6 +84,21 @@ qx.Class.define("unify.view.RemoteView",
     ---------------------------------------------------------------------------
     */
 
+    /**
+     * sets a different activity indicator.
+     *
+     * @param indicator
+     */
+    _setActivityIndicator: function(indicator){
+      this.__activityIndicator=indicator;
+    },
+
+    /**
+     * get the activity indicator used by this view
+     */
+    getActivityIndicator: function(){
+      return this.__activityIndicator;
+    },
 
     /**
      * Whether the view has all required parameters to send a request to
@@ -132,7 +150,7 @@ qx.Class.define("unify.view.RemoteView",
         else
         {
           delete this.__requestId;
-          unify.ui.ActivityIndicator.getInstance().hide();
+          this.__activityIndicator.hide();
           this.__appliedVersion = cachedEntry.created;
           this._wrappedRenderData(cachedEntry.data);
         }
@@ -175,7 +193,7 @@ qx.Class.define("unify.view.RemoteView",
       }
 
       delete this.__requestId;
-      unify.ui.ActivityIndicator.getInstance().hide();
+      this.__activityIndicator.hide();
 
       if (e.isErrornous()) {
         this._errorHandler("communication", e.getRequest().getStatusCode());

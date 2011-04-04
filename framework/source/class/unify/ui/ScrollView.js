@@ -645,8 +645,49 @@ qx.Class.define("unify.ui.ScrollView",
       this.__contentHeight = Math.max(this.__clientHeight, contentElem.offsetHeight);
       this.__minScrollLeft = this.__clientWidth - this.__contentWidth;
       this.__minScrollTop = this.__clientHeight - this.__contentHeight;
-
+      if(this.__isDecelerating){
+        this.__isDecelerating=false;//stop it
+        // Directly hide scroll indicators
+        this.__horizontalScrollIndicator.setVisible(false);
+        this.__verticalScrollIndicator.setVisible(false);
+      }
       this.__snapIntoBounds(false);
+    },
+
+    /**
+     * Returns the cached client width
+     *
+     * @return {Integer} cached client width
+     */
+    _getClientWidth : function() {
+      return this.__clientWidth;
+    },
+
+    /**
+     * Returns the cached client height
+     *
+     * @return {Integer} cached client height
+     */
+    _getClientHeight : function() {
+      return this.__clientHeight;
+    },
+
+    /**
+     * Returns the cached content width
+     *
+     * @return {Integer} cached content width
+     */
+    _getContentWidth : function() {
+      return this.__contentWidth;
+    },
+
+    /**
+     * Returns the cached content height
+     *
+     * @return {Integer} cached content height
+     */
+    _getContentHeight : function() {
+      return this.__contentHeight;
     },
 
 
