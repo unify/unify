@@ -115,7 +115,7 @@ qx.Class.define("unify.ui.widget.container.NavigationBar", {
         masterElem.setHeight(28);
         masterElem.setAllowGrowY(false);
         masterElem.setAllowShrinkY(false);
-        masterElem.setStyle(unify.ui.widget.styling.StaticTheme.navigationBarButtonParent);
+        masterElem.setStyle(unify.ui.widget.styling.StaticTheme.navigationBarButton);
         this._add(masterElem, {
           position: "left"
         });
