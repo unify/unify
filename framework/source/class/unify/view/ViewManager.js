@@ -814,6 +814,8 @@ qx.Class.define("unify.view.ViewManager",
      */
     __setView : function(view, transition)
     {
+      // TODO: view.getElement() is also called if view is in popover
+      //       Maybe it should be rendered lazy
       var oldView = this.__currentView;
       if (view == oldView) {
         return;
