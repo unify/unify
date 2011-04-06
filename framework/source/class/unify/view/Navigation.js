@@ -255,7 +255,12 @@ qx.Class.define("unify.view.Navigation",
 
       var joined = this.__serializedPath = path.serialize();
       unify.bom.History.getInstance().setLocation(joined);
-      unify.bom.Storage.set("navigation-path", joined);
+
+      try {
+        unify.bom.Storage.set("navigation-path", joined);
+      } catch(ex) {
+        this.error('failed to store navigation-path'+ex);
+      }
     },
 
 

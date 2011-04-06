@@ -29,14 +29,14 @@ qx.Class.define("unify.ui.ActivityIndicator",
      * @param text
      */
     setText: function(text){
-       this.getElement().innerHTML=text;
+       this.getElement().innerHTML='<div></div>'+text;
     },
     // overridden
     _createElement : function()
     {
       var elem = this.__elem=this.base(arguments);
 
-      elem.innerHTML = "Loading data...";
+      elem.innerHTML = '<div></div>Loading Data...';
       elem.id = "activity";
 
       return elem;
