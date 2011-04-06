@@ -31,7 +31,18 @@ qx.Class.define("unify.ui.Overlay",
     }
   },
 
+  events :
+  {
+    /**
+     * Fired when show animation finished (or immediatly on show if animation is disabled)
+     */
+    fadeIn : "qx.event.type.Event",
 
+    /**
+     * Fired when hide animation finished (or immediatly on hide if animation is disabled)
+     */
+    fadeOut : "qx.event.type.Event"
+  },
 
   /*
   *****************************************************************************
@@ -73,6 +84,7 @@ qx.Class.define("unify.ui.Overlay",
       if (!this.getEnableAnimation())
       {
         elem.style.display = "";
+        this.fireEvent("fadeIn");
         return;
       }
 
@@ -111,6 +123,7 @@ qx.Class.define("unify.ui.Overlay",
       if (!this.getEnableAnimation())
       {
         elem.style.display = "none";
+        this.fireEvent("fadeOut");
         return;
       }
 
