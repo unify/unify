@@ -34,16 +34,15 @@ qx.Class.define("unify.ui.widget.core.Layer", {
 
     var elem = this.__elem = layer.getContentElement();
     
-    qx.bom.element2.Style.set(elem, "boxSizing", "border-box")
+    qx.bom.element2.Style.set(elem, "boxSizing", "border-box");
     
     view.addListener("appear", this.__viewAppear, this);
     qx.event.Registration.addListener(window, "resize", this.__onResize, this);
   },
-  
+
   members: {
     __elem : null,
     __layer : null,
-    __dirty : true,
     
     getUILayer: function() {
       return this.__layer;
@@ -76,11 +75,24 @@ qx.Class.define("unify.ui.widget.core.Layer", {
     getSizeHint : function() {
       var Dimension = qx.bom.element2.Dimension;
       
-      var e = this.getElement();
-      var ret = {
-        width: Dimension.getContentWidth(e),
-        height: Dimension.getContentHeight(e)
-      };
+      var ret;
+      if (this.__view.getManager().getDisplayMode() == "popover") {
+        // Look at popovermanager's default settings
+        var styles = unify.view.PopOverManager.getInstance().getStyles(this.__view.getManager());
+        if (styles) {
+          ret = {
+            // TODO: Default borders of 10 px calculated in, this has to be fixed to real border/padding/margin width
+            width : parseInt(styles.width, 10) - 10,
+            height : parseInt(styles.height, 10) - 10
+          }
+        }
+      } else {
+        var e = this.getElement();
+        ret = {
+          width: Dimension.getContentWidth(e),
+          height: Dimension.getContentHeight(e)
+        };
+      }
 
       return ret;
     }
@@ -90,7 +102,7 @@ qx.Class.define("unify.ui.widget.core.Layer", {
     this.__view.removeListener("appear", this.__viewAppear);
     this.__view.removeListener("disappear", this.__viewDisappear);
     
-    this.__elem = null
+    this.__elem = null;
     this.__layer = null;
     this.__view = null;
   }

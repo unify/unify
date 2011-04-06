@@ -31,6 +31,7 @@ qx.Class.define("kitchensink.Application",
       // Register your view classes...
       MasterViewManager.add(kitchensink.view.Start, true);
       MasterViewManager.add(kitchensink.view.Uicomponents);
+      MasterViewManager.add(kitchensink.view.Widgets);
       MasterViewManager.add(unify.view.SysInfo);
       /* 
       ==========
@@ -76,6 +77,7 @@ qx.Class.define("kitchensink.Application",
       // Add TabViews or SplitViews...
       var TabView = new unify.view.TabViewManager(MasterViewManager);
       TabView.add(kitchensink.view.Start);
+      TabView.add(kitchensink.view.Widgets);
       TabView.add(unify.view.SysInfo);
       
       // Add view manager (or SplitView or TabView) to the root

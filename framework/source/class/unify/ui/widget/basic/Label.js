@@ -104,6 +104,7 @@ qx.Class.define("unify.ui.widget.basic.Label", {
      */
     _applyValue : function(value) {
       this.__contentSize = null;
+      console.debug('_applyValue', value);
       qx.bom.Label.setValue(this.getElement(), value);
     }
   }

@@ -20,7 +20,7 @@ qx.Class.define("unify.ui.widget.form.Input", {
   
   properties : {
     columns : {
-      init: 3
+      init: 50
     },
     rows : {
       init: 3
