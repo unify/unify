@@ -61,7 +61,7 @@ qx.Bootstrap.define("unify.bom.client.Platform",
 
     if (/Windows|Win32|Win64/.exec(input)) {
       name = "win";
-    } else if (/Macintosh|MacPPC|MacIntel|Mac OS/.exec(input)) {
+    } else if (/Macintosh|MacPPC|MacIntel|Mac OS|iPad|iPhone|iPod/.exec(input)) {
       name = "mac";
     } else if (/X11|Linux|BSD|Sun OS|Maemo|Android|SymbianOS|webOS/.exec(input)) {
       name = "unix";
@@ -73,6 +73,7 @@ qx.Bootstrap.define("unify.bom.client.Platform",
     {
       statics[name.toUpperCase()] = true;
       statics.NAME = name;
+      statics.UNKNOWN=false;
     }
   }
 });
