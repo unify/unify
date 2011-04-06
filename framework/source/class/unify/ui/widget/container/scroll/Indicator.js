@@ -79,7 +79,7 @@ qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
       var middleElem = this.__middleElem = elem.appendChild(doc.createElement("div"));
       var endElem = this.__endElem = elem.appendChild(doc.createElement("div"));
 
-      this.__setSliderStyle(this.getOrientation() == "horizontal");
+      this.__setSliderStyle(this.getOrientation() === "horizontal");
 
       // Listener for animation purposes
       qx.event.Registration.addListener(elem, "transitionEnd", this.__onTransitionEnd, this, false);
@@ -90,39 +90,76 @@ qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
     __setSliderStyle : function(horizontal) {
       var self = unify.ui.widget.container.scroll.Indicator;
 
-      var endsize = self.ENDSIZE + "px";
-      var thickness = self.THICKNESS + "px";
-
+      // set scrollbar styles
       var Style = qx.bom.element2.Style;
+      var bgstyle = 'rgba(0,0,0,0.5)';
+      var radiussize = '2px';
+      var endsize = self.ENDSIZE + 'px';
+      var thickness = self.THICKNESS + 'px';
+      
+      // general styles
       Style.set(this.__startElem, {
-        background: "rgba(0,0,0,0.5)",
-        borderTopLeftRadius: "2px",
-        borderTopRightRadius: "2px",
-        width: horizontal?endsize:thickness,
-        height: horizontal?thickness:endsize,
-        top: "0px",
-        left: "0px",
-        position: "absolute"
+        background: bgstyle,
+        top: '0px',
+        left: '0px',
+        width: thickness,
+        height: thickness,
+        position: 'absolute'
       });
       Style.set(this.__middleElem, {
-        background: "rgba(0,0,0,0.5)",
-        width: horizontal?"1px":thickness,
-        height: horizontal?thickness:"1px",
-        top: "3px",
-        left: "0px",
-        position: "absolute",
-        WebkitTransformOrigin: "left top"
+        background: bgstyle,
+        top: '0px',
+        left: '0px',
+        width: thickness,
+        height: thickness,
+        position: 'absolute',
+        WebkitTransformOrigin: 'left top'
       });
       Style.set(this.__endElem, {
-        background: "rgba(0,0,0,0.5)",
-        borderBottomLeftRadius: "2px",
-        borderBottomRightRadius: "2px",
-        width: horizontal?endsize:thickness,
-        height: horizontal?thickness:endsize,
-        top: "0px",
-        left: "0px",
-        position: "absolute"
+        background: bgstyle,
+        top: '0px',
+        left: '0px',
+        width: thickness,
+        height: thickness,
+        position: 'absolute'
       });
+      
+      if (horizontal === true) 
+      {
+        // vertical scrollbar
+        Style.set(this.__startElem, {
+          borderTopLeftRadius: radiussize,
+          borderBottomLeftRadius: radiussize,
+          width: endsize
+        });
+        Style.set(this.__middleElem, {
+          width: '1px',
+          left: '3px'
+        });
+        Style.set(this.__endElem, {
+          borderTopRightRadius: radiussize,
+          borderBottomRightRadius: radiussize,
+          width: endsize
+        });
+      } 
+      else 
+      {
+        // vertical scrollbar
+        Style.set(this.__startElem, {
+          borderTopLeftRadius: radiussize,
+          borderTopRightRadius: radiussize,
+          height: endsize
+        });
+        Style.set(this.__middleElem, {
+          height: '1px',
+          top: '3px'
+        });
+        Style.set(this.__endElem, {
+          borderBottomLeftRadius: radiussize,
+          borderBottomRightRadius: radiussize,
+          height: endsize
+        });
+      }
     },
     
     /*
@@ -191,6 +228,8 @@ qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
 
     // property apply
     _applyOrientation : function(value) {
+      console.debug('------> _applyOrientation called', value);
+      
       var Style = qx.bom.element2.Style;
       // Additional storage, higher memory but reduced number of function calls in render()
       var horizontal = this.__horizontal = value === "horizontal";
@@ -202,6 +241,8 @@ qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
 
     // property apply
     _applyVisible : function(value) {
+      console.debug('------> _applyVisible called', value);
+      
       // Additional storage, higher memory but reduced number of function calls in render()
       this.__isVisible = value;
 

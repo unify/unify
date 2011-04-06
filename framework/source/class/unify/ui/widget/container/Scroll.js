@@ -844,7 +844,7 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
 
         // Display scroll indicators as soon as we touch and the content is bigger than the container
         if (this.__enableScrollX && this.__showIndicatorX) {
-          this.__horizontalScrollIndicator.setVisible(false);
+          this.__horizontalScrollIndicator.setVisible(true);
         }
 
         if (this.__enableScrollY && this.__showIndicatorY) {

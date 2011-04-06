@@ -34,7 +34,7 @@ qx.Class.define("unify.ui.widget.core.Layer", {
 
     var elem = this.__elem = layer.getContentElement();
     
-    qx.bom.element2.Style.set(elem, "boxSizing", "border-box")
+    qx.bom.element2.Style.set(elem, "boxSizing", "border-box");
     
     view.addListener("appear", this.__viewAppear, this);
     qx.event.Registration.addListener(window, "resize", this.__onResize, this);
@@ -90,7 +90,7 @@ qx.Class.define("unify.ui.widget.core.Layer", {
     this.__view.removeListener("appear", this.__viewAppear);
     this.__view.removeListener("disappear", this.__viewDisappear);
     
-    this.__elem = null
+    this.__elem = null;
     this.__layer = null;
     this.__view = null;
   }
