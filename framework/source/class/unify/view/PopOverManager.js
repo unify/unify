@@ -17,7 +17,6 @@ qx.Class.define("unify.view.PopOverManager",
   extend : qx.core.Object,
   type : "singleton",
   
-  
   /*
   *****************************************************************************
      CONSTRUCTOR
@@ -30,6 +29,8 @@ qx.Class.define("unify.view.PopOverManager",
     
     this.__root = document.body;
     this.__visibleViewManagers = [];
+    
+    this.__styleRegistry = {};
     
     var pblocker = this.__pblocker = document.createElement("div");
     pblocker.id = "popover-blocker";
@@ -53,6 +54,17 @@ qx.Class.define("unify.view.PopOverManager",
     /** {Map} ID to view manager registry */
     __viewManagers : null,
     
+    
+    /** {Map} Style registry */
+    __styleRegistry : null,
+    
+    setStyles : function(viewManager, styleMap) {
+      this.__styleRegistry[viewManager] = styleMap;
+    },
+    
+    getStyles : function(viewManager) {
+      return this.__styleRegistry[viewManager];
+    },
     
     /**
      * Applies correct zIndex to all visible pop-overs
@@ -148,6 +160,10 @@ qx.Class.define("unify.view.PopOverManager",
         var wrapper = document.createElement('div');
         wrapper.id=elem.id+'-popover';
         wrapper.className='popover-wrapper';
+        var style = this.__styleRegistry[viewManager];
+        if (style) {
+          qx.bom.element2.Style.set(wrapper, style);
+        }
         this.__root.appendChild(wrapper);
         wrapper.appendChild(elem);
 
@@ -211,6 +227,6 @@ qx.Class.define("unify.view.PopOverManager",
     qx.event.Registration.removeListener(this.__pblocker,'tap',this.__onTapBlocker,this);
     this.__root.removeChild(this.__pblocker);
     this.__root.removeChild(this.__mblocker);
-    this.__root = this.__pblocker= this.__mblocker=this.__viewManager = null;
+    this.__root = this.__pblocker= this.__mblocker=this.__viewManager=this.__styleRegistry = null;
   } 
 });
