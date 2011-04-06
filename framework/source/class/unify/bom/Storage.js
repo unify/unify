@@ -19,6 +19,8 @@ qx.Class.define("unify.bom.Storage",
      * Stores the give value under the given key. The storage is permanentely but might
      * be limited in overall available size.
      *
+     * fires an event if storing fails because of quota. The application should listen to this event and clean up
+     *
      * @param key {String} Application-wide unique key
      * @param value {String} String value to store (JSON needs serialization first)
      */
@@ -29,7 +31,16 @@ qx.Class.define("unify.bom.Storage",
             //fixes problem with QUOTA_EXCEEDED_ERR on older ios versions see http://stackoverflow.com/questions/2603682/
             localStorage.removeItem(this.__prefix + key, value);
         }
-        localStorage.setItem(this.__prefix + key, value);
+        try{
+          localStorage.setItem(this.__prefix + key, value);
+        } catch(ex){
+          if(ex.name=='QUOTA_EXCEEDED_ERR'){
+            qx.event.Registration.fireEvent(this, 'quota_exceeded_err');
+          } else {
+            throw ex;
+          }
+        }
+
       } else {
         qx.bom.Cookie.set(this.__prefix + key, value);
       }

@@ -157,8 +157,15 @@
   +border-radius(12px)
   +linear-gradient(color-stops(rgba(255, 255, 255, 0.61), rgba(255, 255, 255, 0.45) 5%, rgba(255, 255, 255, 0.27) 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0)))
 
+// ***************************************************************************************************
+//   MIXIN: rotateZ
+// ***************************************************************************************************
 
-
+=rotateZ
+  -webkit-animation-name: rotateZ
+  -webkit-animation-duration: 0.85s
+  -webkit-animation-iteration-count: infinite
+  -webkit-animation-timing-function: linear
 
 // ***************************************************************************************************
 //   TAGS
@@ -180,9 +187,18 @@ body
 
 #activity
   background-color: rgb(12, 12, 12)
-  background-image: inline_image("ajax-loader.gif")
-  background-repeat: no-repeat
-  background-position: center
+  > div
+    position: absolute
+    margin-top: -27.5px
+    margin-left: -27.5px
+    top: 50%
+    left: 50%
+    background-image: inline_image("loader.png")
+    background-repeat: no-repeat
+    background-position: center center
+    width: 55px
+    height: 55px
+    +rotateZ
   opacity: 0.85
   +box-shadow(black, 0px, 2px, 10px)
   +border-radius(12px)
@@ -470,3 +486,9 @@ body
   &[orient=landscape]
     left: 5%
     width: 90%
+
+@-webkit-keyframes rotateZ
+  from
+    -webkit-transform: rotateZ(0deg)
+  to
+    -webkit-transform: rotateZ(360deg)

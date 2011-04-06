@@ -42,6 +42,7 @@ qx.Class.define("unify.business.RemoteData",
     var prefix = qx.lang.String.hyphenate(this.basename).substring(1);
     this.__storageDataPrefix = prefix + "/data/";
     this.__storageMetaPrefix = prefix + "/meta/";
+    qx.event.Registration.addListener(unify.bom.Storage,"quota_exceeded_err",this.__onQuotaExceeded,this);
   },
 
 
@@ -436,7 +437,23 @@ qx.Class.define("unify.business.RemoteData",
     },
 
 
-
+    /*
+    ---------------------------------------------------------------------------
+      PROTECTED API
+    ---------------------------------------------------------------------------
+    */
+    /**
+     * called before caching data
+     *
+     * override this if you want to prevent caching of data based on arbitrary conditions
+     * use keep: 0 service configuration to prevent caching altogether!
+     *
+     * @param data
+     * @return {Boolean}
+     */
+    _allowCaching: function(data){
+       return true;
+    },
 
     /*
     ---------------------------------------------------------------------------
@@ -632,7 +649,7 @@ qx.Class.define("unify.business.RemoteData",
         if (reqType == "application/json" && typeof data != "string") {
           data = qx.lang.Json.stringify(data);
         }
-        
+
         req.setRequestType(reqType);
         req.setData(data);
       }
@@ -747,7 +764,7 @@ qx.Class.define("unify.business.RemoteData",
       }
 
       // Cache data
-      if (!isErrornous && !isMalformed && this._getService(service).keep > 0)
+      if (!isErrornous && !isMalformed && this._getService(service).keep > 0 && this._allowCaching(data))
       {
         var cacheId = this.__getCacheId(service, params);
         var modified = req.getResponseHeader("Last-Modified");
@@ -781,7 +798,7 @@ qx.Class.define("unify.business.RemoteData",
           {
             start = new Date;
 
-            var storeData = Json.stringify(
+            var metaData = Json.stringify(
             {
               id : id,
               created : now,
@@ -789,26 +806,34 @@ qx.Class.define("unify.business.RemoteData",
               modified : modified,
               type : type
             });
-
+            var metaStored=false;
+            var Storage=unify.bom.Storage;
             try
             {
-              unify.bom.Storage.remove(storageMetaId);
-              unify.bom.Storage.set(storageMetaId, storeData);
+              Storage.set(storageMetaId, metaData);
+              metaStored=true;
+              var storageDataId = this.__storageDataPrefix + cacheId;
+              Storage.set(storageDataId, text);
+              this.debug("Stored in: " + (new Date - start) + "ms");
             }
             catch(ex) {
               this.warn("Could not store data: " + ex);
+              if(metaStored){
+                Storage.remove(storageMetaId);
+              }
             }
 
-            var storageDataId = this.__storageDataPrefix + cacheId;
-            unify.bom.Storage.set(storageDataId, text);
-            this.debug("Stored in: " + (new Date - start) + "ms");
           }
           else
           {
             // Parse meta data, update time field, and store again
             var meta = Json.parse(unify.bom.Storage.get(storageMetaId));
             meta.checked = now;
-            unify.bom.Storage.set(storageMetaId, Json.stringify(meta));
+            try{
+              unify.bom.Storage.set(storageMetaId, Json.stringify(meta));
+            } catch(ex) {
+              this.warn("Could not store data: " + ex);
+            }
           }
         }
       }
@@ -819,9 +844,62 @@ qx.Class.define("unify.business.RemoteData",
 
       // Dispose request
       req.dispose();
-    }
-  },
+    },
 
+    /**
+     * event handler for storage quota exceeded event.
+     * purges expired data in localStorage
+     */
+    __onQuotaExceeded: function(){
+      if(!window.localStorage){
+        return;
+      }
+      var start = new Date();
+      var services=this._getServices();
+      for (var serviceName in services) {
+        var keep = services[serviceName].keep;
+        if(keep>0){
+          this.__purgeCache(serviceName,start-keep*1000);
+        }
+      }
+      if (qx.core.Variant.isSet("qx.debug", "on")){
+        var end=new Date();
+        this.debug('garbage collection took: '+(end-start)+'ms');
+      }
+    },
+    /**
+     * removes localStorage entries of a service that have not been accessed within its keep time
+     * @param serviceName
+     * @param expiredWhenCheckedBefore
+     */
+    __purgeCache : function(serviceName,expiredWhenCheckedBefore) {
+
+      var
+        dataPrefix = unify.bom.Storage.__prefix + this.__storageDataPrefix + serviceName,
+        metaPrefix = unify.bom.Storage.__prefix + this.__storageMetaPrefix + serviceName,
+        metaRegExp = new RegExp("^" + metaPrefix + "(.*)"),
+        matched,
+        meta,
+        key;
+      if (qx.core.Variant.isSet("qx.debug", "on")){
+        this.debug('Cached entries of service "' + serviceName + '" are expired when last checked before: ' + new Date(expiredWhenCheckedBefore));
+      }
+      for (key in localStorage) {
+        matched = metaRegExp.exec(key);
+        if (matched) {
+          meta = JSON.parse(localStorage.getItem(key));
+          if (meta && meta.checked && meta.checked < expiredWhenCheckedBefore) {
+            if (qx.core.Variant.isSet("qx.debug", "on")){
+              this.debug('*** Expired Cache Entry "' + key + '", checked: ' + new Date(meta.checked));
+            }
+            localStorage.removeItem(dataPrefix + matched[1]);
+            localStorage.removeItem(key);
+          }
+        }
+      }
+    }
+
+  },
 
   /*
   *****************************************************************************
@@ -833,5 +911,6 @@ qx.Class.define("unify.business.RemoteData",
   {
     // Dereference native binding
     this.__cache = null;
+    qx.event.Registration.removeListener(unify.bom.Storage,"quota_exceeded_err",this.__onQuotaExceeded,this);
   }
 });

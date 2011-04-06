@@ -97,6 +97,12 @@ qx.Class.define("unify.business.StaticData",
       db[service] = config || {};
     },
 
+    /**
+     * Returns all service configurations
+     */
+    _getServices: function(){
+      return this.__services;
+    },
 
     /**
      * Returns the service configuration of the given service
@@ -131,5 +137,7 @@ qx.Class.define("unify.business.StaticData",
     _readData : function(service, params) {
       throw new Error("Please implement _readData()!");
     }
+    
+
   }
 });
