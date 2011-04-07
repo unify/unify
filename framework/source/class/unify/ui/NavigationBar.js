@@ -112,6 +112,14 @@ qx.Class.define("unify.ui.NavigationBar",
     
   members :
   {
+    __view : null,
+    __titleElem : null,
+    __masterElem : null,
+    __leftElem : null,
+    __rightElem : null,
+    __centerElem : null,
+    __parentElem : null,
+  
     // overridden - also handles parent handling
     _createElement : function()
     {

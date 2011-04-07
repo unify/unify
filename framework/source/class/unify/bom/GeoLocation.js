@@ -66,6 +66,9 @@ qx.Class.define("unify.bom.GeoLocation",
 
   members :
   {
+    __onLocationFoundWrapped : null,
+    __onLocationFailedWrapped : null,
+  
     /**
      * Fires "locationUpdate" when the location data was updated.
      *

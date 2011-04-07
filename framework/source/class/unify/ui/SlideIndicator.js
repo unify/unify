@@ -70,6 +70,7 @@ qx.Class.define("unify.ui.SlideIndicator",
     __totalDots : 0,
     __activeDot : 0,
     __dotContainer : null,
+    /** TODO: Is this right a global array? @ li nt ignoreReferenceField(__allDots) */
     __allDots : [],
     
     
@@ -90,7 +91,7 @@ qx.Class.define("unify.ui.SlideIndicator",
       indicatorContainer.className = "slide-indicator";
       
       // add a dot for each page
-      for(var i = 0; i < this.__totalDots; i += 1)
+      for(var i = 0; i < totalDots; i += 1)
       {
         this.__allDots[i] = doc.createElement("div");
         this.__dotContainer.appendChild(this.__allDots[i]);

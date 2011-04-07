@@ -42,6 +42,9 @@ qx.Class.define("unify.view.Navigation",
 
   members :
   {
+    __historyInit : null,
+    __serializedPath : null,
+  
     /*
     ---------------------------------------------------------------------------
       VIEW MANAGER MANAGMENT
