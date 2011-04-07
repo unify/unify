@@ -141,6 +141,9 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
   */
 
   members: {
+    __verticalScrollIndicator : null,
+    __horizontalScrollIndicator : null,
+  
     /*
     ---------------------------------------------------------------------------
       SETTINGS
@@ -546,7 +549,6 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
       top = round(top);
 
       var contentElem = this.__contentWidget;
-      var Style = qx.bom.element2.Style;
       if (animate)
       {
         contentElem.setStyle({

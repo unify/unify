@@ -43,6 +43,7 @@ qx.Class.define("unify.ui.widget.core.Layer", {
   members: {
     __elem : null,
     __layer : null,
+    __view : null,
     
     getUILayer: function() {
       return this.__layer;

@@ -77,10 +77,10 @@ qx.Class.define("unify.ui.widget.container.NavigationBar", {
      */
     __onViewChangeParent : function(e)
     {
-      var parentElem = this.__parentElem;
+      var parentElem = this.__parentButton;
       if (!parentElem) 
       {
-        parentElem = this.__parentElem = this._createItemElement({rel:"parent",kind:"button"});
+        parentElem = this.__parentButton = this._createItemElement({rel:"parent",kind:"button"});
         parentElem.setStyle(unify.ui.widget.styling.StaticTheme.navigationBarButtonParent);
         parentElem.setHeight(28);
         parentElem.setAllowGrowY(false);
@@ -108,10 +108,10 @@ qx.Class.define("unify.ui.widget.container.NavigationBar", {
      */
     __onViewChangeMaster : function(e)
     {
-      var masterElem = this.__masterElem;
+      var masterElem = this.__masterButton;
       if (!masterElem)
       {
-        masterElem = this.__masterElem =this._createItemElement({rel:"master",kind:"button"});
+        masterElem = this.__masterButton =this._createItemElement({rel:"master",kind:"button"});
         masterElem.setHeight(28);
         masterElem.setAllowGrowY(false);
         masterElem.setAllowShrinkY(false);

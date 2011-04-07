@@ -60,6 +60,14 @@ qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
   },
 
   members : {
+    __isFadingOut : false,
+    __position : null,
+    __isVisible : false,
+    __horizontal : null,
+    __size : null,
+    __endElem : null,
+    __middleElem : null,
+    __startElem : null,
   
     /*
     ---------------------------------------------------------------------------
@@ -75,9 +83,9 @@ qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
       //elem.className = "scroll-indicator " + this.getOrientation();
 
       // Build sub elements
-      var startElem = this.__startElem = elem.appendChild(doc.createElement("div"));
-      var middleElem = this.__middleElem = elem.appendChild(doc.createElement("div"));
-      var endElem = this.__endElem = elem.appendChild(doc.createElement("div"));
+      this.__startElem = elem.appendChild(doc.createElement("div"));
+      this.__middleElem = elem.appendChild(doc.createElement("div"));
+      this.__endElem = elem.appendChild(doc.createElement("div"));
 
       this.__setSliderStyle(this.getOrientation() === "horizontal");
 
@@ -230,7 +238,6 @@ qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
     _applyOrientation : function(value) {
       console.debug('------> _applyOrientation called', value);
       
-      var Style = qx.bom.element2.Style;
       // Additional storage, higher memory but reduced number of function calls in render()
       var horizontal = this.__horizontal = value === "horizontal";
 

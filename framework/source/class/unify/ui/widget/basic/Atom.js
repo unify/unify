@@ -23,7 +23,7 @@ qx.Class.define("unify.ui.widget.basic.Atom", {
     __labelWidget : null,
     
     setSource : function(value) {
-      this.__iconWidget.setSource(value);
+      this.__imageWidget.setSource(value);
     },
     
     setText : function(value) {

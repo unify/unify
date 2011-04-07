@@ -6,6 +6,10 @@ qx.Class.define("unify.ui.widget.layout.NavigationBar", {
   },
   
   members : {
+    __left : null,
+    __right : null,
+    __title : null,
+  
     renderLayout : function(availWidth, availHeight) {
       if (this._invalidChildrenCache) {
         this.__rebuildCache();
@@ -36,7 +40,7 @@ qx.Class.define("unify.ui.widget.layout.NavigationBar", {
         e.renderLayout(rightx, top, hint.width, hint.height);
       }
       
-      var availTitleWidth = rightx - leftx;
+      //var availTitleWidth = rightx - leftx;
       hint = title.getSizeHint();
       var titleTop = Math.floor(availHeight / 2 - hint.height / 2);
       var titleLeft = Math.floor(availWidth / 2 - hint.width / 2);
