@@ -74,6 +74,8 @@ qx.Class.define("unify.view.TabViewManager",
 
   members :
   {
+    __paths : null,
+  
     /** {unify.view.ViewManager} Instance of attached view manager */
     __viewManager : null,
     
@@ -121,7 +123,6 @@ qx.Class.define("unify.view.TabViewManager",
      */
     add : function(viewClass)
     {
-      var root = this.getElement();
       var viewInstance = viewClass.getInstance();
 
       var elem = document.createElement("div");

@@ -56,6 +56,8 @@ qx.Class.define("unify.view.SplitViewManager",
   
   members :
   {
+    __element : null,
+  
     /** {unify.view.ViewManager} The master view manager */
     __masterViewManager : null,
 
@@ -77,7 +79,6 @@ qx.Class.define("unify.view.SplitViewManager",
       
       var orient = e.getOrientation();
       var master = this.__masterViewManager;
-      var detail = this.__detailViewManager;
       var masterElem = master.getElement();
       var PopOverManager = unify.view.PopOverManager.getInstance();
       var oldOrient = elem.getAttribute("orient");

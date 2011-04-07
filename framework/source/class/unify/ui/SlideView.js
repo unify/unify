@@ -107,7 +107,7 @@ qx.Class.define("unify.ui.SlideView",
       slideViewEl.className = "scroll-view slide-view";
       Registration.addListener(window, "resize", this.__onResize, this);
     
-      if(this.__showSlideIndicator)
+      if(showSlideIndicator)
       {
         slideViewEl.appendChild(slideIndicator.getElement());
         

@@ -224,7 +224,10 @@ qx.Class.define("unify.event.handler.Touch",
     __moveposition : null,
 
 
-    /** {Map} Internal event type re-mapping. Used to emulate one finger touch events for development purposes. */
+    /** 
+     * {Map} Internal event type re-mapping. Used to emulate one finger touch events for development purposes. 
+     * @lint ignoreReferenceField(__typeTranslation)
+     */
     __typeTranslation :
     {
       "mousedown" : "touchstart",
@@ -233,7 +236,10 @@ qx.Class.define("unify.event.handler.Touch",
     },
 
 
-    /** {Map} Prevent default action on all elements but the listed ones */
+    /** 
+     * {Map} Prevent default action on all elements but the listed ones 
+     * @lint ignoreReferenceField(__inputTags)
+     */
     __inputTags :
     {
       "SELECT" : 1,

@@ -85,6 +85,7 @@ qx.Class.define("unify.event.handler.Orientation",
     __manager : null,
     __lastOrientation : null,
     __onNativeWrapper : null,
+    __eventType : null,
 
 
 

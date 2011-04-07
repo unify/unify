@@ -20,6 +20,8 @@ qx.Class.define("unify.business.CompletedEvent",
     __data : null,
     __errornous : null,
     __request : null,
+    __malformed : null,
+    __modified : null,
 
 
     /**

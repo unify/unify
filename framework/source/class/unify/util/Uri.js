@@ -243,7 +243,6 @@ qx.Class.define("unify.util.Uri",
      */
     toString : function()
     {
-      var props = [ "protocol", "user", "password", "host", "port", "path", "query", "anchor" ];
       var result = [];
       var value;
 

@@ -51,6 +51,11 @@ qx.Class.define("unify.view.PopOverManager",
     
   members :
   {
+    __root : null,
+    __visibleViewManagers : null,
+    __pblocker : null,
+    __mblocker : null,
+    
     /** {Map} ID to view manager registry */
     __viewManagers : null,
     

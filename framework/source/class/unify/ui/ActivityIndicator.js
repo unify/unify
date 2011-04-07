@@ -24,6 +24,8 @@ qx.Class.define("unify.ui.ActivityIndicator",
 
   members :
   {
+    __elem : null,
+    
     /**
      * sets the text on the element
      * @param text

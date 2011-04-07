@@ -14,6 +14,19 @@ qx.Class.define("unify.test.io.UriTest",
 
   members :
   {
+    __fromStringUri : null,
+    __cloneUri : null,
+    __uri : null,
+    __strUri : null,
+    __protocol : null,
+    __user : null,
+    __password : null,
+    __host : null,
+    __port : null,
+    __path : null,
+    __query : null,
+    __anchor : null,
+  
     /**
      * Initialize testing variables
      */
