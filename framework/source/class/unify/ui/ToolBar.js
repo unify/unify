@@ -43,6 +43,26 @@ qx.Class.define("unify.ui.ToolBar",
   members :
   {
     __items : null,
+
+    /*
+    ---------------------------------------------------------------------------
+      PUBLIC API
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * disables all items of this Toolbar
+     */
+    disable: function(){
+      this._setDisabledOnChildren(this.__items,true);
+    },
+    
+    /**
+     * enables all items of this Toolbar
+     */
+    enable: function(){
+      this._setDisabledOnChildren(this.__items,false);
+    },
     
     /*
     ---------------------------------------------------------------------------
@@ -193,6 +213,22 @@ qx.Class.define("unify.ui.ToolBar",
       }
       
       return itemElem;
+    },
+    
+    /**
+    * adds/removes disabled="disabled" attribute on childNodes of elem
+    * @param elem The container element
+    * @param disabled true: adds disabled, false: removes disabled
+    */
+    _setDisabledOnChildren: function(elem,disabled){
+      var childNodes=elem.childNodes;
+      for(var i=0,l=childNodes.length;i<l;i++){
+        if(disabled){
+          childNodes[i].setAttribute('disabled','disabled');
+        } else {
+          childNodes[i].removeAttribute('disabled');
+        }
+      }
     }
   }
 });

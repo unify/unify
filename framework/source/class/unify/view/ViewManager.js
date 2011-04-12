@@ -610,7 +610,7 @@ qx.Class.define("unify.view.ViewManager",
     __onTap : function(e)
     {
       var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
-      if (elem)
+      if (elem &&!elem.getAttribute('disabled'))
       {
         // Stop further event processing
         e.stopPropagation();
