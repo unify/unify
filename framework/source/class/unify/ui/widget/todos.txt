@@ -2,3 +2,5 @@ Add Overlay
 Add ActivityIndicator
 Add SlideView
 Add themeing system
+Add segmented control to toolbar
+
