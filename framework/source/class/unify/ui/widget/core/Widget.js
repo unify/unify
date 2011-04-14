@@ -62,7 +62,22 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     navigation : {
       apply : "_applyNavigation",
       init : null
-    }
+    },
+    
+    /**
+     * Whether the widget is enabled. Disabled widgets are usually grayed out
+     * and do not process user created events. While in the disabled state most
+     * user input events are blocked. Only the {@link #mouseover} and
+     * {@link #mouseout} events will be dispatched.
+     */
+    enabled :
+    {
+      check : "Boolean",
+      inheritable : true,
+      apply : "_applyEnabled",
+      event : "changeEnabled",
+      init : true
+    },
   },
   
   statics : {
@@ -142,6 +157,59 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         console.log(this, unify.ui.widget.styling.StyleManager.getInstance().getTheme().getStyles(value));
         this.setStyle(unify.ui.widget.styling.StyleManager.getInstance().getTheme().getStyles(value));
       }*/
+    },
+    
+    // property apply
+    _applyEnabled : function(value, old)
+    {
+      if (value===false)
+      {
+        this.addState("disabled");
+
+        // hovered not configured in widget, but as this is a
+        // standardized name in qooxdoo and we never want a hover
+        // state for disabled widgets, remove this state everytime
+        this.removeState("hovered");
+
+        /*// Blur when focused
+        if (this.isFocusable())
+        {
+          // Remove focused state
+          this.removeState("focused");
+
+          // Remove tabIndex
+          this._applyFocusable(false, true);
+        }
+
+        // Remove draggable
+        if (this.isDraggable()) {
+          this._applyDraggable(false, true);
+        }
+
+        // Remove droppable
+        if (this.isDroppable()) {
+          this._applyDroppable(false, true);
+        }*/
+      }
+      else
+      {
+        this.removeState("disabled");
+
+        /*// Re-add tabIndex
+        if (this.isFocusable()) {
+          this._applyFocusable(true, false);
+        }
+
+        // Re-add draggable
+        if (this.isDraggable()) {
+          this._applyDraggable(true, false);
+        }
+
+        // Re-add droppable
+        if (this.isDroppable()) {
+          this._applyDroppable(true, false);
+        }*/
+      }
     },
   
     __layoutManager : null,
@@ -451,6 +519,170 @@ qx.Class.define("unify.ui.widget.core.Widget", {
 
 
 
+
+    /*
+    ---------------------------------------------------------------------------
+      STATE HANDLING
+    ---------------------------------------------------------------------------
+    */
+
+    /** {Map} The current widget states */
+    __states : null,
+
+
+    /** {Boolean} Whether the widget has state changes which are not yet queued */
+    $$stateChanges : null,
+
+
+    /** {Map} Can be overridden to forward states to the child controls. */
+    _forwardStates : null,
+
+
+    /**
+     * Returns whether a state is set.
+     *
+     * @param state {String} the state to check.
+     * @return {Boolean} whether the state is set.
+     */
+    hasState : function(state)
+    {
+      var states = this.__states;
+      return !!states && !!states[state];
+    },
+
+
+    /**
+     * Sets a state.
+     *
+     * @param state {String} The state to add
+     * @return {void}
+     */
+    addState : function(state)
+    {
+      // Dynamically create state map
+      var states = this.__states;
+      if (!states) {
+        states = this.__states = {};
+      }
+
+      if (states[state]) {
+        return;
+      }
+
+      // Add state and queue
+      this.__states[state] = true;
+
+      // Fast path for hovered state
+      if (!qx.ui.core.queue.Visibility.isVisible(this)) {
+        this.$$stateChanges = true;
+      } else {
+        qx.ui.core.queue.Appearance.add(this);
+      }
+
+      // Forward state change to child controls
+      var forward = this._forwardStates;
+      var controls = this.__childControls;
+
+      if (forward && forward[state] && controls)
+      {
+        var control;
+        for (var id in controls)
+        {
+          control = controls[id];
+          if (control instanceof unify.ui.widget.core.Widget) {
+            controls[id].addState(state);
+          }
+        }
+      }
+    },
+
+
+    /**
+     * Clears a state.
+     *
+     * @param state {String} the state to clear.
+     * @return {void}
+     */
+    removeState : function(state)
+    {
+      // Check for existing state
+      var states = this.__states;
+      if (!states || !states[state]) {
+        return;
+      }
+      
+      // Clear state and queue
+      delete this.__states[state];
+
+      // Fast path for hovered state
+      if (!qx.ui.core.queue.Visibility.isVisible(this)) {
+        this.$$stateChanges = true;
+      } else {
+        qx.ui.core.queue.Appearance.add(this);
+      }
+
+      // Forward state change to child controls
+      var forward = this._forwardStates;
+      var controls = this.__childControls;
+
+      if (forward && forward[state] && controls)
+      {
+        for (var id in controls)
+        {
+          var control = controls[id];
+          if (control instanceof unify.ui.widget.core.Widget) {
+            control.removeState(state);
+          }
+        }
+      }
+    },
+
+
+    /**
+     * Replaces the first state with the second one.
+     *
+     * This method is ideal for state transitions e.g. normal => selected.
+     *
+     * @param old {String} Previous state
+     * @param value {String} New state
+     * @return {void}
+     */
+    replaceState : function(old, value)
+    {
+      var states = this.__states;
+      if (!states) {
+        states = this.__states = {};
+      }
+
+      if (!states[value]) {
+        states[value] = true;
+      }
+
+      if (states[old]) {
+        delete states[old];
+      }
+
+      if (!qx.ui.core.queue.Visibility.isVisible(this)) {
+        this.$$stateChanges = true;
+      } else {
+        qx.ui.core.queue.Appearance.add(this);
+      }
+
+      // Forward state change to child controls
+      var forward = this._forwardStates;
+      var controls = this.__childControls;
+
+      if (forward && forward[value] && controls)
+      {
+        for (var id in controls)
+        {
+          var control = controls[id];
+          if (control instanceof unify.ui.widget.core.Widget) {
+            control.replaceState(old, value);
+          }
+        }
+      }
+    },
 
 
 
