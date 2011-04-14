@@ -119,7 +119,30 @@ qx.Class.define("unify.ui.NavigationBar",
     __rightElem : null,
     __centerElem : null,
     __parentElem : null,
-  
+
+    //overridden
+    disable: function(){
+      this._setDisabledOnChildren(this.__leftElem,true);
+      this._setDisabledOnChildren(this.__centerElem,true);
+      this._setDisabledOnChildren(this.__rightElem,true);
+    },
+
+    //overridden
+    enable: function(){
+      this._setDisabledOnChildren(this.__leftElem,false);
+      this._setDisabledOnChildren(this.__centerElem,false);
+      this._setDisabledOnChildren(this.__rightElem,false);
+    },
+
+    // overridden
+    setItems: function(){
+      if (qx.core.Variant.isSet("qx.debug", "on"))
+      {
+        this.trace();
+        throw new Error(this.toString() + ": Called setItems on NavigationBar, use setLeftItems or setRightItems instead!");
+      }
+    },
+
     // overridden - also handles parent handling
     _createElement : function()
     {

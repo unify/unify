@@ -189,20 +189,26 @@ qx.Class.define("unify.view.ViewManager",
       var elem = this.__element;
       if (!elem)
       {
-        // Create root element of manager (used as parent for view elements)
-        elem = this.__element = document.createElement("div");
-        var Class = qx.bom.element2.Class;
-        Class.add(elem,"view-manager");
-        Class.add(elem,"display-mode-"+this.getDisplayMode());
-        elem.id = this.__managerId;
-
-        // Register to navigation events
-        qx.event.Registration.addListener(elem, "click", this.__onClick, this);
-        qx.event.Registration.addListener(elem, "tap", this.__onTap, this);
-        qx.event.Registration.addListener(elem, "touchhold", this.__onTouchHold, this);
-        qx.event.Registration.addListener(elem, "touchrelease", this.__onTouchRelease, this);      
+        elem=this._createElement();
       }
-      
+      return elem;
+    },
+    
+    /**
+     * creates the root element of the view manager
+     */
+    _createElement: function(){
+      // Create root element of manager (used as parent for view elements)
+      var elem = this.__element = document.createElement("div");
+      var Class = qx.bom.element2.Class;
+      Class.add(elem,"view-manager");
+      Class.add(elem,"display-mode-"+this.getDisplayMode());
+      elem.id = this.__managerId;
+      // Register to navigation events
+      qx.event.Registration.addListener(elem, "click", this.__onClick, this);
+      qx.event.Registration.addListener(elem, "tap", this.__onTap, this);
+      qx.event.Registration.addListener(elem, "touchhold", this.__onTouchHold, this);
+      qx.event.Registration.addListener(elem, "touchrelease", this.__onTouchRelease, this);
       return elem;
     },
 
@@ -604,7 +610,7 @@ qx.Class.define("unify.view.ViewManager",
     __onTap : function(e)
     {
       var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
-      if (elem)
+      if (elem &&!elem.getAttribute('disabled'))
       {
         // Stop further event processing
         e.stopPropagation();

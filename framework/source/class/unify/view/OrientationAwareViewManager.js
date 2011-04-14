@@ -29,18 +29,15 @@ qx.Class.define("unify.view.OrientationAwareViewManager",
     // Attach to rotate event to control view manager visibility
     qx.event.Registration.addListener(window, "rotate", this.__onRotate, this);
   },
-  members : {
+  members :
+  {
     //overridden
-    getElement : function(){
-      if(this.__element){
-        return this.base(arguments);
-      } else {
-        var element=this.base(arguments);
-        var orient = qx.bom.Viewport.getOrientation();
-        var isLandscape=(orient == 90 || orient == 270 || orient == -90 || orient == -270);
-        element.setAttribute("orient", isLandscape ? "landscape" : "portrait");
-        return element;
-      }
+    _createElement : function(){
+      var element=this.base(arguments);
+      var orient = qx.bom.Viewport.getOrientation();
+      var isLandscape=(orient == 90 || orient == 270 || orient == -90 || orient == -270);
+      element.setAttribute("orient", isLandscape ? "landscape" : "portrait");
+      return element;
     },
 
 
@@ -51,11 +48,11 @@ qx.Class.define("unify.view.OrientationAwareViewManager",
      */
     __onRotate : function(e)
     {
-      var elem = this.__element;
-      if (!elem) {
+
+      if (!this.isCreated()) {
         return;
       }
-
+      var elem=this.getElement();
       var orient = e.getOrientation();
       var oldOrient = elem.getAttribute("orient");
 

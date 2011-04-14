@@ -85,7 +85,9 @@ qx.Class.define("unify.Application",
         padding : 0
       });
       this.__setupDocumentSize();
-
+      var orient = qx.bom.Viewport.getOrientation();
+      var isLandscape=(orient == 90 || orient == 270 || orient == -90 || orient == -270);
+      document.body.setAttribute('orient',isLandscape?'landscape':'portrait');
       // Event listeners
       var Registration = qx.event.Registration;
       Registration.addListener(window, "resize", this.__onResize, this);
@@ -130,7 +132,7 @@ qx.Class.define("unify.Application",
      * @param e {unify.event.type.Orientation} Orientation change event
      */
     __onRotate : function(e) {
-      document.documentElement.setAttribute("orient", e.getMode());
+      document.body.setAttribute("orient", e.getMode());
     },
 
 
