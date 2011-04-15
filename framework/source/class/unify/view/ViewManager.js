@@ -367,7 +367,7 @@ qx.Class.define("unify.view.ViewManager",
         }
       }
       var instance=viewClass.getInstance();
-      var instanceManager=viewInstance.getManager();
+      var instanceManager=instance.getManager();
       if(instanceManager!=null){
         throw new Error('view is already managed!: '+viewClass+' manager:  '+instanceManager.getId());
       }
