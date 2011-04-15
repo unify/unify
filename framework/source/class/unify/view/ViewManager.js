@@ -316,7 +316,7 @@ qx.Class.define("unify.view.ViewManager",
       }
       
       var viewObj = this.__views[defaultViewId].getInstance();
-      viewObj.setManager(this);
+
       this.__path = new unify.view.Path({
         view : defaultViewId,
         segment : viewObj.getDefaultSegment(),
@@ -366,7 +366,12 @@ qx.Class.define("unify.view.ViewManager",
           throw new Error("Invalid view class to add(): " + viewClass);
         }
       }
-      
+      var instance=viewClass.getInstance();
+      var instanceManager=viewInstance.getManager();
+      if(instanceManager!=null){
+        throw new Error('view is already managed!: '+viewClass+' manager:  '+instanceManager.getId());
+      }
+      instance.setManager(this);
       var id = qx.lang.String.hyphenate(viewClass.basename).substring(1);
       if (isDefault) {
         this.__defaultViewId = id;
@@ -455,7 +460,6 @@ qx.Class.define("unify.view.ViewManager",
       }
       
       var currentViewObj = currentViewCls.getInstance();
-      currentViewObj.setManager(this);
 
       // Automatically fill segment if its empty
       // - 1. via currently selected segment
@@ -489,7 +493,7 @@ qx.Class.define("unify.view.ViewManager",
         }
 
         var parentViewObj = parentViewCls.getInstance();
-        parentViewObj.setManager(this);
+
         parentViewObj.setSegment(parentFragment.segment);
         parentViewObj.setParam(parentFragment.param);
         currentViewObj.setParent(parentViewObj);
