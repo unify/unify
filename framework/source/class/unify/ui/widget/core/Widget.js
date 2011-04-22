@@ -419,7 +419,6 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      * Renders all children of this widget
      */
     renderChildren : function() {
-      this.debug("Render children");
       var children = this._getChildren();
       if (children) {
         var fragment = document.createDocumentFragment();
