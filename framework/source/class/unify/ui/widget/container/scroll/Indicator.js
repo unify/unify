@@ -123,7 +123,7 @@ qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
         position: 'absolute',
         WebkitTransformOrigin: 'left top'
       });
-      Style.set(this.__endElem, {
+      Style.setStyles(this.__endElem, {
         background: bgstyle,
         top: '0px',
         left: '0px',
