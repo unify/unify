@@ -227,7 +227,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      *     <code>null</code> to reset the layout.
      */
     _setLayout : function(layout) {
-      if (qx.core.Variant.isSet("qx.debug", "on")) {
+      if (qx.core.Environment.get("qx.debug")) {
         if (layout) {
           this.assertInstance(layout, qx.ui.layout.Abstract);
         }
@@ -262,7 +262,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
               height: 0
             };
           }
-          /*if (qx.core.Variant.isSet("qx.debug", "on")) {
+          /*if (qx.core.Environment.get("qx.debug")) {
             var msg = "The layout " + layout.toString() + " of the widget " + this.toString() + " returned an invalid size hint!";
             this.assetInteger(hint.width, "Wrong width value. " + msg);
             this.assetInteger(hint.height, "Wrong height value. " + msg);
@@ -295,7 +295,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       var minHeight = this.getMinHeight();
       var maxHeight = this.getMaxHeight();
 
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         if (minWidth !== null && maxWidth !== null) {
           this.assert(minWidth <= maxWidth, "minWidth is larger than maxWidth!");
@@ -1011,7 +1011,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      */
     _addBefore : function(child, before, options)
     {
-      if (qx.core.Variant.isSet("qx.debug", "on")) {
+      if (qx.core.Environment.get("qx.debug")) {
         this.assertInArray(before, this._getChildren(),
           "The 'before' widget is not a child of this widget!");
       }
@@ -1046,7 +1046,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      */
     _addAfter : function(child, after, options)
     {
-      if (qx.core.Variant.isSet("qx.debug", "on")) {
+      if (qx.core.Environment.get("qx.debug")) {
         this.assertInArray(after, this._getChildren(),
           "The 'after' widget is not a child of this widget!");
       }
@@ -1175,7 +1175,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      */
     __addHelper : function(child, options)
     {
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         //this.assertInstance(child, unify.ui.widget.qx.LayoutItem, "Invalid widget to add: " + child);
         this.assertInstance(child, qx.ui.core.LayoutItem, "Invalid widget to add: " + child);
@@ -1227,7 +1227,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      */
     __removeHelper : function(child)
     {
-      if (qx.core.Variant.isSet("qx.debug", "on")) {
+      if (qx.core.Environment.get("qx.debug")) {
         this.assertNotUndefined(child);
       }
 
