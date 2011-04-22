@@ -135,16 +135,16 @@ qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
       if (horizontal === true) 
       {
         // vertical scrollbar
-        Style.set(this.__startElem, {
+        Style.setStyles(this.__startElem, {
           borderTopLeftRadius: radiussize,
           borderBottomLeftRadius: radiussize,
           width: endsize
         });
-        Style.set(this.__middleElem, {
+        Style.setStyles(this.__middleElem, {
           width: '1px',
           left: '3px'
         });
-        Style.set(this.__endElem, {
+        Style.setStyles(this.__endElem, {
           borderTopRightRadius: radiussize,
           borderBottomRightRadius: radiussize,
           width: endsize
@@ -153,16 +153,16 @@ qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
       else 
       {
         // vertical scrollbar
-        Style.set(this.__startElem, {
+        Style.setStyles(this.__startElem, {
           borderTopLeftRadius: radiussize,
           borderTopRightRadius: radiussize,
           height: endsize
         });
-        Style.set(this.__middleElem, {
+        Style.setStyles(this.__middleElem, {
           height: '1px',
           top: '3px'
         });
-        Style.set(this.__endElem, {
+        Style.setStyles(this.__endElem, {
           borderBottomLeftRadius: radiussize,
           borderBottomRightRadius: radiussize,
           height: endsize
