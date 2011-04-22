@@ -810,7 +810,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       this.__topInset = top;
 
       if (this._hasElement()) {
-        qx.bom.element.Style.set(this.getElement(), style);
+        qx.bom.element.Style.setStyles(this.getElement(), style);
       }
     },
     
