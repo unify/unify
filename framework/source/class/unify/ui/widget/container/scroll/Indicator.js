@@ -99,14 +99,14 @@ qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
       var self = unify.ui.widget.container.scroll.Indicator;
 
       // set scrollbar styles
-      var Style = qx.bom.element2.Style;
+      var Style = qx.bom.element.Style;
       var bgstyle = 'rgba(0,0,0,0.5)';
       var radiussize = '2px';
       var endsize = self.ENDSIZE + 'px';
       var thickness = self.THICKNESS + 'px';
       
       // general styles
-      Style.set(this.__startElem, {
+      Style.setStyles(this.__startElem, {
         background: bgstyle,
         top: '0px',
         left: '0px',
@@ -114,7 +114,7 @@ qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
         height: thickness,
         position: 'absolute'
       });
-      Style.set(this.__middleElem, {
+      Style.setStyles(this.__middleElem, {
         background: bgstyle,
         top: '0px',
         left: '0px',
@@ -187,7 +187,7 @@ qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
      * @param size {Integer} Size of indicator
      */
     render : function(position, size) {
-      var Style = qx.bom.element2.Style;
+      var Style = qx.bom.element.Style;
 
       if (this.__position !== position)
       {
@@ -257,7 +257,7 @@ qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
       {
         // Recover old position
         var translate = this.__horizontal ? "translate3d(" + this.__position + "px,0,0)" : "translate3d(0," + this.__position + "px,0)";
-        qx.bom.element2.Style.set(this.getElement(), "transform", translate);
+        qx.bom.element.Style.set(this.getElement(), "transform", translate);
 
         // Fade in
         this.__isFadingOut = false;
@@ -290,7 +290,7 @@ qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
     {
       if (this.__isFadingOut)
       {
-        qx.bom.element2.Style.set(this.getElement(), "transform", null);
+        qx.bom.element.Style.set(this.getElement(), "transform", null);
         this.__isFadingOut = false;
       }
     }

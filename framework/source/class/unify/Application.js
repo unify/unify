@@ -58,9 +58,9 @@ qx.Class.define("unify.Application",
       this.info("Build Time: " + new Date(qx.$$build));
 
       // Configure document
-      var Style = qx.bom.element2.Style;
+      var Style = qx.bom.element.Style;
       // <body>
-      Style.set(document.body, {
+      Style.setStyles(document.body, {
         WebkitUserSelect : "none",
         WebkitTextSizeAdjust : "none",
         WebkitPerspective : "800",
@@ -78,7 +78,7 @@ qx.Class.define("unify.Application",
         background : "white"
       });
       // <html>
-      Style.set(document.body.parentNode, {
+      Style.setStyles(document.body.parentNode, {
         width : "100%",
         height : "100%",
         overflow : "hidden",

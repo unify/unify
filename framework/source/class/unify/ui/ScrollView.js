@@ -560,7 +560,7 @@ qx.Class.define("unify.ui.ScrollView",
       top = round(top);
 
       var contentElem = this.__contentElem;
-      var Style = qx.bom.element2.Style;
+      var Style = qx.bom.element.Style;
       if (animate)
       {
         Style.set(contentElem, "transitionDuration", this.__pagingTransitionDuration);
@@ -766,7 +766,7 @@ qx.Class.define("unify.ui.ScrollView",
       // Immediately stop of types of animation/transition
       this.__isDecelerating = false;
       window.clearTimeout(this.__decelTimer);
-      qx.bom.element2.Style.set(contentElem, "transitionDuration", "0s");
+      qx.bom.element.Style.set(contentElem, "transitionDuration", "0s");
 
       // Cache dimensions
       this.__clientWidth = elem.clientWidth;
@@ -977,7 +977,7 @@ qx.Class.define("unify.ui.ScrollView",
     __onTransitionEnd : function(ev)
     {
       // Disable transition on content element
-      qx.bom.element2.Style.set(this.__contentElem, "transitionDuration", "0s");
+      qx.bom.element.Style.set(this.__contentElem, "transitionDuration", "0s");
 
       // Now, fire the scroll event
       if (this.__hasScrollListener) {

@@ -118,7 +118,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     _applyVisibility : function(value, old)
     {
       var container = this.getElement();
-      var Style = qx.bom.element2.Style;
+      var Style = qx.bom.element.Style;
       
 
       if (value === "visible") {
@@ -379,7 +379,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         top += parentInset[1];
       }
       if (!preventSize) {
-        qx.bom.element2.Style.set(this.getElement(), {
+        qx.bom.element.Style.setStyles(this.getElement(), {
           left: left + "px",
           top: top + "px",
           width: width + "px",
@@ -810,7 +810,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       this.__topInset = top;
 
       if (this._hasElement()) {
-        qx.bom.element2.Style.set(this.getElement(), style);
+        qx.bom.element.Style.set(this.getElement(), style);
       }
     },
     
@@ -840,7 +840,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       if (value) {
         return value;
       } else if (this._hasElement()) {
-        return qx.bom.element2.Style.get(this.getElement(), name, computed);
+        return qx.bom.element.Style.get(this.getElement(), name, computed);
       }
     },
 
@@ -868,13 +868,11 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         
         element.$$widget = this.toHashCode();
         
-        qx.bom.element2.Style.set(element, {
-          position: "absolute"
-        });
+        qx.bom.element.Style.set(element, "position",  "absolute");
         
         var style = this.__style;
         if (style) {
-          qx.bom.element2.Style.set(element, style);
+          qx.bom.element.Style.setStyles(element, style);
         }
         
         var navigation = this.getNavigation();
