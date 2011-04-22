@@ -209,7 +209,7 @@ qx.Class.define("unify.view.RemoteView",
           this.__appliedVersion = cachedEntry.created;
         }
         this._wrappedRenderData(e.getData());
-      } else if (qx.core.Variant.isSet("qx.debug", "on")) {
+      } else if (qx.core.Environment.get("qx.debug")) {
         this.debug("Data was not modified!");
       }
     }

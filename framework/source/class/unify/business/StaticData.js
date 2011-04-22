@@ -56,7 +56,7 @@ qx.Class.define("unify.business.StaticData",
      */
     read : function(service, params)
     {
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         if (!service || !this.__services[service]) {
           throw new Error("Unsupported service: " + service);
@@ -87,7 +87,7 @@ qx.Class.define("unify.business.StaticData",
     _addService : function(service, config)
     {
       var db = this.__services;
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         if (db[service]) {
           throw new Error("Service " + service + " is already registered!");
@@ -113,7 +113,7 @@ qx.Class.define("unify.business.StaticData",
     _getService : function(service)
     {
       var config = this.__services[service];
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         if (!config) {
           throw new Error("Unknown service: " + service);

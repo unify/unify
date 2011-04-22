@@ -307,7 +307,7 @@ qx.Class.define("unify.event.handler.Touch",
         if (type === "touchstart")
         {
           this.__hasMoved = false;
-          if (qx.core.Variant.isSet("unify.touch", "wiggly")) {
+          if (qx.core.Environment.get("unify.touch") == "wiggly") {
             this.__moveposition = [nativeEvent.changedTouches[0].screenX, nativeEvent.changedTouches[0].screenY];
           }
           this.__originalTarget = target;
@@ -322,7 +322,7 @@ qx.Class.define("unify.event.handler.Touch",
         else
         {
           if (type === "touchmove") {
-            if (qx.core.Variant.isSet("unify.touch", "wiggly")) {
+            if (qx.core.Environment.get("unify.touch") == "wiggly") {
               var x = nativeEvent.changedTouches[0].screenX;
               var y = nativeEvent.changedTouches[0].screenY;
               var oldx = this.__moveposition[0];

@@ -92,7 +92,7 @@ qx.Class.define("unify.ui.Overlay",
         return;
       }
 
-      var Class = qx.bom.element2.Class;
+      var Class = qx.bom.element.Class;
 
       this.__in = true;
       if (this.__out)
@@ -131,7 +131,7 @@ qx.Class.define("unify.ui.Overlay",
         return;
       }
 
-      var Class = qx.bom.element2.Class;
+      var Class = qx.bom.element.Class;
 
       this.__out = true;
       if (this.__in)
@@ -140,7 +140,7 @@ qx.Class.define("unify.ui.Overlay",
         this.__in = null;
       }
 
-      Class.add(elem, "out animate");
+      Class.addClasses(elem, ["out", "animate"]);
     },
 
 
@@ -180,9 +180,9 @@ qx.Class.define("unify.ui.Overlay",
     __onTransitionEnd : function()
     {
       var elem = this.getElement();
-      var Class = qx.bom.element2.Class;
+      var Class = qx.bom.element.Class;
 
-      Class.remove(elem, "animate in out");
+      Class.removeClasses(elem, ["animate", "in", "out"]);
 
       if (this.__out)
       {

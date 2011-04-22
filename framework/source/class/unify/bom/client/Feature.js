@@ -143,7 +143,7 @@ qx.Bootstrap.define("unify.bom.client.Feature",
     var undef = undefined;
     var node = document.createElement("div");
     var style = node.style;
-    var prefix = qx.core.Variant.select("qx.client",
+    var prefix = qx.core.Engine.select("engine.name",
     {
       "mshtml" : "Ms",
       "opera" : "O",

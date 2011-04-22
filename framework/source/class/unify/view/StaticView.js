@@ -246,7 +246,7 @@ qx.Class.define("unify.view.StaticView",
      */
     create : function()
     {
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         if (this.__layer) {
           throw new Error(this.toString + ": Is already created!");
@@ -259,7 +259,7 @@ qx.Class.define("unify.view.StaticView",
       
       // Configure CSS classes
       var layerElem = layer.getElement();
-      var Class = qx.bom.element2.Class;
+      var Class = qx.bom.element.Class;
 
       if (this.getParent()) {
         Class.add(layerElem, "has-parent");
@@ -312,7 +312,7 @@ qx.Class.define("unify.view.StaticView",
      */
     _createView : function()
     {
-      if (qx.core.Variant.isSet("qx.debug", "on")) {
+      if (qx.core.Environment.get("qx.debug")) {
         throw new Error(this.toString() + " needs implementation for _createView()!")
       }
     },
@@ -349,7 +349,7 @@ qx.Class.define("unify.view.StaticView",
       var layer = this.__layer;
       if (layer && !!old != !!value) 
       {
-        var Class = qx.bom.element2.Class;
+        var Class = qx.bom.element.Class;
         var layerElem = layer.getElement();
         if (value) {
           Class.add(layerElem, "has-parent");

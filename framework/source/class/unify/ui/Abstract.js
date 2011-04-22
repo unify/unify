@@ -42,7 +42,7 @@ qx.Class.define("unify.ui.Abstract",
      */
     _createElement : function()
     {
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         this.trace();
         throw new Error(this.toString() + ": Called abstract method _createElement()!");
@@ -105,7 +105,7 @@ qx.Class.define("unify.ui.Abstract",
       }
 
       current = this.__element = this._createElement();
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         if (!current) {
           throw new Error(this.toString() + ": Implementation of _createElement did not return an element!");

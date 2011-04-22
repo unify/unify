@@ -78,7 +78,7 @@ qx.Class.define("unify.ui.Container",
           elem = obj;
         } else if (obj.getElement) {
           elem = obj.getElement();
-        } else if (qx.core.Variant.isSet("qx.debug", "on")) {
+        } else if (qx.core.Environment.get("qx.debug")) {
           throw new Error(this.toString() + " invalid element to add(): " + obj);
         }
 
@@ -109,7 +109,7 @@ qx.Class.define("unify.ui.Container",
           elem = obj;
         } else if (obj.getElement) {
           elem = obj.getElement();
-        } else if (qx.core.Variant.isSet("qx.debug", "on")) {
+        } else if (qx.core.Environment.get("qx.debug")) {
           throw new Error(this.toString() + " invalid element to remove(): " + obj);
         }
 

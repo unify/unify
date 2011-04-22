@@ -148,7 +148,7 @@ qx.Class.define("unify.view.PopOverManager",
     {
       var viewManager = unify.view.ViewManager.get(id);
       
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         if (!viewManager) {
           throw new Error("Unknown view manager: " + id);
@@ -167,7 +167,7 @@ qx.Class.define("unify.view.PopOverManager",
         wrapper.className='popover-wrapper';
         var style = this.__styleRegistry[viewManager];
         if (style) {
-          qx.bom.element2.Style.set(wrapper, style);
+          qx.bom.element.Style.setStyles(wrapper, style);
         }
         this.__root.appendChild(wrapper);
         wrapper.appendChild(elem);
@@ -195,7 +195,7 @@ qx.Class.define("unify.view.PopOverManager",
     {
       var viewManager=unify.view.ViewManager.get(id);
 
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         if (!viewManager) {
           throw new Error("Unknown view manager: " + id);

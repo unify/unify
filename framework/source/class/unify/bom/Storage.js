@@ -78,7 +78,7 @@ qx.Class.define("unify.bom.Storage",
   
   defer : function(statics) 
   {
-    var appId = qx.core.Setting.get("qx.application");
+    var appId = qx.core.Environment.get("qx.application");
     statics.__prefix = appId.substring(0, appId.indexOf(".")) + "/";
   }
 });

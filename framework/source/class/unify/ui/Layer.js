@@ -28,7 +28,7 @@ qx.Class.define("unify.ui.Layer",
   {
     this.base(arguments);
 
-    if (qx.core.Variant.isSet("qx.debug", "on"))
+    if (qx.core.Environment.get("qx.debug"))
     {
       if (!view) {
         throw new Error(this.toString() + ": Constructor misses view instance!");
