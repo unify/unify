@@ -2,6 +2,7 @@ qx.Class.define("unify.ui.widget.basic.Image", {
   extend: unify.ui.widget.core.Widget,
   
   construct : function(source) {
+    this.base(arguments);
     if (source) {
       this.setSource(source);
     }
