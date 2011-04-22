@@ -924,7 +924,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       for (var i=0, l=children.length; i<l; i++)
       {
         child = children[i];
-        queue[child.$$hash] = child;
+        queue.push(child);
 
         child.addChildrenToQueue(queue);
       }
