@@ -185,7 +185,7 @@ qx.Class.define("unify.util.Uri",
      */
     addParam : function(name, value)
     {
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         if (typeof value !== "string") {
           throw new Error("Value needs to be a string!");

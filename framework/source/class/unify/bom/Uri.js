@@ -49,7 +49,7 @@ qx.Class.define("unify.bom.Uri",
     parse : function(str, mode)
     {
       var parser = this.__urlParsers[mode||"loose"];
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Engine.get("qx.debug"))
       {
         if (!parser) {
           throw new Error("Invalid mode: " + mode);

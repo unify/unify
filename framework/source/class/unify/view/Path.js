@@ -128,7 +128,7 @@ qx.Class.define("unify.view.Path",
     parseFragment : function(fragment)
     {
       var match = this.__fragmentMatcher.exec(fragment);
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         if (!match) {
           throw new Error("Invalid location fragment: " + fragment);

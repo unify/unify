@@ -136,7 +136,7 @@ qx.Class.define("unify.ui.NavigationBar",
 
     // overridden
     setItems: function(){
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         this.trace();
         throw new Error(this.toString() + ": Called setItems on NavigationBar, use setLeftItems or setRightItems instead!");

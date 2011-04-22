@@ -91,7 +91,7 @@ qx.Class.define("unify.event.handler.Transition",
     __window : null,
     __root : null,
 
-    __nativeTypes : qx.core.Variant.select("qx.client",
+    __nativeTypes : qx.core.Environment.select("engine.name",
     {
       "webkit" :
       {
@@ -112,7 +112,7 @@ qx.Class.define("unify.event.handler.Transition",
       "default" : null
     }),
 
-    __publicTypes : qx.core.Variant.select("qx.client",
+    __publicTypes : qx.core.Environment.select("engine.name",
     {
       "webkit" :
       {
@@ -152,7 +152,7 @@ qx.Class.define("unify.event.handler.Transition",
     /**
      * @signature function(target, type, capture)
      */
-    registerEvent: qx.core.Variant.select("qx.client",
+    registerEvent: qx.core.Environment.select("engine.name",
     {
       "webkit|gecko" : function(target, type, capture) {
         qx.bom.Event.addNativeListener(target, this.__nativeTypes[type], this.__onEventWrapper);
@@ -166,7 +166,7 @@ qx.Class.define("unify.event.handler.Transition",
     /**
      * @signature function(target, type, capture)
      */
-    unregisterEvent: qx.core.Variant.select("qx.client",
+    unregisterEvent: qx.core.Environment.select("engine.name",
     {
       "webkit|gecko" : function(target, type, capture) {
         qx.bom.Event.removeNativeListener(target, this.__nativeTypes[type], this.__onEventWrapper);

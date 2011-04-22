@@ -162,7 +162,7 @@ qx.Class.define("unify.Application",
       unifyPostitionShift = "3d";
     }
 
-    qx.core.Variant.define("unify.touch", ["precise","wiggly"], unifyTouch);
-    qx.core.Variant.define("unify.postitionshift", ["3d","2d","position"], unifyPostitionShift);
+    qx.core.Environment.add("unify.touch", unifyTouch);
+    qx.core.Environment.add("unify.positionshift", unifyPostitionShift);
   }
 });

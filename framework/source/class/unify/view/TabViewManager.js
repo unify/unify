@@ -29,7 +29,7 @@ qx.Class.define("unify.view.TabViewManager",
   {
     this.base(arguments);
     
-    if (qx.core.Variant.isSet("qx.debug", "on"))
+    if (qx.core.Environment.get("qx.debug"))
     {
       if (viewManager == null) {
         throw new Error("TabViewManager needs a ViewManager at construction time!");

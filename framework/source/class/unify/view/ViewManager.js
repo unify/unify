@@ -29,7 +29,7 @@ qx.Class.define("unify.view.ViewManager",
   {
     this.base(arguments);
 
-    if (qx.core.Variant.isSet("qx.debug", "on"))
+    if (qx.core.Environment.get("qx.debug"))
     {
       if (managerId == null) {
         throw new Error("Invalid manager ID: " + managerId);
@@ -41,7 +41,7 @@ qx.Class.define("unify.view.ViewManager",
     
     // Add to registry
     var registry = unify.view.ViewManager.__managers;
-    if (qx.core.Variant.isSet("qx.debug", "on"))
+    if (qx.core.Environment.get("qx.debug"))
     {
       if (registry[managerId]) {
         throw new Error("Manager ID is already in use by: " + registry[managerId]);
@@ -76,7 +76,7 @@ qx.Class.define("unify.view.ViewManager",
     get : function(managerId)
     {
       var mgr = this.__managers[managerId];
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         if (!mgr) {
           throw new Error("Unknown view manager: " + managerId);
@@ -200,7 +200,7 @@ qx.Class.define("unify.view.ViewManager",
     _createElement: function(){
       // Create root element of manager (used as parent for view elements)
       var elem = this.__element = document.createElement("div");
-      var Class = qx.bom.element2.Class;
+      var Class = qx.bom.element.Class;
       Class.add(elem,"view-manager");
       Class.add(elem,"display-mode-"+this.getDisplayMode());
       elem.id = this.__managerId;
@@ -308,7 +308,7 @@ qx.Class.define("unify.view.ViewManager",
     __resetHelper : function()
     {
       var defaultViewId = this.__defaultViewId;
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         if (defaultViewId == null) {
           throw new Error("Missing default view ID!");
@@ -332,7 +332,7 @@ qx.Class.define("unify.view.ViewManager",
     _applyDisplayMode : function(value,old){
       var elem = this.__element;
       if(elem){
-        var Class = qx.bom.element2.Class;
+        var Class = qx.bom.element.Class;
         Class.remove(elem,"display-mode-"+old);
         Class.add(elem,"display-mode-"+value);
       }
@@ -360,7 +360,7 @@ qx.Class.define("unify.view.ViewManager",
      */
     add : function(viewClass, isDefault)
     {
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         if (!viewClass) {
           throw new Error("Invalid view class to add(): " + viewClass);
@@ -420,7 +420,7 @@ qx.Class.define("unify.view.ViewManager",
      */
     navigate : function(path)
     {
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         if (!(path instanceof unify.view.Path)) {
           throw new Error("Invalid path to navigate() to: " + path);
@@ -452,7 +452,7 @@ qx.Class.define("unify.view.ViewManager",
       var views = this.__views;
       var currentFragment = path[length-1];
       var currentViewCls = views[currentFragment.view || this.__currentView.getId()];
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         if (!currentViewCls) {
           throw new Error("Invalid view: " + currentFragment.view + " in view manager " + this.getId());
@@ -700,7 +700,7 @@ qx.Class.define("unify.view.ViewManager",
       // .segment (switch segment, no transition)
       // :param (switch param, no transition)
 
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         if (rel) {
           throw new Error("Invalid 'rel' attribute: " + rel);
@@ -763,7 +763,7 @@ qx.Class.define("unify.view.ViewManager",
     {
       var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
       if (elem) {
-        qx.bom.element2.Class.add(elem, "pressed");
+        qx.bom.element.Class.add(elem, "pressed");
       }
     },
 
@@ -777,7 +777,7 @@ qx.Class.define("unify.view.ViewManager",
     {
       var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
       if (elem) {
-        qx.bom.element2.Class.remove(elem, "pressed");
+        qx.bom.element.Class.remove(elem, "pressed");
       }
     },
 
@@ -796,7 +796,7 @@ qx.Class.define("unify.view.ViewManager",
     /**
      * {Map} Maps the position of the layer to the platform specific transform value.
      */
-    __positions : qx.core.Variant.select("unify.postitionshift",
+    __positions : qx.core.Environment.select("unify.positionshift",
     {
       "3d" :
       {
@@ -867,11 +867,11 @@ qx.Class.define("unify.view.ViewManager",
       else
       {
         if (oldViewElement) {
-          qx.bom.element2.Class.remove(oldViewElement, "current");
+          qx.bom.element.Class.remove(oldViewElement, "current");
         }
 
         if (currentViewElement) {
-          qx.bom.element2.Class.add(currentViewElement, "current");
+          qx.bom.element.Class.add(currentViewElement, "current");
         }
       }
 
@@ -901,8 +901,8 @@ qx.Class.define("unify.view.ViewManager",
       var targetStyle = target.style;
 
       // Normalize cross-browser differences
-      var transformProperty = qx.bom.element2.Style.property("transform");
-      var durationProperty = qx.bom.element2.Style.property("transitionDuration");
+      var transformProperty = qx.bom.element.Style.property("transform");
+      var durationProperty = qx.bom.element.Style.property("transitionDuration");
 
       // Method to cleanup after transition
       var cleanup = function()
@@ -917,13 +917,13 @@ qx.Class.define("unify.view.ViewManager",
         // Otherwise hide this layer when not the current one
         if (current && other)
         {
-          qx.bom.element2.Class.remove(other, "current");
+          qx.bom.element.Class.remove(other, "current");
         }
 
         // Make completely invisible if not current layer
         else if (!current)
         {
-          qx.bom.element2.Class.remove(target, "current");
+          qx.bom.element.Class.remove(target, "current");
         }
 
         // Revert modifications
@@ -940,7 +940,7 @@ qx.Class.define("unify.view.ViewManager",
       // Initial display when current layer
       if (current)
       {
-        qx.bom.element2.Class.add(target, "current");
+        qx.bom.element.Class.add(target, "current");
 
         // Force rendering
         target.offsetWidth + target.offsetHeight;
@@ -949,7 +949,7 @@ qx.Class.define("unify.view.ViewManager",
       // Or show other layer when not the current one
       else if (other)
       {
-        qx.bom.element2.Class.add(other, "current");
+        qx.bom.element.Class.add(other, "current");
       }
 
       // Enable transition and slide to target value
@@ -972,14 +972,14 @@ qx.Class.define("unify.view.ViewManager",
       var targetStyle = target.style;
       var managerStyle=this.__element.style;
       // Normalize cross-browser differences
-      var transformProperty = qx.bom.element2.Style.property("transform");
-      var durationProperty = qx.bom.element2.Style.property("transitionDuration");
+      var transformProperty = qx.bom.element.Style.property("transform");
+      var durationProperty = qx.bom.element.Style.property("transitionDuration");
 
       // Method to cleanup after transition
       var cleanup = function()
       {
         if(!current){
-          qx.bom.element2.Class.remove(target, "current");
+          qx.bom.element.Class.remove(target, "current");
         }
         // Remove listener
         qx.event.Registration.removeListener(target, "transitionEnd", cleanup, this);
@@ -1014,7 +1014,7 @@ qx.Class.define("unify.view.ViewManager",
       targetStyle[transformProperty] = to;
 
       if(current){
-        qx.bom.element2.Class.add(target, "current");
+        qx.bom.element.Class.add(target, "current");
       }
    }
   }
