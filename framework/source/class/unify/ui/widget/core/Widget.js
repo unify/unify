@@ -77,7 +77,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       apply : "_applyEnabled",
       event : "changeEnabled",
       init : true
-    },
+    }
   },
   
   statics : {
