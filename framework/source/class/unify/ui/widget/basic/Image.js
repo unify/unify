@@ -9,7 +9,6 @@ qx.Class.define("unify.ui.widget.basic.Image", {
   
   properties : {
     source : {
-      type : "string",
       apply : "_applySource"
     }
   },
