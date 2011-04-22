@@ -236,8 +236,6 @@ qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
 
     // property apply
     _applyOrientation : function(value) {
-      console.debug('------> _applyOrientation called', value);
-      
       // Additional storage, higher memory but reduced number of function calls in render()
       var horizontal = this.__horizontal = value === "horizontal";
 
@@ -248,8 +246,6 @@ qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
 
     // property apply
     _applyVisible : function(value) {
-      console.debug('------> _applyVisible called', value);
-      
       // Additional storage, higher memory but reduced number of function calls in render()
       this.__isVisible = value;
 
