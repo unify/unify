@@ -11,6 +11,8 @@
  * This class allows interacting with Geolocation support. It dynamically
  * supports different native implementions like available through HTML5,
  * Google Gears, Adobe AIR or PhoneGap.
+ * 
+ * @deprecated
  */
 qx.Class.define("unify.bom.GeoLocation",
 {
