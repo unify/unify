@@ -599,7 +599,7 @@ qx.Class.define("unify.view.ViewManager",
      */
     __onClick : function(e)
     {
-      var elem = qx.dom.Hierarchy.closest(e.getTarget(), "a[href]");
+      var elem = unify.bom.Hierarchy.closest(e.getTarget(), "a[href]");
       if (elem) {
         e.preventDefault();
       }
@@ -613,7 +613,7 @@ qx.Class.define("unify.view.ViewManager",
      */
     __onTap : function(e)
     {
-      var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
+      var elem = unify.bom.Hierarchy.closest(e.getTarget(), this.__followable);
       if (elem &&!elem.getAttribute('disabled'))
       {
         // Stop further event processing
@@ -761,7 +761,7 @@ qx.Class.define("unify.view.ViewManager",
      */
     __onTouchHold : function(e)
     {
-      var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
+      var elem = unify.bom.Hierarchy.closest(e.getTarget(), this.__followable);
       if (elem) {
         qx.bom.element.Class.add(elem, "pressed");
       }
@@ -775,7 +775,7 @@ qx.Class.define("unify.view.ViewManager",
      */
     __onTouchRelease : function(e)
     {
-      var elem = qx.dom.Hierarchy.closest(e.getTarget(), this.__followable);
+      var elem = unify.bom.Hierarchy.closest(e.getTarget(), this.__followable);
       if (elem) {
         qx.bom.element.Class.remove(elem, "pressed");
       }

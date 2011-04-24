@@ -181,7 +181,7 @@ qx.Class.define("unify.view.TabViewManager",
      */
     __onTap : function(e) 
     {
-      var elem = qx.dom.Hierarchy.closest(e.getTarget(), "div[view]");
+      var elem = unify.bom.Hierarchy.closest(e.getTarget(), "div[view]");
       if (elem)
       {
         var viewManager = this.__viewManager;
