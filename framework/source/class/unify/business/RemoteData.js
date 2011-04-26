@@ -543,7 +543,7 @@ qx.Class.define("unify.business.RemoteData",
      * Adds basic authentification data to the request given on the
      * properties {@link #user} and {@link #password}.
      *
-     * @param req {qx.io.HttpRequest} Request object to modify
+     * @param req {unify.io.HttpRequest} Request object to modify
      */
     __addBasicAuth : function(req)
     {
@@ -557,7 +557,7 @@ qx.Class.define("unify.business.RemoteData",
     /**
      * Adds custom request headers to the request
      *
-     * @param req {qx.io.HttpRequest} Request object to modify
+     * @param req {unify.io.HttpRequest} Request object to modify
      */
     __addRequestHeaders : function(req)
     {
@@ -602,7 +602,7 @@ qx.Class.define("unify.business.RemoteData",
       }
 
       // Create request object
-      var HttpRequest = qx.io.HttpRequest;
+      var HttpRequest = unify.io.HttpRequest;
       var req = new HttpRequest(url);
 
       // Sync mime type
