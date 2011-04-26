@@ -86,7 +86,6 @@ qx.Class.define("unify.ui.widget.container.ToolBar", {
   
   destruct : function() {
     this.__view = null;
-    this.__toolBar.dispose();
     this.__toolBar = null;
   }
 });

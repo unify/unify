@@ -152,7 +152,6 @@ qx.Class.define("unify.ui.widget.container.NavigationBar", {
     view.removeListener("changeParent", this.__onViewChangeParent, this);
     view.removeListener("changeMaster", this.__onViewChangeMaster, this);
     view = this.__view = null;
-    this.__navigationBar.dispose();
     this.__navigationBar = null;
   }
 });

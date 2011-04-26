@@ -101,7 +101,6 @@ qx.Class.define("unify.ui.widget.core.Layer", {
   
   destruct : function() {
     this.__view.removeListener("appear", this.__viewAppear);
-    this.__view.removeListener("disappear", this.__viewDisappear);
     
     this.__elem = null;
     this.__layer = null;
