@@ -157,7 +157,7 @@ qx.Class.define("unify.view.PopOverManager",
       if (this.__visibleViewManagers.indexOf(viewManager) >-1) {
         return;//already visible
       }
-      if (qx.core.Variant.isSet("qx.debug", "on")) {
+      if (qx.core.Environment.get("qx.debug")) {
         this.debug("Show: " + id);
       }
       var elem = viewManager.getElement();

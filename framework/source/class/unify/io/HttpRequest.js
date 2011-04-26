@@ -307,7 +307,7 @@ qx.Class.define("unify.io.HttpRequest",
      */
     setRequestHeader : function(label, value)
     {
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         if (label == "Cache-Control") {
           throw new Error("Configured 'Cache-Control' through headers. Please use setCache() instead!");
@@ -612,7 +612,7 @@ qx.Class.define("unify.io.HttpRequest",
     {
       if (this.__req) {
         this.__req.abort();
-      } else if (qx.core.Variant.isSet("qx.debug", "on")) {
+      } else if (qx.core.Environment.get("qx.debug")) {
         throw new Error("Not able to abort a non-running request.");
       }
     },

@@ -265,7 +265,7 @@ qx.Class.define("unify.view.StaticView",
         Class.add(layerElem, "has-parent");
       }
 
-      if (qx.core.Variant.isSet("qx.debug", "on")) {
+      if (qx.core.Environment.get("qx.debug")) {
         this.debug("Created in: " + ((new Date).valueOf() - now) + "ms");
       }
       return layer;

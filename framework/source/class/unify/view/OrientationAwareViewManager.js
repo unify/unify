@@ -60,14 +60,14 @@ qx.Class.define("unify.view.OrientationAwareViewManager",
 
       if(isLandscape){
         if(oldOrient != "landscape"){
-          if (qx.core.Variant.isSet("qx.debug", "on")) {
+          if (qx.core.Environment.get("qx.debug")) {
             this.debug("Switching to landscape layout");
           }
           elem.setAttribute("orient", "landscape");
         }
       } else {
         if(oldOrient != "portrait"){
-          if (qx.core.Variant.isSet("qx.debug", "on")) {
+          if (qx.core.Environment.get("qx.debug")) {
             this.debug("Switching to portrait layout");
           }
           elem.setAttribute("orient", "portrait");

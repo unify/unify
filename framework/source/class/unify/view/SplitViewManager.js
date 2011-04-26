@@ -87,7 +87,7 @@ qx.Class.define("unify.view.SplitViewManager",
 
       if(isLandscape){
         if(oldOrient != "landscape"){
-          if (qx.core.Variant.isSet("qx.debug", "on")) {
+          if (qx.core.Environment.get("qx.debug")) {
             this.debug("Switching to landscape layout");
           }
           PopOverManager.hide(master.getId());
@@ -98,7 +98,7 @@ qx.Class.define("unify.view.SplitViewManager",
         }
       } else {
         if(oldOrient != "portrait"){
-          if (qx.core.Variant.isSet("qx.debug", "on")) {
+          if (qx.core.Environment.get("qx.debug")) {
             this.debug("Switching to portrait layout");
           }
           elem.setAttribute("orient", "portrait");
