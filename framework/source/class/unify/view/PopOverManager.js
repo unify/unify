@@ -157,9 +157,9 @@ qx.Class.define("unify.view.PopOverManager",
       if (this.__visibleViewManagers.indexOf(viewManager) >-1) {
         return;//already visible
       }
-      
-      this.debug("Show: " + id);
-      
+      if (qx.core.Variant.isSet("qx.debug", "on")) {
+        this.debug("Show: " + id);
+      }
       var elem = viewManager.getElement();
       if(viewManager.getDisplayMode()=='popover'){
         var wrapper = document.createElement('div');
