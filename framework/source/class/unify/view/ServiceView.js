@@ -184,7 +184,9 @@ qx.Class.define("unify.view.ServiceView",
         this.error("Failed to render \"" + this._getServiceName() + "\" data: " + ex);
         this._errorHandler("renderer", ex);
       }
-      this.debug("Rendered in: " + ((new Date).valueOf() - now) + "ms");
+      if (qx.core.Variant.isSet("qx.debug", "on")) {
+        this.debug("Rendered in: " + ((new Date).valueOf() - now) + "ms");
+      }
     }
   }
 });
