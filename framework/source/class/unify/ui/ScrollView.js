@@ -7,12 +7,6 @@
     Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
 *********************************************************************************************** */
-/* ************************************************************************
-
-#require(unify.event.handler.Transition)
-#require(unify.event.handler.Touch)
-
-************************************************************************ */
 
 /**
  * Component for "virtual" scrolling through mouse or touch controls.
@@ -434,11 +428,11 @@ qx.Class.define("unify.ui.ScrollView",
       // Add event listeners
       var Registration = qx.event.Registration;
       var root = document.documentElement;
-      Registration.addListener(elem, "touchstart", this.__onTouchStart, this);
+      Registration.addListener(elem, "utouchstart", this.__onTouchStart, this);
       Registration.addListener(contentElem, "transitionEnd", this.__onTransitionEnd, this);
-      Registration.addListener(root, "touchmove", this.__onTouchMove, this);
-      Registration.addListener(root, "touchend", this.__onTouchEnd, this);
-      Registration.addListener(root, "touchcancel", this.__onTouchEnd, this);
+      Registration.addListener(root, "utouchmove", this.__onTouchMove, this);
+      Registration.addListener(root, "utouchend", this.__onTouchEnd, this);
+      Registration.addListener(root, "utouchcancel", this.__onTouchEnd, this);
 
       return elem;
     },

@@ -71,13 +71,13 @@ qx.Class.define("unify.event.handler.Touch",
     /** {Map} Supported event types */
     SUPPORTED_TYPES :
     {
-      tap : 1,
-      touchstart : 1,
-      touchmove : 1,
-      touchend : 1,
-      touchcancel : 1,
-      touchhold : 1,
-      touchrelease : 1
+      utap : 1,
+      utouchstart : 1,
+      utouchmove : 1,
+      utouchend : 1,
+      utouchcancel : 1,
+      utouchhold : 1,
+      utouchrelease : 1
     },
 
     /** {Integer} Which target check to use */
@@ -293,7 +293,7 @@ qx.Class.define("unify.event.handler.Touch",
       }
 
       // Fire qooxdoo event
-      Registration.fireEvent(target, type, unify.event.type.Touch, [nativeEvent, target, null, true, true]);
+      Registration.fireEvent(target, "u"+type, unify.event.type.Touch, [nativeEvent, target, null, true, true]);
 
       // Fire virtual tap event
       if (touches === 1)
@@ -316,7 +316,7 @@ qx.Class.define("unify.event.handler.Touch",
           this.__touchDownHandle = window.setTimeout(function()
           {
             self.__hold = true;
-            Registration.fireEvent(target, "touchhold", unify.event.type.Touch, [nativeEvent, target, null, true, false]);
+            Registration.fireEvent(target, "utouchhold", unify.event.type.Touch, [nativeEvent, target, null, true, false]);
           }, 50);
         }
         else
@@ -340,11 +340,11 @@ qx.Class.define("unify.event.handler.Touch",
           if (this.__hold)
           {
             this.__hold = null;
-            Registration.fireEvent(target, "touchrelease", unify.event.type.Touch, [nativeEvent, target, null, true, false]);
+            Registration.fireEvent(target, "utouchrelease", unify.event.type.Touch, [nativeEvent, target, null, true, false]);
           }
 
           if (!this.__hasMoved && target === this.__originalTarget && type === "touchend") {
-            Registration.fireEvent(target, "tap", unify.event.type.Touch, [nativeEvent, target, null, true, false]);
+            Registration.fireEvent(target, "utap", unify.event.type.Touch, [nativeEvent, target, null, true, false]);
           }
         }
       }
