@@ -108,7 +108,7 @@ qx.Class.define("unify.view.TabViewManager",
         var bar = this.__bar = document.createElement("div");
         bar.className = "tab-bar";
         elem.appendChild(bar);
-        qx.event.Registration.addListener(bar, "tap", this.__onTap, this);
+        qx.event.Registration.addListener(bar, "utap", this.__onTap, this);
       }
 
       return elem;

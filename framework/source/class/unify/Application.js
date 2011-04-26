@@ -13,6 +13,7 @@
 #require(unify.event.handler.Orientation)
 #require(unify.event.handler.Transition)
 #require(unify.event.handler.Touch)
+* #require(qx.event.handler.Touch)
 #require(qx.log.appender.Native)
 #require(qx.event.handler.Mouse)
 

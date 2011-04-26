@@ -206,9 +206,9 @@ qx.Class.define("unify.view.ViewManager",
       elem.id = this.__managerId;
       // Register to navigation events
       qx.event.Registration.addListener(elem, "click", this.__onClick, this);
-      qx.event.Registration.addListener(elem, "tap", this.__onTap, this);
-      qx.event.Registration.addListener(elem, "touchhold", this.__onTouchHold, this);
-      qx.event.Registration.addListener(elem, "touchrelease", this.__onTouchRelease, this);
+      qx.event.Registration.addListener(elem, "utap", this.__onTap, this);
+      qx.event.Registration.addListener(elem, "utouchhold", this.__onTouchHold, this);
+      qx.event.Registration.addListener(elem, "utouchrelease", this.__onTouchRelease, this);
       return elem;
     },
 
