@@ -157,7 +157,7 @@ qx.Class.define("unify.view.TabViewManager",
     // property apply
     _applySelected : function(value, old)
     {
-      var Class = qx.bom.element2.Class;
+      var Class = qx.bom.element.Class;
       var bar = this.__bar;
       var children = bar.childNodes;
       for (var i=0, l=children.length; i<l; i++) 

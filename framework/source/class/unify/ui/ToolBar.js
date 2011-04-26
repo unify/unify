@@ -112,7 +112,7 @@ qx.Class.define("unify.ui.ToolBar",
     __onChangeSegment : function(e)
     {
       var 
-        Class = qx.bom.element2.Class,
+        Class = qx.bom.element.Class,
         allSegmented = e.getTarget().getElement().querySelectorAll(".segmented");
         
       for (var i = 0, l =  allSegmented.length; i < l; i += 1) 
@@ -193,16 +193,16 @@ qx.Class.define("unify.ui.ToolBar",
       
       // add kind as CSS class
       if (config.kind) {
-        qx.bom.element2.Class.add(itemElem, config.kind);
+        qx.bom.element.Class.add(itemElem, config.kind);
       }
       
       // add additional classes
       if (config.addclass) {
-        qx.bom.element2.Class.add(itemElem, config.addclass);
+        qx.bom.element.Class.add(itemElem, config.addclass);
       }
       
       if (config.style) {
-        qx.bom.element2.Class.add(itemElem, config.style);
+        qx.bom.element.Class.add(itemElem, config.style);
       }
       
       // add label or icon container

@@ -151,7 +151,7 @@ qx.Class.define("unify.ui.ScrollIndicator",
      */
     render : function(position, size)
     {
-      var Style = qx.bom.element2.Style;
+      var Style = qx.bom.element.Style;
 
       if (this.__position !== position)
       {
@@ -219,7 +219,7 @@ qx.Class.define("unify.ui.ScrollIndicator",
       {
         // Recover old position
         var translate = this.__horizontal ? "translate3d(" + this.__position + "px,0,0)" : "translate3d(0," + this.__position + "px,0)";
-        qx.bom.element2.Style.set(this.getElement(), "transform", translate);
+        qx.bom.element.Style.set(this.getElement(), "transform", translate);
 
         // Fade in
         this.__isFadingOut = false;
@@ -251,7 +251,7 @@ qx.Class.define("unify.ui.ScrollIndicator",
     {
       if (this.__isFadingOut)
       {
-        qx.bom.element2.Style.set(this.getElement(), "transform", null);
+        qx.bom.element.Style.set(this.getElement(), "transform", null);
         this.__isFadingOut = false;
       }
     }
