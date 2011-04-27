@@ -265,8 +265,9 @@ qx.Class.define("unify.view.StaticView",
         Class.add(layerElem, "has-parent");
       }
 
-      this.debug("Created in: " + ((new Date).valueOf() - now) + "ms");
-
+      if (qx.core.Environment.get("qx.debug")) {
+        this.debug("Created in: " + ((new Date).valueOf() - now) + "ms");
+      }
       return layer;
     },
 

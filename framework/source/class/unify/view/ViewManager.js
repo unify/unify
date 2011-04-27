@@ -565,7 +565,9 @@ qx.Class.define("unify.view.ViewManager",
 
       // Re-activate view (normally only useful if it was paused before)
       var view = this.__currentView;
-      this.debug("Show with: " + view);
+      if (qx.core.Environment.get("qx.debug")) {
+        this.debug("Show with: " + view);
+      }
       if (view) {
         view.setActive(true);
       }

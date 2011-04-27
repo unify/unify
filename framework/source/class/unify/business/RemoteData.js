@@ -311,13 +311,17 @@ qx.Class.define("unify.business.RemoteData",
           {
             start = new Date;
             data = qx.lang.Json.parse(data);
-            this.debug("Restored JSON in: " + (new Date - start) + "ms");
+            if (qx.core.Environment.get("qx.debug")) {
+              this.debug("Restored JSON in: " + (new Date - start) + "ms");
+            }
           }
           else if (entry.type == "application/xml")
           {
             start = new Date;
             data = qx.xml.Document.fromString(data);
-            this.debug("Recovered XML in: " + (new Date - start) + "ms");
+            if (qx.core.Environment.get("qx.debug")) {
+              this.debug("Recovered XML in: " + (new Date - start) + "ms");
+            }
           }
 
           // Store data
@@ -655,8 +659,9 @@ qx.Class.define("unify.business.RemoteData",
       // Every request has a unique identifier
       var id = this.__requestCounter++;
       req.setUserData("id", id);
-      this.debug("Sending request to: " + service + "[id=" + id + "]...");
-
+      if (qx.core.Environment.get("qx.debug")) {
+        this.debug("Sending request to: " + service + "[id=" + id + "]...");
+      }
       // Finally send request
       req.send();
 
@@ -717,7 +722,9 @@ qx.Class.define("unify.business.RemoteData",
                 this.error("failed to parse json: "+ex);
                 isMalformed=true;
               }
-              this.debug("Parsed JSON in: " + (new Date - start) + "ms");
+              if (qx.core.Environment.get("qx.debug")) {
+                this.debug("Parsed JSON in: " + (new Date - start) + "ms");
+              }
               break;
 
             case "application/xml":
@@ -727,15 +734,18 @@ qx.Class.define("unify.business.RemoteData",
               {
                 start = new Date;
                 data = unify.util.XmlToJson.convert(data);
-                this.debug("Converted to JSON in: " + (new Date - start) + "ms");
-
+                if (qx.core.Environment.get("qx.debug")) {
+                  this.debug("Converted to JSON in: " + (new Date - start) + "ms");
+                }
                 // Fix type as we now deal with JSON only
                 type = "application/json";
 
                 // Overwrite original text from service with stringified converted json
                 start = new Date;
                 text = Json.stringify(data);
-                this.debug("Prepared to cache in: " + (new Date - start) + "ms");
+                if (qx.core.Environment.get("qx.debug")) {
+                  this.debug("Prepared to cache in: " + (new Date - start) + "ms");
+                }
               }
               break;
           }
@@ -803,7 +813,9 @@ qx.Class.define("unify.business.RemoteData",
               metaStored=true;
               var storageDataId = this.__storageDataPrefix + cacheId;
               Storage.set(storageDataId, text);
-              this.debug("Stored in: " + (new Date - start) + "ms");
+              if (qx.core.Environment.get("qx.debug")) {
+                this.debug("Stored in: " + (new Date - start) + "ms");
+              }
             }
             catch(ex) {
               this.warn("Could not store data: " + ex);
