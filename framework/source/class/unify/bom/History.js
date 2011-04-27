@@ -36,12 +36,16 @@ qx.Class.define("unify.bom.History",
     // https://developer.mozilla.org/en/DOM/window.onhashchange
     if (qx.bom.Event.supportsEvent(window, "hashchange"))
     {
-      this.debug("Using HTML5 hashchange");
+      if (qx.core.Environment.get("qx.debug")) {
+        this.debug("Using HTML5 hashchange");
+      }
       qx.bom.Event.addNativeListener(window, "hashchange", this.__onCallbackWrapped);
     }
     else
     {
-      this.debug("Using interval");
+      if (qx.core.Environment.get("qx.debug")) {
+        this.debug("Using interval");
+      }
       this.__intervalHandler = window.setInterval(this.__onCallbackWrapped, 100);
     }
   },

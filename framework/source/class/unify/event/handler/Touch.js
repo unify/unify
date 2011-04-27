@@ -263,7 +263,9 @@ qx.Class.define("unify.event.handler.Touch",
 
       // Debug
       if (touches > 1) {
-        this.debug("More than one change at once!");
+        if (qx.core.Environment.get("qx.debug")) {
+          this.debug("More than one change at once!");
+        }
       }
 
       // Fix text node clicks

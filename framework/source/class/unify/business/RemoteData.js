@@ -311,13 +311,17 @@ qx.Class.define("unify.business.RemoteData",
           {
             start = new Date;
             data = qx.lang.Json.parse(data);
-            this.debug("Restored JSON in: " + (new Date - start) + "ms");
+            if (qx.core.Environment.get("qx.debug")) {
+              this.debug("Restored JSON in: " + (new Date - start) + "ms");
+            }
           }
           else if (entry.type == "application/xml")
           {
             start = new Date;
             data = qx.xml.Document.fromString(data);
-            this.debug("Recovered XML in: " + (new Date - start) + "ms");
+            if (qx.core.Environment.get("qx.debug")) {
+              this.debug("Recovered XML in: " + (new Date - start) + "ms");
+            }
           }
 
           // Store data
@@ -540,34 +544,6 @@ qx.Class.define("unify.business.RemoteData",
 
 
     /**
-     * Adds basic authentification data to the request given on the
-     * properties {@link #user} and {@link #password}.
-     *
-     * @param req {unify.io.HttpRequest} Request object to modify
-     */
-    __addBasicAuth : function(req)
-    {
-      var key = this.getEnableProxy() ? "X-Proxy-Authorization" : "Authorization";
-      var value = "Basic " + qx.util.Base64.encode(this.getUser() + ":" + this.getPassword());
-
-      req.setRequestHeader(key, value);
-    },
-
-
-    /**
-     * Adds custom request headers to the request
-     *
-     * @param req {unify.io.HttpRequest} Request object to modify
-     */
-    __addRequestHeaders : function(req)
-    {
-      var headers = this.__headers;
-      for (var name in headers) {
-        req.setRequestHeader(name, headers[name]);
-      }
-    },
-
-    /**
      * Sets custom request headers
      *
      * @param name {String} Name of header
@@ -591,8 +567,9 @@ qx.Class.define("unify.business.RemoteData",
     {
       var config = this._getService(service);
 
+      var url;
       try {
-        var url = this.__patchUrl(config.url, params);
+        url = this.__patchUrl(config.url, params);
       }
       catch(ex)
       {
@@ -602,11 +579,14 @@ qx.Class.define("unify.business.RemoteData",
       }
 
       // Create request object
-      var HttpRequest = unify.io.HttpRequest;
-      var req = new HttpRequest(url);
+      var HttpRequest = unify.io.request.Xhr;
+      var req = new HttpRequest();
+      req.setUrl(url);
+
+      var requestHeaders = req.getRequestHeaders();
 
       // Sync mime type
-      req.setResponseType(this.getResponseType());
+      requestHeaders.Accept = this.getResponseType();
 
       // Sync timeout
       req.setTimeout(this.getTimeout());
@@ -616,16 +596,23 @@ qx.Class.define("unify.business.RemoteData",
       {
         req.setCache(true);
         if (this.getEnableCacheRefresh()) {
-          req.setRefresh(true);
+          //req.setRefresh(true);
+          // TODO
+          
+          var cacheModified = this.getCachedField(service, params, "modified");
+          if (cacheModified != null) {
+            requestHeaders["If-Modified-Since"] = cacheModified;
+          }
         }
 
         // Enable refresh if there is a usable cache entry
-        var cacheModified = this.getCachedField(service, params, "modified");
+        /*var cacheModified = this.getCachedField(service, params, "modified");
         if (cacheModified != null) {
           HttpRequest.sync(url, cacheModified);
         } else {
           HttpRequest.clear(url);
-        }
+        }*/
+        // TODO
       }
 
       // Apply method
@@ -636,11 +623,17 @@ qx.Class.define("unify.business.RemoteData",
       // Support for authentification methods
       var auth = this.getAuthMethod();
       if (auth == "basic") {
-        this.__addBasicAuth(req);
+        var key = this.getEnableProxy() ? "X-Proxy-Authorization" : "Authorization";
+        var value = "Basic " + qx.util.Base64.encode(this.getUser() + ":" + this.getPassword());
+
+        requestHeaders[key] = value;
       }
 
       // Add custom headers
-      this.__addRequestHeaders(req);
+      var headers = this.__headers;
+      for (var name in headers) {
+        requestHeaders[name] = headers[name];
+      }
 
       // Add post data
       if (method == "POST")
@@ -650,7 +643,7 @@ qx.Class.define("unify.business.RemoteData",
           data = qx.lang.Json.stringify(data);
         }
 
-        req.setRequestType(reqType);
+        requestHeaders["Content-Type"] = reqType;
         req.setData(data);
       }
 
@@ -666,8 +659,9 @@ qx.Class.define("unify.business.RemoteData",
       // Every request has a unique identifier
       var id = this.__requestCounter++;
       req.setUserData("id", id);
-      this.debug("Sending request to: " + service + "[id=" + id + "]...");
-
+      if (qx.core.Environment.get("qx.debug")) {
+        this.debug("Sending request to: " + service + "[id=" + id + "]...");
+      }
       // Finally send request
       req.send();
 
@@ -728,25 +722,30 @@ qx.Class.define("unify.business.RemoteData",
                 this.error("failed to parse json: "+ex);
                 isMalformed=true;
               }
-              this.debug("Parsed JSON in: " + (new Date - start) + "ms");
+              if (qx.core.Environment.get("qx.debug")) {
+                this.debug("Parsed JSON in: " + (new Date - start) + "ms");
+              }
               break;
 
             case "application/xml":
-              data = req.getResponseXml();
+              data = req.getTransport().responseXML; //req.getResponseXml();
               // Modify data and modify text
               if (this.getEnableXmlConverter())
               {
                 start = new Date;
                 data = unify.util.XmlToJson.convert(data);
-                this.debug("Converted to JSON in: " + (new Date - start) + "ms");
-
+                if (qx.core.Environment.get("qx.debug")) {
+                  this.debug("Converted to JSON in: " + (new Date - start) + "ms");
+                }
                 // Fix type as we now deal with JSON only
                 type = "application/json";
 
                 // Overwrite original text from service with stringified converted json
                 start = new Date;
                 text = Json.stringify(data);
-                this.debug("Prepared to cache in: " + (new Date - start) + "ms");
+                if (qx.core.Environment.get("qx.debug")) {
+                  this.debug("Prepared to cache in: " + (new Date - start) + "ms");
+                }
               }
               break;
           }
@@ -814,7 +813,9 @@ qx.Class.define("unify.business.RemoteData",
               metaStored=true;
               var storageDataId = this.__storageDataPrefix + cacheId;
               Storage.set(storageDataId, text);
-              this.debug("Stored in: " + (new Date - start) + "ms");
+              if (qx.core.Environment.get("qx.debug")) {
+                this.debug("Stored in: " + (new Date - start) + "ms");
+              }
             }
             catch(ex) {
               this.warn("Could not store data: " + ex);
