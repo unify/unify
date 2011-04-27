@@ -211,11 +211,10 @@ qx.Class.define("unify.util.Uri",
     removeParam : function(name)
     {
       var data = this.__params;
-      if (!data) {
-        return;
+      if (data) {
+        delete data[name];
       }
-
-      delete data[name];
+      return this;
     },
 
 

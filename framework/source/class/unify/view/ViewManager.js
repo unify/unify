@@ -323,7 +323,7 @@ qx.Class.define("unify.view.ViewManager",
         param : null
       });
 
-      viewObj.setSegment(viewObj.getDefaultSegment());
+      viewObj.setSegment(viewObj.getDefaultSegment()||null);
       viewObj.resetParam();
       this.__setView(viewObj);
       this.fireDataEvent("changePath", this.__path);
@@ -494,14 +494,14 @@ qx.Class.define("unify.view.ViewManager",
 
         var parentViewObj = parentViewCls.getInstance();
 
-        parentViewObj.setSegment(parentFragment.segment);
-        parentViewObj.setParam(parentFragment.param);
+        parentViewObj.setSegment(parentFragment.segment||null);
+        parentViewObj.setParam(parentFragment.param||null);
         currentViewObj.setParent(parentViewObj);
       }
 
       // Now update the current view and switch to it
-      currentViewObj.setSegment(currentFragment.segment);
-      currentViewObj.setParam(currentFragment.param);
+      currentViewObj.setSegment(currentFragment.segment||null);
+      currentViewObj.setParam(currentFragment.param||null);//TODO check falsy strings?
       this.__setView(currentViewObj, layerTransition);
       var mode=this.getDisplayMode();
       if(mode=='modal'){
