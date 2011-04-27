@@ -33,7 +33,7 @@ qx.Class.define("unify.business.CompletedEvent",
      * @param modified {Boolean} Whether the request comes with modified data.
      * @param errornous {Boolean} Whether the request was errornous.
      * @param malformed {Boolean} Whether the response content is malformed
-     * @param request {unify.io.HttpRequest} Request object to query communication details
+     * @param request {qx.io.request.Xhr} Request object to query communication details
      * @return {tweet.business.TwitterEvent} The initialized event instance
      */
     init : function(id, data, modified, errornous, malformed, request)
@@ -132,7 +132,7 @@ qx.Class.define("unify.business.CompletedEvent",
      * Returns the request object. Don't rely on this object to persist.
      * It is immediately destroyed after the function is quit.
      *
-     * @return {unify.io.HttpRequest} Request object
+     * @return {qx.io.request.Xhr} Request object
      */
     getRequest : function() {
       return this.__request;

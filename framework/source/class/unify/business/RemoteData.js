@@ -540,34 +540,6 @@ qx.Class.define("unify.business.RemoteData",
 
 
     /**
-     * Adds basic authentification data to the request given on the
-     * properties {@link #user} and {@link #password}.
-     *
-     * @param req {unify.io.HttpRequest} Request object to modify
-     */
-    __addBasicAuth : function(req)
-    {
-      var key = this.getEnableProxy() ? "X-Proxy-Authorization" : "Authorization";
-      var value = "Basic " + qx.util.Base64.encode(this.getUser() + ":" + this.getPassword());
-
-      req.setRequestHeader(key, value);
-    },
-
-
-    /**
-     * Adds custom request headers to the request
-     *
-     * @param req {unify.io.HttpRequest} Request object to modify
-     */
-    __addRequestHeaders : function(req)
-    {
-      var headers = this.__headers;
-      for (var name in headers) {
-        req.setRequestHeader(name, headers[name]);
-      }
-    },
-
-    /**
      * Sets custom request headers
      *
      * @param name {String} Name of header
@@ -591,8 +563,9 @@ qx.Class.define("unify.business.RemoteData",
     {
       var config = this._getService(service);
 
+      var url;
       try {
-        var url = this.__patchUrl(config.url, params);
+        url = this.__patchUrl(config.url, params);
       }
       catch(ex)
       {
@@ -602,11 +575,14 @@ qx.Class.define("unify.business.RemoteData",
       }
 
       // Create request object
-      var HttpRequest = unify.io.HttpRequest;
-      var req = new HttpRequest(url);
+      var HttpRequest = unify.io.request.Xhr;
+      var req = new HttpRequest();
+      req.setUrl(url);
+
+      var requestHeaders = req.getRequestHeaders();
 
       // Sync mime type
-      req.setResponseType(this.getResponseType());
+      requestHeaders.Accept = this.getResponseType();
 
       // Sync timeout
       req.setTimeout(this.getTimeout());
@@ -616,16 +592,23 @@ qx.Class.define("unify.business.RemoteData",
       {
         req.setCache(true);
         if (this.getEnableCacheRefresh()) {
-          req.setRefresh(true);
+          //req.setRefresh(true);
+          // TODO
+          
+          var cacheModified = this.getCachedField(service, params, "modified");
+          if (cacheModified != null) {
+            requestHeaders["If-Modified-Since"] = cacheModified;
+          }
         }
 
         // Enable refresh if there is a usable cache entry
-        var cacheModified = this.getCachedField(service, params, "modified");
+        /*var cacheModified = this.getCachedField(service, params, "modified");
         if (cacheModified != null) {
           HttpRequest.sync(url, cacheModified);
         } else {
           HttpRequest.clear(url);
-        }
+        }*/
+        // TODO
       }
 
       // Apply method
@@ -636,11 +619,17 @@ qx.Class.define("unify.business.RemoteData",
       // Support for authentification methods
       var auth = this.getAuthMethod();
       if (auth == "basic") {
-        this.__addBasicAuth(req);
+        var key = this.getEnableProxy() ? "X-Proxy-Authorization" : "Authorization";
+        var value = "Basic " + qx.util.Base64.encode(this.getUser() + ":" + this.getPassword());
+
+        requestHeaders[key] = value;
       }
 
       // Add custom headers
-      this.__addRequestHeaders(req);
+      var headers = this.__headers;
+      for (var name in headers) {
+        requestHeaders[name] = headers[name];
+      }
 
       // Add post data
       if (method == "POST")
@@ -650,7 +639,7 @@ qx.Class.define("unify.business.RemoteData",
           data = qx.lang.Json.stringify(data);
         }
 
-        req.setRequestType(reqType);
+        requestHeaders["Content-Type"] = reqType;
         req.setData(data);
       }
 
@@ -732,7 +721,7 @@ qx.Class.define("unify.business.RemoteData",
               break;
 
             case "application/xml":
-              data = req.getResponseXml();
+              data = req.getTransport().responseXML; //req.getResponseXml();
               // Modify data and modify text
               if (this.getEnableXmlConverter())
               {
