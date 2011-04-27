@@ -554,7 +554,7 @@ qx.Class.define("unify.business.RemoteData",
     },
 
     __isModified : function(req) {
-      return !(req.getStatus() === 304 || req.getResponseHeader("Last-Modified") === unify.business.SyncRegistry.get(this.getUrl()));
+      return !(req.getStatus() === 304 || req.getResponseHeader("Last-Modified") === unify.business.SyncRegistry.get(req.getUrl()));
     },
 
     /**
@@ -582,12 +582,11 @@ qx.Class.define("unify.business.RemoteData",
       }
 
       // Create request object
-      var HttpRequest = unify.io.request.Xhr;
+      var HttpRequest = qx.io.request.Xhr;
       var req = new HttpRequest();
       req.setUrl(url);
 
-      var requestHeaders = req.getRequestHeaders();
-
+      var requestHeaders = req.getRequestHeaders() || {};
       // Sync mime type
       requestHeaders.Accept = this.getResponseType();
 
@@ -657,6 +656,8 @@ qx.Class.define("unify.business.RemoteData",
       if (qx.core.Environment.get("qx.debug")) {
         this.debug("Sending request to: " + service + "[id=" + id + "]...");
       }
+
+      req.setRequestHeaders(requestHeaders);
       // Finally send request
       req.send();
 
@@ -698,7 +699,7 @@ qx.Class.define("unify.business.RemoteData",
       if (isModified)
       {
         if (qx.core.Environment.get("qx.debug")) {
-          this.debug("Loaded: " + text.length + " bytes in " + req.getDuration() + "ms");
+          //this.debug("Loaded: " + text.length + " bytes in " + req.getDuration() + "ms");//TODO replace getDuration
         }
 
         var type = this.getResponseType();
@@ -755,7 +756,7 @@ qx.Class.define("unify.business.RemoteData",
           this.error("Malformed data returned. Does not validate as: " + type);
           isMalformed = true;
         }
-      }
+      }//TODO add else block here to handle isModified=false response? e.g. get data from cache to enrich completed event before firing it
 
       // Cache data
       if (!isErrornous && !isMalformed && this._getService(service).keep > 0 && this._allowCaching(data))
@@ -835,7 +836,7 @@ qx.Class.define("unify.business.RemoteData",
       }
 
       
-      if (!(isErrornous && isMalformed)) {
+      if (!(isErrornous || isMalformed)) {
         var lastModified = req.getResponseHeader("Last-Modified");
         if (lastModified) {
           unify.business.SyncRegistry.sync(req.getUrl(), lastModified);
