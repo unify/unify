@@ -553,6 +553,9 @@ qx.Class.define("unify.business.RemoteData",
       this.__headers[name] = value;
     },
 
+    __isModified : function(req) {
+      return !(req.getStatus() === 304 || req.getResponseHeader("Last-Modified") === unify.business.SyncRegistry.get(this.getUrl()));
+    },
 
     /**
      * Main communication routine. Called by most developer-level APIs.
@@ -596,23 +599,15 @@ qx.Class.define("unify.business.RemoteData",
       {
         req.setCache(true);
         if (this.getEnableCacheRefresh()) {
-          //req.setRefresh(true);
-          // TODO
-          
           var cacheModified = this.getCachedField(service, params, "modified");
           if (cacheModified != null) {
+            unify.business.SyncRegistry.sync(url, cacheModified);
             requestHeaders["If-Modified-Since"] = cacheModified;
+          } else {
+            unify.business.SyncRegistry.clear(url);
+            requestHeaders["If-Modified-Since"] = "Thu, 01 Jan 1970 00:00:00 GMT"
           }
         }
-
-        // Enable refresh if there is a usable cache entry
-        /*var cacheModified = this.getCachedField(service, params, "modified");
-        if (cacheModified != null) {
-          HttpRequest.sync(url, cacheModified);
-        } else {
-          HttpRequest.clear(url);
-        }*/
-        // TODO
       }
 
       // Apply method
@@ -699,7 +694,7 @@ qx.Class.define("unify.business.RemoteData",
       var start;
 
       // Prepare data (Parse JSON/XML)
-      var isModified = !isMalformed && req.isModified();
+      var isModified = !isMalformed && this.__isModified(req);
       if (isModified)
       {
         if (qx.core.Environment.get("qx.debug")) {
@@ -839,6 +834,14 @@ qx.Class.define("unify.business.RemoteData",
         }
       }
 
+      
+      if (!(isErrornous && isMalformed)) {
+        var lastModified = req.getResponseHeader("Last-Modified");
+        if (lastModified) {
+          unify.business.SyncRegistry.sync(req.getUrl(), lastModified);
+        }
+      }
+      
       // Fire event
       var args = [id, data, isModified, isErrornous, isMalformed, req];
       this.fireEvent("completed", unify.business.CompletedEvent, args);
