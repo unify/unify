@@ -33,7 +33,7 @@
     "TESTRUNNER_PATH"   : "${QOOXDOO_PATH}/component/testrunner",
     "APPLICATION"       : "${APP_NAME}",
     
-    "QXVERSION"         : "1.3.0-unify"
+    "QXVERSION"         : "1.5.0-unify"
   },
   
   
@@ -82,7 +82,11 @@
       {
         "qx.version" : "${QXVERSION}",
         "unify.root" : "/${APP_NAME}"
-      }  
+      },
+      "environment":{
+        "qx.mobile.emulatetouch":"true"
+      }
+
     },
     
     
