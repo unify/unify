@@ -205,10 +205,11 @@ qx.Class.define("unify.view.ViewManager",
       Class.add(elem,"display-mode-"+this.getDisplayMode());
       elem.id = this.__managerId;
       // Register to navigation events
-      qx.event.Registration.addListener(elem, "click", this.__onClick, this);
-      qx.event.Registration.addListener(elem, "utap", this.__onTap, this);
-      qx.event.Registration.addListener(elem, "utouchhold", this.__onTouchHold, this);
-      qx.event.Registration.addListener(elem, "utouchrelease", this.__onTouchRelease, this);
+      qx.event.Registration.addListener(elem, "click", this.__onClick, this);//TODO remove click handling, we care for touches. clicks are emulated into touches if neccassary
+      qx.event.Registration.addListener(elem, "tap", this.__onTap, this);
+      qx.event.Registration.addListener(elem, "touchhold", this.__onTouchHold, this);
+      qx.event.Registration.addListener(elem, "touchrelease", this.__onTouchRelease, this);
+      qx.event.Registration.addListener(elem, "touchleave", this.__onTouchRelease, this);//TODO separate onTouchLeave handler that prevents tap after leave?
       return elem;
     },
 
@@ -759,7 +760,7 @@ qx.Class.define("unify.view.ViewManager",
     /**
      * Executed on every touch hold event
      *
-     * @param e {unify.event.type.Touch} Touch event
+     * @param e {qx.event.type.Touch} Touch event
      */
     __onTouchHold : function(e)
     {
@@ -773,7 +774,7 @@ qx.Class.define("unify.view.ViewManager",
     /**
      * Executed on every touch release event
      *
-     * @param e {unify.event.type.Touch} Touch event
+     * @param e {qx.event.type.Touch} Touch event
      */
     __onTouchRelease : function(e)
     {

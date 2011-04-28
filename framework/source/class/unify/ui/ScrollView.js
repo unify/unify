@@ -428,11 +428,11 @@ qx.Class.define("unify.ui.ScrollView",
       // Add event listeners
       var Registration = qx.event.Registration;
       var root = document.documentElement;
-      Registration.addListener(elem, "utouchstart", this.__onTouchStart, this);
+      Registration.addListener(elem, "touchstart", this.__onTouchStart, this);
       Registration.addListener(contentElem, "transitionEnd", this.__onTransitionEnd, this);
-      Registration.addListener(root, "utouchmove", this.__onTouchMove, this);
-      Registration.addListener(root, "utouchend", this.__onTouchEnd, this);
-      Registration.addListener(root, "utouchcancel", this.__onTouchEnd, this);
+      Registration.addListener(root, "touchmove", this.__onTouchMove, this);
+      Registration.addListener(root, "touchend", this.__onTouchEnd, this);
+      Registration.addListener(root, "touchcancel", this.__onTouchEnd, this);
 
       return elem;
     },
@@ -737,7 +737,7 @@ qx.Class.define("unify.ui.ScrollView",
     /**
      * Event listener for user initiated touchstart event
      *
-     * @param ev {unify.event.type.Touch} Touch event object
+     * @param ev {qx.event.type.Touch} Touch event object
      */
     __onTouchStart : function(ev)
     {
@@ -807,7 +807,7 @@ qx.Class.define("unify.ui.ScrollView",
     /**
      * Event listener for user initiated touchmove event
      *
-     * @param ev {unify.event.type.Touch} Touch event object
+     * @param ev {qx.event.type.Touch} Touch event object
      */
     __onTouchMove : function(ev)
     {
@@ -906,7 +906,7 @@ qx.Class.define("unify.ui.ScrollView",
     /**
      * Event listener for user initiated touchend event
      *
-     * @param ev {unify.event.type.Touch} Touch event object
+     * @param ev {qx.event.type.Touch} Touch event object
      */
     __onTouchEnd : function(ev)
     {
@@ -998,7 +998,7 @@ qx.Class.define("unify.ui.ScrollView",
      * Called when a touch sequence end and the speed of the finger was high enough
      * to switch into deceleration mode.
      *
-     * @param ev {unify.event.type.Touch} Touch event object
+     * @param ev {qx.event.type.Touch} Touch event object
      */
     __startAnimation : function(ev)
     {

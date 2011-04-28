@@ -105,10 +105,10 @@ qx.Class.define("unify.view.TabViewManager",
         var pane = this.__viewManager.getElement();
         elem.appendChild(pane);
         
-        var bar = this.__bar = document.createElement("div");
-        bar.className = "tab-bar";
+        var bar = this.__getBar();
+
         elem.appendChild(bar);
-        qx.event.Registration.addListener(bar, "utap", this.__onTap, this);
+        qx.event.Registration.addListener(bar, "tap", this.__onTap, this);
       }
 
       return elem;
@@ -130,9 +130,20 @@ qx.Class.define("unify.view.TabViewManager",
       elem.setAttribute("view", viewInstance.getId());
       elem.innerHTML = "<div class='tab-bar-element-image'></div>" + viewInstance.getTitle("tab-bar");
 
-      this.__bar.appendChild(elem);
+      this.__getBar().appendChild(elem);
     },
-    
+
+    /**
+     * lazy intialization for __bar
+     */
+    __getBar : function(){
+      var bar=this.__bar;
+      if(!bar){
+        bar = document.createElement("div");
+        bar.className = "tab-bar";
+      }
+      return bar;
+    },
     
     /**
      * Reacts on path changes of the view manager and updates "selected" property accordingly.
@@ -158,7 +169,7 @@ qx.Class.define("unify.view.TabViewManager",
     _applySelected : function(value, old)
     {
       var Class = qx.bom.element.Class;
-      var bar = this.__bar;
+      var bar = this.__getBar();
       var children = bar.childNodes;
       for (var i=0, l=children.length; i<l; i++) 
       {
@@ -177,7 +188,7 @@ qx.Class.define("unify.view.TabViewManager",
     /**
      * Reacts on tabbing on the tabbar buttons.
      * 
-     * @param e {unify.event.type.Touch} Touch event
+     * @param e {qx.event.type.Touch} Touch event
      */
     __onTap : function(e) 
     {

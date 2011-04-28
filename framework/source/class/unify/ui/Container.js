@@ -67,8 +67,7 @@ qx.Class.define("unify.ui.Container",
       var target = this.getContentElement();
       if (typeof obj === "string")
       {
-        var fragment = qx.bom.Html.clean([obj], window, true);
-        target.appendChild(fragment);
+        qx.bom.Html.clean([obj], window, target);
       }
       else
       {
