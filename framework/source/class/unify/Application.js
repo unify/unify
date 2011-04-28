@@ -67,6 +67,15 @@ qx.Class.define("unify.Application",
       var Registration = qx.event.Registration;
       Registration.addListener(window, "resize", this.__onResize, this);
       Registration.addListener(window, "rotate", this.__onRotate, this);
+      
+      if (qx.core.Environment.get("device.runtime.name") == "webos") {
+        var palmSystem = window.PalmSystem;
+        if (palmSystem) {
+          palmSystem.stageReady();
+        } else {
+          this.warn("window.PalmSystem not found");
+        }
+      }
     },
 
 
