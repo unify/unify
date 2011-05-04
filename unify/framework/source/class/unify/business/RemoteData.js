@@ -638,7 +638,7 @@ qx.Class.define("unify.business.RemoteData",
         }
 
         requestHeaders["Content-Type"] = reqType;
-        req.setData(data);
+        req.setRequestData(data);
       }
 
       // Add listeners
