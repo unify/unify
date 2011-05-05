@@ -1,11 +1,11 @@
 .project
-tool/unify-sass/.sass-cache
+unify/tool/unify-sass/.sass-cache
 
-application/widgets/api
-application/widgets/source/script
+unify/application/widgets/api
+unify/application/widgets/source/script
 
 style.css
 
-/application/flicky/log.txt
+unify/application/flicky/log.txt
 .DS_Store
 .settings.xml
