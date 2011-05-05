@@ -19,6 +19,14 @@ qx.Class.define("unify.ui.widget.container.Composite", {
     qx.ui.core.MLayoutHandling
   ],
   
+  construct : function(layout) {
+    this.base(arguments);
+    
+    if (layout) {
+      this._setLayout(layout);
+    }
+  },
+  
   members : {
     _createElement : function() {
       return document.createElement("div");

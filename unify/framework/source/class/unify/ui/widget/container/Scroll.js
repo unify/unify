@@ -17,10 +17,11 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
   include : [unify.ui.widget.core.MRemoteChildrenHandling],
   
   construct : function(layout) {
-    this.base(arguments, new qx.ui.layout.Canvas());
-    var childLayout = layout || new qx.ui.layout.Basic();
+    this.__childLayout = layout || new qx.ui.layout.Basic(); // TODO: Switch over to ChildrenHandlingLayout
+    this.base(arguments);
+    this._setLayout(new qx.ui.layout.Canvas());
 
-    var contentWidget = this.__contentWidget = new unify.ui.widget.container.Composite(childLayout);
+    var contentWidget = this.__contentWidget; // = new unify.ui.widget.container.Composite(childLayout);
     var scrollIndicatorX = this.__horizontalScrollIndicator = new unify.ui.widget.container.scroll.Indicator("horizontal");
     var scrollIndicatorY = this.__verticalScrollIndicator = new unify.ui.widget.container.scroll.Indicator("vertical");
 
@@ -421,7 +422,9 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
       var indicatorY = this.__verticalScrollIndicator = new ScrollIndicator("vertical");
       elem.appendChild(indicatorY.getElement());*/
 
-      var contentElem = this.__contentWidget.getElement();
+      var contentWidget = this.__contentWidget = new unify.ui.widget.container.Composite();      
+      contentWidget.setLayout(this.__childLayout);
+      var contentElem = contentWidget.getElement();
 
       // Initialize properties
       this.__scrollTo(0, 0);
@@ -429,11 +432,11 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
       // Add event listeners
       var Registration = qx.event.Registration;
       var root = document.documentElement;
-      Registration.addListener(elem, "utouchstart", this.__onTouchStart, this);
+      Registration.addListener(elem, "touchstart", this.__onTouchStart, this);
       Registration.addListener(contentElem, "transitionEnd", this.__onTransitionEnd, this);
-      Registration.addListener(root, "utouchmove", this.__onTouchMove, this);
-      Registration.addListener(root, "utouchend", this.__onTouchEnd, this);
-      Registration.addListener(root, "utouchcancel", this.__onTouchEnd, this);
+      Registration.addListener(root, "touchmove", this.__onTouchMove, this);
+      Registration.addListener(root, "touchend", this.__onTouchEnd, this);
+      Registration.addListener(root, "touchcancel", this.__onTouchEnd, this);
 
       return elem;
     },

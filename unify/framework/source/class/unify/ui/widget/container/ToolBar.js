@@ -2,7 +2,8 @@ qx.Class.define("unify.ui.widget.container.ToolBar", {
   extend: unify.ui.widget.container.Composite,
   
   construct : function(layout) {
-    this.base(arguments, layout || new qx.ui.layout.HBox());
+    this.base(arguments);
+    this._setLayout(layout || new qx.ui.layout.HBox());
   },
   
   members : {

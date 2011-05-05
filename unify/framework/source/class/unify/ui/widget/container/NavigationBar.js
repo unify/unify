@@ -5,7 +5,8 @@ qx.Class.define("unify.ui.widget.container.NavigationBar", {
   extend: unify.ui.widget.container.ToolBar,
   
   construct : function(view) {
-    this.base(arguments, new unify.ui.widget.layout.NavigationBar());
+    this.base(arguments);
+    this._setLayout(new unify.ui.widget.layout.NavigationBar());
     
     if (!view || !(view instanceof unify.view.StaticView)) {
       throw new Error("Invalid view! NavigationBar must be attached to a view!")
