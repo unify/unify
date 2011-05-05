@@ -14,19 +14,14 @@
  */
 qx.Class.define("unify.ui.widget.core.Widget", {
   extend : qx.ui.core.LayoutItem,
-  include : [qx.locale.MTranslation],
   
   /**
    * @param layout {qx.ui.layout.Abstract} Layout of widget
    */
-  construct : function(layout) {
+  construct : function() {
     this.base(arguments);
     
-    if (layout) {
-      this._setLayout(layout);
-    }
-    
-    //this._applyAppearance(this.getAppearance());
+    this.__element = this.__createElement();
   },
   
   properties : {
@@ -419,7 +414,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      * Renders all children of this widget
      */
     renderChildren : function() {
-      var children = this._getChildren();
+      /*var children = this._getChildren();
       if (children) {
         var fragment = document.createDocumentFragment();
         for (var i=0,ii=children.length; i<ii; i++) {
@@ -429,7 +424,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         }
         
         this.getContentElement().appendChild(fragment);
-      }
+      }*/
     },
     
     /**
@@ -744,10 +739,6 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      */
     _setStyle : function(map) {
       var disallowedStyles = [
-        "border", // use borderLeft etc.
-        "padding", // use paddingRight etc.
-        "margin", // use marginBottom etc.
-        
         "fontSize",
         "fontWeight",
         "fontFamily",
@@ -761,6 +752,31 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         "height",
         "visibility"
       ];
+      
+      if (map.margin) {
+        var margin = map.margin.split(" ");
+        map.marginTop = margin[0];
+        map.marginRight = margin[1] || margin[0];
+        map.marginBottom = margin[2] || margin[0];
+        map.marginLeft = margin[3] || margin[1] || margin[0];
+        delete map.margin;
+      }
+      if (map.padding) {
+        var padding = map.padding.split(" ");
+        map.paddingTop = padding[0];
+        map.paddingRight = padding[1] || padding[0];
+        map.paddingBottom = padding[2] || padding[0];
+        map.paddingLeft = padding[3] || padding[1] || padding[0];
+        delete map.padding;
+      }
+      if (map.border) {
+        var border = map.border.split(" ");
+        map.borderTop = border[0];
+        map.borderRight = border[1] || border[0];
+        map.borderBottom = border[2] || border[0];
+        map.borderLeft = border[3] || border[1] || border[0];
+        delete map.border;
+      }
 
       var keys = qx.lang.Object.getKeys(map);
       var style = this.__style || {};
@@ -808,9 +824,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       this.__leftInset = left;
       this.__topInset = top;
 
-      if (this._hasElement()) {
-        qx.bom.element.Style.setStyles(this.getElement(), style);
-      }
+      qx.bom.element.Style.setStyles(this.getElement(), style);
     },
     
     getFont : function() {
@@ -838,7 +852,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       
       if (value) {
         return value;
-      } else if (this._hasElement()) {
+      } else {
         return qx.bom.element.Style.get(this.getElement(), name, computed);
       }
     },
@@ -861,25 +875,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      * Returns the DOM element this widget creates
      */
     getElement : function() {
-      var element = this.__element;
-      if (!element) {
-        this.__element = element = this._createElement();
-        
-        element.$$widget = this.toHashCode();
-        
-        qx.bom.element.Style.set(element, "position",  "absolute");
-        
-        var style = this.__style;
-        if (style) {
-          qx.bom.element.Style.setStyles(element, style);
-        }
-        
-        var navigation = this.getNavigation();
-        if (navigation) {
-          this.__applyNavigation(element, navigation);
-        }
-      }
-      return element;
+      return this.__element;
     },
     
     /**
@@ -895,6 +891,26 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      */
     _createElement : function() {
       throw "_createElement is not implemented";
+    },
+    
+    __createElement : function() {
+        var element = this._createElement();
+        
+        element.$$widget = this.toHashCode();
+        
+        qx.bom.element.Style.set(element, "position",  "absolute");
+        
+        var style = this.__style;
+        if (style) {
+          qx.bom.element.Style.setStyles(element, style);
+        }
+        
+        var navigation = this.getNavigation();
+        if (navigation) {
+          this.__applyNavigation(element, navigation);
+        }
+        
+        return element;
     },
     
     __widgetChildren : null,
@@ -1191,11 +1207,8 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         parent._remove(child);
       }
       
-      if (this._hasElement()) {
-        var element = child.getElement();
-        child.renderChildren();
-        this.getContentElement().appendChild(element);
-      }
+      var element = child.getElement();
+      this.getContentElement().appendChild(element);
 
       // Remember parent
       child.setLayoutParent(this);
