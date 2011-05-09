@@ -29,7 +29,7 @@ qx.Class.define("unify.view.PopOverManager",
     
     this.__root = document.body;
     this.__visibleViewManagers = [];
-    
+    this.__overlays={};
     this.__styleRegistry = {};
     
     var pblocker = this.__pblocker = document.createElement("div");
@@ -112,18 +112,18 @@ qx.Class.define("unify.view.PopOverManager",
           }
         }
         if(!mSet){
-          mblocker.style.zIndex ='';
-          mblocker.style.display='';
+          mblocker.style.zIndex =undefined;
+          mblocker.style.display='none';
         }
         if(!pSet){
-          pblocker.style.zIndex = '';
-          pblocker.style.display='';
+          pblocker.style.zIndex = undefined;
+          pblocker.style.display='none';
         }
       } else {
-        pblocker.style.zIndex = '';
-        mblocker.style.zIndex = '';
-        pblocker.style.display='';
-        mblocker.style.display='';
+        pblocker.style.zIndex = undefined;
+        mblocker.style.zIndex = undefined;
+        pblocker.style.display='none';
+        mblocker.style.display='none';
       }
     },
 
@@ -161,20 +161,16 @@ qx.Class.define("unify.view.PopOverManager",
         this.debug("Show: " + id);
       }
       var elem = viewManager.getElement();
+      var overlay;
       if(viewManager.getDisplayMode()=='popover'){
-        var wrapper = document.createElement('div');
-        wrapper.id=elem.id+'-popover';
-        wrapper.className='popover-wrapper';
+        overlay=this.__getOverlay(viewManager);
+        var wrapper = overlay.getElement();
         var style = this.__styleRegistry[viewManager];
         if (style) {
           qx.bom.element.Style.setStyles(wrapper, style);
         }
         this.__root.appendChild(wrapper);
         wrapper.appendChild(elem);
-
-        var indicator=document.createElement("div");
-        indicator.className="popover-indicator";
-        wrapper.appendChild(indicator);
       } else {
         if(!this.__root==elem.parentNode){
           this.__root.appendChild(elem);
@@ -183,6 +179,9 @@ qx.Class.define("unify.view.PopOverManager",
       this.__visibleViewManagers.push(viewManager);
       this.__sortPopOvers();
       viewManager.show();
+      if(overlay){
+         overlay.show();
+      }
     },
     
     
@@ -191,7 +190,7 @@ qx.Class.define("unify.view.PopOverManager",
      *
      * @param id {String} ID of view manager
      */
-    hide : function(id)
+    hide : function(id,skipAnimation)
     {
       var viewManager=unify.view.ViewManager.get(id);
 
@@ -207,21 +206,53 @@ qx.Class.define("unify.view.PopOverManager",
 
       var elem=viewManager.getElement();
       var mode=viewManager.getDisplayMode();
-      if(mode=='popover'){
-        this.__root.removeChild(elem.parentNode);
-      }
+
       var self=this;
       var hideCallback=function(){
-        elem.style.zIndex='';
         elem.style.display='none';
+        if(mode=='popover'){
+            elem=elem.parentNode;
+        }
+        elem.style.zIndex='';
+
         qx.lang.Array.remove(self.__visibleViewManagers, viewManager);
         self.__sortPopOvers();
       };
-      viewManager.hide(hideCallback);
+
+      if(mode=='popover'){
+        var overlay=this.__overlays[viewManager];
+        if(skipAnimation){
+          var animate=overlay.getEnableAnimation();
+          overlay.setEnableAnimation(false);
+          overlay.hide();
+          overlay.setEnableAnimation(animate);
+          hideCallback();
+        } else {
+          overlay.addListenerOnce("fadeOut",hideCallback,this);
+          overlay.hide();
+        }
+      } else {
+        viewManager.hide(hideCallback);
+      }
+    },
+
+    __getOverlay : function(viewManager){
+      var overlay=this.__overlays[viewManager];
+      if(!overlay){
+        overlay=new unify.ui.Overlay;
+        var elem=overlay.getElement();
+        var managerElem=viewManager.getElement();
+        elem.id=managerElem.id+'-popover';
+        qx.bom.element.Class.add(elem,'popover-wrapper');
+        var indicator=document.createElement("div");
+        indicator.className="popover-indicator";
+        elem.appendChild(indicator);
+        this.__overlays[viewManager]=overlay;
+      }
+      return overlay;
     }
   },
 
-  
   /*
   *****************************************************************************
      DESTRUCTOR
