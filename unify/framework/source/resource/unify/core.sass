@@ -167,7 +167,16 @@ a[href], [rel], [goto], [exec]
   &.animate
     +transition(unquote("-webkit-transform, -moz-transform, -o-transform, opacity"), 200ms, ease, 100ms)
 
+// ***************************************************************************************************
+//   popover
+// ***************************************************************************************************
 
+.popover-wrapper
+  &.in,
+  &.out
+    opacity: 0
+  &.animate
+    +transition(unquote("-webkit-transform, -moz-transform, -o-transform, opacity"), 200ms, ease, 100ms)
 
 
 // ***************************************************************************************************

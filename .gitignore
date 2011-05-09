@@ -1,7 +1,7 @@
 .project
-tool/unify-sass/.sass-cache
+unify/tool/unify-sass/.sass-cache
 
-/application/flicky/log.txt
+unify/application/flicky/log.txt
 .DS_Store
 
 .settings.xml
