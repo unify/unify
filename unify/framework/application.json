@@ -84,7 +84,8 @@
         "unify.root" : "/${APP_NAME}"
       },
       "environment":{
-        "qx.mobile.emulatetouch":"true"
+        "qx.mobile.emulatetouch":true,
+        "qx.mobile.nativescroll":false
       }
 
     },

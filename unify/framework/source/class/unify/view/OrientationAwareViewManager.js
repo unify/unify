@@ -27,7 +27,7 @@ qx.Class.define("unify.view.OrientationAwareViewManager",
     this.base(arguments,managerId);
 
     // Attach to rotate event to control view manager visibility
-    qx.event.Registration.addListener(window, "rotate", this.__onRotate, this);
+    qx.event.Registration.addListener(window, "rotate", this._onRotate, this);
   },
   members :
   {
@@ -46,7 +46,7 @@ qx.Class.define("unify.view.OrientationAwareViewManager",
      *
      * @param e {unify.event.type.Orientation} Event object
      */
-    __onRotate : function(e)
+    _onRotate : function(e)
     {
 
       if (!this.isCreated()) {
@@ -76,6 +76,6 @@ qx.Class.define("unify.view.OrientationAwareViewManager",
     }
   },
   destruct : function(){
-    qx.event.Registration.removeListener(window, "rotate", this.__onRotate, this);
+    qx.event.Registration.removeListener(window, "rotate", this._onRotate, this);
   }
 });
