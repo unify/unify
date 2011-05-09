@@ -146,12 +146,8 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     },
     
     
-    _applyAppearance : function(value) {
-      /*if (value) {
-        this.debug("Get styles for key " + value);
-        console.log(this, unify.ui.widget.styling.StyleManager.getInstance().getTheme().getStyles(value));
-        this.setStyle(unify.ui.widget.styling.StyleManager.getInstance().getTheme().getStyles(value));
-      }*/
+    _applyAppearance : function() {
+      this.updateAppearance();
     },
     
     // property apply
@@ -362,8 +358,134 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       };
     },
 
-    checkAppearanceNeeds : function() {
+
+    /*
+    ---------------------------------------------------------------------------
+      APPEARANCE SUPPORT
+    ---------------------------------------------------------------------------
+    */
+
+    /** {String} The currently compiled selector to lookup the matching appearance */
+    __appearanceSelector : null,
+
+
+    /** {Boolean} Whether the selectors needs to be recomputed before updating appearance */
+    __updateSelector : null,
+
+
+    /**
+     * Renders the appearance using the current widget states.
+     */
+    syncAppearance : function()
+    {
+      var manager = qx.theme.manager.Appearance.getInstance();
+      var states = this.__states;
+      var selector = this.__appearanceSelector;
+      var oldStyle, newStyle, key;
+
+      // Check for requested selector update
+      if (this.__updateSelector) {
+        // Clear flag
+        this.__updateSelector = false;
+
+        // Check if the selector was created previously
+        if (selector) {
+          // Query old style
+          oldStyle = manager.styleFrom(selector, states, null, this.getAppearance());
+
+          // Clear current selector (to force recompute)
+          selector = null;
+        }
+      }
+
+      // Build selector
+      if (!selector) {
+        selector = this.__appearanceSelector = this.getAppearance();
+        if (!selector) {
+          this.warn("No appearance set on " + this);
+          return;
+        }
+      }
+
+      // Query current selector
+      newStyle = manager.styleFrom(selector, states, null, this.getAppearance());
+
+      if (newStyle) {
+        if (oldStyle) {
+          var oldStyleData = {};
+          for (key in oldData) {
+            if (newData[key] === undefined) {
+              oldStyleData[key] = undefined;
+            }
+          }
+          this._setStyle(oldStyleData);
+        }
+        this._setStyle(newStyle);
+        
+      } else if (oldStyle) {
+        var styleData = {};
+        for (key in oldStyle) {
+          styleData[key] = undefined;
+        }
+        this._setStyle(styleData);
+      }
+
+      this.fireDataEvent("syncAppearance", this.__states);
     },
+
+    updateAppearance : function() {
+      // Clear selector
+      this.__updateSelector = true;
+
+      // Add to appearance queue
+      qx.ui.core.queue.Appearance.add(this);
+
+      // Update child controls
+      var controls = this.__childControls;
+      if (controls)
+      {
+        var obj;
+        for (var id in controls)
+        {
+          obj = controls[id];
+
+          if (obj instanceof qx.ui.core.Widget) {
+            obj.updateAppearance();
+          }
+        }
+      }
+    },
+
+    checkAppearanceNeeds : function() {
+      // CASE 1: Widget has never got an appearance already because it was never
+      // visible before. Normally add it to the queue is the easiest way to update it.
+      if (!this.__initialAppearanceApplied)
+      {
+        qx.ui.core.queue.Appearance.add(this);
+        this.__initialAppearanceApplied = true;
+      }
+
+      // CASE 2: Widget has got an appearance before, but was hidden for some time
+      // which results into maybe omitted state changes have not been applied.
+      // In this case the widget is already queued in the appearance. This is basically
+      // what all addState/removeState do, but the queue itself may not have been registered
+      // to be flushed
+      else if (this.$$stateChanges)
+      {
+        qx.ui.core.queue.Appearance.add(this);
+        delete this.$$stateChanges;
+      }
+    },
+    
+    
+    
+    
+    
+    
+
+
+
+
     
     renderLayout : function(left, top, width, height, preventSize) {
       this.base(arguments, left, top, width, height);
@@ -811,10 +933,17 @@ qx.Class.define("unify.ui.widget.core.Widget", {
       if (font) {
         this.__font = font = qx.bom.Font.fromString(font);
         delete style.font;
-        var fontStyle = font.getStyles();
-        fontStyle.color = fontStyle.textColor;
-        delete fontStyle.textColor;
+        
+        var fontStyle = qx.theme.manager.Font.getInstance().resolve(font).getStyles();
+        var textColor = style.textColor;
+        if (textColor) {
+          style.color = qx.theme.manager.Color.getInstance().resolve(textColor);
+        }
+        
         style = qx.lang.Object.merge(fontStyle, style);
+        
+        delete style.textColor;
+        
         qx.ui.core.queue.Layout.add(this);
       }
       
