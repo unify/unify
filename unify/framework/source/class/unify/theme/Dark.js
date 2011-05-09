@@ -1,6 +1,6 @@
 
 /**
- * Simple Theme
+ * Dark Theme
  */
 qx.Theme.define("unify.theme.Dark",
 {
