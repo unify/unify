@@ -11,7 +11,7 @@
   "let" :
   {
     "QOOXDOO_PATH"      : "${REL_QOOXDOO_PATH}",
-    "UNIFY_PATH"        : "${REL_QOOXDOO_PATH}/../../unify/unify",
+    "UNIFY_PATH"        : "${REL_QOOXDOO_PATH}/../../unify",
     "APP_PATH"          : ".",
 
     "CACHE"             : "${Cache}",
