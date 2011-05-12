@@ -160,7 +160,7 @@
       
       "environment" :
       {
-        "qx.debug" : [ "on" ]
+        "qx.debug" : true 
       },
       
       "compile-options" :
