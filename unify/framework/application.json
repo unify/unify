@@ -103,10 +103,10 @@
     {
       "extend" : [ "unify-core" ],
       
-      /*"shell" : 
+      "shell" : 
       {
         "command" : "python ${UNIFY_PATH}/tool/sass.py ${APP_PATH}/source/resource/${APP_NAME}/style.sass ${APP_PATH}/source/resource/${APP_NAME}/style.css"
-      },*/
+      },
 
       "include" :
       [
