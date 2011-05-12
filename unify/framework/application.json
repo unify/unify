@@ -78,14 +78,15 @@
         "downloads" :  "${CACHE}/downloads"
       },      
 
-      "settings" :
-      {
-        "qx.version" : "${QXVERSION}",
-        "unify.root" : "/${APP_NAME}"
-      },
       "environment":{
-        "qx.mobile.emulatetouch":true,
-        "qx.mobile.nativescroll":false
+        "qx.version" :              "${QXVERSION}",
+        "unify.root" :              "/${APP_NAME}",
+        "qx.mobile.emulatetouch" :  true,
+        "qx.mobile.nativescroll" :  false,
+        "qx.application" :          "${APP_NAME}.Application",
+        "qx.dynlocale" :            false,
+        "qx.aspects" :              false,
+        "qx.debug" :                [ false, true ]
       }
 
     },
@@ -102,20 +103,15 @@
     {
       "extend" : [ "unify-core" ],
       
-      "shell" : 
+      /*"shell" : 
       {
         "command" : "python ${UNIFY_PATH}/tool/sass.py ${APP_PATH}/source/resource/${APP_NAME}/style.sass ${APP_PATH}/source/resource/${APP_NAME}/style.css"
-      },
+      },*/
 
       "include" :
       [
         "${APP_NAME}.Application"
-      ],    
-      
-      "settings" :
-      {
-        "qx.application" : "${APP_NAME}.Application"
-      }
+      ]
     },
     
     "unify-run-build" : 
@@ -140,14 +136,7 @@
           "locales"  : "${APP_LOCALES}",
           "optimize" : [ "variables", "privates", "basecalls" ]
         }
-      },
-      
-      "variants" :
-      {
-        "qx.dynlocale" : [ "off" ],
-        "qx.aspects" : [ "off" ],
-        "qx.debug" : [ "off", "on" ]
-      },      
+      },     
       
       "copy-files" :
       {
@@ -169,7 +158,7 @@
     {
       "extend" : [ "unify-core" ],
       
-      "variants" :
+      "environment" :
       {
         "qx.debug" : [ "on" ]
       },
@@ -212,7 +201,7 @@
         "BUILD_PATH" : "build/mobile",
         "COPY_FILES" : [ "index.html", "resource/${APP_NAME}" ]
       },
-      "variants" : {
+      "environment" : {
         "qx.client" : ["webkit", "gecko", "opera"]
       }
     },
@@ -228,7 +217,7 @@
         "BUILD_PATH" : "build/phonegap",
         "COPY_FILES" : [ "phonegap.html", "resource/${APP_NAME}" ]
       },
-      "variants" : {
+      "environment" : {
         "qx.client" : ["webkit"]
       }
     },
