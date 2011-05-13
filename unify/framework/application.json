@@ -85,8 +85,7 @@
         "qx.mobile.nativescroll" :  false,
         "qx.application" :          "${APP_NAME}.Application",
         "qx.dynlocale" :            false,
-        "qx.aspects" :              false,
-        "qx.debug" :                [ false, true ]
+        "qx.aspects" :              false
       }
 
     },
@@ -117,6 +116,10 @@
     "unify-run-build" : 
     {
       "extend" : [ "unify-core" ],
+            "environment" :
+      {
+        "qx.debug" : [false,true]
+      },
       
       "compile-options" :
       {
@@ -160,7 +163,7 @@
       
       "environment" :
       {
-        "qx.debug" : [ "on" ]
+        "qx.debug" : [true]
       },
       
       "compile-options" :

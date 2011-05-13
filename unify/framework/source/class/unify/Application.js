@@ -10,8 +10,8 @@
 
 /* ************************************************************************
 
-#require(unify.event.handler.Orientation)
-#require(unify.event.handler.Transition)
+#require(qx.event.handler.Orientation)
+#require(qx.event.handler.Transition)
 #require(qx.event.handler.Mouse)
 #require(qx.event.handler.Touch)
 #require(qx.log.appender.Native)
@@ -60,13 +60,12 @@ qx.Class.define("unify.Application",
 
       // Configure document
       this.__setupDocumentSize();
-      var orient = qx.bom.Viewport.getOrientation();
-      var isLandscape=(orient == 90 || orient == 270 || orient == -90 || orient == -270);
+      var isLandscape=qx.bom.Viewport.isLandscape();
       document.body.setAttribute('orient',isLandscape?'landscape':'portrait');
       // Event listeners
       var Registration = qx.event.Registration;
       Registration.addListener(window, "resize", this.__onResize, this);
-      Registration.addListener(window, "rotate", this.__onRotate, this);
+      Registration.addListener(window, "orientationchange", this.__onRotate, this);
       
       if (qx.core.Environment.get("device.runtime.name") == "webos") {
         var palmSystem = window.PalmSystem;
