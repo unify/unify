@@ -112,10 +112,11 @@ qx.Class.define("unify.Application",
      * named "orient" which is set to "landscape" or "portrait" depending
      * on the current device orientation.
      *
-     * @param e {unify.event.type.Orientation} Orientation change event
+     * @param e {qx.event.type.Orientation} Orientation change event
      */
     __onRotate : function(e) {
-      document.body.setAttribute("orient", e.getMode());
+      var orient=qx.bom.Viewport
+      document.body.setAttribute("orient", e.isLandscape()?"landscape":"portrait");
     },
 
 
