@@ -7,7 +7,11 @@
     Copyright: 2009-2011 Deutsche Telekom AG, Germany, http://telekom.com
 
 *********************************************************************************************** */
+/* ***********************************************************************************************
 
+#require(qx.event.handler.Orientation)
+
+*********************************************************************************************** */
 /**
  * Specialized ViewManager that shows views fullscreen modal
  *
@@ -27,15 +31,14 @@ qx.Class.define("unify.view.OrientationAwareViewManager",
     this.base(arguments,managerId);
 
     // Attach to rotate event to control view manager visibility
-    qx.event.Registration.addListener(window, "rotate", this._onRotate, this);
+    qx.event.Registration.addListener(window, "orientationchange", this._onRotate, this);
   },
   members :
   {
     //overridden
     _createElement : function(){
       var element=this.base(arguments);
-      var orient = qx.bom.Viewport.getOrientation();
-      var isLandscape=(orient == 90 || orient == 270 || orient == -90 || orient == -270);
+      var isLandscape=qx.bom.Viewport.isLandscape();
       element.setAttribute("orient", isLandscape ? "landscape" : "portrait");
       return element;
     },
@@ -44,7 +47,7 @@ qx.Class.define("unify.view.OrientationAwareViewManager",
     /**
      * Reacts on rotate event of window
      *
-     * @param e {unify.event.type.Orientation} Event object
+     * @param e {qx.event.type.Orientation} Event object
      */
     _onRotate : function(e)
     {
@@ -56,7 +59,7 @@ qx.Class.define("unify.view.OrientationAwareViewManager",
       var orient = e.getOrientation();
       var oldOrient = elem.getAttribute("orient");
 
-      var isLandscape=(orient == 90 || orient == 270 || orient == -90 || orient == -270);
+      var isLandscape=qx.bom.Viewport.isLandscape();
 
       if(isLandscape){
         if(oldOrient != "landscape"){
@@ -76,6 +79,6 @@ qx.Class.define("unify.view.OrientationAwareViewManager",
     }
   },
   destruct : function(){
-    qx.event.Registration.removeListener(window, "rotate", this._onRotate, this);
+    qx.event.Registration.removeListener(window, "orientationchange", this._onRotate, this);
   }
 });

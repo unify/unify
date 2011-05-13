@@ -10,7 +10,7 @@
 
 /* ***********************************************************************************************
 
-#require(unify.event.handler.Orientation)
+#require(qx.event.handler.Orientation)
 
 *********************************************************************************************** */
 
@@ -43,7 +43,7 @@ qx.Class.define("unify.view.SplitViewManager",
     detailViewManager.setMaster(masterViewManager);
     
     // Attach to rotate event to control view manager visibility
-    qx.event.Registration.addListener(window, "rotate", this.__onRotate, this);
+    qx.event.Registration.addListener(window, "orientationchange", this.__onRotate, this);
   },
   
 
@@ -76,14 +76,13 @@ qx.Class.define("unify.view.SplitViewManager",
       if (!elem) {
         return;
       }
-      
-      var orient = e.getOrientation();
+
       var master = this.__masterViewManager;
       var masterElem = master.getElement();
       var PopOverManager = unify.view.PopOverManager.getInstance();
       var oldOrient = elem.getAttribute("orient");
 
-      var isLandscape=(orient == 90 || orient == 270 || orient == -90 || orient == -270);
+      var isLandscape=qx.bom.Viewport.isLandscape();
 
       if(isLandscape){
         if(oldOrient != "landscape"){
@@ -118,8 +117,7 @@ qx.Class.define("unify.view.SplitViewManager",
       var elem = this.__element;
       if (!elem)
       {
-        var orient = qx.bom.Viewport.getOrientation();
-        var isLandscape=(orient == 90 || orient == 270 || orient == -90 || orient == -270);
+        var isLandscape=qx.bom.Viewport.isLandscape();
         var elem = this.__element = document.createElement("div");
         elem.className = "split-view";
         elem.setAttribute("orient", isLandscape ? "landscape" : "portrait");
