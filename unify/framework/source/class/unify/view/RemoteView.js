@@ -196,7 +196,7 @@ qx.Class.define("unify.view.RemoteView",
       this.__activityIndicator.hide();
 
       if (e.isErrornous()) {
-        this._errorHandler("communication", e.getRequest().getStatusCode());
+        this._errorHandler("communication", e.getRequest());
       } else if (e.isMalformed()) {
         this._errorHandler("data",e.getData());
       } else if (e.isModified()) {

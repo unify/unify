@@ -132,11 +132,11 @@ qx.Class.define("unify.business.RemoteData",
       init : "application/json"
     },
 
-    /** Time after communication should be regarded as failed (in milliseconds) */
+    /** Time after communication should be regarded as failed (in seconds) */
     timeout :
     {
       check : "Integer",
-      init : 10000
+      init : 10
     },
 
     /** Which authentication method is needed for all services */
