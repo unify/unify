@@ -180,6 +180,11 @@ qx.Class.define("unify.view.ServiceView",
       var now = (new Date).valueOf();
       try{
         this._renderData(data);
+        
+        // TODO : Lay out to Environment
+        if (data) {
+          unify.ui.widget.core.QueueManager.flush(this);
+        }
       } catch(ex) {
         this.error("Failed to render \"" + this._getServiceName() + "\" data: " + ex);
         this._errorHandler("renderer", ex);
