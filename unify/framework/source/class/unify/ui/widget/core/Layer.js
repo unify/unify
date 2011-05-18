@@ -38,6 +38,7 @@ qx.Class.define("unify.ui.widget.core.Layer", {
     qx.bom.element.Style.set(elem, "boxSizing", "border-box");
     
     view.addListener("appear", this.__viewAppear, this);
+    
     qx.event.Registration.addListener(window, "resize", this.__onResize, this);
   },
 
@@ -63,6 +64,8 @@ qx.Class.define("unify.ui.widget.core.Layer", {
     /** Handler for appearance of layer */
     __viewAppear : function() {
       this.renderChildren();
+      
+      unify.ui.widget.core.QueueManager.flush();
     },
     
     __onResize : function(e) {
@@ -76,7 +79,6 @@ qx.Class.define("unify.ui.widget.core.Layer", {
     /** Returns fixed size hint of base layer size */
     getSizeHint : function() {
       var Dimension = qx.bom.element.Dimension;
-      
       var ret;
       if (this.__view.getManager().getDisplayMode() == "popover") {
         // Look at popovermanager's default settings
@@ -95,7 +97,6 @@ qx.Class.define("unify.ui.widget.core.Layer", {
           height: Dimension.getContentHeight(e)
         };
       }
-
       return ret;
     }
   },
