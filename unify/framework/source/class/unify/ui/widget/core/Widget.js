@@ -449,7 +449,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         {
           obj = controls[id];
 
-          if (obj instanceof qx.ui.core.Widget) {
+          if (obj instanceof unify.ui.widget.core.Widget) {
             obj.updateAppearance();
           }
         }
@@ -489,7 +489,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     
     renderLayout : function(left, top, width, height, preventSize) {
       this.base(arguments, left, top, width, height);
-      
+
       var parentInset = this.getParentInset();
       if(parentInset) {
         left += parentInset[0];
