@@ -65,7 +65,7 @@ qx.Class.define("unify.ui.widget.core.Layer", {
     __viewAppear : function() {
       this.renderChildren();
       
-      unify.ui.widget.core.QueueManager.flush();
+      qx.ui.core.queue.Manager.flush();
     },
     
     __onResize : function(e) {

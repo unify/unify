@@ -183,7 +183,7 @@ qx.Class.define("unify.view.ServiceView",
         
         // TODO : Lay out to Environment
         if (data) {
-          unify.ui.widget.core.QueueManager.flush(this);
+          ui.core.queue.Manager.flush();
         }
       } catch(ex) {
         this.error("Failed to render \"" + this._getServiceName() + "\" data: " + ex);
