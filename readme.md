@@ -11,9 +11,11 @@ Unify is made available under a dual license: MIT + Apache, Version 2.0. For det
 Setup
 -----
 
-1. Check out unify from github via <code>git clone https://github.com/unify/unify.git</code>
-2. Change into new unify directory <code>cd unify</code>
-3. Init submodules via <code>git submodule init</code>
-4. Update submodules via <code>git submodules update</code>
+You only need 4 steps to set up unify.
 
-That's all you need to set up unify.
+1. <code>git clone https://github.com/unify/unify.git</code>
+2. <code>cd unify</code>
+3. <code>git submodule init</code>
+4. <code>git submodules update</code>
+
+Happy coding.
