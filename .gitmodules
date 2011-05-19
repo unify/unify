@@ -1,6 +1,6 @@
 [submodule "qooxdoo"]
 	path = qooxdoo
-	url = git@github.com:unify/qooxdoo.git
+	url = https://github.com/unify/qooxdoo.git
 [submodule "support/phonegap-iphone"]
 	path = support/phonegap-iphone
 	url = https://github.com/unify/phonegap-iphone.git
