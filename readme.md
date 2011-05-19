@@ -13,9 +13,9 @@ Setup
 
 You only need 4 steps to set up unify.
 
-1. <code>git clone https://github.com/unify/unify.git</code>
-2. <code>cd unify</code>
-3. <code>git submodule init</code>
-4. <code>git submodules update</code>
+1. <code> git clone https://github.com/unify/unify.git </code>
+2. <code> cd unify </code>
+3. <code> git submodule init </code>
+4. <code> git submodules update </code>
 
 Happy coding.
