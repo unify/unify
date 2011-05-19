@@ -119,7 +119,7 @@ qx.Class.define("unify.ui.Overlay",
         return;
       }
       var Class = qx.bom.element.Class;
-
+      var elem = this.getElement();
       this.__out = true;
       if (this.__in)
       {
