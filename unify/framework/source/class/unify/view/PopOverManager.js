@@ -136,6 +136,10 @@ qx.Class.define("unify.view.PopOverManager",
         var topMost=this.__visibleViewManagers[numVisible-1];
 
         this.hide(topMost.getId());
+      } else {
+        this.error("tapped on blocker without visible viewmanager");
+        //sort popovers again to make sure the blocker is gone
+        this.__sortPopOvers();
       }
     },
 
@@ -155,6 +159,9 @@ qx.Class.define("unify.view.PopOverManager",
         }
       }
       if (this.__visibleViewManagers.indexOf(viewManager) >-1) {
+        if (qx.core.Environment.get("qx.debug")){
+            this.debug("called show with viewmanager that is already visible: "+id);
+        }
         return;//already visible
       }
       if (qx.core.Environment.get("qx.debug")) {
@@ -201,9 +208,11 @@ qx.Class.define("unify.view.PopOverManager",
         }
       }
       if (this.__visibleViewManagers.indexOf(viewManager) < 0) {
+        if (qx.core.Environment.get("qx.debug")){
+            this.debug("called hide with viewmanager that is not visible: "+id);
+        }
         return;
       }
-
       var elem=viewManager.getElement();
       var mode=viewManager.getDisplayMode();
 
