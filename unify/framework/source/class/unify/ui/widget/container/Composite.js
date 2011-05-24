@@ -9,6 +9,8 @@
 *********************************************************************************************** */
 
 /**
+ * EXPERIMENTAL
+ *
  * Generic composite container widget
  */
 qx.Class.define("unify.ui.widget.container.Composite", {

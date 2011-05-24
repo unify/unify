@@ -1,3 +1,17 @@
+/* ***********************************************************************************************
+
+    Unify Project
+
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2010, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+
+*********************************************************************************************** */
+
+/**
+ * EXPERIMENTAL
+ */
+ 
 qx.Class.define("unify.ui.widget.basic.Image", {
   extend: unify.ui.widget.core.Widget,
   
@@ -17,10 +31,10 @@ qx.Class.define("unify.ui.widget.basic.Image", {
   members: {
     _createElement : function() {
       var e = document.createElement("img");
-      var source = this.getSource();
+      /*var source = this.getSource();
       if (source) {
         e.setAttribute("src", source);
-      }
+      }*/
       
       return e;
     },

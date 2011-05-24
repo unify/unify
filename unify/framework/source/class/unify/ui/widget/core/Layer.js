@@ -9,6 +9,8 @@
 *********************************************************************************************** */
 
 /**
+ * EXPERIMENTAL
+ *
  * Specialised layer widget that connects to a unify layer and takes the whole space to support
  * unify layer and navigation system
  *

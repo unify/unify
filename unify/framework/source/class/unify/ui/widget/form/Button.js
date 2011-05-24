@@ -1,3 +1,17 @@
+/* ***********************************************************************************************
+
+    Unify Project
+
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2010, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+
+*********************************************************************************************** */
+
+/**
+ * EXPERIMENTAL
+ */
+ 
 qx.Class.define("unify.ui.widget.form.Button", {
   extend: unify.ui.widget.basic.Label,
 

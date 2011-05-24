@@ -9,6 +9,9 @@
 *********************************************************************************************** */
 
 /**
+ * EXPERIMENTAL
+ *
+ *
  * Simple content widget based upon html DIV element
  */
 qx.Class.define("unify.ui.widget.basic.Content", {

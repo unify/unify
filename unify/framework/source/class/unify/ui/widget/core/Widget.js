@@ -9,6 +9,8 @@
 *********************************************************************************************** */
 
 /**
+ * EXPERIMENTAL
+ *
  * Generic widget that depends on a slighly modified qooxdoo LayoutItem
  * This is the base of every widget in the unify widget system
  */

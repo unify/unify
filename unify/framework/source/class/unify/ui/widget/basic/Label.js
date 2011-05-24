@@ -9,6 +9,8 @@
 *********************************************************************************************** */
 
 /**
+ * EXPERIMENTAL
+ *
  * The label widget implements text representation in unify widget system
  */
 qx.Class.define("unify.ui.widget.basic.Label", {
