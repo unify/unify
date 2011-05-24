@@ -76,20 +76,13 @@ qx.Class.define("unify.ui.Overlay",
      */
     show : function()
     {
+      if (this.__in || this.isVisible()) {
+        return;
+      }
+
       var elem = this.getElement();
       if (!elem.parentNode) {
         document.body.appendChild(elem);
-      }
-
-      if (!this.getEnableAnimation())
-      {
-        elem.style.display = "";
-        this.fireEvent("fadeIn");
-        return;
-      }
-
-      if (this.__in) {
-        return;
       }
 
       var Class = qx.bom.element.Class;
@@ -101,16 +94,19 @@ qx.Class.define("unify.ui.Overlay",
         this.__out = null;
       }
 
-      // Bring into start position
-      Class.add(elem, "in");
-
-      // Display it there and force rendering
-      elem.style.display = "block";
-      elem.offsetWidth;
-
-      // The enable animation and remove start position data (switch to default position)
-      Class.add(elem, "animate");
-      Class.remove(elem, "in");
+      if (!this.getEnableAnimation()){
+        elem.style.display = "";
+        this.__onTransitionEnd();
+      } else {
+        // Bring into start position
+        Class.add(elem, "in");
+        // Display it there and force rendering
+        elem.style.display = "block";
+        elem.offsetWidth;
+        // The enable animation and remove start position data (switch to default position)
+        Class.add(elem, "animate");
+        Class.remove(elem, "in");
+      }
     },
 
 
@@ -119,28 +115,22 @@ qx.Class.define("unify.ui.Overlay",
      */
     hide : function()
     {
-      var elem = this.getElement();
-      if (!this.getEnableAnimation())
-      {
-        elem.style.display = "none";
-        this.fireEvent("fadeOut");
+      if (this.__out || !this.isVisible()) {
         return;
       }
-
-      if (this.__out) {
-        return;
-      }
-
       var Class = qx.bom.element.Class;
-
+      var elem = this.getElement();
       this.__out = true;
       if (this.__in)
       {
         Class.remove(elem, "in");
         this.__in = null;
       }
-
-      Class.addClasses(elem, ["out", "animate"]);
+      if (!this.getEnableAnimation()){
+        this.__onTransitionEnd();
+      } else {
+        Class.addClasses(elem, ["out", "animate"]);
+      }
     },
 
 
