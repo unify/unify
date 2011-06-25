@@ -40,7 +40,8 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     "layer" : {
       style : function() {
         return {
-          backgroundColor: "#CBD2D8"
+          backgroundColor: "#CBD2D8",
+          backgroundImage: "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAABCAIAAACdaSOZAAAAFElEQVQI12M4euYKErp0+tINIAIAuHQQ4hrnkJoAAAAASUVORK5CYII=')"
         };
       }
     },
