@@ -78,8 +78,8 @@ qx.Class.define("unify.business.SysInfo",
             {
               "Platform" : unify.bom.client.Platform.NAME,
               "System" : unify.bom.client.System.TITLE,
-              "Engine" : unify.bom.client.Engine.NAME + ' ' + qx.bom.client.Version.VERSION,
-              "Browser" : qx.bom.client.Browser.TITLE
+              "Engine" : qx.core.Environment.get("engine.name") + ' ' + qx.core.Environment.get("engine.version"),
+              "Browser" : qx.core.Environment.get("browser.name") + ' ' + qx.core.Environment.get("browser.version")
             },
             "Extensions" : this.__fromConstants(unify.bom.client.Extension)
           };
