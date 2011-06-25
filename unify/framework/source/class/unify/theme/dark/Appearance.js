@@ -37,7 +37,38 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     
     "composite" : {},
     "scroll" : {},
-    "layer" : {},
+    "layer" : {
+      style : function() {
+        return {
+          backgroundColor: "#CBD2D8"
+        };
+      }
+    },
+    
+    /*
+    ---------------------------------------------------------------------------
+      BARS
+    ---------------------------------------------------------------------------
+    */
+    
+    "navigationbar" : {
+      style : function() {
+        return {
+          background: "url(" + qx.util.ResourceManager.getInstance().toUri("unify/iphoneos/navigation-bar/black/navigationbar.png") + ")"
+        };
+      }
+    },
+    
+    "navigationbar.title" : {
+      style : function() {
+        return {
+          font: "20px bold",
+          color: "white",
+          textShadow: "rgba(0, 0, 0, 0.4) 0px -1px 0",
+          textOverflow: "ellipsis"
+        };
+      }
+    },
     
     /*
     ---------------------------------------------------------------------------

@@ -29,18 +29,9 @@ qx.Class.define("unify.ui.widget.container.NavigationBar", {
     this.__view = view;
     
     var title = this.__title = new unify.ui.widget.basic.Label();
-    title.setStyle({
-      font: "20px bold",
-      color: "white",
-      textShadow: "rgba(0, 0, 0, 0.4) 0px -1px 0",
-      textOverflow: "ellipsis"
-    });
+    title.setAppearance("navigationbar.title");
     this._add(title, {
       position: "title"
-    });
-    
-    this.setStyle({
-      background: "url(" + qx.util.ResourceManager.getInstance().toUri("unify/iphoneos/navigation-bar/black/navigationbar.png") + ")"
     });
     
     // Finally listen for any changes occour after creation of the titlebar
@@ -96,7 +87,7 @@ qx.Class.define("unify.ui.widget.container.NavigationBar", {
       if (!parentElem) 
       {
         parentElem = this.__parentButton = this._createItemElement({rel:"parent",kind:"button"});
-        parentElem.setStyle(unify.ui.widget.styling.StaticTheme.navigationBarButtonParent);
+        //parentElem.setStyle(unify.ui.widget.styling.StaticTheme.navigationBarButtonParent);
         parentElem.setHeight(28);
         parentElem.setAllowGrowY(false);
         parentElem.setAllowShrinkY(false);
@@ -130,7 +121,7 @@ qx.Class.define("unify.ui.widget.container.NavigationBar", {
         masterElem.setHeight(28);
         masterElem.setAllowGrowY(false);
         masterElem.setAllowShrinkY(false);
-        masterElem.setStyle(unify.ui.widget.styling.StaticTheme.navigationBarButton);
+        //masterElem.setStyle(unify.ui.widget.styling.StaticTheme.navigationBarButton);
         this._add(masterElem, {
           position: "left"
         });
