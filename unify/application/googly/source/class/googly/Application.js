@@ -27,7 +27,8 @@ qx.Class.define("googly.Application",
     {
       // Call super class
       this.base(arguments);
-
+      qx.theme.manager.Meta.getInstance().setTheme(unify.theme.Dark);
+      
       // Configure application
       document.title = "Googly";
 

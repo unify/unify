@@ -68,9 +68,7 @@ qx.Class.define("googly.view.Translate",
     // overridden
     _createView : function() 
     {
-      var layer = new unify.ui.Layer(this);
-      
-      var layerWidget = new unify.ui.widget.core.Layer(layer);
+      var layerWidget = new unify.ui.widget.core.Layer(this);
       layerWidget.set({
         allowGrowY: true
       });
@@ -134,7 +132,7 @@ qx.Class.define("googly.view.Translate",
         allowGrowX: true
       });
       button.setExecute("refresh");
-      qx.bom.element2.Class.add(button.getElement(), "button");
+      qx.bom.element.Class.add(button.getElement(), "button");
       
       layerWidget.add(inputText, {
         flex: 1
@@ -144,7 +142,7 @@ qx.Class.define("googly.view.Translate",
         flex: 1
       });
 
-      return layer;
+      return layerWidget.getUILayer();
     },
     
     
