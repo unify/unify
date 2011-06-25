@@ -48,6 +48,13 @@ qx.Class.define("unify.ui.widget.form.Button", {
       init: null,
       nullable: true,
       apply: "_applyShow"
+    },
+    
+    // overridden
+    appearance :
+    {
+      refine: true,
+      init: "button"
     }
   },
   

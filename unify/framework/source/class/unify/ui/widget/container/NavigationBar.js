@@ -69,7 +69,7 @@ qx.Class.define("unify.ui.widget.container.NavigationBar", {
     
     appearance : {
       refine : true,
-      init: "toolbar.navigationbar"
+      init: "navigationbar"
     }
   },
   

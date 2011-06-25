@@ -38,7 +38,7 @@ qx.Class.define("unify.ui.widget.basic.Label", {
     
     html : {
       check: "Boolean",
-      init: false,
+      init: true,
       event: "changeHtml"
     },
     
@@ -59,6 +59,12 @@ qx.Class.define("unify.ui.widget.basic.Label", {
     allowShrinkY : {
       refine : true,
       init : false
+    },
+    // overridden
+    appearance :
+    {
+      refine: true,
+      init: "label"
     }
   },
   
@@ -85,19 +91,42 @@ qx.Class.define("unify.ui.widget.basic.Label", {
       };
     },
     
+    // overridden
+    _hasHeightForWidth : function() {
+      return true; //this.getHtml() && this.getWrap();
+    },
+    
+    // overridden
+    _getContentHeightForWidth : function(width)
+    {
+      console.log("LABEL getContentHeightForWidth");
+      /*if (!this.getHtml() && !this.getWrap()) {
+        return null;
+      }*/
+      return this.__computeContentSize(width).height;
+    },
+    
     /**
      * Internal utility to compute the content dimensions.
      *
+     * @param width {Integer} Width of label
      * @return {Map} Content size
      */
-    __computeContentSize : function()
+    __computeContentSize : function(width)
     {
       var Label = qx.bom.Label;
 
       var styles = this.getFont();
       var content = this.getValue() || "A";
 
-      return Label.getTextSize(content, styles);
+      var hint;
+      if (this.getHtml()) {
+        hint = Label.getHtmlSize(content, styles, width);
+      } else {
+        hint = Label.getTextSize(content, styles);
+      }
+      
+      return hint;
     },
     
     /**

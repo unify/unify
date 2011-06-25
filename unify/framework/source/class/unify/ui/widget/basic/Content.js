@@ -17,6 +17,15 @@
 qx.Class.define("unify.ui.widget.basic.Content", {
   extend : unify.ui.widget.core.Widget,
   
+  properties : {
+    // overridden
+    appearance :
+    {
+      refine: true,
+      init: "content"
+    }
+  },
+  
   members : {
     _createElement : function() {
       return document.createElement("div");

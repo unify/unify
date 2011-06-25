@@ -29,6 +29,13 @@ qx.Class.define("unify.ui.widget.basic.Atom", {
     direction : {
       type : "String",
       value : "top"
+    },
+    
+    // overridden
+    appearance :
+    {
+      refine: true,
+      init: "atom"
     }
   },
   

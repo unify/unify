@@ -43,6 +43,15 @@ qx.Class.define("unify.ui.widget.core.Layer", {
     
     qx.event.Registration.addListener(window, "resize", this.__onResize, this);
   },
+  
+  properties : {
+    // overridden
+    appearance :
+    {
+      refine: true,
+      init: "layer"
+    }
+  },
 
   members: {
     __elem : null,

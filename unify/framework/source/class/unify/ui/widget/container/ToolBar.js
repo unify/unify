@@ -19,6 +19,15 @@ qx.Class.define("unify.ui.widget.container.ToolBar", {
     this._setLayout(layout || new qx.ui.layout.HBox());
   },
   
+  properties : {
+    // overridden
+    appearance :
+    {
+      refine: true,
+      init: "toolbar"
+    }
+  },
+  
   members : {
     /*
     ---------------------------------------------------------------------------

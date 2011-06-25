@@ -29,6 +29,15 @@ qx.Class.define("unify.ui.widget.container.Composite", {
     }
   },
   
+  properties : {
+    // overridden
+    appearance :
+    {
+      refine: true,
+      init: "composite"
+    }
+  },
+  
   members : {
     _createElement : function() {
       return document.createElement("div");

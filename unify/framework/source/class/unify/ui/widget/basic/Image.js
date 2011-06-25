@@ -25,6 +25,12 @@ qx.Class.define("unify.ui.widget.basic.Image", {
   properties : {
     source : {
       apply : "_applySource"
+    },
+    // overridden
+    appearance :
+    {
+      refine: true,
+      init: "image"
     }
   },
   

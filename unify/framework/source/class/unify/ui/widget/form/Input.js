@@ -25,6 +25,12 @@ qx.Class.define("unify.ui.widget.form.Input", {
     },
     rows : {
       init: 3
+    },
+    // overridden
+    appearance :
+    {
+      refine: true,
+      init: "input"
     }
   },
   

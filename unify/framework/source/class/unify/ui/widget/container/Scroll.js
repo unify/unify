@@ -115,6 +115,13 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
       init : true,
       check : "Boolean",
       apply : "_applyScrollMode"
+    },
+    
+    // overridden
+    appearance :
+    {
+      refine: true,
+      init: "scroll"
     }
   },
 
