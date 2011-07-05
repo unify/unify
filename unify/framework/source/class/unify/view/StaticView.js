@@ -46,7 +46,7 @@ qx.Class.define("unify.view.StaticView",
   {
     this.base(arguments);
     
-    this.__id = qx.lang.String.hyphenate(this.constructor.basename).substring(1);
+    this.__id = qx.lang.String.hyphenate(this.constructor.basename).toLowerCase();
   },
   
 

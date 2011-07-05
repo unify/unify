@@ -39,7 +39,7 @@ qx.Class.define("unify.business.RemoteData",
     this.__headers = {};
 
     /** {String} Prefix used for storage */
-    var prefix = qx.lang.String.hyphenate(this.basename).substring(1);
+    var prefix = qx.lang.String.hyphenate(this.basename).toLowerCase();
     this.__storageDataPrefix = prefix + "/data/";
     this.__storageMetaPrefix = prefix + "/meta/";
     qx.event.Registration.addListener(unify.bom.Storage,"quota_exceeded_err",this.__onQuotaExceeded,this);
