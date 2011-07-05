@@ -139,7 +139,8 @@ qx.Class.define("unify.view.TabViewManager",
     __getBar : function(){
       var bar=this.__bar;
       if(!bar){
-        bar = document.createElement("div");
+        // TODO: Check in master the next line!
+        this.__bar = bar = document.createElement("div");
         bar.className = "tab-bar";
       }
       return bar;

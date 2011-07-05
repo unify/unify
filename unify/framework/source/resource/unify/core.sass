@@ -61,8 +61,8 @@ body
   -webkit-perspective: 800
   -webkit-transform-style: preserve-3d
 
-input, textarea, .selectable
-  +user-select(auto)
+//input, textarea, .selectable
+//  +user-select(auto)
 
 a
   &:active, &:visited, &:hover, &:link
@@ -73,9 +73,6 @@ a
 
 li
   position: relative
-
-textarea
-  resize: none
 
 a[href], [rel], [goto], [exec]
   cursor: default
@@ -184,12 +181,6 @@ a[href], [rel], [goto], [exec]
 // ***************************************************************************************************
 
 .layer
-  -webkit-backface-visibility: hidden
-  -webkit-transform: translate3d(0, 0, 0) rotate(0) scale(1)
-  -webkit-transition-property: -webkit-transform, opacity
-  -webkit-transition-duration: 350ms
-  -webkit-transition-timing-function: ease-in-out
-  position: absolute
   left: 0
   top: 0
   width: 100%

@@ -81,16 +81,10 @@ qx.Class.define("googly.view.Translate",
         paddingTop: "10px",
         paddingRight: "10px",
         paddingBottom: "10px",
-        borderRadius: "4px",
-        borderLeft: "1px solid #3A3A3A",
-        borderTop: "1px solid #3A3A3A",
-        borderRight: "1px solid #3A3A3A",
-        borderBottom: "1px solid #888",
         marginTop: "8px",
         marginBottom: "8px",
         marginLeft: "10px",
-        marginRight: "10px",
-        backgroundColor: "#e8e8e8"
+        marginRight: "10px"
       };
       
       var inputText = this.__inputText = new unify.ui.widget.form.Input();
@@ -109,16 +103,6 @@ qx.Class.define("googly.view.Translate",
       
       var button = new unify.ui.widget.form.Button("Translate");
       button.setStyle({
-        font: "20px bold",
-        color: "white",
-        backgroundImage: "-webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, rgba(255, 255, 255, 0.61)), color-stop(5%, rgba(255, 255, 255, 0.45)), color-stop(50%, rgba(255, 255, 255, 0.27)), color-stop(50%, rgba(255, 255, 255, 0.2)), color-stop(100%, rgba(255, 255, 255, 0)))",
-        borderLeft: "3px solid #3A3A3A",
-        borderTop: "3px solid #3A3A3A",
-        borderRight: "3px solid #3A3A3A",
-        borderBottom: "3px solid #3A3A3A",
-        backgroundColor: "#242424",
-        borderRadius: "12px",
-        textAlign: "center",
         marginLeft: "10px",
         marginRight: "10px",
         paddingLeft: "10px",
