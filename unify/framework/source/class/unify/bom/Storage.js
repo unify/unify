@@ -27,7 +27,8 @@ qx.Class.define("unify.bom.Storage",
     set : function(key, value)
     {
       if (this.__localStorage) {
-        if(unify.bom.client.System.IOS && unify.bom.client.System.VERSION && unify.bom.client.System.VERSION<4.2){//TODO find out exact version of fix (some time between 3.2 and 4.2)
+        if (qx.core.Environment.get("os.name") == "ios" && parseFloat(qx.core.Environment.get("os.version") || 0) < 4.2) {
+            //TODO find out exact version of fix (some time between 3.2 and 4.2)
             //fixes problem with QUOTA_EXCEEDED_ERR on older ios versions see http://stackoverflow.com/questions/2603682/
             localStorage.removeItem(this.__prefix + key, value);
         }

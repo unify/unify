@@ -47,7 +47,7 @@ qx.Class.define("unify.business.SysInfo",
       STATIC DATA INTERFACE
     ---------------------------------------------------------------------------
     */
-
+    //TODO replace unify.bom.client usage with qx.core.Environment.get calls
     // overridden
     _readData : function(service, params)
     {
@@ -72,14 +72,15 @@ qx.Class.define("unify.business.SysInfo",
           break;
 
         case "env":
+          var Environment=qx.core.Environment;
           data =
           {
             "Runtime" :
             {
               "Platform" : unify.bom.client.Platform.NAME,
               "System" : unify.bom.client.System.TITLE,
-              "Engine" : qx.core.Environment.get("engine.name") + ' ' + qx.core.Environment.get("engine.version"),
-              "Browser" : qx.core.Environment.get("browser.name") + ' ' + qx.core.Environment.get("browser.version")
+              "Engine" : Environment.get('engine.name') + ' ' + Environment.get('engine.version'),
+              "Browser" : Environment.get('browser.name')
             },
             "Extensions" : this.__fromConstants(unify.bom.client.Extension)
           };
