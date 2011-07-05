@@ -49,7 +49,7 @@ qx.Class.define("unify.ui.ScrollView",
     /** Whether the scroll view bounces past the edge of content and back again. */
     bounces :
     {
-      init : !unify.bom.client.System.ANDROID,
+      init : true,
       check : "Boolean"
     },
 

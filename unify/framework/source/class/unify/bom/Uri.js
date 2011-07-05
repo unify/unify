@@ -132,7 +132,7 @@ qx.Class.define("unify.bom.Uri",
     /**
      * {Array} Contains regular expressions for matching native URLs
      */
-    __nativeUrlPatterns: unify.bom.client.System.IOS ? [
+    __nativeUrlPatterns: (qx.core.Environment.get("os.name") == "ios") ? [
       new RegExp("^mailto:"),
       new RegExp("^tel:"),
       new RegExp("^http:\/\/maps.google.com\/maps\?"),
