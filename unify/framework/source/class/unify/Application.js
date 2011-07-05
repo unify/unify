@@ -48,7 +48,7 @@ qx.Class.define("unify.Application",
       this.base(arguments);
 
       // Global error handling (otherwise we see nothing in PhoneGap)
-      if (unify.bom.client.Extension.PHONEGAP)
+      if (qx.core.Environment.get("phonegap"))
       {
         qx.event.GlobalError.setErrorHandler(function(ex) {
           qx.log.Logger.error("" + ex);
@@ -67,7 +67,7 @@ qx.Class.define("unify.Application",
       Registration.addListener(window, "resize", this.__onResize, this);
       Registration.addListener(window, "orientationchange", this.__onRotate, this);
       
-      if (qx.core.Environment.get("device.runtime.name") == "webos") {
+      if (qx.core.Environment.get("os.name") == "webos") {
         var palmSystem = window.PalmSystem;
         if (palmSystem) {
           palmSystem.stageReady();
@@ -137,7 +137,7 @@ qx.Class.define("unify.Application",
      */
     __setupDocumentSize : function()
     {
-      if (unify.bom.client.Extension.PHONEGAP && unify.bom.client.System.IOS)
+      if (qx.core.Environment.get("phonegap") && qx.core.Environment.get("os.name") == "ios")
       {
         // This is a client-side bugfix for this issue in PhoneGap on iPhone OS:
         // http://phonegap.lighthouseapp.com/projects/20116-iphone/tickets/51-uiwebview-viewport-larger-than-application-viewport
@@ -160,19 +160,16 @@ qx.Class.define("unify.Application",
   {
     var unifyTouch;
     var unifyPostitionShift;
-    if (unify.bom.client.System.ANDROID)
+    if (qx.core.Environment.get("os.name") == "android")
     {
       qx.bom.element.Class.add(document.documentElement, "android");
-      unifyTouch = "wiggly";
       unifyPostitionShift = "2d";
     }
     else
     {
-      unifyTouch = "precise";
       unifyPostitionShift = "3d";
     }
 
-    qx.core.Environment.add("unify.touch", unifyTouch);
     qx.core.Environment.add("unify.positionshift", unifyPostitionShift);
   }
 });
