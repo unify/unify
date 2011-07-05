@@ -373,7 +373,7 @@ qx.Class.define("unify.view.ViewManager",
         throw new Error('view is already managed!: '+viewClass+' manager:  '+instanceManager.getId());
       }
       instance.setManager(this);
-      var id = qx.lang.String.hyphenate(viewClass.basename).substring(1);
+      var id = qx.lang.String.hyphenate(viewClass.basename).toLowerCase();
       if (isDefault) {
         this.__defaultViewId = id;
       }
@@ -827,6 +827,8 @@ qx.Class.define("unify.view.ViewManager",
      */
     __setView : function(view, transition)
     {
+      // TODO: view.getElement() is also called if view is in popover
+      //       Maybe it should be rendered lazy
       var oldView = this.__currentView;
       if (view == oldView) {
         return;
