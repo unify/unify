@@ -24,33 +24,44 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
     this._setLayout(new qx.ui.layout.Canvas());
 
     var contentWidget = this.__contentWidget; // = new unify.ui.widget.container.Composite(childLayout);
-    var scrollIndicatorX = this.__horizontalScrollIndicator = new unify.ui.widget.container.scroll.Indicator("horizontal");
-    var scrollIndicatorY = this.__verticalScrollIndicator = new unify.ui.widget.container.scroll.Indicator("vertical");
-
-    var distance = unify.ui.widget.container.scroll.Indicator.DISTANCE;
-
+    
     this._add(contentWidget, {
       left :0,
       top: 0,
       right: 0,
       bottom: 0
     });
-    scrollIndicatorX.setHeight(3);
-    this._add(scrollIndicatorX, {
-      left: 0,
-      right: 0,
-      bottom: distance
-    });
-    scrollIndicatorY.setWidth(3);
-    this._add(scrollIndicatorY, {
-      top: 0,
-      right: distance,
-      bottom: 0
-    });
+    
+    if (unify.bom.client.Feature.CSS_TOUCHSCROLL) {
+      this._setStyle({
+        overflow: "scroll",
+        overflowScrolling: "touch"
+      });
+    } else {
 
-    this._setStyle({
-      overflow: "hidden"
-    });
+      var scrollIndicatorX = this.__horizontalScrollIndicator = new unify.ui.widget.container.scroll.Indicator("horizontal");
+      var scrollIndicatorY = this.__verticalScrollIndicator = new unify.ui.widget.container.scroll.Indicator("vertical");
+
+      var distance = unify.ui.widget.container.scroll.Indicator.DISTANCE;
+      
+      scrollIndicatorX.setHeight(3);
+      this._add(scrollIndicatorX, {
+        left: 0,
+        right: 0,
+        bottom: distance
+      });
+      scrollIndicatorY.setWidth(3);
+      this._add(scrollIndicatorY, {
+        top: 0,
+        right: distance,
+        bottom: 0
+      });
+
+      this._setStyle({
+        overflow: "hidden"
+      });
+    
+    }
   },
 
   /*
@@ -418,34 +429,25 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
       // Create root element
       var elem = document.createElement("div");
 
-      // Add content element
-      /*var contentElem = document.createElement("div");
-      contentElem.className = "content";
-      elem.appendChild(contentElem);
-      this.__contentElem = contentElem;*/
-
-      // Add scroll indicators
-      /*var ScrollIndicator = unify.ui.ScrollIndicator;
-      var indicatorX = this.__horizontalScrollIndicator = new ScrollIndicator("horizontal");
-      elem.appendChild(indicatorX.getElement());
-      var indicatorY = this.__verticalScrollIndicator = new ScrollIndicator("vertical");
-      elem.appendChild(indicatorY.getElement());*/
-
       var contentWidget = this.__contentWidget = new unify.ui.widget.container.Composite();      
       contentWidget.setLayout(this.__childLayout);
       var contentElem = contentWidget.getElement();
 
-      // Initialize properties
-      this.__scrollTo(0, 0);
+      if (!unify.bom.client.Feature.CSS_TOUCHSCROLL) {
+      
+        // Initialize properties
+        this.__scrollTo(0, 0);
 
-      // Add event listeners
-      var Registration = qx.event.Registration;
-      var root = document.documentElement;
-      Registration.addListener(elem, "touchstart", this.__onTouchStart, this);
-      Registration.addListener(contentElem, "transitionEnd", this.__onTransitionEnd, this);
-      Registration.addListener(root, "touchmove", this.__onTouchMove, this);
-      Registration.addListener(root, "touchend", this.__onTouchEnd, this);
-      Registration.addListener(root, "touchcancel", this.__onTouchEnd, this);
+        // Add event listeners
+        var Registration = qx.event.Registration;
+        var root = document.documentElement;
+        Registration.addListener(elem, "touchstart", this.__onTouchStart, this);
+        Registration.addListener(contentElem, "transitionEnd", this.__onTransitionEnd, this);
+        Registration.addListener(root, "touchmove", this.__onTouchMove, this);
+        Registration.addListener(root, "touchend", this.__onTouchEnd, this);
+        Registration.addListener(root, "touchcancel", this.__onTouchEnd, this);
+      
+      }
 
       return elem;
     },
@@ -457,10 +459,16 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
     */
 
     // property apply
-    _applyScrollMode : function(value)
+    _applyScrollMode : function()
     {
-      this.__twoAxisScroll = this.getEnableScrollX() && this.getEnableScrollY() &&
-        this.getShowIndicatorX() && this.getShowIndicatorY();
+      if (unify.bom.client.Feature.CSS_TOUCHSCROLL) {
+        this._setStyle({
+          overflowX: this.getEnableScrollX()?"scroll":"hidden",
+          overflowY: this.getEnableScrollY()?"scroll":"hidden"
+        });
+      } else {
+        this.__twoAxisScroll = this.getEnableScrollX() && this.getEnableScrollY() && this.getShowIndicatorX() && this.getShowIndicatorY();
+      }
     },
 
 

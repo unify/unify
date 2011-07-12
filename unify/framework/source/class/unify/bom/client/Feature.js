@@ -127,7 +127,10 @@ qx.Bootstrap.define("unify.bom.client.Feature",
     CSS_BORDERIMAGE : false,
 
     /** {Boolean} Whether the client supports CSS border radius */
-    CSS_BORDERRADIUS : false
+    CSS_BORDERRADIUS : false,
+    
+    /** {Boolean} New native touch scrolling support */
+    CSS_TOUCHSCROLL : false
   },
 
 
@@ -160,6 +163,8 @@ qx.Bootstrap.define("unify.bom.client.Feature",
     statics.CSS_BOXSHADOW = style[prefix + "BoxShadow"] !== undef;
     statics.CSS_BORDERIMAGE = style[prefix + "BorderImage"] !== undef;
     statics.CSS_BORDERRADIUS = style[prefix + "BorderRadius"] !== undef;
+    
+    statics.CSS_TOUCHSCROLL = style[prefix + "OverflowScrolling"] !== undef;
 
     var html5test = {maybe:true, probably:true};
     if (statics.VIDEOTAG)
