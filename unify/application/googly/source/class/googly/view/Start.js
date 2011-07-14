@@ -26,7 +26,7 @@ qx.Class.define("googly.view.Start",
     // overridden
     _createView : function() 
     {
-      var layerWidget = new unify.ui.widget.core.Layer(this);
+      var layerWidget = this; //new unify.ui.widget.core.Layer(this);
       
       /*var navigationBar = new unify.ui.NavigationBar(this);
       layer.add(navigationBar);*/
@@ -51,7 +51,7 @@ qx.Class.define("googly.view.Start",
         paddingBottom: "10px"
       });
 
-      return layerWidget.getUILayer();
+      //return layerWidget.getUILayer();
     }
   }
 });
