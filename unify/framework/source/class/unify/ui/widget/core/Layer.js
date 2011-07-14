@@ -9,6 +9,7 @@
 *********************************************************************************************** */
 
 /**
+ * @deprecated
  * EXPERIMENTAL
  *
  * Specialised layer widget that connects to a unify layer and takes the whole space to support
@@ -17,29 +18,31 @@
  * In general this is the base (or root) widget of a layer
  */
 qx.Class.define("unify.ui.widget.core.Layer", {
-  extend : unify.ui.widget.core.Widget,
-  
+  //extend : unify.ui.widget.core.Widget,
+  extend: unify.ui.widget.container.Composite,
+  /*
   include : [
     qx.ui.core.MChildrenHandling
-  ],
+  ],*/
   
   /**
    * @param layer {unify.view.StaticView} Base view for widget system
    */
   construct : function(view) {
     // This has to be in front of base call as we need an element in base call
-    var layer = this.__layer = new unify.ui.Layer(view);
-    var elem = this.__elem = layer.getContentElement();
+    //var layer = this.__layer = new unify.ui.Layer(view);
+    //var elem = this.__elem = layer.getContentElement();
     
     this.base(arguments);
-    
+
     this._setLayout(new qx.ui.layout.VBox());
     
-    this.__view = layer.getView();
+    //this.__view = layer.getView();
+    this.__view = view;
 
-    qx.bom.element.Style.set(elem, "boxSizing", "border-box");
+    //qx.bom.element.Style.set(elem, "boxSizing", "border-box");
     
-    view.addListener("appear", this.__viewAppear, this);
+    //view.addListener("appear", this.__viewAppear, this);
     
     qx.event.Registration.addListener(window, "resize", this.__onResize, this);
   },
@@ -59,7 +62,7 @@ qx.Class.define("unify.ui.widget.core.Layer", {
     __view : null,
     
     getUILayer: function() {
-      return this.__layer;
+      return this;//.__layer;
     },
     
     // overridden
@@ -68,27 +71,29 @@ qx.Class.define("unify.ui.widget.core.Layer", {
     },
     
     // overridden
-    _createElement : function() {
+    /*_createElement : function() {
       return this.__elem;
-    },
+    },*/
     
     /** Handler for appearance of layer */
     __viewAppear : function() {
+      console.log("Layer appear");
       this.renderChildren();
       
       qx.ui.core.queue.Manager.flush();
     },
     
     __onResize : function(e) {
+      console.log("Layer resize");
       qx.ui.core.queue.Layout.add(this);
-    },
+    }
     
-    renderLayout : function(left, top, width, height) {
+    /*renderLayout : function(left, top, width, height) {
       this.base(arguments, left, top, width, height, true);
-    },
+    },*/
     
     /** Returns fixed size hint of base layer size */
-    getSizeHint : function() {
+    /*getSizeHint : function() {
       var Dimension = qx.bom.element.Dimension;
       var ret;
       if (this.__view.getManager().getDisplayMode() == "popover") {
@@ -109,7 +114,7 @@ qx.Class.define("unify.ui.widget.core.Layer", {
         };
       }
       return ret;
-    }
+    }*/
   },
   
   destruct : function() {

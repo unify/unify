@@ -118,6 +118,7 @@ qx.Class.define("unify.Application",
      * @param viewManager {Object} Any object with a method "getElement" which returns a DOM element
      */
     add : function(viewManager) {
+      viewManager.setMasterView(true);
       document.body.appendChild(viewManager.getElement());
     },
 

@@ -31,7 +31,8 @@
  */
 qx.Class.define("unify.view.StaticView",
 {
-  extend : qx.core.Object,
+  //extend : qx.core.Object,
+  extend: unify.ui.widget.container.Composite,
   include : [qx.locale.MTranslation],
   type : "abstract",
   
@@ -45,6 +46,8 @@ qx.Class.define("unify.view.StaticView",
   construct : function()
   {
     this.base(arguments);
+    
+    this._setLayout(new qx.ui.layout.VBox());
     
     this.__id = qx.lang.String.hyphenate(this.constructor.basename).toLowerCase();
   },
@@ -91,7 +94,7 @@ qx.Class.define("unify.view.StaticView",
      */
     manager : 
     {
-      check : "unify.view.ViewManager",
+      //check : "unify.view.ViewManager",
       nullable : true
     },
 
@@ -205,7 +208,11 @@ qx.Class.define("unify.view.StaticView",
      * @return {Element} DOM element of the view (root element)
      */
     getElement : function() {
-      return this.getLayer().getElement();
+      //return this.getLayer().getElement();
+      //console.error("getElement");
+      var e = this.base(arguments);
+      qx.bom.element.Class.add(e, "layer");
+      return e;
     },
 
 
@@ -246,7 +253,7 @@ qx.Class.define("unify.view.StaticView",
      */
     create : function()
     {
-      if (qx.core.Environment.get("qx.debug"))
+      /*if (qx.core.Environment.get("qx.debug"))
       {
         if (this.__layer) {
           throw new Error(this.toString + ": Is already created!");
@@ -268,7 +275,9 @@ qx.Class.define("unify.view.StaticView",
       if (qx.core.Environment.get("qx.debug")) {
         this.debug("Created in: " + ((new Date).valueOf() - now) + "ms");
       }
-      return layer;
+      return layer;*/
+      //console.error("create");
+      this._createView();
     },
 
 

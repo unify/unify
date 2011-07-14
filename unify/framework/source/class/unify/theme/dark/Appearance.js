@@ -86,6 +86,37 @@ qx.Theme.define("unify.theme.dark.Appearance", {
       }
     },
     
+    "tabbar" : {
+      style : function() {
+        return {
+          background: "-webkit-gradient(linear, 0% 0%, 0% 100%, from(#434343), to(black), color-stop(.02,#2e2e2e), color-stop(.5,#151515), color-stop(.5,black))",
+          borderTop: "1px solid black"
+        };
+      }
+    },
+    
+    "tabbar.button" : {
+      style : function(state) {
+        var style = {
+          font: "10px bold",
+          borderRadius: "3px",
+          marginTop: "1px",
+          marginLeft: "2px",
+          marginRight: "2px"
+        };
+        
+        if (state.active) {
+          style.color = "white";
+          style.background = "-webkit-gradient(linear, 0% 0%, 0% 100%, from(#494949), to(#252525), color-stop(.5,#353535), color-stop(.5,#252525))";
+        } else {
+          style.color = "#9a9a9a";
+          style.background = "transparent";
+        }
+        
+        return style;
+      }
+    },
+    
     
     /*
     ---------------------------------------------------------------------------
