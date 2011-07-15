@@ -14,6 +14,7 @@
 qx.Class.define("unify.view.widget.ViewManager", {
   extend : qx.core.Object,
   include : [unify.view.widget.MNavigatable],
+  implement : [unify.view.widget.IViewManager],
   
   /*
   *****************************************************************************
@@ -182,6 +183,24 @@ qx.Class.define("unify.view.widget.ViewManager", {
     },
     
     /**
+     * Returns the currently selected view instance
+     *
+     * @return {unify.view.StaticView} View instance which is currently selected
+     */
+    getCurrentView : function() {
+      return this.__currentView;
+    },
+    
+    /**
+     * Returns the local path of the view manager
+     *
+     * @return {Map[]} List of dictonaries (with keys view, segment and param)
+     */
+    getPath : function() {
+      return this.__path;
+    },
+    
+    /**
      * Returns the ID of the view manager
      *
      * @return {String} The ID
@@ -196,6 +215,35 @@ qx.Class.define("unify.view.widget.ViewManager", {
       qx.ui.core.queue.Visibility.add(this.__viewcontainer);
       qx.ui.core.queue.Layout.add(this.__viewcontainer);
       qx.ui.core.queue.Manager.flush();
+    },
+    
+    /**
+     * Internal helper to reset state of view and jump to the
+     * default view (with its default segment).
+     *
+     */
+    __resetHelper : function()
+    {
+      var defaultViewId = this.__defaultViewId;
+      if (qx.core.Environment.get("qx.debug"))
+      {
+        if (!defaultViewId) {
+          throw new Error("Missing default view ID!");
+        }
+      }
+      
+      var viewObj = this.__views[defaultViewId].getInstance();
+
+      this.__path = new unify.view.Path({
+        view : defaultViewId,
+        segment : viewObj.getDefaultSegment(),
+        param : null
+      });
+
+      viewObj.setSegment(viewObj.getDefaultSegment()||null);
+      viewObj.resetParam();
+      this.__setView(viewObj);
+      this.fireDataEvent("changePath", this.__path);
     },
     
     /**
@@ -317,6 +365,9 @@ qx.Class.define("unify.view.widget.ViewManager", {
      */
     _onTap : function(e)
     {
+      this.__tapHelper(e);
+      return;
+      console.log("_onTap", e.getTarget());
       return; //TODO
       var elem = unify.bom.Hierarchy.closest(e.getTarget(), this.__followable);
       if (elem &&!elem.getAttribute('disabled'))

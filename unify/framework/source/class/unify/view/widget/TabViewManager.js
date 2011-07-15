@@ -14,6 +14,7 @@
 qx.Class.define("unify.view.widget.TabViewManager", {
   extend : qx.core.Object,
   include : [unify.view.widget.MNavigatable],
+  implement : [unify.view.widget.IViewManager],
   
   /*
   *****************************************************************************
@@ -140,6 +141,19 @@ qx.Class.define("unify.view.widget.TabViewManager", {
     {
       return this.getWidgetElement().getElement();
     },
+    
+    /**
+     * Returns the currently selected view instance
+     *
+     * @return {unify.view.StaticView} View instance which is currently selected
+     */
+    getCurrentView : function() {
+      return this.__viewManager.getCurrentView(); 
+    },
+    
+    getPath : function() {
+      return this.__viewManager.getPath();
+    },
         
     
     /**
@@ -160,10 +174,9 @@ qx.Class.define("unify.view.widget.TabViewManager", {
       var elem = new unify.ui.widget.form.Button(viewInstance.getTitle("tab-bar"));
       elem.set({
         appearance: "tabbar.button",
-        //goTo: viewInstance.getId(),
+        goTo: viewInstance.getId(),
         height: 44
       });
-      elem.setExecute("test");
       
       this.__viewmap[viewInstance.getId()] = elem;
       this.__getBar().add(elem);
@@ -224,7 +237,9 @@ qx.Class.define("unify.view.widget.TabViewManager", {
     },
     
     
-    _onTap : function() {},
+    _onTap : function(e) {
+      this.__tapHelper(e);
+    },
     _onTouchHold : function() {},
     _onTouchRelease : function() {},
     

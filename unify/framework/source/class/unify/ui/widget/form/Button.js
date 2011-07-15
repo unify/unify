@@ -32,6 +32,7 @@ qx.Class.define("unify.ui.widget.form.Button", {
       apply: "_applyHyperreference"
     },
     
+    // could be : close, parent, same
     relation: {
       init: null,
       nullable: true,
@@ -48,6 +49,12 @@ qx.Class.define("unify.ui.widget.form.Button", {
       init: null,
       nullable: true,
       apply: "_applyShow"
+    },
+    
+    hide: {
+      init: null,
+      nullable: true,
+      apply: "_applyHide"
     },
     
     // overridden
@@ -142,6 +149,16 @@ qx.Class.define("unify.ui.widget.form.Button", {
           this.getContentElement().setAttribute("show", value);
         } else {
           this.getContentElement().removeAttribute("show");
+        }
+      }
+    },
+    
+    _applyHide : function(value) {
+      if (this._hasElement()) {
+        if (value) {
+          this.getContentElement().setAttribute("hide", value);
+        } else {
+          this.getContentElement().removeAttribute("hide");
         }
       }
     }
