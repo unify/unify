@@ -641,13 +641,15 @@ qx.Class.define("unify.view.widget.ViewManager", {
 
       if (transition == "in")
       {
-        this.__animateLayer(view, positions.right, positions.center, true);
-        this.__animateLayer(oldView, positions.center, positions.left, false);
+        //this.__animateLayer(view, positions.right, positions.center, true);
+        //this.__animateLayer(oldView, positions.center, positions.left, false);
+        console.log("TRANSITION IN ", view, oldView);
       }
       else if (transition == "out")
       {
-        this.__animateLayer(view, positions.left, positions.center, true);
-        this.__animateLayer(oldView, positions.center, positions.right, false);
+        //this.__animateLayer(view, positions.left, positions.center, true);
+        //this.__animateLayer(oldView, positions.center, positions.right, false);
+        console.log("TRANSITION OUT ", view, oldView);
       }
       else
       {

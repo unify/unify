@@ -17,12 +17,17 @@ qx.Mixin.define("unify.view.widget.MNavigatable", {
       }
     },
     
-    __tapHelper : function(e) {
-      /** {String} CSS selector with elements which are followable by the navigation manager */
+    __getTapFollowElement : function(e) {
       var followable = "a[href],[rel],[goto],[exec],[show],[hide]";
     
       var elem = unify.bom.Hierarchy.closest(e.getTarget(), followable);
       var widget = elem && qx.core.ObjectRegistry.fromHashCode(elem.$$widget);
+      
+      return widget;
+    },
+    
+    __tapHelper : function(e) {
+      var widget = this.__getTapFollowElement(e);
 
       if (widget && widget.getEnabled()) {
         // Stop further event processing
@@ -118,14 +123,16 @@ qx.Mixin.define("unify.view.widget.MNavigatable", {
       var config = unify.view.Path.parseFragment(dest);
       console.log("CONFIG: ", config);
       var view = config.view;
-      if (view && !this.__views[view])
+      if (view && !this.getView(view))
       {
+        console.log("NAVIGATE : not in this manager");
         unify.view.Navigation.getInstance().navigate(new unify.view.Path(config));
       }
       else
       {
+        console.log("NAVIGATE : in this manager");
         // Read current path and make non-deep copy of path
-        var path = this.__path;
+        var path = this.getPath();
         var clone = path.concat();
         var cloneLast = clone.length-1;
         
@@ -150,6 +157,7 @@ qx.Mixin.define("unify.view.widget.MNavigatable", {
         }
 
         // Finally do the navigate()
+        console.log("NAVIGATE TO ", clone);
         this.navigate(clone);
       }
     }

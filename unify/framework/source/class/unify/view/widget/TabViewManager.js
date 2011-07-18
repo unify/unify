@@ -154,6 +154,14 @@ qx.Class.define("unify.view.widget.TabViewManager", {
     getPath : function() {
       return this.__viewManager.getPath();
     },
+    
+    getView : function(id) {
+      return this.__viewManager.getView(id);
+    },
+    
+    navigate : function(path) {
+      this.__viewManager.navigate(path);
+    },
         
     
     /**
@@ -175,6 +183,7 @@ qx.Class.define("unify.view.widget.TabViewManager", {
       elem.set({
         appearance: "tabbar.button",
         goTo: viewInstance.getId(),
+        relation: "same",
         height: 44
       });
       
@@ -238,7 +247,8 @@ qx.Class.define("unify.view.widget.TabViewManager", {
     
     
     _onTap : function(e) {
-      this.__tapHelper(e);
+      var widget = this.__getTapFollowElement(e);
+      this.__onTap(widget);
     },
     _onTouchHold : function() {},
     _onTouchRelease : function() {},
@@ -248,23 +258,24 @@ qx.Class.define("unify.view.widget.TabViewManager", {
      * 
      * @param e {qx.event.type.Touch} Touch event
      */
-    __onTap : function(e) 
+    __onTap : function(widget) 
     {
-      var elem = unify.bom.Hierarchy.closest(e.getTarget(), "div[view]");
-      if (elem)
+      if (widget)
       {
         var viewManager = this.__viewManager;
         var oldPath = viewManager.getPath();
         var oldRootView = oldPath[0].view;
         
-        var newRootView = elem.getAttribute("view");
+        var newRootView = widget.getGoTo();
         
         // If root view has not changed we force jump to root of the view and not
         // using the stored deep path. This results into the intented behavior to
         // jump to top on the second click on the same button.
         
+        var newPath;
+        
         if (oldRootView != newRootView) {
-          var newPath = this.__paths[newRootView];
+          newPath = this.__paths[newRootView];
         }
         
         if (!newPath) {
