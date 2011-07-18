@@ -258,7 +258,7 @@ qx.Class.define("unify.view.widget.ViewManager", {
           throw new Error("Invalid path to navigate() to: " + path);
         }
       }
-      
+
       var length = path.length;
       if (length == 0) {
         this.warn("Empty path!");

@@ -46,7 +46,7 @@ qx.Class.define("unify.view.widget.ViewContainer", {
     
     // overridden
     isRootWidget : function() {
-      return true;
+      return this.__isMaster;
     },
     
     setMasterView : function(isMaster) {
