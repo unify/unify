@@ -12,7 +12,7 @@
  * EXPERIMENTAL
  */
 qx.Class.define("unify.ui.widget.container.ToolBar", {
-  extend: unify.ui.widget.container.Composite,
+  extend: unify.ui.widget.container.Bar,
   
   construct : function(layout) {
     this.base(arguments);
@@ -31,84 +31,53 @@ qx.Class.define("unify.ui.widget.container.ToolBar", {
   members : {
     /*
     ---------------------------------------------------------------------------
-      PUBLIC API
-    ---------------------------------------------------------------------------
-    */
-    
-    setItems : function(items) {
-      var elem = this.getElement();
-      var itemElem;
-      
-      for (var i=0, l=items.length; i<l; i++)
-      {
-        itemElem = this._createItemElement(items[i]);
-        elem._add(itemElem);
-      }
-    },
-    
-    /**
-     * disables all items of this Toolbar
-     */
-    disable: function(){
-      if (this._hasChildren) {
-        var children = this._getChildren();
-        for (var i=0,ii=children.length; i<ii; i++) {
-          children[i].setEnabled(false);
-        }
-      }
-    },
-    
-    /**
-     * enables all items of this Toolbar
-     */
-    enable: function(){
-      if (this._hasChildren) {
-        var children = this._getChildren();
-        for (var i=0,ii=children.length; i<ii; i++) {
-          children[i].setEnabled(true);
-        }
-      }
-    },
-
-
-    /*
-    ---------------------------------------------------------------------------
       PRIVATE METHODS
     ---------------------------------------------------------------------------
     */
     
     _createItemElement : function(config)
     {
-      var itemElem = new unify.ui.widget.form.Button();
-
-      var navigation = {};
+      var itemElem;
       
-      // rel is independently usable
-      if (config.rel) {
-        navigation.relation = config.rel;
+      if (config.kind == "button") {
+        itemElem = new unify.ui.widget.form.Button();
+  
+        var navigation = {};
+        
+        // rel is independently usable
+        if (config.rel) {
+          itemElem.setRelation(config.rel);
+        }
+        
+        // there can be only one of [jump, exec, show]
+        if (config.jump) {
+          itemElem.setGoTo(config.jump);
+        } else if (config.exec) {
+          itemElem.setExecute(config.exec);
+        } else if (config.show) {
+          itemElem.setShow(config.show);
+        }
+  
+        if (config.label) {
+          itemElem.setValue(config.label);
+        }
+  
+      } else if (config.kind == "segmented") {
+        itemElem = new unify.ui.widget.container.Composite(new qx.ui.layout.HBox());
+        
+        var buttons = config.buttons;
+        for (var i=0,ii=buttons.length; i<ii; i++) {
+          var button = buttons[i];
+          
+          var el = new unify.ui.widget.form.Button(button.label);
+          el.setGoTo("."+button.segment);
+          itemElem.add(el);
+        }
+      } else if (config.kind = "spacer") {
+        itemElem = new unify.ui.widget.container.Spacer();
       }
-      
-      // there can be only one of [jump, exec, show]
-      if (config.jump) {
-        navigation.goTo = config.jump;
-      } else if (config.exec) {
-        navigation.execute = config.exec;
-      } else if (config.show) {
-        navigation.show = config.show;
-      }
-
-      if (config.label) {
-        itemElem.setValue(config.label);
-      }
-
-      itemElem.set(navigation);
       
       return itemElem;
     }
-  },
-  
-  destruct : function() {
-    this.__view = null;
-    this.__toolBar = null;
   }
 });

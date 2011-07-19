@@ -18,7 +18,8 @@ qx.Mixin.define("unify.view.widget.MNavigatable", {
     },
     
     __getTapFollowElement : function(e) {
-      var followable = "a[href],[rel],[goto],[exec],[show],[hide]";
+      //var followable = "a[href],[rel],[goto],[exec],[show],[hide]";
+      var followable = ".navigateble";
     
       var elem = unify.bom.Hierarchy.closest(e.getTarget(), followable);
       var widget = elem && qx.core.ObjectRegistry.fromHashCode(elem.$$widget);
@@ -38,7 +39,6 @@ qx.Mixin.define("unify.view.widget.MNavigatable", {
         if (exec)
         {
           this.getCurrentView()[exec](widget);
-          //widget[exec](elem);
         }
         else
         {
@@ -61,7 +61,7 @@ qx.Mixin.define("unify.view.widget.MNavigatable", {
     __navigationWidgetHelper : function(widget) {
       // Reset event blocking flag
       this.__navigates = false;
-      
+
       // Check up-navigation request first
       //var rel = elem.getAttribute("rel");
       var rel = widget.getRelation && widget.getRelation();

@@ -16,7 +16,7 @@
 #asset(unify/*)
 */
 qx.Class.define("unify.ui.widget.container.NavigationBar", {
-  extend: unify.ui.widget.container.ToolBar,
+  extend: unify.ui.widget.container.Bar,
   
   construct : function(view) {
     this.base(arguments);
