@@ -44,13 +44,13 @@ qx.Class.define("googly.view.Search",
     // overridden
     _getServiceParams : function() 
     {
-      var field = document.getElementById("searchText");
+      var field = this.__inputText && this.__inputText.getValue(); //document.getElementById("searchText");
       if (!field) {
         return;
       }
       
       return {
-        q : field.value
+        q : field
       };
     },
     
@@ -66,7 +66,7 @@ qx.Class.define("googly.view.Search",
     // overridden
     _createView : function() 
     {
-      var layer = new unify.ui.Layer(this);
+      /*var layer = new unify.ui.Layer(this);
       var toolbar = new unify.ui.NavigationBar(this);
       layer.add(toolbar);
       
@@ -75,7 +75,46 @@ qx.Class.define("googly.view.Search",
       scrollView.setEnableScrollX(false);
       scrollView.add("<input type='text' id='searchText'/><div class='button' exec='refresh'>Submit</div><ul id='resultList'></ul>");
 
-      return layer;
+      return layer;*/
+      
+      var navigationBar = new unify.ui.widget.container.NavigationBar(this);
+      this.add(navigationBar);
+      
+      var inputStyles = {
+        font: "20px",
+        paddingLeft: "10px",
+        paddingTop: "10px",
+        paddingRight: "10px",
+        paddingBottom: "10px",
+        marginTop: "8px",
+        marginBottom: "8px",
+        marginLeft: "10px",
+        marginRight: "10px"
+      };
+      
+      var inputText = this.__inputText = new unify.ui.widget.form.Input();
+      inputText.setHeight(50);
+      inputText.setStyle(inputStyles);
+      
+      var button = new unify.ui.widget.form.Button("Search");
+      button.setStyle({
+        marginLeft: "10px",
+        marginRight: "10px",
+        paddingLeft: "10px",
+        paddingTop: "10px",
+        paddingRigth: "10px",
+        paddingBottom: "10px"
+      });
+      button.set({
+        width: 500,
+        height: 54,
+        allowGrowX: true
+      });
+      button.setExecute("refresh");
+      qx.bom.element.Class.add(button.getElement(), "button");
+      
+      this.add(inputText);
+      this.add(button);
     },
     
     

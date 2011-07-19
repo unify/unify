@@ -59,9 +59,8 @@ qx.Class.define("googly.view.Weather",
     // overridden
     _createView : function() 
     {
-      var layer = new unify.ui.Layer(this);
-
-      var toolbar = new unify.ui.ToolBar;
+      //var toolbar = new unify.ui.ToolBar;
+      var toolbar = new unify.ui.widget.container.ToolBar();
       toolbar.setItems(
       [
         {
@@ -96,13 +95,9 @@ qx.Class.define("googly.view.Weather",
           label : "Refresh"
         }
       ]);
-      layer.add(toolbar);
+      this.add(toolbar);
       
-      var weatherDisplay = this.__weatherDisplay = document.createElement("div");
-      weatherDisplay.className = "content";
-      layer.add(weatherDisplay);
-
-      return layer;
+      var weatherDisplay = this.__weatherDisplay = new unify.ui.widget.basic.Content();
     },
     
     

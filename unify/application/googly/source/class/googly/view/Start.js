@@ -26,20 +26,13 @@ qx.Class.define("googly.view.Start",
     // overridden
     _createView : function() 
     {
-      var layerWidget = this; //new unify.ui.widget.core.Layer(this);
-      
-      /*var navigationBar = new unify.ui.NavigationBar(this);
-      layer.add(navigationBar);*/
       var navigationBar = new unify.ui.widget.container.NavigationBar(this);
-      layerWidget.add(navigationBar);
+      this.add(navigationBar);
       
       var text = "Welcome to Googly - The Ultimate Google Experience";
-      /*var content = new unify.ui.Content;
-      content.add(text);
-      layer.add(content);*/
       
       var content = new unify.ui.widget.basic.Label(text);
-      layerWidget.add(content);
+      this.add(content);
       content.set({
         width: 500,
         height: 50
@@ -50,8 +43,6 @@ qx.Class.define("googly.view.Start",
         paddingRight: "10px",
         paddingBottom: "10px"
       });
-
-      //return layerWidget.getUILayer();
     }
   }
 });

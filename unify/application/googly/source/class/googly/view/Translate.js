@@ -68,12 +68,8 @@ qx.Class.define("googly.view.Translate",
     // overridden
     _createView : function() 
     {
-      var layerWidget = new unify.ui.widget.core.Layer(this);
-      layerWidget.set({
-        allowGrowY: true
-      });
       var navigationBar = new unify.ui.widget.container.NavigationBar(this);
-      layerWidget.add(navigationBar);
+      this.add(navigationBar);
       
       var inputStyles = {
         font: "20px",
@@ -118,15 +114,13 @@ qx.Class.define("googly.view.Translate",
       button.setExecute("refresh");
       qx.bom.element.Class.add(button.getElement(), "button");
       
-      layerWidget.add(inputText, {
+      this.add(inputText, {
         flex: 1
       });
-      layerWidget.add(button);
-      layerWidget.add(resultText, {
+      this.add(button);
+      this.add(resultText, {
         flex: 1
       });
-
-      return layerWidget.getUILayer();
     },
     
     
