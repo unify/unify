@@ -121,16 +121,13 @@ qx.Mixin.define("unify.view.widget.MNavigatable", {
       }
       
       var config = unify.view.Path.parseFragment(dest);
-      console.log("CONFIG: ", config);
       var view = config.view;
       if (view && !this.getView(view))
       {
-        console.log("NAVIGATE : not in this manager");
         unify.view.Navigation.getInstance().navigate(new unify.view.Path(config));
       }
       else
       {
-        console.log("NAVIGATE : in this manager");
         // Read current path and make non-deep copy of path
         var path = this.getPath();
         var clone = path.concat();
