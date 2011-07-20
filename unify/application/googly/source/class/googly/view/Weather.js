@@ -111,6 +111,8 @@ qx.Class.define("googly.view.Weather",
       return Math.round((5/9) * (fahrenheit-32));
     },
     
+    _errorHandler : function() {
+    },
     
     // overridden
     _renderData : function(data)

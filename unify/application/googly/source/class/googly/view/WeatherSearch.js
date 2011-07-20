@@ -25,6 +25,7 @@ qx.Class.define("googly.view.WeatherSearch",
     
     // overridden
     isModal : function() {
+      return false;
       return true;
     },
     
@@ -32,19 +33,14 @@ qx.Class.define("googly.view.WeatherSearch",
     // overridden
     _createView : function() 
     {
-      var layer = new unify.ui.Layer(this);
+      var navigationBar = new unify.ui.widget.container.NavigationBar(this);
+      this.add(navigationBar);
 
-      var navigationBar = new unify.ui.NavigationBar(this);
-      layer.add(navigationBar);
-
-      var content = new unify.ui.Content;
-
-      var searchField = this.__searchField = document.createElement("input");
-      searchField.type = "text";
-      content.add(searchField);
-      layer.add(content);
-
-      return layer;
+      var searchField = this.__searchField = new unify.ui.widget.form.Input();
+      searchField.setHeight(50);
+      //searchField.setStyle(inputStyles);
+      
+      this.add(searchField);
     },
     
     
