@@ -643,13 +643,25 @@ qx.Class.define("unify.view.widget.ViewManager", {
       {
         //this.__animateLayer(view, positions.right, positions.center, true);
         //this.__animateLayer(oldView, positions.center, positions.left, false);
-        console.log("TRANSITION IN ", view, oldView);
+        console.log("TRANSITION IN ", view, oldView, positions);
+        oldView.setVisibility("hidden"); //hide();
+        view.setVisibility("visible"); //show();
+        
+        qx.bom.element.Class.remove(oldView.getElement(), "current");
+        qx.bom.element.Class.add(view.getElement(), "current");
       }
       else if (transition == "out")
       {
         //this.__animateLayer(view, positions.left, positions.center, true);
         //this.__animateLayer(oldView, positions.center, positions.right, false);
-        console.log("TRANSITION OUT ", view, oldView);
+        console.log("TRANSITION OUT ", view, oldView, positions);
+        //view.hide();
+        //oldView.show();
+        view.setVisibility("visible");
+        oldView.setVisibility("hidden");
+        
+        qx.bom.element.Class.remove(oldView.getElement(), "current");
+        qx.bom.element.Class.add(view.getElement(), "current");
       }
       else
       {
