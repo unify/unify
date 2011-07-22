@@ -66,14 +66,13 @@ qx.Class.define("googly.view.Weather",
         {
           kind : "button",
           jump : "weather-search", 
-          label : "Select City"
-        },
-        {
-          kind : "spacer"
+          label : "Select City",
+          position : "left"
         },
         {
           kind : "segmented",
           view : this,
+          position : "center",
           buttons : 
           [
             {
@@ -87,12 +86,10 @@ qx.Class.define("googly.view.Weather",
           ]
         },
         {
-          kind : "spacer"
-        },        
-        {
           kind : "button",
           exec : "refresh", 
-          label : "Refresh"
+          label : "Refresh",
+          position : "right"
         }
       ]);
       this.add(toolbar);
