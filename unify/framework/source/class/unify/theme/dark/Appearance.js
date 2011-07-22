@@ -117,6 +117,10 @@ qx.Theme.define("unify.theme.dark.Appearance", {
       }
     },
     
+    "toolbar" : {
+      include : "navigationbar"
+    },
+    
     
     /*
     ---------------------------------------------------------------------------

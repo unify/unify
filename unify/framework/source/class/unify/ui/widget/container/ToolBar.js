@@ -14,9 +14,10 @@
 qx.Class.define("unify.ui.widget.container.ToolBar", {
   extend: unify.ui.widget.container.Bar,
   
-  construct : function(layout) {
+  construct : function() {
     this.base(arguments);
-    this._setLayout(layout || new qx.ui.layout.HBox());
+    this._setLayout(new unify.ui.widget.layout.NavigationBar());
+    
   },
   
   properties : {
@@ -25,6 +26,11 @@ qx.Class.define("unify.ui.widget.container.ToolBar", {
     {
       refine: true,
       init: "toolbar"
+    },
+    
+    height: {
+      refine: true,
+      init: 44
     }
   },
   
@@ -70,12 +76,19 @@ qx.Class.define("unify.ui.widget.container.ToolBar", {
           var button = buttons[i];
           
           var el = new unify.ui.widget.form.Button(button.label);
+          if (i==0) {
+            el.addState("first");
+          } else if (i == buttons.length-1) {
+            el.addState("last");
+          }
           el.setGoTo("."+button.segment);
           itemElem.add(el);
         }
-      } else if (config.kind = "spacer") {
-        itemElem = new unify.ui.widget.container.Spacer();
       }
+      
+      itemElem.setLayoutProperties({
+        position: config.position
+      });
       
       return itemElem;
     }

@@ -70,7 +70,7 @@ qx.Class.define("unify.ui.widget.layout.NavigationBar", {
         var child = all[i];
         
         var position = child.getLayoutProperties().position;
-        if (position == "title") {
+        if (position == "title" || position == "center") {
           if (title) {
             throw new Error("It is not allowed to have more than one child aligned to 'title'!");
           }
