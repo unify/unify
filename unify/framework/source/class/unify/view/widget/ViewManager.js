@@ -243,7 +243,7 @@ qx.Class.define("unify.view.widget.ViewManager", {
       this.__setView(viewObj);
       this.fireDataEvent("changePath", this.__path);
     },
-    
+
     /**
      * Navigates to the given path
      *
@@ -266,14 +266,33 @@ qx.Class.define("unify.view.widget.ViewManager", {
       var oldPath = this.__path;
       var oldLength = oldPath ? oldPath.length : 0;
       var layerTransition = null;
+      var ChunkEquals = unify.view.Path.chunkEquals;
 
       // Detect transition
       if (oldLength > 0)
       {
-        if (length > oldLength) {
-          layerTransition = "in";
-        } else if (length < oldLength) {
-          layerTransition = "out";
+        
+        var minLength = Math.min(length, oldLength);
+        
+        if (minLength >= 0) {
+          var equal = true;
+          var pos = 0;
+          while (equal) {
+            if (ChunkEquals(path[pos],oldPath[pos])) {
+              pos ++;
+            } else {
+              equal = false;
+            }
+          }
+
+          // View is parent or child of old view
+          if (pos == minLength) {
+            if (length > oldLength) {
+              layerTransition = "in";
+            } else if (length < oldLength) {
+              layerTransition = "out";
+            }
+          }
         }
       }
       
@@ -665,6 +684,13 @@ qx.Class.define("unify.view.widget.ViewManager", {
       if (transition == "in" || transition == "out")
       {
         this.__animateLayers(view, oldView, transition);
+      } else {
+        if (oldView) {
+          oldView.setVisibility("hidden");
+        }
+        if (view) {
+          view.setVisibility("visible");
+        }
       }
 
       // Fire appear/disappear events

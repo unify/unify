@@ -140,6 +140,13 @@ qx.Class.define("unify.view.Path",
         segment : RegExp.$3 || null,
         param : RegExp.$5 || null
       };
+    },
+    
+    chunkEquals : function(a, b) {
+      if (!a || !b) {
+        return false;
+      }
+      return (a.view == b.view && a.segment == b.segment && a.param == b.param);
     }
   }
 });
