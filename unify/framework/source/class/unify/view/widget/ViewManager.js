@@ -210,8 +210,6 @@ qx.Class.define("unify.view.widget.ViewManager", {
     },
     
     init : function() {
-      // TODO
-      console.log("Init: ", qx.ui.core.queue.Layout);
       qx.ui.core.queue.Visibility.add(this.__viewcontainer);
       qx.ui.core.queue.Layout.add(this.__viewcontainer);
       qx.ui.core.queue.Manager.flush();
@@ -543,6 +541,10 @@ qx.Class.define("unify.view.widget.ViewManager", {
       }
     },
     
+    hide : function() {
+      console.log("HIDE VIEWMANAGER");
+    },
+    
     /*
     ---------------------------------------------------------------------------
       VIEW MANAGMENT
@@ -594,6 +596,28 @@ qx.Class.define("unify.view.widget.ViewManager", {
     },
     
     /**
+     * {Map} Maps the position of the layer to the platform specific transform value.
+     */
+    __positions : qx.core.Environment.select("unify.positionshift",
+    {
+      "3d" :
+      {
+        bottom : "translate3d(0,100%,0)",
+        right : "translate3d(100%,0,0)",
+        left : "translate3d(-100%,0,0)",
+        center : "translate3d(0,0,0)"
+      },
+
+      "2d" :
+      {
+        bottom : "translate(0,100%)",
+        right : "translate(100%,0)",
+        left : "translate(-100%,0)",
+        center : "translate(0,0)"
+      }
+    }),
+    
+    /**
      * Internal setter method for view switching
      *
      * @param view {unify.view.StaticView} View instance to switch to
@@ -626,7 +650,6 @@ qx.Class.define("unify.view.widget.ViewManager", {
 
       // Insert target layer into DOM
       var elem=this._getWidgetElement();//use getElement is important, __element might not be initialized here
-      console.log("Element is : ", elem, elem.indexOf(view));
       if (elem.indexOf(view) == -1 /*true || currentViewElement.parentNode != elem*/) {
         elem.add(view, {
           left: 0,
@@ -639,39 +662,9 @@ qx.Class.define("unify.view.widget.ViewManager", {
       // Transition specific layer switch
       var positions = this.__positions;
 
-      if (transition == "in")
+      if (transition == "in" || transition == "out")
       {
-        //this.__animateLayer(view, positions.right, positions.center, true);
-        //this.__animateLayer(oldView, positions.center, positions.left, false);
-        console.log("TRANSITION IN ", view, oldView, positions);
-        oldView.setVisibility("hidden"); //hide();
-        view.setVisibility("visible"); //show();
-        
-        qx.bom.element.Class.remove(oldView.getElement(), "current");
-        qx.bom.element.Class.add(view.getElement(), "current");
-      }
-      else if (transition == "out")
-      {
-        //this.__animateLayer(view, positions.left, positions.center, true);
-        //this.__animateLayer(oldView, positions.center, positions.right, false);
-        console.log("TRANSITION OUT ", view, oldView, positions);
-        //view.hide();
-        //oldView.show();
-        view.setVisibility("visible");
-        oldView.setVisibility("hidden");
-        
-        qx.bom.element.Class.remove(oldView.getElement(), "current");
-        qx.bom.element.Class.add(view.getElement(), "current");
-      }
-      else
-      {
-        if (oldView) {
-          qx.bom.element.Class.remove(oldView.getElement(), "current");
-        }
-
-        if (view) {
-          qx.bom.element.Class.add(view.getElement(), "current");
-        }
+        this.__animateLayers(view, oldView, transition);
       }
 
       // Fire appear/disappear events
@@ -683,6 +676,121 @@ qx.Class.define("unify.view.widget.ViewManager", {
         view.fireEvent("appear");
       }
       this.fireEvent("changeView");
+    },
+    
+    __animateLayers : function(toView, fromView, direction) {
+      var self = this;
+      var AnimationDuration = qx.theme.manager.Appearance.getInstance().styleFrom("view").WebkitTransitionDuration;
+      
+      direction = direction || "in";
+      
+      toView.setStyle({
+        "webkitTransitionDuration": "0ms",
+        "webkitTransform": (direction == "in") ? this.__positions.right : this.__positions.left
+      });
+      
+      fromView.setStyle({
+        "webkitTransitionDuration": "0ms",
+        "webkitTransform": this.__positions.center
+      });
+      
+      var visibilityAction = function() {
+        // Force rendering
+        var toViewElement = toView.getElement();
+        toViewElement.offsetWidth + toViewElement.offsetHeight;
+        
+        var fromViewElement = fromView.getElement();
+        var transitionEndFnt = function() {
+          qx.bom.Event.removeNativeListener(fromViewElement, "webkitTransitionEnd", transitionEndFnt);
+          fromView.setVisibility("hidden");
+        };
+        qx.bom.Event.addNativeListener(fromViewElement, "webkitTransitionEnd", transitionEndFnt);
+        
+        toView.setStyle({
+          "webkitTransitionDuration" : AnimationDuration,
+          "webkitTransform": self.__positions.center
+        });
+        fromView.setStyle({
+          "webkitTransitionDuration" : AnimationDuration,
+          "webkitTransform": (direction == "in") ? self.__positions.left : self.__positions.right
+        });
+      };
+      
+      if (toView.getVisibility() != "visible") {
+        toView.addListenerOnce("changeVisibility", visibilityAction);
+        
+        toView.setVisibility("visible");
+      } else {
+        visibilityAction();
+      }
+    },
+    
+    __animateLayer : function(target, from, to, current) {
+      if (current) {
+        target.setVisibility("visible");
+        qx.bom.element.Class.add(target.getElement(), "current");
+      } else {
+        target.setVisibility("hidden");
+        qx.bom.element.Class.remove(target.getElement(), "current");
+      }
+      return;
+      var targetStyle = target.style;
+
+      // Normalize cross-browser differences
+      var transformProperty = qx.bom.element.Style.property("transform");
+      var durationProperty = qx.bom.element.Style.property("transitionDuration");
+
+      // Method to cleanup after transition
+      var cleanup = function()
+      {
+        // Disable transition again
+        targetStyle[durationProperty] = "0ms";
+
+        // Remove listener
+        qx.event.Registration.removeListener(target, "transitionEnd", cleanup, this);
+
+        // Hide the other layer when this is the current one
+        // Otherwise hide this layer when not the current one
+        if (current && other)
+        {
+          qx.bom.element.Class.remove(other, "current");
+        }
+
+        // Make completely invisible if not current layer
+        else if (!current)
+        {
+          qx.bom.element.Class.remove(target, "current");
+        }
+
+        // Revert modifications
+        targetStyle[transformProperty] = "";
+      };
+
+      // React on transition end
+      qx.event.Registration.addListener(target, "transitionEnd", cleanup, this);
+
+      //disable transition and hard switch to initial value
+      targetStyle[durationProperty] = "0ms";
+      targetStyle[transformProperty] = from;
+
+      // Initial display when current layer
+      if (current)
+      {
+        qx.bom.element.Class.add(target, "current");
+
+        // Force rendering
+        target.offsetWidth + target.offsetHeight;
+      }
+
+      // Or show other layer when not the current one
+      else if (other)
+      {
+        qx.bom.element.Class.add(other, "current");
+      }
+
+      // Enable transition and slide to target value
+      targetStyle[durationProperty] = "";
+      targetStyle[transformProperty] = to;
     }
     
     

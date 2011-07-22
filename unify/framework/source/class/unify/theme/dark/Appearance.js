@@ -37,7 +37,8 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     
     "composite" : {},
     "scroll" : {},
-    "layer" : {
+    "layer" : {},
+    "view" : {
       style : function() {
         var style = {
           //backgroundColor: "white",
@@ -45,7 +46,6 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           backgroundImage: "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAABCAIAAACdaSOZAAAAFElEQVQI12M4euYKErp0+tINIAIAuHQQ4hrnkJoAAAAASUVORK5CYII=')",
           
           WebkitBackfaceVisibility: "hidden",
-          WebkitTransform: "translate3d(0, 0, 0) rotate(0) scale(1)",
           WebkitTransitionProperty: "-webkit-transform, opacity",
           WebkitTransitionDuration: "350ms",
           WebkitTransitionTimingFunction: "ease-in-out"

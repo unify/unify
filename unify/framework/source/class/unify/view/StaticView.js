@@ -143,6 +143,11 @@ qx.Class.define("unify.view.StaticView",
       nullable : true,
       apply : "_applySegment",
       event : "changeSegment"
+    },
+    
+    appearance : {
+      refine: true,
+      init: "view"
     }
   },
 

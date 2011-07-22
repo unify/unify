@@ -154,7 +154,6 @@ qx.Mixin.define("unify.view.widget.MNavigatable", {
         }
 
         // Finally do the navigate()
-        console.log("NAVIGATE TO ", clone);
         this.navigate(clone);
       }
     }
