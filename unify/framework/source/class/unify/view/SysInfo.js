@@ -50,35 +50,34 @@ qx.Class.define("unify.view.SysInfo",
     // overridden
     _createView : function()
     {
-      var layer = new unify.ui.Layer(this);
-
-      var toolbar = new unify.ui.ToolBar;
+      var toolbar = new unify.ui.widget.container.ToolBar();
       toolbar.setItems(
       [
         {
-          kind : "spacer"
-        },
-        {
           kind : "segmented",
           view : this,
+          position: "center",
           buttons :
           [
             { label : "Basics", segment : "basics" },
             { label : "Environment", segment : "env" },
             { label : "Features", segment : "features" }
           ]
-        },
-        {
-          kind : "spacer"
         }
       ]);
-      layer.add(toolbar);
+      this.add(toolbar);
       
-      var scrollview = this.__content = new unify.ui.ScrollView(this);
+      var scrollview = this.__content = new unify.ui.widget.container.Scroll(new qx.ui.layout.VBox());
       scrollview.setEnableScrollX(false);
-      layer.add(scrollview);
-
-      return layer;
+      
+      var list = this.__content = new unify.ui.widget.container.List();
+      scrollview.add(list, {
+        flex: 1
+      });
+      
+      this.add(scrollview, {
+        flex: 1
+      });
     },
 
 
@@ -107,10 +106,13 @@ qx.Class.define("unify.view.SysInfo",
     // overridden
     _renderData : function(data)
     {
-      var html = "";
+      this.__content.setData(data);
+      
+      /*console.log(data);
       var header, fields, title;
       for (header in data)
       {
+        
         html += "<h2>" + header + "</h2>";
         html += "<ul>";
 
@@ -123,7 +125,7 @@ qx.Class.define("unify.view.SysInfo",
       }
 
       this.__content.replace(html);
-      this.__content.scrollTo(0, 0, false);
+      this.__content.scrollTo(0, 0, false);*/
     }
   }
 });
