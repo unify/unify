@@ -210,6 +210,10 @@ qx.Class.define("unify.view.widget.ViewManager", {
     },
     
     init : function() {
+      if (!this.__path && this.getDisplayMode()!='modal') {
+        this.__resetHelper();
+      }
+
       qx.ui.core.queue.Visibility.add(this.__viewcontainer);
       qx.ui.core.queue.Layout.add(this.__viewcontainer);
       qx.ui.core.queue.Manager.flush();
