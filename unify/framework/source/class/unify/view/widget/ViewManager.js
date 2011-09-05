@@ -600,7 +600,8 @@ qx.Class.define("unify.view.widget.ViewManager", {
         throw new Error('view is already managed!: '+viewClass+' manager:  '+instanceManager.getId());
       }
       instance.setManager(this);
-      var id = qx.lang.String.hyphenate(viewClass.basename).toLowerCase();
+      var id = qx.lang.String.hyphenate(viewClass.basename).substring(1).toLowerCase();
+console.log(222, id);
       if (isDefault) {
         this.__defaultViewId = id;
       }
