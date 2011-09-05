@@ -872,11 +872,19 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         "bottom",
         "right",
         "position",
-        "width",
-        "height",
+        //"width",
+        //"height",
         "visibility"
       ];
       
+      if (map.height) {
+        this.setHeight(parseInt(map.height,10));
+        delete map.height;
+      }
+      if (map.width) {
+        this.setWidth(parseInt(map.width,10));
+        delete map.height;
+      }
       if (map.margin) {
         var margin = map.margin.split(" ");
         map.marginTop = margin[0];

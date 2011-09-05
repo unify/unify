@@ -17,7 +17,6 @@ qx.Class.define("unify.ui.widget.container.ToolBar", {
   construct : function() {
     this.base(arguments);
     this._setLayout(new unify.ui.widget.layout.NavigationBar());
-    
   },
   
   properties : {
@@ -40,6 +39,9 @@ qx.Class.define("unify.ui.widget.container.ToolBar", {
       PRIVATE METHODS
     ---------------------------------------------------------------------------
     */
+    
+    __segmented : null,
+    __segmentToWidget : null,
     
     _createItemElement : function(config)
     {
@@ -69,19 +71,34 @@ qx.Class.define("unify.ui.widget.container.ToolBar", {
         }
   
       } else if (config.kind == "segmented") {
-        itemElem = new unify.ui.widget.container.Composite(new qx.ui.layout.HBox());
+        itemElem = this.__segmented = new unify.ui.widget.container.Composite(new qx.ui.layout.HBox()).set({
+          appearance: "toolbar.segmented.container"
+        });
+        
+        this.__segmentToWidget = {};
+        
+        config.view.addListener("changeSegment", this.__changeSegment, this);
+        var segment = config.view.getSegment();
         
         var buttons = config.buttons;
         for (var i=0,ii=buttons.length; i<ii; i++) {
           var button = buttons[i];
           
-          var el = new unify.ui.widget.form.Button(button.label);
+          var el = new unify.ui.widget.form.Button(button.label).set({
+            appearance: "toolbar.segmented.button"
+          });
           if (i==0) {
             el.addState("first");
           } else if (i == buttons.length-1) {
             el.addState("last");
           }
           el.setGoTo("."+button.segment);
+          
+          if (!segment || segment == button.segment) {
+            el.addState("active");
+          }
+          
+          this.__segmentToWidget[button.segment] = el.toHashCode();
           itemElem.add(el);
         }
       }
@@ -91,6 +108,24 @@ qx.Class.define("unify.ui.widget.container.ToolBar", {
       });
       
       return itemElem;
+    },
+    
+    __changeSegment : function(e) {
+      var s2w = this.__segmentToWidget;
+      var segment = e.getData();
+      
+      for (var key in s2w) {
+        var v = s2w[key];
+        var w = v && qx.core.ObjectRegistry.fromHashCode(v);
+        
+        if (w) {
+          if (key == segment) {
+            w.addState("active");
+          } else {
+            w.removeState("active");
+          }
+        }
+      }
     }
   }
 });

@@ -107,25 +107,6 @@ qx.Class.define("unify.view.SysInfo",
     _renderData : function(data)
     {
       this.__content.setData(data);
-      
-      /*console.log(data);
-      var header, fields, title;
-      for (header in data)
-      {
-        
-        html += "<h2>" + header + "</h2>";
-        html += "<ul>";
-
-        fields = data[header];
-        for (title in fields) {
-          html += "<li><label>" + title + "</label><span>" + fields[title] + "</span></li>";
-        }
-
-        html += "</ul>";
-      }
-
-      this.__content.replace(html);
-      this.__content.scrollTo(0, 0, false);*/
     }
   }
 });
