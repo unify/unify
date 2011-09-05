@@ -99,7 +99,6 @@ qx.Class.define("unify.ui.widget.basic.Label", {
     // overridden
     _getContentHeightForWidth : function(width)
     {
-      console.log("LABEL getContentHeightForWidth");
       /*if (!this.getHtml() && !this.getWrap()) {
         return null;
       }*/

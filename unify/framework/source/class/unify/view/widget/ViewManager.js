@@ -387,8 +387,6 @@ qx.Class.define("unify.view.widget.ViewManager", {
     _onTap : function(e)
     {
       this.__tapHelper(e);
-      return;
-      console.log("_onTap", e.getTarget());
       return; //TODO
       var elem = unify.bom.Hierarchy.closest(e.getTarget(), this.__followable);
       if (elem &&!elem.getAttribute('disabled'))
@@ -565,7 +563,7 @@ qx.Class.define("unify.view.widget.ViewManager", {
     },
     
     hide : function() {
-      console.log("HIDE VIEWMANAGER");
+      //TODO: Hide
     },
     
     /*
@@ -601,7 +599,6 @@ qx.Class.define("unify.view.widget.ViewManager", {
       }
       instance.setManager(this);
       var id = qx.lang.String.hyphenate(viewClass.basename).substring(1).toLowerCase();
-console.log(222, id);
       if (isDefault) {
         this.__defaultViewId = id;
       }

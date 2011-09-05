@@ -77,14 +77,12 @@ qx.Class.define("unify.ui.widget.core.Layer", {
     
     /** Handler for appearance of layer */
     __viewAppear : function() {
-      console.log("Layer appear");
       this.renderChildren();
       
       qx.ui.core.queue.Manager.flush();
     },
     
     __onResize : function(e) {
-      console.log("Layer resize");
       qx.ui.core.queue.Layout.add(this);
     }
     
