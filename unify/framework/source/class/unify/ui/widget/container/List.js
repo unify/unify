@@ -4,8 +4,7 @@ qx.Class.define("unify.ui.widget.container.List", {
   construct : function() {
     this.base(arguments);
     
-    var layout = new qx.ui.layout.Grid();
-    layout.setColumnFlex(1, 1);
+    var layout = new qx.ui.layout.VBox();
     this._setLayout(layout);
   },
   
@@ -26,31 +25,36 @@ qx.Class.define("unify.ui.widget.container.List", {
     _applyData : function(data) {
       this._removeAll();
       
-      var rowCounter = 0;
-      
       var header, fields, title;
       for (header in data) {
         this._add(
           new unify.ui.widget.basic.Label(header).set({
             appearance: "list.header"
-          }),
-          { row: rowCounter++, column: 0, colSpan: 2 }
+          })
         );
+        
+        var containerLayout = new qx.ui.layout.Grid();
+        containerLayout.setColumnFlex(0, 1);
+        var container = new unify.ui.widget.container.Composite(containerLayout);
+        container.setAppearance("list.content");
+        var rowCounter = 0;
         
         fields = data[header];
         for (title in fields) {
-          this._add(
+          container.add(
             new unify.ui.widget.basic.Label(title).set({
               appearance: "list.description"
             }),
             { row: rowCounter, column: 0 }
           );
-          this._add(
+          container.add(
             new unify.ui.widget.basic.Label(fields[title]).set({
               appearance: "list.value"
             }),
             { row: rowCounter++, column: 1 }
           );
+          
+          this._add(container);
         }
       }
     }

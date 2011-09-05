@@ -170,27 +170,34 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           marginLeft: "10px",
           marginTop: "10px",
           marginRight: "10px",
-          marginBottom: "10px",
+          marginBottom: "10px"
+        };
+      }
+    },
+    "list.content" : {
+      style : function() {
+        return {
           backgroundColor: "white",
-          borderRadius: "5px",
-          paddingLeft: "10px",
-          paddingTop: "10px",
-          paddingRight: "10px",
-          paddingBottom: "10px"
+          borderRadius: "8px",
+          marginTop: "15px",
+          marginBottom: "17px",
+          padding: "10px"
         };
       }
     },
     "list.header" : {
       style : function() {
         return {
-          font: "18px bold"
+          font: "17px bold",
+          color: "#4D576B",
+          textShadow: "white 0 1px 1px"
         };
       }
     },
     "list.description" : {
       style : function() {
         return {
-          font: "bold",
+          font: "17px bold",
           marginRight: "5px"
         };
       }
@@ -198,6 +205,7 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     "list.value" : {
       style : function() {
         return {
+          font: "17px"
         };
       }
     },
