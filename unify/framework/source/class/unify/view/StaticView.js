@@ -49,7 +49,7 @@ qx.Class.define("unify.view.StaticView",
     
     this._setLayout(new qx.ui.layout.VBox());
     
-    this.__id = qx.lang.String.hyphenate(this.constructor.basename).toLowerCase();
+    this.__id = qx.lang.String.hyphenate(this.constructor.basename).substring(1).toLowerCase();
   },
   
 
