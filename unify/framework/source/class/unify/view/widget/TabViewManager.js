@@ -247,7 +247,7 @@ qx.Class.define("unify.view.widget.TabViewManager", {
     
     
     _onTap : function(e) {
-      var widget = this.__getTapFollowElement(e);
+      var widget = this._getTapFollowElement(e);
       this.__onTap(widget);
     },
     _onTouchHold : function() {},

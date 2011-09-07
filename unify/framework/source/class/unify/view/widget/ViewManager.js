@@ -386,7 +386,7 @@ qx.Class.define("unify.view.widget.ViewManager", {
      */
     _onTap : function(e)
     {
-      this.__tapHelper(e);
+      this._tapHelper(e);
       return; //TODO
       var elem = unify.bom.Hierarchy.closest(e.getTarget(), this.__followable);
       if (elem &&!elem.getAttribute('disabled'))

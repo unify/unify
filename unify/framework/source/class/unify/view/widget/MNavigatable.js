@@ -17,7 +17,7 @@ qx.Mixin.define("unify.view.widget.MNavigatable", {
       }
     },
     
-    __getTapFollowElement : function(e) {
+    _getTapFollowElement : function(e) {
       //var followable = "a[href],[rel],[goto],[exec],[show],[hide]";
       var followable = ".navigateble";
     
@@ -27,8 +27,8 @@ qx.Mixin.define("unify.view.widget.MNavigatable", {
       return widget;
     },
     
-    __tapHelper : function(e) {
-      var widget = this.__getTapFollowElement(e);
+    _tapHelper : function(e) {
+      var widget = this._getTapFollowElement(e);
 
       if (widget && widget.getEnabled()) {
         // Stop further event processing
