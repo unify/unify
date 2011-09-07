@@ -109,7 +109,7 @@ qx.Class.define("unify.view.widget.TabViewManager", {
       bar.setHeight(49);
       elem.add(bar);
       
-      this.__makeNavigatable(bar);
+      this._makeNavigatable(bar);
       
       return elem;
     },

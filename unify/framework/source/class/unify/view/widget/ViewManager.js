@@ -154,7 +154,7 @@ qx.Class.define("unify.view.widget.ViewManager", {
       var elem = e.getElement();
       elem.id = this.getId();
       
-      this.__makeNavigatable(e);
+      this._makeNavigatable(e);
       
       return e;
     },

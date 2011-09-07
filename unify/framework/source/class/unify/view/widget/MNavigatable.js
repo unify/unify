@@ -1,6 +1,6 @@
 qx.Mixin.define("unify.view.widget.MNavigatable", {
   members : {
-    __makeNavigatable : function(widget) {
+    _makeNavigatable : function(widget) {
       var e = widget.getElement();
       // Register to navigation events
       qx.event.Registration.addListener(e, "click", this.__onClick, this);//TODO remove click handling, we care for touches. clicks are emulated into touches if neccassary
