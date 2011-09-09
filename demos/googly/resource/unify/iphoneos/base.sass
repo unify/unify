@@ -1,0 +1,494 @@
+// ***************************************************************************************************
+//   MIXIN: PADDED LAYER
+// ***************************************************************************************************
+
+=padded-layer($border_color: #b4b4b4, $border_radius: 8px)
+  background-image: inline_image("pinstripes.png")
+  background-color: rgb(203, 210, 216)
+  
+  .content
+    padding: 10px
+    
+    > *:first-child
+      margin-top: 0 !important
+      
+    > *:last-child
+      margin-bottom: 0 !important
+      
+    > p, > ul, > div
+      margin: 15px 0px 17px
+      
+    > h2
+      text-shadow: rgb(255, 255, 255) 0 1px 1px
+      color: rgb(77, 87, 107)
+      margin: 15px 11px 0px 11px
+      font-size: 17px
+      font-weight: bold
+      
+    > p, > ul > li
+      padding: 10px
+      border: 1px solid $border_color
+      background-color: white
+      
+    > p
+      +border-radius($border_radius)
+      font-size: 15px
+      
+    > ul > li
+      border-bottom-style: none
+      
+      &:first-child
+        +border-top-radius($border_radius)
+        
+      &:last-child
+        +border-bottom-radius($border_radius)
+        border-bottom-style: solid
+        
+
+// ***************************************************************************************************
+//   MIXIN: SCROLLVIEW BACKGROUND TEXTURE
+// ***************************************************************************************************
+
+=scrollview-texture
+  background-image: inline_image("scrollviewbgtexture.png")
+
+
+// ***************************************************************************************************
+//   MIXIN: KEY-VALUE LIST
+// ***************************************************************************************************
+
+=keyvalue-list
+  li
+    +hbox
+    font-size: 17px
+    
+    > label,
+    > span
+      display: block
+      
+    > label
+      font-weight: bold
+      
+    > span
+      color: rgb(56, 84, 135)
+      text-align: right
+      +box-flex(1)
+      
+      
+      
+      
+// ***************************************************************************************************
+//   MIXIN: NAVIGATION LIST
+// ***************************************************************************************************
+
+// Allows arbitrary sub elements
+// Uses a horizontal box layout for layouting children
+// Icon is supported in front of text using a "img" element
+// Text needs to be wrapped by a "label" element
+// Supports additional infos using "em" element
+// May show an arrow to indicate sub content using (self-closed) "hr" element
+
+=navigation-list
+  $selection_start: rgb(66, 134, 245)
+  $selection_end: rgb(25, 79, 219)
+  $count: rgb(130, 151, 188)
+  li
+    +hbox
+    font-weight: bold
+    font-size: 17px
+    
+    > img,
+    > label,
+    > em,
+    > hr
+      display: block
+      
+    > label
+      +box-flex(1)
+      +text-overflow
+      white-space: nowrap
+      width: 10px
+      
+    > em
+      +border-radius(9px)
+      background: $count
+      color: white
+      padding: 2px 10px
+      font-size: 13px
+      font-style: normal
+      
+    > hr
+      margin-left: 8px
+      border: none
+      &:after
+        content: inline_image("list/arrow.png")
+        
+    &.pressed,
+    &.selected
+      +linear-gradient(color-stops($selection_start, $selection_end))
+      color: white
+      
+      > em
+        // maybe we can tweak this gradient further by using CSS background-clip:text
+        // http://webkit.org/blog/164/background-clip-text/
+        background: white
+        color: ($selection_start + $selection_end) / 2
+        
+      > hr
+        after:
+          content: inline_image("list/arrow-selected.png")
+
+
+
+
+// ***************************************************************************************************
+//   MIXIN: BUTTON
+// ***************************************************************************************************
+
+=content-button
+  display: block
+  padding: 10px
+  text-align: center
+  font-size: 20px
+  font-weight: bold
+  border: 3px solid rgb(58, 58, 58)
+  background-color: rgb(36, 36, 36)
+  color: white
+  +border-radius(12px)
+  +linear-gradient(color-stops(rgba(255, 255, 255, 0.61), rgba(255, 255, 255, 0.45) 5%, rgba(255, 255, 255, 0.27) 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0)))
+
+// ***************************************************************************************************
+//   MIXIN: rotateZ
+// ***************************************************************************************************
+
+=rotateZ
+  -webkit-animation-name: rotateZ
+  -webkit-animation-duration: 0.85s
+  -webkit-animation-iteration-count: infinite
+  -webkit-animation-timing-function: linear
+
+// ***************************************************************************************************
+//   TAGS
+// ***************************************************************************************************
+
+body
+  font-family: Helvetica, sans-serif
+  font-size: 14px
+  line-height: 1.4
+  color: black
+  background: white
+
+
+
+
+// ***************************************************************************************************
+//   SINGLETON: ACTIVITY INDICATOR
+// ***************************************************************************************************
+
+#activity
+  background-color: rgb(12, 12, 12)
+  > div
+    position: absolute
+    margin-top: -27.5px
+    margin-left: -27.5px
+    top: 50%
+    left: 50%
+    background-image: inline_image("loader.png")
+    background-repeat: no-repeat
+    background-position: center center
+    width: 55px
+    height: 55px
+    +rotateZ
+  opacity: 0.85
+  +box-shadow(black, 0px, 2px, 10px)
+  +border-radius(12px)
+  padding-top: 110px
+  color: #eeeeee
+  font-weight: bold
+  font-size: 16px
+  text-align: center
+  
+  &.out
+    +scale(0.3)
+    
+  &.in
+    +scale(1.5)
+    
+    
+
+
+// ***************************************************************************************************
+//   CLASS: VIEW MANAGER
+// ***************************************************************************************************
+
+.view-manager
+  overflow: hidden
+  position: relative
+
+
+
+
+// ***************************************************************************************************
+//   CLASS: LAYER
+// ***************************************************************************************************
+
+.layer
+  background: white
+
+
+
+
+// ***************************************************************************************************
+//   CLASS: NAVIGATION BAR + TOOL BAR
+// ***************************************************************************************************
+
+=tool-bar-button-icon($source)
+  $size: 20px
+  $width: image_width($source)
+  $height: image_height($source)
+  
+  > div:empty
+    width: $size
+    height: $size
+    
+    &:after
+      width: $width
+      height: $height
+      margin-top: ($size - $height) / 2
+      -webkit-mask-image: inline_image($source)
+      background: white
+      content: ""
+      display: inline-block
+      vertical-align: top
+
+// basic navigation-bar and tool-bar styles
+// colors for these are set in theme.sass
+.navigation-bar,
+.tool-bar
+  height: 44px
+  padding-left: 2px
+  padding-right: 2px
+  white-space: nowrap
+
+  > h1
+    font-size: 20px
+    font-weight: bold
+    line-height: 42px
+    
+// left, center and right
+.navigation-bar > div, 
+.tool-bar
+  
+  // shared button class - used by segmentation control and top-level buttons
+  .button
+    font-size: 12px
+    font-weight: bold
+    text-decoration: none
+    line-height: 20px
+    padding: 4px
+    cursor: default
+    border-width: 0px 5px
+    
+  .spacer
+    +box-flex(1)
+    
+.navigation-bar > .center,
+.tool-bar
+  
+  .segmented
+    border-width: 0px 5px
+    
+    > .button
+      border-width: 0px 1px
+      display: inline-block
+      position: relative
+      padding: 5px 12px
+      margin-left: -1px
+      z-index: 5
+      
+      &:first-child
+        border-left-width: 0
+        margin-left: 0
+        
+      &:last-child
+        border-right-width: 0
+        
+      &.selected
+        z-index: 6
+        
+        &:first-child
+          border-left-width: 5px
+          margin-left: -5px
+          
+        &:last-child
+          border-right-width: 5px
+          margin-right: -5px
+          
+.navigation-bar
+  +hbox
+  position: relative
+  white-space: nowrap
+
+  > .left,
+  > .center,
+  > .right
+    height: 42px
+    overflow: hidden
+    width: 33%
+    +box-flex(1)
+    +hbox
+    
+    > div
+      margin-left: 6px
+      margin-right: 4px
+      
+  > .center
+    width: 34%
+    +box-pack(center)
+    
+    > h1
+      width: 100%
+      font-size: 20px
+      color: white
+      text-shadow: rgba(0, 0, 0, 0.4) 0px -1px 0
+      font-weight: bold
+      text-align: center
+      line-height: 42px 
+      text-overflow: ellipsis
+      overflow: hidden
+      
+  > .right
+    +box-pack(end)
+    
+  .button[rel=parent]
+    border-left-width: 12px
+    
+.tool-bar
+  +hbox
+  
+  > div
+    margin-left: 6px
+    margin-right: 4px
+    
+  // bottom positioned tool bar
+  &:last-child
+    border-bottom: 0px none
+    
+
+// ***************************************************************************************************
+//   CLASS: TABBAR
+// ***************************************************************************************************
+
+=tab-bar-button-icon($source)
+  $size: 32px
+  $width: image_width($source)
+  $height: image_height($source)
+  .tab-bar-element-image
+    width: $size
+    height: $size
+    
+    &:after
+      width: $width
+      height: $height
+      margin-top: ($size - $height) / 2
+      -webkit-mask-image: inline_image($source)
+      
+.tab-view
+  > .tab-bar
+    height: 49px
+    +box-pack(center)
+    +linear-gradient(color-stops(#434343, #2e2e2e 2%, #151515 50%, black 50%, black 100%))
+    border-top: 1px solid black
+    font:
+      weight: bold
+      size: 10px
+    color: #9a9a9a
+    
+    .tab-bar-element
+      display: block
+      height: 44px
+      background: transparent
+      margin-top: 1px
+      margin-left: 2px
+      margin-right: 2px
+      padding: 0
+      border: 0
+      +border-radius(3px)
+      position: relative
+      max-width: 100px
+      cursor: default
+      
+      &.selected
+        color: white
+        +linear-gradient(color-stops(#494949, #353535 50%, #252525 50%, #252525))
+        .tab-bar-element-image:after
+          background-image: inline_image("tabbar/mask.png") !important
+          
+    .tab-bar-element-image
+      margin:
+        left: auto
+        right: auto
+        
+      &:after
+        content: ""
+        display: inline-block
+        vertical-align: top
+        +linear-gradient(color-stops(#b0b0b0, #545454), top, true)
+        background-size: 100% 100%
+
+
+// ***************************************************************************************************
+//   CLASS: POPOVER MANAGER
+// ***************************************************************************************************
+
+#popover-blocker,
+#modal-blocker
+  position: absolute
+  width: 100%
+  height: 100%
+  top: 0px
+  left: 0px
+  display: none
+
+#modal-blocker
+  background-color: black
+  opacity: 0.5
+  
+.popover-indicator
+  width: 0
+  height: 0
+  border-left: 20px solid transparent
+  border-right: 20px solid transparent
+  border-width: 20px
+  border-style: solid
+  border-top: 0
+  position: absolute
+  top: -20px
+  left: 0px
+  
+.popover-wrapper
+  position: absolute
+  border-width: 5px
+  border-style: solid
+  +border-radius(10px)
+  
+.view-manager.display-mode-modal,
+.view-manager.display-mode-popover
+  position: absolute
+  width: 100%
+  height: 100%
+  top: 0px
+  left: 0px
+
+.view-manager.display-mode-modal
+  display: none
+
+  &[orient=landscape]
+    left: 5%
+    width: 90%
+
+@-webkit-keyframes rotateZ
+  from
+    -webkit-transform: rotateZ(0deg)
+  to
+    -webkit-transform: rotateZ(360deg)

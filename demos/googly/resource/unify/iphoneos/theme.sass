@@ -1,0 +1,165 @@
+$default-theme: "black" !default
+
+=tool-bar-theme($color:$default-theme)
+  background: inline_image("tool-bar/#{$color}/toolbar.png")
+
+  > h1
+    @if $color == "black"
+      color: white
+      text-shadow: rgba(0, 0, 0, 0.398438) 0px -1px 0px
+    @else if $color == "silver"
+      color: #717880
+      text-shadow: rgba(255, 255, 255, 0.398438) 0px 1px 0px
+    @else if $color == "blue"
+      color: white
+      text-shadow: rgba(26, 34, 44, 0.398438) 0px -1px 0px
+
+  .button
+    color: white
+    text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
+    -webkit-border-image: inline_image("tool-bar/#{$color}/button-normal.png") 0 5 30 5
+
+    &.pressed,
+    &.selected
+      -webkit-border-image: inline_image("tool-bar/#{$color}/button-normal.png") 30 5 0 5
+
+    &.inactive
+      color: lightGrey
+
+    &.action
+      -webkit-border-image: inline_image("tool-bar/#{$color}/button-red.png") 0 5 30 5
+
+    &.action.pressed
+      -webkit-border-image: inline_image("tool-bar/#{$color}/button-red.png") 30 5 0 5
+
+    &.cancel
+      -webkit-border-image: inline_image("tool-bar/#{$color}/button-blue.png") 0 5 30 5
+
+    &.cancel.pressed
+      -webkit-border-image: inline_image("tool-bar/#{$color}/button-blue.png") 30 5 0 5
+
+  .segmented
+    -webkit-border-image: inline_image("tool-bar/#{$color}/segmented-all.png") 0 5 120 5
+
+    > .button
+      @if $color == "black"
+        color: grey
+        text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
+      @else if $color == "silver"
+        color: #4f5459
+        text-shadow: rgba(255, 255, 255, 0.5) 0px 1px 0
+      @else if $color == "blue"
+        color: white
+        text-shadow: rgba(26, 34, 44, 0.398438) 0px -1px 0
+
+      -webkit-border-image: inline_image("tool-bar/#{$color}/segmented-all.png") 30 5 90 5
+
+      &.selected
+        @if $color == "black"
+          color: white
+          text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
+        @else if $color == "silver"
+          color: white
+          text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
+        @else if $color == "blue"
+          color: white
+          text-shadow: rgba(26, 34, 44, 0.5) 0px -1px 0
+
+        -webkit-border-image: inline_image("tool-bar/#{$color}/segmented-all.png") 60 5 60 5
+
+        &:first-child
+          -webkit-border-image: inline_image("tool-bar/#{$color}/segmented-all.png") 90 5 30 5
+
+        &:last-child
+          -webkit-border-image: inline_image("tool-bar/#{$color}/segmented-all.png") 120 5 0 5
+
+=navigation-bar-theme($color:$default-theme)
+  background: inline_image("navigation-bar/#{$color}/navigationbar.png")
+
+  > .center > h1
+    @if $color == "black"
+      color: white
+      text-shadow: rgba(0, 0, 0, 0.398438) 0px -1px 0px
+    @else if $color == "silver"
+      color: #717880
+      text-shadow: rgba(255, 255, 255, 0.398438) 0px 1px 0px
+    @else if $color == "blue"
+      color: white
+      text-shadow: rgba(26, 34, 44, 0.398438) 0px -1px 0p
+
+
+  .button
+    @if $color == "black"
+      color: white
+      text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
+    @else if $color == "silver"
+      color: white
+      text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
+    @else if $color == "blue"
+      color: white
+      text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
+
+    -webkit-border-image: inline_image("tool-bar/#{$color}/button-normal.png") 0 5 30 5
+
+    &.pressed
+      -webkit-border-image: inline_image("tool-bar/#{$color}/button-normal.png") 30 5 0 5
+
+  .button[rel=parent]
+    -webkit-border-image: inline_image("tool-bar/#{$color}/button-back.png") 0 5 30 12
+
+    &.pressed
+      -webkit-border-image: inline_image("tool-bar/#{$color}/button-back.png") 30 5 0 12
+
+  .segmented
+    -webkit-border-image: inline_image("tool-bar/#{$color}/segmented-all.png") 0 5 120 5
+
+    > .button
+      @if $color == "black"
+        color: #4f5459
+        text-shadow: rgba(255, 255, 255, 0.5) 0px 1px 0
+      @else if $color == "silver"
+        color: #4f5459
+        text-shadow: rgba(255, 255, 255, 0.5) 0px 1px 0
+      @else if $color == "blue"
+        color: #4f5459
+        text-shadow: rgba(255, 255, 255, 0.5) 0px 1px 0
+      -webkit-border-image: inline_image("tool-bar/#{$color}/segmented-all.png") 30 5 90 5
+
+      &.selected
+        @if $color == "black"
+          color: white
+          text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
+        @else if $color == "silver"
+          color: white
+          text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
+        @else if $color == "blue"
+          color: white
+          text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0
+        -webkit-border-image: inline_image("tool-bar/#{$color}/segmented-all.png") 60 5 60 5
+
+        &:first-child
+          -webkit-border-image: inline_image("tool-bar/#{$color}/segmented-all.png") 90 5 30 5
+
+        &:last-child
+          -webkit-border-image: inline_image("tool-bar/#{$color}/segmented-all.png") 120 5 0 5
+
+
+
+=popover-indicator-theme($color:$default-theme)
+  border-bottom-color: black
+
+
+=popover-wrapper-theme($color:$default-theme)
+  border-color: black
+
+
+.tool-bar
+  +tool-bar-theme
+
+.navigation-bar
+  +navigation-bar-theme
+
+.popover-indicator
+  +popover-indicator-theme
+.popover-wrapper
+  +popover-wrapper-theme
