@@ -872,11 +872,19 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         "bottom",
         "right",
         "position",
-        "width",
-        "height",
+        //"width",
+        //"height",
         "visibility"
       ];
       
+      if (map.height) {
+        this.setHeight(parseInt(map.height,10));
+        delete map.height;
+      }
+      if (map.width) {
+        this.setWidth(parseInt(map.width,10));
+        delete map.height;
+      }
       if (map.margin) {
         var margin = map.margin.split(" ");
         map.marginTop = margin[0];
@@ -1027,6 +1035,10 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     __createElement : function() {
         var element = this._createElement();
         
+        if (!element) {
+          return null;
+        }
+        
         element.$$widget = this.toHashCode();
         
         qx.bom.element.Style.set(element, "position",  "absolute");
@@ -1081,8 +1093,26 @@ qx.Class.define("unify.ui.widget.core.Widget", {
      * @return {Boolean} Widget has children
      */
     _hasChildren : function() {
-      var childs = this.__widgetChildren;
-      return !! (childs && childs.length > 0)
+      var children = this.__widgetChildren;
+      return !!(children && children.length > 0);
+    },
+    
+    /**
+     * Returns the index position of the given widget if it is
+     * a child widget. Otherwise it returns <code>-1</code>.
+     *
+     * @param child {Widget} the widget to query for
+     * @return {Integer} The index position or <code>-1</code> when
+     *   the given widget is no child of this layout.
+     */
+    _indexOf : function(child)
+    {
+      var children = this.__widgetChildren;
+      if (!children) {
+        return -1;
+      }
+
+      return children.indexOf(child);
     },
     
     /**

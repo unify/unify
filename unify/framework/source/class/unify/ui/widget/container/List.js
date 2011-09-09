@@ -1,0 +1,62 @@
+qx.Class.define("unify.ui.widget.container.List", {
+  extend: unify.ui.widget.container.Composite,
+  
+  construct : function() {
+    this.base(arguments);
+    
+    var layout = new qx.ui.layout.VBox();
+    this._setLayout(layout);
+  },
+  
+  properties : {
+    // overridden
+    appearance :
+    {
+      refine: true,
+      init: "list"
+    },
+    
+    data : {
+      apply: "_applyData"
+    }
+  },
+  
+  members : {
+    _applyData : function(data) {
+      this._removeAll();
+      
+      var header, fields, title;
+      for (header in data) {
+        this._add(
+          new unify.ui.widget.basic.Label(header).set({
+            appearance: "list.header"
+          })
+        );
+        
+        var containerLayout = new qx.ui.layout.Grid();
+        containerLayout.setColumnFlex(0, 1);
+        var container = new unify.ui.widget.container.Composite(containerLayout);
+        container.setAppearance("list.content");
+        var rowCounter = 0;
+        
+        fields = data[header];
+        for (title in fields) {
+          container.add(
+            new unify.ui.widget.basic.Label(title).set({
+              appearance: "list.description"
+            }),
+            { row: rowCounter, column: 0 }
+          );
+          container.add(
+            new unify.ui.widget.basic.Label(fields[title]).set({
+              appearance: "list.value"
+            }),
+            { row: rowCounter++, column: 1 }
+          );
+          
+          this._add(container);
+        }
+      }
+    }
+  }
+});

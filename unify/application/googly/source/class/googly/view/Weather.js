@@ -59,22 +59,20 @@ qx.Class.define("googly.view.Weather",
     // overridden
     _createView : function() 
     {
-      var layer = new unify.ui.Layer(this);
-
-      var toolbar = new unify.ui.ToolBar;
+      //var toolbar = new unify.ui.ToolBar;
+      var toolbar = new unify.ui.widget.container.ToolBar();
       toolbar.setItems(
       [
         {
           kind : "button",
           jump : "weather-search", 
-          label : "Select City"
-        },
-        {
-          kind : "spacer"
+          label : "Select City",
+          position : "left"
         },
         {
           kind : "segmented",
           view : this,
+          position : "center",
           buttons : 
           [
             {
@@ -88,21 +86,15 @@ qx.Class.define("googly.view.Weather",
           ]
         },
         {
-          kind : "spacer"
-        },        
-        {
           kind : "button",
           exec : "refresh", 
-          label : "Refresh"
+          label : "Refresh",
+          position : "right"
         }
       ]);
-      layer.add(toolbar);
+      this.add(toolbar);
       
-      var weatherDisplay = this.__weatherDisplay = document.createElement("div");
-      weatherDisplay.className = "content";
-      layer.add(weatherDisplay);
-
-      return layer;
+      var weatherDisplay = this.__weatherDisplay = new unify.ui.widget.basic.Content();
     },
     
     
@@ -116,6 +108,8 @@ qx.Class.define("googly.view.Weather",
       return Math.round((5/9) * (fahrenheit-32));
     },
     
+    _errorHandler : function() {
+    },
     
     // overridden
     _renderData : function(data)

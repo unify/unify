@@ -28,17 +28,20 @@ qx.Class.define("${Namespace}.Application",
       // Call super class
       this.base(arguments);
       
+      // Set theme
+      qx.theme.manager.Meta.getInstance().setTheme(unify.theme.Dark);
+      
       // Configure application
       document.title = "${Name}";
       
       // Create view managers
-      var MasterViewManager = new unify.view.ViewManager("master");
+      var MasterViewManager = new unify.view.widget.ViewManager("master");
       
       // Register your view classes...
       MasterViewManager.add(${Namespace}.view.Start, true);
       
       // Add TabViews or SplitViews...
-      var TabView = new unify.view.TabViewManager(MasterViewManager);
+      var TabView = new unify.view.widget.TabViewManager(MasterViewManager);
       TabView.add(${Namespace}.view.Start);
       
       // Add view manager (or SplitView or TabView) to the root

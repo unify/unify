@@ -12,11 +12,11 @@
  * EXPERIMENTAL
  */
 qx.Class.define("unify.ui.widget.container.ToolBar", {
-  extend: unify.ui.widget.container.Composite,
+  extend: unify.ui.widget.container.Bar,
   
-  construct : function(layout) {
+  construct : function() {
     this.base(arguments);
-    this._setLayout(layout || new qx.ui.layout.HBox());
+    this._setLayout(new unify.ui.widget.layout.NavigationBar());
   },
   
   properties : {
@@ -25,90 +25,107 @@ qx.Class.define("unify.ui.widget.container.ToolBar", {
     {
       refine: true,
       init: "toolbar"
+    },
+    
+    height: {
+      refine: true,
+      init: 44
     }
   },
   
   members : {
     /*
     ---------------------------------------------------------------------------
-      PUBLIC API
-    ---------------------------------------------------------------------------
-    */
-    
-    setItems : function(items) {
-      var elem = this.getElement();
-      var itemElem;
-      
-      for (var i=0, l=items.length; i<l; i++)
-      {
-        itemElem = this._createItemElement(items[i]);
-        elem._add(itemElem);
-      }
-    },
-    
-    /**
-     * disables all items of this Toolbar
-     */
-    disable: function(){
-      if (this._hasChildren) {
-        var children = this._getChildren();
-        for (var i=0,ii=children.length; i<ii; i++) {
-          children[i].setEnabled(false);
-        }
-      }
-    },
-    
-    /**
-     * enables all items of this Toolbar
-     */
-    enable: function(){
-      if (this._hasChildren) {
-        var children = this._getChildren();
-        for (var i=0,ii=children.length; i<ii; i++) {
-          children[i].setEnabled(true);
-        }
-      }
-    },
-
-
-    /*
-    ---------------------------------------------------------------------------
       PRIVATE METHODS
     ---------------------------------------------------------------------------
     */
     
+    __segmented : null,
+    __segmentToWidget : null,
+    
     _createItemElement : function(config)
     {
-      var itemElem = new unify.ui.widget.form.Button();
-
-      var navigation = {};
+      var itemElem;
       
-      // rel is independently usable
-      if (config.rel) {
-        navigation.relation = config.rel;
+      if (config.kind == "button") {
+        itemElem = new unify.ui.widget.form.Button();
+  
+        var navigation = {};
+        
+        // rel is independently usable
+        if (config.rel) {
+          itemElem.setRelation(config.rel);
+        }
+        
+        // there can be only one of [jump, exec, show]
+        if (config.jump) {
+          itemElem.setGoTo(config.jump);
+        } else if (config.exec) {
+          itemElem.setExecute(config.exec);
+        } else if (config.show) {
+          itemElem.setShow(config.show);
+        }
+  
+        if (config.label) {
+          itemElem.setValue(config.label);
+        }
+  
+      } else if (config.kind == "segmented") {
+        itemElem = this.__segmented = new unify.ui.widget.container.Composite(new qx.ui.layout.HBox()).set({
+          appearance: "toolbar.segmented.container"
+        });
+        
+        this.__segmentToWidget = {};
+        
+        config.view.addListener("changeSegment", this.__changeSegment, this);
+        var segment = config.view.getSegment();
+        
+        var buttons = config.buttons;
+        for (var i=0,ii=buttons.length; i<ii; i++) {
+          var button = buttons[i];
+          
+          var el = new unify.ui.widget.form.Button(button.label).set({
+            appearance: "toolbar.segmented.button"
+          });
+          if (i==0) {
+            el.addState("first");
+          } else if (i == buttons.length-1) {
+            el.addState("last");
+          }
+          el.setGoTo("."+button.segment);
+          
+          if (!segment || segment == button.segment) {
+            el.addState("active");
+          }
+          
+          this.__segmentToWidget[button.segment] = el.toHashCode();
+          itemElem.add(el);
+        }
       }
       
-      // there can be only one of [jump, exec, show]
-      if (config.jump) {
-        navigation.goTo = config.jump;
-      } else if (config.exec) {
-        navigation.execute = config.exec;
-      } else if (config.show) {
-        navigation.show = config.show;
-      }
-
-      if (config.label) {
-        itemElem.setValue(config.label);
-      }
-
-      itemElem.set(navigation);
+      itemElem.setLayoutProperties({
+        position: config.position
+      });
       
       return itemElem;
+    },
+    
+    __changeSegment : function(e) {
+      var s2w = this.__segmentToWidget;
+      var segment = e.getData();
+      
+      for (var key in s2w) {
+        var v = s2w[key];
+        var w = v && qx.core.ObjectRegistry.fromHashCode(v);
+        
+        if (w) {
+          if (key == segment) {
+            w.addState("active");
+          } else {
+            w.removeState("active");
+          }
+        }
+      }
     }
-  },
-  
-  destruct : function() {
-    this.__view = null;
-    this.__toolBar = null;
   }
 });

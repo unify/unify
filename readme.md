@@ -1,5 +1,5 @@
-Unify Project
-=============
+Unify Project - Widget Special
+==============================
 
 Native-like applications for smartphones, tablets and desktops
 --------------------------------------------------------------
@@ -13,7 +13,7 @@ Setup
 
 You only need 4 steps to set up unify.
 
-1. <code> git clone https://github.com/unify/unify.git </code>
+1. <code> git clone https://github.com/fastner/unify.git </code>
 2. <code> cd unify </code>
 3. <code> git submodule init </code>
 4. <code> git submodules update </code>

@@ -31,7 +31,8 @@
  */
 qx.Class.define("unify.view.StaticView",
 {
-  extend : qx.core.Object,
+  //extend : qx.core.Object,
+  extend: unify.ui.widget.container.Composite,
   include : [qx.locale.MTranslation],
   type : "abstract",
   
@@ -42,11 +43,11 @@ qx.Class.define("unify.view.StaticView",
   *****************************************************************************
   */  
   
-  construct : function()
+  construct : function(layout)
   {
-    this.base(arguments);
+    this.base(arguments, layout || new qx.ui.layout.VBox());
     
-    this.__id = qx.lang.String.hyphenate(this.constructor.basename).toLowerCase();
+    this.__id = qx.lang.String.hyphenate(this.constructor.basename).substring(1).toLowerCase();
   },
   
 
@@ -91,7 +92,7 @@ qx.Class.define("unify.view.StaticView",
      */
     manager : 
     {
-      check : "unify.view.ViewManager",
+      //check : "unify.view.ViewManager",
       nullable : true
     },
 
@@ -140,6 +141,11 @@ qx.Class.define("unify.view.StaticView",
       nullable : true,
       apply : "_applySegment",
       event : "changeSegment"
+    },
+    
+    appearance : {
+      refine: true,
+      init: "view"
     }
   },
 
@@ -205,7 +211,11 @@ qx.Class.define("unify.view.StaticView",
      * @return {Element} DOM element of the view (root element)
      */
     getElement : function() {
-      return this.getLayer().getElement();
+      //return this.getLayer().getElement();
+      //console.error("getElement");
+      var e = this.base(arguments);
+      qx.bom.element.Class.add(e, "layer");
+      return e;
     },
 
 
@@ -246,7 +256,7 @@ qx.Class.define("unify.view.StaticView",
      */
     create : function()
     {
-      if (qx.core.Environment.get("qx.debug"))
+      /*if (qx.core.Environment.get("qx.debug"))
       {
         if (this.__layer) {
           throw new Error(this.toString + ": Is already created!");
@@ -265,10 +275,14 @@ qx.Class.define("unify.view.StaticView",
         Class.add(layerElem, "has-parent");
       }
 
+      return layer;*/
+      //console.error("create");
+      var now = +(new Date());
+      this._createView();
       if (qx.core.Environment.get("qx.debug")) {
-        this.debug("Created in: " + ((new Date).valueOf() - now) + "ms");
+        this.debug("Created in: " + ((new Date()) - now) + "ms");
       }
-      return layer;
+      this.__layer = true;
     },
 
 

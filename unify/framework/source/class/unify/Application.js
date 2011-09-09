@@ -72,6 +72,7 @@ qx.Class.define("unify.Application",
         overflow : "hidden",
         border : 0,
         padding : 0,
+        margin : 0,
         boxSizing : "borderBox",
         fontFamily : "Helvetica,sans-serif",
         fontSize: "14px",
@@ -118,6 +119,7 @@ qx.Class.define("unify.Application",
      * @param viewManager {Object} Any object with a method "getElement" which returns a DOM element
      */
     add : function(viewManager) {
+      viewManager.setMasterView(true);
       document.body.appendChild(viewManager.getElement());
     },
 

@@ -451,6 +451,18 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
 
       return elem;
     },
+    
+    _computeSizeHint : function() {
+      // Build size hint and return
+      return {
+        width : this.getWidth() || 10,
+        minWidth : this.getMinWidth() || 10,
+        maxWidth : this.getMaxWidth() || Infinity,
+        height : this.getHeight() || 10,
+        minHeight : this.getMinHeight() || 10,
+        maxHeight : this.getMaxHeight() || Infinity
+      };
+    },
 
     /*
     ---------------------------------------------------------------------------
