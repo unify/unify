@@ -27,7 +27,7 @@
         var source = location.pathname.indexOf("/source/") > 0;
         var variant = "googly";
         if (!source) {
-          variant += "-" + engine + "-" + (location.search.substring(1) == "debug" ? "on" : "off")
+          variant += "-" + engine + "-" + (location.search.substring(1) == "debug" ? "True" : "False")
         }
         
         elem.type = "text/javascript";
