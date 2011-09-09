@@ -626,6 +626,12 @@ qx.Class.define("unify.view.ViewManager",
         var exec = elem.getAttribute("exec");
         if (exec)
         {
+          if(!this.__currentView){
+            throw new Error('Illegal exec attribute in ViewManager '+this.getId()+': There is no current view to call '+exec+' on');
+          }
+          if(!this.__currentView[exec]){
+            throw new Error('Illegal exec attribute in ViewManager '+this.getId()+': current view '+this.__currentView.getId()+" has no function named "+exec);
+          }
           this.__currentView[exec](elem);
         }
         else
@@ -724,7 +730,7 @@ qx.Class.define("unify.view.ViewManager",
         var cloneLast = clone.length-1;
         
         // Select right modification point
-        if (rel == "same") 
+        if (rel == "same" || clone[cloneLast].view===config.view)
         {
           clone[cloneLast] = config;
         } 
