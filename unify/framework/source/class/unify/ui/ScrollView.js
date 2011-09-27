@@ -704,23 +704,21 @@ members :
     var contentElem = this.__contentElem;
     elem.offsetWidth+elem.offsetHeight;
     contentElem.offsetWidth+contentElem.offsetHeight;
+    this.__clientWidth = elem.clientWidth;
+    this.__clientHeight = elem.clientHeight;
+    this.__contentWidth = Math.max(this.__clientWidth, contentElem.offsetWidth);
+    this.__contentHeight = Math.max(this.__clientHeight, contentElem.offsetHeight);
+    this.__minScrollLeft = this.__clientWidth - this.__contentWidth;
+    this.__minScrollTop = this.__clientHeight - this.__contentHeight;
+    if(this.__isDecelerating){
+      this.__isDecelerating=false;//stop it
+      // Directly hide scroll indicators
+      this.__horizontalScrollIndicator.setVisible(false);
+      this.__verticalScrollIndicator.setVisible(false);
+    }
     if(this.getNativeScroll()){
       if(this.__scrollTop>0||this.__scrollLeft>0){
         this.__scrollTo(this.__scrollLeft,this.__scrollTop);
-      }
-    } else {
-
-      this.__clientWidth = elem.clientWidth;
-      this.__clientHeight = elem.clientHeight;
-      this.__contentWidth = Math.max(this.__clientWidth, contentElem.offsetWidth);
-      this.__contentHeight = Math.max(this.__clientHeight, contentElem.offsetHeight);
-      this.__minScrollLeft = this.__clientWidth - this.__contentWidth;
-      this.__minScrollTop = this.__clientHeight - this.__contentHeight;
-      if(this.__isDecelerating){
-        this.__isDecelerating=false;//stop it
-        // Directly hide scroll indicators
-        this.__horizontalScrollIndicator.setVisible(false);
-        this.__verticalScrollIndicator.setVisible(false);
       }
     }
     this.__snapIntoBounds(false);
