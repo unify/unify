@@ -100,7 +100,8 @@ qx.Class.define("unify.view.ViewManager",
   {
     /** Fired whenever the view-local path was modified */
     changePath : "qx.event.type.Data",
-    changeView : "qx.event.type.Event"
+    changeView : "qx.event.type.Event",
+    popoverShow: "qx.event.type.Event"
   },
   
   
@@ -205,7 +206,7 @@ qx.Class.define("unify.view.ViewManager",
       Class.add(elem,"display-mode-"+this.getDisplayMode());
       elem.id = this.__managerId;
       // Register to navigation events
-      qx.event.Registration.addListener(elem, "click", this.__onClick, this);//TODO remove click handling, we care for touches. clicks are emulated into touches if neccassary
+      //qx.event.Registration.addListener(elem, "click", this.__onClick, this);//TODO remove click handling, we care for touches. clicks are emulated into touches if neccassary
       qx.event.Registration.addListener(elem, "tap", this.__onTap, this);
       qx.event.Registration.addListener(elem, "touchhold", this.__onTouchHold, this);
       qx.event.Registration.addListener(elem, "touchrelease", this.__onTouchRelease, this);
@@ -373,7 +374,7 @@ qx.Class.define("unify.view.ViewManager",
         throw new Error('view is already managed!: '+viewClass+' manager:  '+instanceManager.getId());
       }
       instance.setManager(this);
-      var id = qx.lang.String.hyphenate(viewClass.basename).toLowerCase();
+      var id = qx.lang.String.hyphenate(viewClass.basename).toLowerCase().substring(1);
       if (isDefault) {
         this.__defaultViewId = id;
       }
@@ -578,6 +579,9 @@ qx.Class.define("unify.view.ViewManager",
         this.__animateModal(view.getElement(),pos.bottom,pos.center,true);
       } else {
          elem.style.display = mode=='default'?"":"block";
+      }
+      if(mode=='popover'){
+        this.fireEvent('popoverShow');
       }
     },
 

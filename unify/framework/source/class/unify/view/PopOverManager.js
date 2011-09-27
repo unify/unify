@@ -36,7 +36,10 @@ qx.Class.define("unify.view.PopOverManager",
     pblocker.id = "popover-blocker";
     var mblocker = this.__mblocker = document.createElement("div");
     mblocker.id = "modal-blocker";
-    qx.event.Registration.addListener(pblocker,'tap',this.__onTapBlocker,this);
+    var registration=qx.event.Registration;
+    registration.addListener(pblocker,'tap',this.__onTapBlocker,this);
+    registration.addListener(pblocker,'touchstart',this.__onTouchBlocker,this);
+    registration.addListener(mblocker,'touchstart',this.__onTouchBlocker,this);
     this.__root.appendChild(pblocker);
     this.__root.appendChild(mblocker);
   },
@@ -127,6 +130,12 @@ qx.Class.define("unify.view.PopOverManager",
       }
     },
 
+    /**
+     * prevents default behaviour
+     */
+   __onTouchBlocker : function(e){
+      e.preventDefault();
+    },
     /**
      * Closes topmost popover
      */
@@ -269,7 +278,10 @@ qx.Class.define("unify.view.PopOverManager",
   */
     
   destruct : function() {
-    qx.event.Registration.removeListener(this.__pblocker,'tap',this.__onTapBlocker,this);
+    var registration=qx.event.Registration;
+    registration.removeListener(this.__pblocker,'tap',this.__onTapBlocker,this);
+    registration.removeListener(this.__pblocker,'touchstart',this.__onTouchBlocker,this);
+    registration.removeListener(this.__mblocker,'touchstart',this.__onTouchBlocker,this);
     this.__root.removeChild(this.__pblocker);
     this.__root.removeChild(this.__mblocker);
     this.__root = this.__pblocker= this.__mblocker=this.__viewManager=this.__styleRegistry = null;

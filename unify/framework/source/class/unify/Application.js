@@ -66,6 +66,10 @@ qx.Class.define("unify.Application",
       var Registration = qx.event.Registration;
       Registration.addListener(window, "resize", this.__onResize, this);
       Registration.addListener(window, "orientationchange", this.__onRotate, this);
+      if(qx.core.Environment.get("qx.mobile.nativescroll")){
+        Registration.addListener(document,"touchstart",this.__onTouchAllowNativeScroll,this);
+        Registration.addListener(document,"touchmove",this.__onTouchAllowNativeScroll,this);
+      }
       
       if (qx.core.Environment.get("os.name") == "webos") {
         var palmSystem = window.PalmSystem;
@@ -127,6 +131,19 @@ qx.Class.define("unify.Application",
      */
     __onResize : function(e) {
       this.__setupDocumentSize();
+    },
+
+    __onTouchAllowNativeScroll : function(e){
+      var target = e.getTarget();
+      var nodeName=target.nodeName;
+      if(nodeName=="INPUT"||nodeName=="TEXTAREA"){
+        return;//must allow native behavior on inputs
+      }
+      var nativeScrollview = unify.bom.Hierarchy.closest(target,".scroll-view-native");
+      if(  !nativeScrollview
+         ||(nativeScrollview.scrollHeight<=nativeScrollview.clientHeight&&nativeScrollview.scrollWidth<=nativeScrollview.clientWidth)){
+        e.preventDefault();
+      }
     },
 
 

@@ -82,7 +82,6 @@
         "qx.version" :              "${QXVERSION}",
         "unify.root" :              "/${APP_NAME}",
         "qx.mobile.emulatetouch" :  true,
-        "qx.mobile.nativescroll" :  false,
         "qx.application" :          "${APP_NAME}.Application",
         "qx.dynlocale" :            false,
         "qx.aspects" :              false
