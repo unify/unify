@@ -121,32 +121,6 @@ header h1{
   display: none;
 }
 
-header p{
-  position: absolute;
-  top: 0;
-  right: 0px;
-  width: 300px;
-  text-transform: uppercase;
-  font-size: 28px;
-  padding: 4px 0;
-  margin: 0;
-  color: white;
-  text-shadow: -1px 1px 1px rgba(0,0,0,0.3);
-  background: rgb(255,165,60);
-  
-  -webkit-transform: rotate(45deg) translateY(-10px) translateX(80px);
-  -moz-transform: rotate(45deg) translateY(-10px) translateX(80px);
-  -o-transform: rotate(45deg) translateY(-10px) translateX(80px);
-  transform: rotate(45deg) translateY(-10px) translateX(80px);
-    
-  -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-  -moz-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-  -o-box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-  box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-}
-
-
-
 /* 
 =========================================================
     FOOTER
@@ -161,9 +135,15 @@ footer{
   padding: 30px 0;
 }
 
-footer p:last-child{
+footer p{
+  float: right;
   text-align: right;
-  margin-top: 40px;
+  margin-top: 8px;
+  clear: right;
+}
+
+footer p em {
+  display: block;
 }
 
 footer img{
