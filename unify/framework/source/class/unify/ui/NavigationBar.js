@@ -13,6 +13,7 @@
  * for showing a title and offering simple navigation options. Like a {@link ToolBar}
  * it might show additional buttons on the right side for navigation proposes.
  * The left side is used for a backward navigation
+ * @deprecated
  */
 qx.Class.define("unify.ui.NavigationBar",
 {

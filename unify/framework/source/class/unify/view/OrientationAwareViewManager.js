@@ -14,11 +14,12 @@
 *********************************************************************************************** */
 /**
  * Specialized ViewManager that shows views fullscreen modal
+ * @deprecated
  *
  */
 qx.Class.define("unify.view.OrientationAwareViewManager",
 {
-  extend : unify.view.ViewManager,
+  extend : qx.core.Object, //unify.view.ViewManager,
 
   /*
   *****************************************************************************

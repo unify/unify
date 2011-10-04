@@ -10,6 +10,7 @@
 
 /**
  * Slide view component to have left/right sliding boxes with 100% width
+ * @deprecated
  */
 qx.Class.define("unify.ui.SlideView", 
 {

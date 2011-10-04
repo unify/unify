@@ -11,6 +11,7 @@
 /**
  * This is the basic ToolBar class for Unify interfaces. It supports
  * buttons being centered or aligned left hand and right hand side.
+ * @deprecated
  */
 qx.Class.define("unify.ui.ToolBar",
 {

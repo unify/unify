@@ -9,6 +9,7 @@
 *********************************************************************************************** */
 /**
  * Used exclusively by {@link ScrollView} for displaying scroll position indicators.
+ * @deprecated
  */
 qx.Class.define("unify.ui.ScrollIndicator",
 {

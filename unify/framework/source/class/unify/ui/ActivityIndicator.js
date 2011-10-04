@@ -9,6 +9,7 @@
 *********************************************************************************************** */
 /**
  * Activity indicator to show activities like loading of data
+ * @deprecated
  */
 qx.Class.define("unify.ui.ActivityIndicator",
 {

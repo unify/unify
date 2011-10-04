@@ -24,6 +24,7 @@
  * * Frame based animation which is able to drop frames when needed.
  * * Animation could be disabled on slow systems
  *
+ * @deprecated
  */
 qx.Class.define("unify.ui.ScrollView",
 {

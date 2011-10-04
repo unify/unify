@@ -9,6 +9,7 @@
 *********************************************************************************************** */
 /**
  * Generic overlay class for dialogs, popups, activity, etc.
+ * @deprecated
  */
 qx.Class.define("unify.ui.Overlay",
 {

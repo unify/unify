@@ -10,6 +10,7 @@
 
 /**
  * Used exclusively by {@link SlideView} for displaying current position as dots.
+ * @deprecated
  */
 qx.Class.define("unify.ui.SlideIndicator",
 {
