@@ -10,6 +10,7 @@
 /**
  * Same basic control as {@link Abstract} but with additional
  * support for children managment.
+ * @deprecated
  */
 qx.Class.define("unify.ui.Container",
 {
