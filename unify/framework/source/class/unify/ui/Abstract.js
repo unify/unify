@@ -9,6 +9,7 @@
 *********************************************************************************************** */
 /**
  * Basic control for low level interface creation.
+ * @deprecated
  */
 qx.Class.define("unify.ui.Abstract",
 {

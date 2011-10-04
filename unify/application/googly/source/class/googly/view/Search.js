@@ -113,8 +113,14 @@ qx.Class.define("googly.view.Search",
       button.setExecute("refresh");
       qx.bom.element.Class.add(button.getElement(), "button");
       
+      var output = this.__output = new unify.ui.widget.basic.Content().set({
+        width: 500,
+        height: 700
+      });
+      
       this.add(inputText);
       this.add(button);
+      this.add(output);
     },
     
     
@@ -122,7 +128,7 @@ qx.Class.define("googly.view.Search",
     _renderData : function(data)
     {
       if(!data){
-        document.getElementById("resultList").innerHTML = "";
+        this.__output.getElement().innerHTML = "";
         return;
       }
       var results = data.query.results;
@@ -139,7 +145,7 @@ qx.Class.define("googly.view.Search",
         }
       }
 
-      document.getElementById("resultList").innerHTML = markup;
+      this.__output.getElement().innerHTML = markup;
     }    
   }
 });

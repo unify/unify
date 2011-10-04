@@ -9,6 +9,7 @@
 *********************************************************************************************** */
 /**
  * Layer control. Top level control for each view.
+ * @deprecated
  */
 qx.Class.define("unify.ui.Layer",
 {
