@@ -179,7 +179,7 @@ qx.Class.define("unify.view.widget.TabViewManager", {
       elem.setAttribute("view", viewInstance.getId());
       elem.innerHTML = "<div class='tab-bar-element-image'></div>" + viewInstance.getTitle("tab-bar");*/
 
-      var elem = new unify.ui.widget.form.Button(viewInstance.getTitle("tab-bar"));
+      var elem = new unify.ui.widget.basic.NavigationButton(viewInstance.getTitle("tab-bar"));
       elem.set({
         appearance: "tabbar.button",
         goTo: viewInstance.getId(),
