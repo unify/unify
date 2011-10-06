@@ -150,7 +150,7 @@ qx.Class.define("unify.view.PopOverManager",
      */
     show : function(id)
     {
-      var viewManager = unify.view.ViewManager.get(id);
+      var viewManager = unify.view.widget.ViewManager.get(id);
       
       if (qx.core.Environment.get("qx.debug"))
       {
@@ -199,7 +199,7 @@ qx.Class.define("unify.view.PopOverManager",
      */
     hide : function(id,skipAnimation)
     {
-      var viewManager=unify.view.ViewManager.get(id);
+      var viewManager=unify.view.widget.ViewManager.get(id);
 
       if (qx.core.Environment.get("qx.debug"))
       {
