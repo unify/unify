@@ -16,7 +16,7 @@
  * EXPERIMENTAL
  * Input component
  */
-qx.Class.define("unify.ui.widget.form.Input", {
+qx.Class.define("unify.ui.widget.form.TextArea", {
   extend : unify.ui.widget.core.Widget,
   
   properties : {

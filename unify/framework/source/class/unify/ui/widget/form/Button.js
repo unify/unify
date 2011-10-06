@@ -20,37 +20,6 @@ qx.Class.define("unify.ui.widget.form.Button", {
   },
 
   properties: {
-    execute: {
-      init: null,
-      nullable: true
-    },
-    
-    hyperreference: {
-      init: null,
-      nullable: true
-    },
-    
-    // could be : close, parent, same
-    relation: {
-      init: null,
-      nullable: true
-    },
-    
-    goTo: {
-      init: null,
-      nullable: true
-    },
-    
-    show: {
-      init: null,
-      nullable: true
-    },
-    
-    hide: {
-      init: null,
-      nullable: true
-    },
-    
     // overridden
     appearance :
     {
@@ -60,13 +29,12 @@ qx.Class.define("unify.ui.widget.form.Button", {
   },
   
   members: {
-    getElement : function() {
-      var element = this.base(arguments);
+    _createElement : function() {
+      var e = this.base(arguments);
       
-      qx.event.Registration.addListener(element, "tap", this.__onTap, this);
-      qx.bom.element.Class.add(element, "navigateble");
+      qx.event.Registration.addListener(e, "tap", this.__onTap, this);
       
-      return element;
+      return e;
     },
     
     __onTap : function(e) {
