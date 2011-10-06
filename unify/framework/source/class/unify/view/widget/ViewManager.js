@@ -40,7 +40,7 @@ qx.Class.define("unify.view.widget.ViewManager", {
     this.__managerId = managerId;
     
     // Add to registry
-    var registry = unify.view.ViewManager.__managers;
+    var registry = unify.view.widget.ViewManager.__managers;
     if (qx.core.Environment.get("qx.debug"))
     {
       if (registry[managerId]) {
