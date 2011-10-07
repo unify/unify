@@ -32,7 +32,6 @@ qx.Class.define("unify.ui.widget.embed.Iframe", {
     
     // overridden
     _createElement : function() {
-      console.log("" + this);
       var e = qx.bom.Iframe.create();
       qx.event.Registration.addListener(e, "load", this.__iframeLoaded, this);
       return e;
