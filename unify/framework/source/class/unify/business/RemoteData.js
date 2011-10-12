@@ -759,7 +759,7 @@ qx.Class.define("unify.business.RemoteData",
         {
           // pass: not modified + no content
         }
-        else if (status==0 && this.getService(service).handleOffline && window.navigator.onLine===false){
+        else if (status==0 && this._getService(service).handleOffline && window.navigator.onLine===false){
           var cachedEntry=this.getCachedEntry(service,params);
           if(cachedEntry){
             data=cachedEntry.data;
