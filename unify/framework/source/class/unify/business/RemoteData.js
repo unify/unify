@@ -553,7 +553,7 @@ qx.Class.define("unify.business.RemoteData",
       this.__headers[name] = value;
     },
 
-    isModified : function(req) {
+    __isModified : function(req) {
       if(req.getStatus()===304){
         return false;
       }
