@@ -553,8 +553,15 @@ qx.Class.define("unify.business.RemoteData",
       this.__headers[name] = value;
     },
 
-    __isModified : function(req) {
-      return !(req.getStatus() === 304 || req.getResponseHeader("Last-Modified") === unify.business.SyncRegistry.get(req.getUrl()));
+    isModified : function(req) {
+      if(req.getStatus()===304){
+        return false;
+      }
+      var lmh=req.getResponseHeader("Last-Modified");
+      if(!!lmh && lmh===unify.business.SyncRegistry.get(req.getUrl())){
+        return false;
+      }
+      return true;
     },
 
     /**
@@ -679,6 +686,7 @@ qx.Class.define("unify.business.RemoteData",
       var eventType = e.getType();
       var isErrornous = eventType == "error" || eventType == "timeout";
       var isMalformed = eventType == "timeout";
+      var isServedFromCache=false;
 
       // Read request specific data
       var id = req.getUserData("id");
@@ -746,20 +754,34 @@ qx.Class.define("unify.business.RemoteData",
               break;
           }
         }
-
-        if (this.getEnableNoContent() && req.getStatusCode() == 204)
+        var status = req.getStatus();
+        if (this.getEnableNoContent() && status == 204)
         {
           // pass: not modified + no content
+        }
+        else if (status==0 && this.getService(service).handleOffline && window.navigator.onLine===false){
+          var cachedEntry=this.getCachedEntry(service,params);
+          if(cachedEntry){
+            data=cachedEntry.data;
+            cachedEntry.checked=now;
+          }
+          isServedFromCache=true;
         }
         else if (!data)
         {
           this.error("Malformed data returned. Does not validate as: " + type);
           isMalformed = true;
         }
-      }//TODO add else block here to handle isModified=false response? e.g. get data from cache to enrich completed event before firing it
-
+      } else {
+        var cachedEntry=this.getCachedEntry(service,params);
+        if(cachedEntry){
+          data=cachedEntry.data;
+          cachedEntry.checked=now;
+        }
+        isServedFromCache=true;
+      }
       // Cache data
-      if (!isErrornous && !isMalformed && this._getService(service).keep > 0 && this._allowCaching(data))
+      if (!isErrornous && !isMalformed && !isServedFromCache && this._getService(service).keep > 0 && this._allowCaching(data))
       {
         var cacheId = this.__getCacheId(service, params);
         var modified = req.getResponseHeader("Last-Modified");
@@ -836,7 +858,7 @@ qx.Class.define("unify.business.RemoteData",
       }
 
       
-      if (!(isErrornous || isMalformed)) {
+      if (!(isErrornous || isMalformed || isServedFromCache)) {
         var lastModified = req.getResponseHeader("Last-Modified");
         if (lastModified) {
           unify.business.SyncRegistry.sync(req.getUrl(), lastModified);
@@ -844,7 +866,7 @@ qx.Class.define("unify.business.RemoteData",
       }
       
       // Fire event
-      var args = [id, data, isModified, isErrornous, isMalformed, req];
+      var args = [id, data, isModified, isErrornous, isMalformed, req, isServedFromCache];
       this.fireEvent("completed", unify.business.CompletedEvent, args);
 
       // Dispose request

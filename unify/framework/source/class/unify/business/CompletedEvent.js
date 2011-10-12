@@ -22,7 +22,7 @@ qx.Class.define("unify.business.CompletedEvent",
     __request : null,
     __malformed : null,
     __modified : null,
-
+    __servedFromCache: null,
 
     /**
      * Initialize the fields of the event. The event must be initialized before
@@ -34,9 +34,10 @@ qx.Class.define("unify.business.CompletedEvent",
      * @param errornous {Boolean} Whether the request was errornous.
      * @param malformed {Boolean} Whether the response content is malformed
      * @param request {qx.io.request.Xhr} Request object to query communication details
-     * @return {tweet.business.TwitterEvent} The initialized event instance
+     * @param servedFromCache {Boolean} Whether the data was taken from cache
+     * @return {unify.business.CompletedEvent} The initialized event instance
      */
-    init : function(id, data, modified, errornous, malformed, request)
+    init : function(id, data, modified, errornous, malformed, request,servedFromCache)
     {
       this.base(arguments, false, false);
 
@@ -46,6 +47,7 @@ qx.Class.define("unify.business.CompletedEvent",
       this.__errornous = errornous;
       this.__malformed = malformed;
       this.__request = request;
+      this.__servedFromCache = servedFromCache;
 
       return this;
     },
@@ -71,6 +73,7 @@ qx.Class.define("unify.business.CompletedEvent",
       clone.__errornous = this.__errornous;
       clone.__malformed = this.__malformed;
       clone.__request = this.__request;
+      clone.__servedFromCache = this.__servedFromCache;
 
       return clone;
     },
@@ -104,7 +107,7 @@ qx.Class.define("unify.business.CompletedEvent",
      * @return {Boolean} Whether the data was modified
      */
     isModified : function() {
-      return this.__modified;
+      return !!this.__modified;
     },
 
 
@@ -114,7 +117,7 @@ qx.Class.define("unify.business.CompletedEvent",
      * @return {Boolean} Whether there were errors in the request.
      */
     isErrornous : function() {
-      return this.__errornous;
+      return !!this.__errornous;
     },
 
 
@@ -124,7 +127,7 @@ qx.Class.define("unify.business.CompletedEvent",
      * @return {Boolean} Whether there were errors in the request.
      */
     isMalformed : function() {
-      return this.__malformed;
+      return !!this.__malformed;
     },
 
 
@@ -136,6 +139,13 @@ qx.Class.define("unify.business.CompletedEvent",
      */
     getRequest : function() {
       return this.__request;
+    },
+
+    /**
+     * @return {Boolean} Whether the data was taken from cache
+     */
+    isServedFromCache : function() {
+      return !!this.__servedFromCache;
     }
   }
 });
