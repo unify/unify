@@ -206,7 +206,7 @@ qx.Class.define("unify.view.ViewManager",
       Class.add(elem,"display-mode-"+this.getDisplayMode());
       elem.id = this.__managerId;
       // Register to navigation events
-      //qx.event.Registration.addListener(elem, "click", this.__onClick, this);//TODO remove click handling, we care for touches. clicks are emulated into touches if neccassary
+      qx.event.Registration.addListener(elem, "click", this.__onClick, this);//TODO remove click handling, we care for touches. clicks are emulated into touches if neccassary
       qx.event.Registration.addListener(elem, "tap", this.__onTap, this);
       qx.event.Registration.addListener(elem, "touchhold", this.__onTouchHold, this);
       qx.event.Registration.addListener(elem, "touchrelease", this.__onTouchRelease, this);
@@ -719,7 +719,7 @@ qx.Class.define("unify.view.ViewManager",
           throw new Error("Invalid 'rel' attribute: " + rel);
         }
       }
-      
+
       var config = unify.view.Path.parseFragment(dest);
       var view = config.view;
       if (view && !this.__views[view])
