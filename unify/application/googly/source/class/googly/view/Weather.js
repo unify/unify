@@ -60,7 +60,7 @@ qx.Class.define("googly.view.Weather",
     _createView : function() 
     {
       //var toolbar = new unify.ui.ToolBar;
-      var toolbar = new unify.widget.container.ToolBar();
+      var toolbar = new unify.ui.container.ToolBar();
       toolbar.setItems(
       [
         {
@@ -94,7 +94,7 @@ qx.Class.define("googly.view.Weather",
       ]);
       this.add(toolbar);
       
-      var weatherDisplay = this.__weatherDisplay = new unify.widget.basic.Content();
+      var weatherDisplay = this.__weatherDisplay = new unify.ui.basic.Content();
     },
     
     

@@ -29,18 +29,18 @@ qx.Class.define("widgets.view.Start", {
       //var titlebar = new unify.ui.ToolBar(this);
       //layer.add(titlebar);
 
-      var layerWidget = new unify.widget.core.Layer(layer);
+      var layerWidget = new unify.ui.core.Layer(layer);
 
-      var titleBar = new unify.widget.container.NavigationBar(this);
+      var titleBar = new unify.ui.container.NavigationBar(this);
       layerWidget.add(titleBar);
 
-      var c1 = new unify.widget.container.Composite(new qx.ui.layout.HBox());
+      var c1 = new unify.ui.container.Composite(new qx.ui.layout.HBox());
       layerWidget.add(c1);
       c1.set({
         appearance: "test",
         height: 300
       });
-      var c2 = new unify.widget.container.Composite(new qx.ui.layout.Basic());
+      var c2 = new unify.ui.container.Composite(new qx.ui.layout.Basic());
       c2.setAppearance("test.test1");
       c2.setStyle({
         borderRightWidth: "5px",
@@ -48,7 +48,7 @@ qx.Class.define("widgets.view.Start", {
         borderTopWidth: "10px",
         borderTopStyle: "solid"
       });
-      var c3 = new unify.widget.container.Composite(new qx.ui.layout.Basic());
+      var c3 = new unify.ui.container.Composite(new qx.ui.layout.Basic());
       c3.setAppearance("test.test2");
       c1.add(c2, {
         width: "40%"
@@ -57,13 +57,13 @@ qx.Class.define("widgets.view.Start", {
         width: "40%"
       });
 
-      var scroller = new unify.widget.container.Scroll();
+      var scroller = new unify.ui.container.Scroll();
       layerWidget.add(scroller);
       scroller.set({
         height: 300
       });
       
-      var label = new unify.widget.basic.Label("Das ist ein Test");
+      var label = new unify.ui.basic.Label("Das ist ein Test");
       label.set({
         width: 800,
         height: 50
@@ -76,7 +76,7 @@ qx.Class.define("widgets.view.Start", {
         top: 0
       });
       
-      var content1 = new unify.widget.basic.Content();
+      var content1 = new unify.ui.basic.Content();
       content1.set({
         width: 800,
         height: 400

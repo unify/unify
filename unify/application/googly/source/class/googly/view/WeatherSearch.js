@@ -33,10 +33,10 @@ qx.Class.define("googly.view.WeatherSearch",
     // overridden
     _createView : function() 
     {
-      var navigationBar = new unify.widget.container.NavigationBar(this);
+      var navigationBar = new unify.ui.container.NavigationBar(this);
       this.add(navigationBar);
 
-      var searchField = this.__searchField = new unify.widget.form.Input();
+      var searchField = this.__searchField = new unify.ui.form.Input();
       searchField.setHeight(50);
       //searchField.setStyle(inputStyles);
       

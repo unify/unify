@@ -28,7 +28,7 @@ qx.Class.define("widgets.Application",
       // Call super class
       this.base(arguments);
    
-      unify.widget.styling.StyleManager.getInstance().setTheme(new widgets.Theme);
+      unify.ui.styling.StyleManager.getInstance().setTheme(new widgets.Theme);
       
       // Configure application
       document.title = "widgets";

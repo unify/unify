@@ -77,7 +77,7 @@ qx.Class.define("googly.view.Search",
 
       return layer;*/
       
-      var navigationBar = new unify.widget.container.NavigationBar(this);
+      var navigationBar = new unify.ui.container.NavigationBar(this);
       this.add(navigationBar);
       
       var inputStyles = {
@@ -92,11 +92,11 @@ qx.Class.define("googly.view.Search",
         marginRight: "10px"
       };
       
-      var inputText = this.__inputText = new unify.widget.form.Input();
+      var inputText = this.__inputText = new unify.ui.form.Input();
       inputText.setHeight(50);
       inputText.setStyle(inputStyles);
       
-      var button = new unify.widget.form.Button("Search");
+      var button = new unify.ui.form.Button("Search");
       button.setStyle({
         marginLeft: "10px",
         marginRight: "10px",
@@ -113,7 +113,7 @@ qx.Class.define("googly.view.Search",
       button.setExecute("refresh");
       qx.bom.element.Class.add(button.getElement(), "button");
       
-      var output = this.__output = new unify.widget.basic.Content().set({
+      var output = this.__output = new unify.ui.basic.Content().set({
         width: 500,
         height: 700
       });
