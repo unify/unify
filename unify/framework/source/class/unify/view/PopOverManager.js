@@ -249,7 +249,7 @@ qx.Class.define("unify.view.PopOverManager",
     __getOverlay : function(viewManager){
       var overlay=this.__overlays[viewManager];
       if(!overlay){
-        overlay=new unify.ui.Overlay;
+        overlay=new unify.ui.container.Overlay;
         var elem=overlay.getElement();
         var managerElem=viewManager.getElement();
         elem.id=managerElem.id+'-popover';
