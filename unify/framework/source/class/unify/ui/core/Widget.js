@@ -638,6 +638,76 @@ qx.Class.define("unify.ui.core.Widget", {
 
 
 
+
+    /*
+    ---------------------------------------------------------------------------
+      VISIBILITY API
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Shows the widgets.
+     *
+     * @return {void}
+     */
+    show : function() {
+      this.setVisibility("visible");
+    },
+
+
+    /**
+     * Hides the widget.
+     */
+    hide : function() {
+      this.setVisibility("hidden");
+    },
+
+
+    /**
+     * Excludes the widget
+     */
+    exclude : function() {
+      this.setVisibility("excluded");
+    },
+
+
+    /**
+     * Returns if the widget is visible.
+     *
+     * @return {Boolean} Returns true if the widget is visible.
+     */
+    isVisible : function() {
+      return this.getVisibility() == "visible";
+    },
+
+
+    /**
+     * Returns if the widget is not visible (hidden or excluded).
+     * 
+     * @return {Boolean} Returns true if the widget is not visible.
+     */
+    isHidden : function() {
+      return this.getVisibility() != "visible";
+    },
+
+
+    /**
+     * Returns if the widget is excluded from the rendering queue.
+     *
+     * @return {Boolean} Returns true if the widget is excluded.
+     */
+    isExcluded : function() {
+      return this.getVisibility() == "excluded";
+    },
+
+
+
+
+
+
+
+
+
     /*
     ---------------------------------------------------------------------------
       STATE HANDLING
