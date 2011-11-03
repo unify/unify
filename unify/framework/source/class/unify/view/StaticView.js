@@ -364,23 +364,5 @@ qx.Class.define("unify.view.StaticView",
     _applySegment : function() {
       // nothing to do here
     }
-  },
-
-
-
-
-  /*
-  *****************************************************************************
-     DESTRUCTOR
-  *****************************************************************************
-  */
-
-  destruct : function() 
-  {
-    if (this.__layer)
-    {
-      this.__layer.dispose();
-      this.__layer = null;
-    }
   }
 });
