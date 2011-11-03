@@ -12,7 +12,7 @@
  * Manager for view managers which functions as a so-called pop over.
  *
  */
-// TODO: Switch to widget system
+// TODO: Switch to widget system?
 qx.Class.define("unify.view.PopOverManager",
 {
   extend : qx.core.Object,
@@ -151,7 +151,7 @@ qx.Class.define("unify.view.PopOverManager",
      */
     show : function(id)
     {
-      var viewManager = unify.view.widget.ViewManager.get(id);
+      var viewManager = unify.view.ViewManager.get(id);
       
       if (qx.core.Environment.get("qx.debug"))
       {
@@ -200,7 +200,7 @@ qx.Class.define("unify.view.PopOverManager",
      */
     hide : function(id,skipAnimation)
     {
-      var viewManager=unify.view.widget.ViewManager.get(id);
+      var viewManager=unify.view.ViewManager.get(id);
 
       if (qx.core.Environment.get("qx.debug"))
       {
