@@ -115,8 +115,8 @@ qx.Class.define("unify.view.Path",
     },
 
 
-    /** {RegExp} Matches location fragments */
-    __fragmentMatcher : /^([a-z-]+)?(\.([a-z-]+))?(\:([a-zA-Z0-9_-]+))?$/,
+    /** {RegExp} Matches location fragments (view.segment:param) */
+    __fragmentMatcher : /^([a-z0-9-]+)?(\.([a-z-]+))?(\:([a-zA-Z0-9_-]+))?$/,
 
 
     /**
