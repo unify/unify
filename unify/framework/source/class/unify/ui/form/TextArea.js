@@ -16,8 +16,8 @@
  * EXPERIMENTAL
  * Input component
  */
-qx.Class.define("unify.ui.widget.form.TextArea", {
-  extend : unify.ui.widget.core.Widget,
+qx.Class.define("unify.ui.form.TextArea", {
+  extend : unify.ui.core.Widget,
   
   properties : {
     columns : {

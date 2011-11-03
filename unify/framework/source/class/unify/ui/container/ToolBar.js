@@ -11,12 +11,12 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.ui.widget.container.ToolBar", {
-  extend: unify.ui.widget.container.Bar,
+qx.Class.define("unify.ui.container.ToolBar", {
+  extend: unify.ui.container.Bar,
   
   construct : function() {
     this.base(arguments);
-    this._setLayout(new unify.ui.widget.layout.NavigationBar());
+    this._setLayout(new unify.ui.layout.NavigationBar());
   },
   
   properties : {
@@ -48,7 +48,7 @@ qx.Class.define("unify.ui.widget.container.ToolBar", {
       var itemElem;
       
       if (config.kind == "button") {
-        itemElem = new unify.ui.widget.form.Button();
+        itemElem = new unify.ui.form.Button();
   
         var navigation = {};
         
@@ -71,7 +71,7 @@ qx.Class.define("unify.ui.widget.container.ToolBar", {
         }
   
       } else if (config.kind == "segmented") {
-        itemElem = this.__segmented = new unify.ui.widget.container.Composite(new qx.ui.layout.HBox()).set({
+        itemElem = this.__segmented = new unify.ui.container.Composite(new qx.ui.layout.HBox()).set({
           appearance: "toolbar.segmented.container"
         });
         
@@ -84,7 +84,7 @@ qx.Class.define("unify.ui.widget.container.ToolBar", {
         for (var i=0,ii=buttons.length; i<ii; i++) {
           var button = buttons[i];
           
-          var el = new unify.ui.widget.form.Button(button.label).set({
+          var el = new unify.ui.form.Button(button.label).set({
             appearance: "toolbar.segmented.button"
           });
           if (i==0) {

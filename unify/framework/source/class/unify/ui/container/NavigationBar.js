@@ -15,12 +15,12 @@
 /*
 #asset(unify/*)
 */
-qx.Class.define("unify.ui.widget.container.NavigationBar", {
-  extend: unify.ui.widget.container.Bar,
+qx.Class.define("unify.ui.container.NavigationBar", {
+  extend: unify.ui.container.Bar,
   
   construct : function(view) {
     this.base(arguments);
-    this._setLayout(new unify.ui.widget.layout.NavigationBar());
+    this._setLayout(new unify.ui.layout.NavigationBar());
     
     if (!view || !(view instanceof unify.view.StaticView)) {
       throw new Error("Invalid view! NavigationBar must be attached to a view!")
@@ -28,7 +28,7 @@ qx.Class.define("unify.ui.widget.container.NavigationBar", {
     
     this.__view = view;
     
-    var title = this.__title = new unify.ui.widget.basic.Label();
+    var title = this.__title = new unify.ui.basic.Label();
     title.setAppearance("navigationbar.title");
     this._add(title, {
       position: "title"
@@ -87,7 +87,7 @@ qx.Class.define("unify.ui.widget.container.NavigationBar", {
       if (!parentElem) 
       {
         parentElem = this.__parentButton = this._createItemElement({rel:"parent",kind:"button"});
-        //parentElem.setStyle(unify.ui.widget.styling.StaticTheme.navigationBarButtonParent);
+        //parentElem.setStyle(unify.ui.styling.StaticTheme.navigationBarButtonParent);
         parentElem.setHeight(28);
         parentElem.setAllowGrowY(false);
         parentElem.setAllowShrinkY(false);
@@ -121,7 +121,7 @@ qx.Class.define("unify.ui.widget.container.NavigationBar", {
         masterElem.setHeight(28);
         masterElem.setAllowGrowY(false);
         masterElem.setAllowShrinkY(false);
-        //masterElem.setStyle(unify.ui.widget.styling.StaticTheme.navigationBarButton);
+        //masterElem.setStyle(unify.ui.styling.StaticTheme.navigationBarButton);
         this._add(masterElem, {
           position: "left"
         });

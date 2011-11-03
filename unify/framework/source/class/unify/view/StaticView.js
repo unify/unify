@@ -32,7 +32,7 @@
 qx.Class.define("unify.view.StaticView",
 {
   //extend : qx.core.Object,
-  extend: unify.ui.widget.container.Composite,
+  extend: unify.ui.container.Composite,
   include : [qx.locale.MTranslation],
   type : "abstract",
   

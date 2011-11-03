@@ -11,15 +11,15 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.ui.widget.basic.Atom", {
-  extend: unify.ui.widget.core.Widget,
+qx.Class.define("unify.ui.basic.Atom", {
+  extend: unify.ui.core.Widget,
   
   construct : function(label, icon) {
     this.base(arguments);
-    this._setLayout(new unify.ui.widget.layout.AtomLayout());
+    this._setLayout(new unify.ui.layout.AtomLayout());
     
-    var imageWidget = this.__imageWidget = new unify.ui.widget.basic.Icon(icon);
-    var labelWidget = this.__labelWidget = new unify.ui.widget.basic.Label(label);
+    var imageWidget = this.__imageWidget = new unify.ui.basic.Icon(icon);
+    var labelWidget = this.__labelWidget = new unify.ui.basic.Label(label);
     
     this._add(imageWidget);
     this._add(labelWidget);

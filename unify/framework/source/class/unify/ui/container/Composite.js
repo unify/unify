@@ -13,8 +13,8 @@
  *
  * Generic composite container widget
  */
-qx.Class.define("unify.ui.widget.container.Composite", {
-  extend : unify.ui.widget.core.Widget,
+qx.Class.define("unify.ui.container.Composite", {
+  extend : unify.ui.core.Widget,
   
   include : [
     qx.ui.core.MChildrenHandling,

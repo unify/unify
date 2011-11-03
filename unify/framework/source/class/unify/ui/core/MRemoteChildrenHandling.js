@@ -11,7 +11,7 @@
 /**
  * EXPERIMENTAL
  */
-qx.Mixin.define("unify.ui.widget.core.MRemoteChildrenHandling", {
+qx.Mixin.define("unify.ui.core.MRemoteChildrenHandling", {
   include : qx.ui.core.MRemoteChildrenHandling,
 
   members : {

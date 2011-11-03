@@ -12,8 +12,8 @@
  * EXPERIMENTAL
  */
  
-qx.Class.define("unify.ui.widget.basic.Image", {
-  extend: unify.ui.widget.core.Widget,
+qx.Class.define("unify.ui.basic.Image", {
+  extend: unify.ui.core.Widget,
   
   construct : function(source) {
     this.base(arguments);

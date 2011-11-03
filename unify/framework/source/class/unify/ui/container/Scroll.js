@@ -13,17 +13,17 @@
  *
  * Generic composite container widget
  */
-qx.Class.define("unify.ui.widget.container.Scroll", {
-  extend : unify.ui.widget.core.Widget,
+qx.Class.define("unify.ui.container.Scroll", {
+  extend : unify.ui.core.Widget,
 
-  include : [unify.ui.widget.core.MRemoteChildrenHandling],
+  include : [unify.ui.core.MRemoteChildrenHandling],
   
   construct : function(layout) {
     this.__childLayout = layout || new qx.ui.layout.Basic(); // TODO: Switch over to ChildrenHandlingLayout
     this.base(arguments);
     this._setLayout(new qx.ui.layout.Canvas());
 
-    var contentWidget = this.__contentWidget; // = new unify.ui.widget.container.Composite(childLayout);
+    var contentWidget = this.__contentWidget; // = new unify.ui.container.Composite(childLayout);
     
     this._add(contentWidget, {
       left :0,
@@ -39,10 +39,10 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
       });
     } else {
 
-      var scrollIndicatorX = this.__horizontalScrollIndicator = new unify.ui.widget.container.scroll.Indicator("horizontal");
-      var scrollIndicatorY = this.__verticalScrollIndicator = new unify.ui.widget.container.scroll.Indicator("vertical");
+      var scrollIndicatorX = this.__horizontalScrollIndicator = new unify.ui.container.scroll.Indicator("horizontal");
+      var scrollIndicatorY = this.__verticalScrollIndicator = new unify.ui.container.scroll.Indicator("vertical");
 
-      var distance = unify.ui.widget.container.scroll.Indicator.DISTANCE;
+      var distance = unify.ui.container.scroll.Indicator.DISTANCE;
       
       scrollIndicatorX.setHeight(3);
       this._add(scrollIndicatorX, {
@@ -429,7 +429,7 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
       // Create root element
       var elem = document.createElement("div");
 
-      var contentWidget = this.__contentWidget = new unify.ui.widget.container.Composite();      
+      var contentWidget = this.__contentWidget = new unify.ui.container.Composite();      
       contentWidget.setLayout(this.__childLayout);
       var contentElem = contentWidget.getElement();
 
@@ -505,7 +505,7 @@ qx.Class.define("unify.ui.widget.container.Scroll", {
         return;
       }
 
-      var ScrollIndicator = unify.ui.widget.container.scroll.Indicator;
+      var ScrollIndicator = unify.ui.container.scroll.Indicator;
 
       // Sum of margins substracted from the client size for computing the indicator size
       var margin = ScrollIndicator.DISTANCE * 2;

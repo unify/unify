@@ -11,8 +11,8 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
-  extend : unify.ui.widget.container.Composite,
+qx.Class.define("unify.ui.container.scroll.Indicator", {
+  extend : unify.ui.container.Composite,
 
   /*
   *****************************************************************************
@@ -109,7 +109,7 @@ qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
     },
 
     __setSliderStyle : function(horizontal) {
-      var self = unify.ui.widget.container.scroll.Indicator;
+      var self = unify.ui.container.scroll.Indicator;
 
       // set scrollbar styles
       var Style = qx.bom.element.Style;
@@ -223,7 +223,7 @@ qx.Class.define("unify.ui.widget.container.scroll.Indicator", {
 
         // Compute sizes based on CSS stored size of end pieces
         var scaleX=1, scaleY=1, endPosX=0, endPosY=0;
-        var endpieces = unify.ui.widget.container.scroll.Indicator.ENDSIZE;
+        var endpieces = unify.ui.container.scroll.Indicator.ENDSIZE;
         if (this.__horizontal)
         {
           scaleX = size - (endpieces * 2);

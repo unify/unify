@@ -14,7 +14,7 @@
  * Generic widget that depends on a slighly modified qooxdoo LayoutItem
  * This is the base of every widget in the unify widget system
  */
-qx.Class.define("unify.ui.widget.core.Widget", {
+qx.Class.define("unify.ui.core.Widget", {
   extend : qx.ui.core.LayoutItem,
   
   /**
@@ -451,7 +451,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         {
           obj = controls[id];
 
-          if (obj instanceof unify.ui.widget.core.Widget) {
+          if (obj instanceof unify.ui.core.Widget) {
             obj.updateAppearance();
           }
         }
@@ -707,7 +707,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         for (var id in controls)
         {
           control = controls[id];
-          if (control instanceof unify.ui.widget.core.Widget) {
+          if (control instanceof unify.ui.core.Widget) {
             controls[id].addState(state);
           }
         }
@@ -748,7 +748,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         for (var id in controls)
         {
           var control = controls[id];
-          if (control instanceof unify.ui.widget.core.Widget) {
+          if (control instanceof unify.ui.core.Widget) {
             control.removeState(state);
           }
         }
@@ -795,7 +795,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
         for (var id in controls)
         {
           var control = controls[id];
-          if (control instanceof unify.ui.widget.core.Widget) {
+          if (control instanceof unify.ui.core.Widget) {
             control.replaceState(old, value);
           }
         }
@@ -1060,7 +1060,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     
     /**
      * Returns children of widget
-     * @return {unify.ui.widget.core.Widget[]} Child widgets
+     * @return {unify.ui.core.Widget[]} Child widgets
      */
     _getChildren : function() {
       return this.__widgetChildren;
@@ -1353,7 +1353,7 @@ qx.Class.define("unify.ui.widget.core.Widget", {
     {
       if (qx.core.Environment.get("qx.debug"))
       {
-        //this.assertInstance(child, unify.ui.widget.qx.LayoutItem, "Invalid widget to add: " + child);
+        //this.assertInstance(child, unify.ui.qx.LayoutItem, "Invalid widget to add: " + child);
         this.assertInstance(child, qx.ui.core.LayoutItem, "Invalid widget to add: " + child);
         this.assertNotIdentical(child, this, "Could not add widget to itself: " + child);
 

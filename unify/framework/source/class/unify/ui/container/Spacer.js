@@ -1,5 +1,5 @@
-qx.Class.define("unify.ui.widget.container.Spacer", {
-  extend: unify.ui.widget.core.Widget,
+qx.Class.define("unify.ui.container.Spacer", {
+  extend: unify.ui.core.Widget,
   
   construct : function() {
     this.base(arguments);

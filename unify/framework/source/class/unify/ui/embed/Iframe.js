@@ -14,8 +14,8 @@
  *
  * Embedded iframe widget
  */
-qx.Class.define("unify.ui.widget.embed.Iframe", {
-  extend : unify.ui.widget.core.Widget,
+qx.Class.define("unify.ui.embed.Iframe", {
+  extend : unify.ui.core.Widget,
   
   properties : {
     // overridden

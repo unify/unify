@@ -14,8 +14,8 @@
  *
  * Simple content widget based upon html DIV element
  */
-qx.Class.define("unify.ui.widget.basic.Content", {
-  extend : unify.ui.widget.core.Widget,
+qx.Class.define("unify.ui.basic.Content", {
+  extend : unify.ui.core.Widget,
   
   properties : {
     // overridden

@@ -50,7 +50,7 @@ qx.Class.define("unify.view.SysInfo",
     // overridden
     _createView : function()
     {
-      var toolbar = new unify.ui.widget.container.ToolBar();
+      var toolbar = new unify.ui.container.ToolBar();
       toolbar.setItems(
       [
         {
@@ -67,10 +67,10 @@ qx.Class.define("unify.view.SysInfo",
       ]);
       this.add(toolbar);
       
-      var scrollview = this.__content = new unify.ui.widget.container.Scroll(new qx.ui.layout.VBox());
+      var scrollview = this.__content = new unify.ui.container.Scroll(new qx.ui.layout.VBox());
       scrollview.setEnableScrollX(false);
       
-      var list = this.__content = new unify.ui.widget.container.List();
+      var list = this.__content = new unify.ui.container.List();
       scrollview.add(list, {
         flex: 1
       });

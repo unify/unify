@@ -12,7 +12,7 @@
  * EXPERIMENTAL
  */
 qx.Class.define("unify.view.ViewContainer", {
-  extend : unify.ui.widget.core.Widget,
+  extend : unify.ui.core.Widget,
   
   include : [
     qx.ui.core.MChildrenHandling

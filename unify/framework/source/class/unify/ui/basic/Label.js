@@ -13,8 +13,8 @@
  *
  * The label widget implements text representation in unify widget system
  */
-qx.Class.define("unify.ui.widget.basic.Label", {
-  extend : unify.ui.widget.core.Widget,
+qx.Class.define("unify.ui.basic.Label", {
+  extend : unify.ui.core.Widget,
   
   /**
    * Creates a new instance of Label

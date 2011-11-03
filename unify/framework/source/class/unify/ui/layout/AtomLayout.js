@@ -11,7 +11,7 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.ui.widget.layout.AtomLayout", {
+qx.Class.define("unify.ui.layout.AtomLayout", {
   extend : qx.ui.layout.Abstract,
   
   members : {

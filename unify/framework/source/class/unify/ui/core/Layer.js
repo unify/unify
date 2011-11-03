@@ -17,9 +17,9 @@
  *
  * In general this is the base (or root) widget of a layer
  */
-qx.Class.define("unify.ui.widget.core.Layer", {
-  //extend : unify.ui.widget.core.Widget,
-  extend: unify.ui.widget.container.Composite,
+qx.Class.define("unify.ui.core.Layer", {
+  //extend : unify.ui.core.Widget,
+  extend: unify.ui.container.Composite,
   /*
   include : [
     qx.ui.core.MChildrenHandling

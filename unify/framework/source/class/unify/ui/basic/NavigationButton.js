@@ -9,29 +9,50 @@
 *********************************************************************************************** */
 
 /**
+ * Button to support navigation
+ *
  * EXPERIMENTAL
  */
  
-qx.Class.define("unify.ui.widget.basic.NavigationButton", {
-  extend: unify.ui.widget.form.Button,
+qx.Class.define("unify.ui.basic.NavigationButton", {
+  extend: unify.ui.form.Button,
 
   properties: {
+    /**
+     * Executes the given function on the view.
+     * The function has to be public!
+     */
     execute: {
+      check: "String",
       init: null,
       nullable: true
     },
     
+    /**
+     * Opens hyperreference (=URL) in a new window
+     */
     hyperreference: {
+      check: "String",
       init: null,
       nullable: true
     },
     
-    // could be : close, parent, same
+    /**
+     * Relational navigation. This property navigates relative to the current view.
+     * Allowed parameters:
+     * close - Close current view if it is a modal view on top of another one
+     * parent - Navigate to the parent view in hierarchy
+     * same - Take the same view, change segment or parameter
+     */
     relation: {
+      check : ["close", "parent", "same"],
       init: null,
       nullable: true
     },
     
+    /**
+     * Opens other view
+     */
     goTo: {
       init: null,
       nullable: true
@@ -49,6 +70,7 @@ qx.Class.define("unify.ui.widget.basic.NavigationButton", {
   },
   
   members: {
+    // overwritten
     getElement : function() {
       var element = this.base(arguments);
       

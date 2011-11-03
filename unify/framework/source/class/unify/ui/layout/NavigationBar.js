@@ -11,7 +11,7 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.ui.widget.layout.NavigationBar", {
+qx.Class.define("unify.ui.layout.NavigationBar", {
   extend : qx.ui.layout.Abstract,
   
   statics : {

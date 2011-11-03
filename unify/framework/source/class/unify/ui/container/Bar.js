@@ -11,8 +11,8 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.ui.widget.container.Bar", {
-  extend: unify.ui.widget.container.Composite,
+qx.Class.define("unify.ui.container.Bar", {
+  extend: unify.ui.container.Composite,
   
   construct : function(layout) {
     this.base(arguments);
@@ -78,7 +78,7 @@ qx.Class.define("unify.ui.widget.container.Bar", {
     
     _createItemElement : function(config)
     {
-      var itemElem = new unify.ui.widget.form.Button();
+      var itemElem = new unify.ui.form.Button();
 
       var navigation = {};
       

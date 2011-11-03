@@ -12,8 +12,8 @@
  * EXPERIMENTAL
  */
  
-qx.Class.define("unify.ui.widget.form.Button", {
-  extend: unify.ui.widget.basic.Label,
+qx.Class.define("unify.ui.form.Button", {
+  extend: unify.ui.basic.Label,
 
   events : {
     "execute" : "qx.event.type.Event"
