@@ -43,9 +43,10 @@ qx.Class.define("unify.ui.basic.NavigationButton", {
      * close - Close current view if it is a modal view on top of another one
      * parent - Navigate to the parent view in hierarchy
      * same - Take the same view, change segment or parameter
+     * master - ?
      */
     relation: {
-      check : ["close", "parent", "same"],
+      check : ["close", "parent", "same", "master"],
       init: null,
       nullable: true
     },

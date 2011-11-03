@@ -78,7 +78,7 @@ qx.Class.define("unify.ui.container.Bar", {
     
     _createItemElement : function(config)
     {
-      var itemElem = new unify.ui.form.Button();
+      var itemElem = new unify.ui.basic.NavigationButton();
 
       var navigation = {};
       
