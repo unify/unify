@@ -35,13 +35,13 @@ qx.Class.define("${Namespace}.Application",
       document.title = "${Name}";
       
       // Create view managers
-      var MasterViewManager = new unify.view.widget.ViewManager("master");
+      var MasterViewManager = new unify.view.ViewManager("master");
       
       // Register your view classes...
       MasterViewManager.add(${Namespace}.view.Start, true);
       
       // Add TabViews or SplitViews...
-      var TabView = new unify.view.widget.TabViewManager(MasterViewManager);
+      var TabView = new unify.view.TabViewManager(MasterViewManager);
       TabView.add(${Namespace}.view.Start);
       
       // Add view manager (or SplitView or TabView) to the root
