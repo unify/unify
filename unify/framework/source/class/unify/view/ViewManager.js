@@ -11,10 +11,10 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.view.widget.ViewManager", {
+qx.Class.define("unify.view.ViewManager", {
   extend : qx.core.Object,
-  include : [unify.view.widget.MNavigatable],
-  implement : [unify.view.widget.IViewManager],
+  include : [unify.view.MNavigatable],
+  implement : [unify.view.IViewManager],
   
   /*
   *****************************************************************************
@@ -40,7 +40,7 @@ qx.Class.define("unify.view.widget.ViewManager", {
     this.__managerId = managerId;
     
     // Add to registry
-    var registry = unify.view.widget.ViewManager.__managers;
+    var registry = unify.view.ViewManager.__managers;
     if (qx.core.Environment.get("qx.debug"))
     {
       if (registry[managerId]) {
@@ -150,7 +150,7 @@ qx.Class.define("unify.view.widget.ViewManager", {
   members :
   {
     _createWidgetElement : function() {
-      var e = this.__viewcontainer = new unify.view.widget.ViewContainer();
+      var e = this.__viewcontainer = new unify.view.ViewContainer();
       var elem = e.getElement();
       elem.id = this.getId();
       
@@ -386,146 +386,8 @@ qx.Class.define("unify.view.widget.ViewManager", {
      */
     _onTap : function(e)
     {
+      // Redirct to tapHelper from MNavigatable
       this._tapHelper(e);
-      return; //TODO
-      var elem = unify.bom.Hierarchy.closest(e.getTarget(), this.__followable);
-      if (elem &&!elem.getAttribute('disabled'))
-      {
-        // Stop further event processing
-        e.stopPropagation();
-
-        // Support executing public function on currently selected view
-        var exec = elem.getAttribute("exec");
-        if (exec)
-        {
-          if(!this.__currentView){
-            throw new Error('Illegal exec attribute in ViewManager '+this.getId()+': There is no current view to call '+exec+' on');
-          }
-          if(!this.__currentView[exec]){
-            throw new Error('Illegal exec attribute in ViewManager '+this.getId()+': current view '+this.__currentView.getId()+" has no function named "+exec);
-          }
-          this.__currentView[exec](elem);
-        }
-        else
-        {
-          // Detect absolute links
-          var href = elem.getAttribute("href");
-          if (href != null && href != "" && href.charAt(0) != "#") {
-            window.open(href);
-          }
-
-          // Lazily navigate (omits navigation during activity)
-          else if (!this.__navigates)
-          {
-            this.__navigates = true;
-            qx.lang.Function.delay(this.__onTapNavigate, 0, this, elem);
-          }
-        }
-      }
-    },
-
-
-    /**
-     * Used for lazy execution of tap event
-     *
-     * @param elem {Element} Element which was tapped onto
-     */
-    __onTapNavigate : function(elem)
-    {
-      return; //TODO
-      
-      // Reset event blocking flag
-      this.__navigates = false;
-
-      // Check up-navigation request first
-      var rel = elem.getAttribute("rel");
-      if (rel == "parent" || rel == "close")
-      {
-        if(this.__path.length == 1) {
-          if(this.getDisplayMode()=='default'){
-            this.hide();
-          } else {
-            unify.view.PopOverManager.getInstance().hide(this.getId());
-          }
-        } else {
-          this.navigate(this.__path.slice(0, -1));
-        }
-        return;
-      }
-      
-      // Support for showing/hiding another view manager (without a specific view e.g. a pop over)
-      // TODO: Are there other kinds of view managers which might be shown here (not just popups)?
-      var show = elem.getAttribute("show");
-      if (show != null)
-      {
-        unify.view.PopOverManager.getInstance().show(show);
-        return;
-      }
-
-      var hide = elem.getAttribute("hide");
-      if (hide != null)
-      {
-        unify.view.PopOverManager.getInstance().hide(hide);
-        return;
-      }
-
-      // Read attributes
-      var href = elem.getAttribute("href");
-      var dest = href ? href.substring(1) : elem.getAttribute("goto");
-      if (dest == null) {
-        throw new Error("Empty destination found!");
-      }
-
-      // Valid Paths (leading with a "#" in href attributes):
-      // localView.segment:param (in transition)
-      // otherView.segment:param (globally known view => delegate to navigation)
-      // .segment:param (switch segment and param, no transition)
-      // .segment (switch segment, no transition)
-      // :param (switch param, no transition)
-
-      if (qx.core.Environment.get("qx.debug"))
-      {
-        if (rel) {
-          throw new Error("Invalid 'rel' attribute: " + rel);
-        }
-      }
-      
-      var config = unify.view.Path.parseFragment(dest);
-      var view = config.view;
-      if (view && !this.__views[view])
-      {
-        unify.view.Navigation.getInstance().navigate(new unify.view.Path(config));
-      }
-      else
-      {
-        // Read current path and make non-deep copy of path
-        var path = this.__path;
-        var clone = path.concat();
-        var cloneLast = clone.length-1;
-        
-        // Select right modification point
-        if (rel == "same" || clone[cloneLast].view===config.view)
-        {
-          clone[cloneLast] = config;
-        } 
-        else if (config.view) 
-        {
-          clone.push(config);
-        } 
-        else 
-        {
-          if (config.segment) {
-            clone[cloneLast].segment = config.segment;
-          }
-
-          if (config.param) {
-            clone[cloneLast].param = config.param;
-          }
-        }
-
-        // Finally do the navigate()
-        this.navigate(clone);
-      }
     },
 
 
@@ -568,8 +430,18 @@ qx.Class.define("unify.view.widget.ViewManager", {
       }
     },
     
+    /**
+     * Shows the view
+     */
+    show : function() {
+      this._getWidgetElement().show();
+    },
+    
+    /**
+     * Hides the view
+     */
     hide : function() {
-      //TODO: Hide
+      this._getWidgetElement().hide();
     },
     
     /*

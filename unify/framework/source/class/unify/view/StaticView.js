@@ -92,7 +92,7 @@ qx.Class.define("unify.view.StaticView",
      */
     manager : 
     {
-      //check : "unify.view.ViewManager",
+      check : "unify.view.ViewManager",
       nullable : true
     },
 
@@ -256,27 +256,6 @@ qx.Class.define("unify.view.StaticView",
      */
     create : function()
     {
-      /*if (qx.core.Environment.get("qx.debug"))
-      {
-        if (this.__layer) {
-          throw new Error(this.toString + ": Is already created!");
-        }
-      }
-
-      // Create and store layer reference
-      var now = (new Date).valueOf();
-      var layer = this.__layer = this._createView();
-      
-      // Configure CSS classes
-      var layerElem = layer.getElement();
-      var Class = qx.bom.element.Class;
-
-      if (this.getParent()) {
-        Class.add(layerElem, "has-parent");
-      }
-
-      return layer;*/
-      //console.error("create");
       var now = +(new Date());
       this._createView();
       if (qx.core.Environment.get("qx.debug")) {

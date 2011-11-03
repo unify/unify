@@ -13,7 +13,7 @@
 #require(qx.event.handler.Orientation)
 
 *********************************************************************************************** */
-
+// TODO: Switch to widget system
 /**
  * A manager for a so-called split screen.
  *

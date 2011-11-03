@@ -1,4 +1,4 @@
-qx.Interface.define("unify.view.widget.IViewManager", {
+qx.Interface.define("unify.view.IViewManager", {
   members : {
     getWidgetElement : function() {},
     getCurrentView : function() {},

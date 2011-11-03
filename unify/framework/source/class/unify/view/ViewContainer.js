@@ -11,7 +11,7 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.view.widget.ViewContainer", {
+qx.Class.define("unify.view.ViewContainer", {
   extend : unify.ui.widget.core.Widget,
   
   include : [

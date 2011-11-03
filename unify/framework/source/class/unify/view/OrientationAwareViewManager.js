@@ -12,6 +12,7 @@
 #require(qx.event.handler.Orientation)
 
 *********************************************************************************************** */
+// TODO: Switch to widget system
 /**
  * Specialized ViewManager that shows views fullscreen modal
  * @deprecated
