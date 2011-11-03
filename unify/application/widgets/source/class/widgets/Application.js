@@ -29,7 +29,7 @@ qx.Class.define("widgets.Application",
       this.base(arguments);
    
       // Set theme
-      qx.theme.manager.Meta.getInstance().setTheme(unify.theme.Dark);
+      qx.theme.manager.Meta.getInstance().setTheme(widgets.theme.WidgetTheme);
       
       // Configure application
       document.title = "widgets";
