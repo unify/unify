@@ -25,7 +25,7 @@ qx.Class.define("${Namespace}.view.Start", {
     // overridden
     _createView : function() 
     {
-      var content = new unify.ui.widget.basic.Label("Hello World");
+      var content = new unify.widget.basic.Label("Hello World");
       this.add(content);
     }
   }

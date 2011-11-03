@@ -68,7 +68,7 @@ qx.Class.define("googly.view.Translate",
     // overridden
     _createView : function() 
     {
-      var navigationBar = new unify.ui.widget.container.NavigationBar(this);
+      var navigationBar = new unify.widget.container.NavigationBar(this);
       this.add(navigationBar);
       
       var inputStyles = {
@@ -83,21 +83,21 @@ qx.Class.define("googly.view.Translate",
         marginRight: "10px"
       };
       
-      var inputText = this.__inputText = new unify.ui.widget.form.Input();
+      var inputText = this.__inputText = new unify.widget.form.Input();
       inputText.set({
         allowGrowY: true
       });
       //inputText.setHeight(150);
       inputText.setStyle(inputStyles);
       
-      var resultText = this.__resultText = new unify.ui.widget.form.Input();
+      var resultText = this.__resultText = new unify.widget.form.Input();
       resultText.set({
         allowGrowY: true
       });
       //resultText.setHeight(150);
       resultText.setStyle(inputStyles);
       
-      var button = new unify.ui.widget.form.Button("Translate");
+      var button = new unify.widget.form.Button("Translate");
       button.setStyle({
         marginLeft: "10px",
         marginRight: "10px",

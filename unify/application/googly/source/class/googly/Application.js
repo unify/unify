@@ -33,7 +33,7 @@ qx.Class.define("googly.Application",
       document.title = "Googly";
 
       // Master view
-      var MasterViewManager = new unify.view.widget.ViewManager("master");
+      var MasterViewManager = new unify.view.ViewManager("master");
       //var MasterViewManager = new unify.view.ViewManager("master");
       MasterViewManager.add(googly.view.Start, true);
       MasterViewManager.add(googly.view.Translate);
@@ -43,7 +43,7 @@ qx.Class.define("googly.Application",
       MasterViewManager.add(unify.view.SysInfo);
       
       // Configure tab view
-      var TabView = new unify.view.widget.TabViewManager(MasterViewManager);
+      var TabView = new unify.view.TabViewManager(MasterViewManager);
       TabView.add(googly.view.Start);
       TabView.add(googly.view.Translate);
       TabView.add(googly.view.Search);

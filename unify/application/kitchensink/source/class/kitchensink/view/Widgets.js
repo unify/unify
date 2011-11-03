@@ -27,24 +27,24 @@ qx.Class.define("kitchensink.view.Widgets",
     {
       var 
         // layer widget in compatibility mode
-        layerWidget = new unify.ui.widget.core.Layer(new unify.ui.Layer(this)),
+        layerWidget = new unify.widget.core.Layer(new unify.ui.Layer(this)),
         
         // navigation bar widget
-        navigationBar = new unify.ui.widget.container.NavigationBar(this),
+        navigationBar = new unify.widget.container.NavigationBar(this),
         
         // some texts for labels
         labelTextOne = "Label One",
         labelTextTwo = "Second Label",
         
         // label containers
-        labelOne = new unify.ui.widget.basic.Label(labelTextOne),
-        labelTwo = new unify.ui.widget.basic.Label(labelTextTwo),
+        labelOne = new unify.widget.basic.Label(labelTextOne),
+        labelTwo = new unify.widget.basic.Label(labelTextTwo),
         
         // a button
-        buttonOne = new unify.ui.widget.form.Button(),
+        buttonOne = new unify.widget.form.Button(),
         
         // text input
-        inputOne = new unify.ui.widget.form.Input(),
+        inputOne = new unify.widget.form.Input(),
         
         // config for all widgets
         baseConfig = {

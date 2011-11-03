@@ -1,5 +1,5 @@
 qx.Class.define("widgets.Theme", {
-  extend: unify.ui.widget.styling.Theme,
+  extend: unify.widget.styling.Theme,
   
   construct : function() {
     var styles = {

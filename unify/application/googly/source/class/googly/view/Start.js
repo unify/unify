@@ -26,12 +26,12 @@ qx.Class.define("googly.view.Start",
     // overridden
     _createView : function() 
     {
-      var navigationBar = new unify.ui.widget.container.NavigationBar(this);
+      var navigationBar = new unify.widget.container.NavigationBar(this);
       this.add(navigationBar);
       
       var text = "Welcome to Googly - The Ultimate Google Experience";
       
-      var content = new unify.ui.widget.basic.Label(text);
+      var content = new unify.widget.basic.Label(text);
       this.add(content);
       content.set({
         width: 500,
