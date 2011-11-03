@@ -52,7 +52,7 @@ qx.Class.define("unify.ui.widget.basic.NavigationButton", {
     getElement : function() {
       var element = this.base(arguments);
       
-      qx.bom.element.Class.add(element, "navigateble");
+      qx.bom.element.Class.add(element, "navigatable");
       
       return element;
     }

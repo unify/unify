@@ -19,7 +19,7 @@ qx.Mixin.define("unify.view.MNavigatable", {
     
     _getTapFollowElement : function(e) {
       //var followable = "a[href],[rel],[goto],[exec],[show],[hide]";
-      var followable = ".navigateble";
+      var followable = ".navigatable";
       // TODO Walk the tree inside of javascript and not through the DOM
     
       var elem = unify.bom.Hierarchy.closest(e.getTarget(), followable);
