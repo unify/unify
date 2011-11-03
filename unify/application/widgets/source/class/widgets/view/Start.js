@@ -24,18 +24,11 @@ qx.Class.define("widgets.view.Start", {
     // overridden
     _createView : function() 
     {
-      var layer = new unify.ui.Layer(this);
-
-      //var titlebar = new unify.ui.ToolBar(this);
-      //layer.add(titlebar);
-
-      var layerWidget = new unify.ui.core.Layer(layer);
-
       var titleBar = new unify.ui.container.NavigationBar(this);
-      layerWidget.add(titleBar);
+      this.add(titleBar);
 
       var c1 = new unify.ui.container.Composite(new qx.ui.layout.HBox());
-      layerWidget.add(c1);
+      this.add(c1);
       c1.set({
         appearance: "test",
         height: 300
@@ -58,7 +51,7 @@ qx.Class.define("widgets.view.Start", {
       });
 
       var scroller = new unify.ui.container.Scroll();
-      layerWidget.add(scroller);
+      this.add(scroller);
       scroller.set({
         height: 300
       });
@@ -88,8 +81,6 @@ qx.Class.define("widgets.view.Start", {
         left: 0,
         top: 50
       });
-      
-      return layerWidget;
     }
   }
 });
