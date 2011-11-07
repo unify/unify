@@ -26,6 +26,18 @@ qx.Class.define("unify.ui.core.Widget", {
     this.__element = this.__createElement();
   },
   
+  events : {
+    /**
+     * Fired on resize of the widget.
+     */
+    resize : "qx.event.type.Event",
+    
+    /**
+     * Fired on move of the widget.
+     */
+    move : "qx.event.type.Event"
+  },
+  
   properties : {
     /**
      * Controls the visibility. Valid values are:
@@ -490,7 +502,11 @@ qx.Class.define("unify.ui.core.Widget", {
 
     
     renderLayout : function(left, top, width, height, preventSize) {
-      this.base(arguments, left, top, width, height);
+      var changes = this.base(arguments, left, top, width, height);
+
+      if(!changes) {
+        return;
+      }
 
       var parentInset = this.getParentInset();
       if(parentInset) {
@@ -522,6 +538,14 @@ qx.Class.define("unify.ui.core.Widget", {
         } else if (this.hasLayoutChildren()) {
           throw new Error("No layout in " + this);
         }
+      }
+      
+      // Fire events
+      if (changes.position && this.hasListener("move")) {
+        this.fireEvent("move");
+      }
+      if (changes.size && this.hasListener("resize")) {
+        this.fireEvent("resize");
       }
     },
 
