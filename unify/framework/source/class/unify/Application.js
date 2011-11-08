@@ -35,6 +35,8 @@ qx.Class.define("unify.Application",
 
   members :
   {
+    __root : null,
+    
     /*
     ---------------------------------------------------------------------------
       APPLICATION CORE
@@ -56,19 +58,29 @@ qx.Class.define("unify.Application",
       }
 
       // Display build time
-      this.info("Build Time: " + new Date(qx.$$build));
+      if (qx.$$build) {
+        this.info("Build Time: " + new Date(qx.$$build));
+      }
+
+      var rootElement = this._getRootElement();
+      this.__root = new unify.view.Root(rootElement);
 
       // Configure document
       var Style = qx.bom.element.Style;
       // <body>
-      Style.setStyles(document.body, {
+      Style.setStyles(rootElement, {
         WebkitUserSelect : "none",
         WebkitTextSizeAdjust : "none",
         WebkitPerspective : "800",
         WebkitTransformStyle : "preserve-3d",
         WebkitTouchCallout : "none",
-        width : "100%",
-        height : "100%",
+        position : "absolute",
+        /*width : "100%",
+        height : "100%",*/
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0,
         overflow : "hidden",
         border : 0,
         padding : 0,
@@ -81,7 +93,7 @@ qx.Class.define("unify.Application",
         background : "white"
       });
       // <html>
-      Style.setStyles(document.body.parentNode, {
+      Style.setStyles(rootElement.parentNode, {
         width : "100%",
         height : "100%",
         overflow : "hidden",
@@ -89,7 +101,7 @@ qx.Class.define("unify.Application",
       });
       this.__setupDocumentSize();
       var isLandscape=qx.bom.Viewport.isLandscape();
-      document.body.setAttribute('orient',isLandscape?'landscape':'portrait');
+      rootElement.setAttribute('orient',isLandscape?'landscape':'portrait');
       // Event listeners
       var Registration = qx.event.Registration;
       Registration.addListener(window, "resize", this.__onResize, this);
@@ -106,6 +118,14 @@ qx.Class.define("unify.Application",
     },
 
 
+    _getRootElement : function() {
+      return document.body;
+    },
+    
+    getRoot : function() {
+      return this.__root;
+    },
+
 
     /*
     ---------------------------------------------------------------------------
@@ -119,8 +139,12 @@ qx.Class.define("unify.Application",
      * @param viewManager {Object} Any object with a method "getElement" which returns a DOM element
      */
     add : function(viewManager) {
-      viewManager.setMasterView(true);
-      document.body.appendChild(viewManager.getElement());
+      this.__root.add(viewManager.getWidgetElement(), {
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0
+      });
     },
 
 
@@ -145,7 +169,7 @@ qx.Class.define("unify.Application",
      */
     __onRotate : function(e) {
       var orient=qx.bom.Viewport
-      document.body.setAttribute("orient", e.isLandscape()?"landscape":"portrait");
+      this._getRootElement().setAttribute("orient", e.isLandscape()?"landscape":"portrait");
     },
 
 

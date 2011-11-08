@@ -35,13 +35,13 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     ---------------------------------------------------------------------------
     */
     
+    "root" : {},
     "composite" : {},
     "scroll" : {},
     "layer" : {},
     "view" : {
       style : function() {
         var style = {
-          //backgroundColor: "white",
           backgroundColor: "#CBD2D8",
           backgroundImage: "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAABCAIAAACdaSOZAAAAFElEQVQI12M4euYKErp0+tINIAIAuHQQ4hrnkJoAAAAASUVORK5CYII=')",
           
@@ -56,6 +56,16 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           style.WebkitTransitionDuration = "150ms";
           style.WebkitTransitionTimingFunction = "linear";
         }
+        
+        return style;
+      }
+    },
+    "overlay" : {
+      style : function() {
+        var style = {
+          backgroundColor: "red",
+          border: "3px solid black"
+        };
         
         return style;
       }

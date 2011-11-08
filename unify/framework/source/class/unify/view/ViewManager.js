@@ -133,7 +133,7 @@ qx.Class.define("unify.view.ViewManager", {
     displayMode : {
       check : "String",
       init: "default",
-      apply: "_applyDisplayMode",
+      //apply: "_applyDisplayMode",
       event: "changeDisplayMode"
     }
   },
@@ -149,8 +149,10 @@ qx.Class.define("unify.view.ViewManager", {
 
   members :
   {
+    __initialized : false,
+    
     _createWidgetElement : function() {
-      var e = this.__viewcontainer = new unify.view.ViewContainer();
+      var e = this.__viewcontainer = new unify.ui.container.Composite(new qx.ui.layout.Canvas());
       var elem = e.getElement();
       elem.id = this.getId();
       
@@ -210,6 +212,7 @@ qx.Class.define("unify.view.ViewManager", {
     },
     
     init : function() {
+      this.debug("Init");
       if (!this.__path && this.getDisplayMode()!='modal') {
         this.__resetHelper();
       }
@@ -217,6 +220,36 @@ qx.Class.define("unify.view.ViewManager", {
       qx.ui.core.queue.Visibility.add(this.__viewcontainer);
       qx.ui.core.queue.Layout.add(this.__viewcontainer);
       qx.ui.core.queue.Manager.flush();
+      
+      this.__initialized = true;
+    },
+    
+    /**
+     * Whether the view manager is initialized
+     *
+     * @return {Boolean} <code>true</code> if initialized
+     */
+    isInitialized : function() {
+      return this.__initialized;
+    },
+    
+    /**
+     * Resets the view manager to the defaultView if it is not already selected.
+     */
+    reset : function()
+    {
+      if (!this.__initialized) {
+        return;
+      }
+      
+      // Check whether we are already at default view
+      var path = this.__path;
+      var defaultViewId = this.__defaultViewId;
+      if (path==null||(path.length == 1 && path[0].view == defaultViewId)) {
+        return;
+      }
+
+      this.__resetHelper();
     },
     
     /**

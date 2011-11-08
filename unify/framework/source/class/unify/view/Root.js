@@ -11,20 +11,19 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.view.ViewContainer", {
+qx.Class.define("unify.view.Root", {
   extend : unify.ui.core.Widget,
   
   include : [
     qx.ui.core.MChildrenHandling
   ],
   
-  construct : function(layout) {
+  construct : function(rootElement) {
+    this.__rootElement = rootElement;
+    
     this.base(arguments);
     
-    if (!layout) {
-      layout = new qx.ui.layout.Canvas();
-    }
-    this._setLayout(layout);
+    this._setLayout(new qx.ui.layout.Canvas());
     
     qx.event.Registration.addListener(window, "resize", this.__onResize, this);
   },
@@ -34,23 +33,21 @@ qx.Class.define("unify.view.ViewContainer", {
     appearance :
     {
       refine: true,
-      init: "layer"
+      init: "root"
     }
   },
   
   members : {
+    // Root element the whole application is based upon
+    __rootElement : null,
+    
     _createElement : function() {
-      var e = document.createElement("div");
-      return e;
+      return this.__rootElement;
     },
     
     // overridden
     isRootWidget : function() {
-      return this.__isMaster;
-    },
-    
-    setMasterView : function(isMaster) {
-      this.__isMaster = isMaster;
+      return true;
     },
     
     __onResize : function() {
@@ -59,16 +56,14 @@ qx.Class.define("unify.view.ViewContainer", {
     
     /** Returns fixed size hint of base layer size */
     getSizeHint : function() {
-      if (this.__isMaster) {
-        var Dimension = qx.bom.element.Dimension;
-        var e = {
-          width: Dimension.getContentWidth(document.body),
-          height: Dimension.getContentHeight(document.body)
-        };
-        return e;
-      } else {
-        return this.base(arguments);
-      }
+      var root = this.__rootElement;
+      
+      var Dimension = qx.bom.element.Dimension;
+      var e = {
+        width: Dimension.getContentWidth(root),
+        height: Dimension.getContentHeight(root)
+      };
+      return e;
     }
   },
   
@@ -77,7 +72,6 @@ qx.Class.define("unify.view.ViewContainer", {
   },
   
   defer : function(statics, members) {
-    qx.ui.core.MLayoutHandling.remap(members);
     qx.ui.core.MChildrenHandling.remap(members);
   }
 });

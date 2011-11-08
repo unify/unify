@@ -12,7 +12,7 @@
  * Manager for view managers which functions as a so-called pop over.
  *
  */
-// TODO: Switch to widget system?
+
 qx.Class.define("unify.view.PopOverManager",
 {
   extend : qx.core.Object,
@@ -28,18 +28,38 @@ qx.Class.define("unify.view.PopOverManager",
   {
     this.base(arguments);
     
-    this.__root = document.body;
+    this.__root = qx.core.Init.getApplication().getRoot();
     this.__visibleViewManagers = [];
     this.__overlays={};
     this.__styleRegistry = {};
     
+    var setStyles = qx.lang.Function.bind(qx.bom.element.Style.setStyles, qx.bom.element.Style);
+    
     var pblocker = this.__pblocker = document.createElement("div");
+    setStyles(pblocker, {
+      "position": "absolute",
+      "left": 0,
+      "top": 0,
+      "width": "100%",
+      "height": "100%",
+      "display": "none"
+    });
     pblocker.id = "popover-blocker";
     var mblocker = this.__mblocker = document.createElement("div");
+    setStyles(mblocker, {
+      "position": "absolute",
+      "left": 0,
+      "top": 0,
+      "width": "100%",
+      "height": "100%",
+      "display": "none",
+      "backgroundColor": "#000",
+      "opacity": 0.5
+    });
     mblocker.id = "modal-blocker";
     qx.event.Registration.addListener(pblocker,'tap',this.__onTapBlocker,this);
-    this.__root.appendChild(pblocker);
-    this.__root.appendChild(mblocker);
+    this.__root.getElement().appendChild(pblocker);
+    this.__root.getElement().appendChild(mblocker);
   },
   
   
@@ -152,6 +172,9 @@ qx.Class.define("unify.view.PopOverManager",
     show : function(id)
     {
       var viewManager = unify.view.ViewManager.get(id);
+      if (!viewManager.isInitialized()) {
+        viewManager.init();
+      }
       
       if (qx.core.Environment.get("qx.debug"))
       {
@@ -172,13 +195,26 @@ qx.Class.define("unify.view.PopOverManager",
       var overlay;
       if(viewManager.getDisplayMode()=='popover'){
         overlay=this.__getOverlay(viewManager);
-        var wrapper = overlay.getElement();
-        var style = this.__styleRegistry[viewManager];
+        /*var wrapper = overlay.getElement();*/
+        var style = this.__styleRegistry[viewManager] || {};
+        
         if (style) {
-          qx.bom.element.Style.setStyles(wrapper, style);
+          var left = style.left || 0;
+          var top = style.top || 0;
+          var mystyle = qx.lang.Object.clone(style);
+          delete mystyle.left;
+          delete mystyle.top;
+          
+          overlay.setStyle(mystyle);
+          this.__root.add(overlay, {
+            left: left,
+            top: top
+          });
+        } else {
+          this.error("No style of overlay for view " + viewManager);
         }
-        this.__root.appendChild(wrapper);
-        wrapper.appendChild(elem);
+        
+        overlay.add(viewManager.getWidgetElement());
       } else {
         if(!this.__root==elem.parentNode){
           this.__root.appendChild(elem);
@@ -214,16 +250,11 @@ qx.Class.define("unify.view.PopOverManager",
         }
         return;
       }
-      var elem=viewManager.getElement();
       var mode=viewManager.getDisplayMode();
 
       var self=this;
       var hideCallback=function(){
-        elem.style.display='none';
-        if(mode=='popover'){
-            elem=elem.parentNode;
-        }
-        elem.style.zIndex='';
+        viewManager.hide();
 
         qx.lang.Array.remove(self.__visibleViewManagers, viewManager);
         self.__sortPopOvers();
@@ -238,7 +269,7 @@ qx.Class.define("unify.view.PopOverManager",
           overlay.setEnableAnimation(animate);
           hideCallback();
         } else {
-          overlay.addListenerOnce("fadeOut",hideCallback,this);
+          overlay.addListenerOnce("hidden",hideCallback,this);
           overlay.hide();
         }
       } else {
@@ -251,12 +282,10 @@ qx.Class.define("unify.view.PopOverManager",
       if(!overlay){
         overlay=new unify.ui.container.Overlay;
         var elem=overlay.getElement();
-        var managerElem=viewManager.getElement();
-        elem.id=managerElem.id+'-popover';
-        qx.bom.element.Class.add(elem,'popover-wrapper');
-        var indicator=document.createElement("div");
+        elem.id='popover-overlay';
+        /*var indicator=document.createElement("div");
         indicator.className="popover-indicator";
-        elem.appendChild(indicator);
+        elem.appendChild(indicator);*/
         this.__overlays[viewManager]=overlay;
       }
       return overlay;

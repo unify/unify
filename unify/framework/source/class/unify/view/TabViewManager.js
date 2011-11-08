@@ -90,16 +90,14 @@ qx.Class.define("unify.view.TabViewManager", {
     /** {Element} Root element of the attached view manager */
     __pane : null,
     
-    __viewcontainer : null,
-    
     __viewmap : null,
     
     _createWidgetElement : function() {
-      var elem = new unify.view.ViewContainer(new qx.ui.layout.VBox());
+      var elem = new unify.ui.container.Composite(new qx.ui.layout.VBox());
         
-      if (this.__isMaster) {
+      /*if (this.__isMaster) {
         elem.setMasterView(true);
-      }
+      }*/
       
       elem.add(this.__viewManager.getWidgetElement(), {
         flex: 1
@@ -203,7 +201,7 @@ qx.Class.define("unify.view.TabViewManager", {
           alignX: "center",
           alignY: "middle"
         });
-        this.__bar = bar = new unify.view.ViewContainer(layout);
+        this.__bar = bar = new unify.ui.container.Composite(layout);
         bar.setAppearance("tabbar");
       }
       return bar;
