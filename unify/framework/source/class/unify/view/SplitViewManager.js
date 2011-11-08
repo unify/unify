@@ -13,7 +13,6 @@
 #require(qx.event.handler.Orientation)
 
 *********************************************************************************************** */
-// TODO: Switch to widget system
 /**
  * A manager for a so-called split screen.
  *
@@ -138,6 +137,31 @@ qx.Class.define("unify.view.SplitViewManager",
       }
 
       return elem;
+    },
+    
+    _createWidgetElement : function() {
+      var e = this.__viewcontainer = new unify.ui.container.Composite(new unify.ui.layout.SplitView());
+      //this._makeNavigatable(e);
+      
+      e.add(this.__masterViewManager.getWidgetElement());
+      e.add(this.__detailViewManager.getWidgetElement());
+      
+      return e;
+    },
+    
+    _getWidgetElement : function() {
+      var e = this.__widgetElement;
+      if (e) {
+        return e;
+      }
+      
+      e = this.__widgetElement = this._createWidgetElement();
+      
+      return e;
+    },
+    
+    getWidgetElement : function() {
+      return this._getWidgetElement();
     }
   }
 });
