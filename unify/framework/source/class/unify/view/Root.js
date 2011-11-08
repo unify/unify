@@ -64,6 +64,10 @@ qx.Class.define("unify.view.Root", {
         height: Dimension.getContentHeight(root)
       };
       return e;
+    },
+    
+    renderLayout : function(left, top, width, height) {
+      this.base(arguments, left, top, width, height, true);
     }
   },
   
