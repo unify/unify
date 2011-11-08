@@ -63,8 +63,12 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     "overlay" : {
       style : function() {
         var style = {
-          backgroundColor: "red",
-          border: "3px solid black"
+          backgroundColor: "white",
+          borderTop: "3px solid black",
+          borderRight: "3px solid black",
+          borderLeft: "3px solid black",
+          borderBottom: "3px solid black",
+          borderRadius: "3px"
         };
         
         return style;
