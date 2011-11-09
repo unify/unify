@@ -168,8 +168,11 @@ qx.Class.define("unify.view.PopOverManager",
      * Shows the view manager with the given ID.
      *
      * @param id {String} ID of view manager
+     * @param trigger {unify.ui.Widget?null} Widget that triggers the opening of the popover
+     * @param triggerPosition {String?null} Position on trigger to attach popover to
+     * @param popoverPosition {String?null} Position on popover to attach to the trigger position
      */
-    show : function(id)
+    show : function(id, trigger, triggerPosition, popoverPosition)
     {
       var viewManager = unify.view.ViewManager.get(id);
       if (!viewManager.isInitialized()) {
@@ -197,6 +200,13 @@ qx.Class.define("unify.view.PopOverManager",
         overlay=this.__getOverlay(viewManager);
         /*var wrapper = overlay.getElement();*/
         var style = this.__styleRegistry[viewManager] || {};
+        
+        if (trigger && triggerPosition && popoverPosition) {
+          var position = trigger.getPositionInfo();
+          
+          style.left = (position.left + position.width + 5);
+          style.top = (position.top + 5);
+        }
         
         if (style) {
           var left = style.left || 0;

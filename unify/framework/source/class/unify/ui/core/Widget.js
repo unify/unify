@@ -14,6 +14,9 @@
  * Generic widget that depends on a slighly modified qooxdoo LayoutItem
  * This is the base of every widget in the unify widget system
  */
+/*
+#use(unify.ui.core.EventHandler)
+*/
 qx.Class.define("unify.ui.core.Widget", {
   extend : qx.ui.core.LayoutItem,
   
@@ -35,7 +38,28 @@ qx.Class.define("unify.ui.core.Widget", {
     /**
      * Fired on move of the widget.
      */
-    move : "qx.event.type.Event"
+    move : "qx.event.type.Event",
+    
+    /** Fired if a touch at the screen is started. */
+    touchstart : "qx.event.type.Touch",
+
+    /** Fired if a touch at the screen has ended. */
+    touchend : "qx.event.type.Touch",
+    
+    /** Fired if a touch at the screen is started. */
+    touchleave : "qx.event.type.Touch",
+
+    /** Fired if a touch at the screen has ended. */
+    touchrelease : "qx.event.type.Touch",
+
+    /** Fired during a touch at the screen. */
+    touchmove : "qx.event.type.Touch",
+
+    /** Fired if a touch at the screen is canceled. */
+    touchcancel : "qx.event.type.Touch",
+
+    /** Fired when a finger taps on the screen. */
+    tap : "qx.event.type.Touch"
   },
   
   properties : {
@@ -65,11 +89,6 @@ qx.Class.define("unify.ui.core.Widget", {
      * Parent's inset to apply to child
      */
     parentInset : {
-      init : null
-    },
-    
-    navigation : {
-      apply : "_applyNavigation",
       init : null
     },
     
@@ -497,11 +516,19 @@ qx.Class.define("unify.ui.core.Widget", {
     
     
 
+    __positionInfo : null,
 
-
-
+    getPositionInfo : function() {
+      return this.__positionInfo;
+    },
     
     renderLayout : function(left, top, width, height, preventSize) {
+      this.__positionInfo = {
+        left: left,
+        top: top,
+        width: width,
+        height: height
+      };
       var changes = this.base(arguments, left, top, width, height);
 
       if(!changes) {
@@ -1140,11 +1167,6 @@ qx.Class.define("unify.ui.core.Widget", {
         var style = this.__style;
         if (style) {
           qx.bom.element.Style.setStyles(element, style);
-        }
-        
-        var navigation = this.getNavigation();
-        if (navigation) {
-          this.__applyNavigation(element, navigation);
         }
         
         return element;

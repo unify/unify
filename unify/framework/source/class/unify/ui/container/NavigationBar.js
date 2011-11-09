@@ -129,9 +129,7 @@ qx.Class.define("unify.ui.container.NavigationBar", {
       var master = this.__view.getManager().getMaster();
       
       if(master && master.getDisplayMode()=='popover'){
-        masterElem.setNavigation({
-          show: master.getId()
-        });
+        masterElem.setShow(master.getId());
         var currentMasterView=master.getCurrentView();
         masterElem.setValue(currentMasterView?currentMasterView.getTitle("parent") : "missing title");
         masterElem.setVisibility("visible");

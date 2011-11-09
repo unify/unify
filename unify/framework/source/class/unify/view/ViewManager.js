@@ -13,7 +13,6 @@
  */
 qx.Class.define("unify.view.ViewManager", {
   extend : qx.core.Object,
-  include : [unify.view.MNavigatable],
   implement : [unify.view.IViewManager],
   
   /*
@@ -155,8 +154,7 @@ qx.Class.define("unify.view.ViewManager", {
       var e = this.__viewcontainer = new unify.ui.container.Composite(new qx.ui.layout.Canvas());
       var elem = e.getElement();
       elem.id = this.getId();
-      
-      this._makeNavigatable(e);
+      e.setUserData("viewManager", this);
       
       return e;
     },

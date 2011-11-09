@@ -26,7 +26,6 @@ qx.Class.define("unify.Application",
 {
   extend : qx.application.Native,
 
-
   /*
   *****************************************************************************
      MEMBERS
@@ -63,6 +62,7 @@ qx.Class.define("unify.Application",
       }
 
       var rootElement = this._getRootElement();
+      qx.bom.Event.addNativeListener(rootElement, "click", this.__onClick);
       this.__root = new unify.view.Root(rootElement);
 
       // Configure document
@@ -117,6 +117,14 @@ qx.Class.define("unify.Application",
       }
     },
 
+    __onClick : function(e) {
+      // Prevent click on href
+      var target = qx.bom.Event.getTarget(e);
+      var elem = unify.bom.Hierarchy.closest(target, "a[href]");
+      if (elem) {
+        e.preventDefault();
+      }
+    },
 
     _getRootElement : function() {
       return document.body;
