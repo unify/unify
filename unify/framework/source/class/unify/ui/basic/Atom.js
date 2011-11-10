@@ -18,7 +18,7 @@ qx.Class.define("unify.ui.basic.Atom", {
     this.base(arguments);
     this._setLayout(new unify.ui.layout.AtomLayout());
     
-    var imageWidget = this.__imageWidget = new unify.ui.basic.Icon(icon);
+    var imageWidget = this.__imageWidget = new unify.ui.basic.Image(icon);
     var labelWidget = this.__labelWidget = new unify.ui.basic.Label(label);
     
     this._add(imageWidget);
