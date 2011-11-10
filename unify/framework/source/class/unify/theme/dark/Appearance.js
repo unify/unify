@@ -64,11 +64,11 @@ qx.Theme.define("unify.theme.dark.Appearance", {
       style : function() {
         var style = {
           backgroundColor: "white",
-          borderTop: "3px solid black",
-          borderRight: "3px solid black",
-          borderLeft: "3px solid black",
-          borderBottom: "3px solid black",
-          borderRadius: "3px"
+          borderTop: "5px solid #333",
+          borderRight: "5px solid #333",
+          borderLeft: "5px solid #333",
+          borderBottom: "5px solid #333",
+          borderRadius: "5px"
         };
         
         return style;
