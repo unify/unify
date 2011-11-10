@@ -36,22 +36,34 @@ qx.Class.define("unify.ui.layout.SplitView", {
     renderLayout : function(availWidth, availHeight) {
       var children = this._getLayoutChildren();
       
-      if (children.length != 2) {
+      if (children.length > 2) {
         this.error("SplitView supports only exactly 2 children!");
       }
       
-      var masterViewManager = children[0].getUserData("viewManager");
-      if (availWidth < availHeight) {
-        children[1].renderLayout(0, 0, availWidth, availHeight);
-        if (masterViewManager) {
-          masterViewManager.setDisplayMode("popover");
+      
+      if (children.length == 1) {
+        if (availWidth < availHeight) {
+          children[0].renderLayout(0, 0, availWidth, availHeight);
+        } else {
+          this._getWidget().getUserData("splitViewManager").inlineMasterView();
         }
       } else {
-        var leftWidth = Math.round(availWidth * this.getSplitLevel());
-        children[0].renderLayout(0, 0, leftWidth, availHeight);
-        children[1].renderLayout(leftWidth, 0, availWidth-leftWidth, availHeight);
-        if (masterViewManager) {
-          masterViewManager.resetDisplayMode();
+        var masterViewManager = masterViewManager = children[0].getUserData("viewManager");
+        
+        if (availWidth < availHeight) {
+          children[0].hide();
+          children[1].renderLayout(0, 0, availWidth, availHeight);
+          if (masterViewManager) {
+            masterViewManager.setDisplayMode("popover");
+          }
+        } else {
+          var leftWidth = Math.round(availWidth * this.getSplitLevel());
+          children[0].show();
+          children[0].renderLayout(0, 0, leftWidth, availHeight);
+          children[1].renderLayout(leftWidth, 0, availWidth-leftWidth, availHeight);
+          if (masterViewManager) {
+            masterViewManager.resetDisplayMode();
+          }
         }
       }
     }

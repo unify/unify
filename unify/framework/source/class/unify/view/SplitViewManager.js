@@ -106,13 +106,20 @@ qx.Class.define("unify.view.SplitViewManager",
       }
     },
     
+    
+    inlineMasterView : function() {
+      var masterWidget = this.__masterViewManager.getWidgetElement();
+      this.__viewcontainer.addAt(masterWidget, 0);
+      masterWidget.show();
+    },
+    
   
     /**
      * Returns the root element of the split screen
      *
      * @return {Element} DOM element of split screen
      */
-    getElement : function()
+    /*getElement : function()
     {
       var elem = this.__element;
       if (!elem)
@@ -138,11 +145,12 @@ qx.Class.define("unify.view.SplitViewManager",
       }
 
       return elem;
-    },
+    },*/
     
     _createWidgetElement : function() {
       var e = this.__viewcontainer = new unify.ui.container.Composite(new unify.ui.layout.SplitView());
-      //this._makeNavigatable(e);
+      
+      e.setUserData("splitViewManager", this);
       
       e.add(this.__masterViewManager.getWidgetElement());
       e.add(this.__detailViewManager.getWidgetElement());
