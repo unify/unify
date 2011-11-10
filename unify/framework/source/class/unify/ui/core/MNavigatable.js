@@ -116,7 +116,7 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
             unify.view.PopOverManager.getInstance().hide(viewManager.getId());
           }
         } else {
-          this.navigate(path.slice(0, -1));
+          viewManager.navigate(path.slice(0, -1));
         }
         return;
       }
