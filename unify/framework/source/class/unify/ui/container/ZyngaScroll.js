@@ -477,7 +477,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
         return;
       }
 
-      this.__scroller.doTouchStart(touches, e.getNative().timeStamp);
+      this.__scroller.doTouchStart(touches, e.getNativeEvent().timeStamp);
       e.preventDefault();
       if (this.__enableScrollX && this.__showIndicatorX) {
         this.__horizontalScrollIndicator.setVisible(true);
