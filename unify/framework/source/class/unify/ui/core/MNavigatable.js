@@ -69,8 +69,8 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
     },
     
     _tapHelper : function(e) {
-      var widget = e.getTarget();
-      var viewManagerWidget = widget.getLayoutParent();
+
+      var viewManagerWidget = this.getLayoutParent();
       var viewManager = null;
       while (!viewManager && viewManagerWidget) {
         viewManager = viewManagerWidget.getUserData("viewManager");
@@ -79,33 +79,33 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
       
       if (qx.core.Environment.get("qx.debug")) {
         if (!viewManager) {
-          this.warn("Widget " + widget + " has no parent view manager!");
+          this.warn("Widget " + this + " has no parent view manager!");
         }
       }
       
-      var exec = widget.getExecute();
+      var exec = this.getExecute();
       if (exec) {
-        viewManager.getCurrentView()[exec](widget);
+        viewManager.getCurrentView()[exec](this);
       } else {
         // Detect absolute links
-        var href = widget.getHyperreference(); //elem.getAttribute("href");
+        var href = this.getHyperreference(); //elem.getAttribute("href");
         if (href != null && href != "" && href.charAt(0) != "#") {
           window.open(href);
         } else if (!this.__navigates) {
           // Lazily navigate (omits navigation during activity)
           this.__navigates = true;
-          qx.lang.Function.delay(this.__navigationWidgetHelper, 0, this, widget, viewManager);
+          qx.lang.Function.delay(this.__navigationWidgetHelper, 0, this, viewManager);
         }
       }
     },
     
-    __navigationWidgetHelper : function(widget, viewManager) {
+    __navigationWidgetHelper : function(viewManager) {
       // Reset event blocking flag
       this.__navigates = false;
 
       // Check up-navigation request first
       //var rel = elem.getAttribute("rel");
-      var rel = widget.getRelation();
+      var rel = this.getRelation();
       if (rel == "parent" || rel == "close")
       {
         var path = viewManager.getPath();
@@ -124,7 +124,7 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
       // Support for showing/hiding another view manager (without a specific view e.g. a pop over)
       // TODO: Are there other kinds of view managers which might be shown here (not just popups)?
       //var show = elem.getAttribute("show");
-      var show = widget.getShow();
+      var show = this.getShow();
       if (show != null)
       {
         unify.view.PopOverManager.getInstance().show(show);
@@ -132,7 +132,7 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
       }
 
       //var hide = elem.getAttribute("hide");
-      var hide = widget.getHide();
+      var hide = this.getHide();
       if (hide != null)
       {
         unify.view.PopOverManager.getInstance().hide(hide);
@@ -141,9 +141,9 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
 
       // Read attributes
       //var href = elem.getAttribute("href");
-      var href = widget.getHyperreference();
+      var href = this.getHyperreference();
       //var dest = href ? href.substring(1) : elem.getAttribute("goto");
-      var dest = href ? href.substring(1) : widget.getGoTo();
+      var dest = href ? href.substring(1) : this.getGoTo();
       if (dest == null) {
         throw new Error("Empty destination found!");
       }
