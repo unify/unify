@@ -174,6 +174,9 @@ qx.Class.define("unify.view.PopOverManager",
      */
     show : function(id, trigger, triggerPosition, popoverPosition)
     {
+      var modLeft = null;
+      var modTop = null;
+      
       var viewManager = unify.view.ViewManager.get(id);
       if (!viewManager.isInitialized()) {
         viewManager.init();
@@ -197,29 +200,75 @@ qx.Class.define("unify.view.PopOverManager",
       var elem = viewManager.getElement();
       var overlay;
       if(viewManager.getDisplayMode()=='popover'){
-        overlay=this.__getOverlay(viewManager);
-        /*var wrapper = overlay.getElement();*/
+        if (popoverPosition) {
+          var map = {
+            "l" : "left",
+            "c" : "center",
+            "r" : "right",
+            "t" : "top",
+            "b" : "bottom"
+          };
+          
+          var direction = map[popoverPosition[0] || ""];
+          var alignment = map[popoverPosition[1] || ""];
+
+          overlay=this.__getOverlay(viewManager, direction, alignment);
+        } else {
+          overlay=this.__getOverlay(viewManager);
+        }
+        
         var style = this.__styleRegistry[viewManager] || {};
         
         if (trigger && triggerPosition && popoverPosition) {
           var position = trigger.getPositionInfo();
           
-          style.left = (position.left + position.width + 5);
-          style.top = (position.top + 5);
+          var direction = triggerPosition[0] || "r";
+          var alignment = triggerPosition[1] || "c";
+          
+          var left;
+          var top;
+
+          if (direction == "r" || direction == "l") {
+            if (direction == "r") {
+              left = position.left + position.width;
+            } else {
+              left = position.left;
+            }
+            
+            if (alignment == "t") {
+              top = position.top;
+            } else if (alignment == "c") {
+              top = position.top + Math.round(position.height / 2);
+            } else if (alignment == "b") {
+              top = position.top + position.height;
+            }
+          } else {
+            if (direction == "t") {
+              top = position.top;
+            } else {
+              top = position.top + position.height;
+            }
+            
+            if (alignment == "l") {
+              left = position.left;
+            } else if (alignment == "c") {
+              left = position.left + Math.round(position.width / 2);
+            } else if (alignment == "r") {
+              left = position.left + position.width;
+            }
+          }
+
+          var modLeft = left;
+          var modTop = top;
         }
         
         if (style) {
-          var left = style.left || 0;
-          var top = style.top || 0;
           var mystyle = qx.lang.Object.clone(style);
           delete mystyle.left;
           delete mystyle.top;
           
           overlay.setStyle(mystyle);
-          this.__root.add(overlay, {
-            left: left,
-            top: top
-          });
+          this.__root.add(overlay);
         } else {
           this.error("No style of overlay for view " + viewManager);
         }
@@ -234,7 +283,7 @@ qx.Class.define("unify.view.PopOverManager",
       this.__sortPopOvers();
       viewManager.show();
       if(overlay){
-         overlay.show();
+         overlay.show(modLeft, modTop);
       }
     },
     
@@ -287,10 +336,10 @@ qx.Class.define("unify.view.PopOverManager",
       }
     },
 
-    __getOverlay : function(viewManager){
+    __getOverlay : function(viewManager, arrowDirection, arrowAlignment){
       var overlay=this.__overlays[viewManager];
       if(!overlay){
-        overlay=new unify.ui.container.Overlay;
+        overlay=new unify.ui.container.Overlay(arrowDirection, arrowAlignment);
         var elem=overlay.getElement();
         elem.id='popover-overlay';
         /*var indicator=document.createElement("div");

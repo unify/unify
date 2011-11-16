@@ -60,7 +60,15 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         return style;
       }
     },
-    "overlay" : {
+    "overlay" : {},
+    "overlay/arrow" : {
+      style : function() {
+        return {
+          overflow: "hidden"
+        };
+      }
+    },
+    "overlay/container" : {
       style : function() {
         var style = {
           backgroundColor: "white",
