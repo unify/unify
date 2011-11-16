@@ -501,16 +501,24 @@ qx.Class.define("unify.ui.core.Widget", {
     
     
 
-    __positionInfo : null,
+    __dimensionInfo : null,
 
     getPositionInfo : function() {
-      return this.__positionInfo;
+      var e = this.getElement();
+      
+      var pos = qx.bom.element.Location.getPosition(e);
+      var dim = this.__dimensionInfo || qx.bom.element.Dimension.getSize(e);
+      
+      return {
+        left: pos.left,
+        top: pos.top,
+        width: dim.width,
+        height: dim.height
+      };
     },
     
     renderLayout : function(left, top, width, height, preventSize) {
-      this.__positionInfo = {
-        left: left,
-        top: top,
+      this.__dimensionInfo = {
         width: width,
         height: height
       };
