@@ -6,7 +6,15 @@ qx.Class.define("unify.ui.other.Arrow", {
       check : ["left", "top", "right", "bottom"],
       init: "left",
       apply: "_applyDirection"
+    },
+    
+    arrowStyle : {
+      apply: "_applyArrowStyle"
     }
+  },
+  
+  construct : function() {
+    this.base(arguments);
   },
   
   members : {
@@ -18,17 +26,14 @@ qx.Class.define("unify.ui.other.Arrow", {
       var arrowSpan = this.__arrowSpan = document.createElement("span");
       e.appendChild(arrowSpan);
       
-      qx.bom.element.Style.setStyles(arrowSpan, {
-        display: "block",
-        width: "38px",
-        height: "38px",
-        backgroundColor: "#333",
-        transform: "rotate(45deg) scale(0.73)",
-        left: "2px",
-        position: "absolute"
-      });
-      
       return e;
+    },
+    
+    _applyArrowStyle : function(value) {
+      var arrowSpan = this.__arrowSpan;
+      if (arrowSpan) {
+        qx.bom.element.Style.setStyles(arrowSpan, value);
+      }
     },
     
     _applyDirection : function(value) {

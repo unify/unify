@@ -221,7 +221,7 @@ qx.Class.define("unify.view.PopOverManager",
         
         if (trigger && triggerPosition && popoverPosition) {
           var position = trigger.getPositionInfo();
-          
+
           var direction = triggerPosition[0] || "r";
           var alignment = triggerPosition[1] || "c";
           

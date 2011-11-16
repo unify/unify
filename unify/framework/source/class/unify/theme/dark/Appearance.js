@@ -64,7 +64,18 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     "overlay/arrow" : {
       style : function() {
         return {
-          overflow: "hidden"
+          overflow: "hidden",
+          properties : {
+            arrowStyle: {
+              display: "block",
+              width: "38px",
+              height: "38px",
+              backgroundColor: "#333",
+              transform: "rotate(45deg) scale(0.73)",
+              left: "2px",
+              position: "absolute"
+            }
+          }
         };
       }
     },
