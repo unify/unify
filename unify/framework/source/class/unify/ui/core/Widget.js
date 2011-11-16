@@ -930,6 +930,13 @@ qx.Class.define("unify.ui.core.Widget", {
      * @param map {Map} Map of styles/values to apply
      */
     _setStyle : function(map) {
+      map = qx.lang.Object.clone(map);
+      var properties = null;
+      if (map.properties) {
+        properties = map.properties;
+        delete map.properties;
+      }
+      
       var disallowedStyles = [
         "fontSize",
         "fontWeight",
@@ -1032,6 +1039,23 @@ qx.Class.define("unify.ui.core.Widget", {
       this.__topInset = top;
 
       qx.bom.element.Style.setStyles(this.getElement(), style);
+      
+      if (properties) {
+        var keys = qx.lang.Object.getKeys(properties);
+        var firstUp = qx.lang.String.firstUp;
+        
+        for (var i=0,ii=keys.length; i<ii; i++) {
+          var key = keys[i];
+          var value = properties[key];
+          
+          var setter = this["set" + firstUp(key)];
+          if (setter) {
+            setter.call(this, value);
+          } else {
+            this.error("Widget has no setter for property " + key)
+          }
+        }
+      }
     },
     
     getFont : function() {
