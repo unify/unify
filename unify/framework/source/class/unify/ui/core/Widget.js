@@ -472,21 +472,6 @@ qx.Class.define("unify.ui.core.Widget", {
 
       // Add to appearance queue
       qx.ui.core.queue.Appearance.add(this);
-
-      // Update child controls
-      var controls = this.__childControls;
-      if (controls)
-      {
-        var obj;
-        for (var id in controls)
-        {
-          obj = controls[id];
-
-          if (obj instanceof unify.ui.core.Widget) {
-            obj.updateAppearance();
-          }
-        }
-      }
     },
 
     checkAppearanceNeeds : function() {
@@ -817,22 +802,6 @@ qx.Class.define("unify.ui.core.Widget", {
       } else {
         qx.ui.core.queue.Appearance.add(this);
       }
-
-      // Forward state change to child controls
-      var forward = this._forwardStates;
-      var controls = this.__childControls;
-
-      if (forward && forward[state] && controls)
-      {
-        var control;
-        for (var id in controls)
-        {
-          control = controls[id];
-          if (control instanceof unify.ui.core.Widget) {
-            controls[id].addState(state);
-          }
-        }
-      }
     },
 
 
@@ -858,21 +827,6 @@ qx.Class.define("unify.ui.core.Widget", {
         this.$$stateChanges = true;
       } else {
         qx.ui.core.queue.Appearance.add(this);
-      }
-
-      // Forward state change to child controls
-      var forward = this._forwardStates;
-      var controls = this.__childControls;
-
-      if (forward && forward[state] && controls)
-      {
-        for (var id in controls)
-        {
-          var control = controls[id];
-          if (control instanceof unify.ui.core.Widget) {
-            control.removeState(state);
-          }
-        }
       }
     },
 
@@ -905,21 +859,6 @@ qx.Class.define("unify.ui.core.Widget", {
         this.$$stateChanges = true;
       } else {
         qx.ui.core.queue.Appearance.add(this);
-      }
-
-      // Forward state change to child controls
-      var forward = this._forwardStates;
-      var controls = this.__childControls;
-
-      if (forward && forward[value] && controls)
-      {
-        for (var id in controls)
-        {
-          var control = controls[id];
-          if (control instanceof unify.ui.core.Widget) {
-            control.replaceState(old, value);
-          }
-        }
       }
     },
 
@@ -1119,8 +1058,6 @@ qx.Class.define("unify.ui.core.Widget", {
 
 
 
-
-    
     hasUserBounds : function() {
     
     },
