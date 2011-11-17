@@ -209,7 +209,7 @@ qx.Class.define("unify.view.PopOverManager",
       if (qx.core.Environment.get("qx.debug")) {
         this.debug("Show: " + id);
       }
-      var elem = viewManager.getElement();
+      var elem = viewManager.getWidgetElement().getElement();
       var overlay;
       if(viewManager.getDisplayMode()=='popover'){
         if (popoverPosition) {
