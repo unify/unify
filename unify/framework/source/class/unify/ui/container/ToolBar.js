@@ -110,6 +110,11 @@ qx.Class.define("unify.ui.container.ToolBar", {
       return itemElem;
     },
     
+    /**
+     * Change segment handler
+     *
+     * @param e {qx.event.type.Data} Event
+     */
     __changeSegment : function(e) {
       var s2w = this.__segmentToWidget;
       var segment = e.getData();

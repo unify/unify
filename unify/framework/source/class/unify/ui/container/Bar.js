@@ -35,6 +35,11 @@ qx.Class.define("unify.ui.container.Bar", {
     ---------------------------------------------------------------------------
     */
     
+    /**
+     * Set items on bar
+     *
+     * @param items {Array} Items to be added to bar
+     */
     setItems : function(items) {
       var itemElem;
       
@@ -76,6 +81,12 @@ qx.Class.define("unify.ui.container.Bar", {
     ---------------------------------------------------------------------------
     */
     
+    /**
+     * Creates a item element from js config object
+     *
+     * @param config {Map} Config of item
+     * @return {unify.ui.basic.NavigationButton} Created item
+     */
     _createItemElement : function(config)
     {
       var itemElem = new unify.ui.basic.NavigationButton();

@@ -10,6 +10,11 @@
 
 /**
  * EXPERIMENTAL
+ *
+ * General view manager that handles a number of views to support
+ * general navigation, animation between views etc.
+ *
+ * @see unify.view.StaticView
  */
 qx.Class.define("unify.view.ViewManager", {
   extend : qx.core.Object,
@@ -99,6 +104,8 @@ qx.Class.define("unify.view.ViewManager", {
   {
     /** Fired whenever the view-local path was modified */
     changePath : "qx.event.type.Data",
+    
+    /** Fired whenever the displayed view was modified */
     changeView : "qx.event.type.Event"
   },
   
@@ -150,6 +157,11 @@ qx.Class.define("unify.view.ViewManager", {
   {
     __initialized : false,
     
+    /**
+     * Creates the widget element that is the base layer of the viewmanager.
+     *
+     * @return {unify.ui.core.Widget} Base widget of the viewmanager
+     */
     _createWidgetElement : function() {
       var e = this.__viewcontainer = new unify.ui.container.Composite(new qx.ui.layout.Canvas());
       var elem = e.getElement();
@@ -159,6 +171,11 @@ qx.Class.define("unify.view.ViewManager", {
       return e;
     },
     
+    /**
+     * Returns the already created of new created base widget of the viewmanager.
+     *
+     * @return {unify.ui.core.Widget} Base widget of the viewmanager
+     */
     _getWidgetElement : function() {
       var e = this.__widgetElement;
       if (e) {
@@ -170,16 +187,13 @@ qx.Class.define("unify.view.ViewManager", {
       return e;
     },
     
-    getElement : function() {
-      return this._getWidgetElement().getElement();
-    },
-    
+    /**
+     * Returns the already created of new created base widget of the viewmanager.
+     *
+     * @return {unify.ui.core.Widget} Base widget of the viewmanager
+     */
     getWidgetElement : function() {
       return this._getWidgetElement();
-    },
-    
-    setMasterView : function(isMaster) {
-      this._getWidgetElement().setMasterView(isMaster);
     },
     
     /**
@@ -209,6 +223,10 @@ qx.Class.define("unify.view.ViewManager", {
       return this.__managerId;
     },
     
+    /**
+     * Initialize the view manager.
+     * This adds the view manager to the layouting queues.
+     */
     init : function() {
       this.debug("Init");
       if (!this.__path && this.getDisplayMode()!='modal') {
@@ -615,6 +633,13 @@ qx.Class.define("unify.view.ViewManager", {
       this.fireEvent("changeView");
     },
     
+    /**
+     * Handling function to animate between views in a view manager
+     *
+     * @param toView {unify.view.StaticView} View to animate to
+     * @param fromView {unify.view.StaticView} View to animate from
+     * @param direction {String} Either "in" or "out", direction of animation
+     */
     __animateLayers : function(toView, fromView, direction) {
       var self = this;
       var AnimationDuration = qx.theme.manager.Appearance.getInstance().styleFrom("view").WebkitTransitionDuration;

@@ -36,6 +36,7 @@ qx.Class.define("unify.ui.basic.Label", {
       nullable: true
     },
     
+    /** Wheter the content is HTML or plain text */
     html : {
       check: "Boolean",
       init: true,
@@ -96,7 +97,12 @@ qx.Class.define("unify.ui.basic.Label", {
       return true; //this.getHtml() && this.getWrap();
     },
     
-    // overridden
+    /**
+     * Returns computed height for given width
+     *
+     * @param width {Integer} Width to match
+     * @return {Integer} Height matching given width
+     */
     _getContentHeightForWidth : function(width)
     {
       /*if (!this.getHtml() && !this.getWrap()) {

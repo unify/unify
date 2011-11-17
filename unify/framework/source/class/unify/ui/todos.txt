@@ -1,6 +1,4 @@
-Add Overlay
 Add ActivityIndicator
-Add SlideView
-Add themeing system
+Add slide view
 Add segmented control to toolbar
 

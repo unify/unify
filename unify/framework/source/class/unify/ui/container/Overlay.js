@@ -1,11 +1,28 @@
-// TODO : Implement it
+/* ***********************************************************************************************
+
+    Unify Project
+
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+
+*********************************************************************************************** */
+
+/**
+ * EXPERIMENTAL
+ *
+ * Overlay container widget
+ */
 qx.Class.define("unify.ui.container.Overlay", {
   extend : unify.ui.container.Composite,
   
   include : [unify.ui.core.MChildControl, qx.ui.core.MRemoteChildrenHandling],
   
   events : {
+    /** Event thrown if overlay visibility is changed to hidden */
     "hidden" : "qx.event.type.Event",
+    
+    /** Event thrown if overlay visibility is changed to shown */
     "shown" : "qx.event.type.Event"
   },
   
@@ -24,6 +41,10 @@ qx.Class.define("unify.ui.container.Overlay", {
     }
   },
   
+  /**
+   * @param arrowDirection {String} Direction of arrow (left, top, right, bottom)
+   * @param arrowAlignment {String} Alignment of arrow on container (top, center, bottom or left, center, right)
+   */
   construct : function(arrowDirection, arrowAlignment) {
     this.base(arguments, new unify.ui.layout.OverlayLayout());
     
@@ -41,12 +62,22 @@ qx.Class.define("unify.ui.container.Overlay", {
     __arrowDirection : null,
     __arrowAlignment : null,
     
-    // overridden
+    /**
+     * Gets inner content container
+     *
+     * @return {unify.ui.core.Widget} Content widget
+     */
     getChildrenContainer : function() {
       return this.getChildControl("container");
     },
     
-    _createChildControlImpl : function(id, hash) {
+    /**
+     * Returns child control widget identified by id
+     *
+     * @param id {String} ID of child widget
+     * @return {unify.ui.core.Widget} Content widget
+     */
+    _createChildControlImpl : function(id) {
       var control;
       
       if (id == "arrow") {

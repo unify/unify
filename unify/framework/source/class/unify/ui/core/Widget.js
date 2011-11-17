@@ -4,7 +4,7 @@
 
     Homepage: unify-project.org
     License: MIT + Apache (V2)
-    Copyright: 2010, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+    Copyright: 2010-2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
 
 *********************************************************************************************** */
 
@@ -13,6 +13,8 @@
  *
  * Generic widget that depends on a slighly modified qooxdoo LayoutItem
  * This is the base of every widget in the unify widget system
+ *
+ * Heavily influenced by qooxdoo widget class
  */
 /*
 #use(unify.ui.core.EventHandler)
@@ -80,6 +82,9 @@ qx.Class.define("unify.ui.core.Widget", {
       event : "changeVisibility"
     },
     
+    /**
+     * Appearance ID of widget used by theme system
+     */
     appearance : {
       init : null,
       apply : "_applyAppearance"
@@ -165,12 +170,25 @@ qx.Class.define("unify.ui.core.Widget", {
       qx.ui.core.queue.Visibility.add(this);
     },
     
+    /**
+     * Apply navigation on element
+     *
+     * @deprecated
+     * @param value {Map[]} Navigation object
+     */
     _applyNavigation : function(value) {
       if (value && this._hasElement()) {
         this.__applyNavigation(this.getElement(), value);
       }
     },
     
+    /**
+     * Apply navigation on element
+     *
+     * @deprecated
+     * @param element {Element} DOM element to apply navigation upon
+     * @param map {Map[]} Navigation object
+     */
     __applyNavigation : function(element, map) {
       for (var key in map) {
         var value = map[key];
@@ -178,7 +196,7 @@ qx.Class.define("unify.ui.core.Widget", {
       }
     },
     
-    
+    // overridden
     _applyAppearance : function() {
       this.updateAppearance();
     },
@@ -466,6 +484,9 @@ qx.Class.define("unify.ui.core.Widget", {
       this.fireDataEvent("syncAppearance", this.__states);
     },
 
+    /**
+     * Updates appearance of widget
+     */
     updateAppearance : function() {
       // Clear selector
       this.__updateSelector = true;
@@ -474,6 +495,9 @@ qx.Class.define("unify.ui.core.Widget", {
       qx.ui.core.queue.Appearance.add(this);
     },
 
+    /**
+     * Checks if appearance need to be applied to widget
+     */
     checkAppearanceNeeds : function() {
       // CASE 1: Widget has never got an appearance already because it was never
       // visible before. Normally add it to the queue is the easiest way to update it.
@@ -503,6 +527,11 @@ qx.Class.define("unify.ui.core.Widget", {
 
     __dimensionInfo : null,
 
+    /**
+     * Returns information of position of widget
+     *
+     * @return {Map[]} Returns left and top position and width and height of widget
+     */
     getPositionInfo : function() {
       var e = this.getElement();
       
@@ -517,6 +546,15 @@ qx.Class.define("unify.ui.core.Widget", {
       };
     },
     
+    /**
+     * Render method to apply layout on widget
+     *
+     * @param left {Integer} Left absolute position of widget
+     * @param top {Integer} Top absolute position of widget
+     * @param width {Integer} Width of widget
+     * @param height {Integer} Height of widget
+     * @param preventSize {Boolean?null} Prevent size of widget and ignore layout hints, use with care!
+     */
     renderLayout : function(left, top, width, height, preventSize) {
       this.__dimensionInfo = {
         width: width,
@@ -1058,6 +1096,11 @@ qx.Class.define("unify.ui.core.Widget", {
       }
     },
     
+    /**
+     * Get font of widget
+     *
+     * @return {Map[]} CSS font styles applied on widget
+     */
     getFont : function() {
       var font = this.__font;
       return font ? font.getStyles() : qx.bom.Font.getDefaultStyles();
@@ -1122,6 +1165,11 @@ qx.Class.define("unify.ui.core.Widget", {
       throw "_createElement is not implemented";
     },
     
+    /**
+     * Creates DOM element
+     * 
+     * @return {Element} DOM element of widget
+     */
     __createElement : function() {
         var element = this._createElement();
         

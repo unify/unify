@@ -21,6 +21,9 @@ qx.Class.define("unify.ui.container.Composite", {
     qx.ui.core.MLayoutHandling
   ],
   
+  /**
+   * @param layout {qx.ui.layout.Abstract?null} Layout of composite
+   */
   construct : function(layout) {
     this.base(arguments);
     

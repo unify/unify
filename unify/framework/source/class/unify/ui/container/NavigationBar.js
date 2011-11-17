@@ -18,6 +18,9 @@
 qx.Class.define("unify.ui.container.NavigationBar", {
   extend: unify.ui.container.Bar,
   
+  /**
+   * @param view {unify.view.StaticView} View the navigation bar is attached to
+   */
   construct : function(view) {
     this.base(arguments);
     this._setLayout(new unify.ui.layout.NavigationBar());

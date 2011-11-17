@@ -10,6 +10,8 @@
 
 /**
  * EXPERIMENTAL
+ *
+ * Root widget bound to the root DOM element
  */
 qx.Class.define("unify.view.Root", {
   extend : unify.ui.core.Widget,
@@ -18,6 +20,9 @@ qx.Class.define("unify.view.Root", {
     qx.ui.core.MChildrenHandling
   ],
   
+  /**
+   * @param rootElement {Element} DOM element the widget root is bound to
+   */
   construct : function(rootElement) {
     this.__rootElement = rootElement;
     
@@ -41,6 +46,7 @@ qx.Class.define("unify.view.Root", {
     // Root element the whole application is based upon
     __rootElement : null,
     
+    // overridden
     _createElement : function() {
       return this.__rootElement;
     },
@@ -50,6 +56,9 @@ qx.Class.define("unify.view.Root", {
       return true;
     },
     
+    /**
+     * Resize handler to start relayouting
+     */
     __onResize : function() {
       qx.ui.core.queue.Layout.add(this);
     },
@@ -66,7 +75,8 @@ qx.Class.define("unify.view.Root", {
       return e;
     },
     
-    renderLayout : function(left, top, width, height) {
+    // overridden
+    renderLayout : function(left, top, width, height, preventSize) {
       this.base(arguments, left, top, width, height, true);
     }
   },

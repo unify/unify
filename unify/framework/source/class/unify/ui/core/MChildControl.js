@@ -8,6 +8,11 @@
 
 *********************************************************************************************** */
 
+/**
+ * Mixin to support child controls
+ *
+ * Childs controls supports state bubbling
+ */
 qx.Mixin.define("unify.ui.core.MChildControl", {
   construct : function() {
     this._applyMChildControl();
@@ -216,6 +221,10 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
       return null;
     },
     
+    /**
+     * Wraps the updateAppearance function of a widget to support
+     * child controls.
+     */
     __childControlUpdateAppearanceWrapper : function() {
       var original = this.updateAppearance;
       
@@ -239,6 +248,10 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
       return qx.lang.Function.bind(newFnt, this);
     },
     
+    /**
+     * Wraps the addState function of a widget to support
+     * child controls.
+     */
     __childControlAddStateWrapper : function() {
       var original = this.addState;
       
@@ -265,6 +278,10 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
       return qx.lang.Function.bind(newFnt, this);
     },
     
+    /**
+     * Wraps the removeState function of a widget to support
+     * child controls.
+     */
     __childControlRemoveStateWrapper : function() {
       var original = this.removeState;
       
@@ -290,6 +307,10 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
       return qx.lang.Function.bind(newFnt, this);
     },
     
+    /**
+     * Wraps the replaceState function of a widget to support
+     * child controls.
+     */
     __childControlReplaceStateWrapper : function() {
       var original = this.replaceState;
       
@@ -315,6 +336,12 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
       return qx.lang.Function.bind(newFnt, this);
     },
     
+    /**
+     * Applies the child control mixin into a widget.
+     *
+     * This method has to be called from the widget's constructor to
+     * mangle in wrappers to support updating of child controls.
+     */
     _applyMChildControl : function() {
       this.updateAppearance = this.__childControlUpdateAppearanceWrapper();
       this.addState = this.__childControlAddStateWrapper();

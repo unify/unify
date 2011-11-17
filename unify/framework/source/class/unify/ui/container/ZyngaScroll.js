@@ -4,7 +4,7 @@
 
  Homepage: unify-project.org
  License: MIT + Apache (V2)
- Copyright: 2010, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+ Copyright: 2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
 
  *********************************************************************************************** */
 
@@ -24,6 +24,9 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
 
   include : [unify.ui.core.MRemoteChildrenHandling],
 
+  /**
+   * @param layout {qx.ui.layout.Abstract} Layout of container element
+   */
   construct : function(layout) {
     this.__childLayout = layout || new qx.ui.layout.Basic(); // TODO: Switch over to ChildrenHandlingLayout
     this.base(arguments);
@@ -72,7 +75,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       contentWidget.setStyle({transform:'translate3d(' + (-left) + 'px,' + (-top) + 'px,0) scale(' + zoom + ')'});
       self.__scrollLeft=left;
       self.__scrollTop=top;
-      self.__renderIndicators(left,top,zoom);
+      self.__renderIndicators();
     };
 
     this.__scroller=new Scroller(render,{zooming:false});//TODO implement bouncing,paging and scrollX/Y limit support
@@ -165,7 +168,10 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
 
   events :
   {
+    /** Event fired if in scroll */
     scroll: "qx.event.type.Event",
+    
+    /** Event fired if container snaped */
     snap: "qx.event.type.Event"
   },
 
@@ -227,6 +233,11 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
 
     __contentWidget : null,
 
+    /**
+     * Gets inner content container
+     *
+     * @return {unify.ui.core.Widget} Content widget
+     */
     getChildrenContainer : function() {
       return this.__contentWidget;
     },
@@ -325,6 +336,9 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       indicator.render(ScrollIndicator.DISTANCE + position, size);
     },
 
+    /**
+     * Updates dimensions of scroller to match content container
+     */
     __updateDimensions : function(){
       var elem=this.getElement();
       var contentElem=this.__contentWidget.getElement();
@@ -338,7 +352,10 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       this.__contentHeight = contentElem.clientHeight;
     },
 
-    __renderIndicators : function(left,top,zoom){
+    /**
+     * Renders scroll indicators (if enabled)
+     */
+    __renderIndicators : function(){
       // Display scroll indicators as soon as we touch and the content is bigger than the container
       if (this.__enableScrollX && this.__showIndicatorX) {
         this.__updateScrollIndicator(this.__horizontalScrollIndicator, this.__clientWidth, this.__contentWidth, this.__scrollLeft);
@@ -421,6 +438,14 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       this.__scrollTo(left, top, animate);
     },
 
+    /**
+     * Scroll to the given position
+     *
+     * @param left {Integer?null} Horizontal scroll position, keeps current if value is <code>null</code>
+     * @param top {Integer?null} Vertical scroll position, keeps current if value is <code>null</code>
+     * @param animate {Boolean?false} Whether the scrolling should happen using an animation
+     * @param zoom {Number?null} Zoom level
+     */
     __scrollTo : function(left,top,animate,zoom){
       this.__scroller.scrollTo(left,top,animate,zoom);
       if(!animate){
@@ -465,6 +490,11 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       return this.__contentHeight;
     },
 
+    /**
+     * Handler for touch start event
+     *
+     * @param e {qx.event.type.Touch} Touch event
+     */
     __onTouchStart : function(e){
       //cache values
       this.__enableScrollX = this.getEnableScrollX();
@@ -488,16 +518,34 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       }
 
     },
+    
+    /**
+     * Handler for touch move event
+     *
+     * @param e {qx.event.type.Touch} Touch event
+     */
     __onTouchMove : function(e){
       var n=e.getNativeEvent();
       this.__scroller.doTouchMove(n.touches, n.timeStamp, n.scale);
     },
+    
+    /**
+     * Handler for touch end event
+     *
+     * @param e {qx.event.type.Touch} Touch event
+     */
     __onTouchEnd : function(e){
       this.__scroller.doTouchEnd(e.getNativeEvent().timeStamp);
       //TODO remove hide indicator code when listening for transitionEnd works
       this.__verticalScrollIndicator.setVisible(false);
       this.__horizontalScrollIndicator.setVisible(false);
     },
+    
+    /**
+     * Handler for transition end event
+     *
+     * @param e {Event} Touch event
+     */
     __onTransitionEnd : function(e){
       this.__horizontalScrollIndicator.setVisible(false);
       this.__verticalScrollIndicator.setVisible(false);

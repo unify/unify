@@ -106,47 +106,20 @@ qx.Class.define("unify.view.SplitViewManager",
       }
     },
     
-    
+    /**
+     * Inlines the master view manager into the split view
+     */
     inlineMasterView : function() {
       var masterWidget = this.__masterViewManager.getWidgetElement();
       this.__viewcontainer.addAt(masterWidget, 0);
       masterWidget.show();
     },
     
-  
     /**
-     * Returns the root element of the split screen
+     * Creates the widget element that is the base layer of the viewmanager.
      *
-     * @return {Element} DOM element of split screen
+     * @return {unify.ui.core.Widget} Base widget of the viewmanager
      */
-    /*getElement : function()
-    {
-      var elem = this.__element;
-      if (!elem)
-      {
-        var isLandscape=qx.bom.Viewport.isLandscape();
-        var elem = this.__element = document.createElement("div");
-        elem.className = "split-view";
-        elem.setAttribute("orient", isLandscape ? "landscape" : "portrait");
-
-        var master = this.__masterViewManager;
-        var detail = this.__detailViewManager;
-        
-        if (isLandscape)
-        {
-          elem.insertBefore(master.getElement(), elem.firstChild);
-        } 
-        else 
-        {
-          master.setDisplayMode('popover');
-        }
-        
-        elem.appendChild(detail.getElement());
-      }
-
-      return elem;
-    },*/
-    
     _createWidgetElement : function() {
       var e = this.__viewcontainer = new unify.ui.container.Composite(new unify.ui.layout.SplitView());
       
@@ -158,6 +131,11 @@ qx.Class.define("unify.view.SplitViewManager",
       return e;
     },
     
+    /**
+     * Returns the already created of new created base widget of the viewmanager.
+     *
+     * @return {unify.ui.core.Widget} Base widget of the viewmanager
+     */
     _getWidgetElement : function() {
       var e = this.__widgetElement;
       if (e) {
@@ -169,6 +147,11 @@ qx.Class.define("unify.view.SplitViewManager",
       return e;
     },
     
+    /**
+     * Returns the already created of new created base widget of the viewmanager.
+     *
+     * @return {unify.ui.core.Widget} Base widget of the viewmanager
+     */
     getWidgetElement : function() {
       return this._getWidgetElement();
     }

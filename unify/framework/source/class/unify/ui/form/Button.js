@@ -16,6 +16,7 @@ qx.Class.define("unify.ui.form.Button", {
   extend: unify.ui.basic.Label,
 
   events : {
+    /** Execute event when button is tapped */
     "execute" : "qx.event.type.Event"
   },
 
@@ -37,6 +38,11 @@ qx.Class.define("unify.ui.form.Button", {
       return e;
     },
     
+    /**
+     * onTap handler on button
+     *
+     * @param e {Event} Tap event
+     */
     __onTap : function(e) {
       this.fireEvent("execute");
     }

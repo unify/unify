@@ -1,25 +1,38 @@
+/* ***********************************************************************************************
+
+    Unify Project
+
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+
+*********************************************************************************************** */
+
+/**
+ * Arrow widget, mainly used in overlay
+ */
 qx.Class.define("unify.ui.other.Arrow", {
   extend: unify.ui.core.Widget,
   
   properties : {
+    /** Direction of arrow */
     direction : {
       check : ["left", "top", "right", "bottom"],
       init: "left",
       apply: "_applyDirection"
     },
     
+    /** {Map[]} Speacial css styles for arrow element */
     arrowStyle : {
       apply: "_applyArrowStyle"
     }
   },
   
-  construct : function() {
-    this.base(arguments);
-  },
-  
   members : {
+    /** Arrow DOM element */
     __arrowSpan : null,
     
+    // overridden
     _createElement : function() {
       var e = document.createElement("div");
       

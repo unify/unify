@@ -4,7 +4,7 @@
 
     Homepage: unify-project.org
     License: MIT + Apache (V2)
-    Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
+    Copyright: 2009-2011 Deutsche Telekom AG, Germany, http://telekom.com
 
 *********************************************************************************************** */
 /**
@@ -452,8 +452,8 @@ qx.Class.define("unify.business.RemoteData",
      * override this if you want to prevent caching of data based on arbitrary conditions
      * use keep: 0 service configuration to prevent caching altogether!
      *
-     * @param data
-     * @return {Boolean}
+     * @param data {Var} Caching data
+     * @return {Boolean} Is caching allowed?
      */
     _allowCaching: function(data){
        return true;
@@ -553,6 +553,12 @@ qx.Class.define("unify.business.RemoteData",
       this.__headers[name] = value;
     },
 
+    /**
+     * Checks if request is marked as modified
+     *
+     * @param req {qx.io.remote.Request} Request object
+     * @return {Boolean} Whether the resource is modified
+     */
     __isModified : function(req) {
       return !(req.getStatus() === 304 || req.getResponseHeader("Last-Modified") === unify.business.SyncRegistry.get(req.getUrl()));
     },
@@ -874,8 +880,9 @@ qx.Class.define("unify.business.RemoteData",
     },
     /**
      * removes localStorage entries of a service that have not been accessed within its keep time
-     * @param serviceName
-     * @param expiredWhenCheckedBefore
+     * 
+     * @param serviceName {String} Service name to purge cache of
+     * @param expiredWhenCheckedBefore {Integer} Last check as timestamp
      */
     __purgeCache : function(serviceName,expiredWhenCheckedBefore) {
 

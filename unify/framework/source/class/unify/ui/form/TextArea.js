@@ -20,12 +20,16 @@ qx.Class.define("unify.ui.form.TextArea", {
   extend : unify.ui.core.Widget,
   
   properties : {
+    /** {Integer} Number of columns in text area */
     columns : {
       init: 50
     },
+    
+    /** {Integer} Number of rows in text area */
     rows : {
       init: 3
     },
+    
     // overridden
     appearance :
     {
@@ -44,10 +48,20 @@ qx.Class.define("unify.ui.form.TextArea", {
       return e;
     },
     
+    /**
+     * Set value of text area
+     *
+     * @param value {String} New value of text area
+     */
     setValue : function(value) {
       qx.bom.Input.setValue(this.getElement(), value);
     },
     
+    /**
+     * Get value of text area
+     *
+     * @return {String} Value of text area
+     */
     getValue : function() {
       return qx.bom.Input.getValue(this.getElement());
     }

@@ -18,6 +18,9 @@ qx.Class.define("unify.ui.container.Scroll", {
 
   include : [unify.ui.core.MRemoteChildrenHandling],
   
+  /**
+   * @param layout {qx.ui.layout.Abstract} Layout of container element
+   */
   construct : function(layout) {
     this.__childLayout = layout || new qx.ui.layout.Basic(); // TODO: Switch over to ChildrenHandlingLayout
     this.base(arguments);
@@ -135,7 +138,10 @@ qx.Class.define("unify.ui.container.Scroll", {
   
   events :
   {
+    /** Event fired if in scroll */
     scroll: "qx.event.type.Event",
+    
+    /** Event fired if container snaped */
     snap: "qx.event.type.Event"
   },
 
@@ -412,6 +418,11 @@ qx.Class.define("unify.ui.container.Scroll", {
     __enableScrollX : null,
     __enableScrollY : null,
 
+    /**
+     * Gets inner content container
+     *
+     * @return {unify.ui.core.Widget} Content widget
+     */
     getChildrenContainer : function() {
       return this.__contentWidget;
     },

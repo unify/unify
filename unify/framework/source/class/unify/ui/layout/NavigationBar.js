@@ -4,12 +4,14 @@
 
     Homepage: unify-project.org
     License: MIT + Apache (V2)
-    Copyright: 2010, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+    Copyright: 2010-2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
 
 *********************************************************************************************** */
 
 /**
  * EXPERIMENTAL
+ *
+ * Layout for navigation bar
  */
 qx.Class.define("unify.ui.layout.NavigationBar", {
   extend : qx.ui.layout.Abstract,
@@ -60,6 +62,9 @@ qx.Class.define("unify.ui.layout.NavigationBar", {
       title.renderLayout(titleLeft, titleTop, hint.width, hint.height);
     },
     
+    /**
+     * Rebuilds cache of layout children
+     */
     __rebuildCache : function() {
       var all = this._getLayoutChildren();
       var left = [];

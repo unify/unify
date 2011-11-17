@@ -39,6 +39,7 @@ qx.Class.define("unify.view.TabViewManager", {
     // Maps root views to full path objects
     this.__paths = {};
     
+    // Maps of views controlled by this manager
     this.__viewmap = {};
     
     // Remember view manager and react on changes of its path
@@ -92,12 +93,13 @@ qx.Class.define("unify.view.TabViewManager", {
     
     __viewmap : null,
     
+    /**
+     * Creates the widget element that is the base layer of the viewmanager.
+     *
+     * @return {unify.ui.core.Widget} Base widget of the viewmanager
+     */
     _createWidgetElement : function() {
       var elem = new unify.ui.container.Composite(new qx.ui.layout.VBox());
-        
-      /*if (this.__isMaster) {
-        elem.setMasterView(true);
-      }*/
       
       elem.add(this.__viewManager.getWidgetElement(), {
         flex: 1
@@ -112,6 +114,11 @@ qx.Class.define("unify.view.TabViewManager", {
       return elem;
     },
     
+    /**
+     * Returns the already created of new created base widget of the viewmanager.
+     *
+     * @return {unify.ui.core.Widget} Base widget of the viewmanager
+     */
     _getWidgetElement : function() {
       if (this.__widgetElement) {
         return this.__widgetElement;
@@ -122,12 +129,13 @@ qx.Class.define("unify.view.TabViewManager", {
       return e;
     },
     
+    /**
+     * Returns the already created of new created base widget of the viewmanager.
+     *
+     * @return {unify.ui.core.Widget} Base widget of the viewmanager
+     */
     getWidgetElement : function() {
       return this._getWidgetElement();
-    },
-    
-    setMasterView : function(isMaster) {
-      this.__isMaster = isMaster;
     },
     
     /**
@@ -149,14 +157,30 @@ qx.Class.define("unify.view.TabViewManager", {
       return this.__viewManager.getCurrentView(); 
     },
     
+    /**
+     * Returns the local path of the view manager
+     *
+     * @return {Map[]} List of dictonaries (with keys view, segment and param)
+     */
     getPath : function() {
       return this.__viewManager.getPath();
     },
     
+    /**
+     * Returns the view instance stored behind the given ID.
+     *
+     * @param id {String} Identifier of the view.
+     * @return {unify.view.StaticView} Instance derived from the StaticView class.
+     */
     getView : function(id) {
       return this.__viewManager.getView(id);
     },
     
+    /**
+     * Navigates to the given path
+     *
+     * @param path {unify.view.Path} Path to navigate to
+     */
     navigate : function(path) {
       this.__viewManager.navigate(path);
     },
@@ -243,18 +267,30 @@ qx.Class.define("unify.view.TabViewManager", {
       }
     },
     
-    
+    /**
+     * Event handler for onTap event
+     *
+     * @param e {qx.event.type.Touch} Event
+     */
     _onTap : function(e) {
       var widget = this._getTapFollowElement(e);
       this.__onTap(widget);
     },
+    
+    /**
+     * Placeholder event handler, empty
+     */
     _onTouchHold : function() {},
+    
+    /**
+     * Placeholder event handler, empty
+     */
     _onTouchRelease : function() {},
     
     /**
      * Reacts on tabbing on the tabbar buttons.
      * 
-     * @param e {qx.event.type.Touch} Touch event
+     * @param widget {unify.ui.core.Widget} Touch event
      */
     __onTap : function(widget) 
     {

@@ -1,3 +1,16 @@
+/* ***********************************************************************************************
+
+    Unify Project
+
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+
+*********************************************************************************************** */
+
+/**
+ * Basic implementation of a list
+ */
 qx.Class.define("unify.ui.container.List", {
   extend: unify.ui.container.Composite,
   
@@ -16,6 +29,9 @@ qx.Class.define("unify.ui.container.List", {
       init: "list"
     },
     
+    /**
+     * Data of list
+     */
     data : {
       apply: "_applyData"
     }

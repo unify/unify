@@ -142,6 +142,14 @@ qx.Class.define("unify.view.Path",
       };
     },
     
+    /**
+     * Checks wheter all single chunks of paths are equal.
+     *
+     * @param a {unify.view.Path} Path a
+     * @param b {unify.view.Path} Path b
+     *
+     * @return {Boolean} true if paths are equal, otherwise false
+     */
     chunkEquals : function(a, b) {
       if (!a || !b) {
         return false;

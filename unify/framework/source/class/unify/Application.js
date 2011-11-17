@@ -117,19 +117,23 @@ qx.Class.define("unify.Application",
       }
     },
 
-    __onClick : function(e) {
-      // Prevent click on href
-      var target = qx.bom.Event.getTarget(e);
-      var elem = unify.bom.Hierarchy.closest(target, "a[href]");
-      if (elem) {
-        e.preventDefault();
-      }
-    },
+    
 
+    /**
+     * Returns the root DOM element.
+     * To switch to another root element overwrite this function with your own implementation.
+     *
+     * @return {Element} DOM element that is the root for this application
+     */
     _getRootElement : function() {
       return document.body;
     },
     
+    /**
+     * Returns the root widget element
+     *
+     * @return {unify.view.Root} Root widget
+     */
     getRoot : function() {
       return this.__root;
     },
@@ -167,6 +171,21 @@ qx.Class.define("unify.Application",
       return clazz.substring(0, clazz.indexOf("."));
     },
 
+
+    /**
+     * Prevent clicking on <a> tags to stop browser from relocate to another website
+     *
+     * @param e {Event} Native click event
+     */
+    __onClick : function(e) {
+      // Prevent click on href
+      var target = qx.bom.Event.getTarget(e);
+      var elem = unify.bom.Hierarchy.closest(target, "a[href]");
+      if (elem) {
+        e.preventDefault();
+      }
+    },
+    
 
     /**
      * Applies an attribute to the document's body (the application root)

@@ -1,3 +1,16 @@
+/* ***********************************************************************************************
+
+    Unify Project
+
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+
+*********************************************************************************************** */
+
+/**
+ * Mixin to support navigation on widgets
+ */
 qx.Mixin.define("unify.ui.core.MNavigatable", {
   properties: {
     /**
@@ -41,11 +54,17 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
       nullable: true
     },
     
+    /**
+     * Shows the view
+     */
     show: {
       init: null,
       nullable: true
     },
     
+    /**
+     * Hides the view
+     */
     hide: {
       init: null,
       nullable: true
@@ -53,7 +72,10 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
   },
   
   members : {
-    _makeNavigatable : function() {
+    /**
+     * Applies event listeners on widget to support navigation
+     */
+    _applyMNavigatable : function() {
       if (this._onTap) {
         this.addListener("tap", this._onTap, this);
       } else {
@@ -68,8 +90,12 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
       }
     },
     
+    /**
+     * Helper function to handle taps
+     *
+     * @param e {qx.event.type.Tap} Tap event
+     */
     _tapHelper : function(e) {
-
       var viewManagerWidget = this.getLayoutParent();
       var viewManager = null;
       while (!viewManager && viewManagerWidget) {
@@ -99,6 +125,11 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
       }
     },
     
+    /**
+     * Executes navigation process on view manager
+     *
+     * @param viewManager {unify.view.ViewManager} View manager navigation is done on
+     */
     __navigationWidgetHelper : function(viewManager) {
       // Reset event blocking flag
       this.__navigates = false;

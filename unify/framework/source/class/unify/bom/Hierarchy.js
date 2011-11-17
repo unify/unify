@@ -47,6 +47,7 @@
 ************************************************************************ */
 
 /**
+ * Hierarchy class
  */
 qx.Class.define("unify.bom.Hierarchy",
 {
@@ -64,6 +65,7 @@ qx.Class.define("unify.bom.Hierarchy",
      * is found that matches the specified expression. If no matching
      * element is found then <code>null</code> will be returned.
      *
+     * @param elem {Element} Element to start
      * @param selector {String} Expression to filter the elements with
      * @return {Element|null} Found parent element which matches the expression
      */ 

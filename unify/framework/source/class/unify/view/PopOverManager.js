@@ -84,10 +84,22 @@ qx.Class.define("unify.view.PopOverManager",
     /** {Map} Style registry */
     __styleRegistry : null,
     
+    /**
+     * Set styles for a specific viewManager
+     *
+     * @param viewManager {unify.view.ViewManager} View manager to get styles for
+     * @param styleMap {Map[]} CSS style map for specific view manager
+     */
     setStyles : function(viewManager, styleMap) {
       this.__styleRegistry[viewManager] = styleMap;
     },
     
+    /**
+     * Return styles set via setStyles for a specific viewManager
+     *
+     * @param viewManager {unify.view.ViewManager} View manager to get styles for
+     * @return {Map[]} CSS style map for specific view manager
+     */
     getStyles : function(viewManager) {
       return this.__styleRegistry[viewManager];
     },
@@ -292,6 +304,7 @@ qx.Class.define("unify.view.PopOverManager",
      * Hides the view manager with the given ID.
      *
      * @param id {String} ID of view manager
+     * @param skipAnimation {Boolean} True if the animation should be skipped
      */
     hide : function(id,skipAnimation)
     {
@@ -336,6 +349,15 @@ qx.Class.define("unify.view.PopOverManager",
       }
     },
 
+    /**
+     * Get overlay element
+     *
+     * @param viewManager {unify.view.ViewManager} View manager to generate overlay for
+     * @param arrowDirection {String} Direction of arrow of popover (left, top, right, bottom)
+     * @param arrowAlignment {String} Alignment of arrow on popover (top, center, bottom or left, center, right)
+     *
+     * @return {unify.ui.container.Overlay} Overlay widget
+     */
     __getOverlay : function(viewManager, arrowDirection, arrowAlignment){
       var overlay=this.__overlays[viewManager];
       if(!overlay){

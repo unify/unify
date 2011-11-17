@@ -108,6 +108,9 @@ qx.Class.define("unify.ui.layout.OverlayLayout", {
       }
     },
     
+    /**
+     * Rebuilds cache of layout children
+     */
     __rebuildCache : function() {
       var all = this._getLayoutChildren();
       

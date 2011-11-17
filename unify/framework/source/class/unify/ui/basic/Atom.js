@@ -14,11 +14,15 @@
 qx.Class.define("unify.ui.basic.Atom", {
   extend: unify.ui.core.Widget,
   
-  construct : function(label, icon) {
+  /**
+   * @param label {String} Label on atom
+   * @param image {String} Image url
+   */
+  construct : function(label, image) {
     this.base(arguments);
     this._setLayout(new unify.ui.layout.AtomLayout());
     
-    var imageWidget = this.__imageWidget = new unify.ui.basic.Image(icon);
+    var imageWidget = this.__imageWidget = new unify.ui.basic.Image(image);
     var labelWidget = this.__labelWidget = new unify.ui.basic.Label(label);
     
     this._add(imageWidget);
@@ -26,6 +30,7 @@ qx.Class.define("unify.ui.basic.Atom", {
   },
   
   properties : {
+    /** Position of image */
     direction : {
       type : "String",
       value : "top"
@@ -43,10 +48,20 @@ qx.Class.define("unify.ui.basic.Atom", {
     __imageWidget : null,
     __labelWidget : null,
     
+    /**
+     * Set source of image
+     *
+     * @param value {String} URL of image
+     */
     setSource : function(value) {
       this.__imageWidget.setSource(value);
     },
     
+    /**
+     * Set text on label
+     *
+     * @param value {String} Label text
+     */
     setText : function(value) {
       this.__labelWidget.setValue(value);
     }

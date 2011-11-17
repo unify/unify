@@ -15,6 +15,9 @@
 qx.Class.define("unify.ui.basic.Image", {
   extend: unify.ui.core.Widget,
   
+  /**
+   * @param source {String} URL of image
+   */
   construct : function(source) {
     this.base(arguments);
     if (source) {
@@ -23,6 +26,7 @@ qx.Class.define("unify.ui.basic.Image", {
   },
   
   properties : {
+    /** {String} URL of image */
     source : {
       apply : "_applySource"
     },
@@ -36,13 +40,7 @@ qx.Class.define("unify.ui.basic.Image", {
   
   members: {
     _createElement : function() {
-      var e = document.createElement("img");
-      /*var source = this.getSource();
-      if (source) {
-        e.setAttribute("src", source);
-      }*/
-      
-      return e;
+      return document.createElement("img");
     },
     
     _applySource : function(value) {

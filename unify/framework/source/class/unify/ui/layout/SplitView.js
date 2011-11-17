@@ -14,6 +14,9 @@
 qx.Class.define("unify.ui.layout.SplitView", {
   extend : qx.ui.layout.Abstract,
   
+  /**
+   * @param splitLevel {Float?0.33} Set width of left part in percent
+   */
   construct : function(splitLevel) {
     this.base(arguments);
     
@@ -23,6 +26,7 @@ qx.Class.define("unify.ui.layout.SplitView", {
   },
   
   properties : {
+    /** {Float} Split level, percantage value of width of left part, defaults to 0.33 */
     splitLevel : {
       init: 0.33
     }

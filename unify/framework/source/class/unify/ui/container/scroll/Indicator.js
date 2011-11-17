@@ -59,6 +59,9 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
     }
   },
 
+  /**
+   * @param orientation {String?null} Orientation of indicator
+   */
   construct : function(orientation) {
     this.base(arguments);
 
@@ -108,6 +111,11 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
       return elem;
     },
 
+    /**
+     * Set style on slider
+     *
+     * @param horizontal {Boolean} Set horizontal styling
+     */
     __setSliderStyle : function(horizontal) {
       var self = unify.ui.container.scroll.Indicator;
 
