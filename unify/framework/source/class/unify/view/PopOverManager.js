@@ -118,7 +118,7 @@ qx.Class.define("unify.view.PopOverManager",
       var numVisible=visible.length;
       for (var i=0; i<numVisible; i++) {
         var viewManager=visible[i];
-        var elem=viewManager.getElement();
+        var elem=viewManager.getWidgetElement().getElement();
         if(viewManager.getDisplayMode()=='popover'){
           elem=elem.parentNode;//adjust wrapper for popovers
         }
