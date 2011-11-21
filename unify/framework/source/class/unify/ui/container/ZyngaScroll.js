@@ -126,7 +126,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     {
       init : true,
       check : "Boolean",
-      apply : "_applyScrollMode"
+      apply : "_applyEnableScrollX"
     },
 
     /** Whether vertical scrolling should be enabled */
@@ -134,7 +134,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     {
       init : true,
       check : "Boolean",
-      apply : "_applyScrollMode"
+      apply : "_applyEnableScrollY"
     },
 
     /** Whether the horizontal scroll indicator should be displayed */
@@ -142,7 +142,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     {
       init : true,
       check : "Boolean",
-      apply : "_applyScrollMode"
+      apply : "_update2AxisSrcoll"
     },
 
     /** Whether the vertical scroll indicator should be displayed */
@@ -150,7 +150,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     {
       init : true,
       check : "Boolean",
-      apply : "_applyScrollMode"
+      apply : "_update2AxisSrcoll"
     },
 
     // overridden
@@ -211,11 +211,6 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     /** {Integer} Current scroll position on y-axis */
     __scrollTop : 0,
 
-    /** {Integer} Minimum allowed scroll position on x-axis */
-    __minScrollLeft : 0,
-
-    /** {Integer} Minimum allowed scroll position on y-axis */
-    __minScrollTop : 0,
 
     /*
      ---------------------------------------------------------------------------
@@ -272,11 +267,19 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
      */
 
     // property apply
-    _applyScrollMode : function()
+    _update2AxisScroll : function()
     {
       this.__twoAxisScroll = this.getEnableScrollX() && this.getEnableScrollY() && this.getShowIndicatorX() && this.getShowIndicatorY();
     },
 
+    _applyEnableScrollX : function(value,old){
+      this.__scroller.options.scrollingX=!!value;
+      this._update2AxisScroll();
+    },
+    _applyEnableScrollY : function(value,old){
+      this.__scroller.options.scrollingY=!!value;
+      this._update2AxisScroll();
+    },
 
     /*
      ---------------------------------------------------------------------------
@@ -382,8 +385,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       this.__clientHeight = elem.clientHeight;
       this.__contentWidth = Math.max(this.__clientWidth, contentElem.offsetWidth); // TODO  remove getElement()
       this.__contentHeight = Math.max(this.__clientHeight, contentElem.offsetHeight); // TODO  remove getElement()
-      this.__minScrollLeft = this.__clientWidth - this.__contentWidth;
-      this.__minScrollTop = this.__clientHeight - this.__contentHeight;
+
       /*
        if(this.__isDecelerating){
        this.__isDecelerating=false;//stop it
