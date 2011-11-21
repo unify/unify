@@ -315,22 +315,22 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       var position = 0;
 
       // Begin out
-      if (scrollPosition > 0)
+      if (scrollPosition < 0)
       {
-        size = Math.round(Math.max(size - scrollPosition, ScrollIndicator.ENDSIZE*2));
+        size = Math.round(Math.max(size + scrollPosition, ScrollIndicator.ENDSIZE*2));
       }
 
       // End out
-      else if (scrollPosition < -(contentSize - clientSize))
+      else if (scrollPosition > (contentSize - clientSize))
       {
-        size = Math.round(Math.max(size + contentSize - clientSize + scrollPosition, ScrollIndicator.ENDSIZE*2));
+        size = Math.round(Math.max(size + contentSize - clientSize - scrollPosition, ScrollIndicator.ENDSIZE*2));
         position = clientSize - margin - size;
       }
 
       // In range with possibility to scroll
       else if (contentSize !== clientSize)
       {
-        var percent = -scrollPosition / (contentSize - clientSize);
+        var percent = scrollPosition / (contentSize - clientSize);
         var avail = clientSize - margin - size;
 
         position = Math.round(percent * avail);
