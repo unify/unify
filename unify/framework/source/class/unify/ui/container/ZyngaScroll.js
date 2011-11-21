@@ -14,8 +14,9 @@
  * port of unify.ui.container.Scroll using Zynga Scroller for rendering
  */
 /*
-#ignore(zynga)
-#ignore(zynga.Animate)
+#ignore(core)
+#ignore(core.effect)
+#ignore(core.effect.Animate)
 #ignore(requestAnimationFrame)
 #ignore(Scroller)
  */
@@ -501,13 +502,16 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       this.__enableScrollY = this.getEnableScrollY();
       this.__showIndicatorX = this.getShowIndicatorX();
       this.__showIndicatorY = this.getShowIndicatorY();
+
+      var ne=e.getNativeEvent();
+      var touches=ne.touches;
+
       // Don't react if initial down happens on a form element
-      var touches=e.getNativeEvent().touches;
-      if (touches[0] && touches[0].target && touches[0].target.tagName.match(/input|textarea|select/i)) {
+      if (touches[0].target.tagName && touches[0].target.tagName.match(/input|textarea|select/i)) {
         return;
       }
 
-      this.__scroller.doTouchStart(touches, e.getNativeEvent().timeStamp);
+      this.__scroller.doTouchStart(touches, +ne.timeStamp);
       e.preventDefault();
       if (this.__enableScrollX && this.__showIndicatorX) {
         this.__horizontalScrollIndicator.setVisible(true);
@@ -525,8 +529,8 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
      * @param e {qx.event.type.Touch} Touch event
      */
     __onTouchMove : function(e){
-      var n=e.getNativeEvent();
-      this.__scroller.doTouchMove(n.touches, n.timeStamp, n.scale);
+      var ne=e.getNativeEvent();
+      this.__scroller.doTouchMove(ne.touches, +ne.timeStamp, ne.scale);
     },
     
     /**
@@ -535,7 +539,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
      * @param e {qx.event.type.Touch} Touch event
      */
     __onTouchEnd : function(e){
-      this.__scroller.doTouchEnd(e.getNativeEvent().timeStamp);
+      this.__scroller.doTouchEnd(+e.getNativeEvent().timeStamp);
       //TODO remove hide indicator code when listening for transitionEnd works
       this.__verticalScrollIndicator.setVisible(false);
       this.__horizontalScrollIndicator.setVisible(false);
@@ -574,7 +578,9 @@ Zynga Scroller files, copied into this source file to ease handling with qooxdoo
  * Copyright 2011, Deutsche Telekom AG
  * License: MIT + Apache (V2)
  */
+
 var Scroller;
+
 (function() {
 
 	/**
@@ -716,6 +722,21 @@ var Scroller;
 
 		/** {Integer} Snapping height for content */
 		__snapHeight: 100,
+
+		/** {Integer} Height to assign to refresh area */
+		__refreshHeight: null,
+
+		/** {Boolean} Whether the refresh process is enabled when the event is released now */
+		__refreshActive: false,
+
+		/** {Function} Callback to execute on activation. This is for signalling the user about a refresh is about to happen when he release */
+		__refreshActivate: null,
+
+		/** {Function} Callback to execute on deactivation. This is for signalling the user about the refresh being cancelled */
+		__refreshDeactivate: null,
+
+		/** {Function} Callback to execute to start the actual refresh. Call {@link #refreshFinish} when done */
+		__refreshStart: null,
 
 		/** {Number} Zoom level */
 		__zoomLevel: 1,
@@ -868,6 +889,45 @@ var Scroller;
 
 
 		/**
+		 * Activates pull-to-refresh. A special zone on the top of the list to start a list refresh whenever
+		 * the user event is released during visibility of this zone. This was introduced by some apps on iOS like
+		 * the official Twitter client.
+		 *
+		 * @param height {Integer} Height of pull-to-refresh zone on top of rendered list
+		 * @param activateCallback {Function} Callback to execute on activation. This is for signalling the user about a refresh is about to happen when he release.
+		 * @param deactivateCallback {Function} Callback to execute on deactivation. This is for signalling the user about the refresh being cancelled.
+		 * @param startCallback {Function} Callback to execute to start the real async refresh action. Call {@link #finishPullToRefresh} after finish of refresh.
+		 */
+		activatePullToRefresh: function(height, activateCallback, deactivateCallback, startCallback) {
+
+			var self = this;
+
+			self.__refreshHeight = height;
+			self.__refreshActivate = activateCallback;
+			self.__refreshDeactivate = deactivateCallback;
+			self.__refreshStart = startCallback;
+
+		},
+
+
+		/**
+		 * Signalizes that pull-to-refresh is finished.
+		 */
+		finishPullToRefresh: function() {
+
+			var self = this;
+
+			self.__refreshActive = false;
+			if (self.__refreshDeactivate) {
+				self.__refreshDeactivate();
+			}
+
+			self.scrollTo(self.__scrollLeft, self.__scrollTop, true);
+
+		},
+
+
+		/**
 		 * Returns the scroll position and zooming values
 		 *
 		 * @return {Map} `left` and `top` scroll position and `zoom` level
@@ -921,7 +981,7 @@ var Scroller;
 
 			// Stop deceleration
 			if (self.__isDecelerating) {
-				zynga.Animate.stop(self.__isDecelerating);
+				core.effect.Animate.stop(self.__isDecelerating);
 				self.__isDecelerating = false;
 			}
 
@@ -997,7 +1057,7 @@ var Scroller;
 
 			// Stop deceleration
 			if (self.__isDecelerating) {
-				zynga.Animate.stop(self.__isDecelerating);
+				core.effect.Animate.stop(self.__isDecelerating);
 				self.__isDecelerating = false;
 			}
 
@@ -1122,13 +1182,13 @@ var Scroller;
 
 			// Stop deceleration
 			if (self.__isDecelerating) {
-				zynga.Animate.stop(self.__isDecelerating);
+				core.effect.Animate.stop(self.__isDecelerating);
 				self.__isDecelerating = false;
 			}
 
 			// Stop animation
 			if (self.__isAnimating) {
-				zynga.Animate.stop(self.__isAnimating);
+				core.effect.Animate.stop(self.__isAnimating);
 				self.__isAnimating = false;
 			}
 
@@ -1291,6 +1351,26 @@ var Scroller;
 
 							scrollTop += (moveY / 2);
 
+							// Support pull-to-refresh (only when only y is scrollable)
+							if (!self.__enableScrollX && self.__refreshHeight != null) {
+
+								if (!self.__refreshActive && scrollTop <= -self.__refreshHeight) {
+
+									self.__refreshActive = true;
+									if (self.__refreshActivate) {
+										self.__refreshActivate();
+									}
+
+								} else if (self.__refreshActive && scrollTop > -self.__refreshHeight) {
+
+									self.__refreshActive = false;
+									if (self.__refreshDeactivate) {
+										self.__refreshDeactivate();
+									}
+
+								}
+							}
+
 						} else if (scrollTop > maxScrollTop) {
 
 							scrollTop = maxScrollTop;
@@ -1400,9 +1480,14 @@ var Scroller;
 
 						// Verify that we have enough velocity to start deceleration
 						if (Math.abs(self.__decelerationVelocityX) > minVelocityToStartDeceleration || Math.abs(self.__decelerationVelocityY) > minVelocityToStartDeceleration) {
-							self.__startDeceleration(timeStamp);
-						}
 
+							// Deactivate pull-to-refresh when decelerating
+							if (!self.__refreshActive) {
+
+								self.__startDeceleration(timeStamp);
+
+							}
+						}
 					}
 				}
 			}
@@ -1414,8 +1499,30 @@ var Scroller;
 			// have modified the scroll positions or even showed the scrollbars though.
 			if (!self.__isDecelerating) {
 
-				self.scrollTo(self.__scrollLeft, self.__scrollTop, true, self.__zoomLevel);
+				if (self.__refreshActive && self.__refreshStart) {
 
+					// Use publish instead of scrollTo to allow scrolling to out of boundary position
+					// We don't need to normalize scrollLeft, zoomLevel, etc. here because we only y-scrolling when pull-to-refresh is enabled
+					self.__publish(self.__scrollLeft, -self.__refreshHeight, self.__zoomLevel, true);
+
+					if (self.__refreshStart) {
+						self.__refreshStart();
+					}
+
+				} else {
+
+					self.scrollTo(self.__scrollLeft, self.__scrollTop, true, self.__zoomLevel);
+
+					// Directly signalize deactivation (nothing todo on refresh?)
+					if (self.__refreshActive) {
+
+						self.__refreshActive = false;
+						if (self.__refreshDeactivate) {
+							self.__refreshDeactivate();
+						}
+
+					}
+				}
 			}
 
 			// Fully cleanup list
@@ -1445,7 +1552,7 @@ var Scroller;
 			// Remember whether we had an animation, then we try to continue based on the current "drive" of the animation
 			var wasAnimating = self.__isAnimating;
 			if (wasAnimating) {
-				zynga.Animate.stop(wasAnimating);
+				core.effect.Animate.stop(wasAnimating);
 				self.__isAnimating = false;
 			}
 
@@ -1495,7 +1602,7 @@ var Scroller;
 				};
 
 				// When continuing based on previous animation we choose an ease-out animation instead of ease-in-out
-				self.__isAnimating = zynga.Animate.start(step, verify, completed, 250, wasAnimating ? easeOutCubic : easeInOutCubic);
+				self.__isAnimating = core.effect.Animate.start(step, verify, completed, 250, wasAnimating ? easeOutCubic : easeInOutCubic);
 
 			} else {
 
@@ -1593,7 +1700,7 @@ var Scroller;
 			};
 
 			// Start animation and switch on flag
-			self.__isDecelerating = zynga.Animate.start(step, verify, completed);
+			self.__isDecelerating = core.effect.Animate.start(step, verify, completed);
 
 		},
 
@@ -1724,9 +1831,7 @@ var Scroller;
 	}
 
 })();
-
-/*src/Animate.js*/
-
+/*src/Raf.js */
 /*
  * Scroller
  * http://github.com/zynga/scroller
@@ -1734,120 +1839,159 @@ var Scroller;
  * Copyright 2011, Zynga Inc.
  * Licensed under the MIT License.
  * https://raw.github.com/zynga/scroller/master/MIT-LICENSE.txt
+ *
+ * Based on the work of: Unify Project (unify-project.org)
+ * http://unify-project.org
+ * Copyright 2011, Deutsche Telekom AG
+ * License: MIT + Apache (V2)
+ *
+ * Inspired by: https://github.com/inexorabletash/raf-shim/blob/master/raf.js
  */
-(function(global) {
-
-	var time = Date.now || function() {
-		return +new Date();
-	};
-
-	var desiredFrames = 60;
-	var millisecondsPerSecond = 1000;
-
-	// Polyfill missing requestAnimationFrame
-
-	if (global.requestAnimationFrame) {
-
-		// pass
-
-	} else {
-
-		// requestAnimationFrame polyfill
-		// http://webstuff.nfshost.com/anim-timing/Overview.html
-
-		var postfix = "RequestAnimationFrame";
-		var prefix = (function() {
-			var all = "webkit,moz,o,ms".split(",");
-			for (var i=0; i<4; i++) {
-				if (global[all[i]+postfix] != null) {
-					return all[i];
-				}
-			}
-		})();
-
-		if (prefix) {
-
-			// Vendor specific implementation
-			global.requestAnimationFrame = global[prefix+postfix];
-			global.cancelRequestAnimationFrame = global[prefix+"Cancel"+postfix];
-
-		} else {
-
-			// Custom implementation
-			var requests = {};
-			var rafHandle = 1;
-			var timeoutHandle = null;
-
-			global.requestAnimationFrame = function(callback, root)
-			{
-				var callbackHandle = rafHandle++;
-
-				// Store callback
-				requests[callbackHandle] = callback;
-
-				// Create timeout at first request
-				if (timeoutHandle === null) {
-
-					timeoutHandle = setTimeout(function() {
-
-						var now = time();
-						var currentRequests = requests;
-
-						var keys = [];
-						for (var key in currentRequests) {
-							keys.push(key);
-						}
-
-						// Reset data structure before executing callbacks
-						requests = {};
-						timeoutHandle = null;
-
-						// Process all callbacks
-						for (var i=0, l=keys.length; i<l; i++) {
-							currentRequests[keys[i]](now);
-						}
-
-					}, millisecondsPerSecond / desiredFrames);
-
-				}
-
-				return callbackHandle;
-			};
-
-			global.cancelRequestAnimationFrame = function(handle) {
-				delete requests[handle];
-
-				// Stop timeout if all where removed
-				for (var key in requests) {
-					return;
-				}
-
-				clearTimeout(timeoutHandle);
-				timeoutHandle = null;
-			};
-		}
+(function(global)
+{
+	if(global.requestAnimationFrame) {
+		return;
 	}
 
+	// Basic emulation of native methods for internal use
 
+	var now = Date.now || function() {
+		return +new Date;
+	};
+
+	var getKeys = Object.keys || function(obj) {
+
+		var keys = {};
+		for (var key in obj) {
+			keys[key] = true;
+		}
+
+		return keys;
+
+	};
+
+	var isEmpty = Object.empty || function(obj) {
+
+		for (var key in obj) {
+			return false;
+		}
+
+		return true;
+
+	};
+
+
+	// requestAnimationFrame polyfill
+	// http://webstuff.nfshost.com/anim-timing/Overview.html
+
+	var postfix = "RequestAnimationFrame";
+	var prefix = (function()
+	{
+		var all = "webkit,moz,o,ms".split(",");
+		for (var i=0; i<4; i++) {
+			if (global[all[i]+postfix] != null) {
+				return all[i];
+			}
+		}
+	})();
+
+	// Vendor specific implementation
+	if (prefix)
+	{
+		global.requestAnimationFrame = global[prefix+postfix];
+		global.cancelRequestAnimationFrame = global[prefix+"Cancel"+postfix];
+		return;
+	}
+
+	// Custom implementation
+	var TARGET_FPS = 60;
+	var requests = {};
+	var rafHandle = 1;
+	var timeoutHandle = null;
+
+	global.requestAnimationFrame = function(callback, root)
+	{
+		var callbackHandle = rafHandle++;
+
+		// Store callback
+		requests[callbackHandle] = callback;
+
+		// Create timeout at first request
+		if (timeoutHandle === null)
+		{
+			timeoutHandle = setTimeout(function()
+			{
+				var time = now();
+				var currentRequests = requests;
+				var keys = getKeys(currentRequests);
+
+				// Reset data structure before executing callbacks
+				requests = {};
+				timeoutHandle = null;
+
+				// Process all callbacks
+				for (var i=0, l=keys.length; i<l; i++) {
+					currentRequests[keys[i]](time);
+				}
+			}, 1000 / TARGET_FPS);
+		}
+
+		return callbackHandle;
+	};
+
+	global.cancelRequestAnimationFrame = function(handle)
+	{
+		delete requests[handle];
+
+		// Stop timeout if all where removed
+		if (isEmpty(requests))
+		{
+			clearTimeout(timeoutHandle);
+			timeoutHandle = null;
+		}
+	};
+
+})(this);
+/*src/Animate.js*/
+/*
+ * Scroller
+ * http://github.com/zynga/scroller
+ *
+ * Copyright 2011, Zynga Inc.
+ * Licensed under the MIT License.
+ * https://raw.github.com/zynga/scroller/master/MIT-LICENSE.txt
+ *
+ * Based on the work of: Unify Project (unify-project.org)
+ * http://unify-project.org
+ * Copyright 2011, Deutsche Telekom AG
+ * License: MIT + Apache (V2)
+ */
+
+/**
+ * Generic animation class with support for dropped frames both optional easing and duration.
+ *
+ * Optional duration is useful when the lifetime is defined by another condition than time
+ * e.g. speed of an animating object, etc.
+ *
+ * Dropped frame logic allows to keep using the same updater logic independent from the actual
+ * rendering. This eases a lot of cases where it might be pretty complex to break down a state
+ * based on the pure time difference.
+ */
+(function(global) {
+	var time = Date.now;
+	var desiredFrames = 60;
+	var millisecondsPerSecond = 1000;
 	var running = {};
 	var counter = 1;
 
-	if (!window.zynga) {
-		zynga = {};
+	// Create namespaces
+	if (!global.core) {
+		global.core = { effect : {} };
+	} else if (!core.effect) {
+		core.effect = {};
 	}
 
-
-	/**
-	 * Generic animation class with support for dropped frames both optional easing and duration.
-	 *
-	 * Optional duration is useful when the lifetime is defined by another condition than time
-	 * e.g. speed of an animating object, etc.
-	 *
-	 * Dropped frame logic allows to keep using the same updater logic independent from the actual
-	 * rendering. This eases a lot of cases where it might be pretty complex to figure out the state
-	 * on the pure time difference.
-	 */
-	zynga.Animate = {
+	core.effect.Animate = {
 
 		/**
 		 * Stops the given animation.
@@ -1926,7 +2070,7 @@ var Scroller;
 				if (!running[id] || (verifyCallback && !verifyCallback(id))) {
 
 					running[id] = null;
-					completedCallback(desiredFrames - (dropCounter / ((now - start) / millisecondsPerSecond)), id, false);
+					completedCallback && completedCallback(desiredFrames - (dropCounter / ((now - start) / millisecondsPerSecond)), id, false);
 					return;
 
 				}
@@ -1936,7 +2080,7 @@ var Scroller;
 				if (render) {
 
 					var droppedFrames = Math.round((now - lastFrame) / (millisecondsPerSecond / desiredFrames)) - 1;
-					for (var j = 0; j < droppedFrames; j++) {
+					for (var j = 0; j < Math.min(droppedFrames, 4); j++) {
 						step(true);
 						dropCounter++;
 					}
@@ -1955,7 +2099,7 @@ var Scroller;
 				var value = easingMethod ? easingMethod(percent) : percent;
 				if ((stepCallback(value, now, render) === false || percent === 1) && render) {
 					running[id] = null;
-					completedCallback(desiredFrames - (dropCounter / ((now - start) / millisecondsPerSecond)), id, percent === 1 || duration == null);
+					completedCallback && completedCallback(desiredFrames - (dropCounter / ((now - start) / millisecondsPerSecond)), id, percent === 1 || duration == null);
 				} else if (render) {
 					lastFrame = now;
 					requestAnimationFrame(step, root);
