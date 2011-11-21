@@ -354,6 +354,8 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       this.__clientHeight = elem.clientHeight;
       this.__contentWidth = contentElem.clientWidth;
       this.__contentHeight = contentElem.clientHeight;
+      this.setEnableScrollX(this.__contentWidth>this.__clientWidth);
+      this.setEnableScrollY(this.__contentHeight>this.__clientHeight);
     },
 
     /**
@@ -378,6 +380,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
      */
     reflow : function()
     {
+      /*
       //TODO find out what needs to be done besides updating the scroller
       var elem = this.getElement();
       var contentElem = this.__contentWidget.getElement();
