@@ -149,6 +149,8 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
       if (!control) {
         throw new Error("Unsupported control: " + id);
       }
+      
+      control.setAppearance(this.getAppearance() + "/" + id);
 
       // Establish connection to parent
       control.$$subcontrol = id;

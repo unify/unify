@@ -82,7 +82,6 @@ qx.Class.define("unify.ui.container.Overlay", {
       
       if (id == "arrow") {
         control = new unify.ui.other.Arrow();
-        control.setAppearance(this.getAppearance() + "/" + id);
         control.setWidth(18);
         control.setHeight(38);
         control.setDirection(this.__arrowDirection);
