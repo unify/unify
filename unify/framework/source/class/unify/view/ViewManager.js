@@ -17,7 +17,7 @@
  * @see unify.view.StaticView
  */
 qx.Class.define("unify.view.ViewManager", {
-  extend : qx.core.Object,
+  extend : unify.ui.container.Composite,
   implement : [unify.view.IViewManager],
   
   /*
@@ -28,10 +28,13 @@ qx.Class.define("unify.view.ViewManager", {
 
   /**
    * @param managerId {String} globally unique ID of this manager
+   * @param layout {qx.ui.layout.Abstract?null} Layout
    */
-  construct : function(managerId)
+  construct : function(managerId, layout)
   {
-    this.base(arguments);
+    this.base(arguments, layout || new qx.ui.layout.Canvas());
+
+    this.setUserData("viewManager", this); // TODO : Remove
 
     if (qx.core.Environment.get("qx.debug"))
     {
@@ -158,45 +161,6 @@ qx.Class.define("unify.view.ViewManager", {
     __initialized : false,
     
     /**
-     * Creates the widget element that is the base layer of the viewmanager.
-     *
-     * @return {unify.ui.core.Widget} Base widget of the viewmanager
-     */
-    _createWidgetElement : function() {
-      var e = this.__viewcontainer = new unify.ui.container.Composite(new qx.ui.layout.Canvas());
-      var elem = e.getElement();
-      elem.id = this.getId();
-      e.setUserData("viewManager", this);
-      
-      return e;
-    },
-    
-    /**
-     * Returns the already created of new created base widget of the viewmanager.
-     *
-     * @return {unify.ui.core.Widget} Base widget of the viewmanager
-     */
-    _getWidgetElement : function() {
-      var e = this.__widgetElement;
-      if (e) {
-        return e;
-      }
-      
-      e = this.__widgetElement = this._createWidgetElement();
-      
-      return e;
-    },
-    
-    /**
-     * Returns the already created of new created base widget of the viewmanager.
-     *
-     * @return {unify.ui.core.Widget} Base widget of the viewmanager
-     */
-    getWidgetElement : function() {
-      return this._getWidgetElement();
-    },
-    
-    /**
      * Returns the currently selected view instance
      *
      * @return {unify.view.StaticView} View instance which is currently selected
@@ -233,8 +197,8 @@ qx.Class.define("unify.view.ViewManager", {
         this.__resetHelper();
       }
 
-      qx.ui.core.queue.Visibility.add(this.__viewcontainer);
-      qx.ui.core.queue.Layout.add(this.__viewcontainer);
+      qx.ui.core.queue.Visibility.add(this);
+      qx.ui.core.queue.Layout.add(this);
       qx.ui.core.queue.Manager.flush();
       
       this.__initialized = true;
@@ -479,20 +443,6 @@ qx.Class.define("unify.view.ViewManager", {
       }
     },
     
-    /**
-     * Shows the view
-     */
-    show : function() {
-      this._getWidgetElement().show();
-    },
-    
-    /**
-     * Hides the view
-     */
-    hide : function() {
-      this._getWidgetElement().hide();
-    },
-    
     /*
     ---------------------------------------------------------------------------
       VIEW MANAGMENT
@@ -511,7 +461,7 @@ qx.Class.define("unify.view.ViewManager", {
      * @param viewClass {Class} Class of the view to register
      * @param isDefault {Boolean?false} Whether the added view functions as the default view for this manager.
      */
-    add : function(viewClass, isDefault)
+    register : function(viewClass, isDefault)
     {
       if (qx.core.Environment.get("qx.debug"))
       {
@@ -597,9 +547,8 @@ qx.Class.define("unify.view.ViewManager", {
       var oldViewElement = oldView;// && oldView.getElement();
 
       // Insert target layer into DOM
-      var elem=this._getWidgetElement();//use getElement is important, __element might not be initialized here
-      if (elem.indexOf(view) == -1 /*true || currentViewElement.parentNode != elem*/) {
-        elem.add(view, {
+      if (this.indexOf(view) == -1 /*true || currentViewElement.parentNode != elem*/) {
+        this.add(view, {
           left: 0,
           top: 0,
           bottom: 0,

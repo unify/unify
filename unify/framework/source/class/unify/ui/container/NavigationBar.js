@@ -83,6 +83,8 @@ qx.Class.define("unify.ui.container.NavigationBar", {
         item.setAllowGrowY(false);
         item.setAllowShrinkY(false);
       }
+      
+      return item;
     },
 
     /*
@@ -103,7 +105,6 @@ qx.Class.define("unify.ui.container.NavigationBar", {
       {
         parentElem = this.__parentButton = this._createItemElement({rel:"parent",kind:"button"});
         //parentElem.setStyle(unify.ui.styling.StaticTheme.navigationBarButtonParent);
-
         this._add(parentElem, {
           position: "left"
         });

@@ -161,8 +161,8 @@ qx.Class.define("unify.Application",
      *
      * @param viewManager {Object} Any object with a method "getElement" which returns a DOM element
      */
-    add : function(viewManager,conf) {
-      this.__root.add(viewManager.getWidgetElement(), conf||{
+    add : function(viewManager) {
+      this.__root.add(viewManager, {
         left: 0,
         top: 0,
         right: 0,

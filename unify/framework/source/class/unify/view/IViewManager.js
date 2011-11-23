@@ -14,13 +14,6 @@
 qx.Interface.define("unify.view.IViewManager", {
   members : {
     /**
-     * Returns the already created of new created base widget of the viewmanager.
-     *
-     * @return {unify.ui.core.Widget} Base widget of the viewmanager
-     */
-    getWidgetElement : function() {},
-    
-    /**
      * Returns the currently selected view instance
      *
      * @return {unify.view.StaticView} View instance which is currently selected
@@ -34,6 +27,14 @@ qx.Interface.define("unify.view.IViewManager", {
      * @return {unify.view.Abstract} Instance derived from the StaticView class.
      */
     getView : function(id) {},
+    
+    /**
+     * Registers a new view. All views must be registered before being used.
+     *
+     * @param viewClass {Class} Class of the view to register
+     * @param isDefault {Boolean?false} Whether the added view functions as the default view for this manager.
+     */
+    register : function(viewClass, isDefault) {},
     
     /**
      * Navigates to the given path

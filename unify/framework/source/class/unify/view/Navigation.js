@@ -63,7 +63,7 @@ qx.Class.define("unify.view.Navigation",
      *
      * @param viewManager {unify.view.ViewManager} View manager instance
      */
-    add : function(viewManager)
+    register : function(viewManager)
     {
       var managerId = viewManager.getId();
 

@@ -1259,8 +1259,7 @@ qx.Class.define("unify.ui.core.Widget", {
      * @param options {Map?null} Optional layout data for widget.
      * @return {void}
      */
-    _add : function(child, options)
-    {
+    _add : function(child, options) {
       // When moving in the same widget, remove widget first
       if (child.getLayoutParent() == this) {
         qx.lang.Array.remove(this.__widgetChildren, child);

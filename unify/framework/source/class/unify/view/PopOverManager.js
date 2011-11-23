@@ -118,7 +118,7 @@ qx.Class.define("unify.view.PopOverManager",
       var numVisible=visible.length;
       for (var i=0; i<numVisible; i++) {
         var viewManager=visible[i];
-        var elem=viewManager.getWidgetElement().getElement();
+        var elem=viewManager.getElement();
         if(viewManager.getDisplayMode()=='popover'){
           elem=elem.parentNode;//adjust wrapper for popovers
         }
@@ -209,7 +209,7 @@ qx.Class.define("unify.view.PopOverManager",
       if (qx.core.Environment.get("qx.debug")) {
         this.debug("Show: " + id);
       }
-      var elem = viewManager.getWidgetElement().getElement();
+      var elem = viewManager.getElement();
       var overlay;
       if(viewManager.getDisplayMode()=='popover'){
         if (popoverPosition) {
@@ -285,7 +285,7 @@ qx.Class.define("unify.view.PopOverManager",
           this.error("No style of overlay for view " + viewManager);
         }
         
-        overlay.add(viewManager.getWidgetElement());
+        overlay.add(viewManager);
       } else {
         if(!this.__root==elem.parentNode){
           this.__root.appendChild(elem);

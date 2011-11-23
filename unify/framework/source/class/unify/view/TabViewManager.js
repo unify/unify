@@ -12,7 +12,7 @@
  * EXPERIMENTAL
  */
 qx.Class.define("unify.view.TabViewManager", {
-  extend : qx.core.Object,
+  extend : unify.ui.container.Composite,
   include : [unify.view.MNavigatable],
   implement : [unify.view.IViewManager],
   
@@ -24,10 +24,11 @@ qx.Class.define("unify.view.TabViewManager", {
 
   /**
    * @param viewManager {unify.view.ViewManager} ViewManager to attach to
+   * @param layout {qx.ui.layout.Abstract?null} Layout
    */
-  construct : function(viewManager)
+  construct : function(viewManager, layout)
   {
-    this.base(arguments);
+    this.base(arguments, layout || new qx.ui.layout.VBox());
     
     if (qx.core.Environment.get("qx.debug"))
     {
@@ -45,6 +46,13 @@ qx.Class.define("unify.view.TabViewManager", {
     // Remember view manager and react on changes of its path
     this.__viewManager = viewManager;
     viewManager.addListener("changePath", this.__onViewManagerChangePath, this);
+    
+    this.add(viewManager, {flex: 1});
+    
+    var bar = this.__getBar();
+    bar.setHeight(49);
+    this.add(bar);
+    this._makeNavigatable(bar);
   },
 
 
@@ -94,61 +102,6 @@ qx.Class.define("unify.view.TabViewManager", {
     __viewmap : null,
     
     /**
-     * Creates the widget element that is the base layer of the viewmanager.
-     *
-     * @return {unify.ui.core.Widget} Base widget of the viewmanager
-     */
-    _createWidgetElement : function() {
-      var elem = new unify.ui.container.Composite(new qx.ui.layout.VBox());
-      
-      elem.add(this.__viewManager.getWidgetElement(), {
-        flex: 1
-      });
-      
-      var bar = this.__getBar();
-      bar.setHeight(49);
-      elem.add(bar);
-      
-      this._makeNavigatable(bar);
-      
-      return elem;
-    },
-    
-    /**
-     * Returns the already created of new created base widget of the viewmanager.
-     *
-     * @return {unify.ui.core.Widget} Base widget of the viewmanager
-     */
-    _getWidgetElement : function() {
-      if (this.__widgetElement) {
-        return this.__widgetElement;
-      }
-      
-      var e = this.__widgetElement = this._createWidgetElement();
-      
-      return e;
-    },
-    
-    /**
-     * Returns the already created of new created base widget of the viewmanager.
-     *
-     * @return {unify.ui.core.Widget} Base widget of the viewmanager
-     */
-    getWidgetElement : function() {
-      return this._getWidgetElement();
-    },
-    
-    /**
-     * Returns the tab view element
-     * 
-     * @return {Element} Root DOM element of tab view
-     */
-    getElement : function()
-    {
-      return this.getWidgetElement().getElement();
-    },
-    
-    /**
      * Returns the currently selected view instance
      *
      * @return {unify.view.StaticView} View instance which is currently selected
@@ -192,7 +145,7 @@ qx.Class.define("unify.view.TabViewManager", {
      *
      * @param viewClass {Class} Class of the view to register {@see unify.view.StaticView}
      */
-    add : function(viewClass)
+    register : function(viewClass)
     {
       var viewInstance = viewClass.getInstance();
 

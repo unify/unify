@@ -19,7 +19,7 @@
  */
 qx.Class.define("unify.view.SplitViewManager",
 {
-  extend : qx.core.Object,
+  extend : unify.ui.container.Composite,
 
   /*
   *****************************************************************************
@@ -33,7 +33,7 @@ qx.Class.define("unify.view.SplitViewManager",
    */
   construct : function(masterViewManager, detailViewManager)
   {
-    this.base(arguments);
+    this.base(arguments, new unify.ui.layout.SplitView());
 
     this.__masterViewManager = masterViewManager;
     this.__detailViewManager = detailViewManager;
@@ -44,6 +44,11 @@ qx.Class.define("unify.view.SplitViewManager",
     // Attach to rotate event to control view manager visibility
     // TODO
     qx.event.Registration.addListener(window, "orientationchange", this.__onRotate, this);
+    
+    this.setUserData("splitViewManager", this); // TODO : Remove
+    
+    this.add(masterViewManager);
+    this.add(detailViewManager);
   },
   
 
@@ -56,8 +61,6 @@ qx.Class.define("unify.view.SplitViewManager",
   
   members :
   {
-    __element : null,
-  
     /** {unify.view.ViewManager} The master view manager */
     __masterViewManager : null,
 
@@ -72,7 +75,7 @@ qx.Class.define("unify.view.SplitViewManager",
      */
     __onRotate : function(e)
     {
-      var elem = this.__element;
+      var elem = this.getElement();
       if (!elem) {
         return;
       }
@@ -110,50 +113,9 @@ qx.Class.define("unify.view.SplitViewManager",
      * Inlines the master view manager into the split view
      */
     inlineMasterView : function() {
-      var masterWidget = this.__masterViewManager.getWidgetElement();
-      this.__viewcontainer.addAt(masterWidget, 0);
+      var masterWidget = this.__masterViewManager;
+      this.addAt(masterWidget, 0);
       masterWidget.show();
-    },
-    
-    /**
-     * Creates the widget element that is the base layer of the viewmanager.
-     *
-     * @return {unify.ui.core.Widget} Base widget of the viewmanager
-     */
-    _createWidgetElement : function() {
-      var e = this.__viewcontainer = new unify.ui.container.Composite(new unify.ui.layout.SplitView());
-      
-      e.setUserData("splitViewManager", this);
-      
-      e.add(this.__masterViewManager.getWidgetElement());
-      e.add(this.__detailViewManager.getWidgetElement());
-      
-      return e;
-    },
-    
-    /**
-     * Returns the already created of new created base widget of the viewmanager.
-     *
-     * @return {unify.ui.core.Widget} Base widget of the viewmanager
-     */
-    _getWidgetElement : function() {
-      var e = this.__widgetElement;
-      if (e) {
-        return e;
-      }
-      
-      e = this.__widgetElement = this._createWidgetElement();
-      
-      return e;
-    },
-    
-    /**
-     * Returns the already created of new created base widget of the viewmanager.
-     *
-     * @return {unify.ui.core.Widget} Base widget of the viewmanager
-     */
-    getWidgetElement : function() {
-      return this._getWidgetElement();
     }
   }
 });
