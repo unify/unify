@@ -62,8 +62,9 @@ qx.Class.define("unify.Application",
       }
 
       var rootElement = this._getRootElement();
+      var rootLayout = this._getRootLayout();
       qx.bom.Event.addNativeListener(rootElement, "click", this.__onClick);
-      this.__root = new unify.view.Root(rootElement);
+      this.__root = new unify.view.Root(rootElement,rootLayout);
 
       // Configure document
       var Style = qx.bom.element.Style;
@@ -128,6 +129,16 @@ qx.Class.define("unify.Application",
     _getRootElement : function() {
       return document.body;
     },
+
+    /**
+     *  Returns the layout for the root view.
+     *  Defaults to canvas, override this function with your own implementation if you want a different layout
+     *
+     *  @return {qx.ui.layout.Abstract} layout
+     */
+    _getRootLayout : function(){
+      return new qx.ui.layout.Canvas();
+    },
     
     /**
      * Returns the root widget element
@@ -150,8 +161,8 @@ qx.Class.define("unify.Application",
      *
      * @param viewManager {Object} Any object with a method "getElement" which returns a DOM element
      */
-    add : function(viewManager) {
-      this.__root.add(viewManager.getWidgetElement(), {
+    add : function(viewManager,conf) {
+      this.__root.add(viewManager.getWidgetElement(), conf||{
         left: 0,
         top: 0,
         right: 0,
