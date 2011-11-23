@@ -45,8 +45,14 @@ qx.Class.define("unify.ui.container.Bar", {
       
       for (var i=0, l=items.length; i<l; i++)
       {
-        itemElem = this._createItemElement(items[i]);
-        this._add(itemElem);
+        var itemConf=items[i];
+        itemElem = this._createItemElement(itemConf);
+        if(itemConf.position){
+          this._add(itemElem,{position:itemConf.position});
+        } else {
+          this._add(itemElem);//TODO allow this? defaults to right
+        }
+
       }
     },
     
@@ -106,10 +112,19 @@ qx.Class.define("unify.ui.container.Bar", {
       }
 
       if (config.label) {
-        itemElem.setValue(config.label);
+        this._setItemLabel(itemElem,config.label);
       }
 
       return itemElem;
+    },
+
+    /**
+     * sets the item label text
+     * @param itemElem {Object} the item to set the text on
+     * @param text {String} the text to set
+     */
+    _setItemLabel : function(itemElem,text){
+        itemElem.setValue(text);
     }
   },
   

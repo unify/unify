@@ -73,6 +73,18 @@ qx.Class.define("unify.ui.container.NavigationBar", {
     __parentButton : null,
     __masterButton : null,
 
+    _createItemElement : function(config){
+      var item = this.base(arguments,config);
+      var rel=config.rel;
+
+      //TODO required? parent and master should be the same layout as all the others
+      if(rel=='parent'||rel=='master'){
+        item.setHeight(28);
+        item.setAllowGrowY(false);
+        item.setAllowShrinkY(false);
+      }
+    },
+
     /*
     ---------------------------------------------------------------------------
       EVENT LISTENER
@@ -91,9 +103,7 @@ qx.Class.define("unify.ui.container.NavigationBar", {
       {
         parentElem = this.__parentButton = this._createItemElement({rel:"parent",kind:"button"});
         //parentElem.setStyle(unify.ui.styling.StaticTheme.navigationBarButtonParent);
-        parentElem.setHeight(28);
-        parentElem.setAllowGrowY(false);
-        parentElem.setAllowShrinkY(false);
+
         this._add(parentElem, {
           position: "left"
         });
@@ -101,11 +111,11 @@ qx.Class.define("unify.ui.container.NavigationBar", {
       
       var parent = this.__view.getParent();
       if(parent){
-        parentElem.setValue(parent.getTitle("parent"));
+        this._setItemLabel(parentElem,parent.getTitle("parent"));
         parentElem.setVisibility("visible");
       } else {
         parentElem.setVisibility("excluded");
-        parentElem.setValue("");
+        this._setItemLabel(parentElem,"");
       }
     },
 
@@ -121,9 +131,6 @@ qx.Class.define("unify.ui.container.NavigationBar", {
       if (!masterElem)
       {
         masterElem = this.__masterButton =this._createItemElement({rel:"master",kind:"button"});
-        masterElem.setHeight(28);
-        masterElem.setAllowGrowY(false);
-        masterElem.setAllowShrinkY(false);
         //masterElem.setStyle(unify.ui.styling.StaticTheme.navigationBarButton);
         this._add(masterElem, {
           position: "left"
@@ -134,11 +141,11 @@ qx.Class.define("unify.ui.container.NavigationBar", {
       if(master && master.getDisplayMode()=='popover'){
         masterElem.setShow(master.getId());
         var currentMasterView=master.getCurrentView();
-        masterElem.setValue(currentMasterView?currentMasterView.getTitle("parent") : "missing title");
+        this._setItemLabel(masterElem,currentMasterView?currentMasterView.getTitle("parent") : "missing title");
         masterElem.setVisibility("visible");
       } else {
         masterElem.setVisibility("excluded");
-        masterElem.setValue("");
+        this._setItemLabel(masterElem,"");
       }
     },
 
@@ -158,7 +165,6 @@ qx.Class.define("unify.ui.container.NavigationBar", {
     view.removeListener("changeTitle", this.__onViewChangeTitle, this);
     view.removeListener("changeParent", this.__onViewChangeParent, this);
     view.removeListener("changeMaster", this.__onViewChangeMaster, this);
-    view = this.__view = null;
-    this.__navigationBar = null;
+    this.__view = this.__title= this.__parentButton = this.__masterButton = null;
   }
 });
