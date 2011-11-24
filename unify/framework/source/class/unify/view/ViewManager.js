@@ -510,22 +510,37 @@ qx.Class.define("unify.view.ViewManager", {
     },
 
     /**
-     *  changes a state on all layout children of a widget recursively.
+     *  changes a state on all  children of a widget recursively.
      *  
      * @param widget {unify.ui.core.Widget} the parent widget
      * @param state {String} the state to change
      * @param remove {Boolean}  true: the state is removed; false: the state is added
      */
     __changeChildState: function (widget,state,remove){
-      var children = widget.getLayoutChildren();
-      for (var i = 0,l=children.length;i<l;i++){
-        var child=children[i];
-        if(remove){
-          child.removeState(state);
-        } else {
-          child.addState(state);
+      var children = widget.getChildren();
+      if(children){
+        for (var i = 0,l=children.length;i<l;i++){
+          var child=children[i];
+          if(remove){
+            child.removeState(state);
+          } else {
+            child.addState(state);
+          }
+          this.__changeChildState(children[i],state,remove);
         }
-        this.__changeChildState(children[i],state,remove);
+      }
+    },
+
+    /**
+     * called when a new child widget was added.
+     *
+     * adds state popover to that child and all its children if this viewmanager is in displaymode popover
+     * @param child {unify.ui.core.Widget} child widget
+     */
+    _afterAddChild : function(child){
+      if(this.getDisplayMode()=='popover'){
+        child.addState('popover');
+        this.__changeChildState(child,'popover');
       }
     },
     
