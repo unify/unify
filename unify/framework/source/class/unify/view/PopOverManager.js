@@ -118,11 +118,11 @@ qx.Class.define("unify.view.PopOverManager",
       var numVisible=visible.length;
       for (var i=0; i<numVisible; i++) {
         var viewManager=visible[i];
-        var elem=viewManager.getElement();
+        var elem=viewManager;
         if(viewManager.getDisplayMode()=='popover'){
-          elem=elem.parentNode;//adjust wrapper for popovers
+          elem=this.__overlays[viewManager];//adjust overlay for popovers
         }
-        elem.style.zIndex = zIndexBase + 2*i;//leave a gap of 1 between layers so the blocker fits between 2 visible popovers
+        elem.setStyle({zIndex: zIndexBase + 2*i});//leave a gap of 1 between layers so the blocker fits between 2 visible popovers
       }
 
       if(numVisible>0){
@@ -327,13 +327,14 @@ qx.Class.define("unify.view.PopOverManager",
       var self=this;
       var hideCallback=function(){
         viewManager.hide();
-
         qx.lang.Array.remove(self.__visibleViewManagers, viewManager);
         self.__sortPopOvers();
       };
 
       if(mode=='popover'){
         var overlay=this.__overlays[viewManager];
+        //TODO reenable animations in overlay and skipAnimation here
+        /*
         if(skipAnimation){
           var animate=overlay.getEnableAnimation();
           overlay.setEnableAnimation(false);
@@ -344,8 +345,14 @@ qx.Class.define("unify.view.PopOverManager",
           overlay.addListenerOnce("hidden",hideCallback,this);
           overlay.hide();
         }
+        */
+        overlay.addListenerOnce("hidden",hideCallback,this);
+        overlay.hide();
       } else {
-        viewManager.hide(hideCallback);
+        //modal
+        hideCallback();
+        //TODO reenable hide callback functionality in viewmanager (or change to event listener here)
+        //viewManager.hide(hideCallback);
       }
     },
 
@@ -363,7 +370,7 @@ qx.Class.define("unify.view.PopOverManager",
       if(!overlay){
         overlay=new unify.ui.container.Overlay(arrowDirection, arrowAlignment);
         var elem=overlay.getElement();
-        elem.id='popover-overlay';
+        elem.id=viewManager.getId()+'-popover-overlay';
         /*var indicator=document.createElement("div");
         indicator.className="popover-indicator";
         elem.appendChild(indicator);*/
@@ -383,6 +390,6 @@ qx.Class.define("unify.view.PopOverManager",
     qx.event.Registration.removeListener(this.__pblocker,'tap',this.__onTapBlocker,this);
     this.__root.removeChild(this.__pblocker);
     this.__root.removeChild(this.__mblocker);
-    this.__root = this.__pblocker= this.__mblocker=this.__viewManager=this.__styleRegistry = null;
+    this.__root = this.__pblocker= this.__mblocker=this.__viewManagers=this.__overlays=this.__styleRegistry = null;
   } 
 });
