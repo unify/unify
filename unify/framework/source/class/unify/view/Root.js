@@ -23,8 +23,9 @@ qx.Class.define("unify.view.Root", {
   /**
    * @param rootElement {Element} DOM element the widget root is bound to
    */
-  construct : function(rootElement,layout) {
+  construct : function(rootElement,rootEventElement,layout) {
     this.__rootElement = rootElement;
+    this.__rootEventElement = rootEventElement;
     
     this.base(arguments);
     
@@ -45,6 +46,9 @@ qx.Class.define("unify.view.Root", {
   members : {
     // Root element the whole application is based upon
     __rootElement : null,
+    
+    // Root element that global events use
+    __rootEventElement : null,
     
     // overridden
     _createElement : function() {
@@ -78,6 +82,59 @@ qx.Class.define("unify.view.Root", {
     // overridden
     renderLayout : function(left, top, width, height, preventSize) {
       this.base(arguments, left, top, width, height, true);
+    },
+    
+    __rootEvents : ["touchstart", "touchmove", "touchend", "touchcancel"],
+    __EventRegistration : qx.event.Registration,
+    
+    // overridden
+    addListener : function(type, listener, self, capture) {
+      if (qx.lang.Array.contains(this.__rootEvents, type)) {
+        return this.__EventRegistration.addListener(this.__rootEventElement, type, listener, self, capture);
+      } else {
+        return this.base(arguments, type, listener, self, capture);
+      }
+    },
+    
+    // overridden
+    addListenerOnce : function(type, listener, self, capture) {
+      if (qx.lang.Array.contains(this.__rootEvents, type)) {
+        var callback = function(e) {
+          this.__EventRegistration.removeListener(this.__rootEventElement, type, callback, this, capture);
+          listener.call(self||this, e);
+        };
+  
+        return this.__EventRegistration.addListener(this.__rootEventElement, type, listener, self, capture);
+      } else {
+        return this.base(arguments, type, listener, self, capture);
+      }
+    },
+    
+    // overridden
+    removeListener : function(type, listener, self, capture) {
+      if (qx.lang.Array.contains(this.__rootEvents, type)) {
+        return this.__EventRegistration.removeListener(this.__rootEventElement, type, listener, self, capture);
+      } else {
+        return this.base(arguments, type, listener, self, capture);
+      }
+    },
+    
+    // overridden
+    removeListenerById : function(id) {
+      if (qx.lang.Array.contains(this.__rootEvents, type)) {
+        return this.__EventRegistration.removeListenerById(this.__rootEventElement, id);
+      } else {
+        return this.base(arguments, id);
+      }
+    },
+    
+    // overridden
+    hasListener : function(type, capture) {
+      if (qx.lang.Array.contains(this.__rootEvents, type)) {
+        return this.__EventRegistration.hasListener(this.__rootEventElement, type, capture);
+      } else {
+        return this.base(arguments, type, capture);
+      }
     }
   },
   

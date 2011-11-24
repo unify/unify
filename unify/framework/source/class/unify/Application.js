@@ -64,7 +64,7 @@ qx.Class.define("unify.Application",
       var rootElement = this._getRootElement();
       var rootLayout = this._getRootLayout();
       qx.bom.Event.addNativeListener(rootElement, "click", this.__onClick);
-      this.__root = new unify.view.Root(rootElement,rootLayout);
+      this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), rootLayout);
 
       // Configure document
       var Style = qx.bom.element.Style;
@@ -128,6 +128,16 @@ qx.Class.define("unify.Application",
      */
     _getRootElement : function() {
       return document.body;
+    },
+    
+    /**
+     * Returns the root event DOM element.
+     * To switch to another root event element overwrite this function with your own implementation.
+     *
+     * @return {Element} DOM element that is the event root for this application
+     */
+    _getRootEventElement : function() {
+      return document.documentElement;
     },
 
     /**

@@ -83,13 +83,20 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     this.__updateDimensions();
 
     var Registration = qx.event.Registration;
-    var root =document.documentElement;
-    Registration.addListener(client,'touchstart',this.__onTouchStart,this);
+    //var root =document.documentElement;
+    /*Registration.addListener(client,'touchstart',this.__onTouchStart,this);
     Registration.addListener(root,"touchmove",this.__onTouchMove,this);
     Registration.addListener(root,"touchend", this.__onTouchEnd,this);
-    Registration.addListener(root,"touchcancel", this.__onTouchEnd,this);
-    Registration.addListener(this,"resize",this.__updateDimensions,this);
-    Registration.addListener(contentWidget,'resize',this.__updateDimensions,this);
+    Registration.addListener(root,"touchcancel", this.__onTouchEnd,this);*/
+    var root = qx.core.Init.getApplication().getRoot();
+    this.addListener("touchstart", this.__onTouchStart,this);
+    root.addListener("touchmove", this.__onTouchMove,this);
+    root.addListener("touchend", this.__onTouchEnd,this);
+    root.addListener("touchcancel", this.__onTouchEnd,this);
+    
+    this.addListener("resize", this.__updateDimensions, this)
+    contentWidget.addListener("resize", this.__updateDimensions, this)
+    
     //TODO find out why transitionEnd is not received here
     Registration.addListener(content,"transitionEnd",this.__onTransitionEnd,this);
   },
