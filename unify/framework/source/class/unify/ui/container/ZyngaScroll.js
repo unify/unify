@@ -72,14 +72,18 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     });
 
     var self=this;
-    var render = function(left, top, zoom) {
+    var render = function(left, top, zoom, event) {
       contentWidget.setStyle({transform:'translate3d(' + (-left) + 'px,' + (-top) + 'px,0) scale(' + zoom + ')'});
       self.__scrollLeft=left;
       self.__scrollTop=top;
       self.__renderIndicators();
+      
+      if (event == "stop" || event == "stop_deceleration") {
+        self.__hideIndicators();
+      }
     };
 
-    this.__scroller=new Scroller(render,{zooming:false});//TODO implement bouncing,paging and scrollX/Y limit support
+    this.__scroller=new Scroller(render, {zooming:false});//TODO implement bouncing,paging and scrollX/Y limit support
     this.__updateDimensions();
 
     var Registration = qx.event.Registration;
@@ -547,9 +551,6 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
      */
     __onTouchEnd : function(e){
       this.__scroller.doTouchEnd(+e.getNativeEvent().timeStamp);
-      //TODO remove hide indicator code when listening for transitionEnd works
-      this.__verticalScrollIndicator.setVisible(false);
-      this.__horizontalScrollIndicator.setVisible(false);
     },
     
     /**
@@ -560,6 +561,11 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     __onTransitionEnd : function(e){
       this.__horizontalScrollIndicator.setVisible(false);
       this.__verticalScrollIndicator.setVisible(false);
+    },
+    
+    __hideIndicators : function() {
+      this.__verticalScrollIndicator.setVisible(false);
+      this.__horizontalScrollIndicator.setVisible(false);
     }
   }
 });
@@ -1519,6 +1525,9 @@ var Scroller;
 				} else {
 
 					self.scrollTo(self.__scrollLeft, self.__scrollTop, true, self.__zoomLevel);
+                                        if (self.__callback) {
+                                                self.__callback(self.__scrollLeft, self.__scrollTop, self.__zoomLevel, "stop");
+                                        }
 
 					// Directly signalize deactivation (nothing todo on refresh?)
 					if (self.__refreshActive) {
@@ -1704,6 +1713,9 @@ var Scroller;
 
 				// Animate to grid when snapping is active, otherwise just fix out-of-boundary positions
 				self.scrollTo(self.__scrollLeft, self.__scrollTop, self.options.snapping);
+                                if (self.__callback) {
+                                        self.__callback(self.__scrollLeft, self.__scrollTop, self.__zoomLevel, "stop_deceleration");
+                                }
 			};
 
 			// Start animation and switch on flag
