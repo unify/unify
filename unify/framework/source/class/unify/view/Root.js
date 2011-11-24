@@ -121,11 +121,7 @@ qx.Class.define("unify.view.Root", {
     
     // overridden
     removeListenerById : function(id) {
-      if (qx.lang.Array.contains(this.__rootEvents, type)) {
-        return this.__EventRegistration.removeListenerById(this.__rootEventElement, id);
-      } else {
-        return this.base(arguments, id);
-      }
+      return this.__EventRegistration.removeListenerById(this.__rootEventElement, id) || this.base(arguments, id);
     },
     
     // overridden
