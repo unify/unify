@@ -83,11 +83,6 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     this.__updateDimensions();
 
     var Registration = qx.event.Registration;
-    //var root =document.documentElement;
-    /*Registration.addListener(client,'touchstart',this.__onTouchStart,this);
-    Registration.addListener(root,"touchmove",this.__onTouchMove,this);
-    Registration.addListener(root,"touchend", this.__onTouchEnd,this);
-    Registration.addListener(root,"touchcancel", this.__onTouchEnd,this);*/
     var root = qx.core.Init.getApplication().getRoot();
     this.addListener("touchstart", this.__onTouchStart,this);
     root.addListener("touchmove", this.__onTouchMove,this);
