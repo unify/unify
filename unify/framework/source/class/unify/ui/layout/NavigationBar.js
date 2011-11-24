@@ -41,7 +41,7 @@ qx.Class.define("unify.ui.layout.NavigationBar", {
         e = left[i];
         hint = e.getSizeHint();
 
-        top = availHeight / 2 - hint.height / 2;
+        top = Math.floor(availHeight / 2 - hint.height / 2);
         e.renderLayout(leftx, top, hint.width, hint.height);
         leftx += hint.width + SPACER;
       }
@@ -51,7 +51,7 @@ qx.Class.define("unify.ui.layout.NavigationBar", {
         hint = e.getSizeHint();
         
         rightx -= hint.width + SPACER;
-        top = availHeight / 2 - hint.height / 2;
+        top = Math.floor(availHeight / 2 - hint.height / 2);
         e.renderLayout(rightx, top, hint.width, hint.height);
       }
       
