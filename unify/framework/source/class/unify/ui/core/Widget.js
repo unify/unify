@@ -1189,6 +1189,14 @@ qx.Class.define("unify.ui.core.Widget", {
     },
     
     __widgetChildren : null,
+
+    /**
+     * Returns children of widget
+     * @return {unify.ui.core.Widget[]} Child widgets
+     */
+    getChildren : function(){
+      return this._getChildren();
+    },
     
     /**
      * Returns children of widget

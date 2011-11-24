@@ -142,7 +142,7 @@ qx.Class.define("unify.view.ViewManager", {
     displayMode : {
       check : "String",
       init: "default",
-      //apply: "_applyDisplayMode",
+      apply: "_applyDisplayMode",
       event: "changeDisplayMode"
     }
   },
@@ -482,7 +482,7 @@ qx.Class.define("unify.view.ViewManager", {
 
       this.__views[id] = viewClass;
     },
-    
+
     /**
      * Returns the view instance stored behind the given ID.
      *
@@ -491,6 +491,57 @@ qx.Class.define("unify.view.ViewManager", {
      */
     getView : function(id) {
       return id && this.__views[id] || null;
+    },
+
+    /**
+     * called when property displayMode changes its value.
+     * adds/removes state 'popover' on this widget and all its children recursively
+     * @param value {String} new displayMode
+     * @param old {String} old displayMode
+     */
+    _applyDisplayMode : function(value,old){
+      if(value=="popover"){
+        this.addState('popover');
+        this.__changeChildState(this,"popover");
+      } else if (old=="popover"){
+        this.__changeChildState(this,"popover",true);
+        this.removeState('popover');
+      }
+    },
+
+    /**
+     *  changes a state on all  children of a widget recursively.
+     *  
+     * @param widget {unify.ui.core.Widget} the parent widget
+     * @param state {String} the state to change
+     * @param remove {Boolean}  true: the state is removed; false: the state is added
+     */
+    __changeChildState: function (widget,state,remove){
+      var children = widget.getChildren();
+      if(children){
+        for (var i = 0,l=children.length;i<l;i++){
+          var child=children[i];
+          if(remove){
+            child.removeState(state);
+          } else {
+            child.addState(state);
+          }
+          this.__changeChildState(children[i],state,remove);
+        }
+      }
+    },
+
+    /**
+     * called when a new child widget was added.
+     *
+     * adds state popover to that child and all its children if this viewmanager is in displaymode popover
+     * @param child {unify.ui.core.Widget} child widget
+     */
+    _afterAddChild : function(child){
+      if(this.getDisplayMode()=='popover'){
+        child.addState('popover');
+        this.__changeChildState(child,'popover');
+      }
     },
     
     /**
