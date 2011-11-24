@@ -597,7 +597,6 @@ qx.Class.define("unify.ui.core.Widget", {
           throw new Error("No layout in " + this);
         }
       }
-      
       // Fire events
       if (changes.position && this.hasListener("move")) {
         this.fireEvent("move");
@@ -1502,6 +1501,7 @@ qx.Class.define("unify.ui.core.Widget", {
       
       var element = child.getElement();
       this.getContentElement().appendChild(element);
+      this._getLayout().invalidateLayoutCache();
 
       // Remember parent
       child.setLayoutParent(this);
@@ -1542,6 +1542,7 @@ qx.Class.define("unify.ui.core.Widget", {
 
       var element = child.getElement();
       this.getContentElement().removeChild(element);
+      this._getLayout().invalidateLayoutCache();
 
       // Clear parent connection
       child.setLayoutParent(null);
