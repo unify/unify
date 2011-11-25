@@ -24,7 +24,7 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
     },
     
     /**
-     * Opens hyperreference (=URL) in a new window
+     * Opens hyperreference (=URL) in the same window
      */
     hyperreference: {
       check: "String",
@@ -116,7 +116,7 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
         // Detect absolute links
         var href = this.getHyperreference(); //elem.getAttribute("href");
         if (href != null && href != "" && href.charAt(0) != "#") {
-          window.open(href);
+          window.open(href, '_self', false);
         } else if (!this.__navigates) {
           // Lazily navigate (omits navigation during activity)
           this.__navigates = true;
