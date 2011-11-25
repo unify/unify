@@ -1,9 +1,9 @@
 [submodule "qooxdoo"]
 	path = qooxdoo
-	url = https://github.com/unify/qooxdoo.git
+	url = http://github.com/unify/qooxdoo.git
 [submodule "support/callback-android"]
 	path = support/callback-android
-	url = https://github.com/unify/callback-android.git
+	url = http://github.com/unify/callback-android.git
 [submodule "support/callback-ios"]
 	path = support/callback-ios
-	url = https://github.com/unify/callback-ios.git
+	url = http://github.com/unify/callback-ios.git
