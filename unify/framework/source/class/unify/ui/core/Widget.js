@@ -1506,7 +1506,6 @@ qx.Class.define("unify.ui.core.Widget", {
       if (parent && parent != this) {
         parent._remove(child);
       }
-      
       var element = child.getElement();
       this.getContentElement().appendChild(element);
       this._getLayout().invalidateLayoutCache();

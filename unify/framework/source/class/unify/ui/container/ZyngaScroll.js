@@ -23,23 +23,22 @@
 qx.Class.define("unify.ui.container.ZyngaScroll", {
   extend : unify.ui.core.Widget,
 
-  include : [unify.ui.core.MRemoteChildrenHandling],
+  include : [unify.ui.core.MRemoteChildrenHandling, qx.ui.core.MRemoteLayoutHandling],
 
   /**
    * @param layout {qx.ui.layout.Abstract} Layout of container element
    */
   construct : function(layout) {
-    this.__childLayout = layout || new qx.ui.layout.Basic(); // TODO: Switch over to ChildrenHandlingLayout
     this.base(arguments);
-    this._setLayout(new qx.ui.layout.Canvas());
 
-    var contentWidget = this.__contentWidget; // = new unify.ui.container.Composite(childLayout);
+    // Child container layout  
+    this.setLayout(layout ||new qx.ui.layout.Basic());
+    // Scroller layout
+    this._setLayout(new unify.ui.layout.ScrollLayout());
 
+    var contentWidget = this.getChildrenContainer();
     this._add(contentWidget, {
-      left :0,
-      top: 0,
-      right: 0,
-      bottom: 0
+      type: "content"
     });
 
     var scrollIndicatorX = this.__horizontalScrollIndicator = new unify.ui.container.scroll.Indicator("horizontal");
@@ -49,15 +48,13 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
 
     scrollIndicatorX.setHeight(3);
     this._add(scrollIndicatorX, {
-      left: 0,
-      right: 0,
-      bottom: distance
+      type: "indicatorX",
+      distance: distance
     });
     scrollIndicatorY.setWidth(3);
     this._add(scrollIndicatorY, {
-      top: 0,
-      right: distance,
-      bottom: 0
+      type: "indicatorY",
+      distance: distance
     });
 
     this._setStyle({
@@ -65,25 +62,13 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     });
 
     var client=this.getElement();
-    var content=this.__contentWidget.getElement();
-    var contentWidget=this.__contentWidget;
+    var content=contentWidget.getElement();
+    var contentWidget=contentWidget;
     contentWidget.setStyle({
       transitionDuration: "0s"
     });
 
-    var self=this;
-    var render = function(left, top, zoom, event) {
-      contentWidget.setStyle({transform:'translate3d(' + (-left) + 'px,' + (-top) + 'px,0) scale(' + zoom + ')'});
-      self.__scrollLeft=left;
-      self.__scrollTop=top;
-      self.__renderIndicators();
-      
-      if (event == "stop" || event == "stop_deceleration") {
-        self.__hideIndicators();
-      }
-    };
-
-    this.__scroller=new Scroller(render, {zooming:false});//TODO implement bouncing,paging and scrollX/Y limit support
+    this.__scroller = this.__getScroller();
     this.__updateDimensions();
 
     var Registration = qx.event.Registration;
@@ -114,7 +99,8 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     bounces :
     {
       init : true,
-      check : "Boolean"
+      check : "Boolean",
+      apply : "_applyBounces"
     },
 
     /**
@@ -124,13 +110,14 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     paging :
     {
       init : false,
-      check : "Boolean"
+      check : "Boolean",
+      apply : "_applyPaging"
     },
 
     /** Whether horizontal scrolling should be enabled */
     enableScrollX :
     {
-      init : true,
+      init : false,
       check : "Boolean",
       apply : "_applyEnableScrollX"
     },
@@ -241,17 +228,17 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
      * @return {unify.ui.core.Widget} Content widget
      */
     getChildrenContainer : function() {
-      return this.__contentWidget;
+      var contentWidget = this.__contentWidget;
+      
+      if (!contentWidget) {
+        contentWidget = this.__contentWidget = new unify.ui.container.Composite();
+      }
+      
+      return contentWidget;
     },
 
     _createElement : function() {
-      // Create root element
-      var elem = document.createElement("div");
-
-      var contentWidget = this.__contentWidget = new unify.ui.container.Composite();
-      contentWidget.setLayout(this.__childLayout);
-
-      return elem;
+      return document.createElement("div");
     },
 
     _computeSizeHint : function() {
@@ -264,6 +251,33 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
         minHeight : this.getMinHeight() || 10,
         maxHeight : this.getMaxHeight() || Infinity
       };
+    },
+
+    __getScroller : function() {
+      var self=this;
+      var contentWidget = this.getChildrenContainer();
+      
+      var render = function(left, top, zoom, event) {
+        contentWidget.setStyle({transform:'translate3d(' + (-left) + 'px,' + (-top) + 'px,0) scale(' + zoom + ')'});
+        self.__scrollLeft=left;
+        self.__scrollTop=top;
+        self.__renderIndicators();
+        
+        if (event == "stop" || event == "stop_deceleration") {
+          self.__hideIndicators();
+        }
+      };
+      
+      var options = {
+        scrollingX : this.getEnableScrollX(),
+        scrollingY : this.getEnableScrollY(),
+        paging : this.getPaging(),
+        bouncing : this.getBounces()
+      };
+      
+      console.log("X", JSON.stringify(options));
+      
+      return new Scroller(render, options);
     },
 
     /*
@@ -281,10 +295,26 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     _applyEnableScrollX : function(value,old){
       this.__scroller.options.scrollingX=!!value;
       this._update2AxisScroll();
+      
+      delete this.__scroller;
+      this.__scroller = this.__getScroller();
     },
     _applyEnableScrollY : function(value,old){
       this.__scroller.options.scrollingY=!!value;
       this._update2AxisScroll();
+      
+      delete this.__scroller;
+      this.__scroller = this.__getScroller();
+    },
+    
+    _applyBounces : function() {
+      delete this.__scroller;
+      this.__scroller = this.__getScroller();
+    },
+    
+    _applyPaging : function() {
+      delete this.__scroller;
+      this.__scroller = this.__getScroller();
     },
 
     /*
@@ -350,18 +380,22 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
      * Updates dimensions of scroller to match content container
      */
     __updateDimensions : function(){
-      var elem=this.getElement();
-      var contentElem=this.__contentWidget.getElement();
-      var rect = elem.getBoundingClientRect();
-      this.__scroller.setPosition(rect.left + elem.clientLeft, rect.top + elem.clientTop);
-      this.__scroller.setDimensions(elem.clientWidth,elem.clientHeight,contentElem.clientWidth,contentElem.clientHeight);
-
-      this.__clientWidth = elem.clientWidth;
-      this.__clientHeight = elem.clientHeight;
-      this.__contentWidth = contentElem.clientWidth;
-      this.__contentHeight = contentElem.clientHeight;
-      this.setEnableScrollX(this.__contentWidth>this.__clientWidth);
-      this.setEnableScrollY(this.__contentHeight>this.__clientHeight);
+      var scrollerDimension = this.getBounds();
+      var contentDimension = this.getChildrenContainer().getBounds();
+      
+      if (scrollerDimension && contentDimension) {
+        var scrollerWidth = scrollerDimension.width;
+        var scrollerHeight = scrollerDimension.height;
+        var contentWidth = contentDimension.width;
+        var contentHeight = contentDimension.height;
+        
+        this.__scroller.setDimensions(scrollerWidth, scrollerHeight, contentWidth, contentHeight);
+        
+        this.__clientWidth = scrollerWidth;
+        this.__clientHeight = scrollerHeight;
+        this.__contentWidth = contentWidth;
+        this.__contentHeight = contentHeight;
+      }
     },
 
     /**
@@ -384,28 +418,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
      * Snaps into bounds after recalculating client width and height
      * Usable for resize of window while paging
      */
-    reflow : function()
-    {
-      /*
-      //TODO find out what needs to be done besides updating the scroller
-      var elem = this.getElement();
-      var contentElem = this.__contentWidget.getElement();
-      this.__clientWidth = elem.clientWidth;
-      this.__clientHeight = elem.clientHeight;
-      this.__contentWidth = Math.max(this.__clientWidth, contentElem.offsetWidth); // TODO  remove getElement()
-      this.__contentHeight = Math.max(this.__clientHeight, contentElem.offsetHeight); // TODO  remove getElement()
-
-      /*
-       if(this.__isDecelerating){
-       this.__isDecelerating=false;//stop it
-       // Directly hide scroll indicators
-       this.__horizontalScrollIndicator.setVisible(false);
-       this.__verticalScrollIndicator.setVisible(false);
-       }
-
-       this.__snapIntoBounds(false);
-       */
-
+    reflow : function() {
       this.__updateDimensions();
     },
 
