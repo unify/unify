@@ -165,6 +165,9 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     /** Event fired if in scroll */
     scroll: "qx.event.type.Event",
     
+    /** Event fired if scroll is ended */
+    scrollend: "qx.event.type.Event",
+    
     /** Event fired if container snaped */
     snap: "qx.event.type.Event"
   },
@@ -254,17 +257,23 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     },
 
     __getScroller : function() {
-      var self=this;
       var contentWidget = this.getChildrenContainer();
       
+      var self = this;
       var render = function(left, top, zoom, event) {
         contentWidget.setStyle({transform:'translate3d(' + (-left) + 'px,' + (-top) + 'px,0) scale(' + zoom + ')'});
         self.__scrollLeft=left;
         self.__scrollTop=top;
         self.__renderIndicators();
         
+        if (self.hasListener("scroll")) {
+          self.fireEvent("scroll");
+        }
         if (event == "stop" || event == "stop_deceleration") {
           self.__hideIndicators();
+          if (self.hasListener("scrollend")) {
+            self.fireEvent("scrollend");
+          }
         }
       };
       
