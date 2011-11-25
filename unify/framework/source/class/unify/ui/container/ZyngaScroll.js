@@ -275,8 +275,6 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
         bouncing : this.getBounces()
       };
       
-      console.log("X", JSON.stringify(options));
-      
       return new Scroller(render, options);
     },
 
