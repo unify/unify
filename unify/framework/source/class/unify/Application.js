@@ -70,14 +70,12 @@ qx.Class.define("unify.Application",
       var Style = qx.bom.element.Style;
       // <body>
       Style.setStyles(rootElement, {
-        WebkitUserSelect : "none",
-        WebkitTextSizeAdjust : "none",
-        WebkitPerspective : "800",
-        WebkitTransformStyle : "preserve-3d",
-        WebkitTouchCallout : "none",
+        userSelect : "none",
+        //textSizeAdjust : "none", // Check for iOS compatibility
+        perspective : "800",
+        transformStyle : "preserve-3d",
+        touchCallout : "none",
         position : "absolute",
-        /*width : "100%",
-        height : "100%",*/
         left: 0,
         top: 0,
         right: 0,
