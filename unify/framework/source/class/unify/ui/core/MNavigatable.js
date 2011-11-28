@@ -124,7 +124,23 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
         }
       }
     },
-    
+
+    /**
+     * event handler for touchhold.
+     * adds state 'pressed' to this widget
+     */
+    _onTouchHold : function(){
+      this.addState("pressed");
+    },
+
+    /**
+     * event handler for touchrelease.
+     * removese state 'pressed' from this widget
+     */
+    _onTouchRelease : function(){
+      this.removeState("pressed");
+    },
+
     /**
      * Executes navigation process on view manager
      *

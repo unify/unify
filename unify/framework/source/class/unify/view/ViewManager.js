@@ -412,36 +412,6 @@ qx.Class.define("unify.view.ViewManager", {
     ---------------------------------------------------------------------------
     */
 
-    /**
-     * Executed on every touch hold event
-     *
-     * @param e {qx.event.type.Touch} Touch event
-     */
-    _onTouchHold : function(e)
-    {
-      return; //TODO
-      
-      var elem = unify.bom.Hierarchy.closest(e.getTarget(), this.__followable);
-      if (elem) {
-        qx.bom.element.Class.add(elem, "pressed");
-      }
-    },
-
-
-    /**
-     * Executed on every touch release event
-     *
-     * @param e {qx.event.type.Touch} Touch event
-     */
-    _onTouchRelease : function(e)
-    {
-      return; //TODO
-      
-      var elem = unify.bom.Hierarchy.closest(e.getTarget(), this.__followable);
-      if (elem) {
-        qx.bom.element.Class.remove(elem, "pressed");
-      }
-    },
     
     /*
     ---------------------------------------------------------------------------

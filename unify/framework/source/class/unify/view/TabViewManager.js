@@ -13,7 +13,6 @@
  */
 qx.Class.define("unify.view.TabViewManager", {
   extend : unify.ui.container.Composite,
-  include : [unify.view.MNavigatable],
   implement : [unify.view.IViewManager],
   
   /*
@@ -229,16 +228,6 @@ qx.Class.define("unify.view.TabViewManager", {
       var widget = this._getTapFollowElement(e);
       this.__onTap(widget);
     },
-    
-    /**
-     * Placeholder event handler, empty
-     */
-    _onTouchHold : function() {},
-    
-    /**
-     * Placeholder event handler, empty
-     */
-    _onTouchRelease : function() {},
     
     /**
      * Reacts on tabbing on the tabbar buttons.
