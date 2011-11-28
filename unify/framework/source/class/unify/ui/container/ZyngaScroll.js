@@ -40,18 +40,18 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     this._add(contentWidget, {
       type: "content"
     });
+    var Indicator=unify.ui.container.scroll.Indicator;
+    var scrollIndicatorX = this.__horizontalScrollIndicator = new Indicator("horizontal");
+    var scrollIndicatorY = this.__verticalScrollIndicator = new Indicator("vertical");
 
-    var scrollIndicatorX = this.__horizontalScrollIndicator = new unify.ui.container.scroll.Indicator("horizontal");
-    var scrollIndicatorY = this.__verticalScrollIndicator = new unify.ui.container.scroll.Indicator("vertical");
-
-    var distance = unify.ui.container.scroll.Indicator.DISTANCE;
-
-    scrollIndicatorX.setHeight(3);
+    var distance = Indicator.DISTANCE;
+    var thickness=Indicator.THICKNESS;
+    scrollIndicatorX.setHeight(thickness);
     this._add(scrollIndicatorX, {
       type: "indicatorX",
       distance: distance
     });
-    scrollIndicatorY.setWidth(3);
+    scrollIndicatorY.setWidth(thickness);
     this._add(scrollIndicatorY, {
       type: "indicatorY",
       distance: distance
@@ -80,9 +80,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     
     this.addListener("resize", this.__updateDimensions, this)
     contentWidget.addListener("resize", this.__updateDimensions, this)
-    
-    //TODO find out why transitionEnd is not received here
-    Registration.addListener(content,"transitionEnd",this.__onTransitionEnd,this);
+
   },
 
   /*
@@ -544,6 +542,14 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
 
       this.__scroller.doTouchStart(touches, +ne.timeStamp);
       e.preventDefault();
+      this.addListenerOnce("touchmove",this.__showIndicators,this);
+    },
+
+    /**
+     * shows scroll indicators depending on configuration
+     * axis must be scroll enabled and the indicator must be allowed to show
+     */
+    __showIndicators: function(){
       if (this.__enableScrollX && this.__showIndicatorX) {
         this.__horizontalScrollIndicator.setVisible(true);
       }
@@ -551,7 +557,6 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       if (this.__enableScrollY && this.__showIndicatorY) {
         this.__verticalScrollIndicator.setVisible(true);
       }
-
     },
     
     /**
