@@ -24,12 +24,24 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
     },
     
     /**
-     * Opens hyperreference (=URL) in a new window
+     * Opens hyperreference (=URL) in a new window or in the same tab depending on hyperreferenceWindowPolicy
      */
     hyperreference: {
       check: "String",
       init: null,
       nullable: true
+    },
+    
+    /**
+     * Rule for opening hyperreferences to foreign urls.
+     * You can choose between
+     * * same : Same tab
+     * * window : New tab or window
+     */
+    hyperreferenceWindowPolicy : {
+      check: ["same", "window"],
+      init: "window",
+      nullable: false
     },
     
     /**
@@ -116,7 +128,11 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
         // Detect absolute links
         var href = this.getHyperreference(); //elem.getAttribute("href");
         if (href != null && href != "" && href.charAt(0) != "#") {
-          window.open(href);
+          if (this.getHyperreferenceWindowPolicy() == "window") {
+            window.open(href);
+          } else {
+            window.location = href;
+          }
         } else if (!this.__navigates) {
           // Lazily navigate (omits navigation during activity)
           this.__navigates = true;
