@@ -1312,7 +1312,7 @@ qx.Class.define("unify.ui.core.Widget", {
         this.__widgetChildren.push(child);
       }
 
-      this.__addHelper(child, options);
+      this.__addHelper(child, options, index);
     },
 
 
@@ -1339,6 +1339,8 @@ qx.Class.define("unify.ui.core.Widget", {
         this.__widgetChildren = [];
       }
 
+      var addAtIndex = this.__widgetChildren.indexOf(before);
+
       // When moving in the same widget, remove widget first
       if (child.getLayoutParent() == this) {
         qx.lang.Array.remove(this.__widgetChildren, child);
@@ -1346,7 +1348,7 @@ qx.Class.define("unify.ui.core.Widget", {
 
       qx.lang.Array.insertBefore(this.__widgetChildren, child, before);
 
-      this.__addHelper(child, options);
+      this.__addHelper(child, options, addAtIndex);
     },
 
 
@@ -1374,6 +1376,8 @@ qx.Class.define("unify.ui.core.Widget", {
         this.__widgetChildren = [];
       }
 
+      var addAtIndex = this.__widgetChildren.indexOf(after)+1;
+
       // When moving in the same widget, remove widget first
       if (child.getLayoutParent() == this) {
         qx.lang.Array.remove(this.__widgetChildren, child);
@@ -1381,7 +1385,7 @@ qx.Class.define("unify.ui.core.Widget", {
 
       qx.lang.Array.insertAfter(this.__widgetChildren, child, after);
 
-      this.__addHelper(child, options);
+      this.__addHelper(child, options, addAtIndex);
     },
 
 
@@ -1487,8 +1491,9 @@ qx.Class.define("unify.ui.core.Widget", {
      *
      * @param child {LayoutItem} The child to add.
      * @param options {Map|null} Optional layout data for the widget.
+     * @param index {Number|null} Optional index where to add the child
      */
-    __addHelper : function(child, options)
+    __addHelper : function(child, options,index)
     {
       if (qx.core.Environment.get("qx.debug"))
       {
@@ -1507,7 +1512,14 @@ qx.Class.define("unify.ui.core.Widget", {
         parent._remove(child);
       }
       var element = child.getElement();
-      this.getContentElement().appendChild(element);
+      var contentElem=this.getContentElement();
+      var childNodes=contentElem.childNodes;
+      if(index!=null && index >=0 && index < childNodes.length){
+        contentElem.insertBefore(element,childNodes[index]);
+      } else {
+        contentElem.appendChild(element);
+      }
+      
       this._getLayout().invalidateLayoutCache();
 
       // Remember parent
