@@ -76,10 +76,10 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
      * Applies event listeners on widget to support navigation
      */
     _applyMNavigatable : function() {
-      this.addListener("tap", this._onTap, this);
-      this.addListener("touchhold", this._onTouchHold, this);
-      this.addListener("touchrelease", this._onTouchRelease, this);
-      this.addListener("touchleave", this._onTouchRelease, this);
+      this.addListener("tap", this.__onMNavigatableTap, this);
+      this.addListener("touchhold", this.__onMNavigatableTouchHold, this);
+      this.addListener("touchrelease", this.__onMNavigatableTouchRelease, this);
+      this.addListener("touchleave", this.__onMNavigatableTouchRelease, this);
     },
     
     /**
@@ -87,7 +87,7 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
      *
      * @param e {qx.event.type.Tap} Tap event
      */
-    _onTap : function(e) {
+    __onMNavigatableTap : function(e) {
       var viewManagerWidget = this.getLayoutParent();
       var viewManager = null;
       while (!viewManager && viewManagerWidget) {
@@ -121,7 +121,7 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
      * event handler for touchhold.
      * adds state 'pressed' to this widget
      */
-    _onTouchHold : function(){
+    __onMNavigatableTouchHold : function(){
       this.addState("pressed");
     },
 
@@ -129,7 +129,7 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
      * event handler for touchrelease.
      * removese state 'pressed' from this widget
      */
-    _onTouchRelease : function(){
+    __onMNavigatableTouchRelease : function(){
       this.removeState("pressed");
     },
 
