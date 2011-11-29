@@ -76,18 +76,10 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
      * Applies event listeners on widget to support navigation
      */
     _applyMNavigatable : function() {
-      if (this._onTap) {
-        this.addListener("tap", this._onTap, this);
-      } else {
-        this.addListener("tap", this._tapHelper, this);
-      }
-      if (this._onTouchHold) {
-        this.addListener("touchhold", this._onTouchHold, this);
-      }
-      if (this._onTouchRelease) {
-        this.addListener("touchrelease", this._onTouchRelease, this);
-        this.addListener("touchleave", this._onTouchRelease, this);
-      }
+      this.addListener("tap", this._onTap, this);
+      this.addListener("touchhold", this._onTouchHold, this);
+      this.addListener("touchrelease", this._onTouchRelease, this);
+      this.addListener("touchleave", this._onTouchRelease, this);
     },
     
     /**
@@ -95,7 +87,7 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
      *
      * @param e {qx.event.type.Tap} Tap event
      */
-    _tapHelper : function(e) {
+    _onTap : function(e) {
       var viewManagerWidget = this.getLayoutParent();
       var viewManager = null;
       while (!viewManager && viewManagerWidget) {
