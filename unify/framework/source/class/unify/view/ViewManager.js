@@ -388,24 +388,6 @@ qx.Class.define("unify.view.ViewManager", {
     /** {Boolean} Whether the app is following a link */
     __navigates : false,
 
-    /** {String} CSS selector with elements which are followable by the navigation manager */
-    __followable : "a[href],[rel],[goto],[exec],[show],[hide]",
-
-
-    /**
-     * Modifies click handling to include the context of the current view
-     *
-     * @param e {qx.event.type.Touch} Touch event
-     */
-    _onTap : function(e)
-    {
-      // Redirct to tapHelper from MNavigatable
-      this._tapHelper(e);
-    },
-
-
-
-
     /*
     ---------------------------------------------------------------------------
       PRESSED STYLE EVENT HANDLERS
