@@ -52,7 +52,6 @@ qx.Class.define("unify.fx.Position", {
     },
     
     _reset : function(value) {
-      console.log("RESET: " + value);
       this.__widget.setStyle({
         transform: value||""
       });
