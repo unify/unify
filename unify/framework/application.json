@@ -27,7 +27,7 @@
 
   "let" :
   {
-    "QOOXDOO_PATH"      : "../../qooxdoo/qooxdoo",
+    "QOOXDOO_PATH"      : "../../qooxdoo",
     "UNIFY_PATH"        : ".",
     "APIVIEWER_PATH"    : "${QOOXDOO_PATH}/component/apiviewer",
     "TESTRUNNER_PATH"   : "${QOOXDOO_PATH}/component/testrunner",
