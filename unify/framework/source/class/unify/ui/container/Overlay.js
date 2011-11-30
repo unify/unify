@@ -48,8 +48,8 @@ qx.Class.define("unify.ui.container.Overlay", {
   construct : function(arrowDirection, arrowAlignment) {
     this.base(arguments, new unify.ui.layout.OverlayLayout());
     
-    this._excludeChildControl("arrow");
     this._showChildControl("container");
+    this._excludeChildControl("arrow");
     
     this.__arrowDirection = arrowDirection;
     this.__arrowAlignment = arrowAlignment;
@@ -85,14 +85,14 @@ qx.Class.define("unify.ui.container.Overlay", {
         control.setWidth(18);
         control.setHeight(38);
         control.setDirection(this.__arrowDirection);
-        this._addAt(control, 0, {
+        this._addAt(control, 1, {
           type: "arrow",
           alignment: this.__arrowAlignment
         });
       } else if (id == "container") {
         control = new unify.ui.container.Composite(new qx.ui.layout.Canvas());
         control.setAppearance(this.getAppearance() + "/" + id);
-        this._add(control);
+        this._addAt(control, 0);
       }
       
       return control || this.base(arguments, id);
