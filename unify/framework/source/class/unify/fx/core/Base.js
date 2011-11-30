@@ -33,7 +33,12 @@ qx.Class.define("unify.fx.core.Base", {
     }
   },
   
+  construct : function(widget) {
+    this._widget = widget;
+  },
+  
   members : {
+    _widget : null,
     __id : null,
     
     start : function(percent) {

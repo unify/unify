@@ -11,7 +11,7 @@
 /**
  * Animate position of widget
  */
-qx.Class.define("unify.fx.Position", {
+qx.Class.define("unify.fx.Opacity", {
   extend: unify.fx.core.Base,
   
   members : {
@@ -21,33 +21,15 @@ qx.Class.define("unify.fx.Position", {
     
     _setup : function() {
       var to = this.getValue();
-      var from = this.__resetPoint = this._widget.getStyle("transform");
+      var from = this.__resetPoint = this._widget.getStyle("opacity") || 1;
       
-      var matcher = new RegExp("translate([^)]+)");
-      var parsed = matcher.exec(from);
-      var mod;
-      if (parsed && parsed.length == 2) {
-        var vals = parsed[1].substring(1).split(",");
-        mod = this.__mod = {
-          top: parseInt(vals[1],10),
-          left: parseInt(vals[0],10)
-        };
-      } else {
-        mod = this.__mod = {
-          top: 0,
-          left: 0
-        };
-      }
-      
-      this.__anim = {
-        top: to.top - mod.top,
-        left: to.left - mod.left
-      };
+      this.__mod = from;
+      this.__anim = to - from
     },
     
     _reset : function(value) {
       this._widget.setStyle({
-        transform: value||""
+        opacity: value||"1"
       });
     },
     
@@ -58,12 +40,9 @@ qx.Class.define("unify.fx.Position", {
     _render : function(percent, now, render) {
       var mod = this.__mod;
       var anim = this.__anim;
-      
-      var left = Math.round(mod.left + (anim.left * percent));
-      var top = Math.round(mod.top + (anim.top * percent));
 
       this._widget.setStyle({
-        transform: "translate(" + left + "px, " + top + "px)"
+        opacity: (mod + anim * percent)
       });
     }
   }
