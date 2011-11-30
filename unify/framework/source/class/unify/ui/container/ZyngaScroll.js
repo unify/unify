@@ -77,6 +77,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     root.addListener("touchmove", this.__onTouchMove,this);
     root.addListener("touchend", this.__onTouchEnd,this);
     root.addListener("touchcancel", this.__onTouchEnd,this);
+    this.addListener("mousewheel", this.__onMouseWheel, this);
     
     this.addListener("resize", this.__updateDimensions, this)
     contentWidget.addListener("resize", this.__updateDimensions, this)
@@ -518,6 +519,18 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
      */
     _getContentHeight : function() {
       return this.__contentHeight;
+    },
+
+    /**
+     * Handler for mouse wheel event
+     *
+     * @param e {qx.event.type.MouseWheel} Mouse wheel event
+     */
+    __onMouseWheel : function(e) {
+      var left = this.getScrollLeft();
+      var top = this.getScrollTop() + e.getWheelDelta() * 20;
+      
+      this.scrollTo(left, top, true);
     },
 
     /**
