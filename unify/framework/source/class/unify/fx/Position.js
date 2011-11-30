@@ -12,7 +12,7 @@
  * Animate position of widget
  */
 qx.Class.define("unify.fx.Position", {
-  extend: unify.fx.Base,
+  extend: unify.fx.core.Base,
   
   construct : function(widget) {
     this.base(arguments);

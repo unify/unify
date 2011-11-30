@@ -11,7 +11,7 @@
 /**
  * Base single animation
  */
-qx.Class.define("unify.fx.Base", {
+qx.Class.define("unify.fx.core.Base", {
   extend: qx.core.Object,
   
   events : {
@@ -40,7 +40,7 @@ qx.Class.define("unify.fx.Base", {
       this._setup();
       
       var easing = this.getEasing() || function(i) { return i; };
-      this.__id = unify.fx.Animation.getInstance().start(this._render, this._verifyRender, this.__finish, this.getDuration(), easing, percent||0, this);
+      this.__id = unify.fx.core.Animation.getInstance().start(this._render, this._verifyRender, this.__finish, this.getDuration(), easing, percent||0, this);
       this.fireEvent("start");
     },
     
@@ -84,7 +84,7 @@ qx.Class.define("unify.fx.Base", {
       var id = this.__id;
       
       if (id) {
-        unify.fx.Animation.getInstance().stop(id);
+        unify.fx.core.Animation.getInstance().stop(id);
         return true;
       }
       

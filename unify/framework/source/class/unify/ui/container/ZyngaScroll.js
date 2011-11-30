@@ -600,15 +600,15 @@ var core = {
   effect : {
     Animate : {
       start : function(stepCallback, verifyCallback, completedCallback, duration, easingMethod, startPosition, context) {
-        return unify.fx.Animation.getInstance().start(stepCallback, verifyCallback, completedCallback, duration, easingMethod, startPosition, context);
+        return unify.fx.core.Animation.getInstance().start(stepCallback, verifyCallback, completedCallback, duration, easingMethod, startPosition, context);
       },
       
       stop: function(id) {
-        return unify.fx.Animation.getInstance().stop(id);
+        return unify.fx.core.Animation.getInstance().stop(id);
       },
       
       isRunning: function(id) {
-        return unify.fx.Animation.getInstance().isRunning(id);
+        return unify.fx.core.Animation.getInstance().isRunning(id);
       }
     }
   }

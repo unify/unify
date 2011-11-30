@@ -15,7 +15,7 @@
 #ignore(requestAnimationFrame)
  */
 
-qx.Class.define("unify.fx.AnimationFrame", {
+qx.Class.define("unify.fx.core.AnimationFrame", {
   type: "static",
   
   statics: {

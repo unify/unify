@@ -27,7 +27,7 @@
  * License: MIT + Apache (V2)
  * 
  */
-qx.Class.define("unify.fx.Animation", {
+qx.Class.define("unify.fx.core.Animation", {
   extend: qx.core.Object,
   type: "singleton",
   
@@ -60,7 +60,7 @@ qx.Class.define("unify.fx.Animation", {
       var id = this.__counter++;
       var percent = this.__percent[id] = startPosition;
       var dropCounter = 0;
-      var AnimationFrame = unify.fx.AnimationFrame;
+      var AnimationFrame = unify.fx.core.AnimationFrame;
       var root = qx.core.Init.getApplication().getRoot().getElement();
       var self = this;
       
