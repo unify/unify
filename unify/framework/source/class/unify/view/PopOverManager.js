@@ -62,7 +62,13 @@ qx.Class.define("unify.view.PopOverManager",
     this.__root.getElement().appendChild(mblocker);
   },
   
-  
+  events : {
+    /** Show popup event */
+    "show" : "qx.event.type.Data",
+    
+    /** Hide popup event */
+    "hide" : "qx.event.type.Data"
+  },
 
   /*
   *****************************************************************************
@@ -294,6 +300,7 @@ qx.Class.define("unify.view.PopOverManager",
       this.__visibleViewManagers.push(viewManager);
       this.__sortPopOvers();
       viewManager.show();
+      this.fireDataEvent("show", id);
       if(overlay){
          overlay.show(modLeft, modTop);
       }
@@ -329,6 +336,8 @@ qx.Class.define("unify.view.PopOverManager",
         viewManager.hide();
         qx.lang.Array.remove(self.__visibleViewManagers, viewManager);
         self.__sortPopOvers();
+        
+        self.fireDataEvent("hide", id);
       };
 
       if(mode=='popover'){
