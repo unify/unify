@@ -51,13 +51,15 @@ qx.Class.define("unify.fx.Position", {
       };
     },
     
-    _reset : function() {
-      var resetPoint = this.__resetPoint;
-      if (resetPoint) {
-        this.__widget.setStyle({
-          transform: resetPoint
-        });
-      }
+    _reset : function(value) {
+      console.log("RESET: " + value);
+      this.__widget.setStyle({
+        transform: value||""
+      });
+    },
+    
+    _getResetValue : function() {
+      return this.__resetPoint;
     },
     
     _render : function(percent, now, render) {

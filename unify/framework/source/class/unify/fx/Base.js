@@ -50,17 +50,25 @@ qx.Class.define("unify.fx.Base", {
       }
     },
     
-    reset : function() {
+    reset : function(value) {
       this.__stop();
-      this._reset();
+      this._reset(value);
       this.fireDataEvent("stop", "reset");
+    },
+    
+    getResetValue : function() {
+      return this._getResetValue();
     },
     
     _setup : function() {
       
     },
     
-    _reset : function() {
+    _reset : function(value) {
+      
+    },
+    
+    _getResetValue : function() {
       
     },
     
