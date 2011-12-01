@@ -276,22 +276,21 @@ qx.Class.define("unify.view.PopOverManager",
             }
           }
 
-          var modLeft = left;
-          var modTop = top;
+          modLeft = left;
+          modTop = top;
         }
         
         if (style) {
           var mystyle = qx.lang.Object.clone(style);
           delete mystyle.left;
           delete mystyle.top;
-          
           overlay.setStyle(mystyle);
           this.__root.add(overlay);
         } else {
           this.error("No style of overlay for view " + viewManager);
         }
-        
-        overlay.add(viewManager);
+
+        overlay.add(viewManager,{top:0,left:0,right:0,bottom:0});
       } else {
         if(!this.__root==elem.parentNode){
           this.__root.appendChild(elem);

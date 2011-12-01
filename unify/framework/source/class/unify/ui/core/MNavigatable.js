@@ -182,7 +182,7 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
       var show = this.getShow();
       if (show != null)
       {
-        unify.view.PopOverManager.getInstance().show(show);
+        unify.view.PopOverManager.getInstance().show(show,this,"bc","tl");
         return;
       }
 
