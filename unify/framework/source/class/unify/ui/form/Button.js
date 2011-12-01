@@ -14,6 +14,7 @@
  
 qx.Class.define("unify.ui.form.Button", {
   extend: unify.ui.basic.Label,
+  include : [unify.ui.core.MInteractionState],
 
   events : {
     /** Execute event when button is tapped */
