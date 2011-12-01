@@ -34,19 +34,19 @@ qx.Mixin.define("unify.ui.core.MInteractionState", {
     },
     
     __MInteractionStateTouchStart : function() {
-      this.addState("hovered");
+      this.addState("hover");
     },
     
     __MInteractionStateTouchLeave : function() {
-      this.removeState("hovered");
+      this.removeState("hover");
     },
     
     __MInteractionStateMouseOver : function() {
-      this.addState("hovered");
+      this.addState("hover");
     },
     
     __MInteractionStateMouseOut : function() {
-      this.removeState("hovered");
+      this.removeState("hover");
     }    
   },
   

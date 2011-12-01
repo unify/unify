@@ -70,7 +70,13 @@ qx.Class.define("unify.ui.core.EventHandler",
       
       mousewheel : 1,
       mouseover : 1,
-      mouseout : 1
+      mouseout : 1,
+      
+      // key events
+      keyup : 1,
+      keydown : 1,
+      keypress : 1,
+      keyinput : 1
     },
 
     /** {Integer} Whether the method "canHandleEvent" must be called */

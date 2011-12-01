@@ -110,6 +110,35 @@ qx.Class.define("unify.ui.core.Widget", {
       apply : "_applyEnabled",
       event : "changeEnabled",
       init : true
+    },
+    
+    /**
+     * Defines the tab index of an widget. If widgets with tab indexes are part
+     * of the current focus root these elements are sorted in first priority. Afterwards
+     * the sorting continues by rendered position, zIndex and other criteria.
+     *
+     * Please note: The value must be between 1 and 32000.
+     */
+    tabIndex :
+    {
+      check : "Integer",
+      nullable : true,
+      apply : "_applyTabIndex"
+    },
+    
+    /**
+     * Whether the widget is focusable e.g. rendering a focus border and visualize
+     * as active element.
+     *
+     * See also {@link #isTabable} which allows runtime checks for
+     * <code>isChecked</code> or other stuff to test whether the widget is
+     * reachable via the TAB key.
+     */
+    focusable :
+    {
+      check : "Boolean",
+      init : false,
+      apply : "_applyFocusable"
     }
   },
   
@@ -206,23 +235,22 @@ qx.Class.define("unify.ui.core.Widget", {
     {
       if (value===false)
       {
-        this.addState("disabled");
+        this.addState("disable");
 
         // hovered not configured in widget, but as this is a
         // standardized name in qooxdoo and we never want a hover
         // state for disabled widgets, remove this state everytime
-        this.removeState("hovered");
+        this.removeState("hover");
 
-        /*// Blur when focused
-        if (this.isFocusable())
-        {
+        // Blur when focused
+        if (this.isFocusable()) {
           // Remove focused state
-          this.removeState("focused");
+          this.removeState("active");
 
           // Remove tabIndex
           this._applyFocusable(false, true);
         }
-
+/*
         // Remove draggable
         if (this.isDraggable()) {
           this._applyDraggable(false, true);
@@ -235,13 +263,13 @@ qx.Class.define("unify.ui.core.Widget", {
       }
       else
       {
-        this.removeState("disabled");
+        this.removeState("disable");
 
-        /*// Re-add tabIndex
+        // Re-add tabIndex
         if (this.isFocusable()) {
           this._applyFocusable(true, false);
         }
-
+/*
         // Re-add draggable
         if (this.isDraggable()) {
           this._applyDraggable(true, false);
@@ -252,6 +280,39 @@ qx.Class.define("unify.ui.core.Widget", {
           this._applyDroppable(true, false);
         }*/
       }
+    },
+    
+    _applyTabIndex : function(value)
+    {
+      if (value == null) {
+        value = 1;
+      } else if (value < 1 || value > 32000) {
+        throw new Error("TabIndex property must be between 1 and 32000");
+      }
+      
+      this.setAttribute("tabIndex", value);
+    },
+    
+    _applyFocusable : function(value, old)
+    {
+      if (value) {
+        var tabIndex = this.getTabIndex();
+        if (tabIndex == null) {
+          tabIndex = 1;
+        }
+
+        this.setAttribute("tabIndex", tabIndex);
+      } else if (old) {
+        this.setAttribute("tabIndex", null);
+      }
+    },
+    
+    tabFocus : function() {
+      this.addState("active");
+    },
+    
+    tabBlur : function() {
+      this.removeState("active");
     },
   
     __layoutManager : null,
@@ -715,9 +776,6 @@ qx.Class.define("unify.ui.core.Widget", {
 
       qx.ui.core.queue.Layout.add(this);
     },
-
-
-
 
 
     /*

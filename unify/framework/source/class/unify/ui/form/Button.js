@@ -23,10 +23,15 @@ qx.Class.define("unify.ui.form.Button", {
 
   properties: {
     // overridden
-    appearance :
-    {
+    appearance : {
       refine: true,
       init: "button"
+    },
+    
+    // overridden
+    focusable : {
+      refine: true,
+      init: true
     }
   },
   

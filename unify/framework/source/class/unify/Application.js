@@ -64,7 +64,9 @@ qx.Class.define("unify.Application",
       var rootElement = this._getRootElement();
       var rootLayout = this._getRootLayout();
       qx.bom.Event.addNativeListener(rootElement, "click", this.__onClick);
-      this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), rootLayout);
+      var root = this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), rootLayout);
+      
+      unify.ui.core.FocusHandler.getInstance().connectTo(root);
 
       // Configure document
       var Style = qx.bom.element.Style;
