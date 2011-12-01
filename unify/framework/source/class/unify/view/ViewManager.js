@@ -377,7 +377,58 @@ qx.Class.define("unify.view.ViewManager", {
       this.fireDataEvent("changePath", this.__path);
     },
     
-    
+    /*
+    ---------------------------------------------------------------------------
+      MODAL VISIBILITY HANDLING
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Hides the view manager and pauses active view
+     *
+     * @param callback {Function} optional callback to execute after hidianimation is done
+     */
+    hideModal : function(callback)
+    {
+      if(this.getDisplayMode()!="modal"){
+        throw new Error("hideModal called on ViewManager without displaymode modal: "+this);
+      }
+      var view = this.__currentView;
+      if (view) {
+        view.setActive(false);
+      }
+        this.__path=null;
+        this.__currentView=null;
+        this.fireDataEvent("changePath", this.__path);
+        this.__animateModal(view,false,callback);
+    },
+
+
+    /**
+     * Shows the view manager and resumes selected view
+     */
+    showModal : function()
+    {
+      if(this.getDisplayMode()!="modal"){
+        throw new Error("called shoModal on ViewManager without displaymode modal: "+this);
+      }
+
+      // Be sure that we show a view (if possible)
+      if(!this.__initialized){
+        this.init();
+      }
+      // Re-activate view (normally only useful if it was paused before)
+      var view = this.__currentView;
+      if (qx.core.Environment.get("qx.debug")) {
+        this.debug("Show with: " + view);
+      }
+      if (view) {
+        view.setActive(true);
+      }
+
+      this.show();
+      this.__animateModal(view,true);
+    },
     
     /*
     ---------------------------------------------------------------------------
@@ -517,7 +568,7 @@ qx.Class.define("unify.view.ViewManager", {
         center : "translate(0,0)"
       }
     }),
-    
+
     /**
      * Internal setter method for view switching
      *
@@ -637,6 +688,59 @@ qx.Class.define("unify.view.ViewManager", {
       } else {
         visibilityAction();
       }
-    }
+    },
+
+    /**
+     * //TODO refactor to share code with __animateLayers?
+     * @param target {Element} DOM element of layer
+     * @param show {Boolean} true for show, false for hide
+     * @param callback {Function} optional callback to execute after animation
+     */
+    __animateModal: function(view,show,callback){
+      var self = this;
+      var AnimationDuration = qx.theme.manager.Appearance.getInstance().styleFrom("view").WebkitTransitionDuration;
+
+
+      view.setStyle({
+        "webkitTransitionDuration": "0ms",
+        "webkitTransform": show ? this.__positions.bottom : this.__positions.center
+      });
+
+
+
+      var visibilityAction = function() {
+        // Force rendering
+        var viewElement = view.getElement();
+        viewElement.offsetWidth + viewElement.offsetHeight;
+
+
+        var transitionEndFnt = function() {
+          qx.bom.Event.removeNativeListener(viewElement, "webkitTransitionEnd", transitionEndFnt);
+          if(!show){
+            view.setActive(false);
+            view.hide();
+            self.hide();
+          }
+          if(callback){
+            callback();
+          }
+        };
+        qx.bom.Event.addNativeListener(viewElement, "webkitTransitionEnd", transitionEndFnt);
+
+
+        view.setStyle({
+          "webkitTransitionDuration" : AnimationDuration,
+          "webkitTransform": show ? self.__positions.center : self.__positions.bottom
+        });
+      };
+
+      if (view.getVisibility() != "visible") {
+        view.addListenerOnce("changeVisibility", visibilityAction);
+
+        view.setVisibility("visible");
+      } else {
+        visibilityAction();
+      }
+   }
   }
 });
