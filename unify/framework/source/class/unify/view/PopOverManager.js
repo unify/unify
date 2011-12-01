@@ -196,6 +196,7 @@ qx.Class.define("unify.view.PopOverManager",
       var modTop = null;
       
       var viewManager = unify.view.ViewManager.get(id);
+      var displayMode=viewManager.getDisplayMode();
       if (!viewManager.isInitialized()) {
         viewManager.init();
       }
@@ -217,7 +218,7 @@ qx.Class.define("unify.view.PopOverManager",
       }
       var elem = viewManager.getElement();
       var overlay;
-      if(viewManager.getDisplayMode()=='popover'){
+      if(displayMode=='popover'){
         if (popoverPosition) {
           var map = {
             "l" : "left",
@@ -291,14 +292,18 @@ qx.Class.define("unify.view.PopOverManager",
         }
 
         overlay.add(viewManager,{top:0,left:0,right:0,bottom:0});
-      } else {
-        if(!this.__root==elem.parentNode){
-          this.__root.appendChild(elem);
+      } else if(displayMode=="modal"){
+        if(this.__root!=viewManager.getLayoutParent()){
+          this.__root.add(viewManager,this.__styleRegistry[viewManager] ||{top:0,left:0,right:0,bottom:0});
         }
       }
       this.__visibleViewManagers.push(viewManager);
       this.__sortPopOvers();
-      viewManager.show();
+      if(displayMode=="modal"){
+        viewManager.showModal();
+      } else {
+        viewManager.show();
+      }
       this.fireDataEvent("show", id);
       if(overlay){
          overlay.show(modLeft, modTop);
@@ -332,7 +337,6 @@ qx.Class.define("unify.view.PopOverManager",
 
       var self=this;
       var hideCallback=function(){
-        viewManager.hide();
         qx.lang.Array.remove(self.__visibleViewManagers, viewManager);
         self.__sortPopOvers();
         
@@ -357,10 +361,7 @@ qx.Class.define("unify.view.PopOverManager",
         overlay.addListenerOnce("hidden",hideCallback,this);
         overlay.hide();
       } else {
-        //modal
-        hideCallback();
-        //TODO reenable hide callback functionality in viewmanager (or change to event listener here)
-        //viewManager.hide(hideCallback);
+        viewManager.hideModal(hideCallback);
       }
     },
 
