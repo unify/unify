@@ -134,7 +134,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     {
       init : true,
       check : "Boolean",
-      apply : "_update2AxisSrcoll"
+      apply : "_update2AxisScroll"
     },
 
     /** Whether the vertical scroll indicator should be displayed */
@@ -142,7 +142,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     {
       init : true,
       check : "Boolean",
-      apply : "_update2AxisSrcoll"
+      apply : "_update2AxisScroll"
     },
 
     // overridden
