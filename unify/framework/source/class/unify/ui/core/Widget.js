@@ -28,6 +28,7 @@ qx.Class.define("unify.ui.core.Widget", {
   construct : function() {
     this.base(arguments);
     
+    this.__initializeSizing();
     this.__element = this.__createElement();
   },
   
@@ -176,6 +177,30 @@ qx.Class.define("unify.ui.core.Widget", {
   },
   
   members: {
+    /** {Map} Padding of element */
+    __padding : null,
+    
+    /** {Map} Border size of element */
+    __border : null,
+    
+    /**
+     * Initializes padding and border size to zero
+     */
+    __initializeSizing : function() {
+      this.__padding = {
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0
+      };
+      this.__border = {
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0
+      };
+    },
+    
     // property apply
     _applyVisibility : function(value, old)
     {
@@ -411,8 +436,10 @@ qx.Class.define("unify.ui.core.Widget", {
       // Ask content
       var contentHint = this._getContentHint();
 
-      var insetX = this.__widthInset;
-      var insetY = this.__heightInset;
+      var border = this.__border;
+      var padding = this.__padding;
+      var insetX = border.left + border.right + padding.left + padding.right;
+      var insetY = border.top + border.bottom + padding.top + padding.bottom;
 
       if (width == null) {
         width = contentHint.width + insetX;
@@ -642,13 +669,16 @@ qx.Class.define("unify.ui.core.Widget", {
       }
 
       if (this._hasChildren()) {
-        var innerWidth = width - this.__widthInset;
-        var innerHeight = height - this.__heightInset;
+        var padding = this.__padding;
+        var border = this.__border;
+        
+        var innerWidth = width - (padding.left + padding.right) - (border.left + border.right);
+        var innerHeight = height - (padding.top + padding.bottom) - (border.top + border.bottom);
 
         var children = this._getChildren();
         if (children) {
           for (var i=0,ii=children.length; i<ii; i++) {
-            children[i].setParentInset([this.__leftInset, this.__topInset]);
+            children[i].setParentInset([padding.left, padding.top]);
           }
         }
 
@@ -1007,10 +1037,6 @@ qx.Class.define("unify.ui.core.Widget", {
 
     __style : null,
     __font : null,
-    __widthInset : 0,
-    __heightInset : 0,
-    __leftInset : 0,
-    __topInset : 0,
 
     /**
      * Set styles to the element
@@ -1104,10 +1130,7 @@ qx.Class.define("unify.ui.core.Widget", {
         }
       }
 
-      var left   = (parseInt(style.borderLeft, 10)   || 0) + (parseInt(style.paddingLeft, 10)   || 0);
-      var top    = (parseInt(style.borderTop, 10)    || 0) + (parseInt(style.paddingTop, 10)    || 0);
-      var right  = (parseInt(style.borderRight, 10)  || 0) + (parseInt(style.paddingRight, 10)  || 0);
-      var bottom = (parseInt(style.borderBottom, 10) || 0) + (parseInt(style.paddingBottom, 10) || 0);
+      
 
       var font = style.font;
       if (font) {
@@ -1128,10 +1151,19 @@ qx.Class.define("unify.ui.core.Widget", {
       }
       
       this.__style = style;
-      this.__widthInset = left + right;
-      this.__heightInset =  top + bottom;
-      this.__leftInset = left;
-      this.__topInset = top;
+      
+      this.__padding = {
+        left: parseInt(style.paddingLeft, 10) || 0,
+        top: parseInt(style.paddingTop, 10) || 0,
+        right: parseInt(style.paddingRight, 10)  || 0,
+        bottom: parseInt(style.paddingBottom, 10) || 0
+      };
+      this.__border = {
+        left: parseInt(style.borderLeft, 10) || 0,
+        top: parseInt(style.borderTop, 10) || 0,
+        right: parseInt(style.borderRight, 10)  || 0,
+        bottom: parseInt(style.borderBottom, 10) || 0
+      };
 
       qx.bom.element.Style.setStyles(this.getElement(), style);
       
