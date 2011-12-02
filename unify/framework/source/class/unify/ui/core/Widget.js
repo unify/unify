@@ -1070,7 +1070,10 @@ qx.Class.define("unify.ui.core.Widget", {
         "position",
         //"width",
         //"height",
-        "visibility"
+        "visibility",
+        
+        "border",
+        "borderSize"
       ];
       
       if (map.height) {
@@ -1097,13 +1100,58 @@ qx.Class.define("unify.ui.core.Widget", {
         map.paddingLeft = padding[3] || padding[1] || padding[0];
         delete map.padding;
       }
-      if (map.border) {
-        var border = map.border.split(" ");
-        map.borderTop = border[0];
-        map.borderRight = border[1] || border[0];
-        map.borderBottom = border[2] || border[0];
-        map.borderLeft = border[3] || border[1] || border[0];
-        delete map.border;
+      if (map.borderWidth) {
+        var borderWidth = map.borderWidth.split(" ");
+        map.borderTopWidth = borderWidth[0];
+        map.borderRightWidth = borderWidth[1] || borderWidth[0];
+        map.borderBottomWidth = borderWidth[2] || borderWidth[0];
+        map.borderLeftWidth = borderWidth[3] || borderWidth[1] || borderWidth[0];
+        delete map.borderWidth;
+      }
+      if (map.borderStyle) {
+        var borderStyle = map.borderStyle.split(" ");
+        map.borderTopStyle = borderStyle[0];
+        map.borderRightStyle = borderStyle[1] || borderStyle[0];
+        map.borderBottomStyle = borderStyle[2] || borderStyle[0];
+        map.borderLeftStyle = borderStyle[3] || borderStyle[1] || borderStyle[0];
+        delete map.borderStyle;
+      }
+      if (map.borderColor) {
+        var borderColor = map.borderColor.split(" ");
+        map.borderTopColor = borderColor[0];
+        map.borderRightColor = borderColor[1] || borderColor[0];
+        map.borderBottomColor = borderColor[2] || borderColor[0];
+        map.borderLeftColor = borderColor[3] || borderColor[1] || borderColor[0];
+        delete map.borderColor;
+      }
+      
+      if (map.borderLeft) {
+        var border = map.borderLeft.split(" ");
+        map.borderLeftWidth = border[0];
+        if (border[1]) map.borderLeftStyle = border[1];
+        if (border[2]) map.borderLeftColor = border[2];
+        delete map.borderLeft;
+      }
+      if (map.borderTop) {
+        var border = map.borderTop.split(" ");
+        map.borderTopWidth = border[0];
+        if (border[1]) map.borderTopStyle = border[1];
+        if (border[2]) map.borderTopColor = border[2];
+        delete map.borderTop;
+      }
+      if (map.borderRight) {
+        var border = map.borderRight.split(" ");
+        map.borderRightWidth = border[0];
+        if (border[1]) map.borderRightStyle = border[1];
+        if (border[2]) map.borderRightColor = border[2];
+        delete map.borderRight;
+      }
+      if (map.borderBottom) {
+        var border = map.borderBottom.split(" ");
+        map.borderBottomWidth = border[0];
+        if (border[1]) map.borderBottomStyle = border[1];
+        if (border[2]) map.borderBottomColor = border[2];
+        delete map.borderBottom;
       }
 
       var keys = qx.lang.Object.getKeys(map);
@@ -1152,18 +1200,25 @@ qx.Class.define("unify.ui.core.Widget", {
       
       this.__style = style;
       
-      this.__padding = {
+      var padding = this.__padding = {
         left: parseInt(style.paddingLeft, 10) || 0,
         top: parseInt(style.paddingTop, 10) || 0,
         right: parseInt(style.paddingRight, 10)  || 0,
         bottom: parseInt(style.paddingBottom, 10) || 0
       };
-      this.__border = {
-        left: parseInt(style.borderLeft, 10) || 0,
-        top: parseInt(style.borderTop, 10) || 0,
-        right: parseInt(style.borderRight, 10)  || 0,
-        bottom: parseInt(style.borderBottom, 10) || 0
+      /*if (padding.left + padding.top + padding.right + padding.bottom > 0) {
+        qx.ui.core.queue.Layout.add(this);
+      }*/
+      
+      var border = this.__border = {
+        left: parseInt(style.borderLeftWidth, 10) || 0,
+        top: parseInt(style.borderTopWidth, 10) || 0,
+        right: parseInt(style.borderRightWidth, 10)  || 0,
+        bottom: parseInt(style.borderBottomWidth, 10) || 0
       };
+      /*if (border.left + border.top + border.right + border.bottom > 0) {
+        qx.ui.core.queue.Layout.add(this);
+      }*/
 
       qx.bom.element.Style.setStyles(this.getElement(), style);
       
