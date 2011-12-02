@@ -108,6 +108,56 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     
     /*
     ---------------------------------------------------------------------------
+      ACTIVITY INDICATOR
+    ---------------------------------------------------------------------------
+    */
+    
+    "activityindicator" : {
+      style : function() {
+        var size = 144;
+        
+        return {
+          marginLeft: -Math.round(size/2),
+          width: size,
+          marginTop: -Math.round(size/2),
+          height: size,
+          backgroundColor: "rgba(0,0,0,0.5)",
+          borderWidth: "1px",
+          borderColor: "#000",
+          borderStyle: "solid",
+          pointerEvents: "none",
+          paddingTop: 30
+        };
+      }
+    },
+    
+    "activityindicator/image" : {
+      style : function() {
+        var url = "unify/iphoneos/loader.png";
+        var ResourceManager = qx.util.ResourceManager.getInstance();
+        
+        return {
+          width: ResourceManager.getImageWidth(url),
+          height: ResourceManager.getImageHeight(url),
+          
+          properties : {
+            source: url
+          }
+        };
+      }
+    },
+    
+    "activityindicator/label" : {
+      style : function() {
+        return {
+          color: "white",
+          marginTop: 25
+        };
+      }
+    },
+    
+    /*
+    ---------------------------------------------------------------------------
       BARS
     ---------------------------------------------------------------------------
     */
