@@ -71,6 +71,8 @@ qx.Class.define("unify.ui.core.EventHandler",
       mousewheel : 1,
       mouseover : 1,
       mouseout : 1,
+      mousedown : 1,
+      mouseup : 1,
       
       // key events
       keyup : 1,

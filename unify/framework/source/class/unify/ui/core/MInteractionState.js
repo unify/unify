@@ -22,32 +22,34 @@ qx.Mixin.define("unify.ui.core.MInteractionState", {
       var supportMouse = true;
       
       if (supportTouch) {
-        this.addListener("touchstart", this.__MInteractionStateTouchStart, this);
-        this.addListener("touchleave", this.__MInteractionStateTouchLeave, this);
-        this.addListener("touchend", this.__MInteractionStateTouchLeave, this);
-        this.addListener("touchcancel", this.__MInteractionStateTouchLeave, this);
+        this.addListener("touchstart", this.__MInteractionStateAddPressed, this);
+        this.addListener("touchleave", this.__MInteractionStateRemovePresse, this);
+        this.addListener("touchend", this.__MInteractionStateRemovePresse, this);
+        this.addListener("touchcancel", this.__MInteractionStateRemovePresse, this);
       }
       if (supportMouse) {
-        this.addListener("mouseover", this.__MInteractionStateMouseOver, this);
-        this.addListener("mouseout", this.__MInteractionStateMouseOut, this);
+        this.addListener("mouseover", this.__MInteractionStateAddHover, this);
+        this.addListener("mouseout", this.__MInteractionStateRemoveHover, this);
+        this.addListener("mousedown", this.__MInteractionStateAddPressed, this);
+        this.addListener("mouseup", this.__MInteractionStateRemovePresse, this);
       }
     },
     
-    __MInteractionStateTouchStart : function() {
+    __MInteractionStateAddHover : function() {
       this.addState("hover");
     },
     
-    __MInteractionStateTouchLeave : function() {
+    __MInteractionStateRemoveHover : function() {
       this.removeState("hover");
     },
     
-    __MInteractionStateMouseOver : function() {
-      this.addState("hover");
+    __MInteractionStateAddPressed : function() {
+      this.addState("pressed");
     },
     
-    __MInteractionStateMouseOut : function() {
-      this.removeState("hover");
-    }    
+    __MInteractionStateRemovePresse : function() {
+      this.removeState("pressed");
+    }  
   },
   
   destruct : function() {
