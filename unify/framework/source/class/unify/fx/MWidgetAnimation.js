@@ -42,6 +42,11 @@ qx.Mixin.define("unify.fx.MWidgetAnimation", {
     animateRotateDuration : {
       check: "Integer",
       init: 5000
+    },
+    
+    animateRotateInfinite : {
+      check: "Boolean",
+      init: false
     }
   },
   
@@ -114,8 +119,18 @@ qx.Mixin.define("unify.fx.MWidgetAnimation", {
           this.__mwAnimationRotateReset = animation.getResetValue();
         }
         
-        animation.addListenerOnce("start", function() { console.log("Start animation"); });
-        animation.addListenerOnce("stop", function(e) { console.log("Stop animation " + e.getData()); });
+        if (this.getAnimateRotateInfinite()) {
+          if (value) {
+            this.__infiniteRotateValue = value;
+          }
+          
+          animation.addListenerOnce("stop", function(e) {
+            if (e.getData() == "done") {
+              this.resetAnimateRotate();
+              this.setAnimateRotate(this.__infiniteRotateValue);
+            }
+          }, this);
+        }
         
         animation.setValue(value);
         animation.setDuration(this.getAnimateRotateDuration());
