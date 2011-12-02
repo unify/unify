@@ -1267,7 +1267,10 @@ qx.Class.define("unify.ui.core.Widget", {
         }
         
         element.$$widget = this.toHashCode();
-        
+
+        if(qx.core.Environment.get("qx.debug")){
+          element.setAttribute("unifyclass",this.classname);
+        }
         qx.bom.element.Style.set(element, "position",  "absolute");
         
         var style = this.__style;

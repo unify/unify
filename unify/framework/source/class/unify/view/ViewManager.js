@@ -58,6 +58,9 @@ qx.Class.define("unify.view.ViewManager", {
     
     // Create instance specific data structures
     this.__views = {};
+
+    //initialize overflow hidden here, so that view transitions animations are hidden properly
+    this.setStyle({overflow:"hidden"});
   },
 
 
