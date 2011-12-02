@@ -44,9 +44,11 @@ qx.Class.define("unify.ui.basic.Image", {
     },
     
     _applySource : function(value) {
+      var ResourceManager = qx.util.ResourceManager.getInstance();
+      
       if (this._hasElement()) {
         var e = this.getElement();
-        e.setAttribute("src", value);
+        e.setAttribute("src", ResourceManager.toUri(value));
       }
     }
   }
