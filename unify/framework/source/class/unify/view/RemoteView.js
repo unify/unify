@@ -33,7 +33,7 @@ qx.Class.define("unify.view.RemoteView",
 
     // Connect business object
     this._getBusinessObject().addListener("completed", this.__onBusinessObjectCompleted, this);
-    // TODO : this.__activityIndicator=unify.ui.ActivityIndicator.getInstance();
+    this.__activityIndicator = unify.ui.other.ActivityIndicator.getInstance();
   },
 
 
