@@ -50,6 +50,9 @@ qx.Class.define("unify.view.Root", {
     // Root element that global events use
     __rootEventElement : null,
     
+    // Size hint
+    __rootSizeHint : null,
+    
     // overridden
     _createElement : function() {
       return this.__rootElement;
@@ -64,19 +67,38 @@ qx.Class.define("unify.view.Root", {
      * Resize handler to start relayouting
      */
     __onResize : function() {
-      qx.ui.core.queue.Layout.add(this);
+      var sizeHint = this._getSizeHint();
+      var rootSizeHint = this.__rootSizeHint;
+      
+      if ((!rootSizeHint) || (sizeHint.width != rootSizeHint.width || sizeHint.height != rootSizeHint.height)) {
+        this.__rootSizeHint = null;
+        
+        this.invalidateLayoutChildren();
+        qx.ui.core.queue.Layout.add(this);
+      }
     },
     
     /** Returns fixed size hint of base layer size */
     getSizeHint : function() {
+      var rootSizeHint = this.__rootSizeHint;
+      if (rootSizeHint) {
+        return rootSizeHint;
+      }
+      
+      rootSizeHint = this.__rootSizeHint = this._getSizeHint();
+      return rootSizeHint;
+    },
+    
+    _getSizeHint : function() {
       var root = this.__rootElement;
       
       var Dimension = qx.bom.element.Dimension;
-      var e = {
+      var rootSizeHint = {
         width: Dimension.getContentWidth(root),
         height: Dimension.getContentHeight(root)
       };
-      return e;
+      
+      return rootSizeHint;
     },
     
     // overridden

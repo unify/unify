@@ -74,8 +74,8 @@ qx.Class.define("unify.Application",
       Style.setStyles(rootElement, {
         userSelect : "none",
         //textSizeAdjust : "none", // Check for iOS compatibility
-        perspective : "800",
-        transformStyle : "preserve-3d",
+        //perspective : "800",
+        //transformStyle : "preserve-3d",
         touchCallout : "none",
         position : "absolute",
         left: 0,
