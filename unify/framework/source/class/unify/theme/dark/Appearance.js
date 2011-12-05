@@ -55,20 +55,9 @@ qx.Theme.define("unify.theme.dark.Appearance", {
       style : function() {
         var style = {
           backgroundColor: "#CBD2D8",
-          backgroundImage: "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAABCAIAAACdaSOZAAAAFElEQVQI12M4euYKErp0+tINIAIAuHQQ4hrnkJoAAAAASUVORK5CYII=')",
-          
-          WebkitBackfaceVisibility: "hidden",
-          WebkitTransitionProperty: "-webkit-transform, opacity",
-          WebkitTransitionDuration: "350ms",
-          WebkitTransitionTimingFunction: "ease-in-out"
+          backgroundImage: "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAABCAIAAACdaSOZAAAAFElEQVQI12M4euYKErp0+tINIAIAuHQQ4hrnkJoAAAAASUVORK5CYII=')"
         };
-        
-        if (qx.core.Environment.get("os.name") == "android") {
-          style.WebkitTransform ="translate(0, 0) rotate(0) scale(1)";
-          style.WebkitTransitionDuration = "150ms";
-          style.WebkitTransitionTimingFunction = "linear";
-        }
-        
+                
         return style;
       }
     },
@@ -311,7 +300,15 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     ---------------------------------------------------------------------------
     */
     
-    "label" : {},
+    "label" : {
+      style : function() {
+        return {
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap"
+        };
+      }
+    },
     "image" : {},
     "input" : {
       style : function() {
