@@ -301,12 +301,17 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     */
     
     "label" : {
-      style : function() {
-        return {
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap"
+      style : function(state) {
+        var e = {
+          overflow: "hidden"
         };
+        
+        if (state.ellipsis) {
+          e.textOverflow = "ellipsis";
+          e.whiteSpace = "nowrap";
+        }
+        
+        return e;
       }
     },
     "image" : {},

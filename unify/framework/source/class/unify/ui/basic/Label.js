@@ -25,6 +25,8 @@ qx.Class.define("unify.ui.basic.Label", {
     if (text) {
       this.setValue(text);
     }
+    
+    this._applyEllipsis(this.getEllipsis());
   },
   
   properties : {
@@ -62,10 +64,16 @@ qx.Class.define("unify.ui.basic.Label", {
       init : false
     },
     // overridden
-    appearance :
-    {
+    appearance : {
       refine: true,
       init: "label"
+    },
+    
+    /** Whether the label text overflow creates an ellipsis */
+    ellipsis : {
+      check: "Boolean",
+      init: true,
+      apply: "_applyEllipsis"
     }
   },
   
@@ -142,6 +150,18 @@ qx.Class.define("unify.ui.basic.Label", {
       this.__contentSize = null;
       this.invalidateLayoutChildren();
       qx.bom.Label.setValue(this.getElement(), value);
+    },
+    
+    /**
+     * Applies ellipsis text overflow to element
+     * @param valuee {Boolean} Ellipsis overflow
+     */
+    _applyEllipsis : function(value) {
+      if (value) {
+        this.addState("ellipsis");
+      } else {
+        this.removeState("ellipsis");
+      }
     }
   }
 });
