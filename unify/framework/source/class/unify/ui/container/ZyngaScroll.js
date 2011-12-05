@@ -347,7 +347,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       this.__updateIndicators();
     },
     
-    _applyShowIndicatorX : function() {
+    _applyShowIndicatorY : function() {
       this.__updateProperties();
       this.__updateIndicators();
     },
