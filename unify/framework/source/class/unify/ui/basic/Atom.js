@@ -20,7 +20,7 @@ qx.Class.define("unify.ui.basic.Atom", {
    */
   construct : function(label, image) {
     this.base(arguments);
-    this._setLayout(new unify.ui.layout.AtomLayout());
+    this._setLayout(new unify.ui.layout.special.AtomLayout());
     
     var imageWidget = this.__imageWidget = new unify.ui.basic.Image(image);
     var labelWidget = this.__labelWidget = new unify.ui.basic.Label(label);

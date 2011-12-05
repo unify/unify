@@ -147,7 +147,7 @@ qx.Class.define("unify.Application",
      *  @return {qx.ui.layout.Abstract} layout
      */
     _getRootLayout : function(){
-      return new qx.ui.layout.Canvas();
+      return new unify.ui.layout.Canvas();
     },
     
     /**

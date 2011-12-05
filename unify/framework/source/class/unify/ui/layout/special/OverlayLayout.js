@@ -11,7 +11,7 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.ui.layout.OverlayLayout", {
+qx.Class.define("unify.ui.layout.special.OverlayLayout", {
   extend : qx.ui.layout.Abstract,
   
   members : {

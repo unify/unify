@@ -11,7 +11,7 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.ui.layout.ScrollLayout", {
+qx.Class.define("unify.ui.layout.special.ScrollLayout", {
   extend : qx.ui.layout.Abstract,
   
   members : {

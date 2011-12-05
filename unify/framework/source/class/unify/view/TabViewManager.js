@@ -27,7 +27,7 @@ qx.Class.define("unify.view.TabViewManager", {
    */
   construct : function(viewManager, layout)
   {
-    this.base(arguments, layout || new qx.ui.layout.VBox());
+    this.base(arguments, layout || new unify.ui.layout.VBox());
     
     if (qx.core.Environment.get("qx.debug"))
     {
@@ -172,7 +172,7 @@ qx.Class.define("unify.view.TabViewManager", {
       var bar=this.__bar;
       if(!bar){
         // TODO: Check in master the next line!
-        var layout = new qx.ui.layout.HBox();
+        var layout = new unify.ui.layout.HBox();
         layout.set({
           alignX: "center",
           alignY: "middle"

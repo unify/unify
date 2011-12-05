@@ -16,7 +16,7 @@ qx.Class.define("unify.ui.container.ToolBar", {
   
   construct : function() {
     this.base(arguments);
-    this._setLayout(new unify.ui.layout.NavigationBar());
+    this._setLayout(new unify.ui.layout.special.NavigationBar());
   },
   
   properties : {
@@ -71,7 +71,7 @@ qx.Class.define("unify.ui.container.ToolBar", {
         }
   
       } else if (config.kind == "segmented") {
-        itemElem = this.__segmented = new unify.ui.container.Composite(new qx.ui.layout.HBox()).set({
+        itemElem = this.__segmented = new unify.ui.container.Composite(new unify.ui.layout.HBox()).set({
           appearance: "toolbar.segmented.container"
         });
         

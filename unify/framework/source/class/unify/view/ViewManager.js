@@ -32,7 +32,7 @@ qx.Class.define("unify.view.ViewManager", {
    */
   construct : function(managerId, layout)
   {
-    this.base(arguments, layout || new qx.ui.layout.Canvas());
+    this.base(arguments, layout || new unify.ui.layout.Canvas());
 
     this.setUserData("viewManager", this); // TODO : Remove
 

@@ -16,7 +16,7 @@ qx.Class.define("unify.ui.container.Bar", {
   
   construct : function(layout) {
     this.base(arguments);
-    this._setLayout(layout || new qx.ui.layout.HBox());
+    this._setLayout(layout || new unify.ui.layout.HBox());
   },
   
   properties : {

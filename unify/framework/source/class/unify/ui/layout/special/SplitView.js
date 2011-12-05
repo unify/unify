@@ -11,7 +11,7 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.ui.layout.SplitView", {
+qx.Class.define("unify.ui.layout.special.SplitView", {
   extend : qx.ui.layout.Abstract,
   
   /**

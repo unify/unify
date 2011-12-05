@@ -23,7 +23,7 @@ qx.Class.define("unify.ui.container.NavigationBar", {
    */
   construct : function(view) {
     this.base(arguments);
-    this._setLayout(new unify.ui.layout.NavigationBar());
+    this._setLayout(new unify.ui.layout.special.NavigationBar());
     
     if (!view || !(view instanceof unify.view.StaticView)) {
       throw new Error("Invalid view! NavigationBar must be attached to a view!")

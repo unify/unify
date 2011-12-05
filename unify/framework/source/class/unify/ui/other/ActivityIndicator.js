@@ -31,7 +31,7 @@ qx.Class.define("unify.ui.other.ActivityIndicator", {
   },
   
   construct : function() {
-    this.base(arguments, new qx.ui.layout.VBox());
+    this.base(arguments, new unify.ui.layout.VBox());
     
     this._showChildControl("image");
     this._showChildControl("label");

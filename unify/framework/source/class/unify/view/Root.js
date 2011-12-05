@@ -29,7 +29,7 @@ qx.Class.define("unify.view.Root", {
     
     this.base(arguments);
     
-    this._setLayout(layout||new qx.ui.layout.Canvas());
+    this._setLayout(layout||new unify.ui.layout.Canvas());
     
     qx.event.Registration.addListener(window, "resize", this.__onResize, this);
   },

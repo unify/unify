@@ -33,7 +33,7 @@ qx.Class.define("unify.view.SplitViewManager",
    */
   construct : function(masterViewManager, detailViewManager)
   {
-    this.base(arguments, new unify.ui.layout.SplitView());
+    this.base(arguments, new unify.ui.layout.special.SplitView());
 
     this.__masterViewManager = masterViewManager;
     this.__detailViewManager = detailViewManager;

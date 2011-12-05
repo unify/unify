@@ -22,9 +22,9 @@ qx.Class.define("unify.ui.container.Scroll", {
    * @param layout {qx.ui.layout.Abstract} Layout of container element
    */
   construct : function(layout) {
-    this.__childLayout = layout || new qx.ui.layout.Basic(); // TODO: Switch over to ChildrenHandlingLayout
+    this.__childLayout = layout || new unify.ui.layout.Basic(); // TODO: Switch over to ChildrenHandlingLayout
     this.base(arguments);
-    this._setLayout(new qx.ui.layout.Canvas());
+    this._setLayout(new unify.ui.layout.Canvas());
 
     var contentWidget = this.__contentWidget; // = new unify.ui.container.Composite(childLayout);
     

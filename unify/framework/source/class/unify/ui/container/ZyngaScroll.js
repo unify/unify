@@ -32,9 +32,9 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     this.base(arguments);
 
     // Child container layout  
-    this.setLayout(layout ||new qx.ui.layout.Basic());
+    this.setLayout(layout ||new unify.ui.layout.Basic());
     // Scroller layout
-    this._setLayout(new unify.ui.layout.ScrollLayout());
+    this._setLayout(new unify.ui.layout.special.ScrollLayout());
 
     var contentWidget = this.getChildrenContainer();
     this._add(contentWidget, {

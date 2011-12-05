@@ -13,7 +13,7 @@
  *
  * Layout for navigation bar
  */
-qx.Class.define("unify.ui.layout.NavigationBar", {
+qx.Class.define("unify.ui.layout.special.NavigationBar", {
   extend : qx.ui.layout.Abstract,
   
   statics : {

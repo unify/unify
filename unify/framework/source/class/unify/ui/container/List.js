@@ -17,7 +17,7 @@ qx.Class.define("unify.ui.container.List", {
   construct : function() {
     this.base(arguments);
     
-    var layout = new qx.ui.layout.VBox();
+    var layout = new unify.ui.layout.VBox();
     this._setLayout(layout);
   },
   
@@ -49,7 +49,7 @@ qx.Class.define("unify.ui.container.List", {
           })
         );
         
-        var containerLayout = new qx.ui.layout.Grid();
+        var containerLayout = new unify.ui.layout.Grid();
         containerLayout.setColumnFlex(0, 1);
         var container = new unify.ui.container.Composite(containerLayout);
         container.setAppearance("list.content");

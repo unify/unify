@@ -46,7 +46,7 @@ qx.Class.define("unify.ui.container.Overlay", {
    * @param arrowAlignment {String} Alignment of arrow on container (top, center, bottom or left, center, right)
    */
   construct : function(arrowDirection, arrowAlignment) {
-    this.base(arguments, new unify.ui.layout.OverlayLayout());
+    this.base(arguments, new unify.ui.layout.special.OverlayLayout());
     
     this._showChildControl("container");
     this._excludeChildControl("arrow");
@@ -90,7 +90,7 @@ qx.Class.define("unify.ui.container.Overlay", {
           alignment: this.__arrowAlignment
         });
       } else if (id == "container") {
-        control = new unify.ui.container.Composite(new qx.ui.layout.Canvas());
+        control = new unify.ui.container.Composite(new unify.ui.layout.Canvas());
         control.setAppearance(this.getAppearance() + "/" + id);
         this._addAt(control, 0);
       }

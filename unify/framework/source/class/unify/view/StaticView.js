@@ -45,7 +45,7 @@ qx.Class.define("unify.view.StaticView",
   
   construct : function(layout)
   {
-    this.base(arguments, layout || new qx.ui.layout.VBox());
+    this.base(arguments, layout || new unify.ui.layout.VBox());
     
     this.__id = qx.lang.String.hyphenate(this.constructor.basename).substring(1).toLowerCase();
   },
