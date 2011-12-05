@@ -134,7 +134,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     {
       init : true,
       check : "Boolean",
-      apply : "_update2AxisScroll"
+      apply : "_applyShowIndicatorX"
     },
 
     /** Whether the vertical scroll indicator should be displayed */
@@ -142,7 +142,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     {
       init : true,
       check : "Boolean",
-      apply : "_update2AxisScroll"
+      apply : "_applyShowIndicatorY"
     },
 
     // overridden
@@ -181,6 +181,8 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     __scroller : null,
     __verticalScrollIndicator : null,
     __horizontalScrollIndicator : null,
+    
+    __inTouch : false,
 
     /*
      ---------------------------------------------------------------------------
@@ -260,9 +262,16 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       
       var self = this;
       var render = function(left, top, zoom, event) {
+        self.__inAnimation = !!self.__inTouch;
         contentWidget.setStyle({transform:'translate3d(' + (-left) + 'px,' + (-top) + 'px,0) scale(' + zoom + ')'});
-        self.__scrollLeft=left;
-        self.__scrollTop=top;
+        
+        if (self.getEnableScrollX()) {
+          self.__scrollLeft=left;
+        }
+        if (self.getEnableScrollY()) {
+          self.__scrollTop=top;
+        }
+        
         self.__renderIndicators();
         
         if (self.hasListener("scroll")) {
@@ -273,6 +282,12 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
           if (self.hasListener("scrollend")) {
             self.fireEvent("scrollend");
           }
+          var sef = self.__scrollerEndFnt;
+          if (sef) {
+            sef();
+            self.__scrollerEndFnt = null;
+          }
+          self.__inAnimation = false;
         }
       };
       
@@ -292,25 +307,49 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
      ---------------------------------------------------------------------------
      */
 
-    // property apply
-    _update2AxisScroll : function()
-    {
-      this.__twoAxisScroll = this.getEnableScrollX() && this.getEnableScrollY() && this.getShowIndicatorX() && this.getShowIndicatorY();
+    _applyEnableScrollX : function(value) {
+      var left = this.__scrollLeft;
+      var top = this.__scrollTop;
+      
+      delete this.__scroller;
+      this.__scroller = this.__getScroller();
+      
+      this.__updateDimensions();
+      this.__updateProperties();
+      this.__updateIndicators();
     },
+    _applyEnableScrollY : function(value) {
+      var self = this;
+      
+      this.__scrollerEndFnt = function() {
+        var left = self.__scrollLeft;
+        var top = self.__scrollTop;
+        
+        delete self.__scroller;
+        var scroller = self.__scroller = self.__getScroller();
+  
+        self.__updateDimensions();
+        self.__updateProperties();
+        self.__updateIndicators();
 
-    _applyEnableScrollX : function(value,old){
-      this.__scroller.options.scrollingX=!!value;
-      this._update2AxisScroll();
+        scroller.scrollTo(left, top);
+        self.getChildrenContainer().setStyle({transform:'translate3d(' + (-left) + 'px,' + (-top) + 'px,0)'});
+      };
       
-      delete this.__scroller;
-      this.__scroller = this.__getScroller();
+      if (!this.__inAnimation) {
+        this.__scrollerEndFnt();
+        this.__scrollerEndFnt = null;
+      }
     },
-    _applyEnableScrollY : function(value,old){
-      this.__scroller.options.scrollingY=!!value;
-      this._update2AxisScroll();
-      
-      delete this.__scroller;
-      this.__scroller = this.__getScroller();
+    
+    _applyShowIndicatorX : function() {
+      this.__updateProperties();
+      this.__updateIndicators();
+    },
+    
+    _applyShowIndicatorX : function() {
+      this.__updateProperties();
+      this.__updateIndicators();
     },
     
     _applyBounces : function() {
@@ -533,17 +572,26 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       this.scrollTo(left, top, true);
     },
 
+    __updateProperties : function() {
+      //cache values
+      this.__enableScrollX = this.getEnableScrollX();
+      this.__enableScrollY = this.getEnableScrollY();
+      this.__showIndicatorX = this.getShowIndicatorX();
+      this.__showIndicatorY = this.getShowIndicatorY();
+    },
+
     /**
      * Handler for touch start event
      *
      * @param e {qx.event.type.Touch} Touch event
      */
     __onTouchStart : function(e){
-      //cache values
-      this.__enableScrollX = this.getEnableScrollX();
-      this.__enableScrollY = this.getEnableScrollY();
-      this.__showIndicatorX = this.getShowIndicatorX();
-      this.__showIndicatorY = this.getShowIndicatorY();
+      this.__inTouch = true;
+      this.__updateProperties();
+
+      if (!(this.__enableScrollX || this.__enableScrollY)) {
+        return;
+      }
 
       var ne=e.getNativeEvent();
       var touches=ne.touches;
@@ -555,19 +603,19 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
 
       this.__scroller.doTouchStart(touches, +ne.timeStamp);
       e.preventDefault();
-      this.addListenerOnce("touchmove",this.__showIndicators,this);
+      this.addListenerOnce("touchmove",this.__updateIndicators,this);
     },
 
     /**
      * shows scroll indicators depending on configuration
      * axis must be scroll enabled and the indicator must be allowed to show
      */
-    __showIndicators: function(){
-      if (this.__enableScrollX && this.__showIndicatorX) {
+    __updateIndicators: function(){
+      if (this.__enableScrollX && this.__showIndicatorX && this.__inTouch) {
         this.__horizontalScrollIndicator.setVisible(true);
       }
 
-      if (this.__enableScrollY && this.__showIndicatorY) {
+      if (this.__enableScrollY && this.__showIndicatorY && this.__inTouch) {
         this.__verticalScrollIndicator.setVisible(true);
       }
     },
@@ -588,6 +636,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
      * @param e {qx.event.type.Touch} Touch event
      */
     __onTouchEnd : function(e){
+      this.__inTouch = false;
       this.__scroller.doTouchEnd(+e.getNativeEvent().timeStamp);
     },
     
