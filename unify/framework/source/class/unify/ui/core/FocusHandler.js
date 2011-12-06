@@ -33,10 +33,21 @@ qx.Class.define("unify.ui.core.FocusHandler", {
       root.addListener("keypress", this.__onKeyPress, this);
     },
     
+    /**
+     * Returns if widget is a focus root
+     *
+     * @param widget {unify.ui.core.Widget} Widget to check for current root
+     * @return {Boolean} Is widget a focus root
+     */
     isFocusRoot : function(widget) {
       return (widget == this.__currentRoot);
     },
     
+    /**
+     * Handler for key presses
+     *
+     * @param e {Event} Key press event
+     */
     __onKeyPress : function(e) {
       if (e.getKeyIdentifier() != "Tab") {
         return;

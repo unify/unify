@@ -17,6 +17,9 @@ qx.Mixin.define("unify.ui.core.MInteractionState", {
   },
   
   members : {
+    /**
+     * Set up event listener for interaction states
+     */
     _applyMInteractionState : function() {
       var supportTouch = true;
       var supportMouse = true;
@@ -35,18 +38,30 @@ qx.Mixin.define("unify.ui.core.MInteractionState", {
       }
     },
     
+    /**
+     * Adds hover state to widget
+     */
     __MInteractionStateAddHover : function() {
       this.addState("hover");
     },
     
+    /**
+     * Removes hover state to widget
+     */
     __MInteractionStateRemoveHover : function() {
       this.removeState("hover");
     },
     
+    /**
+     * Adds pressed state to widget
+     */
     __MInteractionStateAddPressed : function() {
       this.addState("pressed");
     },
     
+    /**
+     * Removes pressed state to widget
+     */
     __MInteractionStateRemovePresse : function() {
       this.removeState("pressed");
     }  

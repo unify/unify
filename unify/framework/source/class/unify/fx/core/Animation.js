@@ -44,6 +44,19 @@ qx.Class.define("unify.fx.core.Animation", {
     __counter : null,
     __percent : null,
     
+    /**
+     * Start animation flow
+     *
+     * @param stepCallback {Function} Callback for every step in animation flow
+     * @param verifyCallback {Function} Callback that verifies that the step should be executed
+     * @param completedCallback {Function} Callback that is called after animation is finished
+     * @param duration {Integer} Duration of animation in milliseconds
+     * @param easingMethod {Function} Function that calculates the easing method
+     * @param startPosition {Float?0} Float value representing starting point (0.0 ... 1.0)
+     * @param context {Object?null} Context of callbacks
+     *
+     * @return {Integer?null} ID of animation
+     */
     start: function(stepCallback, verifyCallback, completedCallback, duration, easingMethod, startPosition, context) {
       if (!startPosition) {
         startPosition = 0;
@@ -132,6 +145,11 @@ qx.Class.define("unify.fx.core.Animation", {
       return id;
     },
     
+    /**
+     * Stops animation flow
+     *
+     * @param id {Integer} ID of animation to stop
+     */
     stop: function(id) {
       var running = this.__running;
       
@@ -143,10 +161,22 @@ qx.Class.define("unify.fx.core.Animation", {
       return cleared;
     },
     
+    /**
+     * Returns if animation is running
+     *
+     * @param id {Integer} ID of animation to stop
+     * @return {Boolean} Animation is running
+     */
     isRunning: function(id) {
       this.__running[id] != null;
     },
     
+    /**
+     * Returns position in percent of animation
+     *
+     * @param id {Integer} ID of animation to stop
+     * @return {Float} Animation position (0.0 ... 1.0)
+     */
     getPosition : function(id) {
       return this.__percent[id];
     }

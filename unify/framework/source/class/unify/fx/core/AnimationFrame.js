@@ -19,6 +19,12 @@ qx.Class.define("unify.fx.core.AnimationFrame", {
   type: "static",
   
   statics: {
+    /**
+     * Request animation frame
+     *
+     * @param callback {Function} Callback function if animation frame is hitten
+     * @param root {Object?null} Root node
+     */
     request : function(callback, root) {
       requestAnimationFrame(callback, root);
     }

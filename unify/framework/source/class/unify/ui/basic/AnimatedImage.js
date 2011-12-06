@@ -24,10 +24,11 @@ qx.Class.define("unify.ui.basic.AnimatedImage", {
   },
   
   members : {
-    renderLayout : function(left, top, width, height, prevent) {
-      this.base(arguments, left, top, width, height, prevent);
-    },
-    
+    /**
+     * Event handler for visibility changes
+     *
+     * @param e {qx.event.type.Data} Change event
+     */
     __onChangeVisibility : function(e) {
       if (e.getData() == "visible") {
         this.setAnimateRotateInfinite(true);

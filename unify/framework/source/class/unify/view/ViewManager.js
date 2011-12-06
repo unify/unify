@@ -695,18 +695,19 @@ qx.Class.define("unify.view.ViewManager", {
 
     /**
      * //TODO refactor to share code with __animateLayers?
-     * @param target {Element} DOM element of layer
+     *
+     * @param view {unify.view.StaticView} View to animate
      * @param show {Boolean} true for show, false for hide
      * @param callback {Function} optional callback to execute after animation
      */
     __animateModal: function(view,show,callback){
       var self = this;
-      var AnimationDuration = qx.theme.manager.Appearance.getInstance().styleFrom("view").WebkitTransitionDuration;
+      var AnimationDuration = qx.theme.manager.Appearance.getInstance().styleFrom("view").transitionDuration;
 
 
       view.setStyle({
-        "webkitTransitionDuration": "0ms",
-        "webkitTransform": show ? this.__positions.bottom : this.__positions.center
+        "transitionDuration": "0ms",
+        "transform": show ? this.__positions.bottom : this.__positions.center
       });
 
 
@@ -732,8 +733,8 @@ qx.Class.define("unify.view.ViewManager", {
 
 
         view.setStyle({
-          "webkitTransitionDuration" : AnimationDuration,
-          "webkitTransform": show ? self.__positions.center : self.__positions.bottom
+          "transitionDuration" : AnimationDuration,
+          "transform": show ? self.__positions.center : self.__positions.bottom
         });
       };
 

@@ -332,10 +332,16 @@ qx.Class.define("unify.ui.core.Widget", {
       }
     },
     
+    /**
+     * Adds focus to element
+     */
     tabFocus : function() {
       this.addState("active");
     },
     
+    /**
+     * Removes focus from element
+     */
     tabBlur : function() {
       this.removeState("active");
     },
@@ -630,7 +636,9 @@ qx.Class.define("unify.ui.core.Widget", {
         left: pos.left,
         top: pos.top,
         width: dim.width,
-        height: dim.height
+        height: dim.height,
+        padding: this.__padding,
+        border: this.__border
       };
     },
     

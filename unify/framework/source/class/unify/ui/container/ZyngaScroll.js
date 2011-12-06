@@ -257,6 +257,11 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       };
     },
 
+    /**
+     * Returns new scroller object
+     *
+     * @return {Scroller} Zynga scroller object
+     */
     __getScroller : function() {
       var contentWidget = this.getChildrenContainer();
       
@@ -572,6 +577,9 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       this.scrollTo(left, top, true);
     },
 
+    /**
+     * Update cached scroll properties
+     */
     __updateProperties : function() {
       //cache values
       this.__enableScrollX = this.getEnableScrollX();
@@ -650,6 +658,9 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       this.__verticalScrollIndicator.setVisible(false);
     },
     
+    /**
+     * Hides indicators
+     */
     __hideIndicators : function() {
       this.__verticalScrollIndicator.setVisible(false);
       this.__horizontalScrollIndicator.setVisible(false);

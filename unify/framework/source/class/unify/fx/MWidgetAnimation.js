@@ -14,36 +14,43 @@
 qx.Mixin.define("unify.fx.MWidgetAnimation", {
   
   properties : {
+    /** {Map} Position to animate to */
     animatePosition : {
       apply : "__mwaApplyAnimationPosition",
       nullable: true
     },
     
+    /** {Integer} Duration of position animation in milliseconds */
     animatePositionDuration : {
       check: "Integer",
       init: 5000
     },
     
+    /** {Float} Opacity to animate to */
     animateOpacity : {
       apply : "__mwaApplyAnimationOpacity",
       nullable: true
     },
     
+    /** {Integer} Duration of opacity animation in milliseconds */
     animateOpacityDuration : {
       check: "Integer",
       init: 5000
     },
     
+    /** {Integer} Rotation level in degree to animate to */
     animateRotate : {
       apply : "__mwaApplyAnimationRotate",
       nullable: true
     },
     
+    /** {Integer} Duration of rotation animation in milliseconds */
     animateRotateDuration : {
       check: "Integer",
       init: 5000
     },
     
+    /** {Boolean} If true rotation animation is infinite, duration is time for one round */
     animateRotateInfinite : {
       check: "Boolean",
       init: false
@@ -59,6 +66,11 @@ qx.Mixin.define("unify.fx.MWidgetAnimation", {
     __mwAnimationRotateReset : null,
     __mwScale : null,
     
+    /**
+     * Animation method for position
+     *
+     * @param value {Map} Position to animate to
+     */
     __mwaApplyAnimationPosition : function(value) {
       if (value != null) {
         var animation = this.__mwAnimationPosition;
@@ -84,6 +96,11 @@ qx.Mixin.define("unify.fx.MWidgetAnimation", {
       }
     },
     
+    /**
+     * Animation method for opacity
+     *
+     * @param value {Float} Opacity to animate to
+     */
     __mwaApplyAnimationOpacity : function(value) {
       if (value != null) {
         var animation = this.__mwAnimationOpacity;
@@ -109,6 +126,11 @@ qx.Mixin.define("unify.fx.MWidgetAnimation", {
       }
     },
     
+    /**
+     * Animation method for rotation
+     *
+     * @param value {Integer} Rotation level to animate to
+     */
     __mwaApplyAnimationRotate : function(value) {
       if (value != null) {
         var animation = this.__mwAnimationRotate;

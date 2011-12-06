@@ -51,6 +51,9 @@ qx.Class.define("unify.ui.layout.special.ScrollLayout", {
       }
     },
     
+    /**
+     * Rebuild children cache
+     */
     __rebuildCache : function() {
       var widgets = this._getLayoutChildren();
       

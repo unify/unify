@@ -22,6 +22,8 @@ qx.Class.define("unify.view.Root", {
   
   /**
    * @param rootElement {Element} DOM element the widget root is bound to
+   * @param rootEventElement {Element} DOM element to bind global event listeners to
+   * @param layout {qx.ui.layout.Abstract} Layout of root element
    */
   construct : function(rootElement,rootEventElement,layout) {
     this.__rootElement = rootElement;
@@ -89,6 +91,11 @@ qx.Class.define("unify.view.Root", {
       return rootSizeHint;
     },
     
+    /**
+     * Returns size hint of root element, this is always dimension of root element (most of the time browser viewport)
+     *
+     * @return {Map} Calculated size of root element
+     */
     _getSizeHint : function() {
       var root = this.__rootElement;
       

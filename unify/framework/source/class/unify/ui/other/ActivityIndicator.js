@@ -24,6 +24,7 @@ qx.Class.define("unify.ui.other.ActivityIndicator", {
       init: "activityindicator"
     },
     
+    /** {String} Text of activity indicator */
     text : {
       check: "String",
       apply: "_applyText"
