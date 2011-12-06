@@ -354,6 +354,28 @@ qx.Theme.define("unify.theme.dark.Appearance", {
 
         return e;
       }
+    },
+    
+    
+    "slider" : {
+      style : function(state) {
+        return {
+          height: 30,
+          backgroundColor: "#242424",
+          padding: "5 10",
+          borderRadius: "14px"
+        };
+      }
+    },
+    "slider/knob" : {
+      style : function(state) {
+        return {
+          height: "20px",
+          width: "20px",
+          borderRadius: "10px",
+          backgroundColor: "#ddd"
+        };
+      }
     }
   }
 });
