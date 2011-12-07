@@ -62,7 +62,13 @@ qx.Class.define("unify.ui.core.Widget", {
     touchcancel : "qx.event.type.Touch",
 
     /** Fired when a finger taps on the screen. */
-    tap : "qx.event.type.Touch"
+    tap : "qx.event.type.Touch",
+    
+    /** Fired if widget is focusable {@link #focusable} and gets focus */
+    focus : "qx.event.type.Focus",
+
+    /** Fired if widget is focusable {@link #focusable} and looses focus */
+    blur : "qx.event.type.Focus"
   },
   
   properties : {
