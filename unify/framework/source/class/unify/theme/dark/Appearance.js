@@ -361,8 +361,17 @@ qx.Theme.define("unify.theme.dark.Appearance", {
       style : function(state) {
         return {
           height: 30,
-          backgroundColor: "#242424",
           padding: "5 10",
+          borderRadius: "15px",
+          backgroundColor: "#242424"
+        };
+      }
+    },
+    "slider/bar" : {
+      style : function(state) {
+        return {
+          margin: "5",
+          backgroundColor: "#999",
           borderRadius: "14px"
         };
       }

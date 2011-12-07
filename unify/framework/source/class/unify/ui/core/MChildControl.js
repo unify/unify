@@ -229,9 +229,10 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
      */
     __childControlUpdateAppearanceWrapper : function() {
       var original = this.updateAppearance;
+      var context = this;
       
       var newFnt = function() {
-        original();
+        original.call(context);
         
         // Update child controls
         var controls = this.__childControls;
@@ -247,7 +248,7 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
         }
       };
       
-      return qx.lang.Function.bind(newFnt, this);
+      return newFnt;
     },
     
     /**
@@ -256,9 +257,10 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
      */
     __childControlAddStateWrapper : function() {
       var original = this.addState;
+      var context = this;
       
       var newFnt = function(state) {
-        original(state);
+        original.call(context, state);
         
         // Forward state change to child controls
         var forward = this._forwardStates;
@@ -277,7 +279,7 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
         }
       };
       
-      return qx.lang.Function.bind(newFnt, this);
+      return newFnt;
     },
     
     /**
@@ -286,9 +288,10 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
      */
     __childControlRemoveStateWrapper : function() {
       var original = this.removeState;
+      var context = this;
       
       var newFnt = function(state) {
-        original(state);
+        original.call(context, state);
         
         // Forward state change to child controls
         var forward = this._forwardStates;
@@ -306,7 +309,7 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
         }
       };
       
-      return qx.lang.Function.bind(newFnt, this);
+      return newFnt;
     },
     
     /**
@@ -315,9 +318,10 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
      */
     __childControlReplaceStateWrapper : function() {
       var original = this.replaceState;
+      var context = this;
       
       var newFnt = function(old, value) {
-        original(old, value);
+        original.call(context, old, value);
         
         // Forward state change to child controls
         var forward = this._forwardStates;
@@ -335,7 +339,7 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
         }
       };
       
-      return qx.lang.Function.bind(newFnt, this);
+      return newFnt;
     },
     
     /**

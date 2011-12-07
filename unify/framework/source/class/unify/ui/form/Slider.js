@@ -34,17 +34,33 @@ qx.Class.define("unify.ui.form.Slider", {
       apply : "_applyValue",
       event : "changeValue",
       init: 0.0
+    },
+    
+    /** {String} Direction of slider (horizontal or vertical) */
+    direction : {
+      check: ["horizontal", "vertical"],
+      apply : "_applyDireciton",
+      init: "horizontal"
     }
   },
   
   construct : function() {
     this.base(arguments);
     
+    this._forwardStates = {
+      "hover" : true,
+      "pressed" : true
+    };
+    
     this._setLayout(new unify.ui.layout.Canvas());
+    this._showChildControl("bar");
     this._showChildControl("knob");
   },
   
   members: {
+    /* {Map} Forward states for child controls */
+    _forwardStates : null,
+    
     /**
      * Create child controls
      *
@@ -53,13 +69,22 @@ qx.Class.define("unify.ui.form.Slider", {
     _createChildControlImpl : function(id) {
       var control;
       
-      switch(id)
-      {
+      switch(id) {
         case "knob":
           control = new unify.ui.basic.Content();
           control.addListener("touchstart", this.__touchStart, this);
 
           this._add(control);
+          break;
+        case "bar":
+          control = new unify.ui.basic.Content();
+
+          this._add(control, {
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0
+          });
           break;
       }
 
