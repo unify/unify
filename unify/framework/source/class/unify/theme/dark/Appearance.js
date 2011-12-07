@@ -359,12 +359,24 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     
     "slider" : {
       style : function(state) {
-        return {
-          height: 30,
-          padding: "5 10",
-          borderRadius: "15px",
-          backgroundColor: "#242424"
-        };
+        console.log(JSON.stringify(state));
+        if (state.horizontalDirection) {
+          var e = {
+            height: 30,
+            padding: "5 10",
+            borderRadius: "15px",
+            backgroundColor: "#242424"
+          };
+        } else if (state.verticalDirection) {
+          var e = {
+            width: 30,
+            padding: "10 5",
+            borderRadius: "15px",
+            backgroundColor: "#242424"
+          };
+        }
+        
+        return e;
       }
     },
     "slider/bar" : {
