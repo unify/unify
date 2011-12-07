@@ -44,6 +44,10 @@ qx.Class.define("unify.ui.form.Slider", {
     }
   },
   
+  events : {
+    clickOnBar: "qx.event.type.Data"
+  },
+  
   construct : function() {
     this.base(arguments);
     
@@ -55,6 +59,8 @@ qx.Class.define("unify.ui.form.Slider", {
     this._setLayout(new unify.ui.layout.Canvas());
     this._showChildControl("bar");
     this._showChildControl("knob");
+    
+    this.addListener("tap", this.__onTap, this);
   },
   
   members: {
@@ -137,19 +143,11 @@ qx.Class.define("unify.ui.form.Slider", {
       }
       
       this.__knob.setStyle({
-        transform: "translate(" + diff + "px, 0)"
+        transform: "translate(" + Math.round(diff) + "px, 0)"
       });
       
       var value = this.__value = diff / calcWidth;
       this.setValue(value);
-    },
-    
-    _applyValue : function(value) {
-      if (value != this.__value) {
-        this.__knob.setStyle({
-          transform: "translate(" + Math.round(this.__calcWidth*value) + "px, 0)"
-        });
-      }
     },
     
     /**
@@ -161,6 +159,50 @@ qx.Class.define("unify.ui.form.Slider", {
       root.removeListener("touchend", this.__touchEnd, this);
 
       this.__knob = null;
+    },
+    
+    /**
+     * Apply value to knob positioning setting
+     *
+     * @param value {Float} Percentage position value
+     */
+    _applyValue : function(value) {
+      if (value != this.__value) {
+        var posInfo = this.getChildControl("bar").getPositionInfo();
+        var knobPosInfo = this.getChildControl("knob").getPositionInfo();
+        var modLeft = posInfo.padding.left + posInfo.border.left;
+        var availWidth = posInfo.width - posInfo.padding.right - posInfo.border.right - modLeft - (knobPosInfo.width/2);
+
+        this.getChildControl("knob").setStyle({
+          transform: "translate(" + Math.round(availWidth * value + modLeft) + "px, 0)"
+        });
+        this.__value = value;
+      }
+    },
+    
+    /**
+     * Tap event to change value of slider
+     *
+     * @param e {Event} Tap event
+     */
+    __onTap : function(e) {
+      var overallWidth = this.getPositionInfo().width;
+      var barWidth = this.getChildControl("bar").getPositionInfo().width;
+      
+      var left = e.getViewportLeft();
+      var element = this.getElement();
+      var leftElement = qx.bom.element.Location.getLeft(element);
+      
+      var mod = Math.round((barWidth - overallWidth) / 2);
+      
+      var clickedPos = left - leftElement + mod;
+      if (clickedPos < 0) {
+        clickedPos = 0;
+      } else if (clickedPos > barWidth) {
+        clickedPos = barWidth;
+      }
+      
+      this.fireDataEvent("clickOnBar", clickedPos / barWidth);
     }
   }
 });
