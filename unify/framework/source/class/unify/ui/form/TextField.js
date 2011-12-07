@@ -173,6 +173,9 @@ qx.Class.define("unify.ui.form.TextField", {
       }
     },
     
+    /**
+     * Blur handler to fire changeValue event
+     */
     __onBlur : function() {
       if (this.__changed) {
         this.fireDataEvent("changeValue", this.getValue());
