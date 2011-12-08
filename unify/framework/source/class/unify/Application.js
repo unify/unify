@@ -66,6 +66,14 @@ qx.Class.define("unify.Application",
       qx.bom.Event.addNativeListener(rootElement, "click", this.__onClick);
       var root = this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), rootLayout);
       
+      // Add box sizing css node
+      var st = document.createElement("style");
+      st.type = "text/css";
+      var prop = qx.lang.String.hyphenate(qx.bom.element.Style.property("boxSizing"));
+      st.innerHTML = " * { " + prop + ": border-box; } ";
+      document.getElementsByTagName("head")[0].appendChild(st);
+      
+      // Support focus handling
       unify.ui.core.FocusHandler.getInstance().connectTo(root);
 
       // Configure document
