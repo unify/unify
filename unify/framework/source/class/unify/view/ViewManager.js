@@ -557,18 +557,18 @@ qx.Class.define("unify.view.ViewManager", {
     {
       "3d" :
       {
-        bottom : "translate3d(0,100%,0)",
-        right : "translate3d(100%,0,0)",
-        left : "translate3d(-100%,0,0)",
-        center : "translate3d(0,0,0)"
+        bottom : unify.bom.Tranform.accelTranslate(0, "100%"),
+        right : unify.bom.Tranform.accelTranslate("100%", 0),
+        left : unify.bom.Tranform.accelTranslate("-100%", 0),
+        center : unify.bom.Tranform.accelTranslate(0, 0)
       },
 
       "2d" :
       {
-        bottom : "translate(0,100%)",
-        right : "translate(100%,0)",
-        left : "translate(-100%,0)",
-        center : "translate(0,0)"
+        bottom : unify.bom.Tranform.translate(0, "100%"),
+        right : unify.bom.Tranform.translate("100%", 0),
+        left : unify.bom.Tranform.translate("-100%", 0),
+        center : unify.bom.Tranform.translate(0, 0)
       }
     }),
 

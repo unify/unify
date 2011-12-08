@@ -268,7 +268,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       var self = this;
       var render = function(left, top, zoom, event) {
         self.__inAnimation = !!self.__inTouch;
-        contentWidget.setStyle({transform:'translate3d(' + (-left) + 'px,' + (-top) + 'px,0) scale(' + zoom + ')'});
+        contentWidget.setStyle({transform:unify.bom.Tranform.accelTranslate((-left) + 'px', (-top) + 'px') + ' scale(' + zoom + ')'});
         
         if (self.getEnableScrollX()) {
           self.__scrollLeft=left;
@@ -338,7 +338,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
         self.__updateIndicators();
 
         scroller.scrollTo(left, top);
-        self.getChildrenContainer().setStyle({transform:'translate3d(' + (-left) + 'px,' + (-top) + 'px,0)'});
+        self.getChildrenContainer().setStyle({transform:unify.bom.Tranform.accelTranslate((-left) + 'px', (-top) + 'px')});
       };
       
       if (!this.__inAnimation) {
