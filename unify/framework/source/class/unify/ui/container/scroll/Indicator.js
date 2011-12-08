@@ -70,8 +70,8 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
     this.setStyle({
       opacity: 0,
       zIndex: 10,
-      WebkitTransitionProperty: "opacity",
-      WebkitTransitionDuration: "0.25s"
+      transitionProperty: "opacity",
+      transitionDuration: "0.25s"
     });
   },
 
@@ -142,7 +142,7 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
         width: thickness,
         height: thickness,
         position: 'absolute',
-        WebkitTransformOrigin: 'left top'
+        transformOrigin: 'left top'
       });
       Style.setStyles(this.__endElem, {
         background: bgstyle,

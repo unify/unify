@@ -648,18 +648,18 @@ qx.Class.define("unify.view.ViewManager", {
      */
     __animateLayers : function(toView, fromView, direction) {
       var self = this;
-      var AnimationDuration = qx.theme.manager.Appearance.getInstance().styleFrom("view").WebkitTransitionDuration;
+      var AnimationDuration = qx.theme.manager.Appearance.getInstance().styleFrom("view").transitionDuration;
       
       direction = direction || "in";
       
       toView.setStyle({
-        "webkitTransitionDuration": "0ms",
-        "webkitTransform": (direction == "in") ? this.__positions.right : this.__positions.left
+        "transitionDuration": "0ms",
+        "transform": (direction == "in") ? this.__positions.right : this.__positions.left
       });
       
       fromView.setStyle({
-        "webkitTransitionDuration": "0ms",
-        "webkitTransform": this.__positions.center
+        "transitionDuration": "0ms",
+        "transform": this.__positions.center
       });
       
       var visibilityAction = function() {
@@ -669,18 +669,18 @@ qx.Class.define("unify.view.ViewManager", {
         
         var fromViewElement = fromView.getElement();
         var transitionEndFnt = function() {
-          qx.bom.Event.removeNativeListener(fromViewElement, "webkitTransitionEnd", transitionEndFnt);
+          qx.bom.Event.removeNativeListener(fromViewElement, "transitionEnd", transitionEndFnt);
           fromView.setVisibility("hidden");
         };
-        qx.bom.Event.addNativeListener(fromViewElement, "webkitTransitionEnd", transitionEndFnt);
+        qx.bom.Event.addNativeListener(fromViewElement, "transitionEnd", transitionEndFnt);
         
         toView.setStyle({
-          "webkitTransitionDuration" : AnimationDuration,
-          "webkitTransform": self.__positions.center
+          "transitionDuration" : AnimationDuration,
+          "transform": self.__positions.center
         });
         fromView.setStyle({
-          "webkitTransitionDuration" : AnimationDuration,
-          "webkitTransform": (direction == "in") ? self.__positions.left : self.__positions.right
+          "transitionDuration" : AnimationDuration,
+          "transform": (direction == "in") ? self.__positions.left : self.__positions.right
         });
       };
       
@@ -719,7 +719,7 @@ qx.Class.define("unify.view.ViewManager", {
 
 
         var transitionEndFnt = function() {
-          qx.bom.Event.removeNativeListener(viewElement, "webkitTransitionEnd", transitionEndFnt);
+          qx.bom.Event.removeNativeListener(viewElement, "transitionEnd", transitionEndFnt);
           if(!show){
             view.setActive(false);
             view.hide();
@@ -729,7 +729,7 @@ qx.Class.define("unify.view.ViewManager", {
             callback();
           }
         };
-        qx.bom.Event.addNativeListener(viewElement, "webkitTransitionEnd", transitionEndFnt);
+        qx.bom.Event.addNativeListener(viewElement, "transitionEnd", transitionEndFnt);
 
 
         view.setStyle({
