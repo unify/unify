@@ -14,7 +14,7 @@
 qx.Class.define("unify.view.TabViewManager", {
   extend : unify.ui.container.Composite,
   implement : [unify.view.IViewManager],
-  
+
   /*
   *****************************************************************************
      CONSTRUCTOR
@@ -28,30 +28,30 @@ qx.Class.define("unify.view.TabViewManager", {
   construct : function(viewManager, layout)
   {
     this.base(arguments, layout || new unify.ui.layout.VBox());
-    
+
     if (qx.core.Environment.get("qx.debug"))
     {
       if (viewManager == null) {
         throw new Error("TabViewManager needs a ViewManager at construction time!");
       }
     }
-    
+
     // Maps root views to full path objects
     this.__paths = {};
-    
+
     // Maps of views controlled by this manager
     this.__viewmap = {};
-    
+
     // Remember view manager and react on changes of its path
     this.__viewManager = viewManager;
     viewManager.addListener("changePath", this.__onViewManagerChangePath, this);
-    
+
     this.add(viewManager, {flex: 1});
-    
+
     var bar = this.__getBar();
     bar.setHeight(49);
     this.add(bar);
-    this._makeNavigatable(bar);
+    //this._makeNavigatable(bar);
   },
 
 
@@ -61,16 +61,16 @@ qx.Class.define("unify.view.TabViewManager", {
      PROPERTIES
   *****************************************************************************
   */
-  
-  properties : 
+
+  properties :
   {
     /** ID of selected view */
-    selected : 
+    selected :
     {
       check : "String",
       event : "changeSelected",
       nullable : true,
-      apply : "_applySelected"      
+      apply : "_applySelected"
     }
   },
 
@@ -85,30 +85,27 @@ qx.Class.define("unify.view.TabViewManager", {
   members :
   {
     __paths : null,
-  
+
     /** {unify.view.ViewManager} Instance of attached view manager */
     __viewManager : null,
-    
-    /** {Element} Container of "bar" and "pane" */
-    __element : null,
-    
+
     /** {Element} Root element which is used for the button bar */
     __bar : null,
-    
+
     /** {Element} Root element of the attached view manager */
     __pane : null,
-    
+
     __viewmap : null,
-    
+
     /**
      * Returns the currently selected view instance
      *
      * @return {unify.view.StaticView} View instance which is currently selected
      */
     getCurrentView : function() {
-      return this.__viewManager.getCurrentView(); 
+      return this.__viewManager.getCurrentView();
     },
-    
+
     /**
      * Returns the local path of the view manager
      *
@@ -117,7 +114,7 @@ qx.Class.define("unify.view.TabViewManager", {
     getPath : function() {
       return this.__viewManager.getPath();
     },
-    
+
     /**
      * Returns the view instance stored behind the given ID.
      *
@@ -127,7 +124,7 @@ qx.Class.define("unify.view.TabViewManager", {
     getView : function(id) {
       return this.__viewManager.getView(id);
     },
-    
+
     /**
      * Navigates to the given path
      *
@@ -136,8 +133,8 @@ qx.Class.define("unify.view.TabViewManager", {
     navigate : function(path) {
       this.__viewManager.navigate(path);
     },
-        
-    
+
+
     /**
      * Adds a view to the tab bar. The buttons are displayed in the order of
      * execution of this function.
@@ -160,7 +157,7 @@ qx.Class.define("unify.view.TabViewManager", {
         relation: "same",
         height: 44
       });
-      
+
       this.__viewmap[viewInstance.getId()] = elem;
       this.__getBar().add(elem);
     },
@@ -182,7 +179,7 @@ qx.Class.define("unify.view.TabViewManager", {
       }
       return bar;
     },
-    
+
     /**
      * Reacts on path changes of the view manager and updates "selected" property accordingly.
      *
@@ -198,27 +195,27 @@ qx.Class.define("unify.view.TabViewManager", {
           return this.setSelected(first.view);
         }
       }
-      
+
       this.resetSelected();
     },
-    
-    
+
+
     // property apply
     _applySelected : function(value, old)
     {
       var viewmap = this.__viewmap;
-      
+
       var n = value && viewmap[value];
       if (n) {
         n.addState("active");
       }
-      
+
       var o = old && viewmap[old];
       if (o) {
         o.removeState("active");
       }
     },
-    
+
     /**
      * Event handler for onTap event
      *
@@ -228,38 +225,38 @@ qx.Class.define("unify.view.TabViewManager", {
       var widget = this._getTapFollowElement(e);
       this.__onTap(widget);
     },
-    
+
     /**
      * Reacts on tabbing on the tabbar buttons.
-     * 
+     *
      * @param widget {unify.ui.core.Widget} Touch event
      */
-    __onTap : function(widget) 
+    __onTap : function(widget)
     {
       if (widget)
       {
         var viewManager = this.__viewManager;
         var oldPath = viewManager.getPath();
         var oldRootView = oldPath[0].view;
-        
+
         var newRootView = widget.getGoTo();
-        
+
         // If root view has not changed we force jump to root of the view and not
         // using the stored deep path. This results into the intented behavior to
         // jump to top on the second click on the same button.
-        
+
         var newPath;
-        
+
         if (oldRootView != newRootView) {
           newPath = this.__paths[newRootView];
         }
-        
+
         if (!newPath) {
           newPath = unify.view.Path.fromString(newRootView);
         }
-        
+
         this.__viewManager.navigate(newPath);
-        
+
         // Store path for old view
         this.__paths[oldRootView] = oldPath;
       }
