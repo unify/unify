@@ -116,7 +116,8 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           borderColor: "#000",
           borderStyle: "solid",
           pointerEvents: "none",
-          paddingTop: 30
+          paddingTop: 30,
+          zIndex: 100000 //make sure indicator is on top of everything
         };
       }
     },
