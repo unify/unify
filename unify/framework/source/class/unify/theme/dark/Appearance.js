@@ -55,7 +55,8 @@ qx.Theme.define("unify.theme.dark.Appearance", {
       style : function() {
         var style = {
           backgroundColor: "#CBD2D8",
-          backgroundImage: "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAABCAIAAACdaSOZAAAAFElEQVQI12M4euYKErp0+tINIAIAuHQQ4hrnkJoAAAAASUVORK5CYII=')"
+          backgroundImage: "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAABCAIAAACdaSOZAAAAFElEQVQI12M4euYKErp0+tINIAIAuHQQ4hrnkJoAAAAASUVORK5CYII=')",
+          transitionDuration: "350ms"
         };
                 
         return style;
