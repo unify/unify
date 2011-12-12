@@ -450,20 +450,22 @@ qx.Class.define("unify.ui.core.Widget", {
         }
       }
 
-      // Ask content
-      var contentHint = this._getContentHint();
-
       var border = this.__border;
       var padding = this.__padding;
       var insetX = border.left + border.right + padding.left + padding.right;
       var insetY = border.top + border.bottom + padding.top + padding.bottom;
 
-      if (width == null) {
-        width = contentHint.width + insetX;
-      }
-
-      if (height == null) {
-        height = contentHint.height + insetY;
+      var contentHint = {};
+      if (width == null || height == null) {
+        // Ask content
+        contentHint = this._getContentHint();
+        
+        if (width == null) {
+          width = contentHint.width + insetX;
+        }
+        if (height == null) {
+          height = contentHint.height + insetY;
+        }
       }
 
       if (minWidth == null)
