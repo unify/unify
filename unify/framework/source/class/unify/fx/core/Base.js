@@ -60,9 +60,16 @@ qx.Class.define("unify.fx.core.Base", {
     start : function(percent) {
       this._setup();
       
-      var easing = this.getEasing() || function(i) { return i; };
-      this.__id = unify.fx.core.Animation.getInstance().start(this._render, this._verifyRender, this.__finish, this.getDuration(), easing, percent||0, this);
-      this.fireEvent("start");
+      var duration = this.getDuration();
+      
+      if (duration > 0) {
+        var easing = this.getEasing() || function(i) { return i; };
+        this.__id = unify.fx.core.Animation.getInstance().start(this._render, this._verifyRender, this.__finish, duration, easing, percent||0, this);
+        this.fireEvent("start");
+      } else {
+        this._render(1.0, (new Date).valueOf(), true);
+        this.__finish(60, -1, true);
+      }
     },
     
     /**

@@ -19,18 +19,42 @@ qx.Class.define("unify.fx.Position", {
     __anim : null,
     __resetPoint: null,
     
-    _setup : function() {
-      var to = this.getValue();
-      var from = this.__resetPoint = this._widget.getStyle("transform");
+    __getPosition : function(left, top) {
+      if (typeof(left) == "number" && typeof(top) == "number") {
+        return {
+          left: left,
+          top: top
+        };
+      }
       
+      left = left.toString().split("%");
+      top = top.toString().split("%");
+      
+      if (left.length + top.length > 2) {
+        var posInfo = this._widget.getPositionInfo();
+        
+        left = Math.round(posInfo.width * (left[0] / 100.0));
+        top = Math.round(posInfo.height * (top[0] / 100.0));
+      }
+      
+      return {
+        left: parseInt(left, 10),
+        top: parseInt(top, 10)
+      };
+    },
+    
+    _setup : function() {
+      var from = this.__resetPoint = this._widget.getStyle("transform");
+
       var matcher = new RegExp("translate([^)]+)");
       var parsed = matcher.exec(from);
       var mod;
       if (parsed && parsed.length == 2) {
         var vals = parsed[1].substring(1).split(",");
+        var pos = this.__getPosition(vals[0], vals[1]);
         mod = this.__mod = {
-          top: parseInt(vals[1],10),
-          left: parseInt(vals[0],10)
+          top: pos.top,
+          left: pos.left
         };
       } else {
         mod = this.__mod = {
@@ -38,11 +62,6 @@ qx.Class.define("unify.fx.Position", {
           left: 0
         };
       }
-      
-      this.__anim = {
-        top: to.top - mod.top,
-        left: to.left - mod.left
-      };
     },
     
     _reset : function(value) {
@@ -58,12 +77,23 @@ qx.Class.define("unify.fx.Position", {
     _render : function(percent, now, render) {
       var mod = this.__mod;
       var anim = this.__anim;
+      if (!anim) {
+        var to = this.getValue();
+        var toPos = this.__getPosition(to.left, to.top);
+        anim = this.__anim = {
+          top: toPos.top - mod.top,
+          left: toPos.left - mod.left
+        };
+        this.addListenerOnce("stop", function() {
+          this.__anim = null;
+        }, this);
+      }
       
       var left = Math.round(mod.left + (anim.left * percent));
       var top = Math.round(mod.top + (anim.top * percent));
 
       this._widget.setStyle({
-        transform: "translate(" + left + "px, " + top + "px)"
+        transform: unify.bom.Transform.accelTranslate(left+"px", top+"px")
       });
     }
   }

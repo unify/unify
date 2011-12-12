@@ -13,6 +13,12 @@
  */
 qx.Mixin.define("unify.fx.MWidgetAnimation", {
   
+  events : {
+    animatePositionDone : "qx.event.type.Event",
+    animateOpacityDone : "qx.event.type.Event",
+    animateRotateDone : "qx.event.type.Event"
+  },
+  
   properties : {
     /** {Map} Position to animate to */
     animatePosition : {
@@ -57,14 +63,43 @@ qx.Mixin.define("unify.fx.MWidgetAnimation", {
     }
   },
   
+  construct : function() {
+    this.__mwAnimationMap = {};
+    this.__mwAnimationResetMap = {};
+  },
+  
   members : {
-    __mwAnimationPosition : null,
-    __mwAnimationPositionReset : null,
-    __mwAnimationOpacity : null,
-    __mwAnimationOpacityReset : null,
+    __mwAnimationMap : null,
+    __mwAnimationResetMap : null,
     __mwAnimationRotate : null,
     __mwAnimationRotateReset : null,
     __mwScale : null,
+    
+    __mwaDoAnimation : function(value, animationName, Animation, doneEvent, duration) {
+      if (value != null) {
+        var animation = this.__mwAnimationMap[animationName];
+        if (animation) {
+          animation.stop();
+        } else {
+          animation = this.__mwAnimationMap[animationName] = Animation;
+          this.__mwAnimationResetMap[animationName] = animation.getResetValue();
+        }
+        
+        animation.addListenerOnce("stop", function() {
+          this.fireEvent(doneEvent);
+        }, this);
+        
+        animation.setValue(value);
+        animation.setDuration(duration);
+        animation.start();
+      } else {
+        var animation = this.__mwAnimationMap[animationName];
+        if (animation) {
+          animation.stop();
+        }
+        animation.reset(this.__mwAnimationResetMap[animationName]);
+      }
+    },
     
     /**
      * Animation method for position
@@ -72,28 +107,7 @@ qx.Mixin.define("unify.fx.MWidgetAnimation", {
      * @param value {Map} Position to animate to
      */
     __mwaApplyAnimationPosition : function(value) {
-      if (value != null) {
-        var animation = this.__mwAnimationPosition;
-        if (animation) {
-          animation.stop();
-        } else {
-          animation = this.__mwAnimationPosition = new unify.fx.Position(this);
-          this.__mwAnimationPositionReset = animation.getResetValue();
-        }
-        
-        animation.addListenerOnce("start", function() { console.log("Start animation"); });
-        animation.addListenerOnce("stop", function(e) { console.log("Stop animation " + e.getData()); });
-        
-        animation.setValue(value);
-        animation.setDuration(this.getAnimatePositionDuration());
-        animation.start();
-      } else {
-        var animation = this.__mwAnimationPosition;
-        if (animation) {
-          animation.stop();
-        }
-        animation.reset(this.__mwAnimationPositionReset);
-      }
+      this.__mwaDoAnimation(value, "position", new unify.fx.Position(this), "animatePositionDone", this.getAnimatePositionDuration());
     },
     
     /**
@@ -102,28 +116,7 @@ qx.Mixin.define("unify.fx.MWidgetAnimation", {
      * @param value {Float} Opacity to animate to
      */
     __mwaApplyAnimationOpacity : function(value) {
-      if (value != null) {
-        var animation = this.__mwAnimationOpacity;
-        if (animation) {
-          animation.stop();
-        } else {
-          animation = this.__mwAnimationOpacity = new unify.fx.Opacity(this);
-          this.__mwAnimationOpacityReset = animation.getResetValue();
-        }
-        
-        animation.addListenerOnce("start", function() { console.log("Start animation"); });
-        animation.addListenerOnce("stop", function(e) { console.log("Stop animation " + e.getData()); });
-        
-        animation.setValue(value);
-        animation.setDuration(this.getAnimateOpacityDuration());
-        animation.start();
-      } else {
-        var animation = this.__mwAnimationOpacity;
-        if (animation) {
-          animation.stop();
-        }
-        animation.reset(this.__mwAnimationOpacityReset);
-      }
+      this.__mwaDoAnimation(value, "opacity", new unify.fx.Opacity(this), "animateOpacityDone", this.getAnimateOpacityDuration());
     },
     
     /**
@@ -151,6 +144,10 @@ qx.Mixin.define("unify.fx.MWidgetAnimation", {
               this.resetAnimateRotate();
               this.setAnimateRotate(this.__infiniteRotateValue);
             }
+          }, this);
+        } else {
+          animation.addListener("stop", function() {
+            this.fireEvent("animateRotationDone");
           }, this);
         }
         

@@ -33,7 +33,7 @@ qx.Class.define("unify.view.StaticView",
 {
   //extend : qx.core.Object,
   extend: unify.ui.container.Composite,
-  include : [qx.locale.MTranslation],
+  include : [qx.locale.MTranslation, unify.fx.MWidgetAnimation],
   type : "abstract",
   
   
@@ -338,19 +338,7 @@ qx.Class.define("unify.view.StaticView",
     
     
     // property apply
-    _applyParent : function(value, old)
-    {
-      var layer = this.__layer;
-      if (layer && !!old != !!value) 
-      {
-        var Class = qx.bom.element.Class;
-        var layerElem = layer.getElement();
-        if (value) {
-          Class.add(layerElem, "has-parent");
-        } else {
-          Class.remove(layerElem, "has-parent");
-        }
-      }      
+    _applyParent : function() {   
     },
     
     

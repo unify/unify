@@ -28,6 +28,8 @@ qx.Class.define("unify.ui.core.Widget", {
   construct : function() {
     this.base(arguments);
     
+    this.__renderLayoutDone = false;
+    
     this.__initializeSizing();
     this.__element = this.__createElement();
   },
@@ -188,6 +190,9 @@ qx.Class.define("unify.ui.core.Widget", {
     
     /** {Map} Border size of element */
     __border : null,
+    
+    /** {Boolean} Widget has valid rendered layout */
+    __renderLayoutDone : null,
     
     /**
      * Initializes padding and border size to zero
@@ -649,6 +654,15 @@ qx.Class.define("unify.ui.core.Widget", {
     },
     
     /**
+     * Returns if widget is layouted
+     *
+     * @return {Boolean} Widget is layouted
+     */
+    hasRenderedLayout : function() {
+      return !!this.__renderLayoutDone;
+    },
+    
+    /**
      * Render method to apply layout on widget
      *
      * @param left {Integer} Left absolute position of widget
@@ -709,6 +723,8 @@ qx.Class.define("unify.ui.core.Widget", {
       if (changes.size && this.hasListener("resize")) {
         this.fireEvent("resize");
       }
+      
+      this.__renderLayoutDone = true;
     },
 
     /**
@@ -1285,7 +1301,7 @@ qx.Class.define("unify.ui.core.Widget", {
       if (value) {
         return value;
       } else {
-        return qx.bom.element.Style.get(this.getElement(), name, computed);
+        return qx.bom.element.Style.get(this.getElement(), qx.bom.element.Style.property(name), computed);
       }
     },
 
