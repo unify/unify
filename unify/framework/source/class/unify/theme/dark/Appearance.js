@@ -359,7 +359,6 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     
     "slider" : {
       style : function(state) {
-        console.log(JSON.stringify(state));
         if (state.horizontalDirection) {
           var e = {
             height: 30,
