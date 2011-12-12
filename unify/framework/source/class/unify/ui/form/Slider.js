@@ -5,6 +5,7 @@
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+    Copyright: 2011, Alexander Wunschik, Mainz, Germany, http://wunschik.it
 
 *********************************************************************************************** */
 
@@ -52,8 +53,6 @@ qx.Class.define("unify.ui.form.Slider", {
   construct : function() {
     this.base(arguments);
     
-    
-    
     this._forwardStates = {
       "hover" : true,
       "pressed" : true,
@@ -68,6 +67,8 @@ qx.Class.define("unify.ui.form.Slider", {
     this._showChildControl("knob");
     
     this.addListener("tap", this.__onTap, this);
+    this.addListener("resize", this.__onResize, this);
+    
   },
   
   members: {
@@ -80,18 +81,18 @@ qx.Class.define("unify.ui.form.Slider", {
      * @param id {String} id of child
      */
     _createChildControlImpl : function(id) {
-      var control;
+      var control = null;
       
       switch(id) {
         case "knob":
           control = new unify.ui.basic.Content();
           control.addListener("touchstart", this.__touchStart, this);
-
+          
           this._add(control);
           break;
         case "bar":
           control = new unify.ui.basic.Content();
-
+          
           this._add(control, {
             left: 0,
             top: 0,
@@ -119,6 +120,13 @@ qx.Class.define("unify.ui.form.Slider", {
     __value : null,
     
     /**
+     * 
+     */
+    __onResize : function() {
+      this._recalculateKnobPosition();
+    },
+    
+    /**
      * Event handler for touch start
      *
      * @param e {Event} Touch event
@@ -133,12 +141,12 @@ qx.Class.define("unify.ui.form.Slider", {
       var posInfo = this.getPositionInfo();
       
       if (this.getDirection() == "horizontal") {
-        var calcWidth = this.__calcWidth = posInfo.width - posInfo.padding.left - posInfo.padding.right - knobPosInfo.width;
+        var calcWidth = this.__calcWidth = posInfo.width - posInfo.padding.left - posInfo.padding.right;
         this.__calcLeft = calcWidth * this.getValue();
         
         this.__touchLeft = e.getScreenLeft();
       } else {
-        var calcHeight = this.__calcHeight = posInfo.height - posInfo.padding.top - posInfo.padding.bottom - knobPosInfo.height;
+        var calcHeight = this.__calcHeight = posInfo.height - posInfo.padding.top - posInfo.padding.bottom;
         this.__calcTop = calcHeight * this.getValue();
         
         this.__touchTop = e.getScreenTop();
@@ -193,32 +201,40 @@ qx.Class.define("unify.ui.form.Slider", {
     },
     
     /**
+     * Recalculate the absolute position of the knob on the sliderbar
+     */
+    _recalculateKnobPosition : function() {
+      var value = this.getValue();
+      var horizontal = this.getDirection() == "horizontal";
+      var posInfo = this.getChildControl("bar").getPositionInfo();
+      var knobPosInfo = this.getChildControl("knob").getPositionInfo();
+      var mod;
+      var avail;
+      var transform;
+      
+      if (horizontal) {
+        mod = posInfo.padding.left;
+        avail = posInfo.width - posInfo.padding.right - posInfo.border.right - mod;
+        transform = "translate(" + Math.round(avail * value + mod) + "px, 0)";
+      } else {
+        mod = posInfo.padding.top + posInfo.border.top;
+        avail = posInfo.height - posInfo.padding.bottom - posInfo.border.bottom - mod;;
+        transform = "translate(0, " + Math.round(avail * value + mod) + "px)";
+      }
+      this.getChildControl("knob").setStyle({
+        transform: transform
+      });
+    },
+    
+    /**
      * Apply value to knob positioning setting
      *
      * @param value {Float} Percentage position value
      */
     _applyValue : function(value) {
       if (value != this.__value) {
-        var horizontal = this.getDirection() == "horizontal";
-        var posInfo = this.getChildControl("bar").getPositionInfo();
-        var knobPosInfo = this.getChildControl("knob").getPositionInfo();
-        var mod;
-        var avail;
-        var transform;
-        
-        if (horizontal) {
-          mod = posInfo.padding.left + posInfo.border.left;
-          avail = posInfo.width - posInfo.padding.right - posInfo.border.right - mod - (knobPosInfo.width/2);
-          transform = "translate(" + Math.round(avail * value + mod) + "px, 0)";
-        } else {
-          mod = posInfo.padding.top + posInfo.border.top;
-          avail = posInfo.height - posInfo.padding.bottom - posInfo.border.bottom - mod - (knobPosInfo.height/2);
-          transform = "translate(0, " + Math.round(avail * value + mod) + "px)";
-        }
-        this.getChildControl("knob").setStyle({
-          transform: transform
-        });
         this.__value = value;
+        this._recalculateKnobPosition();
       }
     },
     
