@@ -691,9 +691,6 @@ qx.Class.define("unify.view.ViewManager", {
         }
       };
       
-      var toViewResetDone = (!toView); 
-      var fromViewResetDone = (!fromView);
-      
       if (toView) {
         var posTo = (direction == "in") ? this.__positions.right : this.__positions.left;
         toView.setStyle({
@@ -718,7 +715,6 @@ qx.Class.define("unify.view.ViewManager", {
     },
 
     /**
-     * //TODO refactor to share code with __animateLayers?
      *
      * @param view {unify.view.StaticView} View to animate
      * @param show {Boolean} true for show, false for hide
@@ -726,41 +722,37 @@ qx.Class.define("unify.view.ViewManager", {
      */
     __animateModal: function(view,show,callback){
       var self = this;
-      var AnimationDuration = qx.theme.manager.Appearance.getInstance().styleFrom("view").transitionDuration;
-
-
-      view.setStyle({
-        "transitionDuration": "0ms",
-        "transform": show ? this.__positions.bottom : this.__positions.center
-      });
-
-
+      var AnimationDuration = this.getAnimationDuration();
 
       var visibilityAction = function() {
-        // Force rendering
-        var viewElement = view.getElement();
-        viewElement.offsetWidth + viewElement.offsetHeight;
-
-
-        var transitionEndFnt = function() {
-          qx.bom.Event.removeNativeListener(viewElement, "transitionEnd", transitionEndFnt);
-          if(!show){
+        var afterRenderAction = function() {
+          var transitionEndFnt = function() {if(!show){
             view.setActive(false);
             view.hide();
             self.hide();
           }
-          if(callback){
-            callback();
-          }
-        };
-        qx.bom.Event.addNativeListener(viewElement, "transitionEnd", transitionEndFnt);
+            if(callback){
+              callback();
+            }
+          };
+          view.addListenerOnce("animatePositionDone", transitionEndFnt, this);
 
+          view.setAnimatePositionDuration(AnimationDuration);
+          view.setAnimatePosition((show) ? self.__positions.center : self.__positions.bottom);
+        }
 
-        view.setStyle({
-          "transitionDuration" : AnimationDuration,
-          "transform": show ? self.__positions.center : self.__positions.bottom
-        });
+        if (view.hasRenderedLayout()) {
+          afterRenderAction();
+        } else {
+          view.addListenerOnce("resize", afterRenderAction, this);
+        }
       };
+
+      var startPos = (show) ? this.__positions.bottom : this.__positions.center;
+      view.setStyle({
+        transform: unify.bom.Transform.accelTranslate(startPos.left, startPos.top)
+      });
+
 
       if (view.getVisibility() != "visible") {
         view.addListenerOnce("changeVisibility", visibilityAction);
@@ -769,6 +761,6 @@ qx.Class.define("unify.view.ViewManager", {
       } else {
         visibilityAction();
       }
-   }
+    }
   }
 });
