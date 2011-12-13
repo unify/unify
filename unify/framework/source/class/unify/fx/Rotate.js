@@ -46,6 +46,9 @@ qx.Class.define("unify.fx.Rotate", {
     },
     
     _render : function(percent, now, render) {
+      if (!render) {
+        return;
+      }
       var mod = this.__mod;
       var anim = this.__anim;
 
