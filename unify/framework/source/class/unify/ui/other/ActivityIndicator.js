@@ -81,6 +81,16 @@ qx.Class.define("unify.ui.other.ActivityIndicator", {
     
     _applyText : function(value) {
       this.getChildControl("label").setValue(value);
+    },
+    
+    show : function() {
+      this.getChildControl("image").show();
+      this.base(arguments);
+    },
+    
+    hide : function() {
+      this.base(arguments);
+      this.getChildControl("image").hide();
     }
   }
 });

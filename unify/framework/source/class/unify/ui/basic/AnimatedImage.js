@@ -35,6 +35,7 @@ qx.Class.define("unify.ui.basic.AnimatedImage", {
         this.setAnimateRotate(360);
       } else {
         this.setAnimateRotateInfinite(false);
+        this.setAnimateRotate(null);
       }
     }
   }
