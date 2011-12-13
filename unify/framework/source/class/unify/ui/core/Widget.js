@@ -612,6 +612,8 @@ qx.Class.define("unify.ui.core.Widget", {
       {
         qx.ui.core.queue.Appearance.add(this);
         this.__initialAppearanceApplied = true;
+        
+        qx.bom.element.Style.set(this.getElement(), "visibility", "visible");
       }
 
       // CASE 2: Widget has got an appearance before, but was hidden for some time
@@ -1692,6 +1694,7 @@ qx.Class.define("unify.ui.core.Widget", {
         parent._remove(child);
       }
       var element = child.getElement();
+      qx.bom.element.Style.set(element, "visibility", "hidden");
       var contentElem=this.getContentElement();
       var childNodes=contentElem.childNodes;
       if(index!=null && index >=0 && index < childNodes.length){
