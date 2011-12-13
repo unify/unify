@@ -20,18 +20,18 @@ qx.Class.define("unify.ui.dialog.Alert", {
    */
   construct : function(value, onOk) {
     this.base(arguments);
-    this.__setVBoxLayout();
+    var vboxLayout = new qx.ui.layout.VBox();
+    vboxLayout.setAlignX( "center" ); 
+    this._setLayout(vboxLayout);
     this.__setDialogText(value);
-    this.__addButton('OK', onOk);
+    var labelWidget = this.__labelWidget = new unify.ui.basic.Label(value);
+    labelWidget.set({appearance: 'alert.label', height: 75, width: 280});
+    this._add(labelWidget); 
+    this._addButton('OK', onOk);
   },
   
   properties : {
-    /** Contains the label content */
-    value : {
-      check: "String",
-      nullable: false
-    },
-    
+
     // overridden
     allowGrowX : {
       refine : true,
@@ -54,43 +54,25 @@ qx.Class.define("unify.ui.dialog.Alert", {
   },
   
   members: {
+    
     /**
-     * {unify.ui.container.Composite} container for buttons with hbox layout. 
-     * buttons should be centered.
+     * {unify.ui.container.Composite} container for buttons in dialog.
+     * Buttons schould be centered.
      */
     __buttonBar : null,
-    
+
     /**
-     * Set vbox layout for the dialog.
+     * {unify.ui.basic.Label} label that contains the text for the dialog
      */
-    __setVBoxLayout : function(){
-      var vboxLayout = new qx.ui.layout.VBox();
-      vboxLayout.setAlignX( "center" ); 
-      this._setLayout(vboxLayout);
-    },
+    __labelWidget: null,
     
     /**
-     * Set text for the dialog.
-     * 
-     * @param value {String} dialog text.
-     */
-    __setDialogText : function(value){
-      if(value){ 
-    	this.setValue(value);
-    	//create a label widget and add it to alert.
-    	var labelWidget = new unify.ui.basic.Label(value);
-    	labelWidget.set({appearance: 'alert.label', height: 75, width: 280});
-    	this._add(labelWidget); 
-      } else throw "Dialog must show some information";	
-    },
-    
-    /**
-     * add a button to a hbox layout button bar. 
+     * add a button to a {qx.ui.layout.HBox} hbox layout button container. 
      * 
      * @param label {String} ok or cancel button text.
      * @param callback {Function} response function to clicked button.
      */
-    __addButton : function(label, callback){
+    _addButton : function(label, callback){
       if(!this.__buttonBar){
       	this.__buttonBar = new unify.ui.container.Composite();
       	var hboxLayout = new qx.ui.layout.HBox();
