@@ -38,7 +38,7 @@ qx.Class.define("unify.bom.Font", {
       if (fontSizeName.indexOf("%") > -1) {
         fontSize = Math.round(self.BaseFontSize * (parseInt(fontSizeName.split("%")[0], 10) / 100));
       } else {
-        fontSize = self.fontSizeMap[fontSizeName];
+        fontSize = self.FontSizeMap[fontSizeName];
       }
       
       return fontSize || self.BaseFontSize;
