@@ -408,6 +408,53 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           backgroundColor: "#ddd"
         };
       }
+    },
+    
+    /*
+    ---------------------------------------------------------------------------
+      DIALOGS
+    ---------------------------------------------------------------------------
+    */
+   
+    "alert" : {
+      style : function() {
+        return {
+          borderLeft: "3px solid #3A3A3A",
+          borderTop: "3px solid #3A3A3A",
+          borderRight: "3px solid #3A3A3A",
+          borderBottom: "3px solid #3A3A3A",
+          backgroundColor: "#242424",
+          borderRadius: "12px",
+          textAlign: "center"
+        };
+      }
+    },
+    
+    "alert.label" : {
+      style : function() {
+        return {
+          font: "20px bold",
+          color: "white"
+        };
+      }
+    },
+    
+    "alert.button" : {
+      style : function() {
+        return {
+          font: "20px bold",
+          color: "white",
+          marginBottom: '5px',
+          backgroundImage: "-webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, rgba(255, 255, 255, 0.61)), color-stop(5%, rgba(255, 255, 255, 0.45)), color-stop(50%, rgba(255, 255, 255, 0.27)), color-stop(50%, rgba(255, 255, 255, 0.2)), color-stop(100%, rgba(255, 255, 255, 0)))",
+          borderLeft: "3px solid #3A3A3A",
+          borderTop: "3px solid #3A3A3A",
+          borderRight: "3px solid #3A3A3A",
+          borderBottom: "3px solid #3A3A3A",
+          backgroundColor: "#242424",
+          borderRadius: "12px",
+          textAlign: "center"
+        };
+      }
     }
   }
 });
