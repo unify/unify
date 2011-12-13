@@ -42,13 +42,10 @@ qx.Class.define("unify.ui.layout.special.ScrollLayout", {
       var widget = this._getWidget();
       var enableScrollX = widget.getEnableScrollX();
       var enableScrollY = widget.getEnableScrollY();
-      if (enableScrollX && enableScrollY) {
-        content.renderLayout(0, 0, contentSizeHint.width, contentSizeHint.height);
-      } else if (enableScrollX) {
-        content.renderLayout(0, 0, contentSizeHint.width, availHeight);
-      } else if (enableScrollY) {
-        content.renderLayout(0, 0, availWidth, contentSizeHint.height);
-      }
+      content.renderLayout(0,0,
+          enableScrollX ? contentSizeHint.width : availWidth,
+          enableScrollY ? contentSizeHint.height : availHeight);
+
     },
     
     /**
