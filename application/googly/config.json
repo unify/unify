@@ -10,8 +10,8 @@
 
   "let" :
   {
-    "QOOXDOO_PATH"      : "../../../qooxdoo/qooxdoo",
-    "UNIFY_PATH"        : "../../../qooxdoo/qooxdoo/../../unify",
+    "QOOXDOO_PATH"      : "../../qooxdoo",
+    "UNIFY_PATH"        : "../../unify",
     "APP_PATH"          : ".",
 
     "CACHE"             : "${TMPDIR}/cache",
