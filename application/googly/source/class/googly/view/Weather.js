@@ -94,7 +94,7 @@ qx.Class.define("googly.view.Weather",
       ]);
       this.add(toolbar);
       
-      var weatherDisplay = this.__weatherDisplay = new unify.ui.basic.Content();
+      var weatherDisplay = this.__weatherDisplay = new unify.ui.embed.Html();
     },
     
     
@@ -115,7 +115,7 @@ qx.Class.define("googly.view.Weather",
     _renderData : function(data)
     {
       if (!data){
-        this.__weatherDisplay.innerHTML='';
+        this.__weatherDisplay.setHtml("");
         return;
       } else {
         data = data.query.results;
@@ -164,7 +164,7 @@ qx.Class.define("googly.view.Weather",
         }
       }
       
-      this.__weatherDisplay.innerHTML = markup;
+      this.__weatherDisplay.setHtml(markup);
     }
   }
 });

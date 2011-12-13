@@ -34,27 +34,25 @@ qx.Class.define("googly.Application",
 
       // Master view
       var MasterViewManager = new unify.view.ViewManager("master");
-      //var MasterViewManager = new unify.view.ViewManager("master");
-      MasterViewManager.add(googly.view.Start, true);
-      MasterViewManager.add(googly.view.Translate);
-      MasterViewManager.add(googly.view.Search);
-      MasterViewManager.add(googly.view.Weather);
-      MasterViewManager.add(googly.view.WeatherSearch);
-      MasterViewManager.add(unify.view.SysInfo);
+      MasterViewManager.register(googly.view.Start, true);
+      MasterViewManager.register(googly.view.Translate);
+      MasterViewManager.register(googly.view.Search);
+      MasterViewManager.register(googly.view.Weather);
+      MasterViewManager.register(googly.view.WeatherSearch);
+      MasterViewManager.register(unify.view.SysInfo);
       
       // Configure tab view
       var TabView = new unify.view.TabViewManager(MasterViewManager);
-      TabView.add(googly.view.Start);
-      TabView.add(googly.view.Translate);
-      TabView.add(googly.view.Search);
-      TabView.add(googly.view.Weather);
-      TabView.add(unify.view.SysInfo);
+      TabView.register(googly.view.Start);
+      TabView.register(googly.view.Translate);
+      TabView.register(googly.view.Search);
+      TabView.register(googly.view.Weather);
+      TabView.register(unify.view.SysInfo);
       this.add(TabView);
-      //this.add(MasterViewManager);
       
       // Add at least one view manager to the navigation managment
       var Navigation = unify.view.Navigation.getInstance();
-      Navigation.add(MasterViewManager);
+      Navigation.register(MasterViewManager);
       Navigation.init();      
     }
   }

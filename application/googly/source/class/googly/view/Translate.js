@@ -83,14 +83,14 @@ qx.Class.define("googly.view.Translate",
         marginRight: "10px"
       };
       
-      var inputText = this.__inputText = new unify.ui.form.Input();
+      var inputText = this.__inputText = new unify.ui.form.TextField();
       inputText.set({
         allowGrowY: true
       });
       //inputText.setHeight(150);
       inputText.setStyle(inputStyles);
       
-      var resultText = this.__resultText = new unify.ui.form.Input();
+      var resultText = this.__resultText = new unify.ui.form.TextField();
       resultText.set({
         allowGrowY: true
       });
@@ -111,7 +111,7 @@ qx.Class.define("googly.view.Translate",
         height: 54,
         allowGrowX: true
       });
-      button.setExecute("refresh");
+      button.addListener("execute", this.refresh, this);
       qx.bom.element.Class.add(button.getElement(), "button");
       
       this.add(inputText, {

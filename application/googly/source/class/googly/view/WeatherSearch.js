@@ -36,7 +36,7 @@ qx.Class.define("googly.view.WeatherSearch",
       var navigationBar = new unify.ui.container.NavigationBar(this);
       this.add(navigationBar);
 
-      var searchField = this.__searchField = new unify.ui.form.Input();
+      var searchField = this.__searchField = new unify.ui.form.TextField();
       searchField.setHeight(50);
       //searchField.setStyle(inputStyles);
       

@@ -92,7 +92,7 @@ qx.Class.define("googly.view.Search",
         marginRight: "10px"
       };
       
-      var inputText = this.__inputText = new unify.ui.form.Input();
+      var inputText = this.__inputText = new unify.ui.form.TextField();
       inputText.setHeight(50);
       inputText.setStyle(inputStyles);
       
@@ -110,10 +110,10 @@ qx.Class.define("googly.view.Search",
         height: 54,
         allowGrowX: true
       });
-      button.setExecute("refresh");
+      button.addListener("execute", this.refresh, this);
       qx.bom.element.Class.add(button.getElement(), "button");
       
-      var output = this.__output = new unify.ui.basic.Content().set({
+      var output = this.__output = new unify.ui.embed.Html().set({
         width: 500,
         height: 700
       });
@@ -128,7 +128,7 @@ qx.Class.define("googly.view.Search",
     _renderData : function(data)
     {
       if(!data){
-        this.__output.getElement().innerHTML = "";
+        this.__output.setHtml("");
         return;
       }
       var results = data.query.results;
@@ -145,7 +145,7 @@ qx.Class.define("googly.view.Search",
         }
       }
 
-      this.__output.getElement().innerHTML = markup;
+      this.__output.setHtml(markup);
     }    
   }
 });
