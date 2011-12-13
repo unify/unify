@@ -22,7 +22,7 @@ qx.Class.define("unify.ui.dialog.Confirm", {
   construct : function(value, onOk, onCancel) {
     this.base(arguments, value, onOk);
     //call parent function to add a "cancel" button and his callback function.
-    this.__addButton("Cancel", onCancel);
+    this._addButton("Cancel", onCancel);
   }
   
 });
