@@ -14,6 +14,10 @@
 qx.Class.define("unify.ui.dialog.Alert", {
   extend: unify.ui.container.Composite,
   
+  /**
+   * @param value {String} Dialog text
+   * @param onOk {Function} onOkay callback
+   */
   construct : function(value, onOk) {
     this.base(arguments);
     this.__setVBoxLayout();
@@ -50,8 +54,10 @@ qx.Class.define("unify.ui.dialog.Alert", {
   },
   
   members: {
-    //container for buttons with hbox layout. 
-    //buttons should be centered.
+    /**
+     * {unify.ui.container.Composite} container for buttons with hbox layout. 
+     * buttons should be centered.
+     */
     __buttonBar : null,
     
     /**
