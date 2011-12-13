@@ -1093,7 +1093,6 @@ qx.Class.define("unify.ui.core.Widget", {
       }
       
       var disallowedStyles = [
-        "fontSize",
         "fontWeight",
         "fontFamily",
         
@@ -1230,6 +1229,21 @@ qx.Class.define("unify.ui.core.Widget", {
         delete style.textColor;
         
         qx.ui.core.queue.Layout.add(this);
+      }
+      
+      var fontSize = style.fontSize;
+      if (fontSize) {
+        var newFont = this.__font || new qx.bom.Font();
+        if (typeof(fontSize) == "string") {
+          newFont.setSize(unify.bom.Font.resolveRelativeSize(fontSize));
+        } else {
+          newFont.setSize(parseInt(fontSize, 10));
+        }
+        
+        delete style.fontSize;
+
+        var fontStyle = qx.theme.manager.Font.getInstance().resolve(newFont).getStyles();
+        style = qx.lang.Object.merge(fontStyle, style);
       }
       
       this.__style = style;

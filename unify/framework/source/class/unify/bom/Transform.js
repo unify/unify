@@ -17,7 +17,7 @@ qx.Class.define("unify.bom.Transform",
   {
     accelTranslate : function(x, y) {
       // Fix resize bug with translate3d on google chrome 15.0.874.121 m
-      if (qx.core.Environment.get("browser.name") == "chrome") {
+      if (qx.core.Environment.get("browser.name") == "chrome" || qx.core.Environment.get("engine.name") != "webkit") {
         return "translate("+x+","+y+")";
       } else {
         return "translate3d("+x+","+y+",0)";
