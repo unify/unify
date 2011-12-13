@@ -125,11 +125,24 @@ qx.Class.define("unify.view.ViewManager", {
   
   properties :
   {
+    // overwritten
+    appearance : {
+      refine: true,
+      init: "viewmanager"
+    },
+    
+    /**
+     * Duration of layer animation
+     */
+    animationDuration : {
+      check: "Integer",
+      init: 350
+    },
+    
     /** 
      * Related view manager which functions as a master (controller) for this view manager 
      */
-    master : 
-    {
+    master : {
       check : "unify.view.ViewManager",
       nullable : true
     },
@@ -553,24 +566,31 @@ qx.Class.define("unify.view.ViewManager", {
     /**
      * {Map} Maps the position of the layer to the platform specific transform value.
      */
+    __positions : {
+      center: {left: 0, top: 0},
+      left: {left: "-100%", top: 0},
+      right: {left: "100%", top: 0},
+      bottom: {left: 0, top: "100%"}
+    },
+    /*
     __positions : qx.core.Environment.select("unify.positionshift",
     {
       "3d" :
       {
-        bottom : unify.bom.Tranform.accelTranslate(0, "100%"),
-        right : unify.bom.Tranform.accelTranslate("100%", 0),
-        left : unify.bom.Tranform.accelTranslate("-100%", 0),
-        center : unify.bom.Tranform.accelTranslate(0, 0)
+        bottom : unify.bom.Transform.accelTranslate(0, "100%"),
+        right : unify.bom.Transform.accelTranslate("100%", 0),
+        left : unify.bom.Transform.accelTranslate("-100%", 0),
+        center : unify.bom.Transform.accelTranslate(0, 0)
       },
 
       "2d" :
       {
-        bottom : unify.bom.Tranform.translate(0, "100%"),
-        right : unify.bom.Tranform.translate("100%", 0),
-        left : unify.bom.Tranform.translate("-100%", 0),
-        center : unify.bom.Tranform.translate(0, 0)
+        bottom : unify.bom.Transform.translate(0, "100%"),
+        right : unify.bom.Transform.translate("100%", 0),
+        left : unify.bom.Transform.translate("-100%", 0),
+        center : unify.bom.Transform.translate(0, 0)
       }
-    }),
+    }),*/
 
     /**
      * Internal setter method for view switching
@@ -587,8 +607,7 @@ qx.Class.define("unify.view.ViewManager", {
         return;
       }
 
-      if (oldView) 
-      {
+      if (oldView) {
         oldView.resetActive();
       }
       
@@ -648,41 +667,43 @@ qx.Class.define("unify.view.ViewManager", {
      */
     __animateLayers : function(toView, fromView, direction) {
       var self = this;
-      var AnimationDuration = qx.theme.manager.Appearance.getInstance().styleFrom("view").transitionDuration;
+      var AnimationDuration = this.getAnimationDuration();
       
       direction = direction || "in";
-      
-      toView.setStyle({
-        "transitionDuration": "0ms",
-        "transform": (direction == "in") ? this.__positions.right : this.__positions.left
-      });
-      
-      fromView.setStyle({
-        "transitionDuration": "0ms",
-        "transform": this.__positions.center
-      });
-      
+
       var visibilityAction = function() {
-        // Force rendering
-        var toViewElement = toView.getElement();
-        toViewElement.offsetWidth + toViewElement.offsetHeight;
+        var afterRenderAction = function() {
+          var transitionEndFnt = function() {
+            fromView.setVisibility("hidden");
+          };
+          fromView.addListenerOnce("animatePositionDone", transitionEndFnt, this);
+          
+          toView.setAnimatePositionDuration(AnimationDuration);
+          toView.setAnimatePosition(self.__positions.center);
+          fromView.setAnimatePositionDuration(AnimationDuration);
+          fromView.setAnimatePosition((direction == "in") ? self.__positions.left : self.__positions.right);
+        }
         
-        var fromViewElement = fromView.getElement();
-        var transitionEndFnt = function() {
-          qx.bom.Event.removeNativeListener(fromViewElement, "transitionEnd", transitionEndFnt);
-          fromView.setVisibility("hidden");
-        };
-        qx.bom.Event.addNativeListener(fromViewElement, "transitionEnd", transitionEndFnt);
-        
-        toView.setStyle({
-          "transitionDuration" : AnimationDuration,
-          "transform": self.__positions.center
-        });
-        fromView.setStyle({
-          "transitionDuration" : AnimationDuration,
-          "transform": (direction == "in") ? self.__positions.left : self.__positions.right
-        });
+        if (toView.hasRenderedLayout()) {
+          afterRenderAction();
+        } else {
+          toView.addListenerOnce("resize", afterRenderAction, this);
+        }
       };
+      
+      if (toView) {
+        var posTo = (direction == "in") ? this.__positions.right : this.__positions.left;
+        toView.setStyle({
+          transform: unify.bom.Transform.accelTranslate(posTo.left, posTo.top)
+        });
+      }
+      
+      if (fromView) {
+        var posFrom = this.__positions.center;
+        fromView.setStyle({
+          transform: unify.bom.Transform.accelTranslate(posFrom.left, posFrom.top)
+        });
+      }
       
       if (toView.getVisibility() != "visible") {
         toView.addListenerOnce("changeVisibility", visibilityAction);
@@ -694,7 +715,6 @@ qx.Class.define("unify.view.ViewManager", {
     },
 
     /**
-     * //TODO refactor to share code with __animateLayers?
      *
      * @param view {unify.view.StaticView} View to animate
      * @param show {Boolean} true for show, false for hide
@@ -702,41 +722,37 @@ qx.Class.define("unify.view.ViewManager", {
      */
     __animateModal: function(view,show,callback){
       var self = this;
-      var AnimationDuration = qx.theme.manager.Appearance.getInstance().styleFrom("view").transitionDuration;
-
-
-      view.setStyle({
-        "transitionDuration": "0ms",
-        "transform": show ? this.__positions.bottom : this.__positions.center
-      });
-
-
+      var AnimationDuration = this.getAnimationDuration();
 
       var visibilityAction = function() {
-        // Force rendering
-        var viewElement = view.getElement();
-        viewElement.offsetWidth + viewElement.offsetHeight;
-
-
-        var transitionEndFnt = function() {
-          qx.bom.Event.removeNativeListener(viewElement, "transitionEnd", transitionEndFnt);
-          if(!show){
+        var afterRenderAction = function() {
+          var transitionEndFnt = function() {if(!show){
             view.setActive(false);
             view.hide();
             self.hide();
           }
-          if(callback){
-            callback();
-          }
-        };
-        qx.bom.Event.addNativeListener(viewElement, "transitionEnd", transitionEndFnt);
+            if(callback){
+              callback();
+            }
+          };
+          view.addListenerOnce("animatePositionDone", transitionEndFnt, this);
 
+          view.setAnimatePositionDuration(AnimationDuration);
+          view.setAnimatePosition((show) ? self.__positions.center : self.__positions.bottom);
+        }
 
-        view.setStyle({
-          "transitionDuration" : AnimationDuration,
-          "transform": show ? self.__positions.center : self.__positions.bottom
-        });
+        if (view.hasRenderedLayout()) {
+          afterRenderAction();
+        } else {
+          view.addListenerOnce("resize", afterRenderAction, this);
+        }
       };
+
+      var startPos = (show) ? this.__positions.bottom : this.__positions.center;
+      view.setStyle({
+        transform: unify.bom.Transform.accelTranslate(startPos.left, startPos.top)
+      });
+
 
       if (view.getVisibility() != "visible") {
         view.addListenerOnce("changeVisibility", visibilityAction);
@@ -745,6 +761,6 @@ qx.Class.define("unify.view.ViewManager", {
       } else {
         visibilityAction();
       }
-   }
+    }
   }
 });

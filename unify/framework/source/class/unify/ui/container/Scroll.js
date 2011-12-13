@@ -569,13 +569,13 @@ qx.Class.define("unify.ui.container.Scroll", {
       {
         contentElem.setStyle({
           transitionDuration: this.__pagingTransitionDuration,
-          transform: unify.bom.Tranform.accelTranslate(left + "px", top + "px")
+          transform: unify.bom.Transform.accelTranslate(left + "px", top + "px")
         });
       }
       else if (left != round(oldLeft) || top != round(oldTop))
       {
         contentElem.setStyle({
-          transform: unify.bom.Tranform.accelTranslate(left + "px", top + "px")
+          transform: unify.bom.Transform.accelTranslate(left + "px", top + "px")
         });
 
         if (this.__hasScrollListener) {

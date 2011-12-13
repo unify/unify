@@ -41,6 +41,7 @@ qx.Class.define("unify.ui.other.ActivityIndicator", {
       top: "50%",
       left: "50%"
     });
+    this.setVisibility("excluded");
   },
   
   members : {

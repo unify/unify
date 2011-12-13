@@ -61,6 +61,17 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         return style;
       }
     },
+    "viewmanager" : {
+      include : "composite",
+      
+      style : function() {
+        return {
+          properties : {
+            animationDuration : 350
+          }
+        };
+      }
+    },
     "overlay" : {},
     "overlay/arrow" : {
       style : function() {
@@ -115,7 +126,8 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           borderColor: "#000",
           borderStyle: "solid",
           pointerEvents: "none",
-          paddingTop: 30
+          paddingTop: 30,
+          zIndex: 100000 //make sure indicator is on top of everything
         };
       }
     },
@@ -359,7 +371,6 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     
     "slider" : {
       style : function(state) {
-        console.log(JSON.stringify(state));
         if (state.horizontalDirection) {
           var e = {
             height: 30,

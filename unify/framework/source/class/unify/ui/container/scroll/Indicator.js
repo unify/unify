@@ -219,7 +219,7 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
         // We move the scrollbar out of view as soon as it is not visible anymore
         if (this.__isVisible)
         {
-          var translate = this.__horizontal ? unify.bom.Tranform.accelTranslate(position+"px",0) : unify.bom.Tranform.accelTranslate(0,position+"px");
+          var translate = this.__horizontal ? unify.bom.Transform.accelTranslate(position+"px",0) : unify.bom.Transform.accelTranslate(0,position+"px");
           Style.set(this.getElement(), "transform", translate);
         }
       }
@@ -244,8 +244,8 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
         }
 
         // Apply transforms for best-in-class performance
-        Style.set(this.__middleElem, "transform", unify.bom.Tranform.accelTranslate(0,0) + " scale(" + scaleX + "," + scaleY + ")");
-        Style.set(this.__endElem, "transform", unify.bom.Tranform.accelTranslate(endPosX + "px", endPosY + "px"));
+        Style.set(this.__middleElem, "transform", unify.bom.Transform.accelTranslate(0,0) + " scale(" + scaleX + "," + scaleY + ")");
+        Style.set(this.__endElem, "transform", unify.bom.Transform.accelTranslate(endPosX + "px", endPosY + "px"));
       }
     },
 
@@ -273,7 +273,7 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
       if (value)
       {
         // Recover old position
-        var translate = this.__horizontal ? unify.bom.Tranform.accelTranslate(this.__position + "px", 0) : unify.bom.Tranform.accelTranslate(0, this.__position + "px");
+        var translate = this.__horizontal ? unify.bom.Transform.accelTranslate(this.__position + "px", 0) : unify.bom.Transform.accelTranslate(0, this.__position + "px");
         qx.bom.element.Style.set(this.getElement(), "transform", translate);
 
         // Fade in
