@@ -61,17 +61,10 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       overflow: "hidden"
     });
 
-    var client=this.getElement();
-    var content=contentWidget.getElement();
-    var contentWidget=contentWidget;
-    contentWidget.setStyle({
-      transitionDuration: "0s"
-    });
 
     this.__scroller = this.__getScroller();
     this.__updateDimensions();
 
-    var Registration = qx.event.Registration;
     var root = qx.core.Init.getApplication().getRoot();
     this.addListener("touchstart", this.__onTouchStart,this);
     root.addListener("touchmove", this.__onTouchMove,this);
@@ -79,8 +72,8 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     root.addListener("touchcancel", this.__onTouchEnd,this);
     this.addListener("mousewheel", this.__onMouseWheel, this);
     
-    this.addListener("resize", this.__updateDimensions, this)
-    contentWidget.addListener("resize", this.__updateDimensions, this)
+    this.addListener("resize", this.__updateDimensions, this);
+    contentWidget.addListener("resize", this.__updateDimensions, this);
 
   },
 
@@ -586,6 +579,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       this.__enableScrollY = this.getEnableScrollY();
       this.__showIndicatorX = this.getShowIndicatorX();
       this.__showIndicatorY = this.getShowIndicatorY();
+      this.__twoAxisScroll = this.__enableScrollX && this.__showIndicatorX && this.__enableScrollY && this.__showIndicatorY;
     },
 
     /**
@@ -597,8 +591,9 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       this.__inTouch = true;
       this.__updateProperties();
 
-      if (!(this.__enableScrollX || this.__enableScrollY)) {
-        return;
+      if (!((this.__enableScrollX && this.__contentWidth > this.__clientWidth)
+          || (this.__enableScrollY && this.__contentHeight > this.__clientHeight))) {
+        return; //neither X nor Y scroll possible, no need to try
       }
 
       var ne=e.getNativeEvent();
@@ -646,16 +641,6 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     __onTouchEnd : function(e){
       this.__inTouch = false;
       this.__scroller.doTouchEnd(+e.getNativeEvent().timeStamp);
-    },
-    
-    /**
-     * Handler for transition end event
-     *
-     * @param e {Event} Touch event
-     */
-    __onTransitionEnd : function(e){
-      this.__horizontalScrollIndicator.setVisible(false);
-      this.__verticalScrollIndicator.setVisible(false);
     },
     
     /**
