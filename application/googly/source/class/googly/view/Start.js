@@ -37,12 +37,6 @@ qx.Class.define("googly.view.Start",
         width: 500,
         height: 50
       });
-      content.setStyle({
-        paddingLeft: "10px",
-        paddingTop: "10px",
-        paddingRight: "10px",
-        paddingBottom: "10px"
-      });
     }
   }
 });
