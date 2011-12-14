@@ -27,13 +27,13 @@ qx.Class.define("unify.ui.layout.special.ScrollLayout", {
       var indicatorX = this.__indicatorX;
       var indicatorXSize = indicatorX.getSizeHint();
       var indicatorXProp = this.__indicatorXProp;
-      indicatorX.renderLayout(0, availHeight-indicatorXSize.height,
+      indicatorX.renderLayout(0, availHeight-indicatorXSize.height-indicatorXProp.distance,
                               availWidth-indicatorXProp.distance,indicatorXSize.height);
       
       var indicatorY = this.__indicatorY;
       var indicatorYSize = indicatorY.getSizeHint();
       var indicatorYProp = this.__indicatorYProp;
-      indicatorY.renderLayout(availWidth-indicatorYSize.width, 0,
+      indicatorY.renderLayout(availWidth-indicatorYSize.width-indicatorYProp.distance, 0,
                               indicatorYSize.width, availHeight-indicatorYProp.distance);
       
       var content = this.__content;
