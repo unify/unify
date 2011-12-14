@@ -27,13 +27,13 @@ qx.Class.define("unify.ui.layout.special.ScrollLayout", {
       var indicatorX = this.__indicatorX;
       var indicatorXSize = indicatorX.getSizeHint();
       var indicatorXProp = this.__indicatorXProp;
-      indicatorX.renderLayout(0, availHeight-indicatorXSize.height,
+      indicatorX.renderLayout(0, availHeight-indicatorXSize.height-indicatorXProp.distance,
                               availWidth-indicatorXProp.distance,indicatorXSize.height);
       
       var indicatorY = this.__indicatorY;
       var indicatorYSize = indicatorY.getSizeHint();
       var indicatorYProp = this.__indicatorYProp;
-      indicatorY.renderLayout(availWidth-indicatorYSize.width, 0,
+      indicatorY.renderLayout(availWidth-indicatorYSize.width-indicatorYProp.distance, 0,
                               indicatorYSize.width, availHeight-indicatorYProp.distance);
       
       var content = this.__content;
@@ -42,13 +42,10 @@ qx.Class.define("unify.ui.layout.special.ScrollLayout", {
       var widget = this._getWidget();
       var enableScrollX = widget.getEnableScrollX();
       var enableScrollY = widget.getEnableScrollY();
-      if (enableScrollX && enableScrollY) {
-        content.renderLayout(0, 0, contentSizeHint.width, contentSizeHint.height);
-      } else if (enableScrollX) {
-        content.renderLayout(0, 0, contentSizeHint.width, availHeight);
-      } else if (enableScrollY) {
-        content.renderLayout(0, 0, availWidth, contentSizeHint.height);
-      }
+      content.renderLayout(0,0,
+          enableScrollX ? contentSizeHint.width : availWidth,
+          enableScrollY ? contentSizeHint.height : availHeight);
+
     },
     
     /**
