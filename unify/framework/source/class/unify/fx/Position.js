@@ -42,11 +42,11 @@ qx.Class.define("unify.fx.Position", {
         top: parseInt(top, 10)
       };
     },
-    
+
     _setup : function() {
       var from = this.__resetPoint = this._widget.getStyle("transform");
-
-      var matcher = new RegExp("translate([^)]+)");
+      
+      var matcher = new RegExp("translate(?:3d)?([^)]+)");
       var parsed = matcher.exec(from);
       var mod;
       if (parsed && parsed.length == 2) {
@@ -78,7 +78,7 @@ qx.Class.define("unify.fx.Position", {
       if (!render) {
         return;
       }
-      
+
       var mod = this.__mod;
       var anim = this.__anim;
       if (!anim) {
@@ -92,7 +92,7 @@ qx.Class.define("unify.fx.Position", {
           this.__anim = null;
         }, this);
       }
-      
+
       var left = Math.round(mod.left + (anim.left * percent));
       var top = Math.round(mod.top + (anim.top * percent));
 
