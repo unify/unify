@@ -1089,30 +1089,41 @@ qx.Class.define("unify.ui.core.Widget", {
      * @param map {Map} Map of styles/values to apply
      */
     _setStyle : function(map) {
+
+      //validation
+
       map = qx.lang.Object.clone(map);
+      var keys = qx.lang.Object.getKeys(map);
+      var disallowedStyles={
+        //positioning and visibility is done by  engine
+        left:true,
+        top:true,
+        bottom:true,
+        right:true,
+        position:true,
+        visibility:true,
+        display:true,
+        //border is not resolved, use more specific properties
+        border:true,
+        borderSize:true
+      };
+      for (var i=0,ii=keys.length; i<ii; i++) {
+        var key = keys[i];
+        if(disallowedStyles[key]){
+          this.error("Widget style type " + key + " is not allowed");
+        }
+      }
+
+      //properties
+
       var properties = null;
       if (map.properties) {
         properties = map.properties;
         delete map.properties;
       }
-      
-      var disallowedStyles = [
-        "fontWeight",
-        "fontFamily",
-        
-        "left",
-        "top",
-        "bottom",
-        "right",
-        "position",
-        //"width",
-        //"height",
-        "visibility",
-        
-        "border",
-        "borderSize"
-      ];
-      
+
+      //dimensions
+
       if (map.height) {
         this.setHeight(parseInt(map.height,10));
         delete map.height;
@@ -1121,6 +1132,9 @@ qx.Class.define("unify.ui.core.Widget", {
         this.setWidth(parseInt(map.width,10));
         delete map.height;
       }
+
+      //margins
+
       if (map.margin) {
         var margin = map.margin.split(" ");
         map.marginTop = margin[0];
@@ -1129,6 +1143,25 @@ qx.Class.define("unify.ui.core.Widget", {
         map.marginLeft = margin[3] || margin[1] || margin[0];
         delete map.margin;
       }
+      if (map.marginLeft) {
+        this.setMarginLeft(parseInt(map.marginLeft, 10));
+        delete map.marginLeft;
+      }
+      if (map.marginTop) {
+        this.setMarginTop(parseInt(map.marginTop, 10));
+        delete map.marginTop;
+      }
+      if (map.marginRight) {
+        this.setMarginRight(parseInt(map.marginRight, 10));
+        delete map.marginRight;
+      }
+      if (map.marginBottom) {
+        this.setMarginBottom(parseInt(map.marginBottom, 10));
+        delete map.marginBottom;
+      }
+
+      //paddings
+
       if (map.padding) {
         var padding = map.padding.split(" ");
         map.paddingTop = padding[0];
@@ -1137,6 +1170,9 @@ qx.Class.define("unify.ui.core.Widget", {
         map.paddingLeft = padding[3] || padding[1] || padding[0];
         delete map.padding;
       }
+
+      //borders
+
       if (map.borderWidth) {
         var borderWidth = map.borderWidth.split(" ");
         map.borderTopWidth = borderWidth[0];
@@ -1191,66 +1227,79 @@ qx.Class.define("unify.ui.core.Widget", {
         delete map.borderBottom;
       }
 
-      var keys = qx.lang.Object.getKeys(map);
-      var style = this.__style || {};
+      //font
 
-      for (var i=0,ii=keys.length; i<ii; i++) {
-        var key = keys[i];
+      //read font properties
+      var font = map.font;
+      var fontSize = map.fontSize;
+      var fontWeight = map.fontWeight;
+      var fontFamily = map.fontFamily;
+      var textColor = map.textColor;
+      var color = map.color;
+      var fontStyle=map.fontStyle;
+      var textDecoration=map.textDecoration;
+      var tmpFont;
 
-        if (!qx.lang.Array.contains(disallowedStyles, key)) {
-          // Margin handling by LayoutItem
-          if (key == "marginLeft") {
-            this.setMarginLeft(parseInt(map[key], 10));
-          } else if (key == "marginTop") {
-            this.setMarginTop(parseInt(map[key], 10));
-          } else if (key == "marginRight") {
-            this.setMarginRight(parseInt(map[key], 10));
-          } else if (key == "marginBottom") {
-            this.setMarginBottom(parseInt(map[key], 10));
-          } else {
-            style[key] = map[key];
-          }
+      //check general font first
+      if (font) {
+        delete map.font;
+        //try to resolve the font first, if it fails, parse it
+        var resolvedFont = qx.theme.manager.Font.getInstance().resolve(font);
+        if(resolvedFont!==font){
+          tmpFont=qx.lang.Object.clone(resolvedFont);
         } else {
-          this.error("Widget style type " + key + " is not allowed");
+          tmpFont = qx.bom.Font.fromString(font);
+        }
+      } else {
+        //no font set, reuse the existing or start from scratch
+        tmpFont=this.__font||new qx.bom.Font();
+      }
+
+      //now check each property
+      if (fontSize) {
+        delete map.fontSize;
+        if (typeof(fontSize) == "string") {
+          tmpFont.setSize(unify.bom.Font.resolveRelativeSize(fontSize));
+        } else {
+          tmpFont.setSize(parseInt(fontSize, 10));
         }
       }
 
-      
+      if(fontWeight){
+        delete map.fontWeight;
+        tmpFont.setBold(fontWeight=="bold");
+      }
 
-      var font = style.font;
-      if (font) {
-        this.__font = font = qx.bom.Font.fromString(font);
-        delete style.font;
-        
-        var fontStyle = qx.theme.manager.Font.getInstance().resolve(font).getStyles();
-        var textColor = style.textColor;
-        if (textColor) {
-          style.color = qx.theme.manager.Color.getInstance().resolve(textColor);
-        }
-        
-        style = qx.lang.Object.merge(fontStyle, style);
-        
-        delete style.textColor;
-        
+      if (textColor) {
+        delete map.textColor;
+        tmpFont.setColor(qx.theme.manager.Color.getInstance().resolve(textColor));
+      }
+
+      if(color){
+        delete map.color;
+        tmpFont.setColor(qx.theme.manager.Color.getInstance().resolve(color));
+      }
+
+      if(fontStyle){
+        delete map.fontStyle;
+        tmpFont.setItalic(fontStyle=="italic");
+      }
+
+      if(textDecoration){
+        delete map.textDecoration;
+        tmpFont.setDecoration(textDecoration);
+      }
+
+      //if something changed, update it
+      if(font||fontSize||fontWeight||fontFamily||textColor||fontStyle||textDecoration){
+        var fontStyle = tmpFont.getStyles();
+        map = qx.lang.Object.merge(map,fontStyle);
+
         qx.ui.core.queue.Layout.add(this);
       }
-      
-      var fontSize = style.fontSize;
-      if (fontSize) {
-        var newFont = this.__font || new qx.bom.Font();
-        if (typeof(fontSize) == "string") {
-          newFont.setSize(unify.bom.Font.resolveRelativeSize(fontSize));
-        } else {
-          newFont.setSize(parseInt(fontSize, 10));
-        }
-        
-        delete style.fontSize;
 
-        var fontStyle = qx.theme.manager.Font.getInstance().resolve(newFont).getStyles();
-        style = qx.lang.Object.merge(fontStyle, style);
-      }
-      
-      this.__style = style;
+      this.__font = tmpFont;//cache font for later use
+      var style = this.__style = qx.lang.Object.merge(this.__style||{},map);
       
       var padding = this.__padding = {
         left: parseInt(style.paddingLeft, 10) || 0,
