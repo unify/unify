@@ -108,6 +108,8 @@ qx.Class.define('unify.bom.Gradient', {
         var startY;
         var endY;
         
+        angle = (540 - angle) % 360;
+        
         var quadrant = Math.ceil(angle/90.0);
         if (angle == 0 || quadrant == 1) {
           startX = 0;
