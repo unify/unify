@@ -264,7 +264,7 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     "toolbar.segmented.button" : {
       style : function(state) {
         var e = {
-          color: "grey",
+          color: "gray",
           textShadow: "rgba(0, 0, 0, 0.5) 0px -1px 0",
           backgroundImage: unify.bom.Gradient.createGradient({
             angle: "to bottom",
