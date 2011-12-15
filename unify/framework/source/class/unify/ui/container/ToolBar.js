@@ -48,7 +48,7 @@ qx.Class.define("unify.ui.container.ToolBar", {
       var itemElem;
       
       if (config.kind == "button") {
-        itemElem = new unify.ui.form.Button();
+        itemElem = new unify.ui.basic.NavigationButton();
   
         var navigation = {};
         
@@ -84,7 +84,7 @@ qx.Class.define("unify.ui.container.ToolBar", {
         for (var i=0,ii=buttons.length; i<ii; i++) {
           var button = buttons[i];
           
-          var el = new unify.ui.form.Button(button.label).set({
+          var el = new unify.ui.basic.NavigationButton(button.label).set({
             appearance: "toolbar.segmented.button"
           });
           if (i==0) {

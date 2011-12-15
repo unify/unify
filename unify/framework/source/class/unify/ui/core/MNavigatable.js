@@ -239,13 +239,14 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
 
       if (qx.core.Environment.get("qx.debug"))
       {
-        if (rel) {
+        if (rel != "same" && rel != "master") {
           throw new Error("Invalid 'rel' attribute: " + rel);
         }
       }
       
       var config = unify.view.Path.parseFragment(dest);
       var view = config.view;
+
       if (view && !viewManager.getView(view))
       {
         unify.view.Navigation.getInstance().navigate(new unify.view.Path(config));

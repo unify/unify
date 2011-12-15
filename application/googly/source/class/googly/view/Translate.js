@@ -75,15 +75,13 @@ qx.Class.define("googly.view.Translate",
       inputText.set({
         allowGrowY: true
       });
-      //inputText.setHeight(150);
-      inputText.setStyle(inputStyles);
+      inputText.setHeight(150);
       
       var resultText = this.__resultText = new unify.ui.form.TextField();
       resultText.set({
         allowGrowY: true
       });
-      //resultText.setHeight(150);
-      resultText.setStyle(inputStyles);
+      resultText.setHeight(150);
       
       var button = new unify.ui.form.Button("Translate");
       button.set({

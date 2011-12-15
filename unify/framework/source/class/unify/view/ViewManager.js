@@ -34,7 +34,7 @@ qx.Class.define("unify.view.ViewManager", {
   {
     this.base(arguments, layout || new unify.ui.layout.Canvas());
 
-    this.setUserData("viewManager", this); // TODO : Remove
+    this.setUserData("viewManager", this);
 
     if (qx.core.Environment.get("qx.debug"))
     {

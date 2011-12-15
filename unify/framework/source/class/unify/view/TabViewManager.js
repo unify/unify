@@ -29,6 +29,8 @@ qx.Class.define("unify.view.TabViewManager", {
   {
     this.base(arguments, layout || new unify.ui.layout.VBox());
 
+    this.setUserData("viewManager", this);
+
     if (qx.core.Environment.get("qx.debug"))
     {
       if (viewManager == null) {
@@ -51,7 +53,6 @@ qx.Class.define("unify.view.TabViewManager", {
     var bar = this.__getBar();
     bar.setHeight(49);
     this.add(bar);
-    //this._makeNavigatable(bar);
   },
 
 
