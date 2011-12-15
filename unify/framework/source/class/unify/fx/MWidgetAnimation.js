@@ -96,8 +96,8 @@ qx.Mixin.define("unify.fx.MWidgetAnimation", {
         var animation = this.__mwAnimationMap[animationName];
         if (animation) {
           animation.stop();
+          animation.reset(this.__mwAnimationResetMap[animationName]);
         }
-        animation.reset(this.__mwAnimationResetMap[animationName]);
       }
     },
     
@@ -158,8 +158,8 @@ qx.Mixin.define("unify.fx.MWidgetAnimation", {
         var animation = this.__mwAnimationRotate;
         if (animation) {
           animation.stop();
+          animation.reset(this.__mwAnimationRotateReset);
         }
-        animation.reset(this.__mwAnimationRotateReset);
       }
     }
   }
