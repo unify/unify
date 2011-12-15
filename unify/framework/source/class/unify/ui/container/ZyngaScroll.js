@@ -1730,7 +1730,7 @@ var Scroller;
 
 				// Push values out
 				if (self.__callback) {
-					self.__callback(left, top, zoom, "stop");
+					self.__callback(left, top, zoom);
 				}
 
 				// Fix max scroll ranges
