@@ -1291,7 +1291,7 @@ qx.Class.define("unify.ui.core.Widget", {
       }
 
       //if something changed, update it
-      if(font||fontSize||fontWeight||fontFamily||textColor||fontStyle||textDecoration){
+      if(font||fontSize||fontWeight||fontFamily||textColor||color||fontStyle||textDecoration){
         var fontStyle = tmpFont.getStyles();
         map = qx.lang.Object.merge(map,fontStyle);
 
