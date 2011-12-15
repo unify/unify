@@ -23,11 +23,10 @@ qx.Class.define("unify.view.TabViewManager", {
 
   /**
    * @param viewManager {unify.view.ViewManager} ViewManager to attach to
-   * @param layout {qx.ui.layout.Abstract?null} Layout
    */
-  construct : function(viewManager, layout)
+  construct : function(viewManager)
   {
-    this.base(arguments, layout || new unify.ui.layout.VBox());
+    this.base(arguments, new unify.ui.layout.special.TabViewLayout());
 
     this.setUserData("viewManager", this);
 
@@ -48,11 +47,13 @@ qx.Class.define("unify.view.TabViewManager", {
     this.__viewManager = viewManager;
     viewManager.addListener("changePath", this.__onViewManagerChangePath, this);
 
-    this.add(viewManager, {flex: 1});
+    this.add(viewManager);
 
     var bar = this.__getBar();
     bar.setHeight(49);
-    this.add(bar);
+    this.add(bar, {
+      type: "bar"
+    });
   },
 
 
