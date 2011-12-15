@@ -262,7 +262,11 @@ qx.Class.define("unify.ui.core.Widget", {
     },
     
     // overridden
-    _applyAppearance : function() {
+    _applyAppearance : function(value) {
+      if (qx.core.Environment.get("qx.debug")) {
+        var e = this.getElement();
+        e.setAttribute("appearance",value);
+      }
       this.updateAppearance();
     },
     
@@ -1373,6 +1377,7 @@ qx.Class.define("unify.ui.core.Widget", {
 
         if(qx.core.Environment.get("qx.debug")){
           element.setAttribute("unifyclass",this.classname);
+          element.setAttribute("appearance",this.getAppearance());
         }
         qx.bom.element.Style.set(element, "position",  "absolute");
         

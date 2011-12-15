@@ -184,8 +184,28 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     
     "tabbar" : {
       style : function() {
+        var gradient = unify.bom.Gradient.createGradient({
+          angle: "to bottom",
+          colorStops : [{
+            position: 0,
+            color: "#434343"
+          }, {
+            position: 0.02,
+            color: "#2e2e2e"
+          }, {
+            position: 0.5,
+            color: "#151515"
+          }, {
+            position: 0.5,
+            color: "#000"
+          }, {
+            position: 1,
+            color: "#000"
+          }]
+        });
+        
         return {
-          //background: "-webkit-gradient(linear, 0% 0%, 0% 100%, from(#434343), to(black), color-stop(.02,#2e2e2e), color-stop(.5,#151515), color-stop(.5,black))",
+          background: gradient,
           borderTop: "1px solid black"
         };
       }
@@ -203,7 +223,22 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         
         if (state.active) {
           style.color = "white";
-          //style.background = "-webkit-gradient(linear, 0% 0%, 0% 100%, from(#494949), to(#252525), color-stop(.5,#353535), color-stop(.5,#252525))";
+          style.background = unify.bom.Gradient.createGradient({
+            angle: "to bottom",
+            colorStops : [{
+              position: 0,
+              color: "#494949"
+            }, {
+              position: 0.5,
+              color: "#353535"
+            }, {
+              position: 0.5,
+              color: "#252525"
+            }, {
+              position: 1,
+              color: "#252525"
+            }]
+          });
         } else {
           style.color = "#9a9a9a";
           style.background = "transparent";
@@ -230,7 +265,22 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         var e = {
           color: "grey",
           textShadow: "rgba(0, 0, 0, 0.5) 0px -1px 0",
-          //backgroundImage: "-webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #464646), color-stop(50%, #1a1a1a), color-stop(50%, #000000), color-stop(100%, #000000))",
+          backgroundImage: unify.bom.Gradient.createGradient({
+            angle: "to bottom",
+            colorStops : [{
+              position: 0,
+              color: "#464646"
+            }, {
+              position: 0.5,
+              color: "#1a1a1a"
+            }, {
+              position: 0.5,
+              color: "#000"
+            }, {
+              position: 1,
+              color: "#000"
+            }]
+          }),
           height: "30px",
           borderTop: "1px solid #2b2b2b",
           borderBottom: "1px solid #323232",
@@ -247,7 +297,22 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         
         if (state.active) {
           e.color = "white";
-          //e.backgroundImage = "-webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #737373), color-stop(50%, #474747), color-stop(50%, #303030), color-stop(100%, #313131))";
+          e.backgroundImage = unify.bom.Gradient.createGradient({
+            angle: "to bottom",
+            colorStops : [{
+              position: 0,
+              color: "#737373"
+            }, {
+              position: 0.5,
+              color: "#474747"
+            }, {
+              position: 0.5,
+              color: "#303030"
+            }, {
+              position: 1,
+              color: "#313131"
+            }]
+          });
         }
         
         return e;
@@ -346,7 +411,25 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         var e = {
           font: "20px bold",
           color: "white",
-          //backgroundImage: "-webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, rgba(255, 255, 255, 0.61)), color-stop(5%, rgba(255, 255, 255, 0.45)), color-stop(50%, rgba(255, 255, 255, 0.27)), color-stop(50%, rgba(255, 255, 255, 0.2)), color-stop(100%, rgba(255, 255, 255, 0)))",
+          backgroundImage: unify.bom.Gradient.createGradient({
+            angle: "to bottom",
+            colorStops : [{
+              position: 0,
+              color: "rgba(255, 255, 255, 0.61)"
+            }, {
+              position: 0.05,
+              color: "rgba(255, 255, 255, 0.45)"
+            }, {
+              position: 0.5,
+              color: "rgba(255, 255, 255, 0.27)"
+            }, {
+              position: 0.5,
+              color: "rgba(255, 255, 255, 0.2)"
+            }, {
+              position: 1,
+              color: "rgba(255, 255, 255, 0)"
+            }]
+          }),
           borderLeft: "3px solid",
           borderTop: "3px solid",
           borderRight: "3px solid",
@@ -440,19 +523,11 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     },
     
     "alert.button" : {
+      include : "button",
+      
       style : function() {
         return {
-          font: "20px bold",
-          color: "white",
-          marginBottom: '5px',
-          backgroundImage: "-webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, rgba(255, 255, 255, 0.61)), color-stop(5%, rgba(255, 255, 255, 0.45)), color-stop(50%, rgba(255, 255, 255, 0.27)), color-stop(50%, rgba(255, 255, 255, 0.2)), color-stop(100%, rgba(255, 255, 255, 0)))",
-          borderLeft: "3px solid #3A3A3A",
-          borderTop: "3px solid #3A3A3A",
-          borderRight: "3px solid #3A3A3A",
-          borderBottom: "3px solid #3A3A3A",
-          backgroundColor: "#242424",
-          borderRadius: "12px",
-          textAlign: "center"
+          marginBottom: "5px"
         };
       }
     }
