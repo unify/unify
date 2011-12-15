@@ -138,7 +138,7 @@ qx.Class.define("unify.ui.basic.Label", {
       } else {
         hint = Label.getTextSize(content, styles);
       }
-      
+      console.log(content, JSON.stringify(hint), this.getHtml(), this.getFont())
       return hint;
     },
     

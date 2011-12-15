@@ -249,6 +249,14 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         return style;
       }
     },
+    "tabbar.button/label" : {
+      style : function(state) {
+        return {
+          font: "14px normal",
+          textAlign: "center"
+        };
+      }
+    },
     
     "toolbar" : {
       include : "navigationbar"
@@ -408,10 +416,10 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
+    
     "button" : {
       style : function(state) {
         var e = {
-          font: "20px bold",
           color: "white",
           backgroundImage: unify.bom.Gradient.createGradient({
             angle: "to bottom",
@@ -450,6 +458,14 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         }
 
         return e;
+      }
+    },
+    "button/label" : {
+      style : function(state) {
+        return {
+          font: "20px bold",
+          textAlign: "center"
+        };
       }
     },
     
