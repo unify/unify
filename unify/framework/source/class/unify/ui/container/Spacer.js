@@ -14,6 +14,15 @@
 qx.Class.define("unify.ui.container.Spacer", {
   extend: unify.ui.core.Widget,
   
+  properties : {
+    // overridden
+    appearance :
+    {
+      refine: true,
+      init: "spacer"
+    }
+  },
+  
   construct : function() {
     this.base(arguments);
     this.setLayoutProperties({flex: 1});

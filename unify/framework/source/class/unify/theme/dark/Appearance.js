@@ -52,6 +52,7 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     "scroll" : {},
     "layer" : {},
     "html" : {},
+    "spacer" : {},
     "view" : {
       style : function() {
         var style = {
