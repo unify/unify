@@ -239,7 +239,7 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
 
       if (qx.core.Environment.get("qx.debug"))
       {
-        if (rel != "same" && rel != "master") {
+        if (rel != "same" && rel != "master" && rel != null) {
           throw new Error("Invalid 'rel' attribute: " + rel);
         }
       }
