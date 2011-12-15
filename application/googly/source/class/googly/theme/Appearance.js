@@ -14,25 +14,18 @@ qx.Theme.define("googly.theme.Appearance", {
   extend: unify.theme.dark.Appearance,
   
   appearances : {
-    "input" : {
-      base: true,
-      
-      style : function() {
-        return {
-          font: "20px",
-          padding: "10px",
-          margin: "10px 8px"
-        };
-      }
-    },
-    
     "button" : {
       base : true,
       
       style : function() {
         return {
-          margin: "10px",
-          padding: "10px"
+          padding: "2px",
+          margin: "10px 8px",
+          fontSize: "12px",
+          backgroundColor: "red",
+          //properties : {
+            verticalAlign: "middle"
+          //}
         };
       }
     },

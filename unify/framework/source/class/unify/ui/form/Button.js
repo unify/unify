@@ -13,8 +13,8 @@
  */
  
 qx.Class.define("unify.ui.form.Button", {
-  extend: unify.ui.basic.Label,
-  include : [unify.ui.core.MInteractionState],
+  extend: unify.ui.container.Composite,
+  include : [unify.ui.core.MInteractionState, unify.ui.core.MChildControl],
 
   events : {
     /** Execute event when button is tapped */
@@ -35,6 +35,15 @@ qx.Class.define("unify.ui.form.Button", {
     }
   },
   
+  construct : function(text) {
+    var layout = this.__layout = new unify.ui.layout.Center();
+    this.base(arguments, layout)
+    
+    if (text) {
+      this.setValue(text);
+    }
+  },
+  
   members: {
     _createElement : function() {
       var e = this.base(arguments);
@@ -42,6 +51,36 @@ qx.Class.define("unify.ui.form.Button", {
       qx.event.Registration.addListener(e, "tap", this.__onTap, this);
       
       return e;
+    },
+    
+    /**
+     * Returns child control widget identified by id
+     *
+     * @param id {String} ID of child widget
+     * @return {unify.ui.core.Widget} Content widget
+     */
+    _createChildControlImpl : function(id) {
+      var control;
+      
+      if (id == "label") {
+        control = new unify.ui.basic.Label();
+        this._add(control);
+      }
+      
+      return control || this.base(arguments, id);
+    },
+    
+    _applyAppearance : function(value) {
+      this.getChildControl("label").setAppearance(value + "/label");
+      this.base(arguments, value);
+    },
+    
+    setValue : function(value) {
+      this.getChildControl("label").setValue(value);
+    },
+    
+    getValue : function() {
+      return this.getChildControl("label").getValue();
     },
     
     /**
