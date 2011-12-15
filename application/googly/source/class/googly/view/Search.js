@@ -66,17 +66,6 @@ qx.Class.define("googly.view.Search",
     // overridden
     _createView : function() 
     {
-      /*var layer = new unify.ui.Layer(this);
-      var toolbar = new unify.ui.NavigationBar(this);
-      layer.add(toolbar);
-      
-      var scrollView = new unify.ui.ScrollView;
-      layer.add(scrollView);
-      scrollView.setEnableScrollX(false);
-      scrollView.add("<input type='text' id='searchText'/><div class='button' exec='refresh'>Submit</div><ul id='resultList'></ul>");
-
-      return layer;*/
-      
       var navigationBar = new unify.ui.container.NavigationBar(this);
       this.add(navigationBar);
       
