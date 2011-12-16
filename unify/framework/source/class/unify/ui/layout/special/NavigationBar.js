@@ -79,20 +79,17 @@ qx.Class.define("unify.ui.layout.special.NavigationBar", {
       }
       var titleTop = Math.floor(availHeight / 2 - titleHeight / 2);
       var titleLeft;
-      console.log(title.getValue());
+
       if (titleWidth <= optimalTitleWidth) {
         // Space for optimal centered title available -> center title
         titleLeft = Math.floor(availWidth / 2 - titleWidth / 2);
-        console.log("title <= optimalTitle");
       } else if (titleWidth <= availTitleWidth) {
         // Center title in available room
         titleLeft = leftWidth + Math.round((availTitleWidth - titleWidth) / 2.0);
-        console.log("title <= availTitle");
       } else {
         // Title is bigger than avail space
         titleLeft = leftWidth;
         titleWidth = availTitleWidth;
-        console.log("title > availTitle");
       }
       
       title.renderLayout(titleLeft, titleTop, titleWidth, titleHeight);
