@@ -71,7 +71,6 @@ qx.Class.define("unify.ui.form.Button", {
     },
     
     _applyAppearance : function(value) {
-      this.getChildControl("label").setAppearance(value + "/label");
       this.base(arguments, value);
     },
     

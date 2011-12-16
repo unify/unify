@@ -151,6 +151,10 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
       }
       
       control.setAppearance(this.getAppearance() + "/" + id);
+      var appearanceChanged = qx.lang.Function.bind(function(childId, parrentAppearance) {
+        this.getChildControl(childId).setAppearance(parrentAppearance + "/" + childId);
+      }, this, id);
+      this.addListener("changeAppearance", function(e) { appearanceChanged(e.getData()); }, this);
 
       // Establish connection to parent
       control.$$subcontrol = id;
