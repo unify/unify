@@ -32,6 +32,7 @@ qx.Class.define("unify.ui.form.Slider", {
     
     /** {Float} Percentual value (0.0 to 1.0) */
     value : {
+      check : "!isNaN(value) && value >= 0.0 && value <= 1.0",
       apply : "_applyValue",
       event : "changeValue",
       init: 0.0
