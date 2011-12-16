@@ -577,7 +577,7 @@ qx.Class.define("unify.ui.core.Widget", {
         if (oldStyle) {
           var oldStyleData = {};
           for (key in oldStyle) {
-            if (newData[key] === undefined) {
+            if (newStyle[key] === undefined) {
               oldStyleData[key] = undefined;
             }
           }
