@@ -163,7 +163,7 @@ qx.Class.define("unify.ui.form.Slider", {
         this.__calcLeft = calcWidth * this.getValue();
         this.__touchLeft = e.getScreenLeft();
       } else {
-        var calcHeight = this.__calcWidth = this.__getAvailSliderHeight();
+        var calcHeight = this.__calcHeight = this.__getAvailSliderHeight();
         
         this.__calcTop = calcHeight * this.getValue();
         this.__touchTop = e.getScreenTop();
@@ -187,11 +187,9 @@ qx.Class.define("unify.ui.form.Slider", {
         diff = this.__calcTop + e.getScreenTop() - this.__touchTop;
         calcVal = this.__calcHeight;
       }
-      
       if (diff < 0 || diff > calcVal) {
         return;
       }
-      
       var transform;
       if (horizontal) {
         transform = "translate(" + Math.round(diff) + "px, 0)";
