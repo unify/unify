@@ -96,7 +96,8 @@ qx.Class.define("unify.ui.core.Widget", {
      */
     appearance : {
       init : null,
-      apply : "_applyAppearance"
+      apply : "_applyAppearance",
+      event : "changeAppearance"
     },
     
     /**
