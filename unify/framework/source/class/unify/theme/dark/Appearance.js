@@ -179,7 +179,9 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           font: "20px bold",
           color: "white",
           textShadow: "rgba(0, 0, 0, 0.4) 0px -1px 0",
-          textOverflow: "ellipsis"
+          textOverflow: "ellipsis",
+          overflow: "hidden",
+          whiteSpace: "nowrap"
         };
       }
     },
