@@ -642,6 +642,11 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     __onTouchEnd : function(e){
       this.__inTouch = false;
       this.__scroller.doTouchEnd(+e.getNativeEvent().timeStamp);
+      
+      var root = qx.core.Init.getApplication().getRoot();
+      root.removeListener("touchmove", this.__onTouchMove,this);
+      root.removeListener("touchend", this.__onTouchEnd,this);
+      root.removeListener("touchcancel", this.__onTouchEnd,this);
     },
     
     /**
