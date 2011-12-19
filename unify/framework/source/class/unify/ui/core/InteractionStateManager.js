@@ -4,23 +4,11 @@ qx.Class.define("unify.ui.core.InteractionStateManager", {
   
   properties : {
     hoveredWidget : {
-      nullable: true,
-      apply : "_applyHover"
+      nullable: true
     },
     
     pressedWidget : {
-      nullable: true,
-      apply : "_applyPress"
-    }
-  },
-  
-  members : {
-    _applyHover : function(value) {
-      console.log("HOVER: " + value);
-    },
-    
-    _applyPress : function(value) {
-      console.log("PRESS: " + value);
+      nullable: true
     }
   }
 });
