@@ -193,7 +193,6 @@ qx.Class.define('unify.bom.Gradient', {
           geckoAngle += 180;
         }
         
-        var g = [];
         var colorStops = [];
         for (var i=0,ii=options.colorStops.length;i<ii;i++) {
           var colorStop = options.colorStops[i];
@@ -201,7 +200,7 @@ qx.Class.define('unify.bom.Gradient', {
           colorStops.push(colorStop.color + " " + _generatePercentageString(colorStop.position));
         }
         
-        gradient = "-moz-linear-gradient(" + geckoAngle + "deg, g.join(","))"
+        gradient = "-moz-linear-gradient(" + geckoAngle + "deg, " + colorStops.join(",") + ")";
       }
       if (qx.core.Environment.get("engine.name") == "presto") {
         var geckoAngle = 90 - angle;
@@ -217,7 +216,7 @@ qx.Class.define('unify.bom.Gradient', {
           colorStops.push(colorStop.color + " " + _generatePercentageString(colorStop.position));
         }
         
-        gradient = "-o-linear-gradient(" + geckoAngle + "deg, g.join(","))"
+        gradient = "-o-linear-gradient(" + geckoAngle + "deg, " + colorStops.join(",") + ")";
       }
       if (qx.core.Environment.get("engine.name") == "trident") {
         var geckoAngle = 90 - angle;
@@ -233,7 +232,7 @@ qx.Class.define('unify.bom.Gradient', {
           colorStops.push(colorStop.color + " " + _generatePercentageString(colorStop.position));
         }
         
-        gradient = "-ms-linear-gradient(" + geckoAngle + "deg, g.join(","))"
+        gradient = "-ms-linear-gradient(" + geckoAngle + "deg, " + colorStops.join(",") + ")";
         
         //"filter: progid:DXImageTransform.Microsoft.Gradient" is supported on older IEs
         //@see http://msdn.microsoft.com/en-us/library/ms532997(VS.85,loband).aspx
