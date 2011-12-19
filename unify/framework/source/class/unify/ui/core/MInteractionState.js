@@ -53,7 +53,6 @@ qx.Mixin.define("unify.ui.core.MInteractionState", {
       var InteractionStateManager = unify.ui.core.InteractionStateManager.getInstance();
       var hovered = InteractionStateManager.getHoveredWidget();
       var pressed = InteractionStateManager.getPressedWidget();
-      console.log(""+hovered, ""+this);
       if ((pressed == null  || pressed == this) && hovered == null) {
         InteractionStateManager.setHoveredWidget(this);
         this.addState("hover");
