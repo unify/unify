@@ -187,14 +187,11 @@ qx.Class.define("unify.view.PopOverManager",
      *
      * @param id {String} ID of view manager
      * @param trigger {unify.ui.Widget?null} Widget that triggers the opening of the popover
-     * @param triggerPosition {String?null} Position on trigger to attach popover to
-     * @param popoverPosition {String?null} Position on popover to attach to the trigger position
+
      */
-    show : function(id, trigger, triggerPosition, popoverPosition)
+    show : function(id, trigger)
     {
-      var modLeft = null;
-      var modTop = null;
-      
+
       var viewManager = unify.view.ViewManager.get(id);
       var displayMode=viewManager.getDisplayMode();
       if (!viewManager.isInitialized()) {
@@ -216,82 +213,20 @@ qx.Class.define("unify.view.PopOverManager",
       if (qx.core.Environment.get("qx.debug")) {
         this.debug("Show: " + id);
       }
-      var elem = viewManager.getElement();
+
       var overlay;
       if(displayMode=='popover'){
-        if (popoverPosition) {
-          var map = {
-            "l" : "left",
-            "c" : "center",
-            "r" : "right",
-            "t" : "top",
-            "b" : "bottom"
-          };
-          
-          var direction = map[popoverPosition[0] || ""];
-          var alignment = map[popoverPosition[1] || ""];
 
-          overlay=this.__getOverlay(viewManager, direction, alignment);
-        } else {
-          overlay=this.__getOverlay(viewManager);
+        overlay=this.__getOverlay(viewManager);
+
+        overlay.setTrigger(trigger);
+
+        var registeredStyle=this.__styleRegistry[viewManager];
+        if(registeredStyle){
+          overlay.getChildrenContainer().setStyle(registeredStyle);
         }
-        
-        var style = this.__styleRegistry[viewManager] || {};
-        
-        if (trigger && triggerPosition && popoverPosition) {
-          var position = trigger.getPositionInfo();
-
-          var direction = triggerPosition[0] || "r";
-          var alignment = triggerPosition[1] || "c";
-          
-          var left;
-          var top;
-
-          if (direction == "r" || direction == "l") {
-            if (direction == "r") {
-              left = position.left + position.width;
-            } else {
-              left = position.left;
-            }
-            
-            if (alignment == "t") {
-              top = position.top;
-            } else if (alignment == "c") {
-              top = position.top + Math.round(position.height / 2);
-            } else if (alignment == "b") {
-              top = position.top + position.height;
-            }
-          } else {
-            if (direction == "t") {
-              top = position.top;
-            } else {
-              top = position.top + position.height;
-            }
-            
-            if (alignment == "l") {
-              left = position.left;
-            } else if (alignment == "c") {
-              left = position.left + Math.round(position.width / 2);
-            } else if (alignment == "r") {
-              left = position.left + position.width;
-            }
-          }
-
-          modLeft = left;
-          modTop = top;
-        }
-        
-        if (style) {
-          var mystyle = qx.lang.Object.clone(style);
-          delete mystyle.left;
-          delete mystyle.top;
-          overlay.setStyle(mystyle);
-          this.__root.add(overlay);
-        } else {
-          this.error("No style of overlay for view " + viewManager);
-        }
-
         overlay.add(viewManager,{top:0,left:0,right:0,bottom:0});
+        this.__root.add(overlay);
       } else if(displayMode=="modal"){
         if(this.__root!=viewManager.getLayoutParent()){
           this.__root.add(viewManager,this.__styleRegistry[viewManager] ||{top:0,left:0,right:0,bottom:0});
@@ -306,7 +241,7 @@ qx.Class.define("unify.view.PopOverManager",
       }
       this.fireDataEvent("show", id);
       if(overlay){
-         overlay.show(modLeft, modTop);
+         overlay.show();
       }
     },
     
@@ -369,20 +304,17 @@ qx.Class.define("unify.view.PopOverManager",
      * Get overlay element
      *
      * @param viewManager {unify.view.ViewManager} View manager to generate overlay for
-     * @param arrowDirection {String} Direction of arrow of popover (left, top, right, bottom)
-     * @param arrowAlignment {String} Alignment of arrow on popover (top, center, bottom or left, center, right)
-     *
      * @return {unify.ui.container.Overlay} Overlay widget
      */
-    __getOverlay : function(viewManager, arrowDirection, arrowAlignment){
+    __getOverlay : function(viewManager){
       var overlay=this.__overlays[viewManager];
       if(!overlay){
-        overlay=new unify.ui.container.Overlay(arrowDirection, arrowAlignment);
-        var elem=overlay.getElement();
-        elem.id=viewManager.getId()+'-popover-overlay';
-        /*var indicator=document.createElement("div");
-        indicator.className="popover-indicator";
-        elem.appendChild(indicator);*/
+        overlay=new unify.ui.container.Overlay();
+        var appearanceId=viewManager.getId()+"-overlay";
+        var appearance=qx.theme.manager.Appearance.getInstance().styleFrom(appearanceId);
+        if(appearance){
+          overlay.setAppearance(appearanceId);
+        }
         this.__overlays[viewManager]=overlay;
       }
       return overlay;
