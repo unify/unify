@@ -194,33 +194,37 @@ qx.Class.define("unify.ui.container.Overlay", {
       var arrowLeft=0;
       var arrowTop=0;
 
-      if(arrow)
-      var arrowWidth=arrow.getWidth();
-      var arrowHeight=arrow.getHeight();
-      var arrowDirection=arrow.getDirection();
-      var arrowPosition=this.getRelativeArrowPosition();
-      var relativeOffset=this.__toPixelValue(height,arrowPosition);
-      if(arrowDirection=="left" || arrowDirection=="right"){
-        if(arrowPosition=="top"){
-          arrowTop=GAP;
-        } else if(arrowPosition=="bottom"){
-          arrowTop = height - arrowHeight - GAP;
-        } else if(arrowPosition=="center"){
-          arrowTop = Math.round(height / 2 - arrowHeight/2);
-        } else {
-          arrowTop = relativeOffset - Math.round(arrowHeight/2);
-        }
-      } else if (arrowDirection=="top" || arrowDirection=="bottom"){
-        if(arrowPosition=="left"){
-          arrowLeft=GAP;
-        } else if(arrowPosition=="right"){
-          arrowLeft = width - arrowWidth - GAP;
-        } else if(arrowPosition=="center"){
-          arrowLeft = Math.round(width / 2 - arrowWidth/2);
-        } else {
-          arrowLeft = relativeOffset - Math.round(arrowWidth/2);
+      if(arrow){
+        var arrowWidth=arrow.getWidth();
+        var arrowHeight=arrow.getHeight();
+        var arrowDirection=arrow.getDirection();
+        var arrowPosition=this.getRelativeArrowPosition();
+
+        if(arrowDirection=="left" || arrowDirection=="right"){
+          var relativeOffset=this.__toPixelValue(height,arrowPosition);
+          if(arrowPosition=="top"){
+            arrowTop=GAP;
+          } else if(arrowPosition=="bottom"){
+            arrowTop = height - arrowHeight - GAP;
+          } else if(arrowPosition=="center"){
+            arrowTop = Math.round(height / 2 - arrowHeight/2);
+          } else {
+            arrowTop = relativeOffset - Math.round(arrowHeight/2);
+          }
+        } else if (arrowDirection=="top" || arrowDirection=="bottom"){
+          var relativeOffset=this.__toPixelValue(width,arrowPosition);
+          if(arrowPosition=="left"){
+            arrowLeft=GAP;
+          } else if(arrowPosition=="right"){
+            arrowLeft = width - arrowWidth - GAP;
+          } else if(arrowPosition=="center"){
+            arrowLeft = Math.round(width / 2 - arrowWidth/2);
+          } else {
+            arrowLeft = relativeOffset - Math.round(arrowWidth/2);
+          }
         }
       }
+
       return {
         left: arrowLeft,
         top: arrowTop
@@ -239,25 +243,32 @@ qx.Class.define("unify.ui.container.Overlay", {
       }
     },
 
-    __toPixelValue : function(baseSize,value){
-      if(value=="left" || value == "top"){
+    /**
+     * calculates the pixel value of relativePosition in relation to baseSize
+     *
+     * @param baseSize {Number} size value to
+     * @param relativePosition {String|Number} left,right,top,bottom,center, a percentage string, a px string or a Number
+     * @return {Number} calculated value
+     */
+    __toPixelValue : function(baseSize,relativePosition){
+      if(relativePosition=="left" || relativePosition == "top"){
         return 0;
-      } else if (value == "center"){
+      } else if (relativePosition == "center"){
         return Math.round(baseSize/2);
-      } else if (value=="right" || value == "bottom"){
+      } else if (relativePosition=="right" || relativePosition == "bottom"){
         return baseSize;
-      } else if(typeof value == "string"){
-        if(value.substring(value.length-1)=="%"){
-          return Math.round(baseSize*(parseInt(value,10)/100));
-        } else if(value.substring(value.length-2)=="px"){
-          return parseInt(value,10);
+      } else if(typeof relativePosition == "string"){
+        if(relativePosition.substring(relativePosition.length-1)=="%"){
+          return Math.round(baseSize*(parseInt(relativePosition,10)/100));
+        } else if(relativePosition.substring(relativePosition.length-2)=="px"){
+          return parseInt(relativePosition,10);
         } else {
           //value is a string but cannot be parsed
-          this.error("invalid relative value: "+value);
+          this.error("invalid relative value: "+relativePosition);
           return 0;
         }
-      } else if(typeof value == "number") {
-        return value;
+      } else if(typeof relativePosition == "number") {
+        return relativePosition;
       }
     },
     
