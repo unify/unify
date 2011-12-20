@@ -74,20 +74,30 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
-    "overlay" : {},
-    "overlay/arrow" : {
+    "overlay" : {
       style : function() {
         return {
+          properties : {
+            relativeArrowPosition: "center"
+          }
+        }
+      }
+    },
+    "overlay/arrow" : {
+
+      style : function() {
+        var size=38;
+        return {
+          width:size,
+          height:Math.floor(size/2),
           overflow: "hidden",
           properties : {
+            direction:"top",
             arrowStyle: {
-              display: "block",
-              width: "38px",
-              height: "38px",
+              width: size+"px",
+              height: size+"px",
               backgroundColor: "#333",
-              transform: "rotate(45deg) scale(0.73)",
-              left: "2px",
-              position: "absolute"
+              transform: "rotate(45deg) scale(0.73)"
             }
           }
         };
