@@ -65,11 +65,7 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     this.__scroller = this.__getScroller();
     this.__updateDimensions();
 
-    var root = qx.core.Init.getApplication().getRoot();
     this.addListener("touchstart", this.__onTouchStart,this);
-    root.addListener("touchmove", this.__onTouchMove,this);
-    root.addListener("touchend", this.__onTouchEnd,this);
-    root.addListener("touchcancel", this.__onTouchEnd,this);
     this.addListener("mousewheel", this.__onMouseWheel, this);
     
     this.addListener("resize", this.__updateDimensions, this);
@@ -607,6 +603,11 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
       this.__scroller.doTouchStart(touches, +ne.timeStamp);
       e.preventDefault();
       this.addListenerOnce("touchmove",this.__updateIndicators,this);
+      
+      var root = qx.core.Init.getApplication().getRoot();
+      root.addListener("touchmove", this.__onTouchMove,this);
+      root.addListener("touchend", this.__onTouchEnd,this);
+      root.addListener("touchcancel", this.__onTouchEnd,this);
     },
 
     /**
@@ -641,6 +642,11 @@ qx.Class.define("unify.ui.container.ZyngaScroll", {
     __onTouchEnd : function(e){
       this.__inTouch = false;
       this.__scroller.doTouchEnd(+e.getNativeEvent().timeStamp);
+      
+      var root = qx.core.Init.getApplication().getRoot();
+      root.removeListener("touchmove", this.__onTouchMove,this);
+      root.removeListener("touchend", this.__onTouchEnd,this);
+      root.removeListener("touchcancel", this.__onTouchEnd,this);
     },
     
     /**

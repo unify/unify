@@ -192,9 +192,9 @@ qx.Class.define("unify.ui.form.Slider", {
       }
       var transform;
       if (horizontal) {
-        transform = "translate(" + Math.round(diff) + "px, 0)";
+        transform = unify.bom.Transform.accelTranslate(Math.round(diff)+"px", 0);
       } else {
-        transform = "translate(0, " + Math.round(diff) + "px)";
+        transform = unify.bom.Transform.accelTranslate(0, Math.round(diff)+"px");
       }
       this.__knob.setStyle({
         transform: transform
