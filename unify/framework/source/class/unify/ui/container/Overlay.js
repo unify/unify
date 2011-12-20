@@ -34,34 +34,52 @@ qx.Class.define("unify.ui.container.Overlay", {
     },
     
     /** Paint arrow */
-    arrow : {
+    hasArrow : {
       check: "Boolean",
       init: true,
-      apply: "__applyArrow"
+      apply: "__applyHasArrow"
+    },
+
+    /** relative position of the arrow on its axis
+     *
+     * may be "left,right,center,top,bottom, a percentage of the axis size or a pixel value (relative to axis start)
+     */
+    relativeArrowPosition : {
+      init: "left",
+      nullable: true
+    },
+
+    /** optional reference to widget that triggers show/hide of this overlay */
+    trigger : {
+      check: "unify.ui.core.Widget",
+      init: null,
+      nullable: true
+    },
+
+     /** optional strategy to ponsition overlay relative to trigger
+      * must be a map containing a value for x and y axis
+      * the value can be "left,right,center,top,bottom, a percentage of the axis size or a pixel value (relative to axis start)
+      */
+    relativeTriggerPosition : {
+      init: {x:"bottom",y:"center"},
+      nullable: true
     }
+
   },
+
   
   /**
-   * @param arrowDirection {String} Direction of arrow (left, top, right, bottom)
-   * @param arrowAlignment {String} Alignment of arrow on container (top, center, bottom or left, center, right)
+   * @param noArrow {Boolean?} set to true if overlay should not have an arrow element
    */
-  construct : function(arrowDirection, arrowAlignment) {
+  construct : function(noArrow) {
     this.base(arguments, new unify.ui.layout.special.OverlayLayout());
     
     this._showChildControl("container");
-    this._excludeChildControl("arrow");
-    
-    this.__arrowDirection = arrowDirection;
-    this.__arrowAlignment = arrowAlignment;
-    if (arrowDirection && arrowAlignment) {
-      this.setArrow(true);
-    }
+    this.setHasArrow(!noArrow);//applyHasArrow creates the arrow if required
   },
   
   members : {
-    __arrowDirection : null,
-    __arrowAlignment : null,
-    
+
     /**
      * Gets inner content container
      *
@@ -70,7 +88,7 @@ qx.Class.define("unify.ui.container.Overlay", {
     getChildrenContainer : function() {
       return this.getChildControl("container");
     },
-    
+
     /**
      * Returns child control widget identified by id
      *
@@ -82,88 +100,174 @@ qx.Class.define("unify.ui.container.Overlay", {
       
       if (id == "arrow") {
         control = new unify.ui.other.Arrow();
-        control.setWidth(18);
-        control.setHeight(38);
-        control.setDirection(this.__arrowDirection);
         this._addAt(control, 1, {
-          type: "arrow",
-          alignment: this.__arrowAlignment
+          type: "arrow"
         });
       } else if (id == "container") {
         control = new unify.ui.container.Composite(new unify.ui.layout.Canvas());
-        control.setAppearance(this.getAppearance() + "/" + id);
         this._addAt(control, 0);
       }
       
       return control || this.base(arguments, id);
     },
-    
-    __applyArrow : function(show) {
-      if (show) {
+
+    /**
+     * shows/hides the arrow element depending on value
+     * @param value {Boolean} new hasArrow value
+     */
+    __applyHasArrow : function(value) {
+      if (value) {
         this._showChildControl("arrow");
       } else {
         this._excludeChildControl("arrow");
       }
     },
+    //overridden, calculate overlaysize as content size + arrow size depending on arrow direction
+    _computeSizeHint: function(){
+      var hint=this.getChildrenContainer().getSizeHint();
+      if(this.getHasArrow()){
+        var arrow=this.getChildControl("arrow");
+        var arrowHint=arrow.getSizeHint();
+        var direction=arrow.getDirection();
+        if(direction=="left"||direction=="right"){
+          hint.width+=arrowHint.width;
+        } else if(direction=="top"||direction=="bottom"){
+          hint.height+=arrowHint.height;
+        }
+      }
+      return hint;
+    },
     
     /**
      * Calculates a position hint to align overlay to trigger widget
+     *
+     * if the overlay has an arrow, the arrows pointing edge is used as reference
      */
     __getPositionHint : function() {
+      qx.ui.core.queue.Manager.flush();//make sure appearance is applied
       var left = 0;
       var top = 0;
-      
-      var arrowHeight = 38;
-      
-      var direction = this.__arrowDirection;
-      var alignment = this.__arrowAlignment;
-      
-      if (direction == "right") {
-        left = this.getWidth();
-      } else if (direction == "bottom") {
-        top = this.getHeight();
+      var trigger=this.getTrigger();
+      var relativeTriggerPosition=this.getRelativeTriggerPosition();
+
+      if(trigger && relativeTriggerPosition){
+        var triggerPoint=this.__resolveRelative(trigger.getPositionInfo(),relativeTriggerPosition);
+        left = triggerPoint.left;
+        top=triggerPoint.top;
       }
-      
-      if (alignment == "center") {
-        if (direction == "left" || direction == "right") {
-          top = Math.round(this.getHeight() / 2);
-        } else {
-          left = Math.round(this.getWidth() / 2);
+      var arrow=this.getChildControl("arrow");
+      if(arrow){
+        var thisSize=this.getSizeHint();
+        var arrowPosition=this.calculateArrowPosition(thisSize.height,thisSize.width);
+
+        left-=arrowPosition.left;
+        top-=arrowPosition.top;
+        var arrowDirection=arrow.getDirection();
+
+        //now account for arrow pointing edge offset
+        //TODO at the moment we assume the pointing edge is in the middle, refactor into arrow class to allow arbitraty points
+        var arrowSize=arrow.getSizeHint();
+        if(arrowDirection=="left"||arrowDirection=="right"){
+          top-=Math.round(arrowSize.height/2);
+        } else if (arrowDirection=="bottom"||arrowDirection=="top"){
+          left-=Math.round(arrowSize.width/2);
         }
-      } else if (alignment == "bottom") {
-        top = this.getHeight() - Math.round(arrowHeight/2);
-      } else if (alignment == "right") {
-        left = this.getWidth() - Math.round(arrowHeight/2);
-      } else if (alignment == "top") {
-        top = Math.round(arrowHeight / 2);
-      } else if (alignment == "left") {
-        left = Math.round(arrowHeight / 2);
       }
-      
+
+
       return {
         left: left,
         top: top
       };
     },
+
+    /**
+     * calculate the left/top position of the arrow element on the overlay .
+     *
+     * this function is used by the layout and by __getPositionHint
+     * @param height {Number} height of the overlay content
+     * @param width {Number} width of the overlay content
+     */
+    calculateArrowPosition : function(height,width){
+      var GAP = 6;//TODO use border width +1?
+      var arrow = this.getChildControl("arrow");
+      var arrowLeft=0;
+      var arrowTop=0;
+
+      if(arrow)
+      var arrowWidth=arrow.getWidth();
+      var arrowHeight=arrow.getHeight();
+      var arrowDirection=arrow.getDirection();
+      var arrowPosition=this.getRelativeArrowPosition();
+      var relativeOffset=this.__toPixelValue(height,arrowPosition);
+      if(arrowDirection=="left" || arrowDirection=="right"){
+        if(arrowPosition=="top"){
+          arrowTop=GAP;
+        } else if(arrowPosition=="bottom"){
+          arrowTop = height - arrowHeight - GAP;
+        } else if(arrowPosition=="center"){
+          arrowTop = Math.round(height / 2 - arrowHeight/2);
+        } else {
+          arrowTop = relativeOffset - Math.round(arrowHeight/2);
+        }
+      } else if (arrowDirection=="top" || arrowDirection=="bottom"){
+        if(arrowPosition=="left"){
+          arrowLeft=GAP;
+        } else if(arrowPosition=="right"){
+          arrowLeft = width - arrowWidth - GAP;
+        } else if(arrowPosition=="center"){
+          arrowLeft = Math.round(width / 2 - arrowWidth/2);
+        } else {
+          arrowLeft = relativeOffset - Math.round(arrowWidth/2);
+        }
+      }
+      return {
+        left: arrowLeft,
+        top: arrowTop
+      }
+    },
+
+    /**
+     * helper function that calculates the absolute position values of a relativePos in elemPos
+     * @param elemPos {Object}  a map containing the elements current position and dimensions (top,left,width,height)
+     * @param relativePos {Object} a map containing relative position values as keys x and y e.g. {x:"center",y:"bottom"}
+     */
+    __resolveRelative: function(elemPos,relativePos){
+      return {
+        top: (elemPos.top||0)+this.__toPixelValue(elemPos.height,relativePos.x),
+        left:(elemPos.left||0)+this.__toPixelValue(elemPos.width,relativePos.y)
+      }
+    },
+
+    __toPixelValue : function(baseSize,value){
+      if(value=="left" || value == "top"){
+        return 0;
+      } else if (value == "center"){
+        return Math.round(baseSize/2);
+      } else if (value=="right" || value == "bottom"){
+        return baseSize;
+      } else if(typeof value == "string"){
+        if(value.substring(value.length-1)=="%"){
+          return Math.round(baseSize*(parseInt(value,10)/100));
+        } else if(value.substring(value.length-2)=="px"){
+          return parseInt(value,10);
+        } else {
+          //value is a string but cannot be parsed
+          this.error("invalid relative value: "+value);
+          return 0;
+        }
+      } else if(typeof value == "number") {
+        return value;
+      }
+    },
     
     /**
      * Shows overlay
-     *
-     * @param left {Integer?null} If set along with top align the overlay to match this position with the arrow
-     * @param top {Integer?null} If set along with top align the overlay to match this position with the arrow
      */
-    show : function(left, top) {
-      this.setVisibility("visible");
-      
-      if (left && top) {
-        var posHint = this.__getPositionHint();
-        
-        this.getLayoutParent().add(this, {
-          left: left - posHint.left,
-          top: top - posHint.top
-        });
-      }
-      
+    show : function() {
+      this.base(arguments);
+      var posHint = this.__getPositionHint();
+      this.getLayoutParent().add(this, posHint);
       this.fireEvent("shown");
     },
     
@@ -171,7 +275,7 @@ qx.Class.define("unify.ui.container.Overlay", {
      * Hides overlay
      */
     hide : function() {
-      this.setVisibility("hidden");
+      this.base(arguments);
       this.fireEvent("hidden");
     }
   }
