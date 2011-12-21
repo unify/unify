@@ -61,7 +61,7 @@ qx.Class.define("unify.ui.container.Overlay", {
       * the value can be "left,right,center,top,bottom, a percentage of the axis size or a pixel value (relative to axis start)
       */
     relativeTriggerPosition : {
-      init: {x:"bottom",y:"center"},
+      init: {y:"bottom",x:"center"},
       nullable: true
     }
 
@@ -238,8 +238,8 @@ qx.Class.define("unify.ui.container.Overlay", {
      */
     __resolveRelative: function(elemPos,relativePos){
       return {
-        top: (elemPos.top||0)+this.__toPixelValue(elemPos.height,relativePos.x),
-        left:(elemPos.left||0)+this.__toPixelValue(elemPos.width,relativePos.y)
+        top: (elemPos.top||0)+this.__toPixelValue(elemPos.height,relativePos.y),
+        left:(elemPos.left||0)+this.__toPixelValue(elemPos.width,relativePos.x)
       }
     },
 
