@@ -272,7 +272,7 @@ qx.Class.define("unify.ui.container.Scroll", {
         if (self.hasListener("scroll")) {
           self.fireEvent("scroll");
         }
-        if (event == "stop" || event == "stop_deceleration") {
+        if (event == "stop" || event == "stop_deceleration" || event == "stop_animation") {
           self.__hideIndicators();
           if (self.hasListener("scrollend")) {
             self.fireEvent("scrollend");
@@ -516,6 +516,8 @@ qx.Class.define("unify.ui.container.Scroll", {
       if(!animate){
         this.__scrollTop=top;
         this.__scrollLeft=left;
+        
+        this.fireEvent("scrollend");
       }
     },
 
@@ -1744,6 +1746,9 @@ var Scroller;
 					if (self.options.zooming) {
 						self.__computeScrollMax();
 					}
+                                        if (self.__callback) {
+							self.__callback(self.__scrollLeft, self.__scrollTop, self.__zoomLevel, "stop_animation");
+                                        }
 				};
 
 				// When continuing based on previous animation we choose an ease-out animation instead of ease-in-out
