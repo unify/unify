@@ -675,7 +675,7 @@ qx.Class.define("unify.ui.container.Scroll", {
     this.removeListener("mousewheel", this.__onMouseWheel, this);
     
     this.removeListener("resize", this.__updateDimensions, this);
-    contentWidget.removeListener("resize", this.__updateDimensions, this);
+    this.getChildrenContainer().removeListener("resize", this.__updateDimensions, this);
     this.removeListener("changeVisibility", this.__onChangeVisibility, this);
   }
 });
