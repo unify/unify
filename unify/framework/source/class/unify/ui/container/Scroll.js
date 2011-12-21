@@ -70,7 +70,8 @@ qx.Class.define("unify.ui.container.Scroll", {
     
     this.addListener("resize", this.__updateDimensions, this);
     contentWidget.addListener("resize", this.__updateDimensions, this);
-
+    
+    this.addListener("changeVisibility", this.__onChangeVisibility, this);
   },
 
   /*
@@ -655,7 +656,27 @@ qx.Class.define("unify.ui.container.Scroll", {
     __hideIndicators : function() {
       this.__verticalScrollIndicator.setVisible(false);
       this.__horizontalScrollIndicator.setVisible(false);
+    },
+    
+    /**
+     * Change visibility handler
+     *
+     * @param e {qx.event.type.Event} Visibility event
+     */
+    __onChangeVisibility : function(e) {
+      if (e.getData() !== "visible") {
+        this.__hideIndicators();
+      }
     }
+  },
+  
+  destruct : function() {
+    this.removeListener("touchstart", this.__onTouchStart,this);
+    this.removeListener("mousewheel", this.__onMouseWheel, this);
+    
+    this.removeListener("resize", this.__updateDimensions, this);
+    contentWidget.removeListener("resize", this.__updateDimensions, this);
+    this.removeListener("changeVisibility", this.__onChangeVisibility, this);
   }
 });
 
