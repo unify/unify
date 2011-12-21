@@ -75,33 +75,6 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
     },
 
     /**
-     * Configuration parameter for triggered popover (via show property)
-     *
-     * controls where the popover connects with this MNavigatable
-     *
-     * @see unify.view.PopOverManager#show
-     */
-    showTriggerPositionPolicy:{
-      check:["lt","lc","lb","rt","rc","rb","tl","tc","tr","bl","bc","br"],
-      init:"bc",
-      nullable:true
-    },
-
-    /**
-     * Configuration parameter for triggered popover (via show property)
-     *
-     * controls where the popover is connected with this MNavigatable
-     *
-     * @see unify.view.PopOverManager#show
-     */
-    showPopOverPositionPolicy:{
-      check:["lt","lc","lb","rt","rc","rb","tl","tc","tr","bl","bc","br"],
-      init:"tl",
-      nullable:true
-    },
-
-
-    /**
      * Hides the view
      */
     hide: {
@@ -209,7 +182,7 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
       var show = this.getShow();
       if (show != null)
       {
-        unify.view.PopOverManager.getInstance().show(show,this,this.getShowTriggerPositionPolicy(),this.getShowPopOverPositionPolicy());
+        unify.view.PopOverManager.getInstance().show(show,this);
         return;
       }
 
