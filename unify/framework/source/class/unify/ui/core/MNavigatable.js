@@ -100,6 +100,9 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
      * @param e {qx.event.type.Tap} Tap event
      */
     __onMNavigatableTap : function(e) {
+      if(this.hasState("disable")){
+        return;
+      }
       var viewManagerWidget = this.getLayoutParent();
       var viewManager = null;
       while (!viewManager && viewManagerWidget) {
@@ -138,6 +141,9 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
      * adds state 'pressed' to this widget
      */
     __onMNavigatableTouchHold : function(){
+      if(this.hasState("disable")){
+        return;
+      }
       this.addState("pressed");
     },
 
