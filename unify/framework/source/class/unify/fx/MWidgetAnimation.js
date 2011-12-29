@@ -125,41 +125,23 @@ qx.Mixin.define("unify.fx.MWidgetAnimation", {
      * @param value {Integer} Rotation level to animate to
      */
     __mwaApplyAnimationRotate : function(value) {
+      var animation = this.__mwAnimationRotate;
+      if (animation) {
+        animation.stop();
+        animation.reset(this.__mwAnimationRotateReset);
+      }
       if (value != null) {
-        var animation = this.__mwAnimationRotate;
-        if (animation) {
-          animation.stop();
-        } else {
+        if (!animation) {
           animation = this.__mwAnimationRotate = new unify.fx.Rotate(this);
           this.__mwAnimationRotateReset = animation.getResetValue();
-        }
-        
-        if (this.getAnimateRotateInfinite()) {
-          if (value) {
-            this.__infiniteRotateValue = value;
-          }
-          
-          animation.addListenerOnce("stop", function(e) {
-            if (e.getData() == "done") {
-              this.resetAnimateRotate();
-              this.setAnimateRotate(this.__infiniteRotateValue);
-            }
-          }, this);
-        } else {
           animation.addListener("stop", function() {
             this.fireEvent("animateRotationDone");
           }, this);
         }
-        
+
         animation.setValue(value);
         animation.setDuration(this.getAnimateRotateDuration());
-        animation.start();
-      } else {
-        var animation = this.__mwAnimationRotate;
-        if (animation) {
-          animation.stop();
-          animation.reset(this.__mwAnimationRotateReset);
-        }
+        animation.start(0,this.getAnimateRotateInfinite());
       }
     }
   }
