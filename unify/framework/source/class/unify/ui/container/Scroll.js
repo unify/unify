@@ -17,7 +17,6 @@
 #ignore(core)
 #ignore(core.effect)
 #ignore(core.effect.Animate)
-#ignore(requestAnimationFrame)
 #ignore(Scroller)
  */
 qx.Class.define("unify.ui.container.Scroll", {
@@ -41,8 +40,14 @@ qx.Class.define("unify.ui.container.Scroll", {
       type: "content"
     });
     var Indicator=unify.ui.container.scroll.Indicator;
-    var scrollIndicatorX = this.__horizontalScrollIndicator = new Indicator("horizontal");
-    var scrollIndicatorY = this.__verticalScrollIndicator = new Indicator("vertical");
+    if(unify.bom.client.System.ANDROID){
+      //android renders the default indicator in a funny way (scaling the middle element does not work correctly for certain values
+      //so we use a specialized one here
+      Indicator=unify.ui.container.scroll.ScalingIndicator;
+    }
+
+    var scrollIndicatorX = this.__horizontalScrollIndicator = new Indicator("horizontal",this);
+    var scrollIndicatorY = this.__verticalScrollIndicator = new Indicator("vertical",this);
 
     var distance = Indicator.DISTANCE;
     var thickness=Indicator.THICKNESS;
@@ -61,9 +66,8 @@ qx.Class.define("unify.ui.container.Scroll", {
       overflow: "hidden"
     });
 
+    this.__createScroller();
 
-    this.__scroller = this.__getScroller();
-    this.__updateDimensions();
 
     this.addListener("touchstart", this.__onTouchStart,this);
     this.addListener("mousewheel", this.__onMouseWheel, this);
@@ -89,7 +93,7 @@ qx.Class.define("unify.ui.container.Scroll", {
     {
       init : true,
       check : "Boolean",
-      apply : "_applyBounces"
+      apply : "_applyScrollerProperty"
     },
 
     /**
@@ -100,7 +104,7 @@ qx.Class.define("unify.ui.container.Scroll", {
     {
       init : false,
       check : "Boolean",
-      apply : "_applyPaging"
+      apply : "_applyScrollerProperty"
     },
 
     /** Whether horizontal scrolling should be enabled */
@@ -108,7 +112,7 @@ qx.Class.define("unify.ui.container.Scroll", {
     {
       init : false,
       check : "Boolean",
-      apply : "_applyEnableScrollX"
+      apply : "_applyScrollerProperty"
     },
 
     /** Whether vertical scrolling should be enabled */
@@ -116,7 +120,7 @@ qx.Class.define("unify.ui.container.Scroll", {
     {
       init : true,
       check : "Boolean",
-      apply : "_applyEnableScrollY"
+      apply : "_applyScrollerProperty"
     },
 
     /** Whether the horizontal scroll indicator should be displayed */
@@ -248,26 +252,30 @@ qx.Class.define("unify.ui.container.Scroll", {
     },
 
     /**
-     * Returns new scroller object
+     * (re)creates the scroller object and restores scroll position if required
      *
      * @return {Scroller} Zynga scroller object
      */
-    __getScroller : function() {
+    __createScroller : function() {
+      this.__updateProperties();
+      delete this.__scroller;
       var contentWidget = this.getChildrenContainer();
-      
+      var contentElement= contentWidget.getElement();
+      var Style=qx.bom.element.Style;
+      var Transform=unify.bom.Transform;
       var self = this;
+
       var render = function(left, top, zoom, event) {
-        self.__inAnimation = !!self.__inTouch;
-        contentWidget.setStyle({transform:unify.bom.Transform.accelTranslate((-left) + 'px', (-top) + 'px') + ' scale(' + zoom + ')'});
-        
-        if (self.getEnableScrollX()) {
+        self.__inAnimation = !!self.__inTouch;//TODO this evaluates to false during deceleration!
+        Style.set(contentElement,"transform",Transform.accelTranslate((-left) + 'px', (-top) + 'px'));
+        if (self.__enableScrollX) {
           self.__scrollLeft=left;
         }
-        if (self.getEnableScrollY()) {
+        if (self.__enableScrollY) {
           self.__scrollTop=top;
         }
         
-        self.__renderIndicators();
+        self.__renderIndicators(left,top);
         
         if (self.hasListener("scroll")) {
           self.fireEvent("scroll");
@@ -277,11 +285,7 @@ qx.Class.define("unify.ui.container.Scroll", {
           if (self.hasListener("scrollend")) {
             self.fireEvent("scrollend");
           }
-          var sef = self.__scrollerEndFnt;
-          if (sef) {
-            sef();
-            self.__scrollerEndFnt = null;
-          }
+          
           self.__inAnimation = false;
         }
       };
@@ -292,8 +296,14 @@ qx.Class.define("unify.ui.container.Scroll", {
         paging : this.getPaging(),
         bouncing : this.getBounces()
       };
-      
-      return new Scroller(render, options);
+      var currentLeft=this.__scrollLeft;
+      var currentTop=this.__scrollTop;
+      var scroller = this.__scroller = new Scroller(render, options);
+      if(currentLeft||currentTop){
+        scroller.scrollTo(currentLeft,currentTop,false);
+      }
+      this.__updateDimensions();
+      return scroller;
     },
 
     /*
@@ -301,119 +311,28 @@ qx.Class.define("unify.ui.container.Scroll", {
      PROPERTY APPLY ROUTINES
      ---------------------------------------------------------------------------
      */
+    /**
+     * must be called when a property changes that influences the scroller behavior
+     * 
+     * recreates the scroller immediatly or after the running animation ended
+     */
+   _applyScrollerProperty : function(){
+     if(this.__inAnimation){
+       this.addListenerOnce("scrollend",this.__createScroller,this);
+     } else {
+       this.__createScroller();
+     }
+   },
 
-    _applyEnableScrollX : function(value) {
-      var left = this.__scrollLeft;
-      var top = this.__scrollTop;
-      
-      delete this.__scroller;
-      this.__scroller = this.__getScroller();
-      
-      this.__updateDimensions();
-      this.__updateProperties();
-      this.__updateIndicators();
-    },
-    _applyEnableScrollY : function(value) {
-      var self = this;
-      
-      this.__scrollerEndFnt = function() {
-        var left = self.__scrollLeft;
-        var top = self.__scrollTop;
-        
-        delete self.__scroller;
-        var scroller = self.__scroller = self.__getScroller();
-  
-        self.__updateDimensions();
-        self.__updateProperties();
-        self.__updateIndicators();
 
-        scroller.scrollTo(left, top);
-        self.getChildrenContainer().setStyle({transform:unify.bom.Transform.accelTranslate((-left) + 'px', (-top) + 'px')});
-      };
-      
-      if (!this.__inAnimation) {
-        this.__scrollerEndFnt();
-        this.__scrollerEndFnt = null;
-      }
-    },
+
     
     _applyShowIndicatorX : function() {
       this.__updateProperties();
-      this.__updateIndicators();
     },
     
     _applyShowIndicatorY : function() {
       this.__updateProperties();
-      this.__updateIndicators();
-    },
-    
-    _applyBounces : function() {
-      delete this.__scroller;
-      this.__scroller = this.__getScroller();
-    },
-    
-    _applyPaging : function() {
-      delete this.__scroller;
-      this.__scroller = this.__getScroller();
-    },
-
-    /*
-     ---------------------------------------------------------------------------
-     SCROLL INDICATORS
-     ---------------------------------------------------------------------------
-     */
-
-    /**
-     * Updates the given scroll indicator based on the given data
-     *
-     * @param indicator {ScrollIndicator} Instance of the scroll indicator to modify
-     * @param clientSize {Integer} Size of the available space
-     * @param contentSize {Integer} Size of the content
-     * @param scrollPosition {Integer} Current scroll position on this axis
-     */
-    __updateScrollIndicator : function(indicator, clientSize, contentSize, scrollPosition)
-    {
-      // On initialization (these value are set-up on first touch)
-      if (clientSize == 0) {
-        return;
-      }
-
-      var ScrollIndicator = unify.ui.container.scroll.Indicator;
-
-      // Sum of margins substracted from the client size for computing the indicator size
-      var margin = ScrollIndicator.DISTANCE * 2;
-      if (this.__twoAxisScroll) {
-        margin += ScrollIndicator.THICKNESS + ScrollIndicator.DISTANCE;
-      }
-
-      // Map size of indicator to size of content
-      var size = Math.max(5, Math.round((clientSize / contentSize) * (clientSize - margin)));
-      var position = 0;
-
-      // Begin out
-      if (scrollPosition < 0)
-      {
-        size = Math.round(Math.max(size + scrollPosition, ScrollIndicator.ENDSIZE*2));
-      }
-
-      // End out
-      else if (scrollPosition > (contentSize - clientSize))
-      {
-        size = Math.round(Math.max(size + contentSize - clientSize - scrollPosition, ScrollIndicator.ENDSIZE*2));
-        position = clientSize - margin - size;
-      }
-
-      // In range with possibility to scroll
-      else if (contentSize !== clientSize)
-      {
-        var percent = scrollPosition / (contentSize - clientSize);
-        var avail = clientSize - margin - size;
-
-        position = Math.round(percent * avail);
-      }
-
-      // Render
-      indicator.render(ScrollIndicator.DISTANCE + position, size);
     },
 
     /**
@@ -423,7 +342,7 @@ qx.Class.define("unify.ui.container.Scroll", {
       var scrollerDimension = this.getBounds();
       var contentDimension = this.getChildrenContainer().getBounds();
       
-      if (scrollerDimension && contentDimension) {
+      if (scrollerDimension && contentDimension && scrollerDimension.width>0 && scrollerDimension.height>0) {
         var scrollerWidth = scrollerDimension.width;
         var scrollerHeight = scrollerDimension.height;
         var contentWidth = contentDimension.width;
@@ -440,15 +359,17 @@ qx.Class.define("unify.ui.container.Scroll", {
 
     /**
      * Renders scroll indicators (if enabled)
+     * @param left {Number} current scrollLeft
+     * @param top {Number} current scrollTop
      */
-    __renderIndicators : function(){
+    __renderIndicators : function(left,top){
       // Display scroll indicators as soon as we touch and the content is bigger than the container
       if (this.__enableScrollX && this.__showIndicatorX) {
-        this.__updateScrollIndicator(this.__horizontalScrollIndicator, this.__clientWidth, this.__contentWidth, this.__scrollLeft);
+        this.__horizontalScrollIndicator.render(left);
       }
 
       if (this.__enableScrollY && this.__showIndicatorY) {
-        this.__updateScrollIndicator(this.__verticalScrollIndicator, this.__clientHeight, this.__contentHeight, this.__scrollTop);
+        this.__verticalScrollIndicator.render(top);
       }
 
     },
@@ -558,6 +479,15 @@ qx.Class.define("unify.ui.container.Scroll", {
     },
 
     /**
+     * getter for cached value
+     *
+     * @return {Boolean} true if both scroll axis are enabled and both indicators are visible
+     */
+    getTwoAxisScroll: function(){
+      return this.__twoAxisScroll;
+    },
+
+    /**
      * Handler for mouse wheel event
      *
      * @param e {qx.event.type.MouseWheel} Mouse wheel event
@@ -578,7 +508,13 @@ qx.Class.define("unify.ui.container.Scroll", {
       this.__enableScrollY = this.getEnableScrollY();
       this.__showIndicatorX = this.getShowIndicatorX();
       this.__showIndicatorY = this.getShowIndicatorY();
+      var oldTwoAxisScroll=this.__twoAxisScroll;
       this.__twoAxisScroll = this.__enableScrollX && this.__showIndicatorX && this.__enableScrollY && this.__showIndicatorY;
+      //twoaxisscroll changed, indicators need to adapt to new dimensions
+      if(oldTwoAxisScroll!=this.__twoAxisScroll){
+        this.__horizontalScrollIndicator.initRenderingCache(this);
+        this.__verticalScrollIndicator.initRenderingCache(this);
+      }
     },
 
     /**
@@ -588,6 +524,7 @@ qx.Class.define("unify.ui.container.Scroll", {
      */
     __onTouchStart : function(e){
       this.__inTouch = true;
+      //TODO why is this called here? touchstart should not change the properties, so no need to recache them
       this.__updateProperties();
 
       if (!((this.__enableScrollX && this.__contentWidth > this.__clientWidth)
@@ -605,7 +542,7 @@ qx.Class.define("unify.ui.container.Scroll", {
 
       this.__scroller.doTouchStart(touches, +ne.timeStamp);
       e.preventDefault();
-      this.addListenerOnce("touchmove",this.__updateIndicators,this);
+      this.addListenerOnce("touchmove",this.__showIndicators,this);
       
       var root = qx.core.Init.getApplication().getRoot();
       root.addListener("touchmove", this.__onTouchMove,this);
@@ -617,7 +554,7 @@ qx.Class.define("unify.ui.container.Scroll", {
      * shows scroll indicators depending on configuration
      * axis must be scroll enabled and the indicator must be allowed to show
      */
-    __updateIndicators: function(){
+    __showIndicators: function(){
       if (this.__enableScrollX && this.__showIndicatorX && this.__inTouch) {
         this.__horizontalScrollIndicator.setVisible(true);
       }
