@@ -45,8 +45,7 @@ qx.Class.define("unify.ui.other.ActivityIndicator", {
   },
   
   members : {
-    __label : null,
-    
+
     /**
      * Returns child control widget identified by id
      *
@@ -57,9 +56,15 @@ qx.Class.define("unify.ui.other.ActivityIndicator", {
       var control;
       
       if (id == "image") {
-        var ResourceManager = qx.util.ResourceManager.getInstance();
-        //var imageId = "unify/iphoneos/ajax-loader.gif";
-        control = new unify.ui.basic.AnimatedImage().set({
+        var control;
+        if(unify.bom.client.System.ANDROID){
+          //AnimatedImage is based on requestAnimationFrame and is choppy on at least motorola xoom with android 3.1
+          //so we use a keyframe based solution here
+          control=new unify.ui.basic.KeyframeAnimatedImage();
+        } else {
+          control=new unify.ui.basic.AnimatedImage();
+        }
+        control.set({
           alignX: "center",
           allowGrowX: false,
           allowGrowY: false,

@@ -56,15 +56,16 @@ qx.Class.define("unify.fx.core.Base", {
      * Start animation
      *
      * @param percent {Float?null} Start position (0.0 ... 1.0)
+     * @param repeat {Boolean?null} optional repeat flag. if true, the animation starts over when finished and has to be stopped via calling stop
      */
-    start : function(percent) {
+    start : function(percent,repeat) {
       this._setup();
       
       var duration = this.getDuration();
       
       if (duration > 0) {
-        var easing = this.getEasing() || function(i) { return i; };
-        this.__id = unify.fx.core.Animation.getInstance().start(this._render, this._verifyRender, this.__finish, duration, easing, percent||0, this);
+        var easing = this.getEasing();
+        this.__id = unify.fx.core.Animation.getInstance().start(this._render, this._verifyRender, this.__finish, duration, easing, percent||0, this,repeat);
         this.fireEvent("start");
       } else {
         this._render(1.0, (new Date).valueOf(), true);

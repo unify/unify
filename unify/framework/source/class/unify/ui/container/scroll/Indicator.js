@@ -56,13 +56,21 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
       check : "Boolean",
       init : false,
       apply : "_applyVisible"
+    },
+    
+    /** parent scroll container of this indicator */
+    scroll:{
+      check:"unify.ui.container.Scroll",
+      init: null,
+      apply: "_applyScroll"
     }
   },
 
   /**
    * @param orientation {String?null} Orientation of indicator
+   * @param scroll {unify.ui.container.Scroll} parent scroll container of this indicator
    */
-  construct : function(orientation) {
+  construct : function(orientation,scroll) {
     this.base(arguments);
 
     this.setOrientation(orientation);
@@ -73,6 +81,10 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
       transitionProperty: "opacity",
       transitionDuration: "0.25s"
     });
+
+    this.setScroll(scroll);
+    scroll.addListener("resize",this.__onScrollerResize,this);
+    scroll.getChildrenContainer().addListener("resize",this.__onScrollerContentResize,this);
   },
 
   members : {
@@ -84,6 +96,14 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
     __endElem : null,
     __middleElem : null,
     __startElem : null,
+    
+    //render cache
+    __distance: null,
+    __endSize: null,
+    __indicatorMargin: null,
+    __maxScrollPosition: null,
+    __clientSize: null,
+    __indicatorSize: null,
   
     /*
     ---------------------------------------------------------------------------
@@ -204,10 +224,40 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
      * things are NOT stored in properties. This method may be called hundreds of times
      * a second!
      *
-     * @param position {Integer} Position of indicator
-     * @param size {Integer} Size of indicator
+     * @param scrollPosition {Integer} current scrollPosition of the parent
      */
-    render : function(position, size) {
+    render : function(scrollPosition) {
+
+      var endSize=this.__endSize;
+      var distance=this.__distance;
+      var margin = this.__indicatorMargin;
+      var maxPosition=this.__maxScrollPosition;
+      var clientSize=this.__clientSize;
+      var size=this.__indicatorSize;
+      var position;
+      //bounce up/left
+      if (scrollPosition < 0)
+      {
+        size = Math.max(Math.round(size + scrollPosition), endSize*2);
+        position=distance;
+      }
+
+      //bounce down/right
+      else if (scrollPosition > maxPosition)
+      {
+        size = Math.max(Math.round(size + maxPosition - scrollPosition), endSize*2);
+        position = clientSize - margin - size;
+      }
+
+      // In range
+      else
+      {
+        var percent = scrollPosition / maxPosition;
+        var avail = clientSize - margin - size;
+
+        position = Math.round(percent * avail);
+      }
+
       var Style = qx.bom.element.Style;
 
       if (this.__position !== position)
@@ -231,20 +281,20 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
 
         // Compute sizes based on CSS stored size of end pieces
         var scaleX=1, scaleY=1, endPosX=0, endPosY=0;
-        var endpieces = unify.ui.container.scroll.Indicator.ENDSIZE;
+        
         if (this.__horizontal)
         {
-          scaleX = size - (endpieces * 2);
-          endPosX = size - endpieces;
+          scaleX = size - (endSize * 2);
+          endPosX = size - endSize;
         }
         else
         {
-          scaleY = size - (endpieces * 2);
-          endPosY = size - endpieces;
+          scaleY = size - (endSize * 2);
+          endPosY = size - endSize;
         }
 
         // Apply transforms for best-in-class performance
-        Style.set(this.__middleElem, "transform", unify.bom.Transform.accelTranslate(0,0) + " scale(" + scaleX + "," + scaleY + ")");
+        Style.set(this.__middleElem, "transform", unify.bom.Transform.accelScale(scaleX,scaleY));//"scale3d(" + scaleX + "," + scaleY + ",1)");
         Style.set(this.__endElem, "transform", unify.bom.Transform.accelTranslate(endPosX + "px", endPosY + "px"));
       }
     },
@@ -307,13 +357,74 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
     {
       if (this.__isFadingOut)
       {
+        //TODO why is this needed (in applyvisible the position gets restored anyways)
         qx.bom.element.Style.set(this.getElement(), "transform", null);
         this.__isFadingOut = false;
       }
-    }
-  },
+    },
 
-  destruct : function() {
-    this.removeListener("changeVisibility", this._applyVisible, this);
+
+    /**
+     * executes on update of scroll property
+     * @param scroll
+     */
+    _applyScroll: function(scroll){
+      this.initRenderingCache(scroll);
+    },
+
+    /**
+     *  event handler for resize of the scroll client element.
+     *  
+     *  updates the rendering cache
+     */
+    __onScrollerResize: function(){
+      this.initRenderingCache(this.getScroll());
+    },
+
+    /**
+     *  event handler for resize of the scroll content element
+     *  
+     *  updates the rendering cache
+     */
+    __onScrollerContentResize: function(){
+      this.initRenderingCache(this.getScroll());
+    },
+
+    /**
+     * initializes the rendering cache of this indicator based on the dimensions of scroll
+     * @param scroll {unify.ui.container.Scroll} the parent scroll indicator
+     */
+    initRenderingCache : function(scroll){
+      var scrollerDimension = scroll.getBounds();
+      var contentDimension = scroll.getChildrenContainer().getBounds();
+
+      if (scrollerDimension && contentDimension && scrollerDimension.width>0 && scrollerDimension.height>0) {
+        var scrollerWidth = scrollerDimension.width;
+        var scrollerHeight = scrollerDimension.height;
+        var contentWidth = contentDimension.width;
+        var contentHeight = contentDimension.height;
+        
+        var ScrollIndicator = this.self(arguments);
+
+        // Sum of margins substracted from the client size for computing the indicator size
+        var margin = ScrollIndicator.DISTANCE * 2;
+        if (scroll.getTwoAxisScroll()) {
+          margin += ScrollIndicator.THICKNESS + ScrollIndicator.DISTANCE;
+        }
+        this.__indicatorMargin = margin;
+        this.__endSize=ScrollIndicator.ENDSIZE;
+        this.__distance=ScrollIndicator.DISTANCE;
+        if(this.__horizontal){
+          this.__clientSize=scrollerWidth;
+          this.__maxScrollPosition=Math.max(0,contentWidth-scrollerWidth);
+          this.__indicatorSize=(scrollerWidth>0 && contentWidth>0)?(Math.round((scrollerWidth/contentWidth)*(scrollerWidth-margin))):0;
+        } else {
+          this.__clientSize=scrollerHeight;
+          this.__maxScrollPosition=Math.max(0,contentHeight-scrollerHeight);
+          this.__indicatorSize=(scrollerHeight>0 && contentHeight>0)?(Math.round((scrollerHeight/contentHeight)*(scrollerHeight-margin))):0;
+        }
+      }
+
+    }
   }
 });
