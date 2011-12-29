@@ -54,10 +54,11 @@ qx.Class.define("unify.fx.core.Animation", {
      * @param easingMethod {Function} Function that calculates the easing method
      * @param startPosition {Float?0} Float value representing starting point (0.0 ... 1.0)
      * @param context {Object?null} Context of callbacks
+     * @param repeat {Boolean?null} optional flag that signals if the animation should start over at its end (it must be stopped programmaticaly in this case!)(
      *
      * @return {Integer?null} ID of animation
      */
-    start: function(stepCallback, verifyCallback, completedCallback, duration, easingMethod, startPosition, context) {
+    start: function(stepCallback, verifyCallback, completedCallback, duration, easingMethod, startPosition,context,repeat) {
       if (!startPosition) {
         startPosition = 0;
       }
@@ -65,7 +66,7 @@ qx.Class.define("unify.fx.core.Animation", {
         context = this;
       }
       
-      var time = qx.lang.Date.now;
+      var time = Date.now || function(){return new Date().getTime()};
       var running = this.__running;
       var desiredFrames = 60;
       var start = time();
@@ -88,7 +89,7 @@ qx.Class.define("unify.fx.core.Animation", {
 
       // This is the internal step method which is called every few milliseconds
       var step = function(virtual) {
-  
+        //TODO for optimal performance, call requestAnimationFrame at the beginning of step
         // Normalize virtual value
         var render = virtual !== true;
   
@@ -103,19 +104,20 @@ qx.Class.define("unify.fx.core.Animation", {
           return;
   
         }
-  
+        
         // For the current rendering to apply let's update omitted steps in memory.
         // This is important to bring internal state variables up-to-date with progress in time.
         if (render) {
   
           var droppedFrames = Math.round((now - lastFrame) / (1000 / desiredFrames)) - 1;
-          for (var j = 0; j < Math.min(droppedFrames, 4); j++) {
+          //TODO why loop here? and why at most 4 times?
+          for (var j = 0, jj = Math.min(droppedFrames, 4);j<jj; j++) {
             step(true);
             dropCounter++;
           }
   
         }
-  
+        
         // Compute percent value
         if (duration) {
           percent = self.__percent[id] = (now - start) / duration + startPosition;
@@ -123,7 +125,11 @@ qx.Class.define("unify.fx.core.Animation", {
             percent = 1;
           }
         }
-  
+        if(repeat && percent==1){
+          percent= self.__percent[id] = 0;
+          start = now;
+        }
+        
         // Execute step callback, then...
         var value = easingMethod ? easingMethod.call(context,percent) : percent;
         if ((stepCallback.call(context, value, now, render) === false || percent === 1) && render) {
@@ -149,6 +155,7 @@ qx.Class.define("unify.fx.core.Animation", {
      * Stops animation flow
      *
      * @param id {Integer} ID of animation to stop
+     * @return true if animation had to be stopped
      */
     stop: function(id) {
       var running = this.__running;
