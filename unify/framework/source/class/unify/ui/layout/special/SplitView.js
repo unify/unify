@@ -43,31 +43,27 @@ qx.Class.define("unify.ui.layout.special.SplitView", {
       if (children.length > 2) {
         this.error("SplitView supports only exactly 2 children!");
       }
+      var isPortrait = (availWidth < availHeight);
       
-      
-      if (children.length == 1) {
-        if (availWidth < availHeight) {
+      if (children.length == 1) { //1 child -> currently in portrait
+        if (isPortrait) {
+          //still in portrait, use whole area for detail
           children[0].renderLayout(0, 0, availWidth, availHeight);
         } else {
-          this._getWidget().getUserData("splitViewManager").inlineMasterView();
+          //back to landscape, readd the master
+          this._getWidget().inlineMasterView();
         }
-      } else {
-        var masterViewManager = masterViewManager = children[0].getUserData("viewManager");
-        
-        if (availWidth < availHeight) {
+      } else { //2 children -> currently in landscape 
+        if (isPortrait) {
+          //switch to portrait, hide master
           children[0].hide();
           children[1].renderLayout(0, 0, availWidth, availHeight);
-          if (masterViewManager) {
-            masterViewManager.setDisplayMode("popover");
-          }
         } else {
+          //stay in landscape, calculate split
           var leftWidth = Math.round(availWidth * this.getSplitLevel());
           children[0].show();
           children[0].renderLayout(0, 0, leftWidth, availHeight);
           children[1].renderLayout(leftWidth, 0, availWidth-leftWidth, availHeight);
-          if (masterViewManager) {
-            masterViewManager.resetDisplayMode();
-          }
         }
       }
     }
