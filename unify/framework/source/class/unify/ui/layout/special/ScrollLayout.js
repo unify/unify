@@ -13,17 +13,17 @@
  */
 qx.Class.define("unify.ui.layout.special.ScrollLayout", {
   extend : qx.ui.layout.Abstract,
-  
+
   members : {
     __content : null,
     __indicatorX : null,
     __indicatorY : null,
-    
+
     renderLayout : function(availWidth, availHeight) {
       if (this._invalidChildrenCache) {
         this.__rebuildCache();
       }
-      
+
       var indicatorX = this.__indicatorX;
       if(indicatorX){
         var indicatorXSize = indicatorX.getSizeHint();
@@ -32,7 +32,7 @@ qx.Class.define("unify.ui.layout.special.ScrollLayout", {
                                 availWidth-indicatorXProp.distance,indicatorXSize.height);
       }
 
-      
+
       var indicatorY = this.__indicatorY;
       if(indicatorY){
         var indicatorYSize = indicatorY.getSizeHint();
@@ -41,31 +41,32 @@ qx.Class.define("unify.ui.layout.special.ScrollLayout", {
                                 indicatorYSize.width, availHeight-indicatorYProp.distance);
       }
 
-      
+
       var content = this.__content;
       var contentSizeHint = content.getSizeHint();
-      
+
       var widget = this._getWidget();
       var enableScrollX = widget.getEnableScrollX();
       var enableScrollY = widget.getEnableScrollY();
-      content.renderLayout(0,0,
-          enableScrollX ? contentSizeHint.width : availWidth,
-          enableScrollY ? contentSizeHint.height : availHeight);
 
+      var contentWidth = enableScrollX ? Math.max(availWidth, contentSizeHint.width) : availWidth;
+      var contentHeight = enableScrollY ? Math.max(availHeight, contentSizeHint.height) : availHeight;
+
+      content.renderLayout(0,0, contentWidth, contentHeight);
     },
-    
+
     /**
      * Rebuild children cache
      */
     __rebuildCache : function() {
       var widgets = this._getLayoutChildren();
-      
+
       for (var i=0,ii=widgets.length; i<ii; i++) {
         var child = widgets[i];
-        
+
         var childProp = child.getLayoutProperties();
         var type = childProp.type;
-        
+
         if (type == "content") {
           this.__content = child;
           this.__contentProp = childProp;
