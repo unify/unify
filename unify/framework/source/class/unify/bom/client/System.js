@@ -215,6 +215,13 @@ qx.Bootstrap.define("unify.bom.client.System",
       {
         name = "bsd";
       }
+      //special detection for HTC Flyer, which identifies itself as unix platform with mac os x 10.6.3 and a rather old webkit
+      //this combination should be unique to the flyer as real mac os  has a different platform (mac) and a newer webkit
+      else if((agent.indexOf("Mac OS X 10.6.3") != -1 && agent.indexOf("AppleWebKit/533.16") != -1) || agent.indexOf("Flyer") != -1)
+      {
+        name = "Android";
+        version = null;//we don't know which version of android it is
+      }
       else
       {
         name = "unix";
