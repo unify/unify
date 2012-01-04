@@ -33,6 +33,8 @@
     "TESTRUNNER_PATH"   : "${QOOXDOO_PATH}/component/testrunner",
     "APPLICATION"       : "${APP_NAME}",
     
+    "OPTIMIZE"     : ["basecalls", "variables", "privates", "strings", "variants", "comments"],
+    
     "QXVERSION"         : "1.5.0-unify"
   },
   
@@ -133,7 +135,7 @@
         {
           "format"   : false,
           "locales"  : "${APP_LOCALES}",
-          "optimize" : [ "variables", "privates", "basecalls" ]
+          "optimize" : "${OPTIMIZE}"
         }
       },     
       
