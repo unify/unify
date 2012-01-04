@@ -10,7 +10,14 @@
 
 /**
  * Appearances "dark" for unify widgets
+ * 
  */
+
+/*
+#asset(unify/iphoneos/navigation-bar/black/navigationbar.png)
+#asset(unify/iphoneos/loader.png)
+*/
+
 qx.Theme.define("unify.theme.dark.Appearance", {
   appearances : {
     /*
