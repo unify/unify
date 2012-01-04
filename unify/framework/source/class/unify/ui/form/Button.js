@@ -39,6 +39,11 @@ qx.Class.define("unify.ui.form.Button", {
     var layout = this.__layout = new unify.ui.layout.Center();
     this.base(arguments, layout)
     
+    this._forwardStates = {
+      "hover" : true,
+      "pressed" : true
+    }
+    
     if (text) {
       this.setValue(text);
     }
@@ -71,7 +76,6 @@ qx.Class.define("unify.ui.form.Button", {
     },
     
     _applyAppearance : function(value) {
-      this.getChildControl("label").setAppearance(value + "/label");
       this.base(arguments, value);
     },
     

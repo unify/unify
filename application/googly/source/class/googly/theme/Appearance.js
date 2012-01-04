@@ -1,14 +1,14 @@
 /* ************************************************************************
-  
-  PagePlace HTML5 Client
-  
-  Copyright
-    2010-2011 Deutsche Telekom AG, Germany, http://telekom.com
- 
+
+   Googly
+
+   Copyright:
+     2010-2011 Deutsche Telekom AG, Germany, http://telekom.com
+
 ************************************************************************ */
 
 /**
- * The gray PagePlace HTML5 client design "Reader Light"
+ * Googly appearances
  */
 qx.Theme.define("googly.theme.Appearance", {
   extend: unify.theme.dark.Appearance,

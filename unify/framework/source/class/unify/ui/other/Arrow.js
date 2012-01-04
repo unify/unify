@@ -18,10 +18,10 @@ qx.Class.define("unify.ui.other.Arrow", {
     /** Direction of arrow */
     direction : {
       check : ["left", "top", "right", "bottom"],
-      init: "left",
+      init: "top",
       apply: "_applyDirection"
     },
-    
+
     /** {Map[]} Speacial css styles for arrow element */
     arrowStyle : {
       apply: "_applyArrowStyle"
@@ -37,6 +37,7 @@ qx.Class.define("unify.ui.other.Arrow", {
       var e = document.createElement("div");
       
       var arrowSpan = this.__arrowSpan = document.createElement("span");
+      qx.bom.element.Style.setStyles(arrowSpan,{display:"block",position:"absolute"});
       e.appendChild(arrowSpan);
       
       return e;
@@ -48,14 +49,14 @@ qx.Class.define("unify.ui.other.Arrow", {
         qx.bom.element.Style.setStyles(arrowSpan, value);
       }
     },
-    
+
     _applyDirection : function(value) {
       var rotate = null;
-      if (value == "top") {
-        rotate = "rotate(90deg) translate(-10px,-10px)";
+      if (value == "right") {
+        rotate = "rotate(90deg)";
+      } else if (value == "left") {
+        rotate = "rotate(-90deg)";
       } else if (value == "bottom") {
-        rotate = "rotate(-90deg) translate(-10px,10px)";
-      } else if (value == "right") {
         rotate = "rotate(180deg)";
       }
       

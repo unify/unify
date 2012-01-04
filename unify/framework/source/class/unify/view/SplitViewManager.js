@@ -42,10 +42,8 @@ qx.Class.define("unify.view.SplitViewManager",
     detailViewManager.setMaster(masterViewManager);
     
     // Attach to rotate event to control view manager visibility
-    // TODO
     qx.event.Registration.addListener(window, "orientationchange", this.__onRotate, this);
     
-    this.setUserData("splitViewManager", this); // TODO : Remove
     
     this.add(masterViewManager);
     this.add(detailViewManager);

@@ -65,6 +65,7 @@ qx.Class.define("unify.Application",
       var rootLayout = this._getRootLayout();
       qx.bom.Event.addNativeListener(rootElement, "click", this.__onClick);
       var root = this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), rootLayout);
+      qx.bom.element.Style.set(rootElement, "visibility", "hidden");
       
       // Add box sizing css node
       var st = document.createElement("style");
@@ -78,13 +79,8 @@ qx.Class.define("unify.Application",
 
       // Configure document
       var Style = qx.bom.element.Style;
-      // <body>
-      Style.setStyles(rootElement, {
+      var rootStyle = {
         userSelect : "none",
-        //textSizeAdjust : "none", // Check for iOS compatibility
-        //perspective : "800",
-        //transformStyle : "preserve-3d",
-        touchCallout : "none",
         position : "absolute",
         left: 0,
         top: 0,
@@ -100,7 +96,16 @@ qx.Class.define("unify.Application",
         lineHeight : "1.4",
         color : "black",
         background : "white"
-      });
+      };
+      // <body>
+      if (qx.core.Environment.get("os.name") == "ios") {
+        rootStyle.touchCallout = "none";
+      }
+      if (qx.core.Environment.get("os.name") == "android") {
+        rootStyle.touchCallout = "none";
+      }
+      Style.setStyles(rootElement, rootStyle);
+      
       // <html>
       Style.setStyles(rootElement.parentNode, {
         width : "100%",
@@ -108,6 +113,7 @@ qx.Class.define("unify.Application",
         overflow : "hidden",
         padding : 0
       });
+      
       this.__setupDocumentSize();
       var isLandscape=qx.bom.Viewport.isLandscape();
       rootElement.setAttribute('orient',isLandscape?'landscape':'portrait');
@@ -124,6 +130,11 @@ qx.Class.define("unify.Application",
           this.warn("window.PalmSystem not found");
         }
       }
+    },
+    
+    // overridden
+    finalize : function() {
+      qx.bom.element.Style.set(this._getRootElement(), "visibility", "visible");
     },
 
     

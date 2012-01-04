@@ -1,14 +1,14 @@
 /* ************************************************************************
 
-   pp
+   Googly
 
    Copyright:
-     2010 Deutsche Telekom AG, Germany, http://telekom.com
+     2010-2011 Deutsche Telekom AG, Germany, http://telekom.com
 
- ************************************************************************ */
+************************************************************************ */
 
 /**
- * The gray PagePlace HTML5 client design "Reader Light"
+ * Googly theme
  */
 qx.Theme.define("googly.theme.Googly",
 {
