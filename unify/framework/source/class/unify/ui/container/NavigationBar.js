@@ -12,9 +12,7 @@
  * EXPERIMENTAL
  */
  
-/*
-#asset(unify/*)
-*/
+
 qx.Class.define("unify.ui.container.NavigationBar", {
   extend: unify.ui.container.Bar,
   
