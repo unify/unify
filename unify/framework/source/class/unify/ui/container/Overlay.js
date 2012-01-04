@@ -280,6 +280,10 @@ qx.Class.define("unify.ui.container.Overlay", {
       var posHint = this.__getPositionHint();
       this.getLayoutParent().add(this, posHint);
       this.fireEvent("shown");
+      var trigger=this.getTrigger();
+      if(trigger){
+        trigger.addListener("move",this.__onTriggerMove,this);
+      }
     },
     
     /**
@@ -288,6 +292,24 @@ qx.Class.define("unify.ui.container.Overlay", {
     hide : function() {
       this.base(arguments);
       this.fireEvent("hidden");
+      var trigger=this.getTrigger();
+      if(trigger){
+        trigger.removeListener("move",this.__onTriggerMove,this);
+      }
+    },
+
+    /**
+     * event handler for trigger move event.
+     * 
+     * repositions the overlay to the new trigger position if the overlay is visible
+     * 
+     * @param e {Event} event object
+     */
+    __onTriggerMove: function(e){
+      if(this.isVisible()){
+        var posHint = this.__getPositionHint();
+        this.getLayoutParent().add(this, posHint);
+      }
     }
   }
 });
