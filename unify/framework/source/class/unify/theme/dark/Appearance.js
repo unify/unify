@@ -8,6 +8,11 @@
 
 *********************************************************************************************** */
 
+/*
+#asset(unify/iphoneos/navigation-bar/black/navigationbar.png)
+#asset(unify/iphoneos/loader.png)
+*/
+
 /**
  * Appearances "dark" for unify widgets
  */
