@@ -15,26 +15,25 @@
 
 qx.Class.define("unify.ui.container.NavigationBar", {
   extend: unify.ui.container.Bar,
-  
+
   /**
    * @param view {unify.view.StaticView} View the navigation bar is attached to
    */
   construct : function(view) {
     this.base(arguments);
     this._setLayout(new unify.ui.layout.special.NavigationBar());
-    
+
     if (!view || !(view instanceof unify.view.StaticView)) {
       throw new Error("Invalid view! NavigationBar must be attached to a view!")
     }
-    
+
     this.__view = view;
-    
-    var title = this.__title = new unify.ui.basic.Label();
-    title.setAppearance("navigationbar.title");
+
+    var title = this.__title = this._createTitleWidget();
     this._add(title, {
       position: "title"
     });
-    
+
     // Finally listen for any changes occour after creation of the titlebar
     view.addListener("changeTitle", this.__onViewChangeTitle, this);
     view.addListener("changeParent", this.__onViewChangeParent, this);
@@ -43,12 +42,12 @@ qx.Class.define("unify.ui.container.NavigationBar", {
       master.addListener("changeView",this.__onViewChangeMaster,this);
       master.addListener("changeDisplayMode",this.__onViewChangeMaster,this);
     }
-    
+
     this.__onViewChangeTitle();
     this.__onViewChangeParent();
     this.__onViewChangeMaster();
   },
-  
+
   properties : {
     minWidth: {
       refine: true,
@@ -58,18 +57,25 @@ qx.Class.define("unify.ui.container.NavigationBar", {
       refine: true,
       init: 44
     },
-    
+
     appearance : {
       refine : true,
       init: "navigationbar"
     }
   },
-  
+
   members : {
     __view : null,
     __title : null,
     __parentButton : null,
     __masterButton : null,
+
+    _createTitleWidget : function() {
+      var title = new unify.ui.basic.Label();
+      title.setAppearance("navigationbar.title");
+
+      return title;
+    },
 
     _createItemElement : function(config){
       var item = this.base(arguments,config);
@@ -81,7 +87,7 @@ qx.Class.define("unify.ui.container.NavigationBar", {
         item.setAllowGrowY(false);
         item.setAllowShrinkY(false);
       }
-      
+
       return item;
     },
 
@@ -99,7 +105,7 @@ qx.Class.define("unify.ui.container.NavigationBar", {
     __onViewChangeParent : function(e)
     {
       var parentElem = this.__parentButton;
-      if (!parentElem) 
+      if (!parentElem)
       {
         parentElem = this.__parentButton = this._createItemElement({rel:"parent",kind:"button"});
         //parentElem.setStyle(unify.ui.styling.StaticTheme.navigationBarButtonParent);
@@ -107,7 +113,7 @@ qx.Class.define("unify.ui.container.NavigationBar", {
           position: "left"
         });
       }
-      
+
       var parent = this.__view.getParent();
       if(parent){
         this._setItemLabel(parentElem,parent.getTitle("parent"));
@@ -136,7 +142,7 @@ qx.Class.define("unify.ui.container.NavigationBar", {
         });
       }
       var master = this.__view.getManager().getMaster();
-      
+
       if(master && master.getDisplayMode()=='popover'){
         masterElem.setShow(master.getId());
         var currentMasterView=master.getCurrentView();
@@ -158,7 +164,7 @@ qx.Class.define("unify.ui.container.NavigationBar", {
       this.__title.setValue(this.__view.getTitle());
     }
   },
-  
+
   destruct : function() {
     var view = this.__view;
     view.removeListener("changeTitle", this.__onViewChangeTitle, this);
