@@ -14,6 +14,8 @@
 qx.Class.define("unify.ui.container.NavigationBar", {
   extend: unify.ui.container.Bar,
 
+  include : [unify.ui.core.MChildControl],
+
   /**
    * @param view {unify.view.StaticView} View the navigation bar is attached to
    */
@@ -102,17 +104,9 @@ qx.Class.define("unify.ui.container.NavigationBar", {
      */
     __onViewChangeParent : function(e)
     {
-      var parentElem = this.__parentButton;
-      if (!parentElem)
-      {
-        parentElem = this.__parentButton = this._createItemElement({rel:"parent",kind:"button"});
-        //parentElem.setStyle(unify.ui.styling.StaticTheme.navigationBarButtonParent);
-        this._add(parentElem, {
-          position: "left"
-        });
-      }
-
+      var parentElem = this.getChildControl("parent");
       var parent = this.__view.getParent();
+
       if(parent){
         this._setItemLabel(parentElem,parent.getTitle("parent"));
         parentElem.setVisibility("visible");
@@ -130,15 +124,7 @@ qx.Class.define("unify.ui.container.NavigationBar", {
      */
     __onViewChangeMaster : function(e)
     {
-      var masterElem = this.__masterButton;
-      if (!masterElem)
-      {
-        masterElem = this.__masterButton =this._createItemElement({rel:"master",kind:"button"});
-        //masterElem.setStyle(unify.ui.styling.StaticTheme.navigationBarButton);
-        this._add(masterElem, {
-          position: "left"
-        });
-      }
+      var masterElem = this.getChildControl("master");
       var master = this.__view.getManager().getMaster();
 
       if(master && master.getDisplayMode()=='popover'){
@@ -150,6 +136,30 @@ qx.Class.define("unify.ui.container.NavigationBar", {
         masterElem.setVisibility("excluded");
         this._setItemLabel(masterElem,"");
       }
+    },
+
+    /**
+     * Returns child control widget identified by id
+     *
+     * @param id {String} ID of child widget
+     * @return {unify.ui.core.Widget} Content widget
+     */
+    _createChildControlImpl : function(id) {
+      var control;
+
+      if (id == "master") {
+        control = this._createItemElement({rel:"master",kind:"button"});
+        this._add(control, {
+          position: "left"
+        });
+      } else if (id == "parent") {
+        control = this._createItemElement({rel:"parent",kind:"button"});
+        this._add(control, {
+          position: "left"
+        });
+      }
+
+      return control || this.base(arguments, id);
     },
 
 
