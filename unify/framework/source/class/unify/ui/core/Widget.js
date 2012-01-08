@@ -21,36 +21,36 @@
 */
 qx.Class.define("unify.ui.core.Widget", {
   extend : qx.ui.core.LayoutItem,
-  
+
   /**
    * @param layout {qx.ui.layout.Abstract} Layout of widget
    */
   construct : function() {
     this.base(arguments);
-    
+
     this.__renderLayoutDone = false;
-    
+
     this.__initializeSizing();
     this.__element = this.__createElement();
   },
-  
+
   events : {
     /**
      * Fired on resize of the widget.
      */
     resize : "qx.event.type.Event",
-    
+
     /**
      * Fired on move of the widget.
      */
     move : "qx.event.type.Event",
-    
+
     /** Fired if a touch at the screen is started. */
     touchstart : "qx.event.type.Touch",
 
     /** Fired if a touch at the screen has ended. */
     touchend : "qx.event.type.Touch",
-    
+
     /** Fired if a touch at the screen is started. */
     touchleave : "qx.event.type.Touch",
 
@@ -65,14 +65,14 @@ qx.Class.define("unify.ui.core.Widget", {
 
     /** Fired when a finger taps on the screen. */
     tap : "qx.event.type.Touch",
-    
+
     /** Fired if widget is focusable {@link #focusable} and gets focus */
     focus : "qx.event.type.Focus",
 
     /** Fired if widget is focusable {@link #focusable} and looses focus */
     blur : "qx.event.type.Focus"
   },
-  
+
   properties : {
     /**
      * Controls the visibility. Valid values are:
@@ -90,7 +90,7 @@ qx.Class.define("unify.ui.core.Widget", {
       apply : "_applyVisibility",
       event : "changeVisibility"
     },
-    
+
     /**
      * Appearance ID of widget used by theme system
      */
@@ -99,14 +99,14 @@ qx.Class.define("unify.ui.core.Widget", {
       apply : "_applyAppearance",
       event : "changeAppearance"
     },
-    
+
     /**
      * Parent's inset to apply to child
      */
     parentInset : {
       init : null
     },
-    
+
     /**
      * Whether the widget is enabled. Disabled widgets are usually grayed out
      * and do not process user created events. While in the disabled state most
@@ -121,7 +121,7 @@ qx.Class.define("unify.ui.core.Widget", {
       event : "changeEnabled",
       init : true
     },
-    
+
     /**
      * Defines the tab index of an widget. If widgets with tab indexes are part
      * of the current focus root these elements are sorted in first priority. Afterwards
@@ -135,7 +135,7 @@ qx.Class.define("unify.ui.core.Widget", {
       nullable : true,
       apply : "_applyTabIndex"
     },
-    
+
     /**
      * Whether the widget is focusable e.g. rendering a focus border and visualize
      * as active element.
@@ -151,7 +151,7 @@ qx.Class.define("unify.ui.core.Widget", {
       apply : "_applyFocusable"
     }
   },
-  
+
   statics : {
     /**
      * Returns the widget, which contains the given DOM element.
@@ -184,17 +184,20 @@ qx.Class.define("unify.ui.core.Widget", {
       return null;
     }
   },
-  
+
   members: {
     /** {Map} Padding of element */
     __padding : null,
-    
+
     /** {Map} Border size of element */
     __border : null,
-    
+
+    /** {Map} Virtual position. Only set if widget is virtual container without DOM representation */
+    __virtualPosition : null,
+
     /** {Boolean} Widget has valid rendered layout */
     __renderLayoutDone : null,
-    
+
     /**
      * Initializes padding and border size to zero
      */
@@ -211,14 +214,18 @@ qx.Class.define("unify.ui.core.Widget", {
         right: 0,
         bottom: 0
       };
+      this.__virtualPosition = {
+        left: 0,
+        top: 0
+      };
     },
-    
+
     // property apply
     _applyVisibility : function(value, old)
     {
       var container = this.getElement();
       var Style = qx.bom.element.Style;
-      
+
 
       if (value === "visible") {
         Style.set(container, "display", "block"); // TODO: Block right? or simply null?
@@ -235,7 +242,7 @@ qx.Class.define("unify.ui.core.Widget", {
       // Update visibility cache
       qx.ui.core.queue.Visibility.add(this);
     },
-    
+
     /**
      * Apply navigation on element
      *
@@ -247,7 +254,7 @@ qx.Class.define("unify.ui.core.Widget", {
         this.__applyNavigation(this.getElement(), value);
       }
     },
-    
+
     /**
      * Apply navigation on element
      *
@@ -261,7 +268,7 @@ qx.Class.define("unify.ui.core.Widget", {
         element.setAttribute(key, value);
       }
     },
-    
+
     // overridden
     _applyAppearance : function(value) {
       if (qx.core.Environment.get("qx.debug")) {
@@ -270,7 +277,7 @@ qx.Class.define("unify.ui.core.Widget", {
       }
       this.updateAppearance();
     },
-    
+
     // property apply
     _applyEnabled : function(value, old)
     {
@@ -322,7 +329,7 @@ qx.Class.define("unify.ui.core.Widget", {
         }*/
       }
     },
-    
+
     _applyTabIndex : function(value)
     {
       if (value == null) {
@@ -330,10 +337,10 @@ qx.Class.define("unify.ui.core.Widget", {
       } else if (value < 1 || value > 32000) {
         throw new Error("TabIndex property must be between 1 and 32000");
       }
-      
+
       this.setAttribute("tabIndex", value);
     },
-    
+
     _applyFocusable : function(value, old)
     {
       if (value) {
@@ -347,27 +354,27 @@ qx.Class.define("unify.ui.core.Widget", {
         this.setAttribute("tabIndex", null);
       }
     },
-    
+
     /**
      * Adds focus to element
      */
     tabFocus : function() {
       this.addState("active");
     },
-    
+
     /**
      * Removes focus from element
      */
     tabBlur : function() {
       this.removeState("active");
     },
-  
+
     __layoutManager : null,
-    
+
     _getLayout : function() {
       return this.__layoutManager;
     },
-    
+
     /**
      * Set a layout manager for the widget. A a layout manager can only be connected
      * with one widget. Reset the connection with a previous widget first, if you
@@ -382,19 +389,19 @@ qx.Class.define("unify.ui.core.Widget", {
           this.assertInstance(layout, qx.ui.layout.Abstract);
         }
       }
-      
+
       if (this.__layoutManager) {
         this.__layoutManager.connectToWidget(null);
       }
-      
+
       if (layout) {
         layout.connectToWidget(this);
       }
-      
+
       this.__layoutManager = layout;
       qx.ui.core.queue.Layout.add(this);
     },
-    
+
     /**
      * Returns the recommended / natural dimension of the widget's content
      *
@@ -405,7 +412,7 @@ qx.Class.define("unify.ui.core.Widget", {
       if (layout) {
         if (this.hasLayoutChildren()) {
           var hint = layout.getSizeHint();
-          
+
           if (!hint) {
             return {
               width: 0,
@@ -417,7 +424,7 @@ qx.Class.define("unify.ui.core.Widget", {
             this.assetInteger(hint.width, "Wrong width value. " + msg);
             this.assetInteger(hint.height, "Wrong height value. " + msg);
           }*/
-          
+
           return hint;
         } else {
           return {
@@ -432,7 +439,7 @@ qx.Class.define("unify.ui.core.Widget", {
         };
       }
     },
-    
+
     // overridden
     _computeSizeHint : function()
     {
@@ -464,7 +471,7 @@ qx.Class.define("unify.ui.core.Widget", {
       if (width == null || height == null) {
         // Ask content
         contentHint = this._getContentHint();
-        
+
         if (width == null) {
           width = contentHint.width + insetX;
         }
@@ -584,7 +591,7 @@ qx.Class.define("unify.ui.core.Widget", {
           this._setStyle(oldStyleData);
         }
         this._setStyle(newStyle);
-        
+
       } else if (oldStyle) {
         var styleData = {};
         for (key in oldStyle) {
@@ -617,7 +624,7 @@ qx.Class.define("unify.ui.core.Widget", {
       {
         qx.ui.core.queue.Appearance.add(this);
         this.__initialAppearanceApplied = true;
-        
+
         //qx.bom.element.Style.set(this.getElement(), "visibility", "visible");
       }
 
@@ -632,12 +639,12 @@ qx.Class.define("unify.ui.core.Widget", {
         delete this.$$stateChanges;
       }
     },
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
 
     __dimensionInfo : null,
 
@@ -648,10 +655,10 @@ qx.Class.define("unify.ui.core.Widget", {
      */
     getPositionInfo : function() {
       var e = this.getElement();
-      
+
       var pos = qx.bom.element.Location.get(e);
       var dim = this.__dimensionInfo || qx.bom.element.Dimension.getSize(e);
-      
+
       return {
         left: pos.left,
         top: pos.top,
@@ -661,7 +668,7 @@ qx.Class.define("unify.ui.core.Widget", {
         border: this.__border
       };
     },
-    
+
     /**
      * Returns if widget is layouted
      *
@@ -670,7 +677,7 @@ qx.Class.define("unify.ui.core.Widget", {
     hasRenderedLayout : function() {
       return !!this.__renderLayoutDone;
     },
-    
+
     /**
      * Render method to apply layout on widget
      *
@@ -697,18 +704,28 @@ qx.Class.define("unify.ui.core.Widget", {
         top += parentInset[1];
       }
       if (!preventSize) {
-        qx.bom.element.Style.setStyles(this.getElement(), {
-          left: left + "px",
-          top: top + "px",
-          width: width + "px",
-          height: height + "px"
-        });
+        var element = this.getElement();
+        if (element instanceof DocumentFragment) {
+          // Only virtual layouter, so save calculated values. There is no element to set position infos on.
+          this.__virtualPosition = {left: left, top: top};
+        } else {
+          // Get position of parent if virtual layout to calculate new relative positions
+          var parentVirtualPosition = this.getLayoutParent().getVirtualPosition();
+
+          qx.bom.element.Style.setStyles(element, {
+            position: "absolute",
+            left: (left + parentVirtualPosition.left) + "px",
+            top: (top + parentVirtualPosition.top) + "px",
+            width: width + "px",
+            height: height + "px"
+          });
+        }
       }
 
       if (this._hasChildren()) {
         var padding = this.__padding;
         var border = this.__border;
-        
+
         var innerWidth = width - (padding.left + padding.right) - (border.left + border.right);
         var innerHeight = height - (padding.top + padding.bottom) - (border.top + border.bottom);
 
@@ -732,8 +749,17 @@ qx.Class.define("unify.ui.core.Widget", {
       if (changes.size && this.hasListener("resize")) {
         this.fireEvent("resize");
       }
-      
+
       this.__renderLayoutDone = true;
+    },
+
+    /**
+     * Returns virtual position calculated via layouter
+     *
+     * @return {Map} Virtual position of element
+     */
+    getVirtualPosition : function() {
+      return this.__virtualPosition;
     },
 
     /**
@@ -744,7 +770,7 @@ qx.Class.define("unify.ui.core.Widget", {
     getContentElement : function() {
       return this.getElement();
     },
-    
+
     /**
      * Renders all children of this widget
      */
@@ -757,11 +783,11 @@ qx.Class.define("unify.ui.core.Widget", {
           child.renderChildren();
           fragment.appendChild(child.getElement());
         }
-        
+
         this.getContentElement().appendChild(fragment);
       }*/
     },
-    
+
     /**
      * Returns whether the layout has children, which are layout relevant. This
      * excludes all widgets, which have a {@link qx.ui.core.Widget#visibility}
@@ -774,7 +800,7 @@ qx.Class.define("unify.ui.core.Widget", {
       if (!children) {
         return false;
       }
-      
+
       var child;
       for (var i=0,ii=children.length; i<ii; i++) {
         child = children[i];
@@ -783,7 +809,7 @@ qx.Class.define("unify.ui.core.Widget", {
         }
       }
     },
-    
+
     /**
      * {Array} Placeholder for children list in empty widgets.
      *     Mainly to keep instance number low.
@@ -791,7 +817,7 @@ qx.Class.define("unify.ui.core.Widget", {
      * @lint ignoreReferenceField(__emptyChildren)
      */
     __emptyChildren : [],
-    
+
     /**
      * Returns all children, which are layout relevant. This excludes all widgets,
      * which have a {@link qx.ui.core.Widget#visibility} value of <code>exclude</code>.
@@ -891,7 +917,7 @@ qx.Class.define("unify.ui.core.Widget", {
 
     /**
      * Returns if the widget is not visible (hidden or excluded).
-     * 
+     *
      * @return {Boolean} Returns true if the widget is not visible.
      */
     isHidden : function() {
@@ -990,7 +1016,7 @@ qx.Class.define("unify.ui.core.Widget", {
       if (!states || !states[state]) {
         return;
       }
-      
+
       // Clear state and queue
       delete this.__states[state];
 
@@ -1063,9 +1089,9 @@ qx.Class.define("unify.ui.core.Widget", {
     {
       this.getContentElement().blur();
     },
-    
-    
-    
+
+
+
 
 
 
@@ -1198,7 +1224,7 @@ qx.Class.define("unify.ui.core.Widget", {
         map.borderLeftColor = borderColor[3] || borderColor[1] || borderColor[0];
         delete map.borderColor;
       }
-      
+
       if (map.borderLeft) {
         var border = map.borderLeft.split(" ");
         map.borderLeftWidth = border[0];
@@ -1301,7 +1327,7 @@ qx.Class.define("unify.ui.core.Widget", {
 
       this.__font = tmpFont;//cache font for later use
       var style = this.__style = qx.lang.Object.merge(this.__style||{},map);
-      
+
       var padding = this.__padding = {
         left: parseInt(style.paddingLeft, 10) || 0,
         top: parseInt(style.paddingTop, 10) || 0,
@@ -1311,7 +1337,7 @@ qx.Class.define("unify.ui.core.Widget", {
       /*if (padding.left + padding.top + padding.right + padding.bottom > 0) {
         qx.ui.core.queue.Layout.add(this);
       }*/
-      
+
       var border = this.__border = {
         left: parseInt(style.borderLeftWidth, 10) || 0,
         top: parseInt(style.borderTopWidth, 10) || 0,
@@ -1323,15 +1349,15 @@ qx.Class.define("unify.ui.core.Widget", {
       }*/
 
       qx.bom.element.Style.setStyles(this.getElement(), style);
-      
+
       if (properties) {
         var keys = qx.lang.Object.getKeys(properties);
         var firstUp = qx.lang.String.firstUp;
-        
+
         for (var i=0,ii=keys.length; i<ii; i++) {
           var key = keys[i];
           var value = properties[key];
-          
+
           var setter = this["set" + firstUp(key)];
           if (setter) {
             setter.call(this, value);
@@ -1341,7 +1367,7 @@ qx.Class.define("unify.ui.core.Widget", {
         }
       }
     },
-    
+
     /**
      * Get font of widget
      *
@@ -1369,7 +1395,7 @@ qx.Class.define("unify.ui.core.Widget", {
     _getStyle : function(name, computed) {
       var style = this.__style;
       var value = (style && style[name]);
-      
+
       if (value) {
         return value;
       } else {
@@ -1380,22 +1406,22 @@ qx.Class.define("unify.ui.core.Widget", {
 
 
     hasUserBounds : function() {
-    
+
     },
-    
+
     isExcluded : function() {
       return this.getVisibility() === "excluded";
     },
-    
+
     __element : null,
-    
+
     /**
      * Returns the DOM element this widget creates
      */
     getElement : function() {
       return this.__element;
     },
-    
+
     /**
      * Returns if the DOM element is created or not
      * @return {Boolean} DOM element is created
@@ -1403,42 +1429,43 @@ qx.Class.define("unify.ui.core.Widget", {
     _hasElement : function() {
       return !!this.__element;
     },
-    
+
     /**
      * Creates DOM element
      */
     _createElement : function() {
       throw "_createElement is not implemented";
     },
-    
+
     /**
      * Creates DOM element
-     * 
+     *
      * @return {Element} DOM element of widget
      */
     __createElement : function() {
         var element = this._createElement();
-        
+
         if (!element) {
           return null;
         }
-        
+
         element.$$widget = this.toHashCode();
 
-        if(qx.core.Environment.get("qx.debug")){
-          element.setAttribute("unifyclass",this.classname);
-          element.setAttribute("appearance",this.getAppearance());
+        if (!element instanceof DocumentFragment) {
+          if(qx.core.Environment.get("qx.debug")){
+            element.setAttribute("unifyclass",this.classname);
+            element.setAttribute("appearance",this.getAppearance());
+          }
+
+          var style = this.__style;
+          if (style) {
+            qx.bom.element.Style.setStyles(element, style);
+          }
         }
-        qx.bom.element.Style.set(element, "position",  "absolute");
-        
-        var style = this.__style;
-        if (style) {
-          qx.bom.element.Style.setStyles(element, style);
-        }
-        
+
         return element;
     },
-    
+
     __widgetChildren : null,
 
     /**
@@ -1448,7 +1475,7 @@ qx.Class.define("unify.ui.core.Widget", {
     getChildren : function(){
       return this._getChildren();
     },
-    
+
     /**
      * Returns children of widget
      * @return {unify.ui.core.Widget[]} Child widgets
@@ -1456,7 +1483,7 @@ qx.Class.define("unify.ui.core.Widget", {
     _getChildren : function() {
       return this.__widgetChildren;
     },
-    
+
     /**
      * Recursively adds all children to the given queue
      *
@@ -1478,7 +1505,7 @@ qx.Class.define("unify.ui.core.Widget", {
         child.addChildrenToQueue(queue);
       }
     },
-    
+
     /**
      * Checks if widget has children
      * @return {Boolean} Widget has children
@@ -1487,7 +1514,7 @@ qx.Class.define("unify.ui.core.Widget", {
       var children = this.__widgetChildren;
       return !!(children && children.length > 0);
     },
-    
+
     /**
      * Returns the index position of the given widget if it is
      * a child widget. Otherwise it returns <code>-1</code>.
@@ -1505,7 +1532,7 @@ qx.Class.define("unify.ui.core.Widget", {
 
       return children.indexOf(child);
     },
-    
+
     /**
      * Adds a new child widget.
      *
@@ -1771,7 +1798,7 @@ qx.Class.define("unify.ui.core.Widget", {
       } else {
         contentElem.appendChild(element);
       }
-      
+
       this._getLayout().invalidateLayoutCache();
 
       // Remember parent
@@ -1832,7 +1859,7 @@ qx.Class.define("unify.ui.core.Widget", {
       }
     }
   },
-  
+
   destruct : function() {
     this._disposeArray("__widgetChildren");
     this._disposeObjects(
