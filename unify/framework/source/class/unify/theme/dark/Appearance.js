@@ -25,7 +25,7 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     */
 
     "widget" : {},
-    
+
     "list.button.top" : {
       style : function(states) {
         return {
@@ -45,13 +45,13 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
-    
+
     /*
     ---------------------------------------------------------------------------
       CONTAINER
     ---------------------------------------------------------------------------
     */
-    
+
     "root" : {},
     "composite" : {},
     "scroll" : {},
@@ -64,13 +64,13 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           backgroundColor: "#CBD2D8",
           backgroundImage: "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAABCAIAAACdaSOZAAAAFElEQVQI12M4euYKErp0+tINIAIAuHQQ4hrnkJoAAAAASUVORK5CYII=')"
         };
-                
+
         return style;
       }
     },
     "viewmanager" : {
       include : "composite",
-      
+
       style : function() {
         return {
           properties : {
@@ -118,21 +118,21 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           borderBottom: "5px solid #333",
           borderRadius: "5px"
         };
-        
+
         return style;
       }
     },
-    
+
     /*
     ---------------------------------------------------------------------------
       ACTIVITY INDICATOR
     ---------------------------------------------------------------------------
     */
-    
+
     "activityindicator" : {
       style : function() {
         var size = 144;
-        
+
         return {
           marginLeft: -Math.round(size/2),
           width: size,
@@ -148,23 +148,23 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
-    
+
     "activityindicator/image" : {
       style : function() {
         var url = "unify/iphoneos/loader.png";
         var ResourceManager = qx.util.ResourceManager.getInstance();
-        
+
         return {
           width: ResourceManager.getImageWidth(url),
           height: ResourceManager.getImageHeight(url),
-          
+
           properties : {
             source: url
           }
         };
       }
     },
-    
+
     "activityindicator/label" : {
       style : function() {
         return {
@@ -173,13 +173,13 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
-    
+
     /*
     ---------------------------------------------------------------------------
       BARS
     ---------------------------------------------------------------------------
     */
-    
+
     "navigationbar" : {
       style : function() {
         return {
@@ -187,7 +187,7 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
-    
+
     "navigationbar.title" : {
       style : function() {
         return {
@@ -200,7 +200,25 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
-    
+
+    "navigationbar/master" : {
+      include : "button"
+    },
+
+    "navigationbar/master/label" : {
+      include : "button/label"
+    },
+
+    "navigationbar/parent" : {
+      include : "button"
+    },
+
+    "navigationbar/parent/label" : {
+      include : "button/label"
+    },
+
+
+
     "tabbar" : {
       style : function() {
         var gradient = unify.bom.Gradient.createGradient({
@@ -222,14 +240,14 @@ qx.Theme.define("unify.theme.dark.Appearance", {
             color: "#000"
           }]
         });
-        
+
         return {
           background: gradient,
           borderTop: "1px solid black"
         };
       }
     },
-    
+
     "tabbar.button" : {
       style : function(state) {
         var style = {
@@ -239,7 +257,7 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           marginLeft: "2px",
           marginRight: "2px"
         };
-        
+
         if (state.active) {
           style.color = "white";
           style.background = unify.bom.Gradient.createGradient({
@@ -262,7 +280,7 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           style.color = "#9a9a9a";
           style.background = "transparent";
         }
-        
+
         return style;
       }
     },
@@ -274,11 +292,11 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
-    
+
     "toolbar" : {
       include : "navigationbar"
     },
-    
+
     "toolbar.segmented.container" : {
       style : function() {
         return {
@@ -286,7 +304,7 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
-    
+
     "toolbar.segmented.button" : {
       style : function(state) {
         var e = {
@@ -315,13 +333,13 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           padding: "5px 12px",
           font: "12px bold"
         };
-        
+
         e.borderRadius = (state.first?"5px ":"0px ") + (state.last?"5px ":"0px ") + (state.last?"5px ":"0px ") + (state.first?"5px ":"0px ");
-        
+
         if (state.last) {
           e.borderRight = "1px solid #181818";
         }
-        
+
         if (state.active) {
           e.color = "white";
           e.backgroundImage = unify.bom.Gradient.createGradient({
@@ -341,17 +359,17 @@ qx.Theme.define("unify.theme.dark.Appearance", {
             }]
           });
         }
-        
+
         return e;
       }
     },
-    
+
     /*
     ---------------------------------------------------------------------------
       LIST
     ---------------------------------------------------------------------------
     */
-    
+
     "list" : {
       style : function() {
         return {
@@ -397,24 +415,24 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
-    
+
     /*
     ---------------------------------------------------------------------------
       ELEMENTS
     ---------------------------------------------------------------------------
     */
-    
+
     "label" : {
       style : function(state) {
         var e = {
           overflow: "hidden"
         };
-        
+
         if (state.ellipsis) {
           e.textOverflow = "ellipsis";
           e.whiteSpace = "nowrap";
         }
-        
+
         return e;
       }
     },
@@ -433,7 +451,29 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
-    
+
+    "input.file" : {
+      style : function() {
+        return {
+          backgroundColor: "orange"
+        };
+      }
+    },
+    "input.file/filename" : {
+      style : function() {
+        return {
+          backgroundColor: "green"
+        };
+      }
+    },
+    "input.file/fileinput" : {
+      style : function() {
+        return {
+          opacity: 0
+        };
+      }
+    },
+
     "button" : {
       style : function(state) {
         var e = {
@@ -466,7 +506,7 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           borderRadius: "12px",
           textAlign: "center"
         };
-        
+
         if (state.active) {
           e.backgroundColor = "#646464";
         }
@@ -485,8 +525,8 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
-    
-    
+
+
     "slider" : {
       style : function(state) {
         if (state.horizontalDirection) {
@@ -504,7 +544,7 @@ qx.Theme.define("unify.theme.dark.Appearance", {
             backgroundColor: "#242424"
           };
         }
-        
+
         return e;
       }
     },
@@ -527,13 +567,13 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
-    
+
     /*
     ---------------------------------------------------------------------------
       DIALOGS
     ---------------------------------------------------------------------------
     */
-   
+
     "alert" : {
       style : function() {
         return {
@@ -547,7 +587,7 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
-    
+
     "alert.label" : {
       style : function() {
         return {
@@ -556,10 +596,10 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
-    
+
     "alert.button" : {
       include : "button",
-      
+
       style : function() {
         return {
           marginBottom: "5px"
