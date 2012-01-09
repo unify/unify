@@ -39,7 +39,7 @@ qx.Class.define("unify.ui.core.Widget", {
     /**
      * Fired on resize of the widget.
      */
-    resize : "qx.event.type.Event",
+    resize : "qx.event.type.Data",
 
     /**
      * Fired on move of the widget.
@@ -721,7 +721,7 @@ qx.Class.define("unify.ui.core.Widget", {
      * @param preventSize {Boolean?null} Prevent size of widget and ignore layout hints, use with care!
      */
     renderLayout : function(left, top, width, height, preventSize) {
-      this.__dimensionInfo = {
+      var dimension = this.__dimensionInfo = {
         width: width,
         height: height
       };
@@ -807,7 +807,7 @@ qx.Class.define("unify.ui.core.Widget", {
         this.fireEvent("move");
       }
       if (changes.size && this.hasListener("resize")) {
-        this.fireEvent("resize");
+        this.fireDataEvent("resize", dimension);
       }
 
       this.__renderLayoutDone = true;
