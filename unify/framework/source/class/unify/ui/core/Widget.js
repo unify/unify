@@ -791,7 +791,11 @@ qx.Class.define("unify.ui.core.Widget", {
           for (var i=0,ii=e.length; i<ii; i++) {
             indexedFragment.appendChild(e[i]);
           }
-          contentElement.insertBefore(indexedFragment,childNode);
+          if (childNode) {
+            contentElement.insertBefore(indexedFragment,childNode);
+          } else {
+            contentElement.appendChild(indexedFragment);
+          }
         }
       }
       
