@@ -174,7 +174,9 @@ qx.Class.define("unify.ui.container.scroll.ScalingIndicator", {
         transitionTimingFunction:"linear",
         transform:"",
         backgroundColor:'rgba(0,0,0,0.5)',
-        opacity:0
+        opacity:0,
+        position:"absolute",
+        zIndex: 10
       };
       qx.bom.element.Style.setStyles(elem,baseStyles);
 
@@ -247,9 +249,9 @@ qx.Class.define("unify.ui.container.scroll.ScalingIndicator", {
        this.__currentSize=newSize;
 
        if(horizontal){
-         style.transformOriginX=((newSize<maxSize && newPosition==this.__minIndicatorPosition)?"left":"right");
+         style.transformOriginX=((newSize<maxSize && newPosition==this.__minIndicatorPosition)?"0%":"100%");
        } else {
-         style.transformOriginY=((newSize<maxSize && newPosition==this.__minIndicatorPosition)?"top":"bottom");
+         style.transformOriginY=((newSize<maxSize && newPosition==this.__minIndicatorPosition)?"0%":"100%");
        }
        var scale;
        if(newSize<maxSize){
