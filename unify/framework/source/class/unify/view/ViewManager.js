@@ -131,6 +131,12 @@ qx.Class.define("unify.view.ViewManager", {
       init: "viewmanager"
     },
     
+    /* switch to disable view transition animations */
+    animateTransitions: {
+      check:"Boolean",
+      init: true
+    },
+    
     /**
      * Duration of layer animation
      */
@@ -416,7 +422,17 @@ qx.Class.define("unify.view.ViewManager", {
         this.__path=null;
         this.__currentView=null;
         this.fireDataEvent("changePath", this.__path);
-        this.__animateModal(view,false,callback);
+        if(this.getAnimateTransitions()){
+          this.__animateModal(view,false,callback);
+        } else {
+          view.setActive(false);
+          view.hide();
+          this.hide();
+          if(callback){
+            callback();
+          }
+        }
+        
     },
 
 
@@ -443,7 +459,12 @@ qx.Class.define("unify.view.ViewManager", {
       }
 
       this.show();
-      this.__animateModal(view,true);
+      if(this.getAnimateTransitions()){
+        this.__animateModal(view,true);
+      } else {
+        view.show();
+      }
+
     },
     
     /*
@@ -635,7 +656,7 @@ qx.Class.define("unify.view.ViewManager", {
       // Transition specific layer switch
       var positions = this.__positions;
 
-      if (transition == "in" || transition == "out")
+      if (this.getAnimateTransitions() &&(transition == "in" || transition == "out"))
       {
         this.__animateLayers(view, oldView, transition);
       } else {
