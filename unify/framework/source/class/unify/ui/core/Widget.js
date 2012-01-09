@@ -770,7 +770,7 @@ qx.Class.define("unify.ui.core.Widget", {
           var childNode = childNodes[key];
           var indexedFragment = document.createDocumentFragment();
           for (var i=0,ii=e.length; i<ii; i++) {
-            indexedFragment.appendChild(e);
+            indexedFragment.appendChild(e[i]);
           }
           contentElement.insertBefore(indexedFragment,childNode);
         }
