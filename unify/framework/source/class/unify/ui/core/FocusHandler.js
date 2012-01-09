@@ -86,8 +86,8 @@ qx.Class.define("unify.ui.core.FocusHandler", {
     /**
      * Compares the order of two widgets
      *
-     * @param widget1 {qx.ui.core.Widget} Widget A
-     * @param widget2 {qx.ui.core.Widget} Widget B
+     * @param widget1 {unify.ui.core.Widget} Widget A
+     * @param widget2 {unify.ui.core.Widget} Widget B
      * @return {Integer} A sort() compatible integer with values
      *   small than 0, exactly 0 or bigger than 0.
      */
@@ -138,7 +138,7 @@ qx.Class.define("unify.ui.core.FocusHandler", {
     /**
      * Returns the first widget.
      *
-     * @return {qx.ui.core.Widget} Retuns the first (positioned) widget from
+     * @return {unify.ui.core.Widget} Retuns the first (positioned) widget from
      *    the current root.
      */
     __getFirstWidget : function() {
@@ -149,7 +149,7 @@ qx.Class.define("unify.ui.core.FocusHandler", {
     /**
      * Returns the last widget.
      *
-     * @return {qx.ui.core.Widget} Returns the last (positioned) widget from
+     * @return {unify.ui.core.Widget} Returns the last (positioned) widget from
      *    the current root.
      */
     __getLastWidget : function() {
@@ -160,8 +160,8 @@ qx.Class.define("unify.ui.core.FocusHandler", {
     /**
      * Returns the widget after the given one.
      *
-     * @param widget {qx.ui.core.Widget} Widget to start with
-     * @return {qx.ui.core.Widget} The found widget.
+     * @param widget {unify.ui.core.Widget} Widget to start with
+     * @return {unify.ui.core.Widget} The found widget.
      */
     __getWidgetAfter : function(widget)
     {
@@ -190,8 +190,8 @@ qx.Class.define("unify.ui.core.FocusHandler", {
     /**
      * Returns the widget before the given one.
      *
-     * @param widget {qx.ui.core.Widget} Widget to start with
-     * @return {qx.ui.core.Widget} The found widget.
+     * @param widget {unify.ui.core.Widget} Widget to start with
+     * @return {unify.ui.core.Widget} The found widget.
      */
     __getWidgetBefore : function(widget)
     {
@@ -232,8 +232,8 @@ qx.Class.define("unify.ui.core.FocusHandler", {
      * the given parent widget. Append all found children to the
      * <code>list</code>.
      *
-     * @param parent {qx.ui.core.Widget} Parent widget
-     * @param widget {qx.ui.core.Widget} Child widget to start with
+     * @param parent {unify.ui.core.Widget} Parent widget
+     * @param widget {unify.ui.core.Widget} Child widget to start with
      * @param result {Array} Result list
      * @return {void}
      */
@@ -268,8 +268,8 @@ qx.Class.define("unify.ui.core.FocusHandler", {
      * the given parent widget. Append all found children to the
      * <code>list</code>.
      *
-     * @param parent {qx.ui.core.Widget} Parent widget
-     * @param widget {qx.ui.core.Widget} Child widget to start with
+     * @param parent {unify.ui.core.Widget} Parent widget
+     * @param widget {unify.ui.core.Widget} Child widget to start with
      * @param result {Array} Result list
      * @return {void}
      */
@@ -302,9 +302,9 @@ qx.Class.define("unify.ui.core.FocusHandler", {
     /**
      * Find first (positioned) widget. (Sorted by coordinates, zIndex, etc.)
      *
-     * @param parent {qx.ui.core.Widget} Parent widget
-     * @param firstWidget {qx.ui.core.Widget?null} Current first widget
-     * @return {qx.ui.core.Widget} The first (positioned) widget
+     * @param parent {unify.ui.core.Widget} Parent widget
+     * @param firstWidget {unify.ui.core.Widget?null} Current first widget
+     * @return {unify.ui.core.Widget} The first (positioned) widget
      */
     __getFirst : function(parent, firstWidget)
     {
@@ -342,9 +342,9 @@ qx.Class.define("unify.ui.core.FocusHandler", {
     /**
      * Find last (positioned) widget. (Sorted by coordinates, zIndex, etc.)
      *
-     * @param parent {qx.ui.core.Widget} Parent widget
-     * @param lastWidget {qx.ui.core.Widget?null} Current last widget
-     * @return {qx.ui.core.Widget} The last (positioned) widget
+     * @param parent {unify.ui.core.Widget} Parent widget
+     * @param lastWidget {unify.ui.core.Widget?null} Current last widget
+     * @return {unify.ui.core.Widget} The last (positioned) widget
      */
     __getLast : function(parent, lastWidget)
     {

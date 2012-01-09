@@ -54,7 +54,7 @@ qx.Class.define("unify.ui.core.EventHandler",
     /** {Integer} Priority of this handler */
     PRIORITY : qx.event.Registration.PRIORITY_FIRST,
 
-    /** {Map} Supported event types. Identical to events map of qx.ui.core.Widget */
+    /** {Map} Supported event types. Identical to events map of unify.ui.core.Widget */
     SUPPORTED_TYPES :
     {
       // touch events

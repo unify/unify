@@ -164,7 +164,7 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
       var states = this.__states;
       var forward = this._forwardStates;
 
-      if (states && forward && control instanceof qx.ui.core.Widget)
+      if (states && forward && control instanceof unify.ui.core.Widget)
       {
         for (var state in states)
         {
@@ -191,7 +191,7 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
         return;
       }
 
-      var Widget = qx.ui.core.Widget;
+      var Widget = unify.ui.core.Widget;
 
       for (var id in controls)
       {

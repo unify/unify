@@ -160,7 +160,7 @@ qx.Class.define("unify.ui.core.Widget", {
      * @param element {Element} The DOM element to search the widget for.
      * @param considerAnonymousState {Boolean?false} If true, anonymous widget
      *   will not be returned.
-     * @return {qx.ui.core.Widget} The widget containing the element.
+     * @return {unify.ui.core.Widget} The widget containing the element.
      */
     getByElement : function(element, considerAnonymousState) {
       while(element) {
@@ -814,7 +814,7 @@ qx.Class.define("unify.ui.core.Widget", {
 
     /**
      * Returns whether the layout has children, which are layout relevant. This
-     * excludes all widgets, which have a {@link qx.ui.core.Widget#visibility}
+     * excludes all widgets, which have a {@link unify.ui.core.Widget#visibility}
      * value of <code>exclude</code>.
      *
      * @return {Boolean} Whether the layout has layout relevant children
@@ -844,10 +844,10 @@ qx.Class.define("unify.ui.core.Widget", {
 
     /**
      * Returns all children, which are layout relevant. This excludes all widgets,
-     * which have a {@link qx.ui.core.Widget#visibility} value of <code>exclude</code>.
+     * which have a {@link unify.ui.core.Widget#visibility} value of <code>exclude</code>.
      *
      * @internal
-     * @return {qx.ui.core.Widget[]} All layout relevant children.
+     * @return {unify.ui.core.Widget[]} All layout relevant children.
      */
     getLayoutChildren : function()
     {
@@ -1882,8 +1882,8 @@ qx.Class.define("unify.ui.core.Widget", {
       var queue = this.__renderQueue;
       var indexed = queue.indexed;
       var isVirtualAppendedElement = !!qx.lang.Array.remove(queue.append, element);
-      var isVirtualIndexedElement = false;
       if (!isVirtualAppendedElement) {
+        var isVirtualIndexedElement = false;
         for (var key in indexed) {
           var indexedArray = indexed[key];
           isVirtualIndexedElement = !!qx.lang.Array.remove(indexedArray, element);
@@ -1892,10 +1892,13 @@ qx.Class.define("unify.ui.core.Widget", {
             break;
           }
         }
+        
+        if (!isVirtualIndexedElement) {
+          // Element is in DOM, so remove it there
+          this.getContentElement().removeChild(element);
+        }
       }
-      if (!(isVirtualIndexedElement && isVirtualAppendedElement)) {
-        this.getContentElement().removeChild(element);
-      }
+
       this._getLayout().invalidateLayoutCache();
 
       // Clear parent connection
