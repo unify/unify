@@ -183,6 +183,25 @@ qx.Class.define("unify.ui.core.Widget", {
         }
       }
       return null;
+    },
+    
+    /**
+     * Check if widget contains child widget.
+     *
+     * @param parent {unify.ui.core.Widget} Parent widget
+     * @param child {unify.ui.core.Widget} Child widget
+     * @return {Boolean} If parent contains child, return true
+     */
+    contains : function(parent, child) {
+      while (child) {
+        if (parent == child) {
+          return true;
+        }
+
+        child = child.getLayoutParent();
+      }
+
+      return false;
     }
   },
 
@@ -1436,6 +1455,27 @@ qx.Class.define("unify.ui.core.Widget", {
     isExcluded : function() {
       return this.getVisibility() === "excluded";
     },
+    
+    
+    
+    /**
+     * Removes widget from parent widget and adds it to dispose queue
+     */
+    destroy : function() {
+      if (this.$$disposed) {
+        return;
+      }
+
+      var parent = this.$$parent;
+      if (parent) {
+        parent._remove(this);
+      }
+
+      qx.ui.core.queue.Dispose.add(this);
+    },
+    
+    
+    
 
     __element : null,
 
