@@ -193,8 +193,7 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
 
       var Widget = unify.ui.core.Widget;
 
-      for (var id in controls)
-      {
+      for (var id in controls) {
         var control = controls[id];
         if (!Widget.contains(this, control)) {
           control.destroy();
