@@ -30,6 +30,7 @@ qx.Class.define("unify.ui.core.Widget", {
 
     this.__renderLayoutDone = false;
 
+    this.__initializeRenderQueue();
     this.__initializeSizing();
     this.__element = this.__createElement();
   },
@@ -217,6 +218,16 @@ qx.Class.define("unify.ui.core.Widget", {
       this.__virtualPosition = {
         left: 0,
         top: 0
+      };
+    },
+    
+    /**
+     * Initializes render queue
+     */
+    __initializeRenderQueue : function() {
+      this.__renderQueue = {
+        append: [],
+        indexed: {}
       };
     },
 
@@ -742,6 +753,33 @@ qx.Class.define("unify.ui.core.Widget", {
           throw new Error("No layout in " + this);
         }
       }
+      
+      // Add children from render queue to DOM
+      var queue = this.__renderQueue;
+      var indexed = queue.indexed;
+      var append = queue.append;
+      var contentElement = this.getContentElement();
+      var childNodes = contentElement.childNodes;
+      
+      for (var key in indexed) {
+        var e = indexed[key];
+        if (e) {
+          var childNode = childNodes[key];
+          var indexedFragment = document.createDocumentFragment();
+          for (var i=0,ii=e.length; i<ii; i++) {
+            indexedFragment.appendChild(e);
+          }
+          contentElement.insertBefore(indexedFragment,childNode);
+        }
+      }
+      
+      var appendFragment = document.createDocumentFragment();
+      for (var j=0,jj=append.length; j<jj; j++) {
+        appendFragment.appendChild(append[j]);
+      }
+      contentElement.appendChild(appendFragment);
+      this.__initializeRenderQueue();
+      
       // Fire events
       if (changes.position && this.hasListener("move")) {
         this.fireEvent("move");
@@ -769,23 +807,6 @@ qx.Class.define("unify.ui.core.Widget", {
      */
     getContentElement : function() {
       return this.getElement();
-    },
-
-    /**
-     * Renders all children of this widget
-     */
-    renderChildren : function() {
-      /*var children = this._getChildren();
-      if (children) {
-        var fragment = document.createDocumentFragment();
-        for (var i=0,ii=children.length; i<ii; i++) {
-          var child = children[i];
-          child.renderChildren();
-          fragment.appendChild(child.getElement());
-        }
-
-        this.getContentElement().appendChild(fragment);
-      }*/
     },
 
     /**
@@ -1757,6 +1778,9 @@ qx.Class.define("unify.ui.core.Widget", {
 
 
 
+    __renderQueue : null,
+
+
     /*
     ---------------------------------------------------------------------------
       CHILDREN HANDLING - IMPLEMENTATION
@@ -1783,7 +1807,7 @@ qx.Class.define("unify.ui.core.Widget", {
           this.assertType(options, "object", "Invalid layout data: " + options);
         }
       }
-
+      
       // Remove from old parent
       var parent = child.getLayoutParent();
       if (parent && parent != this) {
@@ -1793,10 +1817,20 @@ qx.Class.define("unify.ui.core.Widget", {
       //qx.bom.element.Style.set(element, "visibility", "hidden");
       var contentElem=this.getContentElement();
       var childNodes=contentElem.childNodes;
+      
+      var queue = this.__renderQueue;
       if(index!=null && index >=0 && index < childNodes.length){
-        contentElem.insertBefore(element,childNodes[index]);
+        var c = queue.indexed[index];
+        if (c) {
+          c.push(element);
+        } else {
+          queue.indexed[index] = [element];
+        }
+        //qx.lang.Array.insertAt(queue.indexed, element, index);
+        //contentElem.insertBefore(element,childNodes[index]);
       } else {
-        contentElem.appendChild(element);
+        queue.append.push(element);
+        //contentElem.appendChild(element);
       }
 
       this._getLayout().invalidateLayoutCache();
@@ -1839,7 +1873,26 @@ qx.Class.define("unify.ui.core.Widget", {
       }
 
       var element = child.getElement();
-      this.getContentElement().removeChild(element);
+
+      // Check if element is in virtual DOM render queue.
+      // If so, remove it from there, otherwise it is a real DOM element that must be removed from DOM.
+      var queue = this.__renderQueue;
+      var indexed = queue.indexed;
+      var isVirtualAppendedElement = !!qx.lang.Array.remove(queue.append, element);
+      var isVirtualIndexedElement = false;
+      if (!isVirtualAppendedElement) {
+        for (var key in indexed) {
+          var indexedArray = indexed[key];
+          isVirtualIndexedElement = !!qx.lang.Array.remove(indexedArray, element);
+          
+          if (isVirtualIndexedElement) {
+            break;
+          }
+        }
+      }
+      if (!(isVirtualIndexedElement && isVirtualAppendedElement)) {
+        this.getContentElement().removeChild(element);
+      }
       this._getLayout().invalidateLayoutCache();
 
       // Clear parent connection
