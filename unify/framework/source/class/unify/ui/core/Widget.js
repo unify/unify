@@ -689,6 +689,9 @@ qx.Class.define("unify.ui.core.Widget", {
       return !!this.__renderLayoutDone;
     },
 
+/*
+#ignore(DocumentFragment)
+*/
     /**
      * Render method to apply layout on widget
      *
