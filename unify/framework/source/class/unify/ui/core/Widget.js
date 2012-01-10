@@ -787,23 +787,35 @@ qx.Class.define("unify.ui.core.Widget", {
         var e = indexed[key];
         if (e) {
           var childNode = childNodes[key];
-          var indexedFragment = document.createDocumentFragment();
-          for (var i=0,ii=e.length; i<ii; i++) {
-            indexedFragment.appendChild(e[i]);
-          }
-          if (childNode) {
-            contentElement.insertBefore(indexedFragment,childNode);
-          } else {
-            contentElement.appendChild(indexedFragment);
+          var insertCount=e.length;
+          if(insertCount>0){
+            var elementToInsert=e[0];
+            if(insertCount>1){
+              elementToInsert = document.createDocumentFragment();
+              for (var i=0; i<insertCount; i++) {
+                elementToInsert.appendChild(e[i]);
+              }
+            }
+            if (childNode) {
+              contentElement.insertBefore(elementToInsert,childNode);
+            } else {
+              contentElement.appendChild(elementToInsert);
+            }
           }
         }
       }
-      
-      var appendFragment = document.createDocumentFragment();
-      for (var j=0,jj=append.length; j<jj; j++) {
-        appendFragment.appendChild(append[j]);
+      var appendCount=append.length;
+      if(appendCount>0){
+        var elementToAppend = append[0];
+        if(appendCount>1){
+          elementToAppend = document.createDocumentFragment();
+          for (var j=0; j<appendCount; j++) {
+            elementToAppend.appendChild(append[j]);
+          }
+        }
+        contentElement.appendChild(elementToAppend);
       }
-      contentElement.appendChild(appendFragment);
+
       this.__initializeRenderQueue();
       
       // Fire events
