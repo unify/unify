@@ -558,7 +558,6 @@ qx.Class.define("unify.ui.core.Widget", {
       };
     },
 
-
     /*
     ---------------------------------------------------------------------------
       APPEARANCE SUPPORT
@@ -811,6 +810,22 @@ qx.Class.define("unify.ui.core.Widget", {
       }
 
       this.__renderLayoutDone = true;
+    },
+    
+    /**
+     * Returns inner size available for content elements
+     *
+     * @return {Map} Width and height of available inner content size
+     */
+    getContentSize : function() {
+      var size = this.getBounds();
+      var padding = this.__padding;
+      var border = this.__border;
+      
+      return {
+        width: size.width - (padding.left + padding.right) - (border.left + border.right),
+        height: size.height - (padding.top + padding.bottom) - (border.top + border.bottom)
+      };
     },
 
     /**
@@ -1515,7 +1530,7 @@ qx.Class.define("unify.ui.core.Widget", {
 
         element.$$widget = this.toHashCode();
 
-        if (!element instanceof DocumentFragment) {
+        if (!(element instanceof DocumentFragment)) {
           if(qx.core.Environment.get("qx.debug")){
             element.setAttribute("unifyclass",this.classname);
             element.setAttribute("appearance",this.getAppearance());
