@@ -114,8 +114,7 @@ qx.Class.define("unify.ui.core.Widget", {
      * user input events are blocked. Only the {@link #mouseover} and
      * {@link #mouseout} events will be dispatched.
      */
-    enabled :
-    {
+    enabled : {
       check : "Boolean",
       inheritable : true,
       apply : "_applyEnabled",
@@ -130,8 +129,7 @@ qx.Class.define("unify.ui.core.Widget", {
      *
      * Please note: The value must be between 1 and 32000.
      */
-    tabIndex :
-    {
+    tabIndex : {
       check : "Integer",
       nullable : true,
       apply : "_applyTabIndex"
@@ -145,11 +143,20 @@ qx.Class.define("unify.ui.core.Widget", {
      * <code>isChecked</code> or other stuff to test whether the widget is
      * reachable via the TAB key.
      */
-    focusable :
-    {
+    focusable : {
       check : "Boolean",
       init : false,
       apply : "_applyFocusable"
+    },
+    
+    /**
+     * ID to attach to event to support automatic ui tests
+     */
+    testId : {
+      check : "String",
+      nullable : true,
+      init : null,
+      apply : "__applyTestId"
     }
   },
 
@@ -1559,6 +1566,15 @@ qx.Class.define("unify.ui.core.Widget", {
         }
 
         return element;
+    },
+    
+    /**
+     * Applies test id to element to help autmatic ui tests
+     */
+    __applyTestId : function(value) {
+      if(qx.core.Environment.get("qx.debug")) {
+        this.getElement().setAttribute("testid", value);
+      }
     },
 
     __widgetChildren : null,
