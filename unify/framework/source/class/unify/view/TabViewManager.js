@@ -155,8 +155,8 @@ qx.Class.define("unify.view.TabViewManager", {
       var elem = new unify.ui.basic.NavigationButton(viewInstance.getTitle("tab-bar"));
       elem.set({
         appearance: "tabbar.button",
-        jump: viewInstance.getId(),
-        rel: "same",
+        goTo: viewInstance.getId(),
+        relation: "same",
         height: 44
       });
 
