@@ -689,7 +689,7 @@ qx.Class.define("unify.ui.core.Widget", {
      *
      * @return {Map[]} Returns left and top position and width and height of widget
      */
-    getPositionInfo : function() {
+    getPositionInfo : function(noCalculation) {
       var e = this.getElement();
 
       var pos = qx.bom.element.Location.get(e);
@@ -703,6 +703,14 @@ qx.Class.define("unify.ui.core.Widget", {
         padding: this.__padding,
         border: this.__border
       };
+    },
+    
+    getPadding : function() {
+      return this.__padding;
+    },
+    
+    getBorder : function() {
+      return this.__border;
     },
 
     /**

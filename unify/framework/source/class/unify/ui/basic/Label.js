@@ -127,7 +127,12 @@ qx.Class.define("unify.ui.basic.Label", {
           contentSize = this.__contentSize = this.__computeContentSize();
         }
       } else if (!this.getWrap()) {
-        contentSize.height = Math.ceil(( parseInt(this.getFont().fontSize,10)||20 ) * this.self(arguments).LINEHEIGHT);
+        var lineHeight = this.getFont().lineHeight;
+        if (!lineHeight) {
+          // Get default line height from label appearance
+          lineHeight = this.self(arguments).LINEHEIGHT;
+        }
+        contentSize.height = Math.ceil(( parseInt(this.getFont().fontSize,10)||20 ) * lineHeight);
       }
 
       return {

@@ -28,14 +28,23 @@ qx.Class.define("unify.ui.layout.Center", {
       var element = this._getLayoutChildren()[0];
       var elementSizeHint = element.getSizeHint();
       
+      marginLeft = element.getMarginLeft();
+      marginTop = element.getMarginTop();
+      var elementWidth = elementSizeHint.width + marginLeft + element.getMarginRight();
+      var elementHeight = elementSizeHint.height + marginTop + element.getMarginBottom();
+      
       var left = Math.round(availWidth / 2.0 - elementSizeHint.width / 2.0);
       var top = Math.round(availHeight / 2.0 - elementSizeHint.height / 2.0);
       
       if (left < 0) {
         left = 0;
+      } else if (left < marginLeft) {
+        left = marginLeft;
       }
       if (top < 0) {
         top = 0;
+      } else if (top < marginTop) {
+        top = marginTop;
       }
       
       var width = elementSizeHint.width;
