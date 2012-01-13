@@ -14,6 +14,7 @@
  */
 qx.Class.define("unify.view.TabbedViewManager", {
   extend : unify.view.ViewManager,
+  include : [unify.ui.core.MChildControl],
 
 
   /*
@@ -28,16 +29,23 @@ qx.Class.define("unify.view.TabbedViewManager", {
    * @param addBarConfig {Object} layout configuration map used as second parameter when adding the Bar to this widget
    * @param layout {qx.ui.layout.Abstract?null} Layout for this viewmanager
    */
-  construct : function(managerId,bar,addBarConfig,layout)
+  construct : function(managerId,layout)
   {
     this.base(arguments,managerId,layout);
-    this.__bar=bar;
     this.__tabs={};
     this.__currentTab=null;
-    this.addListener("changePath", this.__onViewManagerChangePath, this);
-    this.add(bar,addBarConfig);
+    this.addListener("changePath", this._onViewManagerChangePath, this);
   },
 
+  properties :
+  {
+    // overwritten
+    appearance : {
+      refine: true,
+      init: "tabbedviewmanager"
+    }
+  },
+  
   /*
   *****************************************************************************
      MEMBERS
@@ -46,11 +54,26 @@ qx.Class.define("unify.view.TabbedViewManager", {
 
   members :
   {
-    /** {Element} Root element which is used for the button bar */
-    __bar : null,
+    /** map of all tab widgets by viewInstance*/
     __tabs : null,
+    /** reference to the tab widget of the currently selected tab */
     __currentTab: null,
 
+    /**
+     * implementation for MChildControl
+     * 
+     * override this function if you need a different implementation for a child
+     * 
+     * @param id {String} unique id for the child
+     */
+    _createChildControlImpl: function(id){
+      var control;
+      if(id=="tabbar"){
+        control=new unify.ui.container.Bar();
+        this.add(control,{bottom:0,left:0,right:0});
+      }
+      return control || this.base(arguments,id);
+    },
 
     /**
      * Registers a new view. All views must be registered before being used.
@@ -63,24 +86,34 @@ qx.Class.define("unify.view.TabbedViewManager", {
       this.base(arguments,viewClass,isDefault);
       var viewInstance = viewClass.getInstance();
       if(!excludeFromTabs){
-        var config={
-          label:viewInstance.getTitle("tab-bar"),
-          jump:viewInstance.getId(),
-          rel:"same"
-        };
-        var item=this.__bar.addItem(config);
-        this.__tabs[viewInstance]=item;
+        this.__tabs[viewInstance]=this._addAsTab(viewInstance);
       }
     },
 
-
+    /**
+     * adds a tab for viewInstance to the tabbar childcontrol
+     * 
+     * override this function if you change the tabbar implementation by overriding _createChildControlImpl
+     * 
+     * @param viewInstance {Object} instance of a unify.ui.view.StaticView (or subclass) singleton
+     * @return {unify.ui.core.Widget} the created tab widget
+     */
+    _addAsTab: function(viewInstance){
+      var config={
+        label : viewInstance.getTitle("tab-bar"),
+        jump : viewInstance.getId(),
+        rel : "same"
+      };
+      var item=this.getChildControl("tabbar").addItem(config);
+      return item;
+    },
 
     /**
      * Reacts on path changes of the view manager and updates "selected" property accordingly.
      *
      * @param e {qx.event.type.Data} Data event
      */
-    __onViewManagerChangePath : function(e)
+    _onViewManagerChangePath : function(e)
     {
       var view = this.getCurrentView();
       if(view){
@@ -100,8 +133,8 @@ qx.Class.define("unify.view.TabbedViewManager", {
      * destructor
      */
     destruct : function(){
-      this.removeListener("changePath",this.__onViewManagerChangePath,this);
-      this.__currentTab=this.__tabs=this.__bar=null;
+      this.removeListener("changePath",this._onViewManagerChangePath,this);
+      this.__currentTab=this.__tabs=null;
     }
   }
 });
