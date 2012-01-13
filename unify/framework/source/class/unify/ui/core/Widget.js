@@ -148,7 +148,7 @@ qx.Class.define("unify.ui.core.Widget", {
       init : false,
       apply : "_applyFocusable"
     },
-    
+
     /**
      * ID to attach to event to support automatic ui tests
      */
@@ -191,7 +191,7 @@ qx.Class.define("unify.ui.core.Widget", {
       }
       return null;
     },
-    
+
     /**
      * Check if widget contains child widget.
      *
@@ -246,7 +246,7 @@ qx.Class.define("unify.ui.core.Widget", {
         top: 0
       };
     },
-    
+
     /**
      * Initializes render queue
      */
@@ -781,14 +781,14 @@ qx.Class.define("unify.ui.core.Widget", {
           throw new Error("No layout in " + this);
         }
       }
-      
+
       // Add children from render queue to DOM
       var queue = this.__renderQueue;
       var indexed = queue.indexed;
       var append = queue.append;
       var contentElement = this.getContentElement();
       var childNodes = contentElement.childNodes;
-      
+
       for (var key in indexed) {
         var e = indexed[key];
         if (e) {
@@ -823,7 +823,7 @@ qx.Class.define("unify.ui.core.Widget", {
       }
 
       this.__initializeRenderQueue();
-      
+
       // Fire events
       if (changes.position && this.hasListener("move")) {
         this.fireEvent("move");
@@ -834,7 +834,7 @@ qx.Class.define("unify.ui.core.Widget", {
 
       this.__renderLayoutDone = true;
     },
-    
+
     /**
      * Returns inner size available for content elements
      *
@@ -844,7 +844,7 @@ qx.Class.define("unify.ui.core.Widget", {
       var size = this.getBounds();
       var padding = this.__padding;
       var border = this.__border;
-      
+
       return {
         width: size.width - (padding.left + padding.right) - (border.left + border.right),
         height: size.height - (padding.top + padding.bottom) - (border.top + border.bottom)
@@ -1342,6 +1342,7 @@ qx.Class.define("unify.ui.core.Widget", {
       var fontSize = map.fontSize;
       var fontWeight = map.fontWeight;
       var fontFamily = map.fontFamily;
+      var lineHeight = map.lineHeight;
       var textColor = map.textColor;
       var color = map.color;
       var fontStyle=map.fontStyle;
@@ -1376,6 +1377,11 @@ qx.Class.define("unify.ui.core.Widget", {
       if(fontWeight){
         delete map.fontWeight;
         tmpFont.setBold(fontWeight=="bold");
+      }
+
+      if (lineHeight) {
+        delete map.lineHeight;
+        tmpFont.setLineHeight(lineHeight);
       }
 
       if (textColor) {
@@ -1493,9 +1499,9 @@ qx.Class.define("unify.ui.core.Widget", {
     isExcluded : function() {
       return this.getVisibility() === "excluded";
     },
-    
-    
-    
+
+
+
     /**
      * Removes widget from parent widget and adds it to dispose queue
      */
@@ -1511,9 +1517,9 @@ qx.Class.define("unify.ui.core.Widget", {
 
       qx.ui.core.queue.Dispose.add(this);
     },
-    
-    
-    
+
+
+
 
     __element : null,
 
@@ -1567,7 +1573,7 @@ qx.Class.define("unify.ui.core.Widget", {
 
         return element;
     },
-    
+
     /**
      * Applies test id to element to help autmatic ui tests
      */
@@ -1897,7 +1903,7 @@ qx.Class.define("unify.ui.core.Widget", {
           this.assertType(options, "object", "Invalid layout data: " + options);
         }
       }
-      
+
       // Remove from old parent
       var parent = child.getLayoutParent();
       if (parent && parent != this) {
@@ -1907,7 +1913,7 @@ qx.Class.define("unify.ui.core.Widget", {
       //qx.bom.element.Style.set(element, "visibility", "hidden");
       var contentElem=this.getContentElement();
       var childNodes=contentElem.childNodes;
-      
+
       var queue = this.__renderQueue;
       if(index!=null && index >=0 && index < childNodes.length){
         var c = queue.indexed[index];
@@ -1974,12 +1980,12 @@ qx.Class.define("unify.ui.core.Widget", {
         for (var key in indexed) {
           var indexedArray = indexed[key];
           isVirtualIndexedElement = !!qx.lang.Array.remove(indexedArray, element);
-          
+
           if (isVirtualIndexedElement) {
             break;
           }
         }
-        
+
         if (!isVirtualIndexedElement) {
           // Element is in DOM, so remove it there
           this.getContentElement().removeChild(element);
