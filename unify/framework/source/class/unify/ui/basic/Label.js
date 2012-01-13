@@ -58,7 +58,7 @@ qx.Class.define("unify.ui.basic.Label", {
     // overridden
     allowGrowX : {
       refine : true,
-      init : false
+      init : true
     },
 
 
