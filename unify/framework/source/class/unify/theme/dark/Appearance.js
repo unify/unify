@@ -79,6 +79,17 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
+    
+    "tabbedviewmanager" : {
+      include: "viewmanager"
+    },
+    
+    "bar":{},
+    
+    "tabbedviewmanager/tabbar":{
+      include:"bar"
+    },
+    
     "overlay" : {
       style : function() {
         return {

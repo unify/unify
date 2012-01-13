@@ -231,16 +231,13 @@ qx.Class.define("unify.view.Navigation",
       }
 
       var changed = e.getTarget();
-      var reset = false;
+
       var path = this.__path = new unify.view.Path;
 
       var viewManagers = this.__viewManagers;
       for (var id in viewManagers)
       {
         var manager = viewManagers[id];
-        if (reset) {
-          manager.reset();
-        }
 
         var localPath = manager.getPath();
         if (localPath != null)
@@ -248,11 +245,6 @@ qx.Class.define("unify.view.Navigation",
           for (var i=0, l=localPath.length; i<l; i++) {
             path.push(localPath[i])
           }
-        }
-
-        // Reset all managers after the changed one
-        if (manager == changed) {
-          reset = true;
         }
       }
 
