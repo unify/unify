@@ -71,8 +71,15 @@ qx.Class.define("unify.ui.basic.Label", {
     // overridden
     allowShrinkY : {
       refine : true,
+      init : true
+    },
+    
+    // overridden
+    allowShrinkY : {
+      refine : true,
       init : false
     },
+    
     // overridden
     appearance : {
       refine: true,
