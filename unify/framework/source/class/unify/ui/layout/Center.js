@@ -28,8 +28,8 @@ qx.Class.define("unify.ui.layout.Center", {
       var element = this._getLayoutChildren()[0];
       var elementSizeHint = element.getSizeHint();
       
-      marginLeft = element.getMarginLeft();
-      marginTop = element.getMarginTop();
+      var marginLeft = element.getMarginLeft();
+      var marginTop = element.getMarginTop();
       var elementWidth = elementSizeHint.width + marginLeft + element.getMarginRight();
       var elementHeight = elementSizeHint.height + marginTop + element.getMarginBottom();
       
