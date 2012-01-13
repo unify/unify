@@ -539,8 +539,10 @@ qx.Class.define("unify.view.ViewManager", {
 
     /**
      * helper function to find out if this viewmanager displays its default view
+     * 
+     * @return {Boolean} true if current view is the default view
      */
-    _isInDefaultView: function(){//is not private because it is called from an other instance of this class in _onMasterChangePath
+    isInDefaultView: function(){
       return (this.__currentView && this.__currentView.getId()===this.__defaultViewId);  
     },
     
@@ -582,7 +584,7 @@ qx.Class.define("unify.view.ViewManager", {
      */
     _onMasterChangePath: function(e){
       var master=e.getTarget();
-      if(master._isInDefaultView()){
+      if(master.isInDefaultView()){
         this.reset();//change to our default view aswell
       }
     },
