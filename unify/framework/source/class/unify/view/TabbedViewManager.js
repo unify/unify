@@ -26,8 +26,6 @@ qx.Class.define("unify.view.TabbedViewManager", {
   /**
    * @param managerId {String} globally unique ID of this manager
    * @param bar {unify.ui.container.Bar} bar element used as tabbar (gets added to the viewmanager automatically)
-   * @param addBarConfig {Object} layout configuration map used as second parameter when adding the Bar to this widget
-   * @param layout {qx.ui.layout.Abstract?null} Layout for this viewmanager
    */
   construct : function(managerId,layout)
   {
@@ -127,14 +125,14 @@ qx.Class.define("unify.view.TabbedViewManager", {
           this.__currentTab=tab;
         }
       }
-    },
-
-    /**
-     * destructor
-     */
-    destruct : function(){
-      this.removeListener("changePath",this._onViewManagerChangePath,this);
-      this.__currentTab=this.__tabs=null;
     }
+  },
+  
+  /**
+   * destructor
+   */
+  destruct : function(){
+    this.removeListener("changePath",this._onViewManagerChangePath,this);
+    this.__currentTab=this.__tabs=null;
   }
 });
