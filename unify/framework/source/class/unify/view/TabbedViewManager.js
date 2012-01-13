@@ -25,7 +25,7 @@ qx.Class.define("unify.view.TabbedViewManager", {
 
   /**
    * @param managerId {String} globally unique ID of this manager
-   * @param bar {unify.ui.container.Bar} bar element used as tabbar (gets added to the viewmanager automatically)
+   * @param layout {qx.ui.layout.Abstract?null} Layout
    */
   construct : function(managerId,layout)
   {
