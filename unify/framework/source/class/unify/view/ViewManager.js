@@ -150,7 +150,8 @@ qx.Class.define("unify.view.ViewManager", {
      */
     master : {
       check : "unify.view.ViewManager",
-      nullable : true
+      nullable : true,
+      apply: "_applyMaster"
     },
 
     /**
@@ -495,6 +496,9 @@ qx.Class.define("unify.view.ViewManager", {
     /** {String} ID of default view */
     __defaultViewId : null,
 
+    /** current view instance */
+    __currentView: null,
+    
     /**
      * Registers a new view. All views must be registered before being used.
      *
@@ -534,6 +538,15 @@ qx.Class.define("unify.view.ViewManager", {
     },
 
     /**
+     * helper function to find out if this viewmanager displays its default view
+     * 
+     * @return {Boolean} true if current view is the default view
+     */
+    isInDefaultView: function(){
+      return (this.__currentView && this.__currentView.getId()===this.__defaultViewId);  
+    },
+    
+    /**
      * called when property displayMode changes its value.
      * adds/removes state 'popover' on this widget and all its children recursively
      * @param value {String} new displayMode
@@ -546,6 +559,33 @@ qx.Class.define("unify.view.ViewManager", {
       } else if (old=="popover"){
         this.__changeChildState(this,"popover",true);
         this.removeState('popover');
+      }
+    },
+
+    /**
+     * called when property master changes its value.
+     * 
+     * @param master {ViewManager} the new master viewmanager
+     * @param old {ViewManager} the old maser viewmanager
+     */
+    _applyMaster : function(master,old){
+      if(old){
+        old.removeListener("changePath",this._onMasterChangePath,this);
+      }
+      if(master){
+        master.addListener("changePath",this._onMasterChangePath,this);
+      }
+    },
+
+    /**
+     * event listener for master path changes.
+     * 
+     * @param e {DataEvent} the changepath event
+     */
+    _onMasterChangePath: function(e){
+      var master=e.getTarget();
+      if(master.isInDefaultView()){
+        this.reset();//change to our default view aswell
       }
     },
 

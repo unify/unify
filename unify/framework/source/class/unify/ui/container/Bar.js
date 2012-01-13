@@ -39,22 +39,35 @@ qx.Class.define("unify.ui.container.Bar", {
      * Set items on bar
      *
      * @param items {Array} Items to be added to bar
+     * @return {Array} array of created widgets for each item in items
      */
     setItems : function(items) {
-      var itemElem;
+      var createdItems=[];
       
       for (var i=0, l=items.length; i<l; i++)
       {
         var itemConf=items[i];
-        itemElem = this._createItemElement(itemConf);
-        if(itemConf.position){
-          this._add(itemElem,{position:itemConf.position});
-        } else {
-          this._add(itemElem);//TODO allow this? defaults to right
-        }
-
+        createdItems.push(this.addItem(itemConf));
       }
+      return createdItems;
     },
+
+    /**
+     * adds an item to this bar
+     * @param itemConfig {Object} configuration map for the item
+     * @return the created item widget (see _createItemElement)
+     */
+    addItem : function(itemConfig){
+      var itemElem = this._createItemElement(itemConfig);
+      if(itemConfig.position){
+        this.add(itemElem,{position:itemConfig.position});
+      } else {
+        this.add(itemElem);//TODO allow this? defaults to right
+      }
+      return itemElem;
+    },
+    
+
     
     /**
      * disables all items of this Toolbar
@@ -126,10 +139,5 @@ qx.Class.define("unify.ui.container.Bar", {
     _setItemLabel : function(itemElem,text){
         itemElem.setValue(text);
     }
-  },
-  
-  destruct : function() {
-    this.__view = null;
-    this.__toolBar = null;
   }
 });
