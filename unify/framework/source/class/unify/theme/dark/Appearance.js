@@ -85,7 +85,7 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           properties : {
             relativeArrowPosition: "center"
           }
-        }
+        };
       }
     },
     "overlay/arrow" : {
@@ -401,6 +401,7 @@ qx.Theme.define("unify.theme.dark.Appearance", {
       }
     },
     "list.description" : {
+      include : "label",
       style : function() {
         return {
           font: "17px bold",
@@ -409,6 +410,7 @@ qx.Theme.define("unify.theme.dark.Appearance", {
       }
     },
     "list.value" : {
+      include : "label",
       style : function() {
         return {
           font: "17px"
@@ -425,10 +427,11 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     "label" : {
       style : function(state) {
         var e = {
-          overflow: "hidden"
+          overflow: "hidden",
+          lineHeight : 1.4
         };
 
-        if (state.ellipsis) {
+        if ((!state.wrap) && state.ellipsis) {
           e.textOverflow = "ellipsis";
           e.whiteSpace = "nowrap";
         }
@@ -452,19 +455,12 @@ qx.Theme.define("unify.theme.dark.Appearance", {
       }
     },
 
-    "input.file" : {
-      style : function() {
-        return {
-          backgroundColor: "orange"
-        };
-      }
-    },
+    "input.file" : {},
     "input.file/filename" : {
-      style : function() {
-        return {
-          backgroundColor: "green"
-        };
-      }
+      include : "button"
+    },
+    "input.file/filename/label" : {
+      include : "button/label"
     },
     "input.file/fileinput" : {
       style : function() {
