@@ -38,11 +38,21 @@ qx.Class.define("unify.ui.layout.Center", {
         top = 0;
       }
       
+      var width = elementSizeHint.width;
+      if (width > availWidth) {
+        width = availWidth;
+      }
+      
+      var height = elementSizeHint.height;
+      if (height > availHeight) {
+        height = availHeight;
+      }
+      
       element.renderLayout(
         left,
         top,
-        elementSizeHint.width,
-        elementSizeHint.height
+        width,
+        height
       );
     },
     
