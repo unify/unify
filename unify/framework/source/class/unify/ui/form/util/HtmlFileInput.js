@@ -13,7 +13,7 @@
 */
 
 /**
- * EXPERIMENTAL
+ * EXPERIMENTAL !
  * Input component
  */
 qx.Class.define("unify.ui.form.util.HtmlFileInput", {
@@ -70,8 +70,7 @@ qx.Class.define("unify.ui.form.util.HtmlFileInput", {
      * @param e {qx.event.type.Data} Input event
      */
     __onInput : function(e) {
-      var value = e.getData();
-      this.fireDataEvent("changeValue", value);
+      this.fireDataEvent("changeValue", e.getTarget().files);
     }
   }
 });

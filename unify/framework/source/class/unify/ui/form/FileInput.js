@@ -13,7 +13,7 @@
 */
 
 /**
- * EXPERIMENTAL
+ * EXPERIMENTAL !
  * Input component
  */
 qx.Class.define("unify.ui.form.FileInput", {
@@ -65,7 +65,7 @@ qx.Class.define("unify.ui.form.FileInput", {
           bottom: 0
         });
       } else if (id == "filename") {
-        control = new unify.ui.basic.Label();
+        control = new unify.ui.form.Button();
         this._addAt(control, 0, {
           left: 0,
           top: 0,
@@ -83,8 +83,7 @@ qx.Class.define("unify.ui.form.FileInput", {
      * @param value {String} Value to set on input field
      */
     setValue : function(value) {
-      this.__changed = true;
-      qx.bom.Input.setValue(this.getElement(), value);
+      this.getChildControl("filename").setValue(value);
     },
 
     /**
@@ -93,14 +92,15 @@ qx.Class.define("unify.ui.form.FileInput", {
      * @return {String} Value of input field
      */
     getValue : function() {
-      return qx.bom.Input.getValue(this.getElement());
+      return this.getChildControl("filename").getValue();
+    },
+
+    getFiles : function() {
+      return this.getElement().files;
     },
 
     __fileInputValueChanged : function(e) {
-      var path = e.getData().split("\\");
-      var filename = path.pop();
-      console.log(filename);
-      this.getChildControl("filename").setValue(filename);
+      this.fireDataEvent("changeValue", e.getData());
     }
   },
 
