@@ -73,6 +73,7 @@ qx.Class.define("unify.ui.container.NavigationBar", {
     _createTitleWidget : function() {
       var title = new unify.ui.basic.Label();
       title.setAppearance("navigationbar.title");
+      title.setAutoCalculateSize(true);
 
       return title;
     },
