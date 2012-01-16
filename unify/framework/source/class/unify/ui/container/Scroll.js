@@ -463,18 +463,38 @@ qx.Class.define("unify.ui.container.Scroll", {
     /**
      * Returns the cached content width
      *
+     * @deprecated
      * @return {Integer} cached content width
      */
     _getContentWidth : function() {
+      return this.__contentWidth;
+    },
+    
+    /**
+     * Returns the cached content width
+     *
+     * @return {Integer} cached content width
+     */
+    getContentWidth : function() {
       return this.__contentWidth;
     },
 
     /**
      * Returns the cached content height
      *
+     * @deprecated
      * @return {Integer} cached content height
      */
     _getContentHeight : function() {
+      return this.__contentHeight;
+    },
+    
+    /**
+     * Returns the cached content height
+     *
+     * @return {Integer} cached content height
+     */
+    getContentHeight : function() {
       return this.__contentHeight;
     },
 
