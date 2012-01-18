@@ -7,3 +7,9 @@
 [submodule "support/callback-ios"]
 	path = support/callback-ios
 	url = http://github.com/unify/callback-ios.git
+[submodule "support/jasy"]
+	path = support/jasy
+	url = https://github.com/wpbasti/jasy.git
+[submodule "support/core"]
+	path = support/core
+	url = https://github.com/wpbasti/core.git
