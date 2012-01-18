@@ -639,25 +639,6 @@ qx.Class.define("unify.ui.container.Scroll", {
   }
 });
 
-// Wrapper for zynga's own methods
-var core = {
-  effect : {
-    Animate : {
-      start : function(stepCallback, verifyCallback, completedCallback, duration, easingMethod, startPosition, context) {
-        return unify.fx.core.Animation.getInstance().start(stepCallback, verifyCallback, completedCallback, duration, easingMethod, startPosition, context);
-      },
-      
-      stop: function(id) {
-        return unify.fx.core.Animation.getInstance().stop(id);
-      },
-      
-      isRunning: function(id) {
-        return unify.fx.core.Animation.getInstance().isRunning(id);
-      }
-    }
-  }
-};
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // BELOW BE DRAGONS                                                                                                                         proceed with caution...  //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
