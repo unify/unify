@@ -1050,6 +1050,15 @@ qx.Class.define("unify.ui.core.Widget", {
 
 
     /**
+     * Returns all current states of widget
+     *
+     * @return {Map} States
+     */
+    getAllStates : function() {
+      return this.__states;
+    },
+
+    /**
      * Returns whether a state is set.
      *
      * @param state {String} the state to check.

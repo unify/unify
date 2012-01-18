@@ -98,13 +98,13 @@ qx.Mixin.define("unify.ui.core.MInteractionState", {
   destruct : function() {
     var root = qx.core.Init.getApplication().getRoot();
     
-    this.removeListener("touchstart", this.__MInteractionStateTouchStart, this);
-    this.removeListener("touchleave", this.__MInteractionStateTouchLeave, this);
-    this.removeListener("touchend", this.__MInteractionStateTouchLeave, this);
-    this.removeListener("touchcancel", this.__MInteractionStateTouchLeave, this);
-    this.removeListener("mouseover", this.__MInteractionStateMouseOver, this);
-    this.removeListener("mouseout", this.__MInteractionStateMouseOut, this);
-    this.removeListener("mousedown", this.__MInteractionStateAddPressed, this);
-    root.removeListener("mouseup", this.__MInteractionStateRemovePressed, this);
+    this.removeListener("touchstart", this.__MInteractionStateAddPressed, this, true);
+    this.removeListener("touchleave", this.__MInteractionStateRemovePressed, this, true);
+    this.removeListener("touchend", this.__MInteractionStateRemovePressed, this, true);
+    this.removeListener("touchcancel", this.__MInteractionStateRemovePressed, this, true);
+    this.removeListener("mouseover", this.__MInteractionStateAddHover, this, true);
+    this.removeListener("mouseout", this.__MInteractionStateRemoveHover, this, true);
+    this.removeListener("mousedown", this.__MInteractionStateAddPressed, this, true);
+    root.removeListener("mouseup", this.__MInteractionStateRemovePressed, this, true);
   }
 });

@@ -161,7 +161,7 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
       control.$$subparent = this;
 
       // Support for state forwarding
-      var states = this.__states;
+      var states = this.getAllStates();
       var forward = this._forwardStates;
 
       if (states && forward && control instanceof unify.ui.core.Widget)
