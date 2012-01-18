@@ -37,7 +37,7 @@ qx.Class.define("unify.ui.container.Overlay", {
     hasArrow : {
       check: "Boolean",
       init: true,
-      apply: "__applyHasArrow"
+      apply: "_applyHasArrow"
     },
 
     /** relative position of the arrow on its axis
@@ -115,7 +115,7 @@ qx.Class.define("unify.ui.container.Overlay", {
      * shows/hides the arrow element depending on value
      * @param value {Boolean} new hasArrow value
      */
-    __applyHasArrow : function(value) {
+    _applyHasArrow : function(value) {
       if (value) {
         this._showChildControl("arrow");
       } else {
