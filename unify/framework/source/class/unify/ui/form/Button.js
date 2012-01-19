@@ -32,6 +32,13 @@ qx.Class.define("unify.ui.form.Button", {
     focusable : {
       refine: true,
       init: true
+    },
+    
+    /** Wheter the button should calculate it's size -> property forwarded to label */
+    autoCalculateSize : {
+      check: "Boolean",
+      init: false,
+      apply: "_applyAutoCalculateSize"
     }
   },
 
@@ -94,6 +101,15 @@ qx.Class.define("unify.ui.form.Button", {
      */
     __onTap : function(e) {
       this.fireEvent("execute");
+    },
+    
+    /**
+     * Applies autoCalculateSize property to label
+     *
+     * @param value {Boolean} Label size should be automatic calculated
+     */
+    _applyAutoCalculateSize : function(value) {
+      this.getChildControl("label").setAutoCalculateSize(value);
     }
   }
 });
