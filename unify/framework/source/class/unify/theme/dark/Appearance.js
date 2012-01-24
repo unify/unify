@@ -575,6 +575,41 @@ qx.Theme.define("unify.theme.dark.Appearance", {
       }
     },
 
+    "combobox" : {
+      style : function() {
+        return {
+          height: "30px",
+          backgroundColor: "white",
+          properties : {
+            image : "about:config"
+          }
+        };
+      }
+    },
+    
+    "combobox/label" : {
+      style : function() {
+        return {
+          
+        };
+      }
+    },
+    
+    "combobox/button" : {
+      style : function() {
+        return {
+          width: "40px"
+        };
+      }
+    },
+    
+    "combobox/button/label" : {
+      style : function() {
+        return {
+        };
+      }
+    },
+
     /*
     ---------------------------------------------------------------------------
       DIALOGS

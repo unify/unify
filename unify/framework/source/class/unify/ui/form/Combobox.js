@@ -9,12 +9,11 @@
 *********************************************************************************************** */
 
 /**
- * EXPERIMENTAL
+ * Composite
  */
 
-qx.Class.define("unify.ui.form.Button", {
+qx.Class.define("unify.ui.form.Combobox", {
   extend: unify.ui.basic.Atom,
-  include : [unify.ui.core.MInteractionState],
 
   events : {
     /** Execute event when button is tapped */
@@ -25,7 +24,13 @@ qx.Class.define("unify.ui.form.Button", {
     // overridden
     appearance : {
       refine: true,
-      init: "button"
+      init: "combobox"
+    },
+    
+    /** Position of image */
+    direction : {
+      refine : true,
+      init : "right"
     },
 
     // overridden
@@ -34,21 +39,33 @@ qx.Class.define("unify.ui.form.Button", {
       init: true
     },
     
-    /** Wheter the button should calculate it's size -> property forwarded to label */
-    autoCalculateSize : {
-      check: "Boolean",
-      init: false,
-      apply: "_applyAutoCalculateSize"
+    data : {
+      init: null
     }
   },
 
   members: {
-    _createElement : function() {
+    __selected : null,
+    
+    /*_createElement : function() {
       var e = this.base(arguments);
 
       qx.event.Registration.addListener(e, "tap", this.__onTap, this);
 
       return e;
+    },*/
+    
+    __getEntryById : function(id) {
+      var data = this.getData();
+      if (data) {
+        for (var i=0, ii=data.length; i<ii; i++) {
+          if (data[i].id == id) {
+            return data[i];
+          }
+        }
+      }
+      
+      return null;
     },
 
     /**
@@ -57,7 +74,11 @@ qx.Class.define("unify.ui.form.Button", {
      * @param value {String} Text of button
      */
     setValue : function(value) {
-      this.setText(value);
+      var d = this.__getEntryById(value);
+      if (d) {
+        this.__selected = d.id;
+        this.setText(d.label);
+      }
     },
 
     /**
@@ -66,7 +87,7 @@ qx.Class.define("unify.ui.form.Button", {
      * @return {String} Text of button
      */
     getValue : function() {
-      return this.getText();
+      return this.__selected;
     },
 
     /**
@@ -76,15 +97,6 @@ qx.Class.define("unify.ui.form.Button", {
      */
     __onTap : function(e) {
       this.fireEvent("execute");
-    },
-    
-    /**
-     * Applies autoCalculateSize property to label
-     *
-     * @param value {Boolean} Label size should be automatic calculated
-     */
-    _applyAutoCalculateSize : function(value) {
-      this.getChildControl("label").setAutoCalculateSize(value);
     }
   }
 });
