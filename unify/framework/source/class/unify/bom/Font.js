@@ -4,7 +4,7 @@
 
     Homepage: unify-project.org
     License: MIT + Apache (V2)
-    Copyright: 2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+    Copyright: 2011 - 2012 Sebastian Fastner, Mainz, Germany, http://unify-training.com
 
 *********************************************************************************************** */
 
@@ -13,8 +13,10 @@
  */
 qx.Class.define("unify.bom.Font", {
   statics : {
+    /** {Integer} Base font size to calculate relative font sizes from */
     BaseFontSize : 16,
     
+    /** {Map} Font size map to map from font size names to font size numbers */
     FontSizeMap : {
       "xx-small" : 9,
       "x-small" : 10,

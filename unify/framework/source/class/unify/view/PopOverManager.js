@@ -219,7 +219,7 @@ qx.Class.define("unify.view.PopOverManager",
 
         overlay=this.__getOverlay(viewManager);
 
-        overlay.setTrigger(trigger);
+        overlay.setTrigger(trigger?trigger:null);
 
         var registeredStyle=this.__styleRegistry[viewManager];
         if(registeredStyle){

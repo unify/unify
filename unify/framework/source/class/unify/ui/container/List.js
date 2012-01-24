@@ -22,6 +22,7 @@ qx.Class.define("unify.ui.container.List", {
   },
 
   events: {
+    /** Event fired if list element is tapped */
     "change" : "qx.event.type.Data"
   },
 
@@ -92,6 +93,11 @@ qx.Class.define("unify.ui.container.List", {
       }
     },
 
+    /**
+     * Event handler to support tapping on list items
+     *
+     * @param e {qx.event.type.Event} Tap event
+     */
     __onTap : function(e) {
       this.fireDataEvent("change", e.getTarget().getUserData("id"));
     }

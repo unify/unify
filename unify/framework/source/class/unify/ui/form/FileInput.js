@@ -95,10 +95,20 @@ qx.Class.define("unify.ui.form.FileInput", {
       return this.getChildControl("filename").getValue();
     },
 
+    /**
+     * Returns array of files selected
+     *
+     * @return {Array} Array of files selected in file input
+     */
     getFiles : function() {
       return this.getElement().files;
     },
 
+    /**
+     * Input change handler
+     *
+     * @param e {qx.event.type.Event} Change event
+     */
     __fileInputValueChanged : function(e) {
       this.fireDataEvent("changeValue", e.getData());
     }
