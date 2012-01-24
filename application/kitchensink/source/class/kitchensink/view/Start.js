@@ -1,11 +1,12 @@
-/* ************************************************************************
+/* ***********************************************************************************************
 
-  kitchensink
+    Kitchen Sink
 
-  Copyright:
-    2009 Deutsche Telekom AG, Germany, http://telekom.com
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2012 Sebastian Fastner, Mainz, Germany, http://unify-training.com
 
- ************************************************************************ */
+*********************************************************************************************** */
 
 /**
  * Start View
