@@ -3,6 +3,10 @@ unify/tool/unify-sass/.sass-cache
 
 unify/application/widgets/api
 unify/application/widgets/source/script
+application/kitchensink/source/script
+application/kitchensink/api
+application/googly/source/script
+application/googly/api
 
 unify/application/flicky/log.txt
 .DS_Store
