@@ -40,6 +40,11 @@ qx.Class.define("unify.ui.core.Widget", {
      * Fired on resize of the widget.
      */
     resize : "qx.event.type.Data",
+    
+    /**
+     * Fired on resize of the widget.
+     */
+    appearance : "qx.event.type.Data",
 
     /**
      * Fired on move of the widget.
@@ -636,7 +641,7 @@ qx.Class.define("unify.ui.core.Widget", {
         this._setStyle(styleData);
       }
 
-      this.fireDataEvent("syncAppearance", this.__states);
+      this.fireDataEvent("appearance", this.__states);
     },
 
     /**
@@ -689,7 +694,7 @@ qx.Class.define("unify.ui.core.Widget", {
      *
      * @return {Map[]} Returns left and top position and width and height of widget
      */
-    getPositionInfo : function(noCalculation) {
+    getPositionInfo : function() {
       var e = this.getElement();
 
       var pos = qx.bom.element.Location.get(e);
@@ -705,10 +710,20 @@ qx.Class.define("unify.ui.core.Widget", {
       };
     },
     
+    /**
+     * Returns padding information of widget
+     *
+     * @return {Map} Padding information
+     */
     getPadding : function() {
       return this.__padding;
     },
     
+    /**
+     * Returns border information of widget
+     *
+     * @return {Map} Border information
+     */
     getBorder : function() {
       return this.__border;
     },

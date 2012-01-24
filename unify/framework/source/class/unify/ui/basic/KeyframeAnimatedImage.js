@@ -16,6 +16,7 @@ qx.Class.define("unify.ui.basic.KeyframeAnimatedImage", {
   extend: unify.ui.basic.Image,
 
   properties:{
+    /** Duration of rotation */
     animateRotateDuration:{
       init:1500,
       check:"Integer"

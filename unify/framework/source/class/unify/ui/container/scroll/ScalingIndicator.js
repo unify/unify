@@ -52,6 +52,7 @@ qx.Class.define("unify.ui.container.scroll.ScalingIndicator", {
       apply : "_applyVisible"
     },
 
+    /** Parent scroller indicator belongs to */
     scroll:{
       check:"unify.ui.container.Scroll",
       init: null,
@@ -61,6 +62,7 @@ qx.Class.define("unify.ui.container.scroll.ScalingIndicator", {
 
   /**
    * @param orientation {String?null} Orientation of indicator
+   * @param scroll {unify.ui.container.Scroll} Scroller indicator is assigned to
    */
   construct : function(orientation,scroll) {
     this.base(arguments);
@@ -184,7 +186,7 @@ qx.Class.define("unify.ui.container.scroll.ScalingIndicator", {
     },
 
     //overridden
-    renderLayout : function(left, top, width, height) {
+    renderLayout : function(left, top, width, height, preventSize) {
       //don't let the layout mess with our height/width calculations, this is taken care of in initRenderingCache
       return this.base(arguments,left,top,width,height,true);
     },

@@ -121,12 +121,17 @@ qx.Class.define("unify.ui.form.Slider", {
     __value : null,
     
     /**
-     * 
+     * Resize handler
      */
     __onResize : function() {
       this._recalculateKnobPosition();
     },
     
+    /**
+     * Returns avail slider width
+     *
+     * @return {Integer} Avail width of slider
+     */
     __getAvailSliderWidth : function() {
       var knob = this.getChildControl("knob");
       var knobPosInfo = knob.getPositionInfo();
@@ -136,6 +141,11 @@ qx.Class.define("unify.ui.form.Slider", {
       return posInfo.width - posInfo.padding.left - posInfo.padding.right - posInfo.border.left - posInfo.border.right - Math.round(knobPosInfo.width / 2);
     },
     
+    /**
+     * Returns avail slider height
+     *
+     * @return {Integer} Avail height of slider
+     */
     __getAvailSliderHeight : function() {
       var knob = this.getChildControl("knob");
       var knobPosInfo = knob.getPositionInfo();

@@ -70,6 +70,11 @@ qx.Class.define("unify.ui.container.NavigationBar", {
     __parentButton : null,
     __masterButton : null,
 
+    /**
+     * Creates title widget
+     *
+     * @return {unify.ui.core.Widget} Title widget
+     */
     _createTitleWidget : function() {
       var title = new unify.ui.basic.Label();
       title.setAppearance("navigationbar.title");

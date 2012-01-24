@@ -19,6 +19,13 @@ qx.Class.define("unify.fx.Position", {
     __anim : null,
     __resetPoint: null,
     
+    /**
+     * Calculates position information to real numbers
+     *
+     * @param left {Integer|String} Left position as number or string
+     * @param top {Integer|String} Top position as number or string
+     * @return {Map} left and top as numbers
+     */
     __getPosition : function(left, top) {
       if (typeof(left) == "number" && typeof(top) == "number") {
         return {

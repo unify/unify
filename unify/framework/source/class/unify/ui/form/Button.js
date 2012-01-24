@@ -42,6 +42,9 @@ qx.Class.define("unify.ui.form.Button", {
     }
   },
 
+  /**
+   * @param text {String?null} Text of button
+   */
   construct : function(text) {
     var layout = this.__layout = new unify.ui.layout.Center();
     this.base(arguments, layout)
@@ -86,10 +89,20 @@ qx.Class.define("unify.ui.form.Button", {
       this.base(arguments, value);
     },
 
+    /**
+     * Set button text
+     *
+     * @param value {String} Text of button
+     */
     setValue : function(value) {
       this.getChildControl("label").setValue(value);
     },
 
+    /**
+     * Returns text of button
+     *
+     * @return {String} Text of button
+     */
     getValue : function() {
       return this.getChildControl("label").getValue();
     },

@@ -4,7 +4,7 @@
 
  Homepage: unify-project.org
  License: MIT + Apache (V2)
- Copyright: 2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+ Copyright: 2011 - 2012 Sebastian Fastner, Mainz, Germany, http://unify-training.com
 
  *********************************************************************************************** */
 
@@ -14,8 +14,13 @@
 qx.Mixin.define("unify.fx.MWidgetAnimation", {
   
   events : {
+    /** Fired after position animation is done */
     animatePositionDone : "qx.event.type.Event",
+    
+    /** Fired after opacity animation is done */
     animateOpacityDone : "qx.event.type.Event",
+    
+    /** Fired after rotation animation is done */
     animateRotateDone : "qx.event.type.Event"
   },
   
@@ -75,6 +80,15 @@ qx.Mixin.define("unify.fx.MWidgetAnimation", {
     __mwAnimationRotateReset : null,
     __mwScale : null,
     
+    /**
+     * Apply animation
+     *
+     * @param value {any} Value to set
+     * @param animationName {String} Name of animation
+     * @param Animation {unify.fx.core.Base} Animation object
+     * @param doneEvent {String} Event to fire after animation is done
+     * @param duration {Float} Duration of animation
+     */
     __mwaDoAnimation : function(value, animationName, Animation, doneEvent, duration) {
       if (value != null) {
         var animation = this.__mwAnimationMap[animationName];

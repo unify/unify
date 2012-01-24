@@ -131,7 +131,9 @@ qx.Class.define("unify.view.ViewManager", {
       init: "viewmanager"
     },
     
-    /* switch to disable view transition animations */
+    /**
+     * switch to disable view transition animations
+     */
     animateTransitions: {
       check:"Boolean",
       init: true
@@ -776,6 +778,7 @@ qx.Class.define("unify.view.ViewManager", {
     },
 
     /**
+     * Animate modal view
      *
      * @param view {unify.view.StaticView} View to animate
      * @param show {Boolean} true for show, false for hide

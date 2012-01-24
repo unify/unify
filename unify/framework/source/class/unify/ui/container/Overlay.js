@@ -74,12 +74,23 @@ qx.Class.define("unify.ui.container.Overlay", {
   construct : function(noArrow) {
     this.base(arguments, new unify.ui.layout.special.OverlayLayout());
     
+    this.addListener("appearance", this.__syncAppearance, this);
+    
     this._showChildControl("container");
-    this.setHasArrow(!noArrow);//applyHasArrow creates the arrow if required
+    //this.setHasArrow(!noArrow);//applyHasArrow creates the arrow if required
   },
   
   members : {
-
+    
+    /**
+     * Appearance queue hit widget, so check if arrow is needed
+     */
+    __syncAppearance : function() {
+      if (this.getHasArrow()) {
+        this._showChildControl("arrow");
+      }
+    },
+    
     /**
      * Gets inner content container
      *
@@ -155,7 +166,7 @@ qx.Class.define("unify.ui.container.Overlay", {
         left = triggerPoint.left;
         top=triggerPoint.top;
       }
-      var arrow=this.getChildControl("arrow");
+      var arrow=this.getChildControl("arrow", true);
       if(arrow){
         var thisSize=this.getSizeHint();
         var arrowPosition=this.calculateArrowPosition(thisSize.height,thisSize.width);
@@ -277,6 +288,7 @@ qx.Class.define("unify.ui.container.Overlay", {
      */
     show : function() {
       this.base(arguments);
+      
       var posHint = this.__getPositionHint();
       this.getLayoutParent().add(this, posHint);
       this.fireEvent("shown");
@@ -291,6 +303,7 @@ qx.Class.define("unify.ui.container.Overlay", {
      */
     hide : function() {
       this.base(arguments);
+      
       this.fireEvent("hidden");
       var trigger=this.getTrigger();
       if(trigger){
