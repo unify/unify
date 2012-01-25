@@ -10,6 +10,7 @@
 
 /**
  * EXPERIMENTAL
+ * @deprecated
  */
 qx.Class.define("unify.ui.dialog.Confirm", {
   extend: unify.ui.dialog.Alert,

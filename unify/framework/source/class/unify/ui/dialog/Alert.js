@@ -10,6 +10,7 @@
 
 /**
  * EXPERIMENTAL
+ * @deprecated
  */
 qx.Class.define("unify.ui.dialog.Alert", {
   extend: unify.ui.container.Composite,
