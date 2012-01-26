@@ -664,7 +664,20 @@ qx.Theme.define("unify.theme.dark.Appearance", {
       }
     },
     
-    "combobox/overlay/container" : "overlay/container",
+    "combobox/overlay/container" : {
+      include: "overlay/container",
+      
+      style : function() {
+        return {
+          borderLeft: "0",
+          borderRight: "0",
+          borderTop: "0",
+          borderBottom: "0",
+          backgroundColor: "white",
+          borderRadius: 0
+        };
+      }
+    },
 
     /*
     ---------------------------------------------------------------------------
