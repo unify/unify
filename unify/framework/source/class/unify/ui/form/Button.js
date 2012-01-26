@@ -13,8 +13,8 @@
  */
 
 qx.Class.define("unify.ui.form.Button", {
-  extend: unify.ui.container.Composite,
-  include : [unify.ui.core.MInteractionState, unify.ui.core.MChildControl],
+  extend: unify.ui.basic.Atom,
+  include : [unify.ui.core.MInteractionState],
 
   events : {
     /** Execute event when button is tapped */
@@ -42,23 +42,6 @@ qx.Class.define("unify.ui.form.Button", {
     }
   },
 
-  /**
-   * @param text {String?null} Text of button
-   */
-  construct : function(text) {
-    var layout = this.__layout = new unify.ui.layout.Center();
-    this.base(arguments, layout)
-
-    this._forwardStates = {
-      "hover" : true,
-      "pressed" : true
-    }
-
-    if (text) {
-      this.setValue(text);
-    }
-  },
-
   members: {
     _createElement : function() {
       var e = this.base(arguments);
@@ -69,33 +52,12 @@ qx.Class.define("unify.ui.form.Button", {
     },
 
     /**
-     * Returns child control widget identified by id
-     *
-     * @param id {String} ID of child widget
-     * @return {unify.ui.core.Widget} Content widget
-     */
-    _createChildControlImpl : function(id) {
-      var control;
-
-      if (id == "label") {
-        control = new unify.ui.basic.Label();
-        this._add(control);
-      }
-
-      return control || this.base(arguments, id);
-    },
-
-    _applyAppearance : function(value) {
-      this.base(arguments, value);
-    },
-
-    /**
      * Set button text
      *
      * @param value {String} Text of button
      */
     setValue : function(value) {
-      this.getChildControl("label").setValue(value);
+      this.setText(value);
     },
 
     /**
@@ -104,7 +66,7 @@ qx.Class.define("unify.ui.form.Button", {
      * @return {String} Text of button
      */
     getValue : function() {
-      return this.getChildControl("label").getValue();
+      return this.getText();
     },
 
     /**

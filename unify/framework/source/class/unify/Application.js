@@ -61,6 +61,11 @@ qx.Class.define("unify.Application",
         this.info("Build Time: " + new Date(qx.$$build));
       }
 
+      var theme = this._getTheme();
+      if (theme) {
+        qx.theme.manager.Meta.getInstance().setTheme(theme);
+      }
+
       var rootElement = this._getRootElement();
       var rootLayout = this._getRootLayout();
       qx.bom.Event.addNativeListener(rootElement, "click", this.__onClick);
@@ -79,24 +84,7 @@ qx.Class.define("unify.Application",
 
       // Configure document
       var Style = qx.bom.element.Style;
-      var rootStyle = {
-        userSelect : "none",
-        position : "absolute",
-        left: 0,
-        top: 0,
-        right: 0,
-        bottom: 0,
-        overflow : "hidden",
-        border : 0,
-        padding : 0,
-        margin : 0,
-        boxSizing : "borderBox",
-        fontFamily : "Helvetica,sans-serif",
-        fontSize: "14px",
-        lineHeight : "1.4",
-        color : "black",
-        background : "white"
-      };
+      var rootStyle = qx.theme.manager.Appearance.getInstance().styleFrom("BODY");
       // <body>
       if (qx.core.Environment.get("os.name") == "ios") {
         rootStyle.touchCallout = "none";
@@ -147,6 +135,12 @@ qx.Class.define("unify.Application",
      */
     _getRootElement : function() {
       return document.body;
+    },
+    
+    _getTheme : function() {
+      if (qx.core.Environment.get("qx.debug")) {
+        throw new Error(this.toString() + " needs implementation for _getTheme()!");
+      }
     },
     
     /**

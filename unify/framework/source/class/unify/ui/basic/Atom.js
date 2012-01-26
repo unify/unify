@@ -13,6 +13,7 @@
  */
 qx.Class.define("unify.ui.basic.Atom", {
   extend: unify.ui.core.Widget,
+  include : [unify.ui.core.MChildControl],
   
   /**
    * @param label {String} Label on atom
@@ -21,19 +22,19 @@ qx.Class.define("unify.ui.basic.Atom", {
   construct : function(label, image) {
     this.base(arguments);
     this._setLayout(new unify.ui.layout.special.AtomLayout());
-    
-    var imageWidget = this.__imageWidget = new unify.ui.basic.Image(image);
-    var labelWidget = this.__labelWidget = new unify.ui.basic.Label(label);
-    
-    this._add(imageWidget);
-    this._add(labelWidget);
+    if (label) {
+      this.setText(label);
+    }
+    if (image) {
+      this.setImage(image);
+    }
   },
   
   properties : {
     /** Position of image */
     direction : {
-      type : "String",
-      value : "top"
+      check : "String",
+      init : "top"
     },
     
     // overridden
@@ -41,6 +42,16 @@ qx.Class.define("unify.ui.basic.Atom", {
     {
       refine: true,
       init: "atom"
+    },
+    
+    text : {
+      init: null,
+      apply: "_applyText"
+    },
+    
+    image : {
+      init: null,
+      apply: "_applyImage"
     }
   },
   
@@ -48,13 +59,38 @@ qx.Class.define("unify.ui.basic.Atom", {
     __imageWidget : null,
     __labelWidget : null,
     
+    _createElement : function() {
+      return document.createElement("div");
+    },
+    
+    /**
+     * Returns child control widget identified by id
+     *
+     * @param id {String} ID of child widget
+     * @return {unify.ui.core.Widget} Content widget
+     */
+    _createChildControlImpl : function(id) {
+      var control;
+
+      if (id == "label") {
+        control = new unify.ui.basic.Label();
+        this._add(control, {type: "label"});
+      } else if (id == "image") {
+        control = new unify.ui.basic.Image();
+        this._add(control, {type: "image"});
+      }
+
+      return control || this.base(arguments, id);
+    },
+    
     /**
      * Set source of image
      *
      * @param value {String} URL of image
      */
-    setSource : function(value) {
-      this.__imageWidget.setSource(value);
+    _applyImage : function(value) {
+      var image = this._showChildControl("image");
+      image.setSource(value);
     },
     
     /**
@@ -62,8 +98,9 @@ qx.Class.define("unify.ui.basic.Atom", {
      *
      * @param value {String} Label text
      */
-    setText : function(value) {
-      this.__labelWidget.setValue(value);
+    _applyText : function(value) {
+      var label = this._showChildControl("label");
+      label.setValue(value);
     }
   }
 });

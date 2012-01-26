@@ -11,6 +11,7 @@
 /*
 #asset(unify/iphoneos/navigation-bar/black/navigationbar.png)
 #asset(unify/iphoneos/loader.png)
+#asset(unify/noun/down.png)
 */
 
 /**
@@ -23,6 +24,29 @@ qx.Theme.define("unify.theme.dark.Appearance", {
       CORE
     ---------------------------------------------------------------------------
     */
+    
+    "BODY" : {
+      style : function() {
+        return {
+          userSelect : "none",
+          position : "absolute",
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          overflow : "hidden",
+          border : 0,
+          padding : 0,
+          margin : 0,
+          boxSizing : "borderBox",
+          fontFamily : "Helvetica,sans-serif",
+          fontSize: "14px",
+          lineHeight : "1.4",
+          color : "black",
+          background : "white"
+        };
+      }
+    },
 
     "widget" : {},
 
@@ -438,8 +462,7 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     "label" : {
       style : function(state) {
         var e = {
-          overflow: "hidden",
-          lineHeight : 1.4
+          overflow: "hidden"
         };
 
         if ((!state.wrap) && state.ellipsis) {
@@ -574,6 +597,74 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
+
+    "combobox" : {
+      style : function() {
+        return {
+          height: "30px",
+          backgroundColor: "white",
+          properties : {
+            image : qx.util.ResourceManager.getInstance().toUri("unify/noun/down.png")
+          }
+        };
+      }
+    },
+    
+    "combobox/image" : {
+      style : function() {
+        var ResourceManager = qx.util.ResourceManager.getInstance();
+        return {
+          width: ResourceManager.getImageWidth("unify/noun/down.png"),
+          height: ResourceManager.getImageHeight("unify/noun/down.png"),
+          margin: "5",
+          properties : {
+            allowGrowX: false,
+            allowGrowY: false
+          }
+        };
+      }
+    },
+    
+    "combobox/label" : {
+      style : function() {
+        return {
+          lineHeight: 1.0,
+          marginLeft: "5px",
+          properties : {
+            allowGrowY: false
+          }
+        };
+      }
+    },
+    
+    "combobox/button" : {
+      style : function() {
+        return {
+          width: "40px"
+        };
+      }
+    },
+    
+    "combobox/button/label" : {
+      style : function() {
+        return {
+        };
+      }
+    },
+    
+    "combobox/overlay" : {
+      include : "overlay",
+      
+      style : function() {
+        return {
+          properties : {
+            hasArrow: false
+          }
+        };
+      }
+    },
+    
+    "combobox/overlay/container" : "overlay/container",
 
     /*
     ---------------------------------------------------------------------------

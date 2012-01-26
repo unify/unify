@@ -5,6 +5,7 @@
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2009-2011 Deutsche Telekom AG, Germany, http://telekom.com
+               2012 Sebastian Fastner, Mainz, Germany, http://unify-training.com
 
 *********************************************************************************************** */
 
@@ -125,7 +126,7 @@ qx.Class.define("unify.view.PopOverManager",
       for (var i=0; i<numVisible; i++) {
         var viewManager=visible[i];
         var elem=viewManager;
-        if(viewManager.getDisplayMode()=='popover'){
+        if(viewManager.getDisplayMode && viewManager.getDisplayMode()=='popover'){
           elem=this.__overlays[viewManager];//adjust overlay for popovers
         }
         elem.setStyle({zIndex: zIndexBase + 2*i});//leave a gap of 1 between layers so the blocker fits between 2 visible popovers
@@ -135,7 +136,7 @@ qx.Class.define("unify.view.PopOverManager",
         var mSet=false;
         var pSet=false;
         for(var i=numVisible-1;i>=0;i--){
-          var mode=visible[i].getDisplayMode();
+          var mode=visible[i].getDisplayMode && visible[i].getDisplayMode() || "popover";
 
           if(!mSet && mode == 'modal'){
             mblocker.style.zIndex = (zIndexBase-1)+2*i;
@@ -174,7 +175,14 @@ qx.Class.define("unify.view.PopOverManager",
       if(numVisible>0){
         var topMost=this.__visibleViewManagers[numVisible-1];
 
-        this.hide(topMost.getId());
+        if (!topMost.getId) {
+          if (!topMost.getBlockerClose()) {
+            return;
+          }
+        } else {
+          topMost = topMost.getId();
+        }
+        this.hide(topMost.getId && topMost.getId() || topMost);
       } else {
         this.error("tapped on blocker without visible viewmanager");
         //sort popovers again to make sure the blocker is gone
@@ -185,13 +193,40 @@ qx.Class.define("unify.view.PopOverManager",
     /**
      * Shows the view manager with the given ID.
      *
+     * @param target {String|unify.ui.container.Overlay} ID of view manager as string or overlay widget
+     * @param trigger {unify.ui.Widget?null} Widget that triggers the opening of the popover
+     */
+    show : function(target, trigger) {
+      if (typeof(target) == "string") {
+        this._showView(target, trigger);
+      } else {
+        this._showWidget(target, trigger);
+      }
+    },
+
+    _showWidget : function(widget, trigger) {
+      if (qx.core.Environment.get("qx.debug")) {
+        this.debug("Show: " + widget);
+      }
+      
+      if (trigger) {
+        widget.setTrigger(trigger);
+      }
+
+      this.__root.add(widget);
+      this.__visibleViewManagers.push(widget);
+      this.__sortPopOvers();
+      this.fireDataEvent("show", widget);
+      widget.show();
+    },
+
+    /**
+     * Shows the view manager with the given ID.
+     *
      * @param id {String} ID of view manager
      * @param trigger {unify.ui.Widget?null} Widget that triggers the opening of the popover
-
      */
-    show : function(id, trigger)
-    {
-
+    _showView : function(id, trigger) {
       var viewManager = unify.view.ViewManager.get(id);
       var displayMode=viewManager.getDisplayMode();
       if (!viewManager.isInitialized()) {
@@ -249,11 +284,38 @@ qx.Class.define("unify.view.PopOverManager",
     /**
      * Hides the view manager with the given ID.
      *
+     * @param target {String|unify.ui.container.Overlay} ID of view manager as string or overlay widget
+     * @param skipAnimation {Boolean?false} True if the animation should be skipped
+     */
+    hide : function(target, skipAnimation) {
+      if (typeof(target) == "string") {
+        this._hideView(target, skipAnimation);
+      } else {
+        this._hideWidget(target);
+      }
+    },
+    
+    _hideWidget : function(target) {
+      var self = this;
+      
+      var hideCallback=function(){
+        qx.lang.Array.remove(self.__visibleViewManagers, target);
+        self.__sortPopOvers();
+        
+        self.fireDataEvent("hide", target);
+      };
+
+      target.addListenerOnce("hidden",hideCallback,this);
+      target.hide();
+    },
+    
+    /**
+     * Hides the view manager with the given ID.
+     *
      * @param id {String} ID of view manager
      * @param skipAnimation {Boolean} True if the animation should be skipped
      */
-    hide : function(id,skipAnimation)
-    {
+    _hideView : function(id,skipAnimation) {
       var viewManager=unify.view.ViewManager.get(id);
 
       if (qx.core.Environment.get("qx.debug"))

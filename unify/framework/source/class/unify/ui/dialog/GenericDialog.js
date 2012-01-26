@@ -14,7 +14,6 @@
 qx.Class.define("unify.ui.dialog.GenericDialog", {
   extend : unify.ui.container.Composite,
   include: [
-            qx.locale.MTranslation,
             unify.ui.core.MChildControl,
             unify.ui.core.MRemoteChildrenHandling
            ],
@@ -101,7 +100,7 @@ qx.Class.define("unify.ui.dialog.GenericDialog", {
       
       if (id == "X") {
         // close button (right upper corner)
-        control = new unify.ui.form.Button(this.tr("Close"));
+        control = new unify.ui.form.Button("Close");
         this._add(control);
       } else if (id == "title") {
         control = new unify.ui.basic.Label();
@@ -142,7 +141,7 @@ qx.Class.define("unify.ui.dialog.GenericDialog", {
     __createUI : function(title, buttons) {
       var X = this._showChildControl("X");
       X.addListener("execute", this.__onButtonExecute, this);
-      X.setUserData("id", this.self(arguments).BTN_CLOSE);
+      X.setUserData("id", unify.ui.dialog.GenericDialog.BTN_CLOSE);
       
       this._showChildControl("title").setValue(title);
       this._showChildControl("content");
@@ -180,17 +179,17 @@ qx.Class.define("unify.ui.dialog.GenericDialog", {
       if (!buttons || (buttons.length <= 0)) {
         // No buttons are specified. Create a default Button
         
-        var okBtn = this.__okBtn = new unify.ui.form.Button(this.tr("OK"));
+        var okBtn = this.__okBtn = new unify.ui.form.Button("OK");
         okBtn.setAppearance("dialog.button");
         okBtn.set({
           allowGrowX: true,
           allowGrowY: false,
           alignY: "middle"
         });
-        
-        qx.bom.Element.addListener(okBtn.getElement(), "click", function() {
-          this.fireDataEvent('execute', this.self(arguments).BTN_OK);
-        }, this, false);
+       
+        okBtn.addListener("execute", function() {
+          this.fireDataEvent("execute", unify.ui.dialog.GenericDialog.BTN_OK);
+        }, this);
         
         centerButtonContainer.add(okBtn);
       
