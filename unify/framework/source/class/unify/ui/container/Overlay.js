@@ -300,6 +300,7 @@ qx.Class.define("unify.ui.container.Overlay", {
       var trigger=this.getTrigger();
       if(trigger){
         trigger.addListener("move",this.__onTriggerMove,this);
+        trigger.addListener("resize",this.__onTriggerMove,this);
       }
     },
     
@@ -313,6 +314,7 @@ qx.Class.define("unify.ui.container.Overlay", {
       var trigger=this.getTrigger();
       if(trigger){
         trigger.removeListener("move",this.__onTriggerMove,this);
+        trigger.removeListener("resize",this.__onTriggerMove,this);
       }
     },
 
