@@ -17,7 +17,8 @@ qx.Class.define("unify.ui.basic.Label", {
   extend : unify.ui.core.Widget,
 
   statics : {
-    LINEHEIGHT : null
+    LINEHEIGHT : null,
+    DEFAULTFONTSIZE : null
   },
 
   /**
@@ -27,9 +28,13 @@ qx.Class.define("unify.ui.basic.Label", {
   construct : function(text) {
     this.base(arguments);
 
-    var statics = this.self(arguments);
-    if (!statics.LINEHEIGHT) {
-      statics.LINEHEIGHT = qx.theme.manager.Appearance.getInstance().styleFrom("label", {}, null, "label").lineHeight || 1.4;
+    var Static = this.self(arguments);
+    var Style = qx.theme.manager.Appearance.getInstance().styleFrom("BODY");
+    if (!Static.LINEHEIGHT) {
+      Static.LINEHEIGHT = parseFloat(Style.lineHeight) || 1.4;
+    }
+    if (!Static.DEFAULTFONTSIZE) {
+      Static.DEFAULTFONTSIZE = parseInt(Style.fontSize, 10) || 14;
     }
 
     if (text) {
@@ -132,7 +137,13 @@ qx.Class.define("unify.ui.basic.Label", {
           // Get default line height from label appearance
           lineHeight = this.self(arguments).LINEHEIGHT;
         }
-        contentSize.height = Math.ceil(( parseInt(this.getFont().fontSize,10)||20 ) * lineHeight);
+        var fontSize = this.getFont().fontSize;
+        if (!fontSize) {
+          fontSize = this.self(arguments).DEFAULTFONTSIZE;
+        } else {
+          fontSize = parseInt(fontSize, 10);
+        }
+        contentSize.height = Math.ceil(fontSize  * lineHeight);
       }
 
       return {
