@@ -126,20 +126,20 @@ qx.Class.define("unify.ui.form.Combobox", {
      */
     __onTap : function(e) {
       var overlay = this.getChildControl("overlay");
-      overlay.setWidth(this.getWidth()-20);
-      overlay.setAllowGrowX(false);
+      var container = overlay.getChildControl("container");
+      container.setWidth(this.getWidth());
+      container.setAllowGrowX(false);
       
       overlay.removeAll();
       var container = new unify.ui.container.Composite(new unify.ui.layout.VBox());
-      //container.setWidth(this.getWidth());
       var data = this.getData();
       for (var i=0,ii=data.length; i<ii; i++) {
         var b = new unify.ui.form.Button(data[i].label);
         b.setUserData("id", data[i].id);
         b.addListener("execute", this.__onButtonExecute, this);
-        container.add(b);
+        container.add(b, {flex: 1});
       }
-      overlay.add(container);
+      overlay.add(container, {edge: 0});
       
       unify.view.PopOverManager.getInstance().show(overlay, this)
     },
