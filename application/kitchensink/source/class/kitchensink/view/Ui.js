@@ -24,8 +24,7 @@ qx.Class.define("kitchensink.view.Ui", {
 
     
     // overridden
-    _createView : function() 
-    {
+    _createView : function() {
       var container = new unify.ui.container.Scroll(new unify.ui.layout.VBox());
       this.add(container, {flex: 1});
       
@@ -54,6 +53,26 @@ qx.Class.define("kitchensink.view.Ui", {
         this.debug("COMBO BOX " + e.getData());
       }, this);
       container.add(combobox);
+      
+      var dialogButton = new unify.ui.form.Button("Open Dialog");
+      dialogButton.addListener("execute", this.__openDialog, this);
+      container.add(dialogButton);
+    },
+    
+    __dialog : null,
+    
+    __openDialog : function() {
+      var dialog = this.__dialog = new unify.ui.dialog.GenericDialog("Das ist der Titel", []);
+      dialog.addListener("execute", this.__onDialogExecute, this);
+      var overlay = dialog.getOverlay();
+      
+      unify.view.PopOverManager.getInstance().show(overlay);
+    },
+    
+    __onDialogExecute : function(e) {
+      this.debug("Dialog action : " + e.getData());
+      
+      unify.view.PopOverManager.getInstance().hide(this.__dialog.getOverlay());
     }
   }
 });

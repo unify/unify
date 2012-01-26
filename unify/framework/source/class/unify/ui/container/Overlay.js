@@ -68,6 +68,11 @@ qx.Class.define("unify.ui.container.Overlay", {
     blockerClose : {
       check: "Boolean",
       init: true
+    },
+    
+    staticPosition : {
+      init: null,
+      nullable: true
     }
 
   },
@@ -161,8 +166,20 @@ qx.Class.define("unify.ui.container.Overlay", {
      */
     __getPositionHint : function() {
       qx.ui.core.queue.Manager.flush();//make sure appearance is applied
+      
       var left = 0;
       var top = 0;
+      var isString = false;
+      
+      var staticPosition = this.getStaticPosition();
+      if (staticPosition) {
+        left = staticPosition.left;
+        top = staticPosition.top;
+        if (typeof(left) == "string" || typeof(top) == "string") {
+          isString = true;
+        }
+      }
+      
       var trigger=this.getTrigger();
       var relativeTriggerPosition=this.getRelativeTriggerPosition();
 
@@ -172,7 +189,7 @@ qx.Class.define("unify.ui.container.Overlay", {
         top=triggerPoint.top;
       }
       var arrow=this.getChildControl("arrow", true);
-      if(arrow){
+      if(arrow && !isString){
         var thisSize=this.getSizeHint();
         var arrowPosition=this.calculateArrowPosition(thisSize.height,thisSize.width);
 

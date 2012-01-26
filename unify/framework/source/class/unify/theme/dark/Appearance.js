@@ -703,6 +703,101 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           marginBottom: "5px"
         };
       }
+    },
+    
+    "dialog" : {
+      style : function() {
+        return {
+          borderRadius: "3px",
+          whiteSpace: "normal",
+          backgroundColor: "white",
+          width: "500px",
+          height: "400px"
+        };
+      }
+    },
+    "dialog.overlay" : {
+      style : function() {
+        return {
+          backgroundColor: "white",
+          
+          marginTop : -250,
+          marginLeft : -200,
+          
+          properties : {
+            hasArrow: false,
+            staticPosition : {
+              left: "50%",
+              top: "50%"
+            }
+          }
+        };
+      }
+    },
+    "dialog.overlay/container" : {},
+    "dialog/X" : {
+      style : function(states) {
+        return {
+          height: "24px",
+          width: "24px",
+          margin: "3px 3px 0px 0px",
+          cursor: "pointer",
+          backgroundImage: "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAACmAAAApgBNtNH3wAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAIcSURBVEiJ7ZTPbhJRFMbPucM4I+nCPwQ6DFSkRJ7AhenKJ9DUdKBQZhgWXfgSk/sQJsYNaUkbS40v4WsUhmkLU0RqhcbCjHOvG5u4cCba2MSYfslZndzfl++eey5yzuE6Ra6VfmPw7xvUarWiaeqrYX3T1FcNo/woioFhz7Rer6/cT97bW1iIJ4fusK0sZnTLshgAAKWUuCfH2+m0ok0mk9H407jcbLY+/IoTC3OezWansnTrbvx2XMw9zFUcxyGU0g0AgMGwv7NcyGsECfF9/858fjH64wQAAJsvN7fyuQc1SZKQMca73e5bACCFwvKaIMSI53n8oNNpvX71xghjhCYAAFBTqtlzDklhOV+VZRmLxWKZIOFCTCDz+Zx3bXtHSapmFCNyyJZlMSWZNuyevRsEjEuShJIsEcYYP+h0d1MJxbicy5USXIpzLkynUzg/nwIiAuccGAt+62xkAkopcT/2t9W0WorFBEQkHBGZKIqYzWS0k9GgRSmNZIQ2ERH7w34zm8lURFFEAOBHR4f7Ts95HwSciaKIS9mldXd4vHUlA71Rfq4qqXVCCPq+z23b3huPziqn4y9lu2e/8zyPIQImEok1w6g8CeOE3qP/DUcXs9lXAIgPXHf/83iit9vtAABA07SKzWyuLCrPfN8/AxDl0Aic89CqGtUVo7HxAn7sy88FAFiqlh7rDf1pFCNy0f6G/vPv+sYAAOA7kmcSD+k0/0kAAAAASUVORK5CYII=')",
+          backgroundPosition: "0px 0px",
+          backgroundRepeat: "no-repeat",
+          textIndent: "50000px",
+          properties : {
+            allowGrowX: false,
+            alignX: "right"
+          }
+        }
+      }
+    },
+    "dialog/X/label" : {},
+    "dialog/buttons" : {
+      style : function(states) {
+        return {
+          font: "19px",
+          fontFamily: "Arial",
+          color: "#4B4B4B",
+          textAlign: "center",
+          overflow: "hidden",
+          whiteSpace: "nowrap",
+          textOverflow: "ellipsis",
+          height: "70px",
+          padding: "15px 15px 13px 15px",
+          cursor: "pointer",
+          borderTopWidth: "1px",
+          borderTopStyle: "solid",
+          borderTopColor: "#D0D0D0",
+          borderBottomLeftRadius: "3px",
+          borderBottomRightRadius: "3px"
+        }
+      }
+    },
+    "dialog.button" : "button",
+    "dialog/title" : {
+      style : function(states) {
+        return {
+          textAlign: "center",
+          overflow: "hidden",
+          whiteSpace: "nowrap",
+          textOverflow: "ellipsis",
+          padding: "0px 15px 0px 15px",
+          borderBottomWidth: "1px",
+          borderBottomStyle: "solid",
+          borderBottomColor: "#A4A4A4"
+        }
+      }
+    },
+    "dialog/content" : {
+      style : function() {
+        return {
+          backgroundColor: "white",
+          padding: "10px",
+          overflow: "hidden"
+        };
+      }
     }
   }
 });
