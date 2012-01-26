@@ -28,9 +28,6 @@ qx.Class.define("kitchensink.Application",
       // Call super class
       this.base(arguments);
 
-      // Set theme
-      qx.theme.manager.Meta.getInstance().setTheme(unify.theme.Dark);
-
       // Configure application
       document.title = "kitchensink";
 
@@ -53,6 +50,10 @@ qx.Class.define("kitchensink.Application",
       var Navigation = unify.view.Navigation.getInstance();
       Navigation.register(MasterViewManager);
       Navigation.init();
+    },
+    
+    _getTheme : function() {
+      return unify.theme.Dark;
     }
   }
 });
