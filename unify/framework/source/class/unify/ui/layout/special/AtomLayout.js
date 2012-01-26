@@ -74,19 +74,18 @@ qx.Class.define("unify.ui.layout.special.AtomLayout", {
         }
         
         if (direction == "left") {
-          imageLeft = 0;
+          imageLeft = unify.ui.layout.Util.calculateLeftGap(image);
           labelLeft = imageHint.width;
         } else if (direction == "right") {
-          labelLeft = 0;
-          imageLeft = labelHint.width;
+          labelLeft = label.getMarginLeft();
+          imageLeft = availWidth - imageWidth - unify.ui.layout.Util.calculateRightGap(image);
         } else if (direction == "top") {
-          imageTop = 0;
+          imageTop = unify.ui.layout.Util.calculateTopGap(image);
           labelTop = imageHint.height;
         } else if (direction == "bottom") {
-          labelTop = 0;
-          imageTop = labelHint.height;
+          labelTop = label.getMarginTop();
+          imageTop = availHeight - imageHeight - unify.ui.layout.Util.calculateBottomGap(image);
         }
-        
         image.renderLayout(imageLeft, imageTop, imageWidth, imageHeight);
         label.renderLayout(labelLeft, labelTop, labelWidth, labelHeight);
       } else if (image) {
@@ -119,12 +118,19 @@ qx.Class.define("unify.ui.layout.special.AtomLayout", {
         labelSizeHint = label.getSizeHint();
       }
       
+      var Util = unify.ui.layout.Util;
       if (direction == "left" || direction == "right") {
         neededWidth = imageSizeHint.width + labelSizeHint.width;
+        if (image) {
+          neededWidth += Util.calculateLeftGap(image) + Util.calculateRigthGap(image);
+        }
         neededHeight = Math.max(imageSizeHint.height, labelSizeHint.height);
       } else {
         neededWidth = Math.max(imageSizeHint.width, labelSizeHint.width);
         neededHeight = imageSizeHint.height + labelSizeHint.height;
+        if (image) {
+          neededHeight += Util.calculateTopGap(image) + Util.calculateBottomGap(image);
+        }
       }
       
       return {
