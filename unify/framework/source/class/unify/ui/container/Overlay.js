@@ -63,6 +63,11 @@ qx.Class.define("unify.ui.container.Overlay", {
     relativeTriggerPosition : {
       init: {y:"bottom",x:"center"},
       nullable: true
+    },
+    
+    blockerClose : {
+      check: "Boolean",
+      init: true
     }
 
   },

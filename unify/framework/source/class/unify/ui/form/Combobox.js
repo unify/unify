@@ -14,10 +14,21 @@
 
 qx.Class.define("unify.ui.form.Combobox", {
   extend: unify.ui.basic.Atom,
+  include : [unify.ui.core.MChildControl],
 
   events : {
     /** Execute event when button is tapped */
     "execute" : "qx.event.type.Event"
+  },
+
+  /**
+   * @param label {String} Label on atom
+   * @param image {String} Image url
+   */
+  construct : function(label, image) {
+    this.base(arguments, label, image);
+    
+    this.addListener("tap", this.__onTap, this);
   },
 
   properties: {
@@ -46,6 +57,7 @@ qx.Class.define("unify.ui.form.Combobox", {
 
   members: {
     __selected : null,
+    __overlay : null,
     
     /*_createElement : function() {
       var e = this.base(arguments);
@@ -91,12 +103,52 @@ qx.Class.define("unify.ui.form.Combobox", {
     },
 
     /**
+     * Returns child control widget identified by id
+     *
+     * @param id {String} ID of child widget
+     * @return {unify.ui.core.Widget} Content widget
+     */
+    _createChildControlImpl : function(id) {
+      var control;
+      
+      if (id == "overlay") {
+        control = new unify.ui.container.Overlay();
+        control.setRelativeTriggerPosition({x: "left", y: "bottom"});
+      }
+      
+      return control || this.base(arguments, id);
+    },
+
+    /**
      * onTap handler on button
      *
      * @param e {Event} Tap event
      */
     __onTap : function(e) {
-      this.fireEvent("execute");
+      var overlay = this.getChildControl("overlay");
+      overlay.setWidth(this.getWidth()-20);
+      overlay.setAllowGrowX(false);
+      
+      overlay.removeAll();
+      var container = new unify.ui.container.Composite(new unify.ui.layout.VBox());
+      //container.setWidth(this.getWidth());
+      var data = this.getData();
+      for (var i=0,ii=data.length; i<ii; i++) {
+        var b = new unify.ui.form.Button(data[i].label);
+        b.setUserData("id", data[i].id);
+        b.addListener("execute", this.__onButtonExecute, this);
+        container.add(b);
+      }
+      overlay.add(container);
+      
+      unify.view.PopOverManager.getInstance().show(overlay, this)
+    },
+    
+    __onButtonExecute : function(e) {
+      unify.view.PopOverManager.getInstance().hide(this.getChildControl("overlay"));
+      var id = e.getTarget().getUserData("id");
+      this.setValue(e.getTarget().getUserData("id"));
+      this.fireDataEvent("execute", id);
     }
   }
 });

@@ -35,11 +35,11 @@ qx.Class.define("kitchensink.view.Ui", {
       var button = new unify.ui.form.Button("Button");
       container.add(button);
       
-      var composite = new unify.ui.form.Combobox().set({
+      var combobox = new unify.ui.form.Combobox().set({
         width: 300,
         allowGrowX: false
       });
-      composite.setData([{
+      combobox.setData([{
         id: 1,
         label: "Test1"
       }, {
@@ -49,8 +49,11 @@ qx.Class.define("kitchensink.view.Ui", {
         id: 3,
         label: "Test3"
       }]);
-      composite.setValue(1);
-      container.add(composite);
+      combobox.setValue(1);
+      combobox.addListener("execute", function(e) {
+        this.debug("COMBO BOX " + e.getData());
+      }, this);
+      container.add(combobox);
     }
   }
 });

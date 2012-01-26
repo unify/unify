@@ -651,6 +651,20 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
+    
+    "combobox/overlay" : {
+      include : "overlay",
+      
+      style : function() {
+        return {
+          properties : {
+            hasArrow: false
+          }
+        };
+      }
+    },
+    
+    "combobox/overlay/container" : "overlay/container",
 
     /*
     ---------------------------------------------------------------------------
