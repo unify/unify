@@ -53,7 +53,7 @@ qx.Class.define("kitchensink.Application",
     },
     
     _getTheme : function() {
-      return unify.theme.Dark;
+      return unify.theme.AppleDark;
     }
   }
 });

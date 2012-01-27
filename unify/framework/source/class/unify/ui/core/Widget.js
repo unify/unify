@@ -1253,6 +1253,8 @@ qx.Class.define("unify.ui.core.Widget", {
           this.error("Widget style type " + key + " is not allowed");
         }
       }
+      
+      var Color = qx.theme.manager.Color.getInstance();
 
       //properties
 
@@ -1331,10 +1333,10 @@ qx.Class.define("unify.ui.core.Widget", {
       }
       if (map.borderColor) {
         var borderColor = map.borderColor.split(" ");
-        map.borderTopColor = borderColor[0];
-        map.borderRightColor = borderColor[1] || borderColor[0];
-        map.borderBottomColor = borderColor[2] || borderColor[0];
-        map.borderLeftColor = borderColor[3] || borderColor[1] || borderColor[0];
+        map.borderTopColor = Color.resolve(borderColor[0]);
+        map.borderRightColor = Color.resolve(borderColor[1] || borderColor[0]);
+        map.borderBottomColor = Color.resolve(borderColor[2] || borderColor[0]);
+        map.borderLeftColor = Color.resolve(borderColor[3] || borderColor[1] || borderColor[0]);
         delete map.borderColor;
       }
 
@@ -1418,12 +1420,12 @@ qx.Class.define("unify.ui.core.Widget", {
 
       if (textColor) {
         delete map.textColor;
-        tmpFont.setColor(qx.theme.manager.Color.getInstance().resolve(textColor));
+        tmpFont.setColor(Color.resolve(textColor));
       }
 
       if(color){
         delete map.color;
-        tmpFont.setColor(qx.theme.manager.Color.getInstance().resolve(color));
+        tmpFont.setColor(Color.resolve(color));
       }
 
       if(fontStyle){

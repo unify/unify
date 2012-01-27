@@ -9,12 +9,12 @@
 *********************************************************************************************** */
 
 /**
- * Decorations "dark" for unify widgets
+ * Colors "dark" for unify widgets
  */
-qx.Theme.define("unify.theme.dark.Decoration", {
-  aliases : {
-    decoration : "unify/decoration/Dark"
-  },
-
-  decorations : {}
+qx.Theme.define("unify.theme.appleDark.Color", {
+  colors : {
+    "background" : "black",
+    "actioncolor" : "#40516d",
+    "actionborder" : "#9ea2a3"
+  }
 });
