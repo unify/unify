@@ -25,7 +25,11 @@ qx.Class.define("kitchensink.view.Ui", {
     
     // overridden
     _createView : function() {
-      var container = new unify.ui.container.Scroll(new unify.ui.layout.VBox());
+      var container = new unify.ui.container.Scroll(new unify.ui.layout.VBox()).set({
+        width: 500,
+        alignX: "center",
+        allowGrowX: false
+      });
       this.add(container, {flex: 1});
       
       var label = new unify.ui.basic.Label("Label");
