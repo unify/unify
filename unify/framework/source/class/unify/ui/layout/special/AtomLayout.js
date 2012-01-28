@@ -29,6 +29,7 @@ qx.Class.define("unify.ui.layout.special.AtomLayout", {
       var label = this.__label;
       
       if (image && label) {
+        console.log(1, this._getWidget().getText());
         var imageHint = image.getSizeHint();
         var labelHint = label.getSizeHint();
         
@@ -89,9 +90,31 @@ qx.Class.define("unify.ui.layout.special.AtomLayout", {
         image.renderLayout(imageLeft, imageTop, imageWidth, imageHeight);
         label.renderLayout(labelLeft, labelTop, labelWidth, labelHeight);
       } else if (image) {
-        image.renderLayout(0, 0, availWidth, availHeight);
+        var imageHint = image.getSizeHint();
+        var imageWidth = imageHint.width;
+        if (imageWidth > availWidth) {
+          imageWidth = availWidth;
+        }
+        var imageHeight = imageHint.height;
+        if (imageHeight > availHeight) {
+          imageHeight = availHeight;
+        }
+        var left = Math.round((availWidth / 2) - (imageWidth / 2));
+        var top = Math.round((availHeight / 2) - (imageHeight / 2));
+        image.renderLayout(left, top, imageWidth, imageHeight);
       } else if (label) {
-        label.renderLayout(0, 0, availWidth, availHeight);
+        var labelHint = label.getSizeHint();
+        var labelWidth = labelHint.width;
+        if (labelWidth > availWidth) {
+          labelWidth = availWidth;
+        }
+        var labelHeight = labelHint.height;
+        if (labelHeight > availHeight) {
+          labelHeight = availHeight;
+        }
+        var left = Math.round((availWidth / 2) - (labelWidth / 2));
+        var top = Math.round((availHeight / 2) - (labelHeight / 2));
+        label.renderLayout(left, top, labelWidth, labelHeight);
       }
     },
     

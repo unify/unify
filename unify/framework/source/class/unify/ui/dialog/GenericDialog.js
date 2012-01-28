@@ -258,6 +258,21 @@ qx.Class.define("unify.ui.dialog.GenericDialog", {
      */
     __onButtonExecute : function(e) {
       this.fireDataEvent("execute", e.getTarget().getUserData("id"));
+    },
+    
+    __overlay : null,
+    
+    getOverlay : function() {
+      var overlay = this.__overlay;
+      
+      if (!overlay) {
+        overlay = this.__overlay = new unify.ui.container.Overlay().set({
+          appearance: "dialog.overlay"
+        });
+        overlay.add(this);
+      }
+      
+      return overlay;
     }
   
   }

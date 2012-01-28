@@ -1963,7 +1963,6 @@ qx.Class.define("unify.ui.core.Widget", {
         queue.append.push(element);
         //contentElem.appendChild(element);
       }
-
       this._getLayout().invalidateLayoutCache();
 
       // Remember parent
@@ -2043,6 +2042,15 @@ qx.Class.define("unify.ui.core.Widget", {
       // call the template method
       if (this._afterRemoveChild) {
         this._afterRemoveChild(child);
+      }
+    },
+    
+    // overridden
+    invalidateLayoutCache : function() {
+      this.base(arguments);
+
+      if (this.__layoutManager) {
+        this.__layoutManager.invalidateLayoutCache();
       }
     }
   },

@@ -212,8 +212,8 @@ qx.Class.define("unify.view.PopOverManager",
       if (trigger) {
         widget.setTrigger(trigger);
       }
-
       this.__root.add(widget);
+      
       this.__visibleViewManagers.push(widget);
       this.__sortPopOvers();
       this.fireDataEvent("show", widget);
