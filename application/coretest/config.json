@@ -1,0 +1,22 @@
+{
+  "name"    : "coretest",
+
+  "include" :
+  [
+    {
+      "path" : "${UNIFY_PATH}/framework/application.json"
+    }
+  ],
+
+  "let" :
+  {
+    "QOOXDOO_PATH"      : "../../qooxdoo",
+    "UNIFY_PATH"        : "../../qooxdoo/../unify",
+    "APP_PATH"          : ".",
+
+    "CACHE"             : "${TMPDIR}/qx${QOOXDOO_VERSION}/cache",
+
+    "APP_NAME"          : "coretest",
+    "APP_LOCALES"       : [ "en" ]
+  }
+}
