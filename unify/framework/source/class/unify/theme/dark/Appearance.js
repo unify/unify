@@ -47,6 +47,31 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
+    
+    "POPOVER-BLOCKER" : {
+      style : function(states) {
+        return {
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: "100%",
+          height: "100%"
+        }
+      }
+    },
+    "MODAL-BLOCKER" : {
+      style : function(states) {
+        return {
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "#000",
+          opacity: 0.5
+        }
+      }
+    },
 
     "widget" : {},
 

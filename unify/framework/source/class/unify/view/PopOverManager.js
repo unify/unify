@@ -37,26 +37,14 @@ qx.Class.define("unify.view.PopOverManager",
     var setStyles = qx.lang.Function.bind(qx.bom.element.Style.setStyles, qx.bom.element.Style);
     
     var pblocker = this.__pblocker = document.createElement("div");
-    setStyles(pblocker, {
-      "position": "absolute",
-      "left": 0,
-      "top": 0,
-      "width": "100%",
-      "height": "100%",
-      "display": "none"
-    });
+    var pstyle = qx.theme.manager.Appearance.getInstance().styleFrom("POPOVER-BLOCKER");
+    pstyle.display = "none";
+    setStyles(pblocker, pstyle);
     pblocker.id = "popover-blocker";
     var mblocker = this.__mblocker = document.createElement("div");
-    setStyles(mblocker, {
-      "position": "absolute",
-      "left": 0,
-      "top": 0,
-      "width": "100%",
-      "height": "100%",
-      "display": "none",
-      "backgroundColor": "#000",
-      "opacity": 0.5
-    });
+    var mstyle = qx.theme.manager.Appearance.getInstance().styleFrom("MODAL-BLOCKER");
+    mstyle.display = "none";
+    setStyles(mblocker, mstyle);
     mblocker.id = "modal-blocker";
     qx.event.Registration.addListener(pblocker,'tap',this.__onTapBlocker,this);
     this.__root.getElement().appendChild(pblocker);
