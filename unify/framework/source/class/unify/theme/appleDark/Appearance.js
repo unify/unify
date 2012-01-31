@@ -510,7 +510,7 @@ qx.Theme.define("unify.theme.appleDark.Appearance", {
           backgroundColor: "white",
           borderWidth: "1px",
           borderStyle: "solid",
-          borderColor: "actioncorder",
+          borderColor: "actionborder",
           color: "actioncolor",
           borderRadius: "12px",
           textAlign: "center",
