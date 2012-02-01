@@ -65,36 +65,18 @@ qx.Class.define("unify.ui.dialog.UserInteraction", {
     },
     
     /**
-     * Displays an information message
-     *
-     * @type member
-     * @param msg {String} Message 
-     * @param callback {Function} Callback function
-     * @param context {Object} "this" object in callback function
-     * @return {void} 
-     */
-    inform : function(msg, callback, context) {
-      unify.ui.dialog.UserInteraction._showDialog(
-          qx.locale.Manager.tr("Information"),
-          msg,
-          [], //Default: Show only a OK Button
-          callback,
-          context
-      );
-    },
-    
-    /**
      * Displays an alert / warning
      *
      * @type member
+     * @param title {String} The title of the dialog window
      * @param msg {String} Message 
      * @param callback {Function} Callback function
      * @param context {Object} "this" object in callback function
      * @return {void} 
      */
-    alert : function(msg, callback, context) {
+    alert : function(title, msg, callback, context) {
       unify.ui.dialog.UserInteraction._showDialog(
-          qx.locale.Manager.tr("Error"),
+          title,
           msg,
           [], //Default: Show only a OK Button
           callback,
@@ -106,6 +88,7 @@ qx.Class.define("unify.ui.dialog.UserInteraction", {
      * Asks user to confirm something. The callback function receives a true or false value.
      *
      * @type member
+     * @param title {String} The title of the dialog window
      * @param msg {String} Message 
      * @param yesBtn {String} Label for the "Yes" Button (The left one)
      * @param noBtn {String} Label for the "No" Button (The right one)
@@ -113,9 +96,9 @@ qx.Class.define("unify.ui.dialog.UserInteraction", {
      * @param context {Object} "this" object in callback function
      * @return {void} 
      */
-    confirm : function(msg, yesBtn, noBtn, callback, context) {
+    confirm : function(title, msg, yesBtn, noBtn, callback, context) {
       unify.ui.dialog.UserInteraction._showDialog(
-          qx.locale.Manager.tr("Confirm"),
+          title,
           msg,
           [{
             label: yesBtn,

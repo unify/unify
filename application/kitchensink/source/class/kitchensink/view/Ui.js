@@ -63,19 +63,12 @@ qx.Class.define("kitchensink.view.Ui", {
       dialogButton.addListener("execute", this.__openDialog, this);
       container.add(dialogButton);
       
-      // Show Info-Dialog --------------------------------------------------
-      var infoButton = new unify.ui.form.Button("Info");
-      infoButton.addListener("execute", function(e) {
-        unify.ui.dialog.UserInteraction.inform("Be Informed!", 
-            function() { console.log("You have been informed..."); }
-          );
-        }, this);
-      container.add(infoButton);
-      
       // Show Alert message ------------------------------------------------
       var alertButton = new unify.ui.form.Button("Alert");
       alertButton.addListener("execute", function(e) {
-        unify.ui.dialog.UserInteraction.alert("Be Alert!", 
+        unify.ui.dialog.UserInteraction.alert(
+            "Alert", 
+            "Be Alert!", 
             function() { console.log("You have been alerted..."); }
           );
         }, this);
@@ -85,14 +78,16 @@ qx.Class.define("kitchensink.view.Ui", {
       var confirmButton = new unify.ui.form.Button("Confirm");
       confirmButton.addListener("execute", function(e) {
         unify.ui.dialog.UserInteraction.confirm(
+            "Please deside...",
             "Witch programming language is the best?",
-            "JavaScript", "VisualBasic",
+            "JavaScript", 
+            "VisualBasic",
             function(e) { 
               btnID = e.getData();
               if (btnID == 'YES')
-                console.log("You choose wisely...")
+                console.log("Good choice...")
               else
-                console.log("Watch this you ignorant fool: http://www.youtube.com/watch?v=hQVTIJBZook")
+                console.log("You ignorant fool! Watch this: http://www.youtube.com/watch?v=hQVTIJBZook")
             }
           );
         }, this);
