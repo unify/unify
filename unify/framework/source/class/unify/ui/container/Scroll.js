@@ -299,10 +299,12 @@ qx.Class.define("unify.ui.container.Scroll", {
       var currentLeft=this.__scrollLeft;
       var currentTop=this.__scrollTop;
       var scroller = this.__scroller = new Scroller(render, options);
+      this.__updateDimensions();
+      //restore old scrollposition
       if(currentLeft||currentTop){
         scroller.scrollTo(currentLeft,currentTop,false);
       }
-      this.__updateDimensions();
+      
       return scroller;
     },
 
@@ -433,6 +435,7 @@ qx.Class.define("unify.ui.container.Scroll", {
      * @param zoom {Number?null} Zoom level
      */
     __scrollTo : function(left,top,animate,zoom){
+      console.log("scrollto",left,top);
       this.__scroller.scrollTo(left,top,animate,zoom);
       if(!animate){
         this.__scrollTop=top;
