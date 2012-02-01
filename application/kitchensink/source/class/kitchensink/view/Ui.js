@@ -25,7 +25,7 @@ qx.Class.define("kitchensink.view.Ui", {
     
     // overridden
     _createView : function() {
-      var container = new unify.ui.container.Scroll(new unify.ui.layout.VBox()).set({
+      var container = new unify.ui.container.Scroll(new unify.ui.layout.VBox(20)).set({
         width: 500,
         alignX: "center",
         allowGrowX: false
@@ -58,9 +58,45 @@ qx.Class.define("kitchensink.view.Ui", {
       }, this);
       container.add(combobox);
       
-      var dialogButton = new unify.ui.form.Button("Open Dialog");
+      // Show Empty Dialog --------------------------------------------------
+      var dialogButton = new unify.ui.form.Button("Dialog");
       dialogButton.addListener("execute", this.__openDialog, this);
       container.add(dialogButton);
+      
+      // Show Info-Dialog --------------------------------------------------
+      var infoButton = new unify.ui.form.Button("Info");
+      infoButton.addListener("execute", function(e) {
+        unify.ui.dialog.UserInteraction.inform("Be Informed!", 
+            function() { console.log("You have been informed..."); }
+          );
+        }, this);
+      container.add(infoButton);
+      
+      // Show Alert message ------------------------------------------------
+      var alertButton = new unify.ui.form.Button("Alert");
+      alertButton.addListener("execute", function(e) {
+        unify.ui.dialog.UserInteraction.alert("Be Alert!", 
+            function() { console.log("You have been alerted..."); }
+          );
+        }, this);
+      container.add(alertButton);
+      
+      // Show Confirm Dialog ------------------------------------------------
+      var confirmButton = new unify.ui.form.Button("Confirm");
+      confirmButton.addListener("execute", function(e) {
+        unify.ui.dialog.UserInteraction.confirm(
+            "Witch programming language is the best?",
+            "JavaScript", "VisualBasic",
+            function(e) { 
+              btnID = e.getData();
+              if (btnID == 'YES')
+                console.log("You choose wisely...")
+              else
+                console.log("Watch this you ignorant fool: http://www.youtube.com/watch?v=hQVTIJBZook")
+            }
+          );
+        }, this);
+      container.add(confirmButton);
     },
     
     __dialog : null,
@@ -78,5 +114,6 @@ qx.Class.define("kitchensink.view.Ui", {
       
       unify.view.PopOverManager.getInstance().hide(this.__dialog.getOverlay());
     }
+    
   }
 });
