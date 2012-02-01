@@ -25,7 +25,7 @@ qx.Class.define("kitchensink.view.Ui", {
     
     // overridden
     _createView : function() {
-      var container = new unify.ui.container.Scroll(new unify.ui.layout.VBox()).set({
+      var container = new unify.ui.container.Scroll(new unify.ui.layout.VBox(20)).set({
         width: 500,
         alignX: "center",
         allowGrowX: false
@@ -58,9 +58,40 @@ qx.Class.define("kitchensink.view.Ui", {
       }, this);
       container.add(combobox);
       
-      var dialogButton = new unify.ui.form.Button("Open Dialog");
+      // Show Empty Dialog --------------------------------------------------
+      var dialogButton = new unify.ui.form.Button("Dialog");
       dialogButton.addListener("execute", this.__openDialog, this);
       container.add(dialogButton);
+      
+      // Show Alert message ------------------------------------------------
+      var alertButton = new unify.ui.form.Button("Alert");
+      alertButton.addListener("execute", function(e) {
+        unify.ui.dialog.UserInteraction.alert(
+            "Alert", 
+            "Be Alert!", 
+            function() { console.log("You have been alerted..."); }
+          );
+        }, this);
+      container.add(alertButton);
+      
+      // Show Confirm Dialog ------------------------------------------------
+      var confirmButton = new unify.ui.form.Button("Confirm");
+      confirmButton.addListener("execute", function(e) {
+        unify.ui.dialog.UserInteraction.confirm(
+            "Please deside...",
+            "Witch programming language is the best?",
+            "JavaScript", 
+            "VisualBasic",
+            function(e) { 
+              btnID = e.getData();
+              if (btnID == 'YES')
+                console.log("Good choice...")
+              else
+                console.log("You ignorant fool! Watch this: http://www.youtube.com/watch?v=hQVTIJBZook")
+            }
+          );
+        }, this);
+      container.add(confirmButton);
     },
     
     __dialog : null,
@@ -78,5 +109,6 @@ qx.Class.define("kitchensink.view.Ui", {
       
       unify.view.PopOverManager.getInstance().hide(this.__dialog.getOverlay());
     }
+    
   }
 });
