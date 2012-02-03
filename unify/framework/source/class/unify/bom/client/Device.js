@@ -15,7 +15,7 @@
  * * Tablet: Device based on touch optimized (mobile) operating system with a large screen
  * * Basic: Embedded device, basic phone device, etc.
  */
-qx.Bootstrap.define("unify.bom.client.Device",
+core.Module("unify.bom.client.Device",
 {
   /*
   *****************************************************************************
@@ -23,8 +23,6 @@ qx.Bootstrap.define("unify.bom.client.Device",
   *****************************************************************************
   */
 
-  statics :
-  {
     /** {String} Used to categorize different devices/browsers into groups. One of: "desktop", "mobile" or "phone" */
     CATEGORY : "desktop",
 
@@ -39,51 +37,40 @@ qx.Bootstrap.define("unify.bom.client.Device",
 
     /** {Boolean} A simple device with only basic browsing capabilities */
     BASIC : false
-  },
 
+});
 
+(function(statics) {
+  var Extension = unify.bom.client.Extension;
+  var category = "desktop";
 
-
-  /*
-  *****************************************************************************
-     DEFER
-  *****************************************************************************
-  */
-
-  defer : function(statics)
+  // Desktop Widgets based on AIR, Prism or Titanium
+  if (!(Extension.AIR || Extension.PRISM || Extension.TITANIUM))
   {
-    var Extension = unify.bom.client.Extension;
-    var category = "desktop";
+    var agent = navigator.userAgent;
 
-    // Desktop Widgets based on AIR, Prism or Titanium
-    if (!(Extension.AIR || Extension.PRISM || Extension.TITANIUM))
-    {
-      var agent = navigator.userAgent;
+    if (agent.match(/RIM Tablet OS/i)) {
+      category = "tablet";
+    }
 
-      if (agent.match(/RIM Tablet OS/i)) {
+    // Mozilla Fennec, Opera Mobile
+    // or Webkit-based clients which have a Mobile/ or Bolt/ string in them
+    // Bolt is a server-side rendering client based on Webkit
+    else if (agent.match(/Fennec|Opera Mobi/i) || (agent.match(/AppleWebKit\/5/i) && agent.match(/Mobile\b/i) && !agent.match(/Bolt\//i))) {
+      category = "mobile";
+
+      if (navigator.platform == "iPad") {
         category = "tablet";
-      }
-
-      // Mozilla Fennec, Opera Mobile
-      // or Webkit-based clients which have a Mobile/ or Bolt/ string in them
-      // Bolt is a server-side rendering client based on Webkit
-      else if (agent.match(/Fennec|Opera Mobi/i) || (agent.match(/AppleWebKit\/5/i) && agent.match(/Mobile\b/i) && !agent.match(/Bolt\//i))) {
-        category = "mobile";
-
-        if (navigator.platform == "iPad") {
-          category = "tablet";
-        }
-      }
-
-      // Not so powerful mobile devices with basic or thin client browsers
-      // IE Mobile, BlackBerry Browser, Netfronts, Windows CE-devices, Java-based browsers, Opera Mini, Bolt Browser
-      else if (agent.match(/IEMobile|Mobile|BlackBerry|Netfront|Bolt|Mini|Palm|Windows CE|CLDC|MIDP/i)) {
-        category = "basic";
       }
     }
 
-    statics[category.toUpperCase()] = true;
-    statics.CATEGORY = category;
+    // Not so powerful mobile devices with basic or thin client browsers
+    // IE Mobile, BlackBerry Browser, Netfronts, Windows CE-devices, Java-based browsers, Opera Mini, Bolt Browser
+    else if (agent.match(/IEMobile|Mobile|BlackBerry|Netfront|Bolt|Mini|Palm|Windows CE|CLDC|MIDP/i)) {
+      category = "basic";
+    }
   }
-});
 
+  statics[category.toUpperCase()] = true;
+  statics.CATEGORY = category;
+})(unify.bom.client.Device);

@@ -12,9 +12,8 @@
  * EXPERIMENTAL
  */
 
-qx.Class.define("unify.ui.form.Button", {
-  extend: unify.ui.basic.Atom,
-  include : [unify.ui.core.MInteractionState],
+core.Class("unify.ui.form.Button", {
+  include: [unify.ui.basic.Atom, unify.ui.core.MInteractionState],
 
   events : {
     /** Execute event when button is tapped */
@@ -36,9 +35,9 @@ qx.Class.define("unify.ui.form.Button", {
     
     /** Wheter the button should calculate it's size -> property forwarded to label */
     autoCalculateSize : {
-      check: "Boolean",
+      type: "Boolean",
       init: false,
-      apply: "_applyAutoCalculateSize"
+      apply: this._applyAutoCalculateSize
     }
   },
 

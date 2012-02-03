@@ -27,13 +27,8 @@
  * License: MIT + Apache (V2)
  * 
  */
-qx.Class.define("unify.fx.core.Animation", {
-  extend: qx.core.Object,
-  type: "singleton",
-  
+core.Class("unify.fx.core.Animation", {
   construct : function() {
-    this.base(arguments);
-    
     this.__running = {};
     this.__percent = {};
     this.__counter = 1;
@@ -189,3 +184,5 @@ qx.Class.define("unify.fx.core.Animation", {
     }
   }
 });
+
+unify.core.Singleton.annotate(unify.fx.core.Animation);

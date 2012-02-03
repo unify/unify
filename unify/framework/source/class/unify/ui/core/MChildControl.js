@@ -13,7 +13,7 @@
  *
  * Childs controls supports state bubbling
  */
-qx.Mixin.define("unify.ui.core.MChildControl", {
+core.Class("unify.ui.core.MChildControl", {
   construct : function() {
     this._applyMChildControl();
   },
@@ -357,9 +357,9 @@ qx.Mixin.define("unify.ui.core.MChildControl", {
       this.removeState = this.__childControlRemoveStateWrapper();
       this.replaceState = this.__childControlReplaceStateWrapper();
     }
-  },
+  }/*,
   
   destruct : function() {
     this._disposeChildControls();
-  }
+  }*/
 });

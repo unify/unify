@@ -8,37 +8,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     
-    <style type="text/css">
-      * { box-sizing: border-box; }
-    </style>
-    
-    <script type="text/javascript">
-      var engine;
-      if (window.opera && Object.prototype.toString.call(window.opera) == "[object Opera]") {
-        engine = "presto";
-      } else if (window.controllers && Object.prototype.toString.call(window.controllers) == "[object XULControllers]") {
-        engine = "gecko";
-      } else if (typeof navigator.cpuClass === "string") {
-        engine = "trident";
-      } else if (document.createElement("div").style.WebkitAppearance != null) {
-        engine = "webkit";
-      }
-        
-      document.addEventListener("DOMContentLoaded", function() 
-      {
-        var elem = document.createElement("script");
-        var source = location.pathname.indexOf("/source/") > 0;
-        var variant = "coretest";
-        if (!source) {
-          variant += "-" + engine + "-" + (location.search.substring(1) == "debug" ? "True" : "False")
-        }
-        
-        elem.type = "text/javascript";
-        elem.src = "script/" + variant + ".js";
-        
-        document.getElementsByTagName("head")[0].appendChild(elem);
-      }, false);    
-    </script>
+    <script type="text/javascript" src="script/loader.js"></script>
+    <script type="text/javascript" src="script/coretest.js"></script>
   </head>
   <body>    
   </body>

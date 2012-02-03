@@ -13,19 +13,19 @@
  *
  * Generic composite container widget
  */
-qx.Class.define("unify.ui.container.Composite", {
-  extend : unify.ui.core.Widget,
+core.Class("unify.ui.container.Composite", {
+  include : [unify.ui.core.Widget],
   
-  include : [
+  /*include : [
     qx.ui.core.MChildrenHandling,
     qx.ui.core.MLayoutHandling
-  ],
+  ],*/
   
   /**
    * @param layout {qx.ui.layout.Abstract?null} Layout of composite
    */
   construct : function(layout) {
-    this.base(arguments);
+    unify.ui.core.Widget.call(this);
     
     if (layout) {
       this._setLayout(layout);
@@ -45,10 +45,11 @@ qx.Class.define("unify.ui.container.Composite", {
     _createElement : function() {
       return document.createElement("div");
     }
-  },
-  
-  defer : function(statics, members) {
-    qx.ui.core.MLayoutHandling.remap(members);
-    qx.ui.core.MChildrenHandling.remap(members);
   }
 });
+
+(function(members) {
+  // DEFER
+  /*qx.ui.core.MLayoutHandling.remap(members);
+  qx.ui.core.MChildrenHandling.remap(members);*/
+})(unify.ui.container.Composite.prototype);

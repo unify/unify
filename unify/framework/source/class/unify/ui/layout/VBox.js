@@ -11,6 +11,8 @@
 /**
  * Wrapper for qooxdoo layout class
  */
-qx.Class.define("unify.ui.layout.VBox", {
-  extend: qx.ui.layout.VBox
+core.Class("unify.ui.layout.VBox", {
+  include : [unify.ui.layout.Base],
+  
+  members : {}
 });

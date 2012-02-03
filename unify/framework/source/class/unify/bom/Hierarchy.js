@@ -49,39 +49,35 @@
 /**
  * Hierarchy class
  */
-qx.Class.define("unify.bom.Hierarchy",
+core.Module("unify.bom.Hierarchy",
 {
-  statics :
+  /**
+   * Get the element containing the closest parent element
+   * that matches the specified selector, the starting element included.
+   *
+   * Closest works by first looking at the current element to see if
+   * it matches the specified expression, if so it just returns the
+   * element itself. If it doesn't match then it will continue to
+   * traverse up the document, parent by parent, until an element
+   * is found that matches the specified expression. If no matching
+   * element is found then <code>null</code> will be returned.
+   *
+   * @param elem {Element} Element to start
+   * @param selector {String} Expression to filter the elements with
+   * @return {Element|null} Found parent element which matches the expression
+   */ 
+  closest : function(elem, selector)
   {
-
-    /**
-     * Get the element containing the closest parent element
-     * that matches the specified selector, the starting element included.
-     *
-     * Closest works by first looking at the current element to see if
-     * it matches the specified expression, if so it just returns the
-     * element itself. If it doesn't match then it will continue to
-     * traverse up the document, parent by parent, until an element
-     * is found that matches the specified expression. If no matching
-     * element is found then <code>null</code> will be returned.
-     *
-     * @param elem {Element} Element to start
-     * @param selector {String} Expression to filter the elements with
-     * @return {Element|null} Found parent element which matches the expression
-     */ 
-    closest : function(elem, selector)
+    var bomSelector = qx.bom.Selector;
+    
+    while (elem && elem.ownerDocument)
     {
-      var bomSelector = qx.bom.Selector;
-      
-      while (elem && elem.ownerDocument)
-      {
-        if (bomSelector.matches(selector, [elem]).length > 0) {
-          return elem;
-        }
+      if (bomSelector.matches(selector, [elem]).length > 0) {
+        return elem;
+      }
 
-        // Try the next parent
-        elem = elem.parentNode;
-      }     
-    }
+      // Try the next parent
+      elem = elem.parentNode;
+    }     
   }
 });

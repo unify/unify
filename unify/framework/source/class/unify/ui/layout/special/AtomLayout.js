@@ -11,8 +11,8 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.ui.layout.special.AtomLayout", {
-  extend : qx.ui.layout.Abstract,
+core.Class("unify.ui.layout.special.AtomLayout", {
+  include : [unify.ui.layout.Base],
   
   members : {
     __image : null,

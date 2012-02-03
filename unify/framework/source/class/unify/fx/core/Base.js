@@ -11,8 +11,7 @@
 /**
  * Base single animation
  */
-qx.Class.define("unify.fx.core.Base", {
-  extend: qx.core.Object,
+core.Class("unify.fx.core.Base", {
   
   events : {
     /** Start of animation */
@@ -25,12 +24,12 @@ qx.Class.define("unify.fx.core.Base", {
   properties : {
     /** Duration of animation */
     duration : {
-      check : "Integer"
+      type : "integer"
     },
     
     /** Easing method of animation */
     easing : {
-      check : "Function",
+      type : "function",
       nullable: true
     },
     

@@ -22,10 +22,10 @@
 /**
  * Application class for next generation devices.
  */
-qx.Class.define("unify.Application",
-{
-  extend : qx.application.Native,
-
+core.Class("unify.Application", {
+  
+  include : [unify.core.Init],
+  
   /*
   *****************************************************************************
      MEMBERS
@@ -43,59 +43,58 @@ qx.Class.define("unify.Application",
     */
 
     // overridden
-    main : function()
-    {
-      // Call super class
-      this.base(arguments);
+    main : function() {
 
       // Global error handling (otherwise we see nothing in PhoneGap)
-      if (qx.core.Environment.get("phonegap"))
+      /* TODO: if (qx.core.Environment.get("phonegap"))
       {
         qx.event.GlobalError.setErrorHandler(function(ex) {
           qx.log.Logger.error("" + ex);
         });
-      }
+      }*/
 
       // Display build time
-      if (qx.$$build) {
-        this.info("Build Time: " + new Date(qx.$$build));
+      var buildTime = core.Env.getValue("unify.$$build");
+      if (buildTime) {
+        this.info("Build Time: " + new Date(buildTime));
       }
 
       var theme = this._getTheme();
       if (theme) {
-        qx.theme.manager.Meta.getInstance().setTheme(theme);
+        //TODO: qx.theme.manager.Meta.getInstance().setTheme(theme);
       }
 
       var rootElement = this._getRootElement();
       var rootLayout = this._getRootLayout();
-      qx.bom.Event.addNativeListener(rootElement, "click", this.__onClick);
+      //qx.bom.Event.addNativeListener(rootElement, "click", this.__onClick);
       var root = this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), rootLayout);
-      qx.bom.element.Style.set(rootElement, "visibility", "hidden");
+      //qx.bom.element.Style.set(rootElement, "visibility", "hidden");
+      core.bom.Style.set(rootElement, "visibility", "hidden");
       
       // Add box sizing css node
       var st = document.createElement("style");
       st.type = "text/css";
-      var prop = qx.lang.String.hyphenate(qx.bom.element.Style.property("boxSizing"));
+      var prop = core.bom.Style.property("boxSizing").hyphenate();
       st.innerHTML = " * { " + prop + ": border-box; } ";
-      document.getElementsByTagName("head")[0].appendChild(st);
+      document.head.appendChild(st);
       
       // Support focus handling
-      unify.ui.core.FocusHandler.getInstance().connectTo(root);
+      //TODO: unify.ui.core.FocusHandler.getInstance().connectTo(root);
 
       // Configure document
-      var Style = qx.bom.element.Style;
-      var rootStyle = qx.theme.manager.Appearance.getInstance().styleFrom("BODY");
+      var Style = core.bom.Style;
+      var rootStyle = {}; // TODO: qx.theme.manager.Appearance.getInstance().styleFrom("BODY");
       // <body>
-      if (qx.core.Environment.get("os.name") == "ios") {
+      /* TODO: if (qx.core.Environment.get("os.name") == "ios") {
         rootStyle.touchCallout = "none";
       }
       if (qx.core.Environment.get("os.name") == "android") {
         rootStyle.touchCallout = "none";
-      }
-      Style.setStyles(rootElement, rootStyle);
+      }*/
+      Style.set(rootElement, rootStyle);
       
       // <html>
-      Style.setStyles(rootElement.parentNode, {
+      Style.set(rootElement.parentNode, {
         width : "100%",
         height : "100%",
         overflow : "hidden",
@@ -103,10 +102,9 @@ qx.Class.define("unify.Application",
       });
       
       this.__setupDocumentSize();
-      var isLandscape=qx.bom.Viewport.isLandscape();
-      rootElement.setAttribute('orient',isLandscape?'landscape':'portrait');
+
       // Event listeners
-      var Registration = qx.event.Registration;
+      /* TODO: var Registration = qx.event.Registration;
       Registration.addListener(window, "resize", this.__onResize, this);
       Registration.addListener(window, "orientationchange", this.__onRotate, this);
       
@@ -117,12 +115,12 @@ qx.Class.define("unify.Application",
         } else {
           this.warn("window.PalmSystem not found");
         }
-      }
+      }*/
     },
     
     // overridden
     finalize : function() {
-      qx.bom.element.Style.set(this._getRootElement(), "visibility", "visible");
+      //qx.bom.element.Style.set(this._getRootElement(), "visibility", "visible");
     },
 
     
@@ -138,7 +136,7 @@ qx.Class.define("unify.Application",
     },
     
     _getTheme : function() {
-      if (qx.core.Environment.get("qx.debug")) {
+      if (core.Env.getValue("debug")) {
         throw new Error(this.toString() + " needs implementation for _getTheme()!");
       }
     },
@@ -213,11 +211,11 @@ qx.Class.define("unify.Application",
      */
     __onClick : function(e) {
       // Prevent click on href
-      var target = qx.bom.Event.getTarget(e);
+      /* TODO: var target = qx.bom.Event.getTarget(e);
       var elem = unify.bom.Hierarchy.closest(target, "a[href]");
       if (elem) {
         e.preventDefault();
-      }
+      }*/
     },
     
 
@@ -229,8 +227,8 @@ qx.Class.define("unify.Application",
      * @param e {qx.event.type.Orientation} Orientation change event
      */
     __onRotate : function(e) {
-      var orient=qx.bom.Viewport
-      this._getRootElement().setAttribute("orient", e.isLandscape()?"landscape":"portrait");
+      /* TODO : var orient=qx.bom.Viewport
+      this._getRootElement().setAttribute("orient", e.isLandscape()?"landscape":"portrait");*/
     },
 
 
@@ -251,16 +249,16 @@ qx.Class.define("unify.Application",
      */
     __setupDocumentSize : function()
     {
-      if (qx.core.Environment.get("phonegap") && qx.core.Environment.get("os.name") == "ios")
+      /* TODO: if (qx.core.Environment.get("phonegap") && qx.core.Environment.get("os.name") == "ios")
       {
         // This is a client-side bugfix for this issue in PhoneGap on iPhone OS:
         // http://phonegap.lighthouseapp.com/projects/20116-iphone/tickets/51-uiwebview-viewport-larger-than-application-viewport
         var rootStyle = document.documentElement.style;
         rootStyle.width = window.innerWidth + "px";
         rootStyle.height = window.innerHeight + "px";
-      }
+      }*/
     }
-  },
+  }//,
 
 
 
@@ -269,7 +267,7 @@ qx.Class.define("unify.Application",
      DEFER
   *****************************************************************************
   */
-
+/*
   defer : function()
   {
     var unifyTouch;
@@ -285,5 +283,5 @@ qx.Class.define("unify.Application",
     }
 
     qx.core.Environment.add("unify.positionshift", unifyPostitionShift);
-  }
+  }*/
 });

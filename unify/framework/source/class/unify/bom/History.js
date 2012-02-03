@@ -12,42 +12,40 @@
  *
  * * Supports back and forward events in history which is helpful for iPhone-like layer navigation.
  */
-qx.Class.define("unify.bom.History",
-{
-  extend : qx.core.Object,
-  type : "singleton",
-
-
+core.Class("unify.bom.History", {
+  
+  include : [unify.core.Object],
+  
   /*
   *****************************************************************************
-     CONSTRUCTOR
+    CONSTRUCTOR
   *****************************************************************************
   */
 
   construct : function()
   {
-    this.base(arguments);
-
+    unify.core.Object.call(this);
+    
     // Init callback
-    this.__onCallbackWrapped = qx.lang.Function.bind(this.__onCallback, this);
+    this.__onCallbackWrapped = this.__onCallback.bind(this);
 
     // HTML5 hashchange supported by IE>=8, Firefox>=3.6, Webkit (!Safari 4)
     // See also: https://bugs.webkit.org/show_bug.cgi?id=21605
     // https://developer.mozilla.org/en/DOM/window.onhashchange
-    if (qx.bom.Event.supportsEvent(window, "hashchange"))
+    /* TODO : if (qx.bom.Event.supportsEvent(window, "hashchange"))
     {
-      if (qx.core.Environment.get("qx.debug")) {
+      if (core.Env.getValue("debug")) {
         this.debug("Using HTML5 hashchange");
       }
       qx.bom.Event.addNativeListener(window, "hashchange", this.__onCallbackWrapped);
     }
     else
-    {
-      if (qx.core.Environment.get("qx.debug")) {
-        this.debug("Using interval");
+    {*/
+      if (core.Env.getValue("debug")) {
+        console.debug("Using interval");
       }
       this.__intervalHandler = window.setInterval(this.__onCallbackWrapped, 100);
-    }
+    //}
   },
 
 
@@ -95,7 +93,7 @@ qx.Class.define("unify.bom.History",
       if (value != old)
       {
         this.__location = value;
-        this.fireEvent("change", unify.event.type.History, [value, old]);
+        // TODO: this.fireEvent("change", unify.event.type.History, [value, old]);
         location.hash = "#" + encodeURI(value);
       }
     },
@@ -153,7 +151,7 @@ qx.Class.define("unify.bom.History",
         this.fireEvent("change", unify.event.type.History, [value, old]);
       }
     }
-  },
+  }
 
 
 
@@ -163,12 +161,14 @@ qx.Class.define("unify.bom.History",
   *****************************************************************************
   */
 
-  destruct : function()
+  /*destruct : function()
   {
     if (this.__intervalHandler)
     {
       clearInterval(this.__intervalHandler);
       this.__intervalHandler = null;
     }
-  }
+  }*/
 });
+
+unify.core.Singleton.annotate(unify.bom.History);

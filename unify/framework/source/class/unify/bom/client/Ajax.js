@@ -10,10 +10,8 @@
 /**
  * XMLHttpRequest helper to simplify creation of the nativ object
  */
-qx.Class.define("unify.bom.client.Ajax",
+core.Module("unify.bom.client.Ajax",
 {
-  statics :
-  {
     /** {Boolean} Whether HTTP requests are supported */
     SUPPORTED : false,
 
@@ -45,51 +43,49 @@ qx.Class.define("unify.bom.client.Ajax",
      * @return {Object} New instance
      */
     create : function() {
-      return this.NATIVE ? new XMLHttpRequest : this.ACTIVEX ? new ActiveXObject(this.ACTIVEX) : null;
+      return this.NATIVE ? new XMLHttpRequest() : this.ACTIVEX ? new ActiveXObject(this.ACTIVEX) : null;
     }
-  },
+});
 
-  defer : function(statics)
+(function(statics) {
+  var obj;
+  if (window.XMLHttpRequest)
   {
-    var obj;
-    if (window.XMLHttpRequest)
+    try{
+      obj = new XMLHttpRequest;
+    } catch(ex1) {}
+  }
+  else if (window.ActiveXObject)
+  {
+    var axtype;
+    try
     {
-      try{
-        obj = new XMLHttpRequest;
-      } catch(ex1) {}
+      obj = new ActiveXObject("MSXML2.XMLHTTP.6.0");
+      axtype = "MSXML2.XMLHTTP.6.0";
     }
-    else if (window.ActiveXObject)
+    catch(ex2)
     {
-      var axtype;
       try
       {
-        obj = new ActiveXObject("MSXML2.XMLHTTP.6.0");
-        axtype = "MSXML2.XMLHTTP.6.0";
+        obj = new ActiveXObject("MSXML2.XMLHTTP.3.0");
+        axtype = "MSXML2.XMLHTTP.3.0";
       }
-      catch(ex2)
-      {
-        try
-        {
-          obj = new ActiveXObject("MSXML2.XMLHTTP.3.0");
-          axtype = "MSXML2.XMLHTTP.3.0";
-        }
-        catch(ex3) {}
-      }
+      catch(ex3) {}
     }
-
-    if (!obj) {
-      return;
-    }
-
-    statics.SUPPORTED = true;
-    statics.NATIVE = !axtype;
-    statics.ACTIVEX = axtype || null;
-
-    statics.CROSS_DOMAIN = "withCredentials" in obj || typeof window.XDomainRequest === "object";
-    statics.UPLOAD_SUPPORT = "upload" in obj;
-
-    statics.PROGRESS_EVENT = "onprogress" in obj;
-    statics.LOADSTART_EVENT = "onloadstart" in obj;
-    statics.TIMEOUT_EVENT = "ontimeout" in obj;
   }
-});
+  
+  if (!obj) {
+    return;
+  }
+  
+  statics.SUPPORTED = true;
+  statics.NATIVE = !axtype;
+  statics.ACTIVEX = axtype || null;
+  
+  statics.CROSS_DOMAIN = "withCredentials" in obj || typeof window.XDomainRequest === "object";
+  statics.UPLOAD_SUPPORT = "upload" in obj;
+  
+  statics.PROGRESS_EVENT = "onprogress" in obj;
+  statics.LOADSTART_EVENT = "onloadstart" in obj;
+  statics.TIMEOUT_EVENT = "ontimeout" in obj;
+})(unify.bom.client.Ajax);

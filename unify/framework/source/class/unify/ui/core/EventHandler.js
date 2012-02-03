@@ -21,10 +21,10 @@
 /**
  * Connects the widgets to the browser DOM events.
  */
-qx.Class.define("unify.ui.core.EventHandler",
-{
-  extend : qx.core.Object,
-  implement : qx.event.IEventHandler,
+core.Class("unify.ui.core.EventHandler", {}); 
+/*
+  //extend : qx.core.Object,
+  //implement : qx.event.IEventHandler,
 
 
 
@@ -32,7 +32,6 @@ qx.Class.define("unify.ui.core.EventHandler",
   *****************************************************************************
      CONSTRUCTOR
   *****************************************************************************
-  */
 
   construct : function()
   {
@@ -47,14 +46,13 @@ qx.Class.define("unify.ui.core.EventHandler",
   *****************************************************************************
      STATICS
   *****************************************************************************
-  */
 
   statics :
   {
-    /** {Integer} Priority of this handler */
+    /** {Integer} Priority of this handler /
     PRIORITY : qx.event.Registration.PRIORITY_FIRST,
 
-    /** {Map} Supported event types. Identical to events map of unify.ui.core.Widget */
+    /** {Map} Supported event types. Identical to events map of unify.ui.core.Widget /
     SUPPORTED_TYPES :
     {
       // touch events
@@ -90,7 +88,7 @@ qx.Class.define("unify.ui.core.EventHandler",
       deactivate : 1
     },
 
-    /** {Integer} Whether the method "canHandleEvent" must be called */
+    /** {Integer} Whether the method "canHandleEvent" must be called /
     IGNORE_CAN_HANDLE : false
   },
 
@@ -101,7 +99,7 @@ qx.Class.define("unify.ui.core.EventHandler",
   *****************************************************************************
      MEMBERS
   *****************************************************************************
-  */
+  /
 
   members :
   {
@@ -118,7 +116,7 @@ qx.Class.define("unify.ui.core.EventHandler",
      * Dispatches a DOM event on a widget.
      *
      * @param domEvent {qx.event.type.Event} The event object to dispatch.
-     */
+     /
     _dispatchEvent : function(domEvent)
     {
       // EVENT TARGET
@@ -239,7 +237,7 @@ qx.Class.define("unify.ui.core.EventHandler",
   *****************************************************************************
      DESTRUCTOR
   *****************************************************************************
-  */
+  /
 
   destruct : function() {
     this.__manager = null;
@@ -253,9 +251,10 @@ qx.Class.define("unify.ui.core.EventHandler",
   *****************************************************************************
      DEFER
   *****************************************************************************
-  */
+  /
 
   defer : function(statics) {
     qx.event.Registration.addHandler(statics);
   }
 });
+*/

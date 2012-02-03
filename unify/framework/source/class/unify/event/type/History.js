@@ -10,9 +10,8 @@
 /**
  * Event fired by {@link unify.bom.History}.
  */
-qx.Class.define("unify.event.type.History",
-{
-  extend : qx.event.type.Event,
+core.Class("unify.event.type.History", {
+  // TODO : extend : qx.event.type.Event,
 
   members :
   {

@@ -11,11 +11,8 @@
 /**
  * Manager for navigation of typical iPhone-like applications.
  */
-qx.Class.define("unify.view.Navigation",
+core.Class("unify.view.Navigation",
 {
-  extend : qx.core.Object,
-  type : "singleton",
-
 
   /*
   *****************************************************************************
@@ -25,8 +22,6 @@ qx.Class.define("unify.view.Navigation",
 
   construct : function()
   {
-    this.base(arguments);
-
     // Initialize storage
     this.__viewManagers = {};
   },
@@ -67,7 +62,7 @@ qx.Class.define("unify.view.Navigation",
     {
       var managerId = viewManager.getId();
 
-      if (qx.core.Environment.get("qx.debug"))
+      if (core.Env.getValue("debug"))
       {
         if (this.__viewManagers[managerId]) {
           throw new Error("ViewManager ID is already used: " + managerId);
@@ -147,7 +142,7 @@ qx.Class.define("unify.view.Navigation",
      */
     navigate : function(path)
     {
-      if (qx.core.Environment.get("qx.debug"))
+      if (core.Env.getValue("debug"))
       {
         if (!(path instanceof unify.view.Path)) {
           throw new Error("Invalid path to navigate() to: " + path);
@@ -172,7 +167,7 @@ qx.Class.define("unify.view.Navigation",
           }
         }
 
-        if (qx.core.Environment.get("qx.debug"))
+        if (core.Env.getValue("debug"))
         {
           if (!viewObj) 
           {
@@ -192,7 +187,7 @@ qx.Class.define("unify.view.Navigation",
         }
         else
         {
-          if (qx.core.Environment.get("qx.debug"))
+          if (core.Env.getValue("debug"))
           {
             if (managerId in usedManagers) {
               throw new Error("View manager was re-used in two different path. Invalid segment!");
@@ -271,7 +266,7 @@ qx.Class.define("unify.view.Navigation",
         this.navigate(unify.view.Path.fromString(currentLocation));
       }
     }
-  },
+  }
 
 
 
@@ -282,9 +277,11 @@ qx.Class.define("unify.view.Navigation",
   *****************************************************************************
   */
 
-  destruct : function()
+  /*destruct : function()
   {
     var History = unify.bom.History.getInstance();
     History.removeListener("change", this.__onHistoryChange, this);
-  }
+  }*/
 });
+
+unify.core.Singleton.annotate(unify.view.Navigation);

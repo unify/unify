@@ -11,7 +11,7 @@
 /**
  * ViewManager Interface
  */
-qx.Interface.define("unify.view.IViewManager", {
+core.Interface("unify.view.IViewManager", {
   members : {
     /**
      * Returns the currently selected view instance

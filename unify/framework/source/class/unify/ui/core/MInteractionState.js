@@ -11,12 +11,7 @@
 /**
  * Mixin to support interaction states (hover, active etc.) on widgets
  */
-qx.Mixin.define("unify.ui.core.MInteractionState", {
-  
-  statics : {
-    MInteractionStateIsHovered : null
-  },
-  
+core.Class("unify.ui.core.MInteractionState", {
   construct : function() {
     this._applyMInteractionState();
   },
@@ -93,7 +88,7 @@ qx.Mixin.define("unify.ui.core.MInteractionState", {
         InteractionStateManager.setPressedWidget(null);
       }
     }
-  },
+  }/*,
   
   destruct : function() {
     var root = qx.core.Init.getApplication().getRoot();
@@ -106,5 +101,9 @@ qx.Mixin.define("unify.ui.core.MInteractionState", {
     this.removeListener("mouseout", this.__MInteractionStateRemoveHover, this, true);
     this.removeListener("mousedown", this.__MInteractionStateAddPressed, this, true);
     root.removeListener("mouseup", this.__MInteractionStateRemovePressed, this, true);
-  }
+  }*/
+});
+
+unify.core.Statics.annotate(unify.ui.core.MInteractionState, {
+  MInteractionStateIsHovered : null
 });

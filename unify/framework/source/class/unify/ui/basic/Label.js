@@ -13,13 +13,13 @@
  *
  * The label widget implements text representation in unify widget system
  */
-qx.Class.define("unify.ui.basic.Label", {
-  extend : unify.ui.core.Widget,
+core.Class("unify.ui.basic.Label", {
+  include : [unify.ui.core.Widget],
 
-  statics : {
+  /*statics : {
     LINEHEIGHT : null,
     DEFAULTFONTSIZE : null
-  },
+  },*/
 
   /**
    * Creates a new instance of Label
@@ -47,67 +47,62 @@ qx.Class.define("unify.ui.basic.Label", {
   properties : {
     /** Contains the label content */
     value : {
-      check: "String",
-      apply: "_applyValue",
-      event: "changeValue",
+      type: "string",
+      apply: this._applyValue,
+      fire: "changeValue",
       nullable: true
     },
 
     /** Wheter the content is HTML or plain text */
     html : {
-      check: "Boolean",
+      type: "boolean",
       init: true,
-      event: "changeHtml"
+      fire: "changeHtml"
     },
 
     // overridden
     allowGrowX : {
-      refine : true,
       init : true
     },
 
 
     // overridden
     allowGrowY : {
-      refine : true,
       init : false
     },
 
     // overridden
-    allowShrinkY : {
-      refine : true,
+    allowShrinkX : {
       init : true
     },
     
     // overridden
     allowShrinkY : {
-      refine : true,
       init : false
     },
     
     // overridden
     appearance : {
-      refine: true,
       init: "label"
     },
 
     /** Whether the label text overflow creates an ellipsis */
     ellipsis : {
-      check: "Boolean",
+      type: "boolean",
       init: true,
-      apply: "_applyEllipsis"
+      apply: this._applyEllipsis
     },
 
     /** Whether the label text wraps to multi line or creates hidden overflow */
     wrap : {
-      check: "Boolean",
+      type: "Boolean",
       init: false,
-      apply: "_applyWrap"
+      apply: this._applyWrap
     },
 
     /** Wheter the label should calculate it's size */
     autoCalculateSize : {
-      check: "Boolean",
+      type: "boolean",
       init: false
     }
   },

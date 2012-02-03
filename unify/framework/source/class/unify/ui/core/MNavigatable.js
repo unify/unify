@@ -11,14 +11,14 @@
 /**
  * Mixin to support navigation on widgets
  */
-qx.Mixin.define("unify.ui.core.MNavigatable", {
+core.Class("unify.ui.core.MNavigatable", {
   properties: {
     /**
      * Executes the given function on the view.
      * The function has to be public!
      */
     execute: {
-      check: "String",
+      type: "String",
       init: null,
       nullable: true
     },
@@ -27,7 +27,7 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
      * Opens hyperreference (=URL) in a new window or in the same tab depending on hyperreferenceWindowPolicy
      */
     hyperreference: {
-      check: "String",
+      type: "String",
       init: null,
       nullable: true
     },
@@ -39,7 +39,7 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
      * * window : New tab or window
      */
     hyperreferenceWindowPolicy : {
-      check: ["same", "window"],
+      type: ["same", "window"],
       init: "window",
       nullable: false
     },
@@ -53,7 +53,7 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
      * master - ?
      */
     relation: {
-      check : ["close", "parent", "same", "master"],
+      type : ["close", "parent", "same", "master"],
       init: null,
       nullable: true
     },

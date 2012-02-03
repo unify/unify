@@ -11,6 +11,13 @@
 /**
  * Wrapper for qooxdoo layout class
  */
-qx.Class.define("unify.ui.layout.HBox", {
-  extend: qx.ui.layout.HBox
+core.Class("unify.ui.layout.HBox", {
+  include : [unify.ui.layout.Base],
+  
+  properties : {
+    alignX: {},
+    alignY: {}
+  },
+  
+  members : {}
 });

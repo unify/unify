@@ -11,8 +11,8 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.view.TabViewManager", {
-  extend : unify.ui.container.Composite,
+core.Class("unify.view.TabViewManager", {
+  include : [unify.ui.container.Composite],
   implement : [unify.view.IViewManager],
 
   /*
@@ -26,11 +26,11 @@ qx.Class.define("unify.view.TabViewManager", {
    */
   construct : function(viewManager)
   {
-    this.base(arguments, new unify.ui.layout.special.TabViewLayout());
+    unify.ui.container.Composite.call(this, new unify.ui.layout.special.TabViewLayout());
 
     this.setUserData("viewManager", this);
 
-    if (qx.core.Environment.get("qx.debug"))
+    if (core.Env.getValue("debug"))
     {
       if (viewManager == null) {
         throw new Error("TabViewManager needs a ViewManager at construction time!");
@@ -69,10 +69,10 @@ qx.Class.define("unify.view.TabViewManager", {
     /** ID of selected view */
     selected :
     {
-      check : "String",
-      event : "changeSelected",
+      type : "String",
+      fire : "changeSelected",
       nullable : true,
-      apply : "_applySelected"
+      apply : this._applySelected
     }
   },
 
@@ -143,7 +143,7 @@ qx.Class.define("unify.view.TabViewManager", {
      *
      * @param viewClass {Class} Class of the view to register {@see unify.view.StaticView}
      */
-    register : function(viewClass)
+    register : function(viewClass, isDefault)
     {
       var viewInstance = viewClass.getInstance();
 

@@ -29,12 +29,9 @@
  * history managment, recovery, automatic transitions etc. This might not make
  * a lot of sense sense for application doing mostly fullscreen things like games.
  */
-qx.Class.define("unify.view.StaticView",
+core.Class("unify.view.StaticView",
 {
-  //extend : qx.core.Object,
-  extend: unify.ui.container.Composite,
-  include : [qx.locale.MTranslation, unify.fx.MWidgetAnimation],
-  type : "abstract",
+  include : [unify.ui.container.Composite, /*qx.locale.MTranslation,*/ unify.fx.MWidgetAnimation],
   
   
   /*
@@ -92,7 +89,7 @@ qx.Class.define("unify.view.StaticView",
      */
     manager : 
     {
-      check : "unify.view.ViewManager",
+      type : "unify.view.ViewManager",
       nullable : true
     },
 
@@ -102,10 +99,10 @@ qx.Class.define("unify.view.StaticView",
      */
     parent :
     {
-      check : "unify.view.StaticView",
+      type : "unify.view.StaticView",
       nullable : true,
-      apply : "_applyParent",
-      event : "changeParent"
+      apply : this._applyParent,
+      fire : "changeParent"
     },
     
     /** 
@@ -114,10 +111,10 @@ qx.Class.define("unify.view.StaticView",
      */
     active :
     {
-      check : "Boolean",
+      type : "Boolean",
       init : false,
-      apply : "_applyActive",
-      event : "changeActive"
+      apply : this._applyActive,
+      fire : "changeActive"
     },
 
     /** 
@@ -126,9 +123,9 @@ qx.Class.define("unify.view.StaticView",
      */
     param :
     {
-      check : "String",
+      type : "String",
       nullable : true,
-      apply : "_applyParam"
+      apply : this._applyParam
     },
 
     /** 
@@ -137,10 +134,10 @@ qx.Class.define("unify.view.StaticView",
      */
     segment :
     {
-      check : "String",
+      type : "String",
       nullable : true,
-      apply : "_applySegment",
-      event : "changeSegment"
+      apply : this._applySegment,
+      fire : "changeSegment"
     },
     
     appearance : {

@@ -22,14 +22,14 @@
 /*
 #use(unify.ui.core.EventHandler)
 */
-qx.Class.define("unify.ui.core.Widget", {
-  extend : qx.ui.core.LayoutItem,
+core.Class("unify.ui.core.Widget", {
+  include : [unify.ui.core.LayoutItem],
 
   /**
    * @param layout {qx.ui.layout.Abstract} Layout of widget
    */
   construct : function() {
-    this.base(arguments);
+    unify.core.Object.call(this);
 
     this.__renderLayoutDone = false;
 
@@ -94,10 +94,10 @@ qx.Class.define("unify.ui.core.Widget", {
      * </ul>
      */
     visibility : {
-      check : ["visible", "hidden", "excluded"],
+      type : ["visible", "hidden", "excluded"],
       init : "visible",
-      apply : "_applyVisibility",
-      event : "changeVisibility"
+      apply : this._applyVisibility,
+      fire : "changeVisibility"
     },
 
     /**
@@ -105,8 +105,8 @@ qx.Class.define("unify.ui.core.Widget", {
      */
     appearance : {
       init : null,
-      apply : "_applyAppearance",
-      event : "changeAppearance"
+      apply : this._applyAppearance,
+      fire : "changeAppearance"
     },
 
     /**
@@ -123,10 +123,9 @@ qx.Class.define("unify.ui.core.Widget", {
      * {@link #mouseout} events will be dispatched.
      */
     enabled : {
-      check : "Boolean",
-      inheritable : true,
-      apply : "_applyEnabled",
-      event : "changeEnabled",
+      type : "boolean",
+      apply : this._applyEnabled,
+      fire : "changeEnabled",
       init : true
     },
 
@@ -138,9 +137,9 @@ qx.Class.define("unify.ui.core.Widget", {
      * Please note: The value must be between 1 and 32000.
      */
     tabIndex : {
-      check : "Integer",
+      type : "integer",
       nullable : true,
-      apply : "_applyTabIndex"
+      apply : this._applyTabIndex
     },
 
     /**
@@ -152,71 +151,19 @@ qx.Class.define("unify.ui.core.Widget", {
      * reachable via the TAB key.
      */
     focusable : {
-      check : "Boolean",
+      type : "boolean",
       init : false,
-      apply : "_applyFocusable"
+      apply : this._applyFocusable
     },
 
     /**
      * ID to attach to event to support automatic ui tests
      */
     testId : {
-      check : "String",
+      type : "string",
       nullable : true,
       init : null,
-      apply : "_applyTestId"
-    }
-  },
-
-  statics : {
-    /**
-     * Returns the widget, which contains the given DOM element.
-     *
-     * @param element {Element} The DOM element to search the widget for.
-     * @param considerAnonymousState {Boolean?false} If true, anonymous widget
-     *   will not be returned.
-     * @return {unify.ui.core.Widget} The widget containing the element.
-     */
-    getByElement : function(element, considerAnonymousState) {
-      while(element) {
-        var widgetKey = element.$$widget;
-
-        // dereference "weak" reference to the widget.
-        if (widgetKey != null) {
-          var widget = qx.core.ObjectRegistry.fromHashCode(widgetKey);
-          // check for anonymous widgets
-          if (!considerAnonymousState || !widget.getAnonymous()) {
-            return widget;
-          }
-        }
-
-        // Fix for FF, which occasionally breaks (BUG#3525)
-        try {
-          element = element.parentNode;
-        } catch (e) {
-          return null;
-        }
-      }
-      return null;
-    },
-
-    /**
-     * Check if widget contains child widget.
-     *
-     * @param parent {unify.ui.core.Widget} Parent widget
-     * @param child {unify.ui.core.Widget} Child widget
-     * @return {Boolean} If parent contains child, return true
-     */
-    contains : function(parent, child) {
-      while (child) {
-        if (parent == child) {
-          return true;
-        }
-
-        child = child.getLayoutParent();
-      }
-
-      return false;
+      apply : this._applyTestId
     }
   },
 
@@ -316,7 +263,7 @@ qx.Class.define("unify.ui.core.Widget", {
 
     // overridden
     _applyAppearance : function(value) {
-      if (qx.core.Environment.get("qx.debug")) {
+      if (core.Env.getValue("debug")) {
         var e = this.getElement();
         e.setAttribute("appearance",value);
       }
@@ -429,9 +376,9 @@ qx.Class.define("unify.ui.core.Widget", {
      *     <code>null</code> to reset the layout.
      */
     _setLayout : function(layout) {
-      if (qx.core.Environment.get("qx.debug")) {
+      if (core.Env.getValue("debug")) {
         if (layout) {
-          this.assertInstance(layout, qx.ui.layout.Abstract);
+          // TODO : this.assertInstance(layout, qx.ui.layout.Abstract);
         }
       }
 
@@ -440,11 +387,11 @@ qx.Class.define("unify.ui.core.Widget", {
       }
 
       if (layout) {
-        layout.connectToWidget(this);
+        layout.connectWidget(this);
       }
 
       this.__layoutManager = layout;
-      qx.ui.core.queue.Layout.add(this);
+      unify.ui.layout.queue.Layout.add(this);
     },
 
     /**
@@ -464,7 +411,7 @@ qx.Class.define("unify.ui.core.Widget", {
               height: 0
             };
           }
-          /*if (qx.core.Environment.get("qx.debug")) {
+          /*if (core.Env.getValue("debug")) {
             var msg = "The layout " + layout.toString() + " of the widget " + this.toString() + " returned an invalid size hint!";
             this.assetInteger(hint.width, "Wrong width value. " + msg);
             this.assetInteger(hint.height, "Wrong height value. " + msg);
@@ -497,7 +444,7 @@ qx.Class.define("unify.ui.core.Widget", {
       var minHeight = this.getMinHeight();
       var maxHeight = this.getMaxHeight();
 
-      if (qx.core.Environment.get("qx.debug"))
+      if (core.Env.getValue("debug"))
       {
         if (minWidth !== null && maxWidth !== null) {
           this.assert(minWidth <= maxWidth, "minWidth is larger than maxWidth!");
@@ -1227,6 +1174,31 @@ qx.Class.define("unify.ui.core.Widget", {
       this._setStyle(map);
     },
 
+    __cloneMap : function(obj) {
+      if(obj == null || typeof(obj) != 'object') {
+        return obj;
+      }
+  
+      var temp = obj.constructor(); // changed
+  
+      for(var key in obj) {
+        temp[key] = this.__cloneMap(obj[key]);
+      }
+      
+      return temp;
+    },
+    
+    __mergeObjects : function(map1, map2) {
+      var keys = Object.keys(map2);
+      
+      for (var i=0,ii=keys.length; i<ii; i++) {
+        var key = keys[i];
+        map1[key] = map2[key];
+      }
+      
+      return map1;
+    },
+
     /**
      * Set styles to the element
      * @param map {Map} Map of styles/values to apply
@@ -1235,8 +1207,8 @@ qx.Class.define("unify.ui.core.Widget", {
 
       //validation
 
-      map = qx.lang.Object.clone(map);
-      var keys = qx.lang.Object.getKeys(map);
+      map = this.__cloneMap(map);
+      var keys = Object.keys(map);
       var disallowedStyles={
         //positioning and visibility is done by  engine
         left:true,
@@ -1389,14 +1361,14 @@ qx.Class.define("unify.ui.core.Widget", {
         delete map.font;
         //try to resolve the font first, if it fails, parse it
         var resolvedFont = qx.theme.manager.Font.getInstance().resolve(font);
-        if(resolvedFont!==font){
-          tmpFont=qx.lang.Object.clone(resolvedFont);
+        if(resolvedFont !== font){
+          tmpFont = qx.lang.Object.clone(resolvedFont);
         } else {
           tmpFont = qx.bom.Font.fromString(font);
         }
       } else {
         //no font set, reuse the existing or start from scratch
-        tmpFont=this.__font||new qx.bom.Font();
+        tmpFont=this.__font||new unify.bom.Font();
       }
 
       //now check each property
@@ -1448,7 +1420,7 @@ qx.Class.define("unify.ui.core.Widget", {
       }
 
       this.__font = tmpFont;//cache font for later use
-      var style = this.__style = qx.lang.Object.merge(this.__style||{},map);
+      var style = this.__style = this.__mergeObjects(this.__style||{},map);
 
       var padding = this.__padding = {
         left: parseInt(style.paddingLeft, 10) || 0,
@@ -1470,7 +1442,7 @@ qx.Class.define("unify.ui.core.Widget", {
         qx.ui.core.queue.Layout.add(this);
       }*/
 
-      qx.bom.element.Style.setStyles(this.getElement(), style);
+      core.bom.Style.set(this.getElement(), style);
 
       if (properties) {
         var keys = qx.lang.Object.getKeys(properties);
@@ -1592,10 +1564,10 @@ qx.Class.define("unify.ui.core.Widget", {
           return null;
         }
 
-        element.$$widget = this.toHashCode();
+        //element.$$widget = this.toHashCode();
 
         if (!(element instanceof DocumentFragment)) {
-          if(qx.core.Environment.get("qx.debug")){
+          if(core.Env.getValue("debug")){
             element.setAttribute("unifyclass",this.classname);
             element.setAttribute("appearance",this.getAppearance());
           }
@@ -1613,7 +1585,7 @@ qx.Class.define("unify.ui.core.Widget", {
      * Applies test id to element to help autmatic ui tests
      */
     _applyTestId : function(value) {
-      if(qx.core.Environment.get("qx.debug")) {
+      if(core.Env.getValue("debug")) {
         this.getElement().setAttribute("testid", value);
       }
     },
@@ -1756,7 +1728,7 @@ qx.Class.define("unify.ui.core.Widget", {
      */
     _addBefore : function(child, before, options)
     {
-      if (qx.core.Environment.get("qx.debug")) {
+      if (core.Env.getValue("debug")) {
         this.assertInArray(before, this._getChildren(),
           "The 'before' widget is not a child of this widget!");
       }
@@ -1793,7 +1765,7 @@ qx.Class.define("unify.ui.core.Widget", {
      */
     _addAfter : function(child, after, options)
     {
-      if (qx.core.Environment.get("qx.debug")) {
+      if (core.Env.getValue("debug")) {
         this.assertInArray(after, this._getChildren(),
           "The 'after' widget is not a child of this widget!");
       }
@@ -1928,7 +1900,7 @@ qx.Class.define("unify.ui.core.Widget", {
      */
     __addHelper : function(child, options,index)
     {
-      if (qx.core.Environment.get("qx.debug"))
+      if (core.Env.getValue("debug"))
       {
         //this.assertInstance(child, unify.ui.qx.LayoutItem, "Invalid widget to add: " + child);
         this.assertInstance(child, qx.ui.core.LayoutItem, "Invalid widget to add: " + child);
@@ -1994,7 +1966,7 @@ qx.Class.define("unify.ui.core.Widget", {
      */
     __removeHelper : function(child)
     {
-      if (qx.core.Environment.get("qx.debug")) {
+      if (core.Env.getValue("debug")) {
         this.assertNotUndefined(child);
       }
 
@@ -2053,7 +2025,7 @@ qx.Class.define("unify.ui.core.Widget", {
         this.__layoutManager.invalidateLayoutCache();
       }
     }
-  },
+  }/*,
 
   destruct : function() {
     this._disposeArray("__widgetChildren");
@@ -2061,5 +2033,59 @@ qx.Class.define("unify.ui.core.Widget", {
       "__layoutManager",
       "__element"
     );
+  }*/
+});
+
+
+
+unify.core.Statics.annotate(unify.ui.core.Widget, {
+  /**
+   * Returns the widget, which contains the given DOM element.
+   *
+   * @param element {Element} The DOM element to search the widget for.
+   * @param considerAnonymousState {Boolean?false} If true, anonymous widget
+   *   will not be returned.
+   * @return {unify.ui.core.Widget} The widget containing the element.
+   */
+  getByElement : function(element, considerAnonymousState) {
+    while(element) {
+      var widgetKey = element.$$widget;
+  
+      // dereference "weak" reference to the widget.
+      if (widgetKey != null) {
+        var widget = qx.core.ObjectRegistry.fromHashCode(widgetKey);
+        // check for anonymous widgets
+        if (!considerAnonymousState || !widget.getAnonymous()) {
+          return widget;
+        }
+      }
+  
+      // Fix for FF, which occasionally breaks (BUG#3525)
+      try {
+        element = element.parentNode;
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  },
+  
+  /**
+   * Check if widget contains child widget.
+   *
+   * @param parent {unify.ui.core.Widget} Parent widget
+   * @param child {unify.ui.core.Widget} Child widget
+   * @return {Boolean} If parent contains child, return true
+   */
+  contains : function(parent, child) {
+    while (child) {
+      if (parent == child) {
+        return true;
+      }
+  
+      child = child.getLayoutParent();
+    }
+  
+    return false;
   }
 });

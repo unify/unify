@@ -11,8 +11,8 @@
 /**
  * Animate position of widget
  */
-qx.Class.define("unify.fx.Opacity", {
-  extend: unify.fx.core.Base,
+core.Class("unify.fx.Opacity", {
+  include: [unify.fx.core.Base],
   
   members : {
     __mod : null,

@@ -13,10 +13,10 @@
  *
  * Overlay container widget
  */
-qx.Class.define("unify.ui.container.Overlay", {
-  extend : unify.ui.container.Composite,
+core.Class("unify.ui.container.Overlay", {
+  include : [unify.ui.container.Composite],
   
-  include : [unify.ui.core.MChildControl, qx.ui.core.MRemoteChildrenHandling],
+  //include : [unify.ui.core.MChildControl, qx.ui.core.MRemoteChildrenHandling],
   
   events : {
     /** Event thrown if overlay visibility is changed to hidden */
@@ -29,15 +29,14 @@ qx.Class.define("unify.ui.container.Overlay", {
   properties : {
     // overridden
     appearance : {
-      refine: true,
       init: "overlay"
     },
     
     /** Paint arrow */
     hasArrow : {
-      check: "Boolean",
+      type: "Boolean",
       init: true,
-      apply: "_applyHasArrow"
+      apply: this._applyHasArrow
     },
 
     /** relative position of the arrow on its axis
@@ -51,7 +50,7 @@ qx.Class.define("unify.ui.container.Overlay", {
 
     /** optional reference to widget that triggers show/hide of this overlay */
     trigger : {
-      check: "unify.ui.core.Widget",
+      type: "unify.ui.core.Widget",
       init: null,
       nullable: true
     },
@@ -66,7 +65,7 @@ qx.Class.define("unify.ui.container.Overlay", {
     },
     
     blockerClose : {
-      check: "Boolean",
+      type: "Boolean",
       init: true
     },
     

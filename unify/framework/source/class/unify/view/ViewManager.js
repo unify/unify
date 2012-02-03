@@ -16,8 +16,8 @@
  *
  * @see unify.view.StaticView
  */
-qx.Class.define("unify.view.ViewManager", {
-  extend : unify.ui.container.Composite,
+core.Class("unify.view.ViewManager", {
+  include : [unify.ui.container.Composite],
   implement : [unify.view.IViewManager],
   
   /*
@@ -32,11 +32,11 @@ qx.Class.define("unify.view.ViewManager", {
    */
   construct : function(managerId, layout)
   {
-    this.base(arguments, layout || new unify.ui.layout.Canvas());
+    unify.ui.container.Composite.call(this, layout || new unify.ui.layout.Canvas());
 
     this.setUserData("viewManager", this);
 
-    if (qx.core.Environment.get("qx.debug"))
+    if (core.Env.getValue("debug"))
     {
       if (managerId == null) {
         throw new Error("Invalid manager ID: " + managerId);
@@ -48,7 +48,10 @@ qx.Class.define("unify.view.ViewManager", {
     
     // Add to registry
     var registry = unify.view.ViewManager.__managers;
-    if (qx.core.Environment.get("qx.debug"))
+    if (!registry) {
+      registry = registry = unify.view.ViewManager.__managers = {};
+    }
+    if (core.Env.getValue("debug"))
     {
       if (registry[managerId]) {
         throw new Error("Manager ID is already in use by: " + registry[managerId]);
@@ -61,40 +64,6 @@ qx.Class.define("unify.view.ViewManager", {
 
     //initialize overflow hidden here, so that view transitions animations are hidden properly
     this.setStyle({overflow:"hidden"});
-  },
-
-
-
-  /*
-  *****************************************************************************
-     STATICS
-  *****************************************************************************
-  */
-  
-  statics :
-  {
-    /** {Map} Maps the manager IDs to their instances */
-    __managers : {},
-    
-    
-    /**
-     * Returns the manager with the given ID
-     *
-     * @param managerId {String} The ID of the view manager
-     * @return {unify.view.ViewManager} The view manager instance
-     */
-    get : function(managerId)
-    {
-      var mgr = this.__managers[managerId];
-      if (qx.core.Environment.get("qx.debug"))
-      {
-        if (!mgr) {
-          throw new Error("Unknown view manager: " + managerId);
-        }
-      }
-      
-      return mgr;
-    }
   },
   
   
@@ -135,7 +104,7 @@ qx.Class.define("unify.view.ViewManager", {
      * switch to disable view transition animations
      */
     animateTransitions: {
-      check:"Boolean",
+      type:"boolean",
       init: true
     },
     
@@ -143,7 +112,7 @@ qx.Class.define("unify.view.ViewManager", {
      * Duration of layer animation
      */
     animationDuration : {
-      check: "Integer",
+      type: "integer",
       init: 350
     },
     
@@ -151,9 +120,9 @@ qx.Class.define("unify.view.ViewManager", {
      * Related view manager which functions as a master (controller) for this view manager 
      */
     master : {
-      check : "unify.view.ViewManager",
+      type : "unify.view.ViewManager",
       nullable : true,
-      apply: "_applyMaster"
+      apply: this._applyMaster
     },
 
     /**
@@ -165,10 +134,10 @@ qx.Class.define("unify.view.ViewManager", {
      *   modal: shows over all other ViewManagers with a blocking pane that does nothing
      */
     displayMode : {
-      check : "String",
+      type : "string",
       init: "default",
-      apply: "_applyDisplayMode",
-      event: "changeDisplayMode"
+      apply: this._applyDisplayMode,
+      fire: "changeDisplayMode"
     }
   },
 
@@ -217,14 +186,14 @@ qx.Class.define("unify.view.ViewManager", {
      * This adds the view manager to the layouting queues.
      */
     init : function() {
-      this.debug("Init");
+      console.debug("Init");
       if (!this.__path && this.getDisplayMode()!='modal') {
         this.__resetHelper();
       }
 
-      qx.ui.core.queue.Visibility.add(this);
-      qx.ui.core.queue.Layout.add(this);
-      qx.ui.core.queue.Manager.flush();
+      unify.ui.layout.queue.Visibility.add(this);
+      unify.ui.layout.queue.Layout.add(this);
+      unify.ui.layout.queue.Manager.flush();
       
       this.__initialized = true;
     },
@@ -265,7 +234,7 @@ qx.Class.define("unify.view.ViewManager", {
     __resetHelper : function()
     {
       var defaultViewId = this.__defaultViewId;
-      if (qx.core.Environment.get("qx.debug"))
+      if (core.Env.getValue("debug"))
       {
         if (!defaultViewId) {
           throw new Error("Missing default view ID!");
@@ -292,7 +261,7 @@ qx.Class.define("unify.view.ViewManager", {
      * @param path {unify.view.Path} Path object
      */
     navigate : function(path) {
-      if (qx.core.Environment.get("qx.debug"))
+      if (core.Env.getValue("debug"))
       {
         if (!(path instanceof unify.view.Path)) {
           throw new Error("Invalid path to navigate() to: " + path);
@@ -342,7 +311,7 @@ qx.Class.define("unify.view.ViewManager", {
       var views = this.__views;
       var currentFragment = path[length-1];
       var currentViewCls = views[currentFragment.view || this.__currentView.getId()];
-      if (qx.core.Environment.get("qx.debug"))
+      if (core.Env.getValue("debug"))
       {
         if (!currentViewCls) {
           throw new Error("Invalid view: " + currentFragment.view + " in view manager " + this.getId());
@@ -454,7 +423,7 @@ qx.Class.define("unify.view.ViewManager", {
       }
       // Re-activate view (normally only useful if it was paused before)
       var view = this.__currentView;
-      if (qx.core.Environment.get("qx.debug")) {
+      if (core.Env.getValue("debug")) {
         this.debug("Show with: " + view);
       }
       if (view) {
@@ -509,7 +478,7 @@ qx.Class.define("unify.view.ViewManager", {
      */
     register : function(viewClass, isDefault)
     {
-      if (qx.core.Environment.get("qx.debug"))
+      if (core.Env.getValue("debug"))
       {
         if (!viewClass) {
           throw new Error("Invalid view class to add(): " + viewClass);
@@ -521,7 +490,8 @@ qx.Class.define("unify.view.ViewManager", {
         throw new Error('view is already managed!: '+viewClass+' manager:  '+instanceManager.getId());
       }
       instance.setManager(this);
-      var id = qx.lang.String.hyphenate(viewClass.basename).substring(1).toLowerCase();
+      var classname = viewClass.className;
+      var id = classname.substring(classname.lastIndexOf(".")+1).hyphenate().substring(1).toLowerCase();
       if (isDefault) {
         this.__defaultViewId = id;
       }
@@ -826,5 +796,26 @@ qx.Class.define("unify.view.ViewManager", {
         visibilityAction();
       }
     }
+  }
+});
+
+unify.core.Statics.annotate("unify.view.ViewManager", {
+  /**
+   * Returns the manager with the given ID
+   *
+   * @param managerId {String} The ID of the view manager
+   * @return {unify.view.ViewManager} The view manager instance
+   */
+  get : function(managerId)
+  {
+    var mgr = unify.view.ViewManager.__managers[managerId];
+    if (core.Env.getValue("debug"))
+    {
+      if (!mgr) {
+        throw new Error("Unknown view manager: " + managerId);
+      }
+    }
+    
+    return mgr;
   }
 });

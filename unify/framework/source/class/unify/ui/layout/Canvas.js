@@ -11,6 +11,8 @@
 /**
  * Wrapper for qooxdoo layout class
  */
-qx.Class.define("unify.ui.layout.Canvas", {
-  extend: qx.ui.layout.Canvas
+core.Class("unify.ui.layout.Canvas", {
+  include : [unify.ui.layout.Base],
+  
+  members : {}
 });

@@ -16,9 +16,7 @@
  * (the class you look at), a segment (a e.g. tab selected inside the view) and a param (the
  * selected email ID etc.).
  */
-qx.Class.define("unify.view.Path",
-{
-  extend : qx.type.BaseArray,
+core.Class("unify.view.Path", {
 
 
 
@@ -37,7 +35,7 @@ qx.Class.define("unify.view.Path",
      */
     clone : function()
     {
-      var clone = new unify.view.Path;
+      var clone = new unify.view.Path();
       var entry;
       for (var i=0, l=this.length; i<l; i++)
       {
@@ -73,88 +71,79 @@ qx.Class.define("unify.view.Path",
         if (part.param) {
           temp += ":" + part.param;
         }
-        result.push(temp)
+        result.push(temp);
       }
 
       return result.join("/");
     }
+  }
+});
+
+unify.core.Statics.annotate(unify.view.Path, {
+  /**
+   * Converts a location string into a path object.
+   *
+   * Format is "fragment1/fragment2/fragment3".
+   * Each fragment has the format "view.segment:param".
+   *
+   * @param str {String} A location string with supported special charaters
+   * @return {unify.view.Path} Returns the path object
+   */
+  fromString : function(str)
+  {
+    var obj = new unify.view.Path;
+
+    if (str.length > 0)
+    {
+      var fragments = str.split("/");
+      for (var i=0, l=fragments.length; i<l; i++) {
+        obj.push(this.parseFragment(fragments[i]));
+      }
+    }
+
+    return obj;
   },
 
 
+  /** {RegExp} Matches location fragments (view.segment:param) */
+  __fragmentMatcher : /^([a-z0-9-]+)?(\.([a-z-]+))?(\:([a-zA-Z0-9_-]+))?$/,
 
-  /*
-  *****************************************************************************
-     STATICS
-  *****************************************************************************
-  */
 
-  statics :
+  /**
+   * Parses a location fragment into a object with the keys "view", "segment" and "param".
+   *
+   * @param fragment {String} Location fragment to parse
+   * @return {Map} The parsed fragment.
+   */
+  parseFragment : function(fragment)
   {
-    /**
-     * Converts a location string into a path object.
-     *
-     * Format is "fragment1/fragment2/fragment3".
-     * Each fragment has the format "view.segment:param".
-     *
-     * @param str {String} A location string with supported special charaters
-     * @return {unify.view.Path} Returns the path object
-     */
-    fromString : function(str)
+    var match = this.__fragmentMatcher.exec(fragment);
+    if (qx.core.Environment.get("qx.debug"))
     {
-      var obj = new unify.view.Path;
-
-      if (str.length > 0)
-      {
-        var fragments = str.split("/");
-        for (var i=0, l=fragments.length; i<l; i++) {
-          obj.push(this.parseFragment(fragments[i]));
-        }
+      if (!match) {
+        throw new Error("Invalid location fragment: " + fragment);
       }
-
-      return obj;
-    },
-
-
-    /** {RegExp} Matches location fragments (view.segment:param) */
-    __fragmentMatcher : /^([a-z0-9-]+)?(\.([a-z-]+))?(\:([a-zA-Z0-9_-]+))?$/,
-
-
-    /**
-     * Parses a location fragment into a object with the keys "view", "segment" and "param".
-     *
-     * @param fragment {String} Location fragment to parse
-     * @return {Map} The parsed fragment.
-     */
-    parseFragment : function(fragment)
-    {
-      var match = this.__fragmentMatcher.exec(fragment);
-      if (qx.core.Environment.get("qx.debug"))
-      {
-        if (!match) {
-          throw new Error("Invalid location fragment: " + fragment);
-        }
-      }
-
-      return {
-        view : RegExp.$1 || null,
-        segment : RegExp.$3 || null,
-        param : RegExp.$5 || null
-      };
-    },
-    
-    /**
-     * Checks wheter all single chunks of paths are equal.
-     *
-     * @param a {unify.view.Path} Path a
-     * @param b {unify.view.Path} Path b
-     *
-     * @return {Boolean} true if paths are equal, otherwise false
-     */
-    chunkEquals : function(a, b) {
-      if (!a || !b) {
-        return false;
-      }
-      return (a.view == b.view && a.segment == b.segment && a.param == b.param);
     }
+
+    return {
+      view : RegExp.$1 || null,
+      segment : RegExp.$3 || null,
+      param : RegExp.$5 || null
+    };
+  },
+  
+  /**
+   * Checks wheter all single chunks of paths are equal.
+   *
+   * @param a {unify.view.Path} Path a
+   * @param b {unify.view.Path} Path b
+   *
+   * @return {Boolean} true if paths are equal, otherwise false
+   */
+  chunkEquals : function(a, b) {
+    if (!a || !b) {
+      return false;
+    }
+    return (a.view == b.view && a.segment == b.segment && a.param == b.param);
   }
 });

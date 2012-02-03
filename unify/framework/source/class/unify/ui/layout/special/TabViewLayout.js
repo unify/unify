@@ -11,8 +11,8 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.ui.layout.special.TabViewLayout", {
-  extend : qx.ui.layout.Abstract,
+core.Class("unify.ui.layout.special.TabViewLayout", {
+  include : [unify.ui.layout.Base],
   
   members : {
     __content : null,

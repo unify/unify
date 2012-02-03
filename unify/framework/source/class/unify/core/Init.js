@@ -1,0 +1,42 @@
+core.Class("unify.core.Init", {
+  members : {
+    main : function() {
+      throw new Error("main is not implemented");
+    },
+    finalize : function() {}
+  }
+});
+
+(function() {
+  var load = function() {
+    var Application = core.Class.getByName(core.Env.getValue("application"));
+    var init = new Application();
+
+    init.main();
+    init.finalize();
+  };
+  
+  var events = ["error",
+      "load",
+      "beforeunload",
+      "unload",
+      "resize",
+      "scroll",
+      "beforeshutdown"];
+      
+  var addNativeListener = function(target, type, listener, useCapture) {
+      if (target.addEventListener) {
+        target.addEventListener(type, listener, !!useCapture);
+      } else if (target.attachEvent) {
+        target.attachEvent("on" + type, listener);
+      } else if (typeof target["on" + type] != "undefined") {
+        target["on" + type] = listener;
+      } else {
+        /*if (qx.core.Environment.get("qx.debug")) {
+          qx.log.Logger.warn("No method available to add native listener to " + target);
+        }*/
+      }
+    };
+
+  addNativeListener(window, "load", load);
+})();

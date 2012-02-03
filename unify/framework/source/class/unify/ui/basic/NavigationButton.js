@@ -14,16 +14,14 @@
  * EXPERIMENTAL
  */
  
-qx.Class.define("unify.ui.basic.NavigationButton", {
-  extend: unify.ui.form.Button,
-
-  include : [unify.ui.core.MNavigatable],
+core.Class("unify.ui.basic.NavigationButton", {
+  include : [unify.ui.form.Button, unify.ui.core.MNavigatable],
   
   /**
    * @param label {String} Label on button
    */
   construct : function(label) {
-    this.base(arguments, label);
+    unify.ui.form.Button.call(this, label);
     
     this._applyMNavigatable();
   }

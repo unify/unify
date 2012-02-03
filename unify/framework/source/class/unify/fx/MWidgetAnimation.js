@@ -11,7 +11,7 @@
 /**
  * Add support for animations to widgets
  */
-qx.Mixin.define("unify.fx.MWidgetAnimation", {
+core.Class("unify.fx.MWidgetAnimation", {
   
   events : {
     /** Fired after position animation is done */
@@ -27,43 +27,43 @@ qx.Mixin.define("unify.fx.MWidgetAnimation", {
   properties : {
     /** {Map} Position to animate to */
     animatePosition : {
-      apply : "__mwaApplyAnimationPosition",
+      apply : this.__mwaApplyAnimationPosition,
       nullable: true
     },
     
     /** {Integer} Duration of position animation in milliseconds */
     animatePositionDuration : {
-      check: "Integer",
+      type: "Integer",
       init: 5000
     },
     
     /** {Float} Opacity to animate to */
     animateOpacity : {
-      apply : "__mwaApplyAnimationOpacity",
+      apply : this.__mwaApplyAnimationOpacity,
       nullable: true
     },
     
     /** {Integer} Duration of opacity animation in milliseconds */
     animateOpacityDuration : {
-      check: "Integer",
+      type: "Integer",
       init: 5000
     },
     
     /** {Integer} Rotation level in degree to animate to */
     animateRotate : {
-      apply : "__mwaApplyAnimationRotate",
+      apply : this.__mwaApplyAnimationRotate,
       nullable: true
     },
     
     /** {Integer} Duration of rotation animation in milliseconds */
     animateRotateDuration : {
-      check: "Integer",
+      type: "Integer",
       init: 5000
     },
     
     /** {Boolean} If true rotation animation is infinite, duration is time for one round */
     animateRotateInfinite : {
-      check: "Boolean",
+      type: "Boolean",
       init: false
     }
   },

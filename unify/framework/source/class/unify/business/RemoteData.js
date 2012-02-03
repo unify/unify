@@ -17,7 +17,7 @@
  */
 qx.Class.define("unify.business.RemoteData",
 {
-  extend : unify.business.StaticData,
+  include : [unify.business.StaticData],
 
 
 
@@ -30,7 +30,8 @@ qx.Class.define("unify.business.RemoteData",
   // overridden
   construct : function()
   {
-    this.base(arguments);
+    // TODO: RIGHT?
+    unify.business.StaticData.prototype.construct();
 
     /** {Map} In-Memory Cache */
     this.__cache = {};
@@ -911,7 +912,7 @@ qx.Class.define("unify.business.RemoteData",
       }
     }
 
-  },
+  }
 
   /*
   *****************************************************************************
@@ -919,10 +920,10 @@ qx.Class.define("unify.business.RemoteData",
   *****************************************************************************
   */
 
-  destruct : function()
+  /*destruct : function()
   {
     // Dereference native binding
     this.__cache = null;
     qx.event.Registration.removeListener(unify.bom.Storage,"quota_exceeded_err",this.__onQuotaExceeded,this);
-  }
+  }*/
 });

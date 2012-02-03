@@ -11,11 +11,8 @@
  * Basic data related business object to offline available data
  * (compiled into script block for example)
  */
-qx.Class.define("unify.business.StaticData",
+core.Class("unify.business.StaticData",
 {
-  extend : qx.core.Object,
-
-
   /*
   *****************************************************************************
      CONSTRUCTOR
@@ -25,8 +22,6 @@ qx.Class.define("unify.business.StaticData",
   // overridden
   construct : function()
   {
-    this.base(arguments);
-
     // Initialize service list
     this.__services = {};
   },
@@ -39,8 +34,7 @@ qx.Class.define("unify.business.StaticData",
   *****************************************************************************
   */
 
-  members :
-  {
+  members : {
     /*
     ---------------------------------------------------------------------------
       PUBLIC API
@@ -56,7 +50,7 @@ qx.Class.define("unify.business.StaticData",
      */
     read : function(service, params)
     {
-      if (qx.core.Environment.get("qx.debug"))
+      if (core.Env.getValue("debug"))
       {
         if (!service || !this.__services[service]) {
           throw new Error("Unsupported service: " + service);

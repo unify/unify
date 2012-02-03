@@ -11,8 +11,8 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.ui.layout.special.OverlayLayout", {
-  extend : qx.ui.layout.Abstract,
+core.Class("unify.ui.layout.special.OverlayLayout", {
+  include : [unify.ui.layout.Base],
   
   members : {
     __arrow : null,

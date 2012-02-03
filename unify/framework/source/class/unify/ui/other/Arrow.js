@@ -11,20 +11,20 @@
 /**
  * Arrow widget, mainly used in overlay
  */
-qx.Class.define("unify.ui.other.Arrow", {
-  extend: unify.ui.core.Widget,
+core.Class("unify.ui.other.Arrow", {
+  include: [unify.ui.core.Widget],
   
   properties : {
     /** Direction of arrow */
     direction : {
-      check : ["left", "top", "right", "bottom"],
+      type : ["left", "top", "right", "bottom"],
       init: "top",
-      apply: "_applyDirection"
+      apply: this._applyDirection
     },
 
     /** {Map[]} Speacial css styles for arrow element */
     arrowStyle : {
-      apply: "_applyArrowStyle"
+      apply: this._applyArrowStyle
     }
   },
   

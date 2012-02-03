@@ -11,9 +11,8 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.ui.basic.Atom", {
-  extend: unify.ui.core.Widget,
-  include : [unify.ui.core.MChildControl],
+core.Class("unify.ui.basic.Atom", {
+  include: [unify.ui.core.Widget, unify.ui.core.MChildControl],
   
   /**
    * @param label {String} Label on atom
@@ -33,7 +32,7 @@ qx.Class.define("unify.ui.basic.Atom", {
   properties : {
     /** Position of image */
     direction : {
-      check : "String",
+      type : "String",
       init : "top"
     },
     
@@ -46,12 +45,12 @@ qx.Class.define("unify.ui.basic.Atom", {
     
     text : {
       init: null,
-      apply: "_applyText"
+      apply: this._applyText
     },
     
     image : {
       init: null,
-      apply: "_applyImage"
+      apply: this._applyImage
     }
   },
   

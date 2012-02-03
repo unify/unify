@@ -13,12 +13,12 @@
  *
  * Root widget bound to the root DOM element
  */
-qx.Class.define("unify.view.Root", {
-  extend : unify.ui.core.Widget,
+core.Class("unify.view.Root", {
+  include : [unify.ui.core.Widget],
   
-  include : [
+  /*include : [
     qx.ui.core.MChildrenHandling
-  ],
+  ],*/
   
   /**
    * @param rootElement {Element} DOM element the widget root is bound to
@@ -29,11 +29,11 @@ qx.Class.define("unify.view.Root", {
     this.__rootElement = rootElement;
     this.__rootEventElement = rootEventElement;
     
-    this.base(arguments);
+    unify.ui.core.Widget.call(this);
     
     this._setLayout(layout||new unify.ui.layout.Canvas());
     
-    qx.event.Registration.addListener(window, "resize", this.__onResize, this);
+    // TODO : qx.event.Registration.addListener(window, "resize", this.__onResize, this);
   },
   
   properties : {
@@ -76,7 +76,7 @@ qx.Class.define("unify.view.Root", {
         this.__rootSizeHint = null;
         
         this.invalidateLayoutChildren();
-        qx.ui.core.queue.Layout.add(this);
+        unify.ui.layout.queue.Layout.add(this);
       }
     },
     
@@ -114,7 +114,7 @@ qx.Class.define("unify.view.Root", {
     },
     
     __rootEvents : ["touchstart", "touchmove", "touchend", "touchcancel"],
-    __EventRegistration : qx.event.Registration,
+    // TODO: __EventRegistration : qx.event.Registration,
     
     // overridden
     addListener : function(type, listener, self, capture) {
@@ -161,7 +161,7 @@ qx.Class.define("unify.view.Root", {
         return this.base(arguments, type, capture);
       }
     }
-  },
+  }/*,
   
   destruct : function() {
     qx.event.Registration.removeListener(window, "resize", this.__onResize, this);
@@ -169,5 +169,5 @@ qx.Class.define("unify.view.Root", {
   
   defer : function(statics, members) {
     qx.ui.core.MChildrenHandling.remap(members);
-  }
+  }*/
 });

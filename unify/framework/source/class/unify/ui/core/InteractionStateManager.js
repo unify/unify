@@ -11,9 +11,7 @@
 /**
  * Interaction state manager to support in hovering and pressing the right widgets
  */
-qx.Class.define("unify.ui.core.InteractionStateManager", {
-  extend: qx.core.Object,
-  type: "singleton",
+core.Class("unify.ui.core.InteractionStateManager", {
   
   properties : {
     /**
@@ -31,3 +29,4 @@ qx.Class.define("unify.ui.core.InteractionStateManager", {
     }
   }
 });
+unify.core.Singleton.annotate(unify.ui.core.InteractionStateManager);

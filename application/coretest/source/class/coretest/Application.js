@@ -13,12 +13,14 @@
 
 ************************************************************************ */
 
+core.Env.define("application", "coretest.Application");
+
 /**
  * Unify application class
  */
-qx.Class.define("coretest.Application",
+core.Class("coretest.Application",
 {
-  extend : unify.Application,
+  include : [unify.Application],
 
   members :
   {
@@ -26,10 +28,10 @@ qx.Class.define("coretest.Application",
     main : function()
     {
       // Call super class
-      this.base(arguments);
+      unify.Application.prototype.main.call(this);
 
       // Set theme
-      qx.theme.manager.Meta.getInstance().setTheme(unify.theme.Dark);
+      //qx.theme.manager.Meta.getInstance().setTheme(unify.theme.Dark);
 
       // Configure application
       document.title = "coretest";
@@ -51,6 +53,10 @@ qx.Class.define("coretest.Application",
       var Navigation = unify.view.Navigation.getInstance();
       Navigation.register(MasterViewManager);
       Navigation.init();
+    },
+    
+    _getTheme : function() {
+      return null; // TODO
     }
   }
 });

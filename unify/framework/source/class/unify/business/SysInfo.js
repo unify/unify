@@ -10,10 +10,9 @@
 /**
  * Prepares system information data
  */
-qx.Class.define("unify.business.SysInfo",
+core.Class("unify.business.SysInfo",
 {
-  extend : unify.business.StaticData,
-  type : "singleton",
+  include : [unify.business.StaticData],
 
 
   /*
@@ -23,8 +22,7 @@ qx.Class.define("unify.business.SysInfo",
   */
 
   // overridden
-  construct : function()
-  {
+  construct : function() {
     this.base(arguments);
 
     this._addService("basics");
@@ -135,3 +133,5 @@ qx.Class.define("unify.business.SysInfo",
     }
   }
 });
+
+unify.core.Singleton.annotate(unify.business.SysInfo);

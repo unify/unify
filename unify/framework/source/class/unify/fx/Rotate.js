@@ -11,8 +11,8 @@
 /**
  * Animate position of widget
  */
-qx.Class.define("unify.fx.Rotate", {
-  extend: unify.fx.core.Base,
+core.Class("unify.fx.Rotate", {
+  include: [unify.fx.core.Base],
   
   members : {
     __mod : null,

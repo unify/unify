@@ -10,9 +10,8 @@
 /**
  * Start View
  */
-qx.Class.define("coretest.view.Start", {
-  extend : unify.view.StaticView,
-  type : "singleton",
+core.Class("coretest.view.Start", {
+  include : [unify.view.StaticView],
 
   members : 
   {
@@ -30,3 +29,5 @@ qx.Class.define("coretest.view.Start", {
     }
   }
 });
+
+unify.core.Singleton.annotate(coretest.view.Start);

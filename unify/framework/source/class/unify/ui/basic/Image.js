@@ -12,8 +12,8 @@
  * EXPERIMENTAL
  */
  
-qx.Class.define("unify.ui.basic.Image", {
-  extend: unify.ui.core.Widget,
+core.Class("unify.ui.basic.Image", {
+  include: [unify.ui.core.Widget],
   
   /**
    * @param source {String} URL of image
@@ -28,12 +28,11 @@ qx.Class.define("unify.ui.basic.Image", {
   properties : {
     /** {String} URL of image */
     source : {
-      apply : "_applySource"
+      apply : this._applySource
     },
     // overridden
     appearance :
     {
-      refine: true,
       init: "image"
     }
   },
