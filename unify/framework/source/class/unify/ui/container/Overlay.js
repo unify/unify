@@ -65,7 +65,7 @@ qx.Class.define("unify.ui.container.Overlay", {
       nullable: true
     },
     
-    blockerClose : {
+    modal : {
       check: "Boolean",
       init: true
     },
