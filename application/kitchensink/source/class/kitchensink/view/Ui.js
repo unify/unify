@@ -66,7 +66,7 @@ qx.Class.define("kitchensink.view.Ui", {
       // Show Alert message ------------------------------------------------
       var alertButton = new unify.ui.form.Button("Alert");
       alertButton.addListener("execute", function(e) {
-        unify.ui.dialog.UserInteraction.alert(
+        unify.ui.dialog.Dialog.alert(
             "Alert", 
             "Be Alert!", 
             function() { console.log("You have been alerted..."); }
@@ -77,7 +77,7 @@ qx.Class.define("kitchensink.view.Ui", {
       // Show Confirm Dialog ------------------------------------------------
       var confirmButton = new unify.ui.form.Button("Confirm");
       confirmButton.addListener("execute", function(e) {
-        unify.ui.dialog.UserInteraction.confirm(
+        unify.ui.dialog.Dialog.confirm(
             "Please deside...",
             "Witch programming language is the best?",
             "JavaScript", 
