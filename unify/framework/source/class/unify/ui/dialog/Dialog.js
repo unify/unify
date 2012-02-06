@@ -22,7 +22,7 @@
  * This code is inspired by an qooxdoo example from Christian Boulanger:
  * @see http://qooxdoo.org/documentation/0.7/snippets/asynchronous_user_interaction
  */
-qx.Class.define("unify.ui.dialog.UserInteraction", {
+qx.Class.define("unify.ui.dialog.Dialog", {
   type: 'static',
   
   statics: {
