@@ -56,7 +56,7 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           top: 0,
           width: "100%",
           height: "100%",
-          background: "rgba(0, 0, 0, 0.7)"
+          background: "transparent"
         }
       }
     },

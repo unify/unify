@@ -101,13 +101,13 @@ qx.Class.define("kitchensink.view.Ui", {
       dialog.addListener("execute", this.__onDialogExecute, this);
       var overlay = dialog.getOverlay();
       
-      unify.view.PopOverManager.getInstance().show(overlay);
+      unify.ui.core.PopOverManager.getInstance().show(overlay);
     },
     
     __onDialogExecute : function(e) {
       this.debug("Dialog action : " + e.getData());
       
-      unify.view.PopOverManager.getInstance().hide(this.__dialog.getOverlay());
+      unify.ui.core.PopOverManager.getInstance().hide(this.__dialog.getOverlay());
     }
     
   }

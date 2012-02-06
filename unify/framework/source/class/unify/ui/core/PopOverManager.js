@@ -150,13 +150,13 @@ qx.Class.define("unify.ui.core.PopOverManager",
      */
     show : function(overlay, trigger) {
       if (qx.core.Environment.get("qx.debug")) {
-        this.debug("Show: " + widget);
+        this.debug("Show: " + overlay);
       }
       
       if (trigger) {
         overlay.setTrigger(trigger);
       }
-      this.__root.add(widget);
+      this.__root.add(overlay);
       
       this.__visibleOverlays.push(overlay);
       this.__sortPopOvers();

@@ -56,12 +56,12 @@ qx.Class.define("unify.ui.dialog.Dialog", {
       
       // Add an event handler for closing the dialog
       dialog.addListener("execute", function(e) {
-        unify.view.helper.OverlayManager.getInstance().hide(dialog.getOverlay());
+        unify.ui.core.PopOverManager.getInstance().hide(dialog.getOverlay());
         callback.call(context, e);
       }, this);
       
       // Show the ovelay
-      unify.view.helper.OverlayManager.getInstance().show(dialog.getOverlay());
+      unify.ui.core.PopOverManager.getInstance().show(dialog.getOverlay());
     },
     
     /**
@@ -75,7 +75,7 @@ qx.Class.define("unify.ui.dialog.Dialog", {
      * @return {void} 
      */
     alert : function(title, msg, callback, context) {
-      unify.ui.dialog.UserInteraction._showDialog(
+      unify.ui.dialog.Dialog._showDialog(
           title,
           msg,
           [], //Default: Show only a OK Button
@@ -97,7 +97,7 @@ qx.Class.define("unify.ui.dialog.Dialog", {
      * @return {void} 
      */
     confirm : function(title, msg, yesBtn, noBtn, callback, context) {
-      unify.ui.dialog.UserInteraction._showDialog(
+      unify.ui.dialog.Dialog._showDialog(
           title,
           msg,
           [{

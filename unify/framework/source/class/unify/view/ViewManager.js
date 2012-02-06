@@ -395,7 +395,7 @@ qx.Class.define("unify.view.ViewManager", {
       this.__setView(currentViewObj, layerTransition);
       var mode=this.getDisplayMode();
       if(mode=='modal'){
-        unify.view.PopOverManager.getInstance().show(this.getId());
+        unify.view.helper.ViewOverlayManager.getInstance().show(this.getId());
       }
       // Save path
       this.__path = path;
@@ -445,7 +445,7 @@ qx.Class.define("unify.view.ViewManager", {
     showModal : function()
     {
       if(this.getDisplayMode()!="modal"){
-        throw new Error("called shoModal on ViewManager without displaymode modal: "+this);
+        throw new Error("called showModal on ViewManager without displaymode modal: "+this);
       }
 
       // Be sure that we show a view (if possible)
