@@ -492,7 +492,7 @@ qx.Class.define("unify.event.handler.Touch",
         {
           type = eventMapping[type];
           // Remember if we are in a touch event
-          if (type == "touchstart" && this.__isLeftMouseButton(domEvent)) {
+          if (type == "touchstart") {
             this.__isInTouch = true;
           } else if (type == "touchend") {
             this.__isInTouch = false;
@@ -684,7 +684,8 @@ qx.Class.define("unify.event.handler.Touch",
             return;
           }
           // only fire a "tap" event on the left mouse button
-          if (!this.__isLeftMouseButton(domEvent)) {
+          if ((domEvent.type == "mousedown" || domEvent.type == "mouseup") 
+              && !this.__isLeftMouseButton(domEvent)) {
             return;
           }
           var type = this.__normalizeMouseEvent(domEvent);
