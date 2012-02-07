@@ -1407,7 +1407,7 @@ qx.Class.define("unify.ui.core.Widget", {
       //now check each property
       if (fontSize) {
         delete map.fontSize;
-        if (typeof(fontSize) == "string") {
+        if (typeof(fontSize) == "string" && fontSize.substr(-2) != "px") {
           tmpFont.setSize(unify.bom.Font.resolveRelativeSize(fontSize));
         } else {
           tmpFont.setSize(parseInt(fontSize, 10));
