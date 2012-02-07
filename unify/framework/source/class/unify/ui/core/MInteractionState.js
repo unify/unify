@@ -25,6 +25,28 @@ qx.Mixin.define("unify.ui.core.MInteractionState", {
     __MInteractionStatePressed : null,
     
     /**
+     * Checks if the left mouse button is pressed.
+     *
+     * @signature function(domEvent)
+     * @param domEvent {Event} DOM event
+     * @return {Boolean} Whether the left mouse button is pressed
+     */
+    __isLeftMouseButtonPressed : qx.core.Environment.select("qx.mobile.emulatetouch",
+    {
+      "true" : function(domEvent)
+      {
+        if ((qx.core.Environment.get("engine.name") == "mshtml")) {
+          var buttonIndex = 1;
+        } else {
+          var buttonIndex = 0;
+        }
+        return domEvent.button == buttonIndex;
+      },
+
+      "default" : qx.lang.Function.empty
+    }),
+    
+    /**
      * Set up event listener for interaction states
      */
     _applyMInteractionState : function() {
@@ -75,7 +97,13 @@ qx.Mixin.define("unify.ui.core.MInteractionState", {
     /**
      * Adds pressed state to widget
      */
-    __MInteractionStateAddPressed : function() {
+    __MInteractionStateAddPressed : function(domEvent) {
+      
+      // only react on the left mouse button; ignore all others
+      if (domEvent._type == "mousedown" && !this.__isLeftMouseButtonPressed(domEvent)) {
+        return;
+      }
+      
       var InteractionStateManager = unify.ui.core.InteractionStateManager.getInstance();
       if (InteractionStateManager.getPressedWidget() == null) {
         this.addState("pressed");
@@ -86,7 +114,13 @@ qx.Mixin.define("unify.ui.core.MInteractionState", {
     /**
      * Removes pressed state to widget
      */
-    __MInteractionStateRemovePressed : function() {
+    __MInteractionStateRemovePressed : function(domEvent) {
+      
+      // only react on the left mouse button; ignore all others
+      if (domEvent._type == "mousedown" && !this.__isLeftMouseButtonPressed(domEvent)) {
+        return;
+      }
+      
       var InteractionStateManager = unify.ui.core.InteractionStateManager.getInstance();
       if (InteractionStateManager.getPressedWidget() == this) {
         this.removeState("pressed");

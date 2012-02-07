@@ -376,7 +376,8 @@ qx.Class.define("unify.business.RemoteData",
      * @return {String} Unique ID to identify service/param combination in the "completed" event
      */
     options : function(service, params) {
-      return this.__communicate(service, params, "OPTIONS");
+      var id = this._getCommunicationId();
+      return this._communicate(service, params, "OPTIONS", id);
     },
 
 
@@ -388,7 +389,8 @@ qx.Class.define("unify.business.RemoteData",
      * @return {String} Unique ID to identify service/param combination in the "completed" event
      */
     get : function(service, params) {
-      return this.__communicate(service, params, "GET");
+      var id = this._getCommunicationId();
+      return this._communicate(service, params, "GET", id);
     },
 
 
@@ -401,7 +403,8 @@ qx.Class.define("unify.business.RemoteData",
      * @return {String} Unique ID to identify service/param combination in the "completed" event
      */
     post : function(service, params, data) {
-      return this.__communicate(service, params, "POST", data);
+      var id = this._getCommunicationId();
+      return this._communicate(service, params, "POST", data, id);
     },
 
 
@@ -413,7 +416,8 @@ qx.Class.define("unify.business.RemoteData",
      * @return {String} Unique ID to identify service/param combination in the "completed" event
      */
     put : function(service, params) {
-      return this.__communicate(service, params, "PUT");
+      var id = this._getCommunicationId();
+      return this._communicate(service, params, "PUT", id);
     },
 
 
@@ -425,7 +429,8 @@ qx.Class.define("unify.business.RemoteData",
      * @return {String} Unique ID to identify service/param combination in the "completed" event
      */
     del : function(service, params) {
-      return this.__communicate(service, params, "DELETE");
+      var id = this._getCommunicationId();
+      return this._communicate(service, params, "DELETE", id);
     },
 
 
@@ -437,7 +442,8 @@ qx.Class.define("unify.business.RemoteData",
      * @return {String} Unique ID to identify service/param combination in the "completed" event
      */
     head : function(service, params) {
-      return this.__communicate(service, params, "HEAD");
+      var id = this._getCommunicationId();
+      return this._communicate(service, params, "HEAD", id);
     },
 
 
@@ -478,6 +484,11 @@ qx.Class.define("unify.business.RemoteData",
 
     /** {Map} Custom request headers */
     __headers : null,
+
+
+    _getCommunicationId : function() {
+      return this.__requestCounter++;
+    },
 
 
     /**
@@ -569,10 +580,11 @@ qx.Class.define("unify.business.RemoteData",
      * @param service {String} Identifier of the service to communicate to
      * @param params {Map?null} Optional map of parameters to patch URL with / use for filter method
      * @param method {String} Any supported HTTP method: OPTIONS, GET, POST, PUT, DELETE and HEAD
+     * @param id {Integer} Unique id of request, can be generated via _getCommunicationId
      * @param data {var?null} Data to attach to a POST request
      * @return {String} Returns a unique ID based on the service/param combination
      */
-    __communicate : function(service, params, method, data)
+    _communicate : function(service, params, method, id, data)
     {
       var config = this._getService(service);
 
@@ -657,7 +669,6 @@ qx.Class.define("unify.business.RemoteData",
       req.setUserData("params", params);
 
       // Every request has a unique identifier
-      var id = this.__requestCounter++;
       req.setUserData("id", id);
       if (qx.core.Environment.get("qx.debug")) {
         this.debug("Sending request to: " + service + "[id=" + id + "]...");
