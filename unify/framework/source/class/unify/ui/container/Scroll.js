@@ -435,7 +435,6 @@ qx.Class.define("unify.ui.container.Scroll", {
      * @param zoom {Number?null} Zoom level
      */
     __scrollTo : function(left,top,animate,zoom){
-      console.log("scrollto",left,top);
       this.__scroller.scrollTo(left,top,animate,zoom);
       if(!animate){
         this.__scrollTop=top;
