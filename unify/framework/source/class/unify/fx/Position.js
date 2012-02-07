@@ -34,13 +34,13 @@ qx.Class.define("unify.fx.Position", {
         };
       }
       
-      left = left.toString().split("%");
-      top = top.toString().split("%");
-      
-      if (left.length + top.length > 2) {
-        var posInfo = this._widget.getPositionInfo();
-        
+      var posInfo = this._widget.getPositionInfo();
+      if (left.toString().indexOf("%") > 0) {
+        left = left.toString().split("%");
         left = Math.round(posInfo.width * (left[0] / 100.0));
+      }
+      if (top.toString().indexOf("%") > 0) {
+        top = top.toString().split("%");
         top = Math.round(posInfo.height * (top[0] / 100.0));
       }
       
