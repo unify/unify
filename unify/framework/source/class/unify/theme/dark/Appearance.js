@@ -760,8 +760,8 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         return {
           backgroundColor: "white",
           
-          marginTop : -250,
-          marginLeft : -200,
+          marginTop : -200,
+          marginLeft : -250,
           
           properties : {
             hasArrow: false,
