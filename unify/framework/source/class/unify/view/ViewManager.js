@@ -415,7 +415,7 @@ qx.Class.define("unify.view.ViewManager", {
      */
     hideModal : function(callback)
     {
-      if(this.getDisplayMode()!="modal"){
+      if(this.getDisplayMode() != "modal"){
         throw new Error("hideModal called on ViewManager without displaymode modal: "+this);
       }
       var view = this.__currentView;
@@ -790,17 +790,17 @@ qx.Class.define("unify.view.ViewManager", {
 
       var visibilityAction = function() {
         var afterRenderAction = function() {
-          var transitionEndFnt = function() {if(!show){
-            view.setActive(false);
-            view.hide();
-            self.hide();
-          }
+          var transitionEndFnt = function() {
+            if(!show){
+              view.setActive(false);
+              view.hide();
+              self.hide();
+            }
             if(callback){
               callback();
             }
           };
           view.addListenerOnce("animatePositionDone", transitionEndFnt, this);
-
           view.setAnimatePositionDuration(AnimationDuration);
           view.setAnimatePosition((show) ? self.__positions.center : self.__positions.bottom);
         }
