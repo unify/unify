@@ -30,6 +30,7 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
     
     this.__visibleViewManagers = [];
     this.__styleRegistry = {};
+    this.__overlays = {};
   },
   
   events : {
@@ -56,6 +57,8 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
     
     /** {Map} Style registry */
     __styleRegistry : null,
+    
+    __overlays : null,
     
     /**
      * Set styles for a specific viewManager
@@ -111,28 +114,21 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
       }
 
       var overlay;
-      //if(displayMode=='popover'){
 
-        overlay = this.__getOverlay(viewManager);
-        overlay.set({
-          modal: (displayMode == "modal")
-        });
+      overlay = this.__getOverlay(viewManager);
+      overlay.set({
+        modal: (displayMode == "modal")
+      });
 
-        var registeredStyle = this.__styleRegistry[viewManager];
-        if(registeredStyle){
-          overlay.getChildrenContainer().setStyle(registeredStyle);
-        }
-        overlay.add(viewManager, { top:0, left:0, right:0, bottom:0 });
-        
-        if (this.__root != overlay.getLayoutParent()) {
-          this.__root.add(overlay);
-        }
-        
-      /*} else if(displayMode=="modal") {
-        if(this.__root!=viewManager.getLayoutParent()){
-          this.__root.add(viewManager,this.__styleRegistry[viewManager] ||{top:0,left:0,right:0,bottom:0});
-        }
-      }*/
+      var registeredStyle = this.__styleRegistry[viewManager];
+      if(registeredStyle){
+        overlay.getChildrenContainer().setStyle(registeredStyle);
+      }
+      overlay.add(viewManager, { top:0, left:0, right:0, bottom:0 });
+      
+      qx.core.Init.getApplication().getRoot().add(overlay, { left: 0, top: 0, right: 0, bottom: 0 });
+      
+      this.__visibleViewManagers.push(viewManager);
       
       var PopOverManager = unify.ui.core.PopOverManager.getInstance();
       PopOverManager.addListenerOnce("show", function(e) {
@@ -179,34 +175,23 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
       var self=this;
       var hideCallback=function(){
         qx.lang.Array.remove(self.__visibleViewManagers, viewManager);
-        self.__sortPopOvers();
         
         self.fireDataEvent("hide", id);
       };
 
-      /*if(mode=='popover'){*/
-        var overlay=this.__overlays[viewManager];
-        var PopOverManager = unify.ui.core.PopOverManager.getInstance();
-        PopOverManager.addListenerOnce("", function() {}, this);
-        PopOverManager.hide(overlay);
-        //TODO reenable animations in overlay and skipAnimation here
-        /*
-        if(skipAnimation){
-          var animate=overlay.getEnableAnimation();
-          overlay.setEnableAnimation(false);
+      var overlay=this.__overlays[viewManager];
+      var PopOverManager = unify.ui.core.PopOverManager.getInstance();
+      PopOverManager.addListenerOnce("", function() {}, this);
+      PopOverManager.hide(overlay);
+      
+      overlay.addListenerOnce("hidden",hideCallback,this);
+      if (mode == "modal") {
+        viewManager.hideModal(function() {
           overlay.hide();
-          overlay.setEnableAnimation(animate);
-          hideCallback();
-        } else {
-          overlay.addListenerOnce("hidden",hideCallback,this);
-          overlay.hide();
-        }
-        */
-        overlay.addListenerOnce("hidden",hideCallback,this);
+        });
+      } else {
         overlay.hide();
-      /*} else {
-        viewManager.hideModal(hideCallback);
-      }*/
+      }
     },
 
     /**
@@ -216,9 +201,9 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
      * @return {unify.ui.container.Overlay} Overlay widget
      */
     __getOverlay : function(viewManager){
-      var overlay=this.__overlays[viewManager];
+      var overlay = this.__overlays[viewManager];
       if(!overlay){
-        overlay=new unify.ui.container.Overlay();
+        overlay = (viewManager.getDisplayMode() == "modal") ? new unify.ui.container.SimpleOverlay() : new unify.ui.container.Overlay();
         var appearanceId=viewManager.getId()+"-overlay";
         var appearance=qx.theme.manager.Appearance.getInstance().styleFrom(appearanceId);
         if(appearance){
