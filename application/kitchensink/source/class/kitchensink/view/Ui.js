@@ -92,6 +92,13 @@ qx.Class.define("kitchensink.view.Ui", {
           );
         }, this);
       container.add(confirmButton);
+      
+      // Open modal view
+      var openModalButton = new unify.ui.basic.NavigationButton("Modal");
+      openModalButton.set({
+        goTo: "modal"
+      });
+      container.add(openModalButton);
     },
     
     __dialog : null,
