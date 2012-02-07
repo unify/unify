@@ -114,7 +114,13 @@ qx.Mixin.define("unify.ui.core.MInteractionState", {
     /**
      * Removes pressed state to widget
      */
-    __MInteractionStateRemovePressed : function() {
+    __MInteractionStateRemovePressed : function(domEvent) {
+      
+      // only react on the left mouse button; ignore all others
+      if (domEvent._type == "mousedown" && !this.__isLeftMouseButtonPressed(domEvent)) {
+        return;
+      }
+      
       var InteractionStateManager = unify.ui.core.InteractionStateManager.getInstance();
       if (InteractionStateManager.getPressedWidget() == this) {
         this.removeState("pressed");
