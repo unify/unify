@@ -14,17 +14,7 @@
  * Overlay container widget
  */
 qx.Class.define("unify.ui.container.Overlay", {
-  extend : unify.ui.container.Composite,
-  
-  include : [unify.ui.core.MChildControl, qx.ui.core.MRemoteChildrenHandling],
-  
-  events : {
-    /** Event thrown if overlay visibility is changed to hidden */
-    "hidden" : "qx.event.type.Event",
-    
-    /** Event thrown if overlay visibility is changed to shown */
-    "shown" : "qx.event.type.Event"
-  },
+  extend : unify.ui.container.SimpleOverlay,
   
   properties : {
     // overridden
@@ -47,34 +37,7 @@ qx.Class.define("unify.ui.container.Overlay", {
     relativeArrowPosition : {
       init: "left",
       nullable: true
-    },
-
-    /** optional reference to widget that triggers show/hide of this overlay */
-    trigger : {
-      check: "unify.ui.core.Widget",
-      init: null,
-      nullable: true
-    },
-
-     /** optional strategy to ponsition overlay relative to trigger
-      * must be a map containing a value for x and y axis
-      * the value can be "left,right,center,top,bottom, a percentage of the axis size or a pixel value (relative to axis start)
-      */
-    relativeTriggerPosition : {
-      init: {y:"bottom",x:"center"},
-      nullable: true
-    },
-    
-    modal : {
-      check: "Boolean",
-      init: true
-    },
-    
-    staticPosition : {
-      init: null,
-      nullable: true
     }
-
   },
 
   
@@ -100,15 +63,6 @@ qx.Class.define("unify.ui.container.Overlay", {
         this._showChildControl("arrow");
       }
     },
-    
-    /**
-     * Gets inner content container
-     *
-     * @return {unify.ui.core.Widget} Content widget
-     */
-    getChildrenContainer : function() {
-      return this.getChildControl("container");
-    },
 
     /**
      * Returns child control widget identified by id
@@ -124,9 +78,6 @@ qx.Class.define("unify.ui.container.Overlay", {
         this._addAt(control, 1, {
           type: "arrow"
         });
-      } else if (id == "container") {
-        control = new unify.ui.container.Composite(new unify.ui.layout.Canvas());
-        this._addAt(control, 0);
       }
       
       return control || this.base(arguments, id);
@@ -143,9 +94,11 @@ qx.Class.define("unify.ui.container.Overlay", {
         this._excludeChildControl("arrow");
       }
     },
+    
     //overridden, calculate overlaysize as content size + arrow size depending on arrow direction
     _computeSizeHint: function(){
-      var hint=this.getChildrenContainer().getSizeHint();
+      var hint=this.base(arguments);
+      
       if(this.getHasArrow()){
         var arrow=this.getChildControl("arrow");
         var arrowHint=arrow.getSizeHint();
@@ -156,6 +109,7 @@ qx.Class.define("unify.ui.container.Overlay", {
           hint.height+=arrowHint.height;
         }
       }
+      
       return hint;
     },
     
@@ -165,29 +119,18 @@ qx.Class.define("unify.ui.container.Overlay", {
      * if the overlay has an arrow, the arrows pointing edge is used as reference
      */
     __getPositionHint : function() {
-      qx.ui.core.queue.Manager.flush();//make sure appearance is applied
+      var pos = this.base(arguments);
       
-      var left = 0;
-      var top = 0;
+      var left = pos.left;
+      var top = pos.top;
+      
       var isString = false;
       
       var staticPosition = this.getStaticPosition();
-      if (staticPosition) {
-        left = staticPosition.left;
-        top = staticPosition.top;
-        if (typeof(left) == "string" || typeof(top) == "string") {
-          isString = true;
-        }
+      if (staticPosition && typeof(staticPosition.left) == "string" || typeof(staticPosition.top) == "string") {
+        isString = true;
       }
       
-      var trigger=this.getTrigger();
-      var relativeTriggerPosition=this.getRelativeTriggerPosition();
-
-      if(trigger && relativeTriggerPosition){
-        var triggerPoint=this.__resolveRelative(trigger.getPositionInfo(),relativeTriggerPosition);
-        left = triggerPoint.left;
-        top=triggerPoint.top;
-      }
       var arrow=this.getChildControl("arrow", true);
       if(arrow && !isString){
         var thisSize=this.getSizeHint();
@@ -206,7 +149,6 @@ qx.Class.define("unify.ui.container.Overlay", {
           left-=Math.round(arrowSize.width/2);
         }
       }
-
 
       return {
         left: left,
@@ -234,7 +176,7 @@ qx.Class.define("unify.ui.container.Overlay", {
         var arrowPosition=this.getRelativeArrowPosition();
 
         if(arrowDirection=="left" || arrowDirection=="right"){
-          var relativeOffset=this.__toPixelValue(height,arrowPosition);
+          var relativeOffset=this._toPixelValue(height,arrowPosition);
           if(arrowPosition=="top"){
             arrowTop=GAP;
           } else if(arrowPosition=="bottom"){
@@ -245,7 +187,7 @@ qx.Class.define("unify.ui.container.Overlay", {
             arrowTop = relativeOffset - Math.round(arrowHeight/2);
           }
         } else if (arrowDirection=="top" || arrowDirection=="bottom"){
-          var relativeOffset=this.__toPixelValue(width,arrowPosition);
+          var relativeOffset=this._toPixelValue(width,arrowPosition);
           if(arrowPosition=="left"){
             arrowLeft=GAP;
           } else if(arrowPosition=="right"){
@@ -261,91 +203,6 @@ qx.Class.define("unify.ui.container.Overlay", {
       return {
         left: arrowLeft,
         top: arrowTop
-      }
-    },
-
-    /**
-     * helper function that calculates the absolute position values of a relativePos in elemPos
-     * @param elemPos {Object}  a map containing the elements current position and dimensions (top,left,width,height)
-     * @param relativePos {Object} a map containing relative position values as keys x and y e.g. {x:"center",y:"bottom"}
-     */
-    __resolveRelative: function(elemPos,relativePos){
-      return {
-        top: (elemPos.top||0)+this.__toPixelValue(elemPos.height,relativePos.y),
-        left:(elemPos.left||0)+this.__toPixelValue(elemPos.width,relativePos.x)
-      }
-    },
-
-    /**
-     * calculates the pixel value of relativePosition in relation to baseSize
-     *
-     * @param baseSize {Number} size value to
-     * @param relativePosition {String|Number} left,right,top,bottom,center, a percentage string, a px string or a Number
-     * @return {Number} calculated value
-     */
-    __toPixelValue : function(baseSize,relativePosition){
-      if(relativePosition=="left" || relativePosition == "top"){
-        return 0;
-      } else if (relativePosition == "center"){
-        return Math.round(baseSize/2);
-      } else if (relativePosition=="right" || relativePosition == "bottom"){
-        return baseSize;
-      } else if(typeof relativePosition == "string"){
-        if(relativePosition.substring(relativePosition.length-1)=="%"){
-          return Math.round(baseSize*(parseInt(relativePosition,10)/100));
-        } else if(relativePosition.substring(relativePosition.length-2)=="px"){
-          return parseInt(relativePosition,10);
-        } else {
-          //value is a string but cannot be parsed
-          this.error("invalid relative value: "+relativePosition);
-          return 0;
-        }
-      } else if(typeof relativePosition == "number") {
-        return relativePosition;
-      }
-    },
-    
-    /**
-     * Shows overlay
-     */
-    show : function() {
-      this.base(arguments);
-      
-      var posHint = this.__getPositionHint();
-      this.getLayoutParent().add(this, posHint);
-      this.fireEvent("shown");
-      var trigger=this.getTrigger();
-      if(trigger){
-        trigger.addListener("move",this.__onTriggerMove,this);
-        trigger.addListener("resize",this.__onTriggerMove,this);
-      }
-    },
-    
-    /**
-     * Hides overlay
-     */
-    hide : function() {
-      this.base(arguments);
-      
-      this.fireEvent("hidden");
-      var trigger=this.getTrigger();
-      if(trigger){
-        trigger.removeListener("move",this.__onTriggerMove,this);
-        trigger.removeListener("resize",this.__onTriggerMove,this);
-      }
-    },
-
-    /**
-     * event handler for trigger move event.
-     * 
-     * repositions the overlay to the new trigger position if the overlay is visible
-     * 
-     * @param e {Event} event object
-     */
-    __onTriggerMove: function(e){
-      if(this.isVisible()){
-        var posHint = this.__getPositionHint();
-        this.getLayoutParent().add(this, posHint);
       }
     }
   }
