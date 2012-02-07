@@ -29,7 +29,6 @@ qx.Class.define("unify.ui.layout.special.AtomLayout", {
       var label = this.__label;
       
       if (image && label) {
-        console.log(1, this._getWidget().getText());
         var imageHint = image.getSizeHint();
         var labelHint = label.getSizeHint();
         
