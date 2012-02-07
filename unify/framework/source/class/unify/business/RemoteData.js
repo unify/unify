@@ -480,6 +480,11 @@ qx.Class.define("unify.business.RemoteData",
     __headers : null,
 
 
+    _getCommunicationId : function() {
+      return this.__requestCounter++;
+    },
+
+
     /**
      * Returns the cache ID for the given argument set.
      *
@@ -657,7 +662,7 @@ qx.Class.define("unify.business.RemoteData",
       req.setUserData("params", params);
 
       // Every request has a unique identifier
-      var id = this.__requestCounter++;
+      var id = this._getCommunicationId();
       req.setUserData("id", id);
       if (qx.core.Environment.get("qx.debug")) {
         this.debug("Sending request to: " + service + "[id=" + id + "]...");
