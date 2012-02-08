@@ -238,7 +238,7 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
         var cloneLast = clone.length-1;
         
         // Select right modification point
-        if (rel == "same") 
+        if (rel == "same" || clone[cloneLast].view===config.view) 
         {
           clone[cloneLast] = config;
         } 
