@@ -13,7 +13,6 @@
  */
 qx.Class.define("unify.ui.other.ActivityIndicator", {
   extend: unify.ui.container.Composite,
-  type: "singleton",
   
   include : [unify.ui.core.MChildControl],
   
@@ -37,11 +36,10 @@ qx.Class.define("unify.ui.other.ActivityIndicator", {
     this._showChildControl("image");
     this._showChildControl("label");
     
-    qx.core.Init.getApplication().getRoot().add(this, {
+    /*qx.core.Init.getApplication().getRoot().add(this, {
       top: "50%",
       left: "50%"
-    });
-    this.setVisibility("excluded");
+    });*/
   },
   
   members : {
