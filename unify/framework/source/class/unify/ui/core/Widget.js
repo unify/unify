@@ -1375,7 +1375,18 @@ qx.Class.define("unify.ui.core.Widget", {
         delete map.borderBottom;
       }
 
-      //font
+      // Colors
+      
+      var colorTags = ["color", "backgroundColor", "borderColor", "borderTopColor", "borderLeftColor", "borderRightColor", "borderBottomColor"];
+      for (var i=0,ii=colorTags.length; i<ii; i++) {
+        var tag = colorTags[i];
+        if (map[tag]) {
+          map[tag] = qx.theme.manager.Color.getInstance().resolve(map[tag]);
+        }
+      }
+      
+
+      // font
 
       //read font properties
       var font = map.font;
