@@ -115,7 +115,7 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
           this.warn("Widget " + this + " has no parent view manager!");
         }
       }
-      
+
       var exec = this.getExecute();
       if (exec) {
         viewManager.getCurrentView()[exec](this);
@@ -128,10 +128,12 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
           } else {
             window.location = href;
           }
-        } else if (!this.__navigates) {
-          // Lazily navigate (omits navigation during activity)
-          this.__navigates = true;
-          qx.lang.Function.delay(this.__navigationWidgetHelper, 0, this, viewManager);
+        } else if (!viewManager.isInAnimation()) {
+          this.__navigationWidgetHelper(viewManager);
+        } else {
+          if(qx.core.Environment.get("qx.debug")){
+            this.debug(viewManager.getId()+ "is currently animating, skipping navigation attempt");
+          }
         }
       }
     },
@@ -238,7 +240,7 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
         var cloneLast = clone.length-1;
         
         // Select right modification point
-        if (rel == "same" || clone[cloneLast].view===config.view) 
+        if (rel == "same") 
         {
           clone[cloneLast] = config;
         } 
