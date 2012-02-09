@@ -4,7 +4,7 @@
 
     Homepage: unify-project.org
     License: MIT + Apache (V2)
-    Copyright: 2010-2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+    Copyright: 2010-2012, Sebastian Fastner, Mainz, Germany, http://unify-training.com
 
 *********************************************************************************************** */
 
@@ -15,6 +15,7 @@ qx.Class.define("unify.ui.other.ActivityIndicator", {
   extend: unify.ui.container.Composite,
   
   include : [unify.ui.core.MChildControl],
+  implement : [unify.ui.core.IPopOver],
   
   properties : {
     // overridden
@@ -27,6 +28,11 @@ qx.Class.define("unify.ui.other.ActivityIndicator", {
     text : {
       check: "String",
       apply: "_applyText"
+    },
+    
+    modal : {
+      check: "Boolean",
+      init: true
     }
   },
   
@@ -35,15 +41,9 @@ qx.Class.define("unify.ui.other.ActivityIndicator", {
     
     this._showChildControl("image");
     this._showChildControl("label");
-    
-    /*qx.core.Init.getApplication().getRoot().add(this, {
-      top: "50%",
-      left: "50%"
-    });*/
   },
   
   members : {
-
     /**
      * Returns child control widget identified by id
      *

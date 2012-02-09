@@ -751,7 +751,9 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           whiteSpace: "normal",
           backgroundColor: "white",
           width: "500px",
-          height: "400px"
+          height: "400px",
+          marginLeft: "-250px",
+          marginTop: "-200px"
         };
       }
     },

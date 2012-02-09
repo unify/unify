@@ -1,9 +1,29 @@
+/* ***********************************************************************************************
+
+    Unify Project
+
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2012, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+
+*********************************************************************************************** */
+
+/**
+ * Global activity indicator manager managing multiple activities on one indicator
+ */
 qx.Class.define("unify.ui.manager.ActivityIndicatorManager", {
   type : "singleton",
   extend: qx.core.Object,
   
+  construct : function() {
+    this.base(arguments);
+    
+    this.__activeMap = {};
+  },
+  
   members : {
     __activityIndicator : null,
+    __activeMap : null,
     
     _getActivityIndicator : function() {
       var ai = this.__activityIndicator;
@@ -11,7 +31,7 @@ qx.Class.define("unify.ui.manager.ActivityIndicatorManager", {
         return ai;
       }
       
-      ai = this.__activityIndicator  = new unify.ui.container.SimpleOverlay();
+      ai = this.__activityIndicator  = new unify.ui.other.ActivityIndicator();
       ai.set({
         width: 300,
         height: 300
@@ -21,19 +41,33 @@ qx.Class.define("unify.ui.manager.ActivityIndicatorManager", {
         marginTop: -150
       });
       
-      ai.add(new unify.ui.other.ActivityIndicator());
-      
       return ai;
     },
     
     show : function(id) {
-      var overlay = this._getActivityIndicator();
-      unify.ui.core.PopOverManager.getInstance().show(overlay);
+      if (!id) id = "undef";
+      var am = this.__activeMap;
+      if (!am[id]) {
+        am[id] = 0;
+        var overlay = this._getActivityIndicator();
+        unify.ui.core.PopOverManager.getInstance().show(overlay, "center");
+      }
+      am[id]++;
     },
     
     hide : function(id) {
-      var overlay = this._getActivityIndicator();
-      unify.ui.core.PopOverManager.getInstance().hide(overlay);
+      if (!id) id = "undef";
+      var am = this.__activeMap;
+      if (qx.core.Environment.get("qx.debug")) {
+        if (!am[id]) {
+          throw new Error("Activity indicator " + id + " is not shown!");
+        }
+      }
+      am[id]--;
+      if (am[id] == 0) {
+        var overlay = this._getActivityIndicator();
+        unify.ui.core.PopOverManager.getInstance().hide(overlay);
+      }
     }
   }
 });

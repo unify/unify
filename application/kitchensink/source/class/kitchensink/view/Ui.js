@@ -106,7 +106,7 @@ qx.Class.define("kitchensink.view.Ui", {
         unify.ui.manager.ActivityIndicatorManager.getInstance().show();
         
         window.setTimeout(function() {
-          //unify.ui.manager.ActivityIndicatorManager.getInstance().hide();
+          unify.ui.manager.ActivityIndicatorManager.getInstance().hide();
         }, 3000);
       }, this);
       container.add(startActivityIndicator);
@@ -117,15 +117,14 @@ qx.Class.define("kitchensink.view.Ui", {
     __openDialog : function() {
       var dialog = this.__dialog = new unify.ui.dialog.GenericDialog("Das ist der Titel", []);
       dialog.addListener("execute", this.__onDialogExecute, this);
-      var overlay = dialog.getOverlay();
       
-      unify.ui.core.PopOverManager.getInstance().show(overlay);
+      unify.ui.core.PopOverManager.getInstance().show(dialog, "center");
     },
     
     __onDialogExecute : function(e) {
       this.debug("Dialog action : " + e.getData());
       
-      unify.ui.core.PopOverManager.getInstance().hide(this.__dialog.getOverlay());
+      unify.ui.core.PopOverManager.getInstance().hide(this.__dialog);
     }
     
   }
