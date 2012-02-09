@@ -17,6 +17,7 @@ qx.Class.define("unify.ui.dialog.GenericDialog", {
             unify.ui.core.MChildControl,
             unify.ui.core.MRemoteChildrenHandling
            ],
+  implement : [unify.ui.core.IPopOver],
   
   
   /*
@@ -79,6 +80,10 @@ qx.Class.define("unify.ui.dialog.GenericDialog", {
    *****************************************************************************
    */
   members : {
+    
+    getModal : function() {
+      return true;
+    },
     
     /**
      * Get children container that is accessed via remote child handling
@@ -258,21 +263,6 @@ qx.Class.define("unify.ui.dialog.GenericDialog", {
      */
     __onButtonExecute : function(e) {
       this.fireDataEvent("execute", e.getTarget().getUserData("id"));
-    },
-    
-    __overlay : null,
-    
-    getOverlay : function() {
-      var overlay = this.__overlay;
-      
-      if (!overlay) {
-        overlay = this.__overlay = new unify.ui.container.Overlay().set({
-          appearance: "dialog.overlay"
-        });
-        overlay.add(this);
-      }
-      
-      return overlay;
     }
   
   }

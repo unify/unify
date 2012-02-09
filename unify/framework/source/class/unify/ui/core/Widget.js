@@ -4,7 +4,7 @@
 
     Homepage: unify-project.org
     License: MIT + Apache (V2)
-    Copyright: 2010-2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+    Copyright: 2010-2012, Sebastian Fastner, Mainz, Germany, http://unify-training.com
 
 *********************************************************************************************** */
 

@@ -87,7 +87,12 @@ qx.Class.define("unify.ui.core.PopOverManager",
 
       var numVisible = visible.length;
       for (var i=0; i<numVisible; i++) {
-        visible[i].setStyle({zIndex: zIndexBase + 2*i}); //leave a gap of 1 between layers so the blocker fits between 2 visible popovers
+        var widget = visible[i];
+        if (widget.setOuterStyle) {
+          widget.setOuterStyle({zIndex: zIndexBase + 2*i});
+        } else {
+          widget.setStyle({zIndex: zIndexBase + 2*i});
+        }
       }
 
       if (numVisible > 0) {
@@ -145,43 +150,58 @@ qx.Class.define("unify.ui.core.PopOverManager",
     /**
      * Shows the view manager with the given ID.
      *
-     * @param overlay {unify.ui.container.Overlay} ID of view manager as string or overlay widget
-     * @param trigger {unify.ui.Widget?null} Widget that triggers the opening of the popover
+     * @param widget {unify.ui.core.IPopOver} Widget to show
+     * @param position {String|Map|unify.ui.Widget?"center"} Position of widget ("center", "window", {left:50,top:50}) or trigger widget
      */
-    show : function(overlay, trigger) {
+    show : function(widget, position) {
       if (qx.core.Environment.get("qx.debug")) {
-        this.debug("Show: " + overlay);
+        this.debug("Show: " + widget);
+        if (!qx.Class.implementsInterface(widget, unify.ui.core.IPopOver)) {
+          this.error(widget + " don't implement IPopOver");
+        }
       }
       
-      if (trigger) {
-        overlay.setTrigger(trigger);
+      var pos = position || "center";
+      if (pos instanceof unify.ui.core.Widget) {
+        if (widget.setTrigger) {
+          widget.setTrigger(pos);
+          pos = widget.getPositionHint();
+        } else {
+          pos = null;
+        }
+      } else if (pos == "center" || pos == "window") {
+        pos = {left: "50%", top: "50%"};
+      } else if (pos == "full") {
+        pos = {left: 0, top: 0, right: 0, bottom: 0};
       }
-      this.__root.add(overlay);
+      this.__root.add(widget, pos);
       
-      this.__visibleOverlays.push(overlay);
+      this.__visibleOverlays.push(widget);
       this.__sortPopOvers();
-      this.fireDataEvent("show", overlay);
-      overlay.show();
+      
+      widget.show();
+      
+      this.fireDataEvent("show", widget);
     },
     
     
     /**
      * Hides the view manager with the given ID.
      *
-     * @param overlay {unify.ui.container.Overlay} ID of view manager as string or overlay widget
+     * @param widget {unify.ui.core.IPopOver} Widget to hide
      */
-    hide : function(overlay) {
+    hide : function(widget) {
       var self = this;
       
       var hideCallback=function(){
-        qx.lang.Array.remove(self.__visibleOverlays, overlay);
+        qx.lang.Array.remove(self.__visibleOverlays, widget);
         self.__sortPopOvers();
         
-        self.fireDataEvent("hide", overlay);
+        self.fireDataEvent("hide", widget);
       };
 
-      overlay.addListenerOnce("hidden", hideCallback, this);
-      overlay.hide();
+      widget.addListenerOnce("changeVisibility", hideCallback, this);
+      widget.hide();
     }
   },
 

@@ -56,12 +56,12 @@ qx.Class.define("unify.ui.dialog.Dialog", {
       
       // Add an event handler for closing the dialog
       dialog.addListener("execute", function(e) {
-        unify.ui.core.PopOverManager.getInstance().hide(dialog.getOverlay());
+        unify.ui.core.PopOverManager.getInstance().hide(dialog);
         callback.call(context, e);
       }, this);
       
       // Show the ovelay
-      unify.ui.core.PopOverManager.getInstance().show(dialog.getOverlay());
+      unify.ui.core.PopOverManager.getInstance().show(dialog);
     },
     
     /**
