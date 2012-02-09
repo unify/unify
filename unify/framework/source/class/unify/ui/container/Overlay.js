@@ -110,15 +110,18 @@ qx.Class.define("unify.ui.container.Overlay", {
      */
     _createChildControlImpl : function(id) {
       var control;
-      
+
       if (id == "arrow") {
         control = new unify.ui.other.Arrow();
         this._addAt(control, 1, {
           type: "arrow"
         });
+      } else if (id == "container") {
+        control = new unify.ui.container.Composite(new unify.ui.layout.Canvas());
+        this._addAt(control, 0);
       }
       
-      return control || this.base(arguments, id);
+      return control;
     },
 
     /**
@@ -242,23 +245,6 @@ qx.Class.define("unify.ui.container.Overlay", {
         left: arrowLeft,
         top: arrowTop
       }
-    },
-    
-    /**
-     * Returns child control widget identified by id
-     *
-     * @param id {String} ID of child widget
-     * @return {unify.ui.core.Widget} Content widget
-     */
-    _createChildControlImpl : function(id) {
-      var control;
-      
-      if (id == "container") {
-        control = new unify.ui.container.Composite(new unify.ui.layout.Canvas());
-        this._addAt(control, 0);
-      }
-      
-      return control || this.base(arguments, id);
     },
 
     //overridden, calculate overlaysize as content size + arrow size depending on arrow direction

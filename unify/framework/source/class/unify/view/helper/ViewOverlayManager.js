@@ -28,6 +28,8 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
   {
     this.base(arguments);
     
+    unify.ui.core.PopOverManager.getInstance().addListener("hide", this.__hidePopover, this);
+    
     this.__visibleViewManagers = [];
     this.__styleRegistry = {};
     this.__overlays = {};
@@ -189,6 +191,18 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
         }
       }
     },
+    
+    __hidePopover : function(e) {
+      var overlay = e.getData();
+      var viewManagerHash = overlay.getUserData("viewmanager");
+      
+      if (overlay) {
+        var widget = qx.core.ObjectRegistry.fromHashCode(viewManagerHash); //unify.view.ViewManager.get(viewManagerId);
+        
+        qx.lang.Array.remove(this.__visibleViewManagers, widget);
+        this.fireDataEvent("hide", widget.getId());
+      }
+    },
 
     /**
      * Get overlay element
@@ -200,6 +214,7 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
       var overlay = this.__overlays[viewManager];
       if(!overlay){
         overlay = new unify.ui.container.Overlay();
+        overlay.setUserData("viewmanager", viewManager.toHashCode());
         var appearanceId=viewManager.getId()+"-overlay";
         var appearance=qx.theme.manager.Appearance.getInstance().styleFrom(appearanceId);
         if(appearance){

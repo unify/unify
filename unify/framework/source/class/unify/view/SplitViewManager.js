@@ -82,7 +82,7 @@ qx.Class.define("unify.view.SplitViewManager",
 
       var master = this.__masterViewManager;
 
-      var PopOverManager = unify.view.PopOverManager.getInstance();
+      var ViewOverlayManager = unify.view.helper.ViewOverlayManager.getInstance();
       var oldOrient = elem.getAttribute("orient");
 
       var isLandscape=!this.isPortrait();
@@ -92,7 +92,7 @@ qx.Class.define("unify.view.SplitViewManager",
           if (qx.core.Environment.get("qx.debug")) {
             this.debug("Switching to landscape layout");
           }
-          PopOverManager.hide(master.getId(),true);
+          ViewOverlayManager.hide(master.getId(),true);
           elem.setAttribute("orient", "landscape");
 
           master.setDisplayMode('default');
