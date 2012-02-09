@@ -404,7 +404,7 @@ qx.Class.define("unify.business.RemoteData",
      */
     post : function(service, params, data) {
       var id = this._getCommunicationId();
-      return this._communicate(service, params, "POST", data, id);
+      return this._communicate(service, params, "POST", id, data);
     },
 
 
