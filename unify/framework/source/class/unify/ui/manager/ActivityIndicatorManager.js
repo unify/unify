@@ -19,11 +19,13 @@ qx.Class.define("unify.ui.manager.ActivityIndicatorManager", {
     this.base(arguments);
     
     this.__activeMap = {};
+    this.__activeIds = [];
   },
   
   members : {
     __activityIndicator : null,
     __activeMap : null,
+    __activeIds : null,
     
     _getActivityIndicator : function() {
       var ai = this.__activityIndicator;
@@ -48,6 +50,7 @@ qx.Class.define("unify.ui.manager.ActivityIndicatorManager", {
       if (!id) id = "undef";
       var am = this.__activeMap;
       if (!am[id]) {
+        this.__activeIds.push(id);
         am[id] = 0;
         var overlay = this._getActivityIndicator();
         unify.ui.core.PopOverManager.getInstance().show(overlay, "center");
@@ -65,6 +68,10 @@ qx.Class.define("unify.ui.manager.ActivityIndicatorManager", {
       }
       am[id]--;
       if (am[id] == 0) {
+        qx.lang.Array.remove(this.__activeIds, id);
+      }
+      
+      if (this.__activeIds.length <= 0) {
         var overlay = this._getActivityIndicator();
         unify.ui.core.PopOverManager.getInstance().hide(overlay);
       }
