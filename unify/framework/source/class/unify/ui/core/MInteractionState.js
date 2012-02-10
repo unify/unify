@@ -25,28 +25,6 @@ qx.Mixin.define("unify.ui.core.MInteractionState", {
     __MInteractionStatePressed : null,
     
     /**
-     * Checks if the left mouse button is pressed.
-     *
-     * @signature function(domEvent)
-     * @param domEvent {Event} DOM event
-     * @return {Boolean} Whether the left mouse button is pressed
-     */
-    __isLeftMouseButtonPressed : qx.core.Environment.select("qx.mobile.emulatetouch",
-    {
-      "true" : function(domEvent)
-      {
-        if ((qx.core.Environment.get("engine.name") == "mshtml")) {
-          var buttonIndex = 1;
-        } else {
-          var buttonIndex = 0;
-        }
-        return domEvent.button == buttonIndex;
-      },
-
-      "default" : qx.lang.Function.empty
-    }),
-    
-    /**
      * Set up event listener for interaction states
      */
     _applyMInteractionState : function() {
@@ -100,7 +78,7 @@ qx.Mixin.define("unify.ui.core.MInteractionState", {
     __MInteractionStateAddPressed : function(domEvent) {
       
       // only react on the left mouse button; ignore all others
-      if (domEvent._type == "mousedown" && !this.__isLeftMouseButtonPressed(domEvent)) {
+      if (domEvent instanceof qx.event.type.Mouse && !domEvent.isLeftPressed()) {
         return;
       }
       
@@ -117,7 +95,7 @@ qx.Mixin.define("unify.ui.core.MInteractionState", {
     __MInteractionStateRemovePressed : function(domEvent) {
       
       // only react on the left mouse button; ignore all others
-      if (domEvent._type == "mousedown" && !this.__isLeftMouseButtonPressed(domEvent)) {
+      if (domEvent instanceof qx.event.type.Mouse && !domEvent.isLeftPressed()) {
         return;
       }
       

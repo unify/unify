@@ -144,7 +144,7 @@ qx.Class.define("unify.ui.layout.special.AtomLayout", {
       if (direction == "left" || direction == "right") {
         neededWidth = imageSizeHint.width + labelSizeHint.width;
         if (image) {
-          neededWidth += Util.calculateLeftGap(image) + Util.calculateRigthGap(image);
+          neededWidth += Util.calculateLeftGap(image) + Util.calculateRightGap(image);
         }
         neededHeight = Math.max(imageSizeHint.height, labelSizeHint.height);
       } else {
