@@ -33,7 +33,7 @@ qx.Class.define("unify.view.RemoteView",
 
     // Connect business object
     this._getBusinessObject().addListener("completed", this.__onBusinessObjectCompleted, this);
-    this.__activityIndicator = unify.ui.other.ActivityIndicator.getInstance();
+    this.__activityIndicator = unify.ui.manager.ActivityIndicatorManager.getInstance();
   },
 
 
@@ -72,7 +72,7 @@ qx.Class.define("unify.view.RemoteView",
     {
       this.__requestId = this._getBusinessObject().get(this._getServiceName(), this._getServiceParams());
       if (this.__requestId !== false) {
-        this.__activityIndicator.show();
+        this.__activityIndicator.show(this.toHashCode());
       }
     },
 
@@ -150,7 +150,7 @@ qx.Class.define("unify.view.RemoteView",
         else
         {
           delete this.__requestId;
-          this.__activityIndicator.hide();
+          this.__activityIndicator.hide(this.toHashCode());
           this.__appliedVersion = cachedEntry.created;
           this._wrappedRenderData(cachedEntry.data);
         }
@@ -193,7 +193,7 @@ qx.Class.define("unify.view.RemoteView",
       }
 
       delete this.__requestId;
-      this.__activityIndicator.hide();
+      this.__activityIndicator.hide(this.toHashCode());
 
       if (e.isErrornous()) {
         this._errorHandler("communication", e.getRequest());
