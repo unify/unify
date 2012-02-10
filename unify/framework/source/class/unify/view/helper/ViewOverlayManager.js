@@ -117,26 +117,24 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
 
       
       var PopOverManager = unify.ui.core.PopOverManager.getInstance();
-
+      var registeredStyle = this.__styleRegistry[viewManager];
       if (modal) {
-        PopOverManager.show(viewManager, "full", trigger);
-        //viewManager.showModal();
+        PopOverManager.show(viewManager,registeredStyle ||"full");
       } else {
         var popOverElement = this.__getOverlay(viewManager);
         popOverElement.set({
           modal: false
         });
   
-        var registeredStyle = this.__styleRegistry[viewManager];
+        
         if(registeredStyle){
           popOverElement.getChildrenContainer().setStyle(registeredStyle);
         }
         popOverElement.add(viewManager, { top:0, left:0, right:0, bottom:0 });
         viewManager.show();
         PopOverManager.show(popOverElement, trigger);
-        
-        this.fireDataEvent("show", id);
       }
+      this.fireDataEvent("show", id);
       this.__visibleViewManagers.push(viewManager);
     },
     
@@ -194,9 +192,9 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
     
     __hidePopover : function(e) {
       var overlay = e.getData();
+      if (overlay) {
       var viewManagerHash = overlay.getUserData("viewmanager");
       
-      if (overlay) {
         var widget = qx.core.ObjectRegistry.fromHashCode(viewManagerHash); //unify.view.ViewManager.get(viewManagerId);
         
         qx.lang.Array.remove(this.__visibleViewManagers, widget);

@@ -159,16 +159,31 @@ qx.Class.define("unify.ui.container.Overlay", {
      *
      * if the overlay has an arrow, the arrows pointing edge is used as reference
      */
-    __getPositionHint : function() {
-      var pos = this.base(arguments);
+    getPositionHint : function() {
+      qx.ui.core.queue.Manager.flush();//make sure appearance is applied
       
-      var left = pos.left;
-      var top = pos.top;
+      var left = 0;
+      var top = 0;
+      
+      var staticPosition = this.getStaticPosition();
+      if (staticPosition) {
+        left = staticPosition.left;
+        top = staticPosition.top;
+      }
+      
+      var trigger=this.getTrigger();
+      var relativeTriggerPosition=this.getRelativeTriggerPosition();
+
+      if(trigger && relativeTriggerPosition){
+        var triggerPoint=this.__resolveRelative(trigger.getPositionInfo(),relativeTriggerPosition);
+        left = triggerPoint.left;
+        top=triggerPoint.top;
+      }
       
       var isString = false;
       
       var staticPosition = this.getStaticPosition();
-      if (staticPosition && typeof(staticPosition.left) == "string" || typeof(staticPosition.top) == "string") {
+      if (staticPosition && (typeof(staticPosition.left) == "string" || typeof(staticPosition.top) == "string")) {
         isString = true;
       }
       
@@ -252,38 +267,6 @@ qx.Class.define("unify.ui.container.Overlay", {
       return this.getChildrenContainer().getSizeHint();
     },
     
-    /**
-     * Calculates a position hint to align overlay to trigger widget
-     *
-     * if the overlay has an arrow, the arrows pointing edge is used as reference
-     */
-    getPositionHint : function() {
-      qx.ui.core.queue.Manager.flush();//make sure appearance is applied
-      
-      var left = 0;
-      var top = 0;
-      
-      var staticPosition = this.getStaticPosition();
-      if (staticPosition) {
-        left = staticPosition.left;
-        top = staticPosition.top;
-      }
-      
-      var trigger=this.getTrigger();
-      var relativeTriggerPosition=this.getRelativeTriggerPosition();
-
-      if(trigger && relativeTriggerPosition){
-        var triggerPoint=this.__resolveRelative(trigger.getPositionInfo(),relativeTriggerPosition);
-        left = triggerPoint.left;
-        top=triggerPoint.top;
-      }
-
-      return {
-        left: left,
-        top: top
-      };
-    },
-
     /**
      * helper function that calculates the absolute position values of a relativePos in elemPos
      * @param elemPos {Object}  a map containing the elements current position and dimensions (top,left,width,height)
