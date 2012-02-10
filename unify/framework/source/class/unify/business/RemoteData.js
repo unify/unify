@@ -764,7 +764,7 @@ qx.Class.define("unify.business.RemoteData",
           }
         }
 
-        if (this.getEnableNoContent() && req.getStatusCode() == 204)
+        if (this.getEnableNoContent() && req.getStatus() == 204)
         {
           // pass: not modified + no content
         }
