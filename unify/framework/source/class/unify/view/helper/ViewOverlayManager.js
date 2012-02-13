@@ -193,12 +193,16 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
     __hidePopover : function(e) {
       var overlay = e.getData();
       if (overlay) {
-      var viewManagerHash = overlay.getUserData("viewmanager");
+        var viewManagerHash = overlay.getUserData("viewmanager");
       
-        var widget = qx.core.ObjectRegistry.fromHashCode(viewManagerHash); //unify.view.ViewManager.get(viewManagerId);
-        
-        qx.lang.Array.remove(this.__visibleViewManagers, widget);
-        this.fireDataEvent("hide", widget.getId());
+        if (viewManagerHash) {
+          var widget = qx.core.ObjectRegistry.fromHashCode(viewManagerHash);
+          
+          if (widget) {
+            qx.lang.Array.remove(this.__visibleViewManagers, widget);
+            this.fireDataEvent("hide", widget.getId());
+          }
+        }
       }
     },
 
