@@ -6,7 +6,7 @@ core.Module("unify.ui.layout.queue.Manager", {
   
   scheduleFlush : function() {
     if (!this.__timer) {
-      this.__timer = window.setTimeout(this.__flush.bind(this), 0);
+      window.setTimeout(this.__flush.bind(this), 0);
     }
   },
   
