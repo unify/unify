@@ -5,6 +5,7 @@
 session = Session()
 
 session.addProject(Project("../../support/core/"))
+session.addProject(Project("../../support/lowland/"))
 session.addProject(Project("../../unify/framework/"))
 session.addProject(Project("."))
 
@@ -61,7 +62,7 @@ def test():
 
     # Resolving dependencies
     resolver = Resolver(projects)
-    resolver.addClassName("unify.test.Application")
+    resolver.addClassName("lowland.test.Main")
     classes = resolver.getIncludedClasses()
 
     # Compressing classes
