@@ -12,4 +12,4 @@
 	url = https://github.com/unify/incubator-cordova-ios
 [submodule "support/cordova-android"]
 	path = support/cordova-android
-	url = http://github.com/unify/incubator-cordova-android
+	url = https://github.com/unify/incubator-cordova-android
