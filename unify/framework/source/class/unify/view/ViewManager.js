@@ -184,6 +184,14 @@ qx.Class.define("unify.view.ViewManager", {
   members :
   {
     __initialized : false,
+    __isInAnimation: false,
+
+    /**
+     * @return {Boolean} true if this ViewManager currently animates the transition between 2 views
+     */
+    isInAnimation: function(){
+      return this.__isInAnimation;
+    },
     
     getModal : function() {
       return (this.getDisplayMode() == "modal");
@@ -308,7 +316,7 @@ qx.Class.define("unify.view.ViewManager", {
         this.warn("Empty path!");
         return;
       }
-      
+
       var oldPath = this.__path;
       var oldLength = oldPath ? oldPath.length : 0;
       var layerTransition = null;
@@ -680,6 +688,7 @@ qx.Class.define("unify.view.ViewManager", {
      */
     __setView : function(view, transition)
     {
+      
       // TODO: view.getElement() is also called if view is in popover
       //       Maybe it should be rendered lazy
       var oldView = this.__currentView;
@@ -697,13 +706,10 @@ qx.Class.define("unify.view.ViewManager", {
 
       // Resuming the view
       view.setActive(true);
-
-      // Cache element/view references
-      var currentViewElement = view;// && view.getElement();
-      var oldViewElement = oldView;// && oldView.getElement();
+      
 
       // Insert target layer into DOM
-      if (this.indexOf(view) == -1 /*true || currentViewElement.parentNode != elem*/) {
+      if (this.indexOf(view) == -1) {
         this.add(view, {
           left: 0,
           top: 0,
@@ -712,8 +718,6 @@ qx.Class.define("unify.view.ViewManager", {
         });
       }
 
-      // Transition specific layer switch
-      var positions = this.__positions;
 
       if (this.getAnimateTransitions() &&(transition == "in" || transition == "out"))
       {
@@ -753,8 +757,10 @@ qx.Class.define("unify.view.ViewManager", {
 
       var visibilityAction = function() {
         var afterRenderAction = function() {
+          self.__isInAnimation=true;
           var transitionEndFnt = function() {
             fromView.setVisibility("hidden");
+            self.__isInAnimation=false;
           };
           fromView.addListenerOnce("animatePositionDone", transitionEndFnt, this);
           
@@ -807,9 +813,15 @@ qx.Class.define("unify.view.ViewManager", {
 
       var visibilityAction = function() {
         var afterRenderAction = function() {
-          if (callback) {
-            view.addListenerOnce("animatePositionDone", callback, this);
-          }
+          self.__isInAnimation=true;
+          
+          view.addListenerOnce("animatePositionDone", function() {
+            if (callback) {
+              callback.call(self);
+            }
+            self.__isInAnimation=false;
+          }, this);
+          
           view.setAnimatePositionDuration(AnimationDuration);
           view.setAnimatePosition((show) ? self.__positions.center : self.__positions.bottom);
         }
