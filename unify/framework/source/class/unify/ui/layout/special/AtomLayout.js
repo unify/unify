@@ -29,7 +29,6 @@ core.Class("unify.ui.layout.special.AtomLayout", {
       var label = this.__label;
       
       if (image && label) {
-        console.log(1, this._getWidget().getText());
         var imageHint = image.getSizeHint();
         var labelHint = label.getSizeHint();
         
@@ -145,7 +144,7 @@ core.Class("unify.ui.layout.special.AtomLayout", {
       if (direction == "left" || direction == "right") {
         neededWidth = imageSizeHint.width + labelSizeHint.width;
         if (image) {
-          neededWidth += Util.calculateLeftGap(image) + Util.calculateRigthGap(image);
+          neededWidth += Util.calculateLeftGap(image) + Util.calculateRightGap(image);
         }
         neededHeight = Math.max(imageSizeHint.height, labelSizeHint.height);
       } else {

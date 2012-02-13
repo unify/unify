@@ -174,7 +174,7 @@ core.Class("unify.ui.core.MNavigatable", {
           if(viewManager.getDisplayMode()=='default'){
             viewManager.hide();
           } else {
-            unify.view.PopOverManager.getInstance().hide(viewManager.getId());
+            unify.view.helper.ViewOverlayManager.getInstance().hide(viewManager.getId());
           }
         } else {
           viewManager.navigate(path.slice(0, -1));
@@ -188,7 +188,7 @@ core.Class("unify.ui.core.MNavigatable", {
       var show = this.getShow();
       if (show != null)
       {
-        unify.view.PopOverManager.getInstance().show(show,this);
+        unify.view.helper.ViewOverlayManager.getInstance().show(show,this);
         return;
       }
 
@@ -196,7 +196,7 @@ core.Class("unify.ui.core.MNavigatable", {
       var hide = this.getHide();
       if (hide != null)
       {
-        unify.view.PopOverManager.getInstance().hide(hide);
+        unify.view.helper.ViewOverlayManager.getInstance().hide(hide);
         return;
       }
 

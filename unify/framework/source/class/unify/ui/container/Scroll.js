@@ -299,10 +299,12 @@ qx.Class.define("unify.ui.container.Scroll", {
       var currentLeft=this.__scrollLeft;
       var currentTop=this.__scrollTop;
       var scroller = this.__scroller = new Scroller(render, options);
+      this.__updateDimensions();
+      //restore old scrollposition
       if(currentLeft||currentTop){
         scroller.scrollTo(currentLeft,currentTop,false);
       }
-      this.__updateDimensions();
+      
       return scroller;
     },
 
