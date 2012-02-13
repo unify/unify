@@ -39,14 +39,16 @@ qx.Class.define("unify.ui.container.Overlay", {
      */
     relativeArrowPosition : {
       init: "left",
-      nullable: true
+      nullable: true,
+      apply:"_applyPositionProperty"
     },
     
     /** optional reference to widget that triggers show/hide of this overlay */
     trigger : {
       check: "unify.ui.core.Widget",
       init: null,
-      nullable: true
+      nullable: true,
+      apply: "_applyTrigger"
     },
 
      /** optional strategy to ponsition overlay relative to trigger
@@ -55,7 +57,8 @@ qx.Class.define("unify.ui.container.Overlay", {
       */
     relativeTriggerPosition : {
       init: {y:"bottom",x:"center"},
-      nullable: true
+      nullable: true,
+      apply:"_applyPositionProperty"
     },
     
     modal : {
@@ -65,21 +68,22 @@ qx.Class.define("unify.ui.container.Overlay", {
     
     staticPosition : {
       init: null,
-      nullable: true
+      nullable: true,
+      apply: "_applyPositionProperty"
     }
   },
 
   
   /**
-   * @param noArrow {Boolean?} set to true if overlay should not have an arrow element
+   * contstructor
    */
-  construct : function(noArrow) {
+  construct : function() {
     this.base(arguments, new unify.ui.layout.special.OverlayLayout());
     
     this.addListener("appearance", this.__syncAppearance, this);
     
     this._showChildControl("container");
-    //this.setHasArrow(!noArrow);//applyHasArrow creates the arrow if required
+
   },
   
   members : {
@@ -113,6 +117,7 @@ qx.Class.define("unify.ui.container.Overlay", {
 
       if (id == "arrow") {
         control = new unify.ui.other.Arrow();
+        control.addListener("resize",this._onArrowResize,this);
         this._addAt(control, 1, {
           type: "arrow"
         });
@@ -138,7 +143,7 @@ qx.Class.define("unify.ui.container.Overlay", {
     
     //overridden, calculate overlaysize as content size + arrow size depending on arrow direction
     _computeSizeHint: function(){
-      var hint=this.base(arguments);
+      var hint=this.getChildrenContainer().getSizeHint();
       
       if(this.getHasArrow()){
         var arrow=this.getChildControl("arrow");
@@ -186,23 +191,25 @@ qx.Class.define("unify.ui.container.Overlay", {
       if (staticPosition && (typeof(staticPosition.left) == "string" || typeof(staticPosition.top) == "string")) {
         isString = true;
       }
-      
-      var arrow=this.getChildControl("arrow", true);
-      if(arrow && !isString){
-        var thisSize=this.getSizeHint();
-        var arrowPosition=this.calculateArrowPosition(thisSize.height,thisSize.width);
 
-        left-=arrowPosition.left;
-        top-=arrowPosition.top;
-        var arrowDirection=arrow.getDirection();
+      if(!isString && this.getHasArrow()){
+        var arrow=this.getChildControl("arrow");
+        if(arrow){
+          var thisSize=this.getSizeHint();
+          var arrowPosition=this.calculateArrowPosition(thisSize.height,thisSize.width);
 
-        //now account for arrow pointing edge offset
-        //TODO at the moment we assume the pointing edge is in the middle, refactor into arrow class to allow arbitraty points
-        var arrowSize=arrow.getSizeHint();
-        if(arrowDirection=="left"||arrowDirection=="right"){
-          top-=Math.round(arrowSize.height/2);
-        } else if (arrowDirection=="bottom"||arrowDirection=="top"){
-          left-=Math.round(arrowSize.width/2);
+          left-=arrowPosition.left;
+          top-=arrowPosition.top;
+          var arrowDirection=arrow.getDirection();
+
+          //now account for arrow pointing edge offset
+          //TODO at the moment we assume the pointing edge is in the middle, refactor into arrow class to allow arbitraty points
+          var arrowSize=arrow.getSizeHint();
+          if(arrowDirection=="left"||arrowDirection=="right"){
+            top-=Math.round(arrowSize.height/2);
+          } else if (arrowDirection=="bottom"||arrowDirection=="top"){
+            left-=Math.round(arrowSize.width/2);
+          }
         }
       }
 
@@ -226,8 +233,9 @@ qx.Class.define("unify.ui.container.Overlay", {
       var arrowTop=0;
 
       if(arrow){
-        var arrowWidth=arrow.getWidth();
-        var arrowHeight=arrow.getHeight();
+        var arrowHint=arrow.getSizeHint();
+        var arrowWidth=arrowHint.width;
+        var arrowHeight=arrowHint.height;
         var arrowDirection=arrow.getDirection();
         var arrowPosition=this.getRelativeArrowPosition();
 
@@ -260,11 +268,6 @@ qx.Class.define("unify.ui.container.Overlay", {
         left: arrowLeft,
         top: arrowTop
       }
-    },
-
-    //overridden, calculate overlaysize as content size + arrow size depending on arrow direction
-    _computeSizeHint: function(){
-      return this.getChildrenContainer().getSizeHint();
     },
     
     /**
@@ -316,8 +319,8 @@ qx.Class.define("unify.ui.container.Overlay", {
       
       var trigger = this.getTrigger();
       if(trigger){
-        trigger.addListener("move",this.__onTriggerMove,this);
-        trigger.addListener("resize",this.__onTriggerMove,this);
+        trigger.addListener("move",this._onTriggerChange,this);
+        trigger.addListener("resize",this._onTriggerChange,this);
       }
     },
     
@@ -329,23 +332,76 @@ qx.Class.define("unify.ui.container.Overlay", {
       
       var trigger = this.getTrigger();
       if(trigger){
-        trigger.removeListener("move",this.__onTriggerMove,this);
-        trigger.removeListener("resize",this.__onTriggerMove,this);
+        trigger.removeListener("move",this._onTriggerChange,this);
+        trigger.removeListener("resize",this._onTriggerChange,this);
       }
     },
 
+    /** 
+     * called when the trigger property changes
+     */
+    _applyTrigger : function(value,old){
+      if(old && this.isVisible()){
+
+        old.removeListener("move",this._onTriggerChange,this);
+        old.removeListener("resize",this._onTriggerChange,this);
+
+        if(value){
+          value.addListener("move",this._onTriggerChange,this);
+          value.addListener("resize",this._onTriggerChange,this);
+        }
+        this.__fixPosition();
+      }
+    },
+    
     /**
-     * event handler for trigger move event.
+     * called when a property changes that my influence the position of the overlay
+     */
+    _applyPositionProperty : function(){
+      this.__fixPosition();
+    },
+
+    /**
+     * event handler for resize event of the arrow childcontrol
+     */
+    _onArrowResize : function(){
+      this.__fixPosition();
+    },
+
+    /**
+     * event handler for trigger changes
+     */
+    _onTriggerChange : function(){
+      this.__fixPosition();
+    },
+    
+    /**
      * 
-     * repositions the overlay to the new trigger position if the overlay is visible
+     * repositions the overlay to the trigger based on property values
+     * @see getPositionHint
      * 
      * @param e {Event} event object
      */
-    __onTriggerMove: function(e){
+    __fixPosition : function(e){
       if(this.isVisible()){
-        var posHint = this._getPositionHint();
+        var posHint = this.getPositionHint();
         this.getLayoutParent().add(this, posHint);
       }
+    }
+  },
+
+  /**
+   * destructor
+   */
+  destruct: function(){
+    var arrow=this.getChildControl("arrow");
+    if(arrow){
+      arrow.removeListener("resize",this._onArrowResize,this);
+    }
+    var trigger = this.getTrigger();
+    if(trigger){
+      trigger.removeListener("move",this._onTriggerChange,this);
+      trigger.removeListener("resize",this._onTriggerChange,this);
     }
   }
 });
