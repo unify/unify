@@ -10,6 +10,7 @@ application/kitchensink/api
 application/googly/source/script
 application/googly/api
 application/coretest/source/script
+application/coretest/test/script
 application/coretest/api
 
 unify/application/flicky/log.txt
