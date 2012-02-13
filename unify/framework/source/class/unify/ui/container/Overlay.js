@@ -4,7 +4,7 @@
 
     Homepage: unify-project.org
     License: MIT + Apache (V2)
-    Copyright: 2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+    Copyright: 2011-2012, Sebastian Fastner, Mainz, Germany, http://unify-training.com
 
 *********************************************************************************************** */
 
@@ -14,16 +14,15 @@
  * Overlay container widget
  */
 core.Class("unify.ui.container.Overlay", {
-  include : [unify.ui.container.Composite],
-  
-  //include : [unify.ui.core.MChildControl, qx.ui.core.MRemoteChildrenHandling],
+  include : [unify.ui.container.Composite, unify.ui.core.MChildControl, qx.ui.core.MRemoteChildrenHandling],
+  implement : [unify.ui.core.IPopOver],
   
   events : {
     /** Event thrown if overlay visibility is changed to hidden */
-    "hidden" : "qx.event.type.Event",
+    "hidden" : unify.event.type.Event, //"qx.event.type.Event",
     
     /** Event thrown if overlay visibility is changed to shown */
-    "shown" : "qx.event.type.Event"
+    "shown" : unify.event.type.Event //"qx.event.type.Event"
   },
   
   properties : {
@@ -47,7 +46,7 @@ core.Class("unify.ui.container.Overlay", {
       init: "left",
       nullable: true
     },
-
+    
     /** optional reference to widget that triggers show/hide of this overlay */
     trigger : {
       type: "unify.ui.core.Widget",
@@ -64,8 +63,8 @@ core.Class("unify.ui.container.Overlay", {
       nullable: true
     },
     
-    blockerClose : {
-      type: "Boolean",
+    modal : {
+      check: "Boolean",
       init: true
     },
     
@@ -73,7 +72,6 @@ core.Class("unify.ui.container.Overlay", {
       init: null,
       nullable: true
     }
-
   },
 
   
@@ -92,21 +90,21 @@ core.Class("unify.ui.container.Overlay", {
   members : {
     
     /**
-     * Appearance queue hit widget, so check if arrow is needed
-     */
-    __syncAppearance : function() {
-      if (this.getHasArrow()) {
-        this._showChildControl("arrow");
-      }
-    },
-    
-    /**
      * Gets inner content container
      *
      * @return {unify.ui.core.Widget} Content widget
      */
     getChildrenContainer : function() {
       return this.getChildControl("container");
+    },
+    
+    /**
+     * Appearance queue hit widget, so check if arrow is needed
+     */
+    __syncAppearance : function() {
+      if (this.getHasArrow()) {
+        this._showChildControl("arrow");
+      }
     },
 
     /**
@@ -117,7 +115,7 @@ core.Class("unify.ui.container.Overlay", {
      */
     _createChildControlImpl : function(id) {
       var control;
-      
+
       if (id == "arrow") {
         control = new unify.ui.other.Arrow();
         this._addAt(control, 1, {
@@ -128,7 +126,7 @@ core.Class("unify.ui.container.Overlay", {
         this._addAt(control, 0);
       }
       
-      return control || this.base(arguments, id);
+      return control;
     },
 
     /**
@@ -142,9 +140,11 @@ core.Class("unify.ui.container.Overlay", {
         this._excludeChildControl("arrow");
       }
     },
+    
     //overridden, calculate overlaysize as content size + arrow size depending on arrow direction
     _computeSizeHint: function(){
-      var hint=this.getChildrenContainer().getSizeHint();
+      var hint=this.base(arguments);
+      
       if(this.getHasArrow()){
         var arrow=this.getChildControl("arrow");
         var arrowHint=arrow.getSizeHint();
@@ -155,6 +155,7 @@ core.Class("unify.ui.container.Overlay", {
           hint.height+=arrowHint.height;
         }
       }
+      
       return hint;
     },
     
@@ -163,20 +164,16 @@ core.Class("unify.ui.container.Overlay", {
      *
      * if the overlay has an arrow, the arrows pointing edge is used as reference
      */
-    __getPositionHint : function() {
+    getPositionHint : function() {
       qx.ui.core.queue.Manager.flush();//make sure appearance is applied
       
       var left = 0;
       var top = 0;
-      var isString = false;
       
       var staticPosition = this.getStaticPosition();
       if (staticPosition) {
         left = staticPosition.left;
         top = staticPosition.top;
-        if (typeof(left) == "string" || typeof(top) == "string") {
-          isString = true;
-        }
       }
       
       var trigger=this.getTrigger();
@@ -187,6 +184,14 @@ core.Class("unify.ui.container.Overlay", {
         left = triggerPoint.left;
         top=triggerPoint.top;
       }
+      
+      var isString = false;
+      
+      var staticPosition = this.getStaticPosition();
+      if (staticPosition && (typeof(staticPosition.left) == "string" || typeof(staticPosition.top) == "string")) {
+        isString = true;
+      }
+      
       var arrow=this.getChildControl("arrow", true);
       if(arrow && !isString){
         var thisSize=this.getSizeHint();
@@ -205,7 +210,6 @@ core.Class("unify.ui.container.Overlay", {
           left-=Math.round(arrowSize.width/2);
         }
       }
-
 
       return {
         left: left,
@@ -233,7 +237,7 @@ core.Class("unify.ui.container.Overlay", {
         var arrowPosition=this.getRelativeArrowPosition();
 
         if(arrowDirection=="left" || arrowDirection=="right"){
-          var relativeOffset=this.__toPixelValue(height,arrowPosition);
+          var relativeOffset=this._toPixelValue(height,arrowPosition);
           if(arrowPosition=="top"){
             arrowTop=GAP;
           } else if(arrowPosition=="bottom"){
@@ -244,7 +248,7 @@ core.Class("unify.ui.container.Overlay", {
             arrowTop = relativeOffset - Math.round(arrowHeight/2);
           }
         } else if (arrowDirection=="top" || arrowDirection=="bottom"){
-          var relativeOffset=this.__toPixelValue(width,arrowPosition);
+          var relativeOffset=this._toPixelValue(width,arrowPosition);
           if(arrowPosition=="left"){
             arrowLeft=GAP;
           } else if(arrowPosition=="right"){
@@ -263,6 +267,11 @@ core.Class("unify.ui.container.Overlay", {
       }
     },
 
+    //overridden, calculate overlaysize as content size + arrow size depending on arrow direction
+    _computeSizeHint: function(){
+      return this.getChildrenContainer().getSizeHint();
+    },
+    
     /**
      * helper function that calculates the absolute position values of a relativePos in elemPos
      * @param elemPos {Object}  a map containing the elements current position and dimensions (top,left,width,height)
@@ -270,8 +279,8 @@ core.Class("unify.ui.container.Overlay", {
      */
     __resolveRelative: function(elemPos,relativePos){
       return {
-        top: (elemPos.top||0)+this.__toPixelValue(elemPos.height,relativePos.y),
-        left:(elemPos.left||0)+this.__toPixelValue(elemPos.width,relativePos.x)
+        top: (elemPos.top||0)+this._toPixelValue(elemPos.height,relativePos.y),
+        left:(elemPos.left||0)+this._toPixelValue(elemPos.width,relativePos.x)
       }
     },
 
@@ -282,7 +291,7 @@ core.Class("unify.ui.container.Overlay", {
      * @param relativePosition {String|Number} left,right,top,bottom,center, a percentage string, a px string or a Number
      * @return {Number} calculated value
      */
-    __toPixelValue : function(baseSize,relativePosition){
+    _toPixelValue : function(baseSize,relativePosition){
       if(relativePosition=="left" || relativePosition == "top"){
         return 0;
       } else if (relativePosition == "center"){
@@ -310,10 +319,7 @@ core.Class("unify.ui.container.Overlay", {
     show : function() {
       this.base(arguments);
       
-      var posHint = this.__getPositionHint();
-      this.getLayoutParent().add(this, posHint);
-      this.fireEvent("shown");
-      var trigger=this.getTrigger();
+      var trigger = this.getTrigger();
       if(trigger){
         trigger.addListener("move",this.__onTriggerMove,this);
         trigger.addListener("resize",this.__onTriggerMove,this);
@@ -326,8 +332,7 @@ core.Class("unify.ui.container.Overlay", {
     hide : function() {
       this.base(arguments);
       
-      this.fireEvent("hidden");
-      var trigger=this.getTrigger();
+      var trigger = this.getTrigger();
       if(trigger){
         trigger.removeListener("move",this.__onTriggerMove,this);
         trigger.removeListener("resize",this.__onTriggerMove,this);
@@ -343,7 +348,7 @@ core.Class("unify.ui.container.Overlay", {
      */
     __onTriggerMove: function(e){
       if(this.isVisible()){
-        var posHint = this.__getPositionHint();
+        var posHint = this._getPositionHint();
         this.getLayoutParent().add(this, posHint);
       }
     }

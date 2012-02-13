@@ -4,7 +4,7 @@
 
     Homepage: unify-project.org
     License: MIT + Apache (V2)
-    Copyright: 2010-2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+    Copyright: 2010-2012, Sebastian Fastner, Mainz, Germany, http://unify-training.com
 
 *********************************************************************************************** */
 
@@ -126,6 +126,7 @@ qx.Class.define("unify.ui.form.Combobox", {
      */
     __onTap : function(e) {
       var overlay = this.getChildControl("overlay");
+      overlay.setModal(false);
       var container = overlay.getChildControl("container");
       container.setWidth(this.getWidth());
       container.setAllowGrowX(false);
@@ -141,11 +142,11 @@ qx.Class.define("unify.ui.form.Combobox", {
       }
       overlay.add(container, {edge: 0});
       
-      unify.view.PopOverManager.getInstance().show(overlay, this)
+      unify.ui.core.PopOverManager.getInstance().show(overlay, this)
     },
     
     __onButtonExecute : function(e) {
-      unify.view.PopOverManager.getInstance().hide(this.getChildControl("overlay"));
+      unify.ui.core.PopOverManager.getInstance().hide(this.getChildControl("overlay"));
       var id = e.getTarget().getUserData("id");
       this.setValue(e.getTarget().getUserData("id"));
       this.fireDataEvent("execute", id);

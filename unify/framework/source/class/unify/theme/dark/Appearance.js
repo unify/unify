@@ -47,6 +47,32 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
+    
+    "POPOVER-BLOCKER" : {
+      style : function(states) {
+        return {
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: "100%",
+          height: "100%",
+          background: "transparent"
+        }
+      }
+    },
+    "MODAL-BLOCKER" : {
+      style : function(states) {
+        return {
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "#000",
+          opacity: 0.5
+        }
+      }
+    },
 
     "widget" : {},
 
@@ -725,7 +751,9 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           whiteSpace: "normal",
           backgroundColor: "white",
           width: "500px",
-          height: "400px"
+          height: "400px",
+          marginLeft: "-250px",
+          marginTop: "-200px"
         };
       }
     },
@@ -734,8 +762,8 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         return {
           backgroundColor: "white",
           
-          marginTop : -250,
-          marginLeft : -200,
+          marginTop : -200,
+          marginLeft : -250,
           
           properties : {
             hasArrow: false,

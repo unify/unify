@@ -1,0 +1,1 @@
+core.Class("unify.event.type.Event", {});

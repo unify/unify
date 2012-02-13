@@ -4,7 +4,7 @@
 
     Homepage: unify-project.org
     License: MIT + Apache (V2)
-    Copyright: 2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+    Copyright: 2011-2012, Sebastian Fastner, Mainz, Germany, http://unify-training.com
 
 *********************************************************************************************** */
 
@@ -153,6 +153,10 @@ core.Class("unify.view.ViewManager", {
   members :
   {
     __initialized : false,
+    
+    getModal : function() {
+      return (this.getDisplayMode() == "modal");
+    },
     
     /**
      * Returns the currently selected view instance
@@ -364,7 +368,7 @@ core.Class("unify.view.ViewManager", {
       this.__setView(currentViewObj, layerTransition);
       var mode=this.getDisplayMode();
       if(mode=='modal'){
-        unify.view.PopOverManager.getInstance().show(this.getId());
+        unify.view.helper.ViewOverlayManager.getInstance().show(this.getId());
       }
       // Save path
       this.__path = path;
@@ -382,61 +386,74 @@ core.Class("unify.view.ViewManager", {
      *
      * @param callback {Function} optional callback to execute after hidianimation is done
      */
-    hideModal : function(callback)
-    {
-      if(this.getDisplayMode()!="modal"){
-        throw new Error("hideModal called on ViewManager without displaymode modal: "+this);
-      }
-      var view = this.__currentView;
-      if (view) {
-        view.setActive(false);
-      }
+    hide : function(callback) {
+      if (!this.getModal()) {
+        this.base(arguments);
+      } else {
+        if(this.getDisplayMode() != "modal"){
+          throw new Error("hideModal called on ViewManager without displaymode modal: "+this);
+        }
+        var view = this.__currentView;
+        if (view) {
+          view.setActive(false);
+        }
         this.__path=null;
         this.__currentView=null;
         this.fireDataEvent("changePath", this.__path);
-        if(this.getAnimateTransitions()){
-          this.__animateModal(view,false,callback);
-        } else {
+        
+        var self = this;
+        var selfArguments = arguments;
+        var cb = function() {
           view.setActive(false);
           view.hide();
-          this.hide();
+          self.base(selfArguments);
           if(callback){
             callback();
           }
-        }
+        };
         
+        if(this.getAnimateTransitions()){
+          this.__animateModal(view,false,cb);
+        } else {
+          cb();
+          /*view.setActive(false);
+          view.hide();
+          this.base(arguments);
+          if(callback){
+            callback();
+          }*/
+        }
+      }
     },
 
 
     /**
      * Shows the view manager and resumes selected view
      */
-    showModal : function()
-    {
-      if(this.getDisplayMode()!="modal"){
-        throw new Error("called shoModal on ViewManager without displaymode modal: "+this);
-      }
-
-      // Be sure that we show a view (if possible)
-      if(!this.__initialized){
-        this.init();
-      }
-      // Re-activate view (normally only useful if it was paused before)
-      var view = this.__currentView;
-      if (core.Env.getValue("debug")) {
-        this.debug("Show with: " + view);
-      }
-      if (view) {
-        view.setActive(true);
-      }
-
-      this.show();
-      if(this.getAnimateTransitions()){
-        this.__animateModal(view,true);
+    show : function() {
+      if (!this.getModal()) {
+        unify.ui.container.Composite.show.call(this);
       } else {
-        view.show();
+        // Be sure that we show a view (if possible)
+        if(!this.__initialized){
+          this.init();
+        }
+        // Re-activate view (normally only useful if it was paused before)
+        var view = this.__currentView;
+        if (qx.core.Environment.get("qx.debug")) {
+          this.debug("Show with: " + view);
+        }
+        if (view) {
+          view.setActive(true);
+        }
+  
+        unify.ui.container.Composite.show.call(this);
+        if(this.getAnimateTransitions()) {
+          this.__animateModal(view,true);
+        } else {
+          view.show();
+        }
       }
-
     },
     
     /*
@@ -760,17 +777,9 @@ core.Class("unify.view.ViewManager", {
 
       var visibilityAction = function() {
         var afterRenderAction = function() {
-          var transitionEndFnt = function() {if(!show){
-            view.setActive(false);
-            view.hide();
-            self.hide();
+          if (callback) {
+            view.addListenerOnce("animatePositionDone", callback, this);
           }
-            if(callback){
-              callback();
-            }
-          };
-          view.addListenerOnce("animatePositionDone", transitionEndFnt, this);
-
           view.setAnimatePositionDuration(AnimationDuration);
           view.setAnimatePosition((show) ? self.__positions.center : self.__positions.bottom);
         }

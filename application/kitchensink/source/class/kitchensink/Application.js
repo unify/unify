@@ -37,6 +37,9 @@ qx.Class.define("kitchensink.Application",
       // Register your view classes...
       MasterViewManager.register(kitchensink.view.Start, true);
       MasterViewManager.register(kitchensink.view.Ui);
+      
+      var ModalViewManager = new unify.view.ViewManager("modal").set({displayMode: "modal"});
+      ModalViewManager.register(kitchensink.view.Modal);
 
       // Add TabViews or SplitViews...
       var TabView = new unify.view.TabViewManager(MasterViewManager);
@@ -49,6 +52,7 @@ qx.Class.define("kitchensink.Application",
       // Add at least one view manager to the navigation managment
       var Navigation = unify.view.Navigation.getInstance();
       Navigation.register(MasterViewManager);
+      Navigation.register(ModalViewManager);
       Navigation.init();
     },
     

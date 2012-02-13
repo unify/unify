@@ -70,7 +70,13 @@ core.Class("unify.ui.core.MInteractionState", {
     /**
      * Adds pressed state to widget
      */
-    __MInteractionStateAddPressed : function() {
+    __MInteractionStateAddPressed : function(domEvent) {
+      
+      // only react on the left mouse button; ignore all others
+      if (domEvent instanceof qx.event.type.Mouse && !domEvent.isLeftPressed()) {
+        return;
+      }
+      
       var InteractionStateManager = unify.ui.core.InteractionStateManager.getInstance();
       if (InteractionStateManager.getPressedWidget() == null) {
         this.addState("pressed");
@@ -81,7 +87,13 @@ core.Class("unify.ui.core.MInteractionState", {
     /**
      * Removes pressed state to widget
      */
-    __MInteractionStateRemovePressed : function() {
+    __MInteractionStateRemovePressed : function(domEvent) {
+      
+      // only react on the left mouse button; ignore all others
+      if (domEvent instanceof qx.event.type.Mouse && !domEvent.isLeftPressed()) {
+        return;
+      }
+      
       var InteractionStateManager = unify.ui.core.InteractionStateManager.getInstance();
       if (InteractionStateManager.getPressedWidget() == this) {
         this.removeState("pressed");

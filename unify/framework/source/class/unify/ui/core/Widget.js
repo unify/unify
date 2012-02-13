@@ -7,7 +7,7 @@
 
     Homepage: unify-project.org
     License: MIT + Apache (V2)
-    Copyright: 2010-2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+    Copyright: 2010-2012, Sebastian Fastner, Mainz, Germany, http://unify-training.com
 
 *********************************************************************************************** */
 
@@ -722,7 +722,15 @@ core.Class("unify.ui.core.Widget", {
           this.__virtualPosition = {left: left, top: top};
         } else {
           // Get position of parent if virtual layout to calculate new relative positions
-          var parentVirtualPosition = this.getLayoutParent().getVirtualPosition();
+          var layoutParent = this.getLayoutParent();
+          var parentVirtualPosition = {left: 0, top: 0};
+          if (layoutParent) {
+            parentVirtualPosition = layoutParent.getVirtualPosition();
+          } else {
+            if (qx.core.Environment.get("qx.debug")) {
+              this.warn("No parent widget set, so virtual position is set to 0/0")
+            }
+          }
 
           qx.bom.element.Style.setStyles(element, {
             position: "absolute",
@@ -1342,7 +1350,18 @@ core.Class("unify.ui.core.Widget", {
         delete map.borderBottom;
       }
 
-      //font
+      // Colors
+      
+      var colorTags = ["color", "backgroundColor", "borderColor", "borderTopColor", "borderLeftColor", "borderRightColor", "borderBottomColor"];
+      for (var i=0,ii=colorTags.length; i<ii; i++) {
+        var tag = colorTags[i];
+        if (map[tag]) {
+          map[tag] = qx.theme.manager.Color.getInstance().resolve(map[tag]);
+        }
+      }
+      
+
+      // font
 
       //read font properties
       var font = map.font;
@@ -1374,7 +1393,7 @@ core.Class("unify.ui.core.Widget", {
       //now check each property
       if (fontSize) {
         delete map.fontSize;
-        if (typeof(fontSize) == "string") {
+        if (typeof(fontSize) == "string" && fontSize.substr(-2) != "px") {
           tmpFont.setSize(unify.bom.Font.resolveRelativeSize(fontSize));
         } else {
           tmpFont.setSize(parseInt(fontSize, 10));
