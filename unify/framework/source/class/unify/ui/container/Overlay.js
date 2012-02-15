@@ -385,7 +385,7 @@ qx.Class.define("unify.ui.container.Overlay", {
     __fixPosition : function(e){
       if(this.isVisible()){
         var posHint = this.getPositionHint();
-        this.getLayoutParent().add(this, posHint);
+        this.setLayoutProperties(posHint);
       }
     }
   },
