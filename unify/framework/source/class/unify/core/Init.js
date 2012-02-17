@@ -7,14 +7,25 @@ core.Class("unify.core.Init", {
   }
 });
 
+unify.core.Statics.annotate(unify.core.Init, {
+  getApplication : function() {
+    return unify.core.Init.$$application;
+  }
+});
+
+
 (function() {
   var load = function() {
     var Application = core.Class.getByName(core.Env.getValue("application"));
     var init = new Application();
+    
+    unify.core.Init.$$application = init;
 
     init.main();
     init.finalize();
   };
+  
+  //lowland.bom.Events.set(element, type, handler, capture);
   
   var events = ["error",
       "load",

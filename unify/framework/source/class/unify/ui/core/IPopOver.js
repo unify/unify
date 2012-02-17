@@ -11,7 +11,7 @@
 /**
  * Interface for pop overs
  */
-qx.Interface.define("unify.ui.core.IPopOver", {
+core.Interface("unify.ui.core.IPopOver", {
   members : {
     getModal : function() {}
   }

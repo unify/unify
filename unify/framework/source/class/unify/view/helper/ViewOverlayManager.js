@@ -14,9 +14,8 @@
  *
  */
 
-qx.Class.define("unify.view.helper.ViewOverlayManager", {
-  extend : qx.core.Object,
-  type : "singleton",
+core.Class("unify.view.helper.ViewOverlayManager", {
+  include : [unify.core.Object],
   
   /*
   *****************************************************************************
@@ -24,9 +23,8 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
   *****************************************************************************
   */
     
-  construct : function()
-  {
-    this.base(arguments);
+  construct : function() {
+    unify.core.Object.call(this);
     
     unify.ui.core.PopOverManager.getInstance().addListener("hide", this.__hidePopover, this);
     
@@ -37,10 +35,10 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
   
   events : {
     /** Show popup event */
-    "show" : "qx.event.type.Data",
+    "show" : lowland.events.DataEvent, //"qx.event.type.Data",
     
     /** Hide popup event */
-    "hide" : "qx.event.type.Data"
+    "hide" : lowland.events.DataEvent //"qx.event.type.Data"
   },
 
   /*
@@ -222,7 +220,7 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
       }
       return overlay;
     }
-  },
+  }//,
 
   /*
   *****************************************************************************
@@ -230,7 +228,9 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
   *****************************************************************************
   */
     
-  destruct : function() {
+  /*destruct : function() {
     this.__root = this.__pblocker= this.__mblocker=this.__viewManagers=this.__overlays=this.__styleRegistry = null;
-  } 
+  } */
 });
+
+unify.core.Singleton.annotate(unify.view.helper.ViewOverlayManager);

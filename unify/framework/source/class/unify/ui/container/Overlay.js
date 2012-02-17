@@ -14,7 +14,7 @@
  * Overlay container widget
  */
 core.Class("unify.ui.container.Overlay", {
-  include : [unify.ui.container.Composite, unify.ui.core.MChildControl, qx.ui.core.MRemoteChildrenHandling],
+  include : [unify.ui.container.Composite, unify.ui.core.MChildControl], //, unify.ui.core.MRemoteChildrenHandling],
   implement : [unify.ui.core.IPopOver],
   
   events : {
@@ -64,7 +64,7 @@ core.Class("unify.ui.container.Overlay", {
     },
     
     modal : {
-      check: "Boolean",
+      type: "Boolean",
       init: true
     },
     

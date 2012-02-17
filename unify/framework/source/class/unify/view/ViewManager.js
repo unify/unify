@@ -808,7 +808,7 @@ core.Class("unify.view.ViewManager", {
   }
 });
 
-unify.core.Statics.annotate("unify.view.ViewManager", {
+unify.core.Statics.annotate(unify.view.ViewManager, {
   /**
    * Returns the manager with the given ID
    *

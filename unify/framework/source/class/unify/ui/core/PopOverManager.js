@@ -12,11 +12,8 @@
 /**
  * Handles pop over stacking (and blocking elements)
  */
-
-qx.Class.define("unify.ui.core.PopOverManager",
-{
-  extend : qx.core.Object,
-  type : "singleton",
+core.Class("unify.ui.core.PopOverManager", {
+  include : [unify.core.Object],
   
   /*
   *****************************************************************************
@@ -25,9 +22,9 @@ qx.Class.define("unify.ui.core.PopOverManager",
   */
     
   construct : function() {
-    this.base(arguments);
+    unify.core.Object.call(this);
     
-    var root = this.__root = qx.core.Init.getApplication().getRoot();
+    var root = this.__root = unify.core.Init.getApplication().getRoot();
     this.__visibleOverlays = [];
     this.__overlays={};
     this.__styleRegistry = {};
@@ -35,18 +32,18 @@ qx.Class.define("unify.ui.core.PopOverManager",
     var Style = qx.bom.element.Style;
     
     var pblocker = this.__pblocker = document.createElement("div");
-    var pstyle = qx.theme.manager.Appearance.getInstance().styleFrom("POPOVER-BLOCKER");
+    /* TODO: var pstyle = qx.theme.manager.Appearance.getInstance().styleFrom("POPOVER-BLOCKER");
     pstyle.display = "none";
     Style.setStyles(pblocker, pstyle);
-    pblocker.id = "popover-blocker";
+    pblocker.id = "popover-blocker"; */
     
     var mblocker = this.__mblocker = document.createElement("div");
-    var mstyle = qx.theme.manager.Appearance.getInstance().styleFrom("MODAL-BLOCKER");
+    /* TODO: var mstyle = qx.theme.manager.Appearance.getInstance().styleFrom("MODAL-BLOCKER");
     mstyle.display = "none";
     Style.setStyles(mblocker, mstyle);
     mblocker.id = "modal-blocker";
     
-    qx.event.Registration.addListener(pblocker,'tap',this.__onTapBlocker,this);
+    qx.event.Registration.addListener(pblocker,'tap',this.__onTapBlocker,this); */
     
     var rootElement = root.getElement();
     rootElement.appendChild(pblocker);
@@ -55,10 +52,10 @@ qx.Class.define("unify.ui.core.PopOverManager",
   
   events : {
     /** Show popup event */
-    "show" : "qx.event.type.Data",
+    "show" : lowland.events.DataEvent,
     
     /** Hide popup event */
-    "hide" : "qx.event.type.Data"
+    "hide" : lowland.events.DataEvent
   },
 
   /*
@@ -203,7 +200,7 @@ qx.Class.define("unify.ui.core.PopOverManager",
       widget.addListenerOnce("changeVisibility", hideCallback, this);
       widget.hide();
     }
-  },
+  }//,
 
   /*
   *****************************************************************************
@@ -211,12 +208,14 @@ qx.Class.define("unify.ui.core.PopOverManager",
   *****************************************************************************
   */
     
-  destruct : function() {
+  /*destruct : function() {
     qx.event.Registration.removeListener(this.__pblocker, 'tap', this.__onTapBlocker, this);
     
     var rootElement = this._root.getElement();
     rootElement.removeChild(this.__pblocker);
     rootElement.removeChild(this.__mblocker);
     this.__root = this.__pblocker = this.__mblocker = this.__overlays = this.__styleRegistry = null;
-  } 
+  } */
 });
+
+unify.core.Singleton.annotate(unify.ui.core.PopOverManager);

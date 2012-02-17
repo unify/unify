@@ -11,10 +11,21 @@
 /**
  * EXPERIMENTAL
  */
-qx.Mixin.define("unify.ui.core.MRemoteChildrenHandling", {
-  include : qx.ui.core.MRemoteChildrenHandling,
+core.Class("unify.ui.core.MRemoteChildrenHandling", {
 
   members : {
+    // TODO:
+    getChildren : function() {},
+    hasChildren : function() {},
+    add: function(children, options) {},
+    remove: function(child) {},
+    removeAll: function() {},
+    indexOf: function(child) {},
+    addAt: function(child, index, options) {},
+    addBefore: function(child, beforeChild, options) {},
+    addAfter: function(child, afterChild, options) {},
+    removeAt: function(index) {},
+    
     /**
      * Set style on remote container
      *
