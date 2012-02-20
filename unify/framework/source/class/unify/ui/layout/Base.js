@@ -4,7 +4,8 @@ core.Class("unify.ui.layout.Base", {
   
   members : {
     __widget : null,
-    _invalidChildrenCache : false,
+    _invalidChildrenCache : true,
+    __sizeHint : null,
     
     connectWidget : function(widget) {
       this.__widget = widget;
@@ -19,6 +20,7 @@ core.Class("unify.ui.layout.Base", {
     },
     
     getHeightForWidth : function(width) {
+      console.error("getHeightForWidth is not implemented!", this.constructor);
       return null;
     },
     
@@ -27,10 +29,11 @@ core.Class("unify.ui.layout.Base", {
     },
     
     invalidateLayoutCache : function() {
+      this.__sizeHint = null;
     },
     
     renderLayout : function(availWidth, availHeight) {
-      
+      console.error("renderLayout is not implemented! ", this.constructor);
     },
     
     _computeSizeHint : function() {
@@ -38,7 +41,13 @@ core.Class("unify.ui.layout.Base", {
     },
     
     getSizeHint : function() {
+      var sizeHint = this.__sizeHint;
       
+      if (!sizeHint) {
+        sizeHint = this.__sizeHint = this._computeSizeHint();
+      }
+      
+      return sizeHint;
     },
     
     _getLayoutChildren : function() {
