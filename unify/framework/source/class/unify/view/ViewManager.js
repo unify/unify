@@ -78,10 +78,10 @@ core.Class("unify.view.ViewManager", {
   events :
   {
     /** Fired whenever the view-local path was modified */
-    changePath : "qx.event.type.Data",
+    changePath : lowland.events.DataEvent, //"qx.event.type.Data",
     
     /** Fired whenever the displayed view was modified */
-    changeView : "qx.event.type.Event"
+    changeView : lowland.events.Event //"qx.event.type.Event"
   },
   
   
@@ -96,7 +96,6 @@ core.Class("unify.view.ViewManager", {
   {
     // overwritten
     appearance : {
-      refine: true,
       init: "viewmanager"
     },
     
@@ -120,7 +119,7 @@ core.Class("unify.view.ViewManager", {
      * Related view manager which functions as a master (controller) for this view manager 
      */
     master : {
-      type : "unify.view.ViewManager",
+      type : unify.view.ViewManager,
       nullable : true,
       apply: this._applyMaster
     },
@@ -256,7 +255,7 @@ core.Class("unify.view.ViewManager", {
       viewObj.setSegment(viewObj.getDefaultSegment()||null);
       viewObj.resetParam();
       this.__setView(viewObj);
-      this.fireDataEvent("changePath", this.__path);
+      this.fireEvent("changePath", this.__path);
     },
 
     /**
@@ -372,7 +371,7 @@ core.Class("unify.view.ViewManager", {
       }
       // Save path
       this.__path = path;
-      this.fireDataEvent("changePath", this.__path);
+      this.fireEvent("changePath", this.__path);
     },
     
     /*
@@ -399,7 +398,7 @@ core.Class("unify.view.ViewManager", {
         }
         this.__path=null;
         this.__currentView=null;
-        this.fireDataEvent("changePath", this.__path);
+        this.fireEvent("changePath", this.__path);
         
         var self = this;
         var selfArguments = arguments;
