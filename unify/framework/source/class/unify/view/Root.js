@@ -14,11 +14,7 @@
  * Root widget bound to the root DOM element
  */
 core.Class("unify.view.Root", {
-  include : [unify.ui.core.Widget],
-  
-  /*include : [
-    qx.ui.core.MChildrenHandling
-  ],*/
+  include : [unify.ui.core.Widget, unify.ui.core.MChildrenHandling],
   
   /**
    * @param rootElement {Element} DOM element the widget root is bound to
@@ -33,14 +29,14 @@ core.Class("unify.view.Root", {
     
     this._setLayout(layout||new unify.ui.layout.Canvas());
     
-    // TODO : qx.event.Registration.addListener(window, "resize", this.__onResize, this);
+    lowland.bom.Events.set(window, "resize", this.__onResize.bind(this));
+    
+    //this.setAppearance("root");
   },
   
   properties : {
     // overridden
-    appearance :
-    {
-      refine: true,
+    appearance : {
       init: "root"
     }
   },
@@ -97,69 +93,12 @@ core.Class("unify.view.Root", {
      * @return {Map} Calculated size of root element
      */
     _getSizeHint : function() {
-      var root = this.__rootElement;
-      
-      var Dimension = qx.bom.element.Dimension;
-      var rootSizeHint = {
-        width: Dimension.getContentWidth(root),
-        height: Dimension.getContentHeight(root)
-      };
-      
-      return rootSizeHint;
+      return lowland.bom.Element.getContentSize(this.__rootElement);
     },
     
     // overridden
     renderLayout : function(left, top, width, height, preventSize) {
-      this.base(arguments, left, top, width, height, true);
-    },
-    
-    __rootEvents : ["touchstart", "touchmove", "touchend", "touchcancel"],
-    // TODO: __EventRegistration : qx.event.Registration,
-    
-    // overridden
-    addListener : function(type, listener, self, capture) {
-      if (qx.lang.Array.contains(this.__rootEvents, type)) {
-        return this.__EventRegistration.addListener(this.__rootEventElement, type, listener, self, capture);
-      } else {
-        return this.base(arguments, type, listener, self, capture);
-      }
-    },
-    
-    // overridden
-    addListenerOnce : function(type, listener, self, capture) {
-      if (qx.lang.Array.contains(this.__rootEvents, type)) {
-        var callback = function(e) {
-          this.__EventRegistration.removeListener(this.__rootEventElement, type, callback, this, capture);
-          listener.call(self||this, e);
-        };
-  
-        return this.__EventRegistration.addListener(this.__rootEventElement, type, listener, self, capture);
-      } else {
-        return this.base(arguments, type, listener, self, capture);
-      }
-    },
-    
-    // overridden
-    removeListener : function(type, listener, self, capture) {
-      if (qx.lang.Array.contains(this.__rootEvents, type)) {
-        return this.__EventRegistration.removeListener(this.__rootEventElement, type, listener, self, capture);
-      } else {
-        return this.base(arguments, type, listener, self, capture);
-      }
-    },
-    
-    // overridden
-    removeListenerById : function(id) {
-      return this.__EventRegistration.removeListenerById(this.__rootEventElement, id) || this.base(arguments, id);
-    },
-    
-    // overridden
-    hasListener : function(type, capture) {
-      if (qx.lang.Array.contains(this.__rootEvents, type)) {
-        return this.__EventRegistration.hasListener(this.__rootEventElement, type, capture);
-      } else {
-        return this.base(arguments, type, capture);
-      }
+      unify.ui.core.Widget.prototype.renderLayout.call(this, left, top, width, height, true);
     }
   }/*,
   
