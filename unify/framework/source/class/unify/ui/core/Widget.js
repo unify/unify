@@ -23,7 +23,7 @@
 #use(unify.ui.core.EventHandler)
 */
 core.Class("unify.ui.core.Widget", {
-  include : [unify.ui.core.LayoutItem],
+  include : [unify.ui.core.VisibleBox],
 
   /**
    * @param layout {qx.ui.layout.Abstract} Layout of widget
@@ -539,7 +539,7 @@ core.Class("unify.ui.core.Widget", {
      */
     syncAppearance : function()
     {
-      var manager = qx.theme.manager.Appearance.getInstance();
+      var manager = unify.theme.Manager.get();
       var states = this.__states;
       var selector = this.__appearanceSelector;
       var oldStyle, newStyle, key;
@@ -552,7 +552,8 @@ core.Class("unify.ui.core.Widget", {
         // Check if the selector was created previously
         if (selector) {
           // Query old style
-          oldStyle = manager.styleFrom(selector, states, null, this.getAppearance());
+          oldStyle = manager.resolveStyle(selector, states);
+          //oldStyle = manager.styleFrom(selector, states, null, this.getAppearance());
 
           // Clear current selector (to force recompute)
           selector = null;
@@ -563,13 +564,14 @@ core.Class("unify.ui.core.Widget", {
       if (!selector) {
         selector = this.__appearanceSelector = this.getAppearance();
         if (!selector) {
-          this.warn("No appearance set on " + this);
+          this.warn("No appearance set on " + this.constructor);
           return;
         }
       }
 
       // Query current selector
-      newStyle = manager.styleFrom(selector, states, null, this.getAppearance());
+      //newStyle = manager.styleFrom(selector, states, null, this.getAppearance());
+      newStyle = manager.resolveStyle(selector, states);
 
       if (newStyle) {
         if (oldStyle) {
@@ -591,7 +593,7 @@ core.Class("unify.ui.core.Widget", {
         this._setStyle(styleData);
       }
 
-      this.fireDataEvent("appearance", this.__states);
+      this.fireEvent("appearance", this.__states);
     },
 
     /**
@@ -602,7 +604,7 @@ core.Class("unify.ui.core.Widget", {
       this.__updateSelector = true;
 
       // Add to appearance queue
-      qx.ui.core.queue.Appearance.add(this);
+      unify.ui.layout.queue.Appearance.add(this);
     },
 
     /**
@@ -613,7 +615,7 @@ core.Class("unify.ui.core.Widget", {
       // visible before. Normally add it to the queue is the easiest way to update it.
       if (!this.__initialAppearanceApplied)
       {
-        qx.ui.core.queue.Appearance.add(this);
+        unify.ui.layout.queue.Appearance.add(this);
         this.__initialAppearanceApplied = true;
 
         //qx.bom.element.Style.set(this.getElement(), "visibility", "visible");
@@ -626,7 +628,7 @@ core.Class("unify.ui.core.Widget", {
       // to be flushed
       else if (this.$$stateChanges)
       {
-        qx.ui.core.queue.Appearance.add(this);
+        unify.ui.layout.queue.Appearance.add(this);
         delete this.$$stateChanges;
       }
     },
@@ -704,7 +706,7 @@ core.Class("unify.ui.core.Widget", {
         width: width,
         height: height
       };
-      var changes = this.base(arguments, left, top, width, height);
+      var changes = unify.ui.core.VisibleBox.prototype.renderLayout.call(this, left, top, width, height);
 
       if(!changes) {
         return;
@@ -722,7 +724,7 @@ core.Class("unify.ui.core.Widget", {
           this.__virtualPosition = {left: left, top: top};
         } else {
           // Get position of parent if virtual layout to calculate new relative positions
-          var layoutParent = this.getLayoutParent();
+          var layoutParent = this.getParentBox();
           var parentVirtualPosition = {left: 0, top: 0};
           if (layoutParent) {
             parentVirtualPosition = layoutParent.getVirtualPosition();
@@ -732,7 +734,7 @@ core.Class("unify.ui.core.Widget", {
             }
           }
 
-          qx.bom.element.Style.setStyles(element, {
+          core.bom.Style.set(element, {
             position: "absolute",
             left: (left + parentVirtualPosition.left) + "px",
             top: (top + parentVirtualPosition.top) + "px",
@@ -757,6 +759,7 @@ core.Class("unify.ui.core.Widget", {
         }
 
         if (this.__layoutManager && this.hasLayoutChildren()) {
+          console.log("LM: ", this.__layoutManager.constructor, innerWidth, innerHeight);
           this.__layoutManager.renderLayout(innerWidth, innerHeight);
         } else if (this.hasLayoutChildren()) {
           throw new Error("No layout in " + this);
@@ -1689,7 +1692,7 @@ core.Class("unify.ui.core.Widget", {
      */
     _add : function(child, options) {
       // When moving in the same widget, remove widget first
-      if (child.getLayoutParent() == this) {
+      if (child.getParentBox() == this) {
         qx.lang.Array.remove(this.__widgetChildren, child);
       }
 
@@ -1717,7 +1720,7 @@ core.Class("unify.ui.core.Widget", {
       }
 
       // When moving in the same widget, remove widget first
-      if (child.getLayoutParent() == this) {
+      if (child.getParentBox() == this) {
         qx.lang.Array.remove(this.__widgetChildren, child);
       }
 
@@ -1763,7 +1766,7 @@ core.Class("unify.ui.core.Widget", {
       var addAtIndex = this.__widgetChildren.indexOf(before);
 
       // When moving in the same widget, remove widget first
-      if (child.getLayoutParent() == this) {
+      if (child.getParentBox() == this) {
         qx.lang.Array.remove(this.__widgetChildren, child);
       }
 
@@ -1800,7 +1803,7 @@ core.Class("unify.ui.core.Widget", {
       var addAtIndex = this.__widgetChildren.indexOf(after)+1;
 
       // When moving in the same widget, remove widget first
-      if (child.getLayoutParent() == this) {
+      if (child.getParentBox() == this) {
         qx.lang.Array.remove(this.__widgetChildren, child);
       }
 
@@ -1919,7 +1922,7 @@ core.Class("unify.ui.core.Widget", {
      */
     __addHelper : function(child, options,index)
     {
-      if (core.Env.getValue("debug"))
+      /*if (core.Env.getValue("debug"))
       {
         //this.assertInstance(child, unify.ui.qx.LayoutItem, "Invalid widget to add: " + child);
         this.assertInstance(child, qx.ui.core.LayoutItem, "Invalid widget to add: " + child);
@@ -1928,10 +1931,10 @@ core.Class("unify.ui.core.Widget", {
         if (options != null) {
           this.assertType(options, "object", "Invalid layout data: " + options);
         }
-      }
+      }*/
 
       // Remove from old parent
-      var parent = child.getLayoutParent();
+      var parent = child.getParentBox();
       if (parent && parent != this) {
         parent._remove(child);
       }
@@ -1957,9 +1960,10 @@ core.Class("unify.ui.core.Widget", {
       this._getLayout().invalidateLayoutCache();
 
       // Remember parent
-      child.setLayoutParent(this);
+      child.setParentBox(this);
 
-      qx.ui.core.queue.Visibility.add(this);
+      
+      unify.ui.layout.queue.Visibility.add(this);
 
       // Import options: This call will
       //  - clear the layout's children cache as well and
@@ -1989,7 +1993,7 @@ core.Class("unify.ui.core.Widget", {
         this.assertNotUndefined(child);
       }
 
-      if (child.getLayoutParent() !== this) {
+      if (child.getParentBox() !== this) {
         throw new Error("Remove Error: " + child + " is not a child of this widget!");
       }
 
@@ -2020,7 +2024,7 @@ core.Class("unify.ui.core.Widget", {
       this._getLayout().invalidateLayoutCache();
 
       // Clear parent connection
-      child.setLayoutParent(null);
+      child.setParentBox(null);
 
       // clear the layout's children cache
       if (this.__layoutManager) {
@@ -2102,7 +2106,7 @@ unify.core.Statics.annotate(unify.ui.core.Widget, {
         return true;
       }
   
-      child = child.getLayoutParent();
+      child = child.getParentBox();
     }
   
     return false;
