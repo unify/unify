@@ -48,8 +48,7 @@ def source():
     compressedCode = storeSourceLoader("source/script/%s.js" % NAMESPACE, classes, session, bootCode="null")
 
 
-@task("Test version")
-def test():
+def test(name, startclass):
     # Permutation independend config
     optimization = Optimization("unused", "privates", "variables", "declarations", "blocks")
     formatting = Formatting("comma", "semicolon")
@@ -62,14 +61,20 @@ def test():
 
     # Resolving dependencies
     resolver = Resolver(projects)
-    resolver.addClassName("lowland.test.Main")
+    resolver.addClassName(startclass)
     classes = resolver.getIncludedClasses()
 
     # Compressing classes
     classes = Sorter(resolver).getSortedClasses()
-    compressedCode = storeSourceLoader("test/script/%s.js" % NAMESPACE, classes, session, bootCode="null")
+    compressedCode = storeSourceLoader("test/script/%s.js" % name, classes, session, bootCode="null")
 
+@task("Test version")
+def testlowland():
+    test("lowland", "lowland.test.Main")
 
+@task("Test version")
+def testunify():
+    test("unify", "unify.test.Main")
 
 @task("Build version")
 def build():   

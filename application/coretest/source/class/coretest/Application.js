@@ -30,9 +30,6 @@ core.Class("coretest.Application",
       // Call super class
       unify.Application.prototype.main.call(this);
 
-      // Set theme
-      //qx.theme.manager.Meta.getInstance().setTheme(unify.theme.Dark);
-
       // Configure application
       document.title = "coretest";
 
@@ -56,7 +53,7 @@ core.Class("coretest.Application",
     },
     
     _getTheme : function() {
-      return null; // TODO
+      return new unify.theme.Dark();
     }
   }
 });
