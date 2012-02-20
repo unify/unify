@@ -238,7 +238,7 @@ qx.Class.define("unify.view.Navigation",
         for (var managerId in managers)
         {
           var viewManager = managers[managerId];
-          var view = viewManager.getView(viewId);
+          view = viewManager.getView(viewId);
           if (view) {
             break;
           }
