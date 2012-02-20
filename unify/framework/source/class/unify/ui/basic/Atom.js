@@ -37,9 +37,7 @@ core.Class("unify.ui.basic.Atom", {
     },
     
     // overridden
-    appearance :
-    {
-      refine: true,
+    appearance : {
       init: "atom"
     },
     
