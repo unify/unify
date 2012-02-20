@@ -16,20 +16,19 @@
   
   var widgetQueue = [];
 
-  core.Module("unify.ui.layout.queue.Visibility", {
-    name : "visibility",
+  core.Module("unify.ui.layout.queue.Appearance", {
+    name : "appearance",
     
     add : function(widget) {
       widgetQueue.push(widget);
-      unify.ui.layout.queue.Manager.run(unify.ui.layout.queue.Visibility.name);
+      unify.ui.layout.queue.Manager.run(unify.ui.layout.queue.Appearance.name);
     },
     
     flush : function() {
-      console.log("VISIBILITY: ", widgetQueue.length, widgetQueue);
-      
       for (var i=0,ii=widgetQueue.length; i<ii; i++) {
         var widget = widgetQueue[i];
-        widget.checkAppearanceNeeds();
+        
+        widget.syncAppearance();
       }
     }
   });
