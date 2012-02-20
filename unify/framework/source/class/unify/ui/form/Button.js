@@ -23,13 +23,11 @@ core.Class("unify.ui.form.Button", {
   properties: {
     // overridden
     appearance : {
-      refine: true,
       init: "button"
     },
 
     // overridden
     focusable : {
-      refine: true,
       init: true
     },
     
