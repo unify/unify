@@ -89,7 +89,7 @@ core.Class("unify.view.StaticView",
      */
     manager : 
     {
-      type : "unify.view.ViewManager",
+      type : unify.view.ViewManager,
       nullable : true
     },
 
@@ -99,7 +99,7 @@ core.Class("unify.view.StaticView",
      */
     parent :
     {
-      type : "unify.view.StaticView",
+      type : unify.view.StaticView,
       nullable : true,
       apply : this._applyParent,
       fire : "changeParent"
@@ -111,7 +111,7 @@ core.Class("unify.view.StaticView",
      */
     active :
     {
-      type : "Boolean",
+      type : "boolean",
       init : false,
       apply : this._applyActive,
       fire : "changeActive"
@@ -123,7 +123,7 @@ core.Class("unify.view.StaticView",
      */
     param :
     {
-      type : "String",
+      type : "string",
       nullable : true,
       apply : this._applyParam
     },
@@ -134,14 +134,13 @@ core.Class("unify.view.StaticView",
      */
     segment :
     {
-      type : "String",
+      type : "string",
       nullable : true,
       apply : this._applySegment,
       fire : "changeSegment"
     },
     
     appearance : {
-      refine: true,
       init: "view"
     }
   },
