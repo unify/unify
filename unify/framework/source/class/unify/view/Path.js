@@ -103,7 +103,7 @@ qx.Class.define("unify.view.Path",
     {
       var obj = new unify.view.Path;
 
-      if (str.length > 0)
+      if (str && str.length > 0)
       {
         var fragments = str.split("/");
         for (var i=0, l=fragments.length; i<l; i++) {
