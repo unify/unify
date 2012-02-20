@@ -61,14 +61,14 @@ core.Class("unify.Application", {
 
       var theme = this._getTheme();
       if (theme) {
-        //TODO: qx.theme.manager.Meta.getInstance().setTheme(theme);
+        unify.theme.Manager.register(theme.name(), theme);
+        unify.theme.Manager.setTheme(theme.name());
       }
 
       var rootElement = this._getRootElement();
       var rootLayout = this._getRootLayout();
-      //qx.bom.Event.addNativeListener(rootElement, "click", this.__onClick);
+      lowland.bom.Events.set(rootElement, "click", this.__onClick.bind(this));
       var root = this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), rootLayout);
-      //qx.bom.element.Style.set(rootElement, "visibility", "hidden");
       core.bom.Style.set(rootElement, "visibility", "hidden");
       
       // Add box sizing css node
@@ -83,14 +83,7 @@ core.Class("unify.Application", {
 
       // Configure document
       var Style = core.bom.Style;
-      var rootStyle = {}; // TODO: qx.theme.manager.Appearance.getInstance().styleFrom("BODY");
-      // <body>
-      /* TODO: if (qx.core.Environment.get("os.name") == "ios") {
-        rootStyle.touchCallout = "none";
-      }
-      if (qx.core.Environment.get("os.name") == "android") {
-        rootStyle.touchCallout = "none";
-      }*/
+      var rootStyle = unify.theme.Manager.get().resolveStyle("BODY") || {};
       Style.set(rootElement, rootStyle);
       
       // <html>
@@ -104,10 +97,9 @@ core.Class("unify.Application", {
       this.__setupDocumentSize();
 
       // Event listeners
-      /* TODO: var Registration = qx.event.Registration;
-      Registration.addListener(window, "resize", this.__onResize, this);
-      Registration.addListener(window, "orientationchange", this.__onRotate, this);
-      
+      lowland.bom.Events.set(window, "resize", this.__onResize.bind(this));
+      lowland.bom.Events.set(window, "orientationchange", this.__onRotate.bind(this));
+      /*
       if (qx.core.Environment.get("os.name") == "webos") {
         var palmSystem = window.PalmSystem;
         if (palmSystem) {
