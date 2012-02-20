@@ -14,7 +14,7 @@
  * Generic composite container widget
  */
 core.Class("unify.ui.container.Composite", {
-  include : [unify.ui.core.Widget],
+  include : [unify.ui.core.Widget, unify.ui.core.MChildrenHandling],
   
   /*include : [
     qx.ui.core.MChildrenHandling,
@@ -34,9 +34,7 @@ core.Class("unify.ui.container.Composite", {
   
   properties : {
     // overridden
-    appearance :
-    {
-      refine: true,
+    appearance : {
       init: "composite"
     }
   },
