@@ -39,6 +39,7 @@ qx.Class.define("kitchensink.Application",
       MasterViewManager.register(kitchensink.view.Ui);
       
       var ModalViewManager = new unify.view.ViewManager("modal").set({displayMode: "modal"});
+      ModalViewManager.setUserData("blockerState", "test");
       ModalViewManager.register(kitchensink.view.Modal);
 
       // Add TabViews or SplitViews...

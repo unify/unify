@@ -104,10 +104,32 @@ qx.Class.define("unify.ui.core.PopOverManager",
           if(!mSet && modal){
             mblocker.style.zIndex = (zIndexBase-1)+2*i;
             mblocker.style.display = 'block';
+            
+            var styleState = visible[i].getUserData("blockerState");
+            if (styleState) {
+              var val = styleState;
+              styleState = {};
+              styleState[val] = true;
+            }
+            
+            var style = qx.theme.manager.Appearance.getInstance().styleFrom("MODAL-BLOCKER", styleState);
+            qx.bom.element.Style.setStyles(mblocker, style);
+            
             mSet = true;
           } else if (!pSet && !modal){
             pblocker.style.zIndex = (zIndexBase-1)+2*i;
             pblocker.style.display = 'block';
+            
+            var styleState = visible[i].getUserData("blockerState");
+            if (styleState) {
+              var val = styleState;
+              styleState = {};
+              styleState[val] = true;
+            }
+            
+            var style = qx.theme.manager.Appearance.getInstance().styleFrom("POPOVER-BLOCKER", styleState);
+            qx.bom.element.Style.setStyles(pblocker, style);
+            
             pSet = true;
           }
           if (mSet&&pSet) {
