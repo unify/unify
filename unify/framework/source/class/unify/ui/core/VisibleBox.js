@@ -53,6 +53,10 @@ core.Class("unify.ui.core.VisibleBox", {
   members : {
     __sizeHint : null,
     
+    invalidateLayoutCache : function() {
+      this.__sizeHint = null;
+    },
+    
     getSizeHint : function(compute) {
       var hint = this.__sizeHint;
       
@@ -104,7 +108,7 @@ core.Class("unify.ui.core.VisibleBox", {
       var maxHeight = this.getMaxHeight();
       var minWidth = this.getMinWidth() || 0;
       var minHeight = this.getMinHeight() || 0;
-      
+
       return {
         width: width || minWidth,
         height: height || minHeight,
@@ -136,8 +140,6 @@ core.Class("unify.ui.core.VisibleBox", {
     
     renderLayout : function(left, top, width, height) {
       var cache = this.__cache;
-      
-      console.log("RENDER LAYOUT ", left, top, width, height, this.constructor);
       
       if (!cache) {
         cache = this.__cache = [left, top, width, height];
