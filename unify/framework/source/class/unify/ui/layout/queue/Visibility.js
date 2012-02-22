@@ -9,7 +9,7 @@
 *********************************************************************************************** */
 
 /**
- * @break {unify.ui.layout.queue.Manager}
+ * #break(unify.ui.layout.queue.Manager)
  */
 
 (function() {
