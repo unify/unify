@@ -40,34 +40,96 @@ qx.Class.define("unify.view.animation.IOSAnimationManager", {
       }
     },
     
-    initModalIn : function(fromView, toView) {},
+    initModalIn : function(fromView, toView) {
+      if (toView) {
+        var posTo = this.__positions.bottom;
+        toView.setStyle({
+          transform: unify.bom.Transform.accelTranslate(posTo.left, posTo.top)
+        });
+      }
+      if (fromView) {
+        var posFrom = this.__positions.center;
+        fromView.setStyle({
+          transform: unify.bom.Transform.accelTranslate(posFrom.left, posFrom.top)
+        });
+      }
+    },
     
-    initModalOut : function(fromView, toView) {},
+    initModalOut : function(fromView, toView) {
+      if (toView) {
+        var posTo = this.__positions.center;
+        toView.setStyle({
+          transform: unify.bom.Transform.accelTranslate(posTo.left, posTo.top)
+        });
+      }
+      if (fromView) {
+        var posFrom = this.__positions.bottom;
+        fromView.setStyle({
+          transform: unify.bom.Transform.accelTranslate(posFrom.left, posFrom.top)
+        });
+      }
+    },
     
     
     animateIn : function(fromView, toView, duration, callback) {
       var pos = this.__positions;
       
-      fromView.addListenerOnce("animatePositionDone", callback, this);
-      toView.setAnimatePositionDuration(duration);
-      toView.setAnimatePosition(pos.center);
-      fromView.setAnimatePositionDuration(duration);
-      fromView.setAnimatePosition(pos.left);
+      if (toView) {
+        toView.setAnimatePositionDuration(duration);
+        toView.setAnimatePosition(pos.center);
+      }
+      if (fromView) {
+        fromView.addListenerOnce("animatePositionDone", callback, this);
+        fromView.setAnimatePositionDuration(duration);
+        fromView.setAnimatePosition(pos.left);
+      } else if (toView) {
+        toView.addListenerOnce("animatePositionDone", callback, this);
+      }
     },
     
     animateOut : function(fromView, toView, duration, callback) {
       var pos = this.__positions;
       
-      fromView.addListenerOnce("animatePositionDone", callback, this);
-      toView.setAnimatePositionDuration(duration);
-      toView.setAnimatePosition(pos.center);
-      fromView.setAnimatePositionDuration(duration);
-      fromView.setAnimatePosition(pos.right);
+      if (toView) {
+        toView.setAnimatePositionDuration(duration);
+        toView.setAnimatePosition(pos.center);
+      }
+      if (fromView) {
+        fromView.addListenerOnce("animatePositionDone", callback, this);
+        fromView.setAnimatePositionDuration(duration);
+        fromView.setAnimatePosition(pos.right);
+      } else if (toView) {
+        toView.addListenerOnce("animatePositionDone", callback, this);
+      }
     },
     
-    animateModalIn : function(fromView, toView, duration, callback) {},
+    animateModalIn : function(fromView, toView, duration, callback) {
+      var pos = this.__positions;
+      
+      if (toView) {
+        toView.addListenerOnce("animatePositionDone", callback, this);
+        toView.setAnimatePositionDuration(duration);
+        toView.setAnimatePosition(pos.center);
+      }
+      if (fromView) {
+        fromView.setAnimationDuration(0);
+        fromView.setAnimatePosition(pos.bottom);
+      }
+    },
     
-    animateModalOut : function(fromView, toView, duration, callback) {}
+    animateModalOut : function(fromView, toView, duration, callback) {
+      var pos = this.__positions;
+      
+      if (toView) {
+        toView.setAnimatePositionDuration(0);
+        toView.setAnimatePosition(pos.center);
+      }
+      if (fromView) {
+        fromView.addListenerOnce("animatePositionDone", callback, this);
+        fromView.setAnimationDuration(duration);
+        fromView.setAnimatePosition(pos.bottom);
+      }
+    }
     
     
   }

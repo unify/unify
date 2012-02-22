@@ -688,7 +688,6 @@ qx.Class.define("unify.view.ViewManager", {
      */
     __setView : function(view, transition)
     {
-      
       // TODO: view.getElement() is also called if view is in popover
       //       Maybe it should be rendered lazy
       var oldView = this.__currentView;
@@ -702,7 +701,6 @@ qx.Class.define("unify.view.ViewManager", {
       
       // Store current view
       this.__currentView = view;
-
 
       // Resuming the view
       view.setActive(true);
@@ -804,21 +802,24 @@ qx.Class.define("unify.view.ViewManager", {
     __animateModal: function(view,show,callback){
       var self = this;
       var AnimationDuration = this.getAnimationDuration();
+      var vam = qx.core.Init.getApplication().getViewAnimationManager();
 
       var visibilityAction = function() {
+        self.__isInAnimation=true;
+        var cb = function() {
+          self.__isInAnimation=false;
+          if (callback) {
+            callback();
+          }
+        };
+        
         var afterRenderAction = function() {
-          self.__isInAnimation=true;
-          
-          view.addListenerOnce("animatePositionDone", function() {
-            if (callback) {
-              callback.call(self);
-            }
-            self.__isInAnimation=false;
-          }, this);
-          
-          view.setAnimatePositionDuration(AnimationDuration);
-          view.setAnimatePosition((show) ? self.__positions.center : self.__positions.bottom);
-        }
+          if (show) {
+            vam.animateModalIn(null, view, AnimationDuration, cb);
+          } else {
+            vam.animateModalOut(view, null, AnimationDuration, cb);
+          }
+        };
 
         if (view.hasRenderedLayout()) {
           afterRenderAction();
@@ -827,11 +828,11 @@ qx.Class.define("unify.view.ViewManager", {
         }
       };
 
-      var startPos = (show) ? this.__positions.bottom : this.__positions.center;
-      view.setStyle({
-        transform: unify.bom.Transform.accelTranslate(startPos.left, startPos.top)
-      });
-
+      if (show) {
+        vam.initModalIn(null, view);
+      } else {
+        vam.initModalOut(view, null);
+      }
 
       if (view.getVisibility() != "visible") {
         view.addListenerOnce("changeVisibility", visibilityAction);
