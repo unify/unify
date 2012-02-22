@@ -25,11 +25,13 @@
     },
     
     flush : function() {
-      console.log("VISIBILITY: ", widgetQueue.length, widgetQueue);
-      
       for (var i=0,ii=widgetQueue.length; i<ii; i++) {
-        var widget = widgetQueue[i];
-        widget.checkAppearanceNeeds();
+        var children = widgetQueue[i].getLayoutChildren();
+        widgetQueue = widgetQueue.concat(children);
+      }
+      
+      for (i=0,ii=widgetQueue.length; i<ii; i++) {
+        widgetQueue[i].checkAppearanceNeeds();
       }
     }
   });
