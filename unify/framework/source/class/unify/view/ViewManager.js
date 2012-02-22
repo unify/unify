@@ -752,23 +752,25 @@ qx.Class.define("unify.view.ViewManager", {
     __animateLayers : function(toView, fromView, direction) {
       var self = this;
       var AnimationDuration = this.getAnimationDuration();
+      var vam = qx.core.Init.getApplication().getViewAnimationManager();
       
       direction = direction || "in";
 
       var visibilityAction = function() {
         var afterRenderAction = function() {
           self.__isInAnimation=true;
-          var transitionEndFnt = function() {
+          
+          var callback = function() {
             fromView.setVisibility("hidden");
             self.__isInAnimation=false;
           };
-          fromView.addListenerOnce("animatePositionDone", transitionEndFnt, this);
           
-          toView.setAnimatePositionDuration(AnimationDuration);
-          toView.setAnimatePosition(self.__positions.center);
-          fromView.setAnimatePositionDuration(AnimationDuration);
-          fromView.setAnimatePosition((direction == "in") ? self.__positions.left : self.__positions.right);
-        }
+          if (direction == "in") {
+            vam.animateIn(fromView, toView, AnimationDuration, callback);
+          } else {
+            vam.animateOut(fromView, toView, AnimationDuration, callback);
+          }
+        };
         
         if (toView.hasRenderedLayout()) {
           afterRenderAction();
@@ -777,20 +779,12 @@ qx.Class.define("unify.view.ViewManager", {
         }
       };
       
-      if (toView) {
-        var posTo = (direction == "in") ? this.__positions.right : this.__positions.left;
-        toView.setStyle({
-          transform: unify.bom.Transform.accelTranslate(posTo.left, posTo.top)
-        });
+      if (direction == "in") {
+        vam.initIn(fromView, toView);
+      } else {
+        vam.initOut(fromView, toView);
       }
-      
-      if (fromView) {
-        var posFrom = this.__positions.center;
-        fromView.setStyle({
-          transform: unify.bom.Transform.accelTranslate(posFrom.left, posFrom.top)
-        });
-      }
-      
+
       if (toView.getVisibility() != "visible") {
         toView.addListenerOnce("changeVisibility", visibilityAction);
         

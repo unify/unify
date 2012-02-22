@@ -173,6 +173,7 @@ qx.Class.define("unify.Application",
     },
     
     __viewAnimationManager : null,
+    
     getViewAnimationManager : function() {
       var vam = this.__viewAnimationManager;
       if (!vam) {
