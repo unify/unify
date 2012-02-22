@@ -38,12 +38,16 @@ core.Class("unify.ui.form.Button", {
       apply: this._applyAutoCalculateSize
     }
   },
+  
+  construct : function(label) {
+    unify.ui.basic.Atom.call(this, label);
+  },
 
   members: {
     _createElement : function() {
-      var e = this.base(arguments);
+      var e = unify.ui.basic.Atom.prototype._createElement.call(this);
 
-      qx.event.Registration.addListener(e, "tap", this.__onTap, this);
+      lowland.bom.Events.listen(e, "tap", this.__onTap.bind(this));
 
       return e;
     },

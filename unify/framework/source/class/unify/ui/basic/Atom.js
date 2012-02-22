@@ -19,7 +19,7 @@ core.Class("unify.ui.basic.Atom", {
    * @param image {String} Image url
    */
   construct : function(label, image) {
-    this.base(arguments);
+    unify.ui.core.Widget.call(this);
     this._setLayout(new unify.ui.layout.special.AtomLayout());
     if (label) {
       this.setText(label);

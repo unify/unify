@@ -40,11 +40,11 @@ core.Class("coretest.Application",
       MasterViewManager.register(coretest.view.Start, true);
 
       // Add TabViews or SplitViews...
-      var TabView = new unify.view.TabViewManager(MasterViewManager);
+      /*var TabView = new unify.view.TabViewManager(MasterViewManager);
       TabView.register(coretest.view.Start);
 
       // Add view manager (or SplitView or TabView) to the root
-      this.add(TabView);
+      this.add(TabView);*/
 
       // Add at least one view manager to the navigation managment
       var Navigation = unify.view.Navigation.getInstance();

@@ -32,13 +32,24 @@
       console.log("LAYOUT: ", widgetQueue.length);
       widgetQueue.sort(sortWidgets);
       for (var i=0,ii=widgetQueue.length; i<ii; i++) {
-        console.log(i, widgetQueue[i].constructor);
+        for (var j=i-1;j>=0;j--) {
+          if (widgetQueue[i] === widgetQueue[j]) {
+            widgetQueue[i]  = null;
+          }
+        }
       }
+      
+      for (i=0,ii=widgetQueue.length; i<ii; i++) {
+        if (widgetQueue[i]) {
+          console.log(i, widgetQueue[i].constructor);
+        }
+      }
+      
       var widget;
       while ((widget = widgetQueue.shift())) {
         var sizeHint = widget.getSizeHint(true);
         if (widget.isRootWidget()) {
-          console.log("R2 ", widget.constructor);
+          console.log("R1 ", widget.constructor);
           widget.renderLayout(0, 0, sizeHint.width, sizeHint.height);
         } else {
           var bounds = widget.getBounds();

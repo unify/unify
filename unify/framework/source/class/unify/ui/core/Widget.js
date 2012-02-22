@@ -456,6 +456,9 @@ core.Class("unify.ui.core.Widget", {
 
       var border = this.__border;
       var padding = this.__padding;
+      if (!border) {
+        console.log(this.constructor);
+      }
       var insetX = border.left + border.right + padding.left + padding.right;
       var insetY = border.top + border.bottom + padding.top + padding.bottom;
 
@@ -702,6 +705,7 @@ core.Class("unify.ui.core.Widget", {
      * @param preventSize {Boolean?null} Prevent size of widget and ignore layout hints, use with care!
      */
     renderLayout : function(left, top, width, height, preventSize) {
+      console.log(this.constructor, " RENDER LAYOUT ", left, top, width, height, preventSize, this._hasChildren());
       var dimension = this.__dimensionInfo = {
         width: width,
         height: height
@@ -1590,7 +1594,7 @@ core.Class("unify.ui.core.Widget", {
 
         if (!(element instanceof DocumentFragment)) {
           if(core.Env.getValue("debug")){
-            element.setAttribute("unifyclass",this.classname);
+            element.setAttribute("unifyclass",this.constructor.toString());
             element.setAttribute("appearance",this.getAppearance());
           }
 
