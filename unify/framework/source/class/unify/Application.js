@@ -171,6 +171,17 @@ qx.Class.define("unify.Application",
     getRoot : function() {
       return this.__root;
     },
+    
+    __viewAnimationManager : null,
+    
+    getViewAnimationManager : function() {
+      var vam = this.__viewAnimationManager;
+      if (!vam) {
+        vam = this.__viewAnimationManager = new unify.view.animation.IOSAnimationManager();
+      }
+      
+      return vam;
+    },
 
 
     /*
