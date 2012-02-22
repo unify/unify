@@ -1,5 +1,5 @@
 /**
- * @require {unify.ui.core.EventHandler}
+ * #require(unify.ui.core.EventHandler)
  */
 /* ***********************************************************************************************
 
