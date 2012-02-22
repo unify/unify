@@ -11,7 +11,7 @@
 
 /**
  * Manager for view managers which functions as a so-called pop over.
- *
+ * #break(unify.view.ViewManager)
  */
 
 core.Class("unify.view.helper.ViewOverlayManager", {
