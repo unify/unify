@@ -1,3 +1,16 @@
+/* ***********************************************************************************************
+
+    Unify Project
+
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2012, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+
+*********************************************************************************************** */
+
+/**
+ * Implementation of iOS style animations
+ */
 qx.Class.define("unify.view.animation.IOSAnimationManager", {
   extend: qx.core.Object,
   implement: [unify.view.animation.IAnimationManager],
