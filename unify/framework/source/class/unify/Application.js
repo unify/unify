@@ -112,7 +112,7 @@ core.Class("unify.Application", {
     
     // overridden
     finalize : function() {
-      //qx.bom.element.Style.set(this._getRootElement(), "visibility", "visible");
+      core.bom.Style.set(this._getRootElement(), "visibility", "visible");
     },
 
     
