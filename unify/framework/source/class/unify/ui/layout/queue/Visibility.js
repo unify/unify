@@ -15,6 +15,7 @@
 (function() {
   
   var widgetQueue = [];
+  var visibilityCache = [];
 
   core.Module("unify.ui.layout.queue.Visibility", {
     name : "visibility",
@@ -31,8 +32,20 @@
       }
       
       for (i=0,ii=widgetQueue.length; i<ii; i++) {
-        widgetQueue[i].checkAppearanceNeeds();
+        var widget = widgetQueue[i];
+        if (widget.getVisibility() == "visible") {
+          if (!visibilityCache.contains(widget)) {
+            visibilityCache.push(widget);
+          }
+        } else {
+          visibilityCache.remove(widget);
+        }
+        widget.checkAppearanceNeeds();
       }
+    },
+    
+    isVisible : function(widget) {
+      return visibilityCache.contains(widget);
     }
   });
 
