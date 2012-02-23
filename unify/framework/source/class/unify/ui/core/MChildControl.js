@@ -151,9 +151,12 @@ core.Class("unify.ui.core.MChildControl", {
       }
       
       control.setAppearance(this.getAppearance() + "/" + id);
-      var appearanceChanged = qx.lang.Function.bind(function(childId, parrentAppearance) {
+      /*var appearanceChanged = qx.lang.Function.bind(function(childId, parrentAppearance) {
         this.getChildControl(childId).setAppearance(parrentAppearance + "/" + childId);
-      }, this, id);
+      }, this, id);*/
+      var appearanceChanged = function(childId, parrentAppearance) {
+        this.getChildControl(childId).setAppearance(parrentAppearance + "/" + childId);
+      }.bind(this, id);
       this.addListener("changeAppearance", function(e) { appearanceChanged(e.getData()); }, this);
 
       // Establish connection to parent
@@ -174,7 +177,7 @@ core.Class("unify.ui.core.MChildControl", {
         }
       }
 
-      this.fireDataEvent("createChildControl", control);
+      this.fireEvent("createChildControl", control);
 
       // Register control and return
       return this.__childControls[id] = control;
