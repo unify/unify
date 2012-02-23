@@ -196,7 +196,7 @@ core.Class("unify.view.ViewManager", {
 
       unify.ui.layout.queue.Visibility.add(this);
       unify.ui.layout.queue.Layout.add(this);
-      unify.ui.layout.queue.Manager.flush();
+      //unify.ui.layout.queue.Manager.flush();
       
       this.__initialized = true;
     },
@@ -371,6 +371,7 @@ core.Class("unify.view.ViewManager", {
       }
       // Save path
       this.__path = path;
+      
       this.fireEvent("changePath", this.__path);
     },
     
@@ -655,7 +656,7 @@ core.Class("unify.view.ViewManager", {
       if (view == oldView) {
         return;
       }
-
+      
       if (oldView) {
         oldView.resetActive();
       }
