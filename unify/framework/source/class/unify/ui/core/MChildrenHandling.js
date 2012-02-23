@@ -15,7 +15,7 @@ core.Class("unify.ui.core.MChildrenHandling", {
     },
     
     indexOf : function() {
-      this._indexOf.apply(this, arguments);
+      return this._indexOf.apply(this, arguments);
     }
   }
 });
