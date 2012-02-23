@@ -13,6 +13,8 @@
  */
 core.Class("unify.view.Navigation",
 {
+  
+  include : [unify.core.Object],
 
   /*
   *****************************************************************************
@@ -22,6 +24,7 @@ core.Class("unify.view.Navigation",
 
   construct : function()
   {
+    unify.core.Object.call(this);
     // Initialize storage
     this.__viewManagers = {};
   },
@@ -224,8 +227,6 @@ core.Class("unify.view.Navigation",
       if (this.__historyInit) {
         return;
       }
-
-      var changed = e.getTarget();
 
       var path = this.__path = new unify.view.Path;
 
