@@ -42,9 +42,11 @@ core.Class("unify.view.StaticView",
   
   construct : function(layout)
   {
-    this.base(arguments, layout || new unify.ui.layout.VBox());
+    unify.ui.container.Composite.call(this, layout || new unify.ui.layout.VBox())
     
-    this.__id = qx.lang.String.hyphenate(this.constructor.basename).substring(1).toLowerCase();
+    var className = this.constructor.className.split("\.").pop();
+    className = className[0].toLowerCase() + className.substring(1);
+    this.__id = className.hyphenate();
   },
   
 
@@ -58,13 +60,13 @@ core.Class("unify.view.StaticView",
   events :
   {
     /** Fired when the view appears on the screen */
-    "appear" : "qx.event.type.Event",
+    "appear" : lowland.events.Event, //"qx.event.type.Event",
 
     /** Fired when the view disappears on the screen */
-    "disappear" : "qx.event.type.Event",
+    "disappear" : lowland.events.Event, //"qx.event.type.Event",
 
     /** Fired every time the title may have changed through new conditions */
-    "changeTitle" : "qx.event.type.Event"
+    "changeTitle" : lowland.events.Event //"qx.event.type.Event"
   },
 
 
@@ -101,7 +103,7 @@ core.Class("unify.view.StaticView",
     {
       type : unify.view.StaticView,
       nullable : true,
-      apply : this._applyParent,
+      apply : function(value, old) { this._applyParent(value, old) },
       fire : "changeParent"
     },
     
@@ -111,9 +113,9 @@ core.Class("unify.view.StaticView",
      */
     active :
     {
-      type : "boolean",
+      type : "Boolean",
       init : false,
-      apply : this._applyActive,
+      apply : function(value, old) { this._applyActive(value, old) },
       fire : "changeActive"
     },
 
@@ -123,9 +125,9 @@ core.Class("unify.view.StaticView",
      */
     param :
     {
-      type : "string",
+      type : "String",
       nullable : true,
-      apply : this._applyParam
+      apply :function(value, old) { this._applyParam(value, old) }
     },
 
     /** 
@@ -134,9 +136,9 @@ core.Class("unify.view.StaticView",
      */
     segment :
     {
-      type : "string",
+      type : "String",
       nullable : true,
-      apply : this._applySegment,
+      apply : function(value, old) { this._applySegment(value, old) },
       fire : "changeSegment"
     },
     
@@ -209,8 +211,8 @@ core.Class("unify.view.StaticView",
     getElement : function() {
       //return this.getLayer().getElement();
       //console.error("getElement");
-      var e = this.base(arguments);
-      qx.bom.element.Class.add(e, "layer");
+      var e = unify.ui.container.Composite.prototype.getElement.call(this); //this.base(arguments);
+      core.bom.ClassName.add(e, "layer");
       return e;
     },
 
@@ -254,7 +256,7 @@ core.Class("unify.view.StaticView",
     {
       var now = +(new Date());
       this._createView();
-      if (qx.core.Environment.get("qx.debug")) {
+      if (core.Env.getValue("debug")) {
         this.debug("Created in: " + ((new Date()) - now) + "ms");
       }
       this.__layer = true;
