@@ -50,6 +50,10 @@ core.Class("unify.ui.core.VisibleBox", {
     }
   },
   
+  construct : function() {
+    unify.core.Object.call(this);
+  },
+  
   members : {
     __sizeHint : null,
     
