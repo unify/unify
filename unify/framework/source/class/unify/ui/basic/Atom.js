@@ -43,12 +43,12 @@ core.Class("unify.ui.basic.Atom", {
     
     text : {
       init: null,
-      apply: this._applyText
+      apply: function(value) { this._applyText(value); }
     },
     
     image : {
       init: null,
-      apply: this._applyImage
+      apply: function(value) { this._applyImage(value); }
     }
   },
   
