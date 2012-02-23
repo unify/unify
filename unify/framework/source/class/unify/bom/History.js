@@ -59,7 +59,7 @@ core.Class("unify.bom.History", {
   events :
   {
     /** Fired every time the history is modified */
-    change : "unify.event.type.History"
+    change : lowland.events.DataEvent //"unify.event.type.History"
   },
 
 
@@ -148,7 +148,8 @@ core.Class("unify.bom.History", {
       if (value != old)
       {
         this.__location = value;
-        this.fireEvent("change", unify.event.type.History, [value, old]);
+        //this.fireEvent("change", unify.event.type.History, [value, old]);
+        this.fireEvent("change", value, old);
       }
     }
   }
