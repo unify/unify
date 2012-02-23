@@ -29,7 +29,7 @@ core.Class("unify.ui.core.Widget", {
    * @param layout {qx.ui.layout.Abstract} Layout of widget
    */
   construct : function() {
-    unify.core.Object.call(this);
+    unify.ui.core.VisibleBox.call(this);
 
     this.__renderLayoutDone = false;
 
@@ -42,17 +42,17 @@ core.Class("unify.ui.core.Widget", {
     /**
      * Fired on resize of the widget.
      */
-    resize : "qx.event.type.Data",
+    resize : lowland.events.DataEvent,
     
     /**
      * Fired on resize of the widget.
      */
-    appearance : "qx.event.type.Data",
+    appearance : lowland.events.DataEvent,
 
     /**
      * Fired on move of the widget.
      */
-    move : "qx.event.type.Event",
+    move : lowland.events.Event,
 
     /** Fired if a touch at the screen is started. */
     touchstart : "qx.event.type.Touch",
@@ -456,9 +456,6 @@ core.Class("unify.ui.core.Widget", {
 
       var border = this.__border;
       var padding = this.__padding;
-      if (!border) {
-        console.log(this.constructor);
-      }
       var insetX = border.left + border.right + padding.left + padding.right;
       var insetY = border.top + border.bottom + padding.top + padding.bottom;
 
@@ -705,7 +702,6 @@ core.Class("unify.ui.core.Widget", {
      * @param preventSize {Boolean?null} Prevent size of widget and ignore layout hints, use with care!
      */
     renderLayout : function(left, top, width, height, preventSize) {
-      console.log(this.constructor, " RENDER LAYOUT ", left, top, width, height, preventSize, this._hasChildren());
       var dimension = this.__dimensionInfo = {
         width: width,
         height: height
@@ -763,7 +759,6 @@ core.Class("unify.ui.core.Widget", {
         }
 
         if (this.__layoutManager && this.hasLayoutChildren()) {
-          console.log("LM: ", this.__layoutManager.constructor, innerWidth, innerHeight);
           this.__layoutManager.renderLayout(innerWidth, innerHeight);
         } else if (this.hasLayoutChildren()) {
           throw new Error("No layout in " + this);
@@ -924,7 +919,7 @@ core.Class("unify.ui.core.Widget", {
      * This is a shortcut for <code>qx.ui.core.queue.Layout.add(this);</code>.
      */
     scheduleLayoutUpdate : function() {
-      qx.ui.core.queue.Layout.add(this);
+      unify.ui.layout.queue.Layout.add(this);
     },
 
 
@@ -938,7 +933,7 @@ core.Class("unify.ui.core.Widget", {
         layout.invalidateChildrenCache();
       }
 
-      qx.ui.core.queue.Layout.add(this);
+      unify.ui.layout.queue.Layout.add(this);
     },
 
 
@@ -1073,10 +1068,10 @@ core.Class("unify.ui.core.Widget", {
       this.__states[state] = true;
 
       // Fast path for hovered state
-      if (!qx.ui.core.queue.Visibility.isVisible(this)) {
+      if (!unify.ui.layout.queue.Visibility.isVisible(this)) {
         this.$$stateChanges = true;
       } else {
-        qx.ui.core.queue.Appearance.add(this);
+        unify.ui.layout.queue.Appearance.add(this);
       }
     },
 
@@ -1495,7 +1490,7 @@ core.Class("unify.ui.core.Widget", {
      */
     getFont : function() {
       var font = this.__font;
-      return font ? font.getStyles() : qx.bom.Font.getDefaultStyles();
+      return font ? font.getStyles() : {}; //qx.bom.Font.getDefaultStyles();
     },
 
     /**
