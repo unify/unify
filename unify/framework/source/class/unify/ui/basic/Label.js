@@ -26,15 +26,15 @@ core.Class("unify.ui.basic.Label", {
    * @param text {String} Text content to use
    */
   construct : function(text) {
-    this.base(arguments);
+    unify.ui.core.Widget.call(this);
 
-    var Static = this.self(arguments);
-    var Style = qx.theme.manager.Appearance.getInstance().styleFrom("BODY");
-    if (!Static.LINEHEIGHT) {
-      Static.LINEHEIGHT = parseFloat(Style.lineHeight) || 1.4;
+    var Static = this;
+    var Style = unify.theme.Manager.get().resolveStyle("BODY");
+    if (!Static.__LINEHEIGHT) {
+      Static.__LINEHEIGHT = parseFloat(Style.lineHeight) || 1.4;
     }
-    if (!Static.DEFAULTFONTSIZE) {
-      Static.DEFAULTFONTSIZE = parseInt(Style.fontSize, 10) || 14;
+    if (!Static.__DEFAULTFONTSIZE) {
+      Static.__DEFAULTFONTSIZE = parseInt(Style.fontSize, 10) || 14;
     }
 
     if (text) {
@@ -48,7 +48,7 @@ core.Class("unify.ui.basic.Label", {
     /** Contains the label content */
     value : {
       type: "string",
-      apply: this._applyValue,
+      apply: function(value) { this._applyValue(value); },
       fire: "changeValue",
       nullable: true
     },
@@ -90,14 +90,14 @@ core.Class("unify.ui.basic.Label", {
     ellipsis : {
       type: "boolean",
       init: true,
-      apply: this._applyEllipsis
+      apply: function(value) { this._applyEllipsis(value); }
     },
 
     /** Whether the label text wraps to multi line or creates hidden overflow */
     wrap : {
       type: "Boolean",
       init: false,
-      apply: this._applyWrap
+      apply: function(value) { this._applyWrap(value); }
     },
 
     /** Wheter the label should calculate it's size */
@@ -112,13 +112,13 @@ core.Class("unify.ui.basic.Label", {
 
     // overridden
     _createElement : function() {
-      return qx.bom.Label.create(this.getValue(), this.getHtml());
+      return lowland.bom.Label.create(this.getValue(), this.getHtml());
     },
 
     // overridden
     _getContentHint : function()
     {
-      var contentSize = this.base(arguments);
+      var contentSize = unify.ui.core.Widget.prototype._getContentHint.call(this);
 
       if (this.getAutoCalculateSize()) {
         contentSize = this.__contentSize;
@@ -130,11 +130,11 @@ core.Class("unify.ui.basic.Label", {
         var lineHeight = this.getFont().lineHeight;
         if (!lineHeight) {
           // Get default line height from label appearance
-          lineHeight = this.self(arguments).LINEHEIGHT;
+          lineHeight = this.__LINEHEIGHT;
         }
         var fontSize = this.getFont().fontSize;
         if (!fontSize) {
-          fontSize = this.self(arguments).DEFAULTFONTSIZE;
+          fontSize = this.__DEFAULTFONTSIZE;
         } else {
           fontSize = parseInt(fontSize, 10);
         }
@@ -174,7 +174,7 @@ core.Class("unify.ui.basic.Label", {
      */
     __computeContentSize : function(width)
     {
-      var Label = qx.bom.Label;
+      var Label = lowland.bom.Label;
 
       var styles = this.getFont();
       var content = this.getValue() || "A";
@@ -196,7 +196,7 @@ core.Class("unify.ui.basic.Label", {
     _applyValue : function(value) {
       this.__contentSize = null;
       this.invalidateLayoutChildren();
-      qx.bom.Label.setValue(this.getElement(), value);
+      lowland.bom.Label.setValue(this.getElement(), value);
     },
 
     /**
