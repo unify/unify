@@ -29,7 +29,6 @@
     },
     
     flush : function() {
-      console.log("LAYOUT: ", widgetQueue.length);
       widgetQueue.sort(sortWidgets);
       for (var i=0,ii=widgetQueue.length; i<ii; i++) {
         for (var j=i-1;j>=0;j--) {
@@ -39,22 +38,16 @@
         }
       }
       
-      for (i=0,ii=widgetQueue.length; i<ii; i++) {
-        if (widgetQueue[i]) {
-          console.log(i, widgetQueue[i].constructor);
-        }
-      }
-      
       var widget;
       while ((widget = widgetQueue.shift())) {
         var sizeHint = widget.getSizeHint(true);
         if (widget.isRootWidget()) {
-          console.log("R1 ", widget.constructor);
           widget.renderLayout(0, 0, sizeHint.width, sizeHint.height);
         } else {
           var bounds = widget.getBounds();
-          console.log("R2 ", widget.constructor);
-          widget.renderLayout(bounds.left, bounds.top, bound.width, bounds.height);
+          if (bounds) {
+            widget.renderLayout(bounds.left, bounds.top, bound.width, bounds.height);
+          }
         }
       }
     }
