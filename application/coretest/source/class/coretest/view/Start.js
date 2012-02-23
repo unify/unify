@@ -13,6 +13,10 @@
 core.Class("coretest.view.Start", {
   include : [unify.view.StaticView],
 
+  construct : function() {
+    unify.view.StaticView.call(this);
+  },
+
   members : 
   {
     // overridden

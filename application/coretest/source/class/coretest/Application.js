@@ -45,11 +45,15 @@ core.Class("coretest.Application",
 
       // Add view manager (or SplitView or TabView) to the root
       this.add(TabView);*/
+      this.add(MasterViewManager);
 
       // Add at least one view manager to the navigation managment
       var Navigation = unify.view.Navigation.getInstance();
       Navigation.register(MasterViewManager);
       Navigation.init();
+      
+      
+      Navigation.navigate(unify.view.Path.fromString("start"));
     },
     
     _getTheme : function() {
