@@ -1358,7 +1358,7 @@ core.Class("unify.ui.core.Widget", {
       for (var i=0,ii=colorTags.length; i<ii; i++) {
         var tag = colorTags[i];
         if (map[tag]) {
-          map[tag] = qx.theme.manager.Color.getInstance().resolve(map[tag]);
+          map[tag] = unify.theme.Manager.get().resolveColor(map[tag]);
         }
       }
       
@@ -1381,11 +1381,11 @@ core.Class("unify.ui.core.Widget", {
       if (font) {
         delete map.font;
         //try to resolve the font first, if it fails, parse it
-        var resolvedFont = qx.theme.manager.Font.getInstance().resolve(font);
+        var resolvedFont = unify.theme.Manager.get().resolveColor(font); //qx.theme.manager.Font.getInstance().resolve(font);
         if(resolvedFont !== font){
-          tmpFont = qx.lang.Object.clone(resolvedFont);
+          tmpFont = resolvedFont; //TODO: qx.lang.Object.clone(resolvedFont);
         } else {
-          tmpFont = qx.bom.Font.fromString(font);
+          tmpFont = font; //TODO :qx.bom.Font.fromString(font);
         }
       } else {
         //no font set, reuse the existing or start from scratch
@@ -1414,12 +1414,12 @@ core.Class("unify.ui.core.Widget", {
 
       if (textColor) {
         delete map.textColor;
-        tmpFont.setColor(qx.theme.manager.Color.getInstance().resolve(textColor));
+        tmpFont.setColor(unify.theme.Manager.get().resolveColor(textColor));
       }
 
       if(color){
         delete map.color;
-        tmpFont.setColor(qx.theme.manager.Color.getInstance().resolve(color));
+        tmpFont.setColor(unify.theme.Manager.get().resolveColor(color));
       }
 
       if(fontStyle){
