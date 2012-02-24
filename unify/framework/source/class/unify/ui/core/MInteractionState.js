@@ -32,17 +32,17 @@ qx.Mixin.define("unify.ui.core.MInteractionState", {
       var supportMouse = true;
       
       var root = qx.core.Init.getApplication().getRoot();
-      
+
       if (supportTouch) {
-        this.addListener("touchstart", this.__MInteractionStateAddPressed, this, true);
-        this.addListener("touchleave", this.__MInteractionStateRemovePressed, this, true);
-        this.addListener("touchend", this.__MInteractionStateRemovePressed, this, true);
-        this.addListener("touchcancel", this.__MInteractionStateRemovePressed, this, true);
+        this.addListener("touchstart", this.__MInteractionStateAddPressed, this);
+        this.addListener("touchleave", this.__MInteractionStateRemovePressed, this);
+        this.addListener("touchend", this.__MInteractionStateRemovePressed, this);
+        this.addListener("touchcancel", this.__MInteractionStateRemovePressed, this);
       } else if (supportMouse) {
-        this.addListener("mouseover", this.__MInteractionStateAddHover, this, true);
-        this.addListener("mouseout", this.__MInteractionStateRemoveHover, this, true);
-        this.addListener("mousedown", this.__MInteractionStateAddPressed, this, true);
-        root.addListener("mouseup", this.__MInteractionStateRemovePressed, this, true);
+        this.addListener("mouseover", this.__MInteractionStateAddHover, this);
+        this.addListener("mouseout", this.__MInteractionStateRemoveHover, this);
+        this.addListener("mousedown", this.__MInteractionStateAddPressed, this);
+        root.addListener("mouseup", this.__MInteractionStateRemovePressed, this);
       }
     },
     

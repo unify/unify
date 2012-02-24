@@ -110,6 +110,9 @@ qx.Class.define("kitchensink.view.Ui", {
         }, 3000);
       }, this);
       container.add(startActivityIndicator);
+      
+      var textfield = new unify.ui.form.TextField();
+      container.add(textfield);
     },
     
     __dialog : null,

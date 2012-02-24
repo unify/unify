@@ -18,6 +18,7 @@
  */
 qx.Class.define("unify.ui.form.TextField", {
   extend : unify.ui.core.Widget,
+  include : [unify.ui.core.MInteractionState],
   
   properties : {
     /**
@@ -34,6 +35,12 @@ qx.Class.define("unify.ui.form.TextField", {
     {
       refine: true,
       init: "input"
+    },
+    
+    // overridden
+    focusable : {
+      refine: true,
+      init: true
     },
     
     /**
