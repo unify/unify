@@ -32,15 +32,21 @@ def source():
     optimization = Optimization("unused", "privates", "variables", "declarations", "blocks")
     formatting = Formatting("comma", "semicolon")
     
-    # Store loader script
-    includedByKernel = storeKernel("source/script/loader.js", session)
-    
     # Get projects
     projects = session.getProjects()
-
+    
+    # Assets
+    resolver = Resolver(projects)
+    resolver.addClassName("%s.Application" % NAMESPACE)
+    assets = Asset(session, resolver.getIncludedClasses()).exportSource()
+    
+    # Store loader script
+    includedByKernel = storeKernel("source/script/loader.js", session, assets)
+    
     # Resolving dependencies
     resolver = Resolver(projects)
     resolver.addClassName("%s.Application" % NAMESPACE)
+    resolver.excludeClasses(includedByKernel)
     classes = resolver.getIncludedClasses()
 
     # Compressing classes
@@ -62,6 +68,7 @@ def test(name, startclass):
     # Resolving dependencies
     resolver = Resolver(projects)
     resolver.addClassName(startclass)
+    resolver.excludeClasses(includedByKernel)
     classes = resolver.getIncludedClasses()
 
     # Compressing classes

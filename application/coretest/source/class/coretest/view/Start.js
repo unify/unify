@@ -21,9 +21,16 @@ core.Class("coretest.view.Start", {
   {
     // overridden
     getTitle : function(type, param) {
-      return "Start";
+      return "World Clock";
     },
 
+    /**
+     * #asset(coretest/clock.png)
+     */
+    // overridden
+    getIcon : function(type, param) {
+      return "coretest/clock.png";
+    },
     
     // overridden
     _createView : function() 
