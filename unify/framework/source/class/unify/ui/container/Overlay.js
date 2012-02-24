@@ -80,6 +80,7 @@ core.Class("unify.ui.container.Overlay", {
    */
   construct : function(noArrow) {
     this.base(arguments, new unify.ui.layout.special.OverlayLayout());
+    unify.ui.core.MChildControl.call(this);
     
     this.addListener("appearance", this.__syncAppearance, this);
     

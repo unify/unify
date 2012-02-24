@@ -38,6 +38,7 @@ qx.Class.define("unify.ui.other.ActivityIndicator", {
   
   construct : function() {
     this.base(arguments, new unify.ui.layout.VBox());
+    unify.ui.core.MChildControl.call(this);
     
     this._showChildControl("image");
     this._showChildControl("label");

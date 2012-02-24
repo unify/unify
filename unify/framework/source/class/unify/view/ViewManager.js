@@ -103,7 +103,7 @@ core.Class("unify.view.ViewManager", {
      * switch to disable view transition animations
      */
     animateTransitions: {
-      type:"boolean",
+      type:"Boolean",
       init: true
     },
     
@@ -111,7 +111,7 @@ core.Class("unify.view.ViewManager", {
      * Duration of layer animation
      */
     animationDuration : {
-      type: "integer",
+      type: "Integer",
       init: 350
     },
     
@@ -133,7 +133,7 @@ core.Class("unify.view.ViewManager", {
      *   modal: shows over all other ViewManagers with a blocking pane that does nothing
      */
     displayMode : {
-      type : "string",
+      type : "String",
       init: "default",
       apply: this._applyDisplayMode,
       fire: "changeDisplayMode"

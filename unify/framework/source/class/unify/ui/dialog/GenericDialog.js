@@ -57,6 +57,7 @@ qx.Class.define("unify.ui.dialog.GenericDialog", {
    */
   construct: function(title, buttons) {
     this.base(arguments, new qx.ui.layout.VBox());
+    unify.ui.core.MChildControl.call(this);
     
     this.__createUI(title, buttons);
   },

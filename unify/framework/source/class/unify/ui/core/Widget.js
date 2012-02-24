@@ -48,6 +48,8 @@ core.Class("unify.ui.core.Widget", {
      * Fired on resize of the widget.
      */
     appearance : lowland.events.DataEvent,
+    
+    changeAppearance : lowland.events.DataEvent,
 
     /**
      * Fired on move of the widget.
@@ -96,7 +98,7 @@ core.Class("unify.ui.core.Widget", {
     visibility : {
       type : ["visible", "hidden", "excluded"],
       init : "visible",
-      apply : this._applyVisibility,
+      apply : function(value, old) { this._applyVisibility(value, old); },
       fire : "changeVisibility"
     },
 
@@ -105,7 +107,7 @@ core.Class("unify.ui.core.Widget", {
      */
     appearance : {
       init : null,
-      apply : this._applyAppearance,
+      apply : function(value, old) { this._applyAppearance(value, old); },
       fire : "changeAppearance"
     },
 
@@ -123,8 +125,8 @@ core.Class("unify.ui.core.Widget", {
      * {@link #mouseout} events will be dispatched.
      */
     enabled : {
-      type : "boolean",
-      apply : this._applyEnabled,
+      type : "Boolean",
+      apply : function(value, old) { this._applyEnabled(value, old); },
       fire : "changeEnabled",
       init : true
     },
@@ -137,9 +139,9 @@ core.Class("unify.ui.core.Widget", {
      * Please note: The value must be between 1 and 32000.
      */
     tabIndex : {
-      type : "integer",
+      type : "Integer",
       nullable : true,
-      apply : this._applyTabIndex
+      apply : function(value, old) { this._applyTabIndex(value, old); }
     },
 
     /**
@@ -151,19 +153,19 @@ core.Class("unify.ui.core.Widget", {
      * reachable via the TAB key.
      */
     focusable : {
-      type : "boolean",
+      type : "Boolean",
       init : false,
-      apply : this._applyFocusable
+      apply : function(value, old) { this._applyFocusable(value, old); }
     },
 
     /**
      * ID to attach to event to support automatic ui tests
      */
     testId : {
-      type : "string",
+      type : "String",
       nullable : true,
       init : null,
-      apply : this._applyTestId
+      apply : function(value, old) { this._applyTestId(value, old); }
     }
   },
 
@@ -216,7 +218,7 @@ core.Class("unify.ui.core.Widget", {
     _applyVisibility : function(value, old)
     {
       var container = this.getElement();
-      var Style = qx.bom.element.Style;
+      var Style = core.bom.Style;
 
 
       if (value === "visible") {
@@ -232,7 +234,7 @@ core.Class("unify.ui.core.Widget", {
       }
 
       // Update visibility cache
-      qx.ui.core.queue.Visibility.add(this);
+      unify.ui.layout.queue.Visibility.add(this);
     },
 
     /**
@@ -1381,35 +1383,35 @@ core.Class("unify.ui.core.Widget", {
       if (font) {
         delete map.font;
         //try to resolve the font first, if it fails, parse it
-        var resolvedFont = unify.theme.Manager.get().resolveColor(font); //qx.theme.manager.Font.getInstance().resolve(font);
-        if(resolvedFont !== font){
+        var tmpFont = unify.theme.Manager.get().resolveFont(font) || {}; //qx.theme.manager.Font.getInstance().resolve(font);
+        /*if(resolvedFont !== font){
           tmpFont = resolvedFont; //TODO: qx.lang.Object.clone(resolvedFont);
         } else {
           tmpFont = font; //TODO :qx.bom.Font.fromString(font);
-        }
+        }*/
       } else {
         //no font set, reuse the existing or start from scratch
-        tmpFont=this.__font||new unify.bom.Font();
+        tmpFont=this.__font||{}; //new unify.bom.Font();
       }
 
       //now check each property
       if (fontSize) {
         delete map.fontSize;
         if (typeof(fontSize) == "string" && fontSize.substr(-2) != "px") {
-          tmpFont.setSize(unify.bom.Font.resolveRelativeSize(fontSize));
+          tmpFont.size = unify.bom.Font.resolveRelativeSize(fontSize);
         } else {
-          tmpFont.setSize(parseInt(fontSize, 10));
+          tmpFont.size = parseInt(fontSize, 10);
         }
       }
 
       if(fontWeight){
         delete map.fontWeight;
-        tmpFont.setBold(fontWeight=="bold");
+        tmpFont.weight = fontWeight; //setBold(fontWeight=="bold");
       }
 
       if (lineHeight) {
         delete map.lineHeight;
-        tmpFont.setLineHeight(lineHeight);
+        tmpFont.lineHeight = lineHeight;
       }
 
       if (textColor) {
@@ -1418,26 +1420,24 @@ core.Class("unify.ui.core.Widget", {
       }
 
       if(color){
-        delete map.color;
-        tmpFont.setColor(unify.theme.Manager.get().resolveColor(color));
+        map.color = unify.theme.Manager.get().resolveColor(map.color);
       }
 
       if(fontStyle){
         delete map.fontStyle;
-        tmpFont.setItalic(fontStyle=="italic");
+        tmpFont.style = fontStyle;
       }
 
       if(textDecoration){
         delete map.textDecoration;
-        tmpFont.setDecoration(textDecoration);
+        tmpFont.decoration = textDecoration;
       }
 
       //if something changed, update it
       if(font||fontSize||fontWeight||fontFamily||textColor||color||fontStyle||textDecoration||lineHeight){
-        var fontStyle = tmpFont.getStyles();
-        map = qx.lang.Object.merge(map,fontStyle);
+        map = this.__mergeObjects(map, tmpFont);
 
-        qx.ui.core.queue.Layout.add(this);
+        unify.ui.layout.queue.Layout.add(this);
       }
 
       this.__font = tmpFont;//cache font for later use
@@ -1466,8 +1466,10 @@ core.Class("unify.ui.core.Widget", {
       core.bom.Style.set(this.getElement(), style);
 
       if (properties) {
-        var keys = qx.lang.Object.getKeys(properties);
-        var firstUp = qx.lang.String.firstUp;
+        var keys = Object.keys(properties);
+        var firstUp = function(str) {
+          return str[0].toUpperCase() + str.substring(1);
+        };
 
         for (var i=0,ii=keys.length; i<ii; i++) {
           var key = keys[i];
@@ -1489,8 +1491,7 @@ core.Class("unify.ui.core.Widget", {
      * @return {Map[]} CSS font styles applied on widget
      */
     getFont : function() {
-      var font = this.__font;
-      return font ? font.getStyles() : {}; //qx.bom.Font.getDefaultStyles();
+      return font = this.__font || {};
     },
 
     /**

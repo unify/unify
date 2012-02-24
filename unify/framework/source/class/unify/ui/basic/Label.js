@@ -47,7 +47,7 @@ core.Class("unify.ui.basic.Label", {
   properties : {
     /** Contains the label content */
     value : {
-      type: "string",
+      type: "String",
       apply: function(value) { this._applyValue(value); },
       fire: "changeValue",
       nullable: true
@@ -55,7 +55,7 @@ core.Class("unify.ui.basic.Label", {
 
     /** Wheter the content is HTML or plain text */
     html : {
-      type: "boolean",
+      type: "Boolean",
       init: true,
       fire: "changeHtml"
     },
@@ -88,7 +88,7 @@ core.Class("unify.ui.basic.Label", {
 
     /** Whether the label text overflow creates an ellipsis */
     ellipsis : {
-      type: "boolean",
+      type: "Boolean",
       init: true,
       apply: function(value) { this._applyEllipsis(value); }
     },
@@ -102,7 +102,7 @@ core.Class("unify.ui.basic.Label", {
 
     /** Wheter the label should calculate it's size */
     autoCalculateSize : {
-      type: "boolean",
+      type: "Boolean",
       init: false
     }
   },

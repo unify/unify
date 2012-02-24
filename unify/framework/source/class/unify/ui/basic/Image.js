@@ -19,7 +19,7 @@ core.Class("unify.ui.basic.Image", {
    * @param source {String} URL of image
    */
   construct : function(source) {
-    this.base(arguments);
+    unify.ui.core.Widget.call(this);
     if (source) {
       this.setSource(source);
     }
@@ -28,7 +28,7 @@ core.Class("unify.ui.basic.Image", {
   properties : {
     /** {String} URL of image */
     source : {
-      apply : this._applySource
+      apply : function(value) { this._applySource(value); }
     },
     // overridden
     appearance :
@@ -39,15 +39,22 @@ core.Class("unify.ui.basic.Image", {
   
   members: {
     _createElement : function() {
-      return document.createElement("img");
+      return document.createElement("div");
     },
     
     _applySource : function(value) {
-      var ResourceManager = qx.util.ResourceManager.getInstance();
-      
+      var ResourceManager = core.io.Asset;
+
       if (this._hasElement()) {
         var e = this.getElement();
-        e.setAttribute("src", ResourceManager.toUri(value));
+        var src = ResourceManager.toUri(value);
+        //e.setAttribute("src", src);
+        core.bom.Style.set(e, {
+          backgroundImage: "url(" + src + ")"
+        });
+        var imgSize = ResourceManager.getImageSize(value);
+        this.setWidth(imgSize.width);
+        this.setHeight(imgSize.height);
       }
     }
   }

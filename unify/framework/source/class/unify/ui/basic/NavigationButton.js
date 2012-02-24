@@ -20,8 +20,8 @@ core.Class("unify.ui.basic.NavigationButton", {
   /**
    * @param label {String} Label on button
    */
-  construct : function(label) {
-    unify.ui.form.Button.call(this, label);
+  construct : function(label, image) {
+    unify.ui.form.Button.call(this, label, image);
     
     this._applyMNavigatable();
   }

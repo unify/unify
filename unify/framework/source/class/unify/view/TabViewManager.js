@@ -147,17 +147,11 @@ core.Class("unify.view.TabViewManager", {
     {
       var viewInstance = viewClass.getInstance();
 
-      /*var elem = document.createElement("div");
-      elem.className = "tab-bar-element";
-      elem.setAttribute("view", viewInstance.getId());
-      elem.innerHTML = "<div class='tab-bar-element-image'></div>" + viewInstance.getTitle("tab-bar");*/
-
-      var elem = new unify.ui.basic.NavigationButton(viewInstance.getTitle("tab-bar"));
+      var elem = new unify.ui.basic.NavigationButton(viewInstance.getTitle("tab-bar"), viewInstance.getIcon("tab-bar"));
       elem.set({
         appearance: "tabbar.button",
         goTo: viewInstance.getId(),
-        relation: "same",
-        height: 44
+        relation: "same"
       });
 
       this.__viewmap[viewInstance.getId()] = elem;
@@ -174,7 +168,7 @@ core.Class("unify.view.TabViewManager", {
         var layout = new unify.ui.layout.HBox();
         layout.set({
           alignX: "center",
-          alignY: "middle"
+          alignY: "top"
         });
         this.__bar = bar = new unify.ui.container.Composite(layout);
         bar.setAppearance("tabbar");

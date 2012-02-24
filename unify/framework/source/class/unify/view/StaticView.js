@@ -226,6 +226,16 @@ core.Class("unify.view.StaticView",
     getTitle : function(type) {
       return "Default";
     },
+    
+    /**
+     * Returns the icon of the view
+     *
+     * @param type {String} One of "short", "title-bar", "tab-bar", "up", etc. Support depends on view.
+     * @return {String?null} URL of icon
+     */
+    getIcon : function(type) {
+      return null;
+    },
 
 
     /**

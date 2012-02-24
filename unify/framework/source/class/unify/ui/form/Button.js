@@ -35,12 +35,12 @@ core.Class("unify.ui.form.Button", {
     autoCalculateSize : {
       type: "Boolean",
       init: false,
-      apply: this._applyAutoCalculateSize
+      apply: function(value) { this._applyAutoCalculateSize(value); }
     }
   },
   
-  construct : function(label) {
-    unify.ui.basic.Atom.call(this, label);
+  construct : function(label, image) {
+    unify.ui.basic.Atom.call(this, label, image);
   },
 
   members: {

@@ -30,6 +30,7 @@ qx.Class.define("unify.view.TabbedViewManager", {
   construct : function(managerId,layout)
   {
     this.base(arguments,managerId,layout);
+    unify.ui.core.MChildControl.call(this);
     this.__tabs={};
     this.__currentTab=null;
     this.addListener("changePath", this._onViewManagerChangePath, this);

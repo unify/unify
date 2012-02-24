@@ -36,6 +36,7 @@ qx.Class.define("unify.ui.form.FileInput", {
 
   construct : function() {
     this.base(arguments, new unify.ui.layout.Canvas());
+    unify.ui.core.MChildControl.call(this);
 
     this._showChildControl("filename");
     this._showChildControl("fileinput");

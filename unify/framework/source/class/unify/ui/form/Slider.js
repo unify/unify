@@ -53,6 +53,7 @@ qx.Class.define("unify.ui.form.Slider", {
   
   construct : function() {
     this.base(arguments);
+    unify.ui.core.MChildControl.call(this);
     
     this._forwardStates = {
       "hover" : true,

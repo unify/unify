@@ -27,6 +27,7 @@ qx.Class.define("unify.ui.form.Combobox", {
    */
   construct : function(label, image) {
     this.base(arguments, label, image);
+    unify.ui.core.MChildControl.call(this);
     
     this.addListener("tap", this.__onTap, this);
   },

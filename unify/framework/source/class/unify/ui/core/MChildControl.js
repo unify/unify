@@ -150,14 +150,20 @@ core.Class("unify.ui.core.MChildControl", {
         throw new Error("Unsupported control: " + id);
       }
       
-      control.setAppearance(this.getAppearance() + "/" + id);
-      /*var appearanceChanged = qx.lang.Function.bind(function(childId, parrentAppearance) {
+      /*control.setAppearance(this.getAppearance() + "/" + id);
+      / *var appearanceChanged = qx.lang.Function.bind(function(childId, parrentAppearance) {
         this.getChildControl(childId).setAppearance(parrentAppearance + "/" + childId);
-      }, this, id);*/
-      var appearanceChanged = function(childId, parrentAppearance) {
-        this.getChildControl(childId).setAppearance(parrentAppearance + "/" + childId);
-      }.bind(this, id);
-      this.addListener("changeAppearance", function(e) { appearanceChanged(e.getData()); }, this);
+      }, this, id);* /
+      var appearanceChanged = (function(self, childId) {
+        return function(parrentAppearance) {
+          console.log(childId, self.constructor, self.getChildControl(childId).constructor, parrentAppearance + "/" + childId);
+          self.getChildControl(childId).setAppearance(parrentAppearance + "/" + childId);
+        };
+      })(this, id);
+      console.log("ADD CHANGE APPEARANCE", this.constructor);
+      this.addListener("changeAppearance", function(e) {
+        appearanceChanged(e.getData());
+      }, this);*/
 
       // Establish connection to parent
       control.$$subcontrol = id;
@@ -359,6 +365,14 @@ core.Class("unify.ui.core.MChildControl", {
       this.addState = this.__childControlAddStateWrapper();
       this.removeState = this.__childControlRemoveStateWrapper();
       this.replaceState = this.__childControlReplaceStateWrapper();
+      
+      this.addListener("changeAppearance", function(e) {
+        var childs = this._getCreatedChildControls();
+        
+        for (var id in childs) {
+          childs[id].setAppearance(e.getData() + "/" + id);
+        }
+      }, this);
     }
   }/*,
   

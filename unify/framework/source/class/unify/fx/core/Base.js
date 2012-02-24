@@ -24,12 +24,12 @@ core.Class("unify.fx.core.Base", {
   properties : {
     /** Duration of animation */
     duration : {
-      type : "integer"
+      type : "Integer"
     },
     
     /** Easing method of animation */
     easing : {
-      type : "function",
+      type : "Function",
       nullable: true
     },
     

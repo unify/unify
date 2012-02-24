@@ -25,11 +25,23 @@ core.Class("unify.theme.Theme", {
     },
     
     resolveColor : function(name) {
-      return this.__colors[name] || null;
+      var result = this.__colors[name] || null;
+      if (core.Env.getValue("debug")) {
+        if (!result) {
+          console.warn("Color " + name + " not found!");
+        }
+      }
+      return result;
     },
     
     resolveFont : function(name) {
-      return this.__fonts[name] || null;
+      var result = this.__fonts[name] || null;
+      if (core.Env.getValue("debug")) {
+        if (!result) {
+          console.warn("Font " + name + " not found!");
+        }
+      }
+      return result;
     },
     
     resolveStyle : function(name, states) {
@@ -48,11 +60,13 @@ core.Class("unify.theme.Theme", {
         res = style(states);
       } else {
         for (var j=0,jj=style.length; j<jj; j++) {
-          var newStyles = style[j](states);
-          var newKeys = Object.keys(newStyles);
-          for (var i=0,ii=newKeys.length; i<ii; i++) {
-            var k = newKeys[i];
-            res[k] = newStyles[k];
+          if (style[j]) {
+            var newStyles = style[j](states);
+            var newKeys = Object.keys(newStyles);
+            for (var i=0,ii=newKeys.length; i<ii; i++) {
+              var k = newKeys[i];
+              res[k] = newStyles[k];
+            }
           }
         }
       }

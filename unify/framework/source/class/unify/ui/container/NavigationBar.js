@@ -21,6 +21,7 @@ qx.Class.define("unify.ui.container.NavigationBar", {
    */
   construct : function(view) {
     this.base(arguments);
+    unify.ui.core.MChildControl.call(this);
     this._setLayout(new unify.ui.layout.special.NavigationBar());
 
     if (!view || !(view instanceof unify.view.StaticView)) {

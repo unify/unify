@@ -45,19 +45,23 @@ core.Class("unify.ui.layout.HBox", {
         var height;
         
         if (alignY == "top") {
-          top = 0;
+          top = widget.getMarginTop();
           height = size.height;
         } else if (alignY == "center") {
           top = Math.round(availHeight / 2 - size.height / 2);
           height = size.height;
         } else {
           height = size.height;
-          top = availHeight - height;
+          top = availHeight - height - widget.getMarginBottom();
         }
         
+        var leftGap = unify.ui.layout.Util.calculateLeftGap(widget);
+        var rightGap = unify.ui.layout.Util.calculateRightGap(widget);
+        
+        left += leftGap;
         widget.renderLayout(left, top, width, height);
         
-        left += width;
+        left += width + rightGap;
       }
     },
     

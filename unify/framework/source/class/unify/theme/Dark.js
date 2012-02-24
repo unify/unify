@@ -16,10 +16,37 @@ core.Class("unify.theme.Dark", {
       name : "unify.Dark",
       
       colors: {
-        color1: "#ff0000",
-        color2: "green"
+        black: "#000000",
+        white: "#ffffff",
+        "#ffffff" : "#ffffff",
+        "#9a9a9a" : "#9a9a9a",
+        "#CBD2D8" : "#CBD2D8"
       },
       fonts: {
+        "default" : {
+          family : "Helvetica,sans-serif",
+          size: 14,
+          lineHeight: 1.4
+        },
+        "tabbar bold" : {
+          size: 9,
+          weight: "bold"
+        },
+        "big bold" : {
+          size: 20,
+          weight: "bold"
+        },
+        "small bold" : {
+          size: 12,
+          weight: "bold"
+        },
+        "huge bold" : {
+          size: 17,
+          weight: "bold"
+        },
+        "huge" : {
+          size: 17
+        },
         font0: {},
         font1: {
           family: "sans-serif",
@@ -56,9 +83,7 @@ core.Class("unify.theme.Dark", {
               padding : 0,
               margin : 0,
               boxSizing : "borderBox",
-              fontFamily : "Helvetica,sans-serif",
-              fontSize: "14px",
-              lineHeight : "1.4",
+              font: "default",
               color : "black",
               background : "white",
               touchCallout : "none"
@@ -108,7 +133,6 @@ core.Class("unify.theme.Dark", {
               borderRight: "1px solid #b4b4b4",
               borderBottom: "1px solid #b4b4b4",
               backgroundColor: "white",
-              font: "14px",
               textColor: "text-disabled"
             };
           }
@@ -270,7 +294,7 @@ core.Class("unify.theme.Dark", {
         "navigationbar.title" : {
           style : function() {
             return {
-              font: "20px bold",
+              font: "big bold",
               color: "white",
               textShadow: "rgba(0, 0, 0, 0.4) 0px -1px 0",
               textOverflow: "ellipsis",
@@ -326,15 +350,18 @@ core.Class("unify.theme.Dark", {
             };
           }
         },
-    
+        
+        // IOS
         "tabbar.button" : {
           style : function(state) {
             var style = {
-              font: "10px bold",
+              font: "tabbar bold",
               borderRadius: "3px",
-              marginTop: "1px",
-              marginLeft: "2px",
-              marginRight: "2px"
+              marginTop: 2,
+              marginLeft: 2,
+              marginRight: 2,
+              width: 76,
+              height: 44
             };
     
             if (state.active) {
@@ -363,11 +390,21 @@ core.Class("unify.theme.Dark", {
             return style;
           }
         },
+        // IOS
         "tabbar.button/label" : {
           style : function(state) {
             return {
-              font: "14px normal",
-              textAlign: "center"
+              font: "tabbar bold",
+              textAlign: "center",
+              marginTop: 2
+            };
+          }
+        },
+        // IOS
+        "tabbar.button/image" : {
+          style : function(state) {
+            return {
+              marginTop: 1
             };
           }
         },
@@ -410,7 +447,7 @@ core.Class("unify.theme.Dark", {
               borderBottom: "1px solid #323232",
               borderLeft: "1px solid #181818",
               padding: "5px 12px",
-              font: "12px bold"
+              font: "small bold"
             };
     
             e.borderRadius = (state.first?"5px ":"0px ") + (state.last?"5px ":"0px ") + (state.last?"5px ":"0px ") + (state.first?"5px ":"0px ");
@@ -473,7 +510,7 @@ core.Class("unify.theme.Dark", {
         "list.header" : {
           style : function() {
             return {
-              font: "17px bold",
+              font: "huge bold",
               color: "#4D576B",
               textShadow: "white 0 1px 1px"
             };
@@ -483,7 +520,7 @@ core.Class("unify.theme.Dark", {
           include : "label",
           style : function() {
             return {
-              font: "17px bold",
+              font: "huge bold",
               marginRight: "5px"
             };
           }
@@ -492,7 +529,7 @@ core.Class("unify.theme.Dark", {
           include : "label",
           style : function() {
             return {
-              font: "17px"
+              font: "huge"
             };
           }
         },
@@ -506,7 +543,8 @@ core.Class("unify.theme.Dark", {
         "label" : {
           style : function(state) {
             var e = {
-              overflow: "hidden"
+              overflow: "hidden",
+              font: "default"
             };
     
             if ((!state.wrap) && state.ellipsis) {

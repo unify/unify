@@ -20,6 +20,7 @@ core.Class("unify.ui.basic.Atom", {
    */
   construct : function(label, image) {
     unify.ui.core.Widget.call(this);
+    unify.ui.core.MChildControl.call(this);
     this._setLayout(new unify.ui.layout.special.AtomLayout());
     if (label) {
       this.setText(label);
