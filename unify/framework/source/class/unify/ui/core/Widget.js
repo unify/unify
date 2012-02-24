@@ -380,7 +380,7 @@ qx.Class.define("unify.ui.core.Widget", {
         throw new Error("TabIndex property must be between 1 and 32000");
       }
 
-      this.setAttribute("tabIndex", value);
+      this.getElement().setAttribute("tabIndex", value);
     },
 
     _applyFocusable : function(value, old)
@@ -391,9 +391,9 @@ qx.Class.define("unify.ui.core.Widget", {
           tabIndex = 1;
         }
 
-        this.setAttribute("tabIndex", tabIndex);
+        this.getElement().setAttribute("tabIndex", tabIndex);
       } else if (old) {
-        this.setAttribute("tabIndex", null);
+        this.getElement().setAttribute("tabIndex", null);
       }
     },
 

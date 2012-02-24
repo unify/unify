@@ -688,7 +688,6 @@ qx.Class.define("unify.view.ViewManager", {
      */
     __setView : function(view, transition)
     {
-      
       // TODO: view.getElement() is also called if view is in popover
       //       Maybe it should be rendered lazy
       var oldView = this.__currentView;
@@ -702,7 +701,6 @@ qx.Class.define("unify.view.ViewManager", {
       
       // Store current view
       this.__currentView = view;
-
 
       // Resuming the view
       view.setActive(true);
@@ -752,23 +750,25 @@ qx.Class.define("unify.view.ViewManager", {
     __animateLayers : function(toView, fromView, direction) {
       var self = this;
       var AnimationDuration = this.getAnimationDuration();
+      var vam = qx.core.Init.getApplication().getViewAnimationManager();
       
       direction = direction || "in";
 
       var visibilityAction = function() {
         var afterRenderAction = function() {
           self.__isInAnimation=true;
-          var transitionEndFnt = function() {
+          
+          var callback = function() {
             fromView.setVisibility("hidden");
             self.__isInAnimation=false;
           };
-          fromView.addListenerOnce("animatePositionDone", transitionEndFnt, this);
           
-          toView.setAnimatePositionDuration(AnimationDuration);
-          toView.setAnimatePosition(self.__positions.center);
-          fromView.setAnimatePositionDuration(AnimationDuration);
-          fromView.setAnimatePosition((direction == "in") ? self.__positions.left : self.__positions.right);
-        }
+          if (direction == "in") {
+            vam.animateIn(fromView, toView, AnimationDuration, callback);
+          } else {
+            vam.animateOut(fromView, toView, AnimationDuration, callback);
+          }
+        };
         
         if (toView.hasRenderedLayout()) {
           afterRenderAction();
@@ -777,20 +777,12 @@ qx.Class.define("unify.view.ViewManager", {
         }
       };
       
-      if (toView) {
-        var posTo = (direction == "in") ? this.__positions.right : this.__positions.left;
-        toView.setStyle({
-          transform: unify.bom.Transform.accelTranslate(posTo.left, posTo.top)
-        });
+      if (direction == "in") {
+        vam.initIn(fromView, toView);
+      } else {
+        vam.initOut(fromView, toView);
       }
-      
-      if (fromView) {
-        var posFrom = this.__positions.center;
-        fromView.setStyle({
-          transform: unify.bom.Transform.accelTranslate(posFrom.left, posFrom.top)
-        });
-      }
-      
+
       if (toView.getVisibility() != "visible") {
         toView.addListenerOnce("changeVisibility", visibilityAction);
         
@@ -810,21 +802,24 @@ qx.Class.define("unify.view.ViewManager", {
     __animateModal: function(view,show,callback){
       var self = this;
       var AnimationDuration = this.getAnimationDuration();
+      var vam = qx.core.Init.getApplication().getViewAnimationManager();
 
       var visibilityAction = function() {
+        self.__isInAnimation=true;
+        var cb = function() {
+          self.__isInAnimation=false;
+          if (callback) {
+            callback();
+          }
+        };
+        
         var afterRenderAction = function() {
-          self.__isInAnimation=true;
-          
-          view.addListenerOnce("animatePositionDone", function() {
-            if (callback) {
-              callback.call(self);
-            }
-            self.__isInAnimation=false;
-          }, this);
-          
-          view.setAnimatePositionDuration(AnimationDuration);
-          view.setAnimatePosition((show) ? self.__positions.center : self.__positions.bottom);
-        }
+          if (show) {
+            vam.animateModalIn(null, view, AnimationDuration, cb);
+          } else {
+            vam.animateModalOut(view, null, AnimationDuration, cb);
+          }
+        };
 
         if (view.hasRenderedLayout()) {
           afterRenderAction();
@@ -833,11 +828,11 @@ qx.Class.define("unify.view.ViewManager", {
         }
       };
 
-      var startPos = (show) ? this.__positions.bottom : this.__positions.center;
-      view.setStyle({
-        transform: unify.bom.Transform.accelTranslate(startPos.left, startPos.top)
-      });
-
+      if (show) {
+        vam.initModalIn(null, view);
+      } else {
+        vam.initModalOut(view, null);
+      }
 
       if (view.getVisibility() != "visible") {
         view.addListenerOnce("changeVisibility", visibilityAction);

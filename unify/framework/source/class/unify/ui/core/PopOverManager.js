@@ -102,9 +102,6 @@ qx.Class.define("unify.ui.core.PopOverManager",
           var modal = visible[i].getModal();
 
           if(!mSet && modal){
-            mblocker.style.zIndex = (zIndexBase-1)+2*i;
-            mblocker.style.display = 'block';
-            
             var styleState = visible[i].getUserData("blockerState");
             if (styleState) {
               var val = styleState;
@@ -112,14 +109,13 @@ qx.Class.define("unify.ui.core.PopOverManager",
               styleState[val] = true;
             }
             
-            var style = qx.theme.manager.Appearance.getInstance().styleFrom("MODAL-BLOCKER", styleState);
+            var style = qx.theme.manager.Appearance.getInstance().styleFrom("MODAL-BLOCKER", styleState) || {};
+            style.zIndex = (zIndexBase-1)+2*i;
+            style.display = 'block';
             qx.bom.element.Style.setStyles(mblocker, style);
             
             mSet = true;
           } else if (!pSet && !modal){
-            pblocker.style.zIndex = (zIndexBase-1)+2*i;
-            pblocker.style.display = 'block';
-            
             var styleState = visible[i].getUserData("blockerState");
             if (styleState) {
               var val = styleState;
@@ -127,7 +123,9 @@ qx.Class.define("unify.ui.core.PopOverManager",
               styleState[val] = true;
             }
             
-            var style = qx.theme.manager.Appearance.getInstance().styleFrom("POPOVER-BLOCKER", styleState);
+            var style = qx.theme.manager.Appearance.getInstance().styleFrom("POPOVER-BLOCKER", styleState) || {};
+            style.zIndex = (zIndexBase-1)+2*i;
+            style.display = 'block';
             qx.bom.element.Style.setStyles(pblocker, style);
             
             pSet = true;
