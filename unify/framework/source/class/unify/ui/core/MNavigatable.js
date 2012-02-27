@@ -230,12 +230,9 @@ core.Class("unify.ui.core.MNavigatable", {
       var config = unify.view.Path.parseFragment(dest);
       var view = config.view;
 
-      if (view && !viewManager.getView(view))
-      {
+      if (view && !viewManager.getView(view)) {
         unify.view.Navigation.getInstance().navigate(new unify.view.Path(config));
-      }
-      else
-      {
+      } else {
         // Read current path and make non-deep copy of path
         var path = viewManager.getPath();
         var clone = path.concat();
