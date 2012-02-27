@@ -25,6 +25,10 @@ core.Class("unify.ui.layout.HBox", {
   
   members : {
     __childrenCache : null,
+    __overallFlex : 0,
+    __hasFlex : null,
+    __hasNoFlex : null,
+    __sizeCache : null,
     
     renderLayout : function(availWidth, availHeight) {
       if (this._invalidChildrenCache) {
@@ -32,12 +36,33 @@ core.Class("unify.ui.layout.HBox", {
       }
       
       var left = 0;
-      
+      var hasFlex = this.__hasFlex;
+      var hasNoFlex = this.__hasNoFlex;
+      var sizeCache = this.__sizeCache;
       var cache = this.__childrenCache;
-      for (var i=0,ii=cache.length; i<ii; i++) {
-        var widget = cache[i];
-        var calc = widget.getLayoutProperties();
-        var size = widget.getSizeHint();
+      var i, ii;
+      
+      if (hasFlex.length > 0) {
+        var overallFlex = this.__overallFlex;
+        var usedNoFlexWidth = 0;
+        
+        for (i=0,ii=hasNoFlex.length; i<ii; i++) {
+          var e = sizeCache[hasNoFlex[i]];
+          
+          e.size.width = e.size.minWidth;
+          usedNoFlexWidth += e.size.width;
+        }
+        
+        for (i=0,ii=hasFlex.length; i<ii; i++) {
+          
+        }
+      }
+      
+      for (i=0,ii=sizeCache.length; i<ii; i++) {
+        var element = sizeCache[i];
+        var widget = element.widget;
+        var calc = element.properties;
+        var size = element.size;
         
         var alignY = this.getAlignY();
         var top;
@@ -79,7 +104,28 @@ core.Class("unify.ui.layout.HBox", {
     },
     
     __rebuildChildrenCache : function() {
-      this.__childrenCache = this._getLayoutChildren();
+      var children = this.__childrenCache = this._getLayoutChildren();
+      var flex = this.__hasFlex = [];
+      var noFlex = this.__hasNoFlex = [];
+      var sizes = this.__sizeCache = [];
+      var overallFlex = 0;
+      
+      for (var i=0,ii=children.length; i<ii; i++) {
+        var child = children[i];
+        var props = child.getLayoutProperties();
+        
+        var flex = props.flex;
+        if (flex) {
+          flex.push(i);
+          overallFlex += flex;
+          sizes.push({widget: child, properties: props, flex: flex, size: child.getSizeHint()});
+        } else {
+          noFlex.push(i);
+          sizes.push({widget: child, properties: props, flex: false, size: child.getSizeHint()});
+        }
+      }
+      
+      this.__overallFlex = overallFlex;
     }
   }
 });

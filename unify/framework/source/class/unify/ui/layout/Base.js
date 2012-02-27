@@ -2,6 +2,10 @@ core.Class("unify.ui.layout.Base", {
   
   include : [unify.core.Object],
   
+  construct : function() {
+    unify.core.Object.call(this);
+  },
+  
   members : {
     __widget : null,
     _invalidChildrenCache : true,

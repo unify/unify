@@ -385,7 +385,7 @@ core.Class("unify.ui.core.Widget", {
       }
 
       if (this.__layoutManager) {
-        this.__layoutManager.connectToWidget(null);
+        this.__layoutManager.connectWidget(null);
       }
 
       if (layout) {
@@ -908,7 +908,7 @@ core.Class("unify.ui.core.Widget", {
             layoutChildren = children.concat();
           }
 
-          qx.lang.Array.remove(layoutChildren, child);
+          layoutChildren.remove(child);
         }
       }
 
@@ -2042,7 +2042,7 @@ core.Class("unify.ui.core.Widget", {
     
     // overridden
     invalidateLayoutCache : function() {
-      this.base(arguments);
+      unify.ui.core.VisibleBox.prototype.invalidateLayoutCache.call(this);
 
       if (this.__layoutManager) {
         this.__layoutManager.invalidateLayoutCache();

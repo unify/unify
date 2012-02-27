@@ -13,5 +13,15 @@ core.Module("unify.ui.layout.Util", {
   
   calculateBottomGap : function(widget) {
     return widget.getBorder().bottom + widget.getMarginBottom() || 0;
+  },
+  
+  calculateHorizontalGap : function(widget) {
+    var border = widget.getBorder();
+    return border.left + widget.getMarginLeft() + border.right + widget.getMarginRight() || 0;
+  },
+  
+  calculateVerticalGap : function(widget) {
+    var border = widget.getBorder();
+    return border.top + widget.getMarginTop() + border.bottom + widget.getMarginBottom() || 0;
   }
 });
