@@ -685,7 +685,7 @@ core.Class("unify.view.ViewManager", {
       // Transition specific layer switch
       var positions = this.__positions;
 
-      if (this.getAnimateTransitions() &&(transition == "in" || transition == "out"))
+      if (this.getAnimateTransitions() && (transition == "in" || transition == "out"))
       {
         this.__animateLayers(view, oldView, transition);
       } else {
