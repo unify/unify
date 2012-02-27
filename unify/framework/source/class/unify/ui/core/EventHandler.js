@@ -1,27 +1,33 @@
-/* ************************************************************************
+/* ***********************************************************************************************
 
-   qooxdoo - the new era of web development
+    Unify Project
 
-   http://qooxdoo.org
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2010-2012, Sebastian Fastner, Mainz, Germany, http://unify-training.com
 
-   Copyright:
-     2004-2008 1&1 Internet AG, Germany, http://www.1und1.de
+*********************************************************************************************** */
 
-   License:
-     LGPL: http://www.gnu.org/licenses/lgpl.html
-     EPL: http://www.eclipse.org/org/documents/epl-v10.php
-     See the LICENSE file in the project's top-level directory for details.
+(function(global) {
 
-   Authors:
-     * Sebastian Werner (wpbasti)
-     * Fabian Jakobs (fjakobs)
+  lowland.bom.Events.listen(global.window, "click", function(e) {
+    lowland.bom.Events.dispatch(e.target, "tap");
+  });
 
-************************************************************************ */
+  /*core.Class("unify.ui.core.EventHandler", {
+    construct : function(element) {
+      lowland.bom.Events.listen(element, "click", this.__click);
+    },
+    
+    members : {
+      __click : function() {
+        console.log("CLICK ", arguments);
+      }
+    }
+  });*/
 
-/**
- * Connects the widgets to the browser DOM events.
- */
-core.Class("unify.ui.core.EventHandler", {}); 
+})(this);
+
 /*
   //extend : qx.core.Object,
   //implement : qx.event.IEventHandler,
