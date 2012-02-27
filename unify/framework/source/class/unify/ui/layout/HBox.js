@@ -44,20 +44,25 @@ core.Class("unify.ui.layout.HBox", {
       
       if (hasFlex.length > 0) {
         var overallFlex = this.__overallFlex;
-        var usedNoFlexWidth = 0;
+        var usedNoFlexHeight = 0;
+        var e;
         
         for (i=0,ii=hasNoFlex.length; i<ii; i++) {
-          var e = sizeCache[hasNoFlex[i]];
+          e = sizeCache[hasNoFlex[i]];
           
-          e.size.width = e.size.minWidth;
-          usedNoFlexWidth += e.size.width;
+          e.size.height = e.size.minHeight;
+          usedNoFlexHeight += e.size.width;
         }
         
+        var flexUnit = (availHeight - usedNoFlexHeight) / overallFlex;
+        
         for (i=0,ii=hasFlex.length; i<ii; i++) {
+          e = sizeCache[hasFlex[i]];
           
+          e.size.height = Math.round(flexUnit * e.flex);
         }
       }
-      
+
       for (i=0,ii=sizeCache.length; i<ii; i++) {
         var element = sizeCache[i];
         var widget = element.widget;
@@ -113,12 +118,12 @@ core.Class("unify.ui.layout.HBox", {
       for (var i=0,ii=children.length; i<ii; i++) {
         var child = children[i];
         var props = child.getLayoutProperties();
-        
-        var flex = props.flex;
-        if (flex) {
+
+        var flexState = props.flex;
+        if (flexState) {
           flex.push(i);
-          overallFlex += flex;
-          sizes.push({widget: child, properties: props, flex: flex, size: child.getSizeHint()});
+          overallFlex += flexState;
+          sizes.push({widget: child, properties: props, flex: flexState, size: child.getSizeHint()});
         } else {
           noFlex.push(i);
           sizes.push({widget: child, properties: props, flex: false, size: child.getSizeHint()});
