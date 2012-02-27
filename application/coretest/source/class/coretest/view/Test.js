@@ -38,7 +38,7 @@ core.Class("coretest.view.Test", {
       var navbar = new unify.ui.container.NavigationBar(this);
       this.add(navbar, {flex: 1});
       
-      var content = new unify.ui.basic.Label("Hello World");
+      var content = new unify.ui.basic.Label("Another test view");
       this.add(content);
     }
   }
