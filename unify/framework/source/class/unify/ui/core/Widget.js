@@ -98,7 +98,9 @@ core.Class("unify.ui.core.Widget", {
     visibility : {
       type : ["visible", "hidden", "excluded"],
       init : "visible",
-      apply : function(value, old) { this._applyVisibility(value, old); },
+      apply : function(value, old) { if (value !== old) {
+        this._applyVisibility(value, old); 
+      }},
       fire : "changeVisibility"
     },
 
@@ -107,7 +109,9 @@ core.Class("unify.ui.core.Widget", {
      */
     appearance : {
       init : null,
-      apply : function(value, old) { this._applyAppearance(value, old); },
+      apply : function(value, old) { if (value !== old) {
+        this._applyAppearance(value, old); 
+      }},
       fire : "changeAppearance"
     },
 
@@ -228,7 +232,8 @@ core.Class("unify.ui.core.Widget", {
       }
 
       // only force a layout update if visibility change from/to "exclude"
-      var parent = this.$$parent;
+      var parent = this.getParentBox();
+      
       if (parent && (old == null || value == null || old === "excluded" || value === "excluded")) {
         parent.invalidateLayoutChildren();
       }
@@ -735,7 +740,7 @@ core.Class("unify.ui.core.Widget", {
               this.warn("No parent widget set, so virtual position is set to 0/0")
             }
           }
-
+          
           core.bom.Style.set(element, {
             position: "absolute",
             left: (left + parentVirtualPosition.left) + "px",
