@@ -88,6 +88,7 @@ core.Class("unify.ui.core.MNavigatable", {
      * Applies event listeners on widget to support navigation
      */
     _applyMNavigatable : function() {
+      lowland.bom.Events.listen(this.getElement(), "tap", this.__onMNavigatableTap.bind(this), true);
       this.addListener("tap", this.__onMNavigatableTap, this);
       this.addListener("touchhold", this.__onMNavigatableTouchHold, this);
       this.addListener("touchrelease", this.__onMNavigatableTouchRelease, this);
@@ -103,14 +104,14 @@ core.Class("unify.ui.core.MNavigatable", {
       if(this.hasState("disable")){
         return;
       }
-      var viewManagerWidget = this.getLayoutParent();
+      var viewManagerWidget = this.getParentBox();
       var viewManager = null;
       while (!viewManager && viewManagerWidget) {
         viewManager = viewManagerWidget.getUserData("viewManager");
-        viewManagerWidget = viewManagerWidget.getLayoutParent();
+        viewManagerWidget = viewManagerWidget.getParentBox();
       }
       
-      if (qx.core.Environment.get("qx.debug")) {
+      if (core.Env.getValue("debug")) {
         if (!viewManager) {
           this.warn("Widget " + this + " has no parent view manager!");
         }
@@ -131,7 +132,10 @@ core.Class("unify.ui.core.MNavigatable", {
         } else if (!this.__navigates) {
           // Lazily navigate (omits navigation during activity)
           this.__navigates = true;
-          qx.lang.Function.delay(this.__navigationWidgetHelper, 0, this, viewManager);
+          /**
+           * #require(lowland.ext.Function)
+           */
+          this.__navigationWidgetHelper.delay(0, this, viewManager);
         }
       }
     },
@@ -216,7 +220,7 @@ core.Class("unify.ui.core.MNavigatable", {
       // .segment (switch segment, no transition)
       // :param (switch param, no transition)
 
-      if (qx.core.Environment.get("qx.debug"))
+      if (core.Env.getValue("debug"))
       {
         if (rel != "same" && rel != "master" && rel != null) {
           throw new Error("Invalid 'rel' attribute: " + rel);
