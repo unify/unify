@@ -51,8 +51,9 @@
           widget.renderLayout(0, 0, sizeHint.width, sizeHint.height);
         } else {
           var bounds = widget.getBounds();
+          
           if (bounds) {
-            widget.renderLayout(bounds.left, bounds.top, bound.width, bounds.height);
+            widget.renderLayout(bounds[0], bounds[1], bounds[2], bounds[3]);
           }
         }
       }
