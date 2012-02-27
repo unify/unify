@@ -35,6 +35,9 @@ core.Class("coretest.view.Start", {
     // overridden
     _createView : function() 
     {
+      var navbar = new unify.ui.container.NavigationBar(this);
+      this.add(navbar, {flex: 1});
+      
       var content = new unify.ui.basic.Label("Hello World");
       this.add(content);
     }

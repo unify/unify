@@ -20,7 +20,9 @@ core.Class("unify.theme.Dark", {
         white: "#ffffff",
         "#ffffff" : "#ffffff",
         "#9a9a9a" : "#9a9a9a",
-        "#CBD2D8" : "#CBD2D8"
+        "#CBD2D8" : "#CBD2D8",
+        "#242424" : "#242424",
+        "#3a3a3a" : "#3a3a3a"
       },
       fonts: {
         "default" : {
@@ -281,11 +283,22 @@ core.Class("unify.theme.Dark", {
           BARS
         ---------------------------------------------------------------------------
         */
-    
+        
+        /**
+         * #asset(unify/iphoneos/navigation-bar/black/navigationbar.png)
+         */
         "navigationbar" : {
           style : function() {
             return {
-              background: "url(" + qx.util.ResourceManager.getInstance().toUri("unify/iphoneos/navigation-bar/black/navigationbar.png") + ")"
+              height: 44,
+              background: "url(" + core.io.Asset.toUri("unify/iphoneos/navigation-bar/black/navigationbar.png") + ")",
+              properties : {
+                allowGrowX: true,
+                allowGrowY: false,
+                allowShrinkY: false,
+                allowShrinkX: false,
+                minWidth: 200
+              }
             };
           }
         },
@@ -418,7 +431,7 @@ core.Class("unify.theme.Dark", {
         "toolbar.segmented.container" : {
           style : function() {
             return {
-              //"WebkitBorderImage" : "url(" + qx.util.ResourceManager.getInstance().toUri("unify/iphoneos/tool-bar/black/segmented-all.png") + ") 0 5 120 5"
+              //"WebkitBorderImage" : "url(" + core.io.Asset.toUri("unify/iphoneos/tool-bar/black/segmented-all.png") + ") 0 5 120 5"
             };
           }
         },
@@ -695,7 +708,7 @@ core.Class("unify.theme.Dark", {
               height: "30px",
               backgroundColor: "white",
               properties : {
-                image : qx.util.ResourceManager.getInstance().toUri("unify/noun/down.png")
+                image : core.io.Asset.toUri("unify/noun/down.png")
               }
             };
           }

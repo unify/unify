@@ -11,20 +11,19 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.ui.container.NavigationBar", {
-  extend: unify.ui.container.Bar,
-
-  include : [unify.ui.core.MChildControl],
+core.Class("unify.ui.container.NavigationBar", {
+  include : [unify.ui.container.Bar, unify.ui.core.MChildControl],
 
   /**
    * @param view {unify.view.StaticView} View the navigation bar is attached to
    */
   construct : function(view) {
-    this.base(arguments);
+    unify.ui.container.Bar.call(this);
     unify.ui.core.MChildControl.call(this);
+    
     this._setLayout(new unify.ui.layout.special.NavigationBar());
 
-    if (!view || !(view instanceof unify.view.StaticView)) {
+    if (!view || !(core.Class.includesClass(view.constructor, unify.view.StaticView))) {
       throw new Error("Invalid view! NavigationBar must be attached to a view!")
     }
 
@@ -50,17 +49,7 @@ qx.Class.define("unify.ui.container.NavigationBar", {
   },
 
   properties : {
-    minWidth: {
-      refine: true,
-      init: 200
-    },
-    height: {
-      refine: true,
-      init: 44
-    },
-
     appearance : {
-      refine : true,
       init: "navigationbar"
     }
   },
@@ -85,7 +74,7 @@ qx.Class.define("unify.ui.container.NavigationBar", {
     },
 
     _createItemElement : function(config){
-      var item = this.base(arguments,config);
+      var item = unify.ui.container.Bar.prototype._createItemElement.call(this, config);
       var rel=config.rel;
 
       //TODO required? parent and master should be the same layout as all the others
@@ -166,7 +155,7 @@ qx.Class.define("unify.ui.container.NavigationBar", {
         });
       }
 
-      return control || this.base(arguments, id);
+      return control || unify.ui.container.Bar.prototype._createChildControlImpl.call(this, id); 
     },
 
 
@@ -178,7 +167,7 @@ qx.Class.define("unify.ui.container.NavigationBar", {
     __onViewChangeTitle : function(e) {
       this.__title.setValue(this.__view.getTitle());
     }
-  },
+  }/* TODO: ,
 
   destruct : function() {
     var view = this.__view;
@@ -186,5 +175,5 @@ qx.Class.define("unify.ui.container.NavigationBar", {
     view.removeListener("changeParent", this.__onViewChangeParent, this);
     view.removeListener("changeMaster", this.__onViewChangeMaster, this);
     this.__view = this.__title= this.__parentButton = this.__masterButton = null;
-  }
+  }*/
 });

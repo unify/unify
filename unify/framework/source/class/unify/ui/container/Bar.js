@@ -11,19 +11,17 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.ui.container.Bar", {
-  extend: unify.ui.container.Composite,
+core.Class("unify.ui.container.Bar", {
+  include: [unify.ui.container.Composite],
   
   construct : function(layout) {
-    this.base(arguments);
+    unify.ui.container.Composite.call(this);
     this._setLayout(layout || new unify.ui.layout.HBox());
   },
   
   properties : {
     // overridden
-    appearance :
-    {
-      refine: true,
+    appearance : {
       init: "bar"
     }
   },
