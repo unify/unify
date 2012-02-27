@@ -56,7 +56,7 @@ core.Class("unify.ui.basic.Label", {
     /** Wheter the content is HTML or plain text */
     html : {
       type: "Boolean",
-      init: true,
+      init: false,
       fire: "changeHtml"
     },
 
