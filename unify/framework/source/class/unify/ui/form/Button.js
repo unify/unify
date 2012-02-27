@@ -17,7 +17,7 @@ core.Class("unify.ui.form.Button", {
 
   events : {
     /** Execute event when button is tapped */
-    "execute" : "qx.event.type.Event"
+    "execute" : lowland.events.Event
   },
 
   properties: {
