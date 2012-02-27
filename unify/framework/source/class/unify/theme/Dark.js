@@ -192,7 +192,6 @@ core.Class("unify.theme.Dark", {
           }
         },
         "overlay/arrow" : {
-    
           style : function() {
             var size=38;
             return {
@@ -402,9 +401,12 @@ core.Class("unify.theme.Dark", {
         },
         // IOS
         "tabbar.button/image" : {
+          include: "image",
           style : function(state) {
             return {
-              marginTop: 1
+              marginTop: 1,
+              width: 30,
+              height: 30
             };
           }
         },
@@ -555,7 +557,14 @@ core.Class("unify.theme.Dark", {
             return e;
           }
         },
-        "image" : {},
+        "image" : {
+          style : function() {
+            return {
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center"
+            };
+          }
+        },
         "input" : {
           style : function() {
             return {
