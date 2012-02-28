@@ -16,6 +16,8 @@ session.permutateField("locale", ["de"])
 
 NAMESPACE = "coretest"
 
+session.setField("application", NAMESPACE)
+
 
 
 @task("Clear Cache")

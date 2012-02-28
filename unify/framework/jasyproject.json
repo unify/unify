@@ -1,5 +1,11 @@
 {
-    "name": "unify",
-    "kind" : "full",
-    "package" : ""
+  "name": "unify",
+  "kind" : "full",
+  "package" : "",
+  "fields" : {
+		"application" : {
+			"check" : "String",
+			"default" : "default"
+		}
+	}
 }
