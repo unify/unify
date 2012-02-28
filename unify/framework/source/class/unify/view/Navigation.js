@@ -260,9 +260,8 @@ core.Class("unify.view.Navigation",
      *
      * @param e {unify.event.type.History} History event
      */
-    __onHistoryChange : function(e)
-    {
-      var currentLocation = decodeURI(e.getLocation());
+    __onHistoryChange : function(e) {
+      var currentLocation = decodeURI(e.getData());
       if (currentLocation != "" && currentLocation != this.__serializedPath) {
         this.navigate(unify.view.Path.fromString(currentLocation));
       }
