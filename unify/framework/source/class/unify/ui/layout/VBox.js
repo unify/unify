@@ -60,29 +60,35 @@ core.Class("unify.ui.layout.VBox", {
       }
       
       for (i=0,ii=cache.length; i<ii; i++) {
-        var widget = cache[i];
-        var calc = widget.getLayoutProperties();
-        var size = widget.getSizeHint();
+        var element = sizeCache[i];
+        var widget = element.widget;
+        var calc = element.properties;
+        var size = element.size;
         
         var alignX = this.getAlignX();
         var left;
-        var width;
+        var width = availWidth;
         var height = size.height;
+        
+        if (size.maxWidth && width > size.maxWidth) {
+          width = size.maxWidth;
+        }
         
         if (alignX == "left") {
           left = 0;
-          width = size.width;
         } else if (alignX == "center") {
-          left = Math.round(availHeight / 2 - size.height / 2);
-          width = size.width;
+          left = Math.round(availWidth / 2 - width / 2);
         } else {
-          width = size.width;
-          left = availHeight - width;
+          left = availWidth - width;
         }
         
+        var topGap = unify.ui.layout.Util.calculateTopGap(widget);
+        var bottomGap = unify.ui.layout.Util.calculateBottomGap(widget);
+        
+        top += topGap;
         widget.renderLayout(left, top, width, height);
         
-        top += height;
+        top += height + bottomGap;
       }
     },
     

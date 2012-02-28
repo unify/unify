@@ -72,16 +72,17 @@ core.Class("unify.ui.layout.HBox", {
         var alignY = this.getAlignY();
         var top;
         var width = size.width;
-        var height;
+        var height = availHeight;
+        
+        if (size.maxHeight && height > size.maxHeight) {
+          height = size.maxHeight;
+        }
         
         if (alignY == "top") {
           top = widget.getMarginTop();
-          height = size.height;
         } else if (alignY == "center") {
-          top = Math.round(availHeight / 2 - size.height / 2);
-          height = size.height;
+          top = Math.round(availHeight / 2 - height / 2);
         } else {
-          height = size.height;
           top = availHeight - height - widget.getMarginBottom();
         }
         
