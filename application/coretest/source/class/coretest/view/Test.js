@@ -39,6 +39,7 @@ core.Class("coretest.view.Test", {
       this.add(navbar, {flex: 1});
       
       var content = new unify.ui.basic.Label("Another test view");
+      content.setWidth(200);
       this.add(content);
     }
   }

@@ -10,7 +10,7 @@
 /**
  * Start View
  */
-core.Class("coretest.view.Start", {
+core.Class("coretest.view.OtherTest", {
   include : [unify.view.StaticView],
 
   construct : function() {
@@ -21,7 +21,7 @@ core.Class("coretest.view.Start", {
   {
     // overridden
     getTitle : function(type, param) {
-      return "World Clock";
+      return "Inner View";
     },
 
     /**
@@ -38,15 +38,10 @@ core.Class("coretest.view.Start", {
       var navbar = new unify.ui.container.NavigationBar(this);
       this.add(navbar, {flex: 1});
       
-      var content = new unify.ui.basic.Label("Hello World");
-      content.setWidth(200);
+      var content = new unify.ui.basic.Label("Secondary test view");
       this.add(content);
-      
-      var button = new unify.ui.basic.NavigationButton("Other test");
-      button.setGoTo("other-test");
-      this.add(button);
     }
   }
 });
 
-unify.core.Singleton.annotate(coretest.view.Start);
+unify.core.Singleton.annotate(coretest.view.OtherTest);

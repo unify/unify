@@ -39,6 +39,7 @@ core.Class("coretest.Application",
       // Register your view classes...
       MasterViewManager.register(coretest.view.Start, true);
       MasterViewManager.register(coretest.view.Test);
+      MasterViewManager.register(coretest.view.OtherTest);
 
       // Add TabViews or SplitViews...
       var TabView = new unify.view.TabViewManager(MasterViewManager);
