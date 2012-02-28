@@ -819,7 +819,7 @@ core.Class("unify.ui.core.Widget", {
         this.fireEvent("move");
       }
       if (changes.size && this.hasListener("resize")) {
-        this.fireDataEvent("resize", dimension);
+        this.fireEvent("resize", dimension);
       }
 
       this.__renderLayoutDone = true;
