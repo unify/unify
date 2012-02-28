@@ -35,7 +35,7 @@ core.Class("unify.theme.Dark", {
           weight: "bold"
         },
         "big bold" : {
-          size: 20,
+          size: 21,
           weight: "bold"
         },
         "small bold" : {
