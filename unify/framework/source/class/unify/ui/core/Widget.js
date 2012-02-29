@@ -50,6 +50,9 @@ core.Class("unify.ui.core.Widget", {
     appearance : lowland.events.DataEvent,
     
     changeAppearance : lowland.events.DataEvent,
+    
+    changeVisibility : lowland.events.DataEvent,
+
 
     /**
      * Fired on move of the widget.
