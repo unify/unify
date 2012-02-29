@@ -727,12 +727,12 @@ core.Class("unify.view.ViewManager", {
             fromView.setVisibility("hidden");
           };
           fromView.addListenerOnce("animatePositionDone", transitionEndFnt, this);
-          
+
           toView.setAnimatePositionDuration(AnimationDuration);
           toView.setAnimatePosition(self.__positions.center);
           fromView.setAnimatePositionDuration(AnimationDuration);
           fromView.setAnimatePosition((direction == "in") ? self.__positions.left : self.__positions.right);
-        }
+        };
         
         if (toView.hasRenderedLayout()) {
           afterRenderAction();
