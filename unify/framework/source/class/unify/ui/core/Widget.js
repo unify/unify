@@ -656,7 +656,7 @@ core.Class("unify.ui.core.Widget", {
     getPositionInfo : function() {
       var e = this.getElement();
 
-      var pos = qx.bom.element.Location.get(e);
+      var pos = lowland.bom.Element.getLocation(e); //qx.bom.element.Location.get(e);
       var dim = this.__dimensionInfo || qx.bom.element.Dimension.getSize(e);
 
       return {
