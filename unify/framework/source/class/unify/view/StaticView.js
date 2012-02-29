@@ -42,9 +42,10 @@ core.Class("unify.view.StaticView",
   
   construct : function(layout)
   {
-    unify.ui.container.Composite.call(this, layout || new unify.ui.layout.VBox())
+    unify.ui.container.Composite.call(this, layout || new unify.ui.layout.VBox());
+    unify.fx.MWidgetAnimation.call(this);
     
-    var className = this.constructor.className.split("\.").pop();
+    var className = this.constructor.className.split(".").pop();
     className = className[0].toLowerCase() + className.substring(1);
     this.__id = className.hyphenate();
   },
