@@ -13,12 +13,14 @@
  */
 core.Class("unify.fx.core.Base", {
   
+  include : [unify.core.Object],
+  
   events : {
     /** Start of animation */
-    start : "qx.event.type.Event",
+    start : lowland.events.Event, //"qx.event.type.Event",
     
     /** Stop of animation */
-    stop : "qx.event.type.Data"
+    stop : lowland.events.DataEvent //"qx.event.type.Data"
   },
   
   properties : {
@@ -42,7 +44,7 @@ core.Class("unify.fx.core.Base", {
    * @param widget {unify.ui.core.Widget} Widget that should be animated
    */
   construct : function(widget) {
-    this.base(arguments);
+    unify.core.Object.call(this);
     
     this._widget = widget;
   },
@@ -77,7 +79,7 @@ core.Class("unify.fx.core.Base", {
      */
     stop : function() {
       if (this.__stop()) {
-        this.fireDataEvent("stop", "break");
+        this.fireEvent("stop", "break");
       }
     },
     
@@ -89,7 +91,7 @@ core.Class("unify.fx.core.Base", {
     reset : function(value) {
       this.__stop();
       this._reset(value);
-      this.fireDataEvent("stop", "reset");
+      this.fireEvent("stop", "reset");
     },
     
     /**
@@ -169,7 +171,7 @@ core.Class("unify.fx.core.Base", {
      */
     __finish : function(fps, id, finished) {
       if (finished) {
-        this.fireDataEvent("stop", "done");
+        this.fireEvent("stop", "done");
       }
     }
   }

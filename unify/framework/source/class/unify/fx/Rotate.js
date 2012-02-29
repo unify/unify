@@ -14,6 +14,10 @@
 core.Class("unify.fx.Rotate", {
   include: [unify.fx.core.Base],
   
+  construct : function(widget) {
+    unify.fx.core.Base.call(this, widget);
+  },
+  
   members : {
     __mod : null,
     __anim : null,

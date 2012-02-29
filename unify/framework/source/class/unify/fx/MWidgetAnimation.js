@@ -15,19 +15,19 @@ core.Class("unify.fx.MWidgetAnimation", {
   
   events : {
     /** Fired after position animation is done */
-    animatePositionDone : "qx.event.type.Event",
+    animatePositionDone : lowland.events.Event, //"qx.event.type.Event",
     
     /** Fired after opacity animation is done */
-    animateOpacityDone : "qx.event.type.Event",
+    animateOpacityDone : lowland.events.Event, //"qx.event.type.Event",
     
     /** Fired after rotation animation is done */
-    animateRotateDone : "qx.event.type.Event"
+    animateRotateDone : lowland.events.Event //"qx.event.type.Event"
   },
   
   properties : {
     /** {Map} Position to animate to */
     animatePosition : {
-      apply : this.__mwaApplyAnimationPosition,
+      apply : function(value) { this.__mwaApplyAnimationPosition(value); },
       nullable: true
     },
     
@@ -39,7 +39,7 @@ core.Class("unify.fx.MWidgetAnimation", {
     
     /** {Float} Opacity to animate to */
     animateOpacity : {
-      apply : this.__mwaApplyAnimationOpacity,
+      apply : function(value) { this.__mwaApplyAnimationOpacity(value); },
       nullable: true
     },
     
@@ -51,7 +51,7 @@ core.Class("unify.fx.MWidgetAnimation", {
     
     /** {Integer} Rotation level in degree to animate to */
     animateRotate : {
-      apply : this.__mwaApplyAnimationRotate,
+      apply : function(value) { this.__mwaApplyAnimationRotate(value); },
       nullable: true
     },
     
@@ -90,8 +90,8 @@ core.Class("unify.fx.MWidgetAnimation", {
      * @param duration {Float} Duration of animation
      */
     __mwaDoAnimation : function(value, animationName, Animation, doneEvent, duration) {
-      if (value != null) {
-        var animation = this.__mwAnimationMap[animationName];
+      var animation = this.__mwAnimationMap[animationName];
+      if (value) {
         if (animation) {
           animation.stop();
         } else {
@@ -107,7 +107,6 @@ core.Class("unify.fx.MWidgetAnimation", {
         animation.setDuration(duration);
         animation.start();
       } else {
-        var animation = this.__mwAnimationMap[animationName];
         if (animation) {
           animation.stop();
           animation.reset(this.__mwAnimationResetMap[animationName]);
@@ -144,7 +143,7 @@ core.Class("unify.fx.MWidgetAnimation", {
         animation.stop();
         animation.reset(this.__mwAnimationRotateReset);
       }
-      if (value != null) {
+      if (value) {
         if (!animation) {
           animation = this.__mwAnimationRotate = new unify.fx.Rotate(this);
           this.__mwAnimationRotateReset = animation.getResetValue();

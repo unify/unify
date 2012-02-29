@@ -15,7 +15,9 @@
  #ignore(requestAnimationFrame)
  #ignore(cancelAnimationFrame)
  */
-
+/**
+ * #require(ext.RequestAnimationFrame)
+ */
 core.Module("unify.fx.core.AnimationFrame", {
   /**
    * Request animation frame
