@@ -151,7 +151,7 @@ core.Class("unify.view.TabViewManager", {
       elem.set({
         appearance: "tabbar.button",
         goTo: viewInstance.getId(),
-        relation: "same"
+        relation: "master"
       });
 
       this.__viewmap[viewInstance.getId()] = elem;
