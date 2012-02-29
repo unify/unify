@@ -650,6 +650,7 @@ core.Class("unify.view.ViewManager", {
      */
     __setView : function(view, transition)
     {
+      console.log("SET VIEW ", this.constructor, view.constructor);
       // TODO: view.getElement() is also called if view is in popover
       //       Maybe it should be rendered lazy
       var oldView = this.__currentView;
@@ -667,7 +668,7 @@ core.Class("unify.view.ViewManager", {
 
       // Resuming the view
       view.setActive(true);
-
+      
       // Cache element/view references
       var currentViewElement = view;// && view.getElement();
       var oldViewElement = oldView;// && oldView.getElement();
@@ -681,7 +682,7 @@ core.Class("unify.view.ViewManager", {
           right: 0
         });
       }
-
+      
       // Transition specific layer switch
       var positions = this.__positions;
 
@@ -689,14 +690,19 @@ core.Class("unify.view.ViewManager", {
       {
         this.__animateLayers(view, oldView, transition);
       } else {
+        
         if (oldView) {
           oldView.setVisibility("hidden");
         }
         if (view) {
+          var pos = this.__positions.center;
+          view.setStyle({
+            transform: unify.bom.Transform.accelTranslate(pos.left, pos.top)
+          });
           view.setVisibility("visible");
         }
       }
-
+      
       // Fire appear/disappear events
       if (oldView) {
         oldView.fireEvent("disappear");
@@ -718,7 +724,6 @@ core.Class("unify.view.ViewManager", {
     __animateLayers : function(toView, fromView, direction) {
       var self = this;
       var AnimationDuration = this.getAnimationDuration();
-      
       direction = direction || "in";
 
       var visibilityAction = function() {
