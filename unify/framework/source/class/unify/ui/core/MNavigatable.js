@@ -242,7 +242,11 @@ core.Class("unify.ui.core.MNavigatable", {
         if (rel == "same") 
         {
           clone[cloneLast] = config;
-        } 
+        }
+        else if (rel == "master")
+        {
+          clone = [config];
+        }
         else if (config.view) 
         {
           clone.push(config);
