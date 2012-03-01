@@ -235,6 +235,10 @@ qx.Class.define("unify.ui.dialog.GenericDialog", {
             alignY: "middle"
           });
           
+          if (button.appearance) {
+            userBtn.setAppearance(button.appearance);
+          }
+          
           userBtn.addListener("execute", this.__onButtonExecute, this);
           
           // add the new button to the right alignment container
