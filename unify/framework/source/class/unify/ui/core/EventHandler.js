@@ -11,6 +11,7 @@
 (function(global) {
 
   lowland.bom.Events.listen(global.window, "click", function(e) {
+    console.log("DISPATCH TAP");
     lowland.bom.Events.dispatch(e.target, "tap");
   });
 

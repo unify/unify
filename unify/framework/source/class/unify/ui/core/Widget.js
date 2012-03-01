@@ -1190,9 +1190,9 @@ core.Class("unify.ui.core.Widget", {
      * Set styles to the element
      * @param map {Map} Map of styles/values to apply
      */
-    setStyle : function(map) {
+    /*setStyle : function(map) {
       this._setStyle(map);
-    },
+    },*/
 
     __cloneMap : function(obj) {
       if(obj == null || typeof(obj) != 'object') {
@@ -1507,9 +1507,9 @@ core.Class("unify.ui.core.Widget", {
      * @param name {String} Style name to return
      * @param computed {Boolean?false} Value should be computed
      */
-    getStyle : function(name, computed) {
+    /*getStyle : function(name, computed) {
       return this._getStyle(name, computed);
-    },
+    },*/
 
     /**
      * Get style of element
@@ -1626,9 +1626,9 @@ core.Class("unify.ui.core.Widget", {
      * Returns children of widget
      * @return {unify.ui.core.Widget[]} Child widgets
      */
-    getChildren : function(){
+    /*getChildren : function(){
       return this._getChildren();
-    },
+    },*/
 
     /**
      * Returns children of widget

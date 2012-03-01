@@ -15,7 +15,9 @@ core.Class("unify.ui.core.MRemoteChildrenHandling", {
 
   members : {
     // TODO:
-    getChildren : function() {},
+    getChildren : function() {
+      return this.getChildrenContainer().getChildren();
+    },
     hasChildren : function() {},
     add: function(children, options) {},
     remove: function(child) {},
