@@ -41,6 +41,11 @@ qx.Interface.define("unify.view.IViewManager", {
      *
      * @param path {unify.view.Path} Path object
      */
-    navigate : function(path) {}
+    navigate : function(path) {},
+    
+    /**
+     * @return {Boolean} true if this ViewManager currently animates the transition between 2 views
+     */
+    isInAnimation : function() {}
   }
 });
