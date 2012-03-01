@@ -214,8 +214,8 @@ qx.Class.define("unify.ui.container.Overlay", {
       }
 
       return {
-        left: left,
-        top: top
+        left: Math.round(left),
+        top: Math.round(top)
       };
     },
 
