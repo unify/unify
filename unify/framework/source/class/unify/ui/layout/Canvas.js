@@ -4,15 +4,16 @@
 
     Homepage: unify-project.org
     License: MIT + Apache (V2)
-    Copyright: 2010, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+    Copyright: 2012, Sebastian Fastner, Mainz, Germany, http://unify-training.com
 
 *********************************************************************************************** */
 
-/**
- * Wrapper for qooxdoo layout class
- */
 core.Class("unify.ui.layout.Canvas", {
   include : [unify.ui.layout.Base],
+  
+  construct : function() {
+    unify.ui.layout.Base.call(this);
+  },
   
   members : {
     __childrenCache : null,

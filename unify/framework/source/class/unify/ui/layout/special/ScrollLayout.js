@@ -4,15 +4,16 @@
 
     Homepage: unify-project.org
     License: MIT + Apache (V2)
-    Copyright: 2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+    Copyright: 2011-2012, Sebastian Fastner, Mainz, Germany, http://unify-training.com
 
 *********************************************************************************************** */
 
-/**
- * EXPERIMENTAL
- */
-qx.Class.define("unify.ui.layout.special.ScrollLayout", {
-  extend : qx.ui.layout.Abstract,
+core.Class("unify.ui.layout.special.ScrollLayout", {
+  include : [unify.ui.layout.Base],
+  
+  construct : function() {
+    unify.ui.layout.Base.call(this);
+  },
 
   members : {
     __content : null,

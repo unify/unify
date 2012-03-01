@@ -11,12 +11,11 @@
 /**
  * Global activity indicator manager managing multiple activities on one indicator
  */
-qx.Class.define("unify.ui.manager.ActivityIndicatorManager", {
-  type : "singleton",
-  extend: qx.core.Object,
+core.Class("unify.ui.manager.ActivityIndicatorManager", {
+  include: [unify.core.Object],
   
   construct : function() {
-    this.base(arguments);
+    unify.core.Object.call(this);
     
     this.__activeMap = {};
     this.__activeIds = [];
@@ -61,14 +60,14 @@ qx.Class.define("unify.ui.manager.ActivityIndicatorManager", {
     hide : function(id) {
       if (!id) id = "undef";
       var am = this.__activeMap;
-      if (qx.core.Environment.get("qx.debug")) {
+      if (core.Env.getValue("debug")) {
         if (!am[id]) {
           throw new Error("Activity indicator " + id + " is not shown!");
         }
       }
       am[id]--;
       if (am[id] == 0) {
-        qx.lang.Array.remove(this.__activeIds, id);
+        this.__activeIds.remove(id);
       }
       
       if (this.__activeIds.length <= 0) {
@@ -78,3 +77,5 @@ qx.Class.define("unify.ui.manager.ActivityIndicatorManager", {
     }
   }
 });
+
+unify.core.Singleton.annotate(unify.ui.manager.ActivityIndicatorManager);

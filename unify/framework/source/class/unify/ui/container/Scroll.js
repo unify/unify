@@ -19,16 +19,14 @@
 #ignore(core.effect.Animate)
 #ignore(Scroller)
  */
-qx.Class.define("unify.ui.container.Scroll", {
-  extend : unify.ui.core.Widget,
-
-  include : [unify.ui.core.MRemoteChildrenHandling, qx.ui.core.MRemoteLayoutHandling],
+core.Class("unify.ui.container.Scroll", {
+  include : [unify.ui.core.Widget, unify.ui.core.MRemoteChildrenHandling, unify.ui.core.MRemoteLayoutHandling],
 
   /**
    * @param layout {qx.ui.layout.Abstract} Layout of container element
    */
   construct : function(layout) {
-    this.base(arguments);
+    unify.ui.core.Widget.call(this);
 
     // Child container layout  
     this.setLayout(layout ||new unify.ui.layout.Basic());
@@ -50,7 +48,7 @@ qx.Class.define("unify.ui.container.Scroll", {
     var scrollIndicatorY = this.__verticalScrollIndicator = new Indicator("vertical",this);
 
     var distance = Indicator.DISTANCE;
-    var thickness=Indicator.THICKNESS;
+    var thickness = Indicator.THICKNESS;
     scrollIndicatorX.setHeight(thickness);
     this._add(scrollIndicatorX, {
       type: "indicatorX",
@@ -92,8 +90,8 @@ qx.Class.define("unify.ui.container.Scroll", {
     bounces :
     {
       init : true,
-      check : "Boolean",
-      apply : "_applyScrollerProperty"
+      type : "Boolean",
+      apply : function(value) { this._applyScrollerProperty(value); }
     },
 
     /**
@@ -103,46 +101,45 @@ qx.Class.define("unify.ui.container.Scroll", {
     paging :
     {
       init : false,
-      check : "Boolean",
-      apply : "_applyScrollerProperty"
+      type : "Boolean",
+      apply : function(value) { this._applyScrollerProperty(value); }
     },
 
     /** Whether horizontal scrolling should be enabled */
     enableScrollX :
     {
       init : false,
-      check : "Boolean",
-      apply : "_applyScrollerProperty"
+      type : "Boolean",
+      apply : function(value) { this._applyScrollerProperty(value); }
     },
 
     /** Whether vertical scrolling should be enabled */
     enableScrollY :
     {
       init : true,
-      check : "Boolean",
-      apply : "_applyScrollerProperty"
+      type : "Boolean",
+      apply : function(value) { this._applyScrollerProperty(value); }
     },
 
     /** Whether the horizontal scroll indicator should be displayed */
     showIndicatorX :
     {
       init : true,
-      check : "Boolean",
-      apply : "_applyShowIndicatorX"
+      type : "Boolean",
+      apply : function(value) { this._applyShowIndicatorX(value); }
     },
 
     /** Whether the vertical scroll indicator should be displayed */
     showIndicatorY :
     {
       init : true,
-      check : "Boolean",
-      apply : "_applyShowIndicatorY"
+      type : "Boolean",
+      apply : function(value) { this._applyShowIndicatorY(value); }
     },
 
     // overridden
     appearance :
     {
-      refine: true,
       init: "scroll"
     }
   },
@@ -156,13 +153,13 @@ qx.Class.define("unify.ui.container.Scroll", {
   events :
   {
     /** Event fired if in scroll */
-    scroll: "qx.event.type.Event",
+    scroll: lowland.events.Event,
     
     /** Event fired if scroll is ended */
-    scrollend: "qx.event.type.Event",
+    scrollend: lowland.events.Event,
     
     /** Event fired if container snaped */
-    snap: "qx.event.type.Event"
+    snap: lowland.events.Event
   },
 
   /*
@@ -261,7 +258,7 @@ qx.Class.define("unify.ui.container.Scroll", {
       delete this.__scroller;
       var contentWidget = this.getChildrenContainer();
       var contentElement= contentWidget.getElement();
-      var Style=qx.bom.element.Style;
+      var Style=core.bom.Style;
       var Transform=unify.bom.Transform;
       var self = this;
 
@@ -566,7 +563,7 @@ qx.Class.define("unify.ui.container.Scroll", {
       e.preventDefault();
       this.addListenerOnce("touchmove",this.__showIndicators,this);
       
-      var root = qx.core.Init.getApplication().getRoot();
+      var root = unify.core.Init.getApplication().getRoot();
       root.addListener("touchmove", this.__onTouchMove,this);
       root.addListener("touchend", this.__onTouchEnd,this);
       root.addListener("touchcancel", this.__onTouchEnd,this);
@@ -629,7 +626,7 @@ qx.Class.define("unify.ui.container.Scroll", {
         this.__hideIndicators();
       }
     }
-  },
+  }/*,
   
   destruct : function() {
     this.removeListener("touchstart", this.__onTouchStart,this);
@@ -638,7 +635,7 @@ qx.Class.define("unify.ui.container.Scroll", {
     this.removeListener("resize", this.__updateDimensions, this);
     this.getChildrenContainer().removeListener("resize", this.__updateDimensions, this);
     this.removeListener("changeVisibility", this.__onChangeVisibility, this);
-  }
+  }*/
 });
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

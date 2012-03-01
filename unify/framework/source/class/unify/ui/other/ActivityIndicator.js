@@ -11,33 +11,30 @@
 /**
  * Activity indicator
  */
-qx.Class.define("unify.ui.other.ActivityIndicator", {
-  extend: unify.ui.container.Composite,
-  
-  include : [unify.ui.core.MChildControl],
+core.Class("unify.ui.other.ActivityIndicator", {
+  include : [unify.ui.container.Composite, unify.ui.core.MChildControl],
   implement : [unify.ui.core.IPopOver],
   
   properties : {
     // overridden
     appearance : {
-      refine: true,
       init: "activityindicator"
     },
     
     /** {String} Text of activity indicator */
     text : {
-      check: "String",
-      apply: "_applyText"
+      type: "String",
+      apply: function(value) { this._applyText(value); }
     },
     
     modal : {
-      check: "Boolean",
+      type: "Boolean",
       init: true
     }
   },
   
   construct : function() {
-    this.base(arguments, new unify.ui.layout.VBox());
+    unify.ui.container.Composite.call(this, new unify.ui.layout.VBox());
     unify.ui.core.MChildControl.call(this);
     
     this._showChildControl("image");

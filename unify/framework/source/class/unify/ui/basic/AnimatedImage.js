@@ -12,12 +12,12 @@
  * EXPERIMENTAL
  */
  
-qx.Class.define("unify.ui.basic.AnimatedImage", {
-  extend: unify.ui.basic.Image,
-  include: [unify.fx.MWidgetAnimation],
+core.Class("unify.ui.basic.AnimatedImage", {
+  include: [unify.ui.basic.Image, unify.fx.MWidgetAnimation],
   
   construct : function(source) {
-    this.base(arguments, source);
+    unify.ui.basic.Image.call(this, source);
+    unify.fx.MWidgetAnimation.call(this);
     
     this.setAnimateRotateDuration(1500);
     this.addListener("changeVisibility", this.__onChangeVisibility, this);

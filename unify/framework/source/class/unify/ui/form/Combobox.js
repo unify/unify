@@ -12,9 +12,8 @@
  * Composite
  */
 
-qx.Class.define("unify.ui.form.Combobox", {
-  extend: unify.ui.basic.Atom,
-  include : [unify.ui.core.MChildControl],
+core.Class("unify.ui.form.Combobox", {
+  include : [unify.ui.basic.Atom],
 
   events : {
     /** Execute event when button is tapped */
@@ -26,8 +25,8 @@ qx.Class.define("unify.ui.form.Combobox", {
    * @param image {String} Image url
    */
   construct : function(label, image) {
-    this.base(arguments, label, image);
-    unify.ui.core.MChildControl.call(this);
+    unify.ui.form.Combobox.call(this, label, image);
+    //unify.ui.core.MChildControl.call(this);
     
     this.addListener("tap", this.__onTap, this);
   },
@@ -35,19 +34,16 @@ qx.Class.define("unify.ui.form.Combobox", {
   properties: {
     // overridden
     appearance : {
-      refine: true,
       init: "combobox"
     },
     
     /** Position of image */
     direction : {
-      refine : true,
       init : "right"
     },
 
     // overridden
     focusable : {
-      refine: true,
       init: true
     },
     

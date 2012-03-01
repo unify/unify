@@ -63,7 +63,7 @@ core.Class("unify.view.ViewManager", {
     this.__views = {};
 
     //initialize overflow hidden here, so that view transitions animations are hidden properly
-    this.setStyle({overflow:"hidden"});
+    this._setStyle({overflow:"hidden"});
   },
   
   

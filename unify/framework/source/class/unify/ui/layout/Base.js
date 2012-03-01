@@ -59,7 +59,7 @@ core.Class("unify.ui.layout.Base", {
       
       var widget = this._getWidget();
       if (widget) {
-        return widget.getChildren();
+        return widget.getLayoutChildren();
       }
       
       return [];
