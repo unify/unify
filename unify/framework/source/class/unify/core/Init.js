@@ -16,7 +16,7 @@ unify.core.Statics.annotate(unify.core.Init, {
 
 (function() {
   var load = function() {
-    var Application = core.Class.getByName(core.Env.getValue("application"));
+    var Application = core.Class.getByName(core.Env.getValue("application") + ".Application");
     var init = new Application();
     
     unify.core.Init.$$application = init;
