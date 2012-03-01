@@ -16,9 +16,9 @@
 /**
  * Unify application class
  */
-qx.Class.define("kitchensink.Application",
+core.Class("kitchensink.Application",
 {
-  extend : unify.Application,
+  include : [unify.Application],
 
   members :
   {
@@ -26,7 +26,7 @@ qx.Class.define("kitchensink.Application",
     main : function()
     {
       // Call super class
-      this.base(arguments);
+      unify.Application.prototype.main.call(this);
 
       // Configure application
       document.title = "kitchensink";
@@ -38,7 +38,8 @@ qx.Class.define("kitchensink.Application",
       MasterViewManager.register(kitchensink.view.Start, true);
       MasterViewManager.register(kitchensink.view.Ui);
       
-      var ModalViewManager = new unify.view.ViewManager("modal").set({displayMode: "modal"});
+      var ModalViewManager = new unify.view.ViewManager("modal");
+      ModalViewManager.setDisplayMode("modal");
       ModalViewManager.register(kitchensink.view.Modal);
 
       // Add TabViews or SplitViews...
@@ -57,7 +58,7 @@ qx.Class.define("kitchensink.Application",
     },
     
     _getTheme : function() {
-      return unify.theme.Dark;
+      return new unify.theme.Dark();
     }
   }
 });

@@ -11,9 +11,12 @@
 /**
  * Modal View
  */
-qx.Class.define("kitchensink.view.Modal", {
-  extend : unify.view.StaticView,
-  type : "singleton",
+core.Class("kitchensink.view.Modal", {
+  include : [unify.view.StaticView],
+
+  construct : function() {
+    unify.view.StaticView.call(this);
+  },
 
   members : 
   {
@@ -35,3 +38,5 @@ qx.Class.define("kitchensink.view.Modal", {
     }
   }
 });
+
+unify.core.Singleton.annotate(kitchensink.view.Modal);

@@ -11,9 +11,12 @@
 /**
  * UI view
  */
-qx.Class.define("kitchensink.view.Ui", {
-  extend : unify.view.StaticView,
-  type : "singleton",
+core.Class("kitchensink.view.Ui", {
+  include : [unify.view.StaticView],
+
+  construct : function() {
+    unify.view.StaticView.call(this);
+  },
 
   members : 
   {
@@ -25,7 +28,8 @@ qx.Class.define("kitchensink.view.Ui", {
     
     // overridden
     _createView : function() {
-      var container = new unify.ui.container.Scroll(new unify.ui.layout.VBox(20)).set({
+      var container = new unify.ui.container.Scroll(new unify.ui.layout.VBox(20));
+      container.set({
         width: 500,
         alignX: "center",
         allowGrowX: false
@@ -129,3 +133,5 @@ qx.Class.define("kitchensink.view.Ui", {
     
   }
 });
+
+unify.core.Singleton.annotate(kitchensink.view.Ui);

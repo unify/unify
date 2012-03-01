@@ -11,9 +11,12 @@
 /**
  * Start View
  */
-qx.Class.define("kitchensink.view.Start", {
-  extend : unify.view.StaticView,
-  type : "singleton",
+core.Class("kitchensink.view.Start", {
+  include : [unify.view.StaticView],
+
+  construct : function() {
+    unify.view.StaticView.call(this);
+  },
 
   members : 
   {
@@ -31,3 +34,5 @@ qx.Class.define("kitchensink.view.Start", {
     }
   }
 });
+
+unify.core.Singleton.annotate(kitchensink.view.Start);
