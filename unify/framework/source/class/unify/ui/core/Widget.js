@@ -57,34 +57,34 @@ core.Class("unify.ui.core.Widget", {
     /**
      * Fired on move of the widget.
      */
-    move : lowland.events.Event,
+    move : lowland.events.Event//,
 
     /** Fired if a touch at the screen is started. */
-    touchstart : "qx.event.type.Touch",
+    //touchstart : "qx.event.type.Touch",
 
     /** Fired if a touch at the screen has ended. */
-    touchend : "qx.event.type.Touch",
+    //touchend : "qx.event.type.Touch",
 
     /** Fired if a touch at the screen is started. */
-    touchleave : "qx.event.type.Touch",
+    //touchleave : "qx.event.type.Touch",
 
     /** Fired if a touch at the screen has ended. */
-    touchrelease : "qx.event.type.Touch",
+    //touchrelease : "qx.event.type.Touch",
 
     /** Fired during a touch at the screen. */
-    touchmove : "qx.event.type.Touch",
+    //touchmove : "qx.event.type.Touch",
 
     /** Fired if a touch at the screen is canceled. */
-    touchcancel : "qx.event.type.Touch",
+    //touchcancel : "qx.event.type.Touch",
 
     /** Fired when a finger taps on the screen. */
-    tap : "qx.event.type.Touch",
+    //tap : "qx.event.type.Touch",
 
     /** Fired if widget is focusable {@link #focusable} and gets focus */
-    focus : "qx.event.type.Focus",
+    //focus : "qx.event.type.Focus",
 
     /** Fired if widget is focusable {@link #focusable} and looses focus */
-    blur : "qx.event.type.Focus"
+    //blur : "qx.event.type.Focus"
   },
 
   properties : {
@@ -1104,10 +1104,10 @@ core.Class("unify.ui.core.Widget", {
       delete this.__states[state];
 
       // Fast path for hovered state
-      if (!qx.ui.core.queue.Visibility.isVisible(this)) {
+      if (!unify.ui.layout.queue.Visibility.isVisible(this)) {
         this.$$stateChanges = true;
       } else {
-        qx.ui.core.queue.Appearance.add(this);
+        unify.ui.layout.queue.Visibility.Appearance.add(this);
       }
     },
 
@@ -1136,10 +1136,10 @@ core.Class("unify.ui.core.Widget", {
         delete states[old];
       }
 
-      if (!qx.ui.core.queue.Visibility.isVisible(this)) {
+      if (!unify.ui.layout.queue.Visibility.isVisible(this)) {
         this.$$stateChanges = true;
       } else {
-        qx.ui.core.queue.Appearance.add(this);
+        unify.ui.layout.queue.Visibility.add(this);
       }
     },
 
@@ -1523,7 +1523,7 @@ core.Class("unify.ui.core.Widget", {
       if (value) {
         return value;
       } else {
-        return qx.bom.element.Style.get(this.getElement(), qx.bom.element.Style.property(name), computed);
+        return core.bom.Style.get(this.getElement(), name, computed);
       }
     },
 
@@ -1552,7 +1552,7 @@ core.Class("unify.ui.core.Widget", {
         parent._remove(this);
       }
 
-      qx.ui.core.queue.Dispose.add(this);
+      // TODO: qx.ui.core.queue.Dispose.add(this);
     },
 
 
@@ -1604,7 +1604,7 @@ core.Class("unify.ui.core.Widget", {
 
           var style = this.__style;
           if (style) {
-            qx.bom.element.Style.setStyles(element, style);
+            core.bom.Style.set(element, style);
           }
         }
 
@@ -1701,7 +1701,7 @@ core.Class("unify.ui.core.Widget", {
     _add : function(child, options) {
       // When moving in the same widget, remove widget first
       if (child.getParentBox() == this) {
-        qx.lang.Array.remove(this.__widgetChildren, child);
+        this.__widgetChildren.remove(child);
       }
 
       if (this.__widgetChildren) {
@@ -1729,7 +1729,7 @@ core.Class("unify.ui.core.Widget", {
 
       // When moving in the same widget, remove widget first
       if (child.getParentBox() == this) {
-        qx.lang.Array.remove(this.__widgetChildren, child);
+        this.__widgetChildren.remove(child);
       }
 
       var ref = this.__widgetChildren[index];
@@ -1738,10 +1738,12 @@ core.Class("unify.ui.core.Widget", {
         return child.setLayoutProperties(options);
       }
 
+      var widgetChildren = this.__widgetChildren;
       if (ref) {
-        qx.lang.Array.insertBefore(this.__widgetChildren, child, ref);
+        var pos = widgetChildren.indexOf(ref);
+        widgetChildren.insertAt(child, pos<0?null:pos);
       } else {
-        this.__widgetChildren.push(child);
+        widgetChildren.push(child);
       }
 
       this.__addHelper(child, options, index);
@@ -1775,10 +1777,12 @@ core.Class("unify.ui.core.Widget", {
 
       // When moving in the same widget, remove widget first
       if (child.getParentBox() == this) {
-        qx.lang.Array.remove(this.__widgetChildren, child);
+        this.__widgetChildren.remove(child);
       }
 
-      qx.lang.Array.insertBefore(this.__widgetChildren, child, before);
+      var widgetChildren = this.__widgetChildren;
+      var pos = widgetChildren.indexOf(before);
+      widgetChildren.insertAt(child, pos<0?null:pos);
 
       this.__addHelper(child, options, addAtIndex);
     },
@@ -1812,10 +1816,10 @@ core.Class("unify.ui.core.Widget", {
 
       // When moving in the same widget, remove widget first
       if (child.getParentBox() == this) {
-        qx.lang.Array.remove(this.__widgetChildren, child);
+        this.__widgetChildren.remove(child);
       }
 
-      qx.lang.Array.insertAfter(this.__widgetChildren, child, after);
+      this.__widgetChildren.inesrtAt(child, this.__widgetChildren.indexOf(after)+1);
 
       this.__addHelper(child, options, addAtIndex);
     },
@@ -1833,7 +1837,7 @@ core.Class("unify.ui.core.Widget", {
         throw new Error("This widget has no children!");
       }
 
-      qx.lang.Array.remove(this.__widgetChildren, child);
+      this.__widgetChildren.remove(child);
       this.__removeHelper(child);
     },
 
@@ -1852,7 +1856,7 @@ core.Class("unify.ui.core.Widget", {
 
       var child = this.__widgetChildren[index];
 
-      qx.lang.Array.removeAt(this.__widgetChildren, index);
+      this.__widgetChildren.removeAt(index);
       this.__removeHelper(child);
 
       return child;
@@ -1877,7 +1881,7 @@ core.Class("unify.ui.core.Widget", {
         this.__removeHelper(children[i]);
       }
 
-      qx.ui.core.queue.Layout.add(this);
+      unify.ui.layout.queue.Layout.add(this);
     },
 
 
@@ -2011,12 +2015,12 @@ core.Class("unify.ui.core.Widget", {
       // If so, remove it from there, otherwise it is a real DOM element that must be removed from DOM.
       var queue = this.__renderQueue;
       var indexed = queue.indexed;
-      var isVirtualAppendedElement = !!qx.lang.Array.remove(queue.append, element);
+      var isVirtualAppendedElement = !!queue.append.remove(element);
       if (!isVirtualAppendedElement) {
         var isVirtualIndexedElement = false;
         for (var key in indexed) {
           var indexedArray = indexed[key];
-          isVirtualIndexedElement = !!qx.lang.Array.remove(indexedArray, element);
+          isVirtualIndexedElement = !!indexedArray.remove(element);
 
           if (isVirtualIndexedElement) {
             break;
@@ -2040,7 +2044,7 @@ core.Class("unify.ui.core.Widget", {
       }
 
       // Add to layout queue
-      qx.ui.core.queue.Layout.add(this);
+      unify.ui.layout.queue.Layout.add(this);
 
       // call the template method
       if (this._afterRemoveChild) {
@@ -2079,6 +2083,8 @@ unify.core.Statics.annotate(unify.ui.core.Widget, {
    * @return {unify.ui.core.Widget} The widget containing the element.
    */
   getByElement : function(element, considerAnonymousState) {
+    throw Error("NOT WORKING NOW");
+    // TODO
     while(element) {
       var widgetKey = element.$$widget;
   
