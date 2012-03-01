@@ -13,8 +13,6 @@
 
 ************************************************************************ */
 
-core.Env.define("application", "coretest.Application");
-
 /**
  * Unify application class
  */
