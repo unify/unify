@@ -744,6 +744,7 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         return {
           lineHeight: 1.0,
           marginLeft: "5px",
+          marginRight: "5px",
           properties : {
             allowGrowX: true,
             allowShrinkX: true,

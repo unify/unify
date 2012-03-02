@@ -83,10 +83,10 @@ qx.Class.define("unify.ui.layout.special.AtomLayout", {
         
         if (direction == "left") {
           imageLeft = unify.ui.layout.Util.calculateLeftGap(image);
-          labelLeft = imageHint.width + unify.ui.layout.Util.calculateLeftGap(image) + unify.ui.layout.Util.calculateLeftGap(label);
+          labelLeft = imageWidth + unify.ui.layout.Util.calculateHorizontalGap(image) + unify.ui.layout.Util.calculateLeftGap(label);
         } else if (direction == "right") {
           labelLeft = label.getMarginLeft();
-          imageLeft = availWidth - imageWidth - unify.ui.layout.Util.calculateRightGap(image) - unify.ui.layout.Util.calculateRightGap(label);
+          imageLeft = availWidth - imageWidth - unify.ui.layout.Util.calculateHorizontalGap(image);
         } else if (direction == "top") {
           imageTop = unify.ui.layout.Util.calculateTopGap(image);
           labelTop = imageTop + imageHint.height + label.getMarginTop();
