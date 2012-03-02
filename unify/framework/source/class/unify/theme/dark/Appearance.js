@@ -730,7 +730,7 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         return {
           width: ResourceManager.getImageWidth("unify/noun/checkbox.png"),
           height: ResourceManager.getImageHeight("unify/noun/checkbox.png"),
-          margin: Math.floor((30-ResourceManager.getImageHeight("unify/noun/checkbox.png"))/2) + "px",
+          marginTop: Math.floor((30-ResourceManager.getImageHeight("unify/noun/checkbox.png"))/2) + "px",
           properties : {
             allowGrowX: false,
             allowGrowY: false
@@ -743,7 +743,7 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         var ResourceManager = qx.util.ResourceManager.getInstance();
         return {
           lineHeight: 1.0,
-          marginLeft: "10px",
+          marginLeft: "5px",
           properties : {
             allowGrowX: true,
             allowShrinkX: true,

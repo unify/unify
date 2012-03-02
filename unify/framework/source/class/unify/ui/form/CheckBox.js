@@ -43,15 +43,11 @@ qx.Class.define("unify.ui.form.CheckBox", {
       refine : true,
       init : "left"
     },
-
+    
     // overridden
     focusable : {
       refine: true,
       init: true
-    },
-    
-    data : {
-      init: null
     },
     
     checked : {
@@ -62,81 +58,7 @@ qx.Class.define("unify.ui.form.CheckBox", {
   },
 
   members: {
-    __selected : null,
-    __overlay : null,
     
-    /*_createElement : function() {
-      var e = this.base(arguments);
-
-      qx.event.Registration.addListener(e, "tap", this.__onTap, this);
-
-      return e;
-    },*/
-    
-    /**
-     * TODO
-     * @param value {Boolean} TODO
-     */
-    _applyChecked : function(value) {
-      if (value) {
-        this.addState("checked");
-      } else {
-        this.removeState("checked");
-      }
-    },
-    
-    __getEntryById : function(id) {
-      var data = this.getData();
-      if (data) {
-        for (var i=0, ii=data.length; i<ii; i++) {
-          if (data[i].id == id) {
-            return data[i];
-          }
-        }
-      }
-      
-      return null;
-    },
-
-    /**
-     * Set button text
-     *
-     * @param value {String} Text of button
-     */
-    setValue : function(value) {
-      var d = this.__getEntryById(value);
-      if (d) {
-        this.__selected = d.id;
-        this.setText(d.label);
-      }
-    },
-
-    /**
-     * Returns text of button
-     *
-     * @return {String} Text of button
-     */
-    getValue : function() {
-      return this.__selected;
-    },
-
-    /**
-     * Returns child control widget identified by id
-     *
-     * @param id {String} ID of child widget
-     * @return {unify.ui.core.Widget} Content widget
-     */
-    _createChildControlImpl : function(id) {
-      var control;
-      
-      if (id == "overlay") {
-        control = new unify.ui.container.Overlay();
-        control.setRelativeTriggerPosition({x: "left", y: "bottom"});
-      }
-      
-      return control || this.base(arguments, id);
-    },
-
     /**
      * onTap handler on button
      *
@@ -147,11 +69,16 @@ qx.Class.define("unify.ui.form.CheckBox", {
       this.setChecked(!this.getChecked());
     },
     
-    __onButtonExecute : function(e) {
-      unify.ui.core.PopOverManager.getInstance().hide(this.getChildControl("overlay"));
-      var id = e.getTarget().getUserData("id");
-      this.setValue(e.getTarget().getUserData("id"));
-      this.fireDataEvent("execute", id);
+    /**
+     * Handles chanches on the "checked" property
+     * @param value {Boolean} if the checkbox is checked
+     */
+    _applyChecked : function(value) {
+      if (value) {
+        this.addState("checked");
+      } else {
+        this.removeState("checked");
+      }
     }
   }
 });
