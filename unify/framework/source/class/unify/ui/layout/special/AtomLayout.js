@@ -110,18 +110,7 @@ qx.Class.define("unify.ui.layout.special.AtomLayout", {
         var top = Math.round((availHeight / 2) - (imageHeight / 2));
         image.renderLayout(left, top, imageWidth, imageHeight);
       } else if (label) {
-        var labelHint = label.getSizeHint();
-        var labelWidth = labelHint.width;
-        //if (labelWidth > availWidth) {
-          labelWidth = availWidth;
-        //}
-        var labelHeight = labelHint.height;
-        //if (labelHeight > availHeight) {
-          labelHeight = availHeight;
-        //}
-        var left = Math.round((availWidth / 2) - (labelWidth / 2));
-        var top = Math.round((availHeight / 2) - (labelHeight / 2));
-        label.renderLayout(left, top, labelWidth, labelHeight);
+        label.renderLayout(0, 0, availWidth, availHeight);
       }
     },
     
