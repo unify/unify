@@ -18,7 +18,7 @@ qx.Class.define("unify.ui.form.Combobox", {
 
   events : {
     /** Execute event when button is tapped */
-    "execute" : "qx.event.type.Event"
+    "execute" : "qx.event.type.DataEvent"
   },
 
   /**
