@@ -17,7 +17,7 @@ qx.Class.define("unify.ui.form.CheckBox", {
 
   events : {
     /** Execute event when button is tapped */
-    "execute" : "qx.event.type.Event"
+    "execute" : "qx.event.type.DataEvent"
   },
 
   /**
@@ -67,6 +67,7 @@ qx.Class.define("unify.ui.form.CheckBox", {
     __onTap : function(e) {
       // toggle checked state
       this.setChecked(!this.getChecked());
+      this.fireDataEvent("execute", this.getChecked());
     },
     
     /**
