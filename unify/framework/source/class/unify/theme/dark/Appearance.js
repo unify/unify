@@ -12,8 +12,8 @@
 #asset(unify/iphoneos/navigation-bar/black/navigationbar.png)
 #asset(unify/iphoneos/loader.png)
 #asset(unify/noun/down.png)
-#asset(unify/noun/checkbox.png)
-#asset(unify/noun/checkbox_checked.png)
+#asset(unify/checkbox.png)
+#asset(unify/checkbox_checked.png)
 */
 
 /**
@@ -715,11 +715,11 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           height: "30px",
           cursor: "pointer",
           properties : {
-            image : ResourceManager.toUri("unify/noun/checkbox.png")
+            image : ResourceManager.toUri("unify/checkbox.png")
           }
         }; 
         if (states.checked) {
-          style.properties.image = ResourceManager.toUri("unify/noun/checkbox_checked.png");
+          style.properties.image = ResourceManager.toUri("unify/checkbox_checked.png");
         }        
         return style;
       }
@@ -728,9 +728,9 @@ qx.Theme.define("unify.theme.dark.Appearance", {
       style : function(states) {
         var ResourceManager = qx.util.ResourceManager.getInstance();
         return {
-          width: ResourceManager.getImageWidth("unify/noun/checkbox.png"),
-          height: ResourceManager.getImageHeight("unify/noun/checkbox.png"),
-          marginTop: Math.floor((30-ResourceManager.getImageHeight("unify/noun/checkbox.png"))/2) + "px",
+          width: ResourceManager.getImageWidth("unify/checkbox.png"),
+          height: ResourceManager.getImageHeight("unify/checkbox.png"),
+          marginTop: Math.floor((30-ResourceManager.getImageHeight("unify/checkbox.png"))/2) + "px",
           properties : {
             allowGrowX: false,
             allowGrowY: false
