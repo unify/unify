@@ -20,7 +20,9 @@ core.Class("unify.ui.layout.HBox", {
     },
     alignY: {
       init: "top"
-    }
+    },
+    
+    spacing : {}
   },
   
   members : {

@@ -71,7 +71,8 @@ qx.Class.define("unify.ui.container.ToolBar", {
         }
   
       } else if (config.kind == "segmented") {
-        itemElem = this.__segmented = new unify.ui.container.Composite(new unify.ui.layout.HBox()).set({
+        itemElem = this.__segmented = new unify.ui.container.Composite(new unify.ui.layout.HBox());
+        itemElem.set({
           appearance: "toolbar.segmented.container"
         });
         
@@ -84,7 +85,8 @@ qx.Class.define("unify.ui.container.ToolBar", {
         for (var i=0,ii=buttons.length; i<ii; i++) {
           var button = buttons[i];
           
-          var el = new unify.ui.basic.NavigationButton(button.label).set({
+          var el = new unify.ui.basic.NavigationButton(button.label);
+          el.set({
             appearance: "toolbar.segmented.button"
           });
           if (i==0) {

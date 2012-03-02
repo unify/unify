@@ -39,7 +39,7 @@
      
     events: {
       /** This event is fired when the dialog is closed by pressing a button */
-      "execute": "qx.event.type.Data"
+      "execute": lowland.events.DataEvent, //"qx.event.type.Data"
     },
     
     /**
@@ -49,7 +49,7 @@
      * @param buttons {Array} Array of buttons
      */
     construct: function(title, buttons) {
-      unify.ui.container.Composite.call(this, new qx.ui.layout.VBox());
+      unify.ui.container.Composite.call(this, new unify.ui.layout.VBox());
       unify.ui.core.MChildControl.call(this);
       unify.ui.core.MRemoteChildrenHandling.call(this);
       
@@ -124,7 +124,7 @@
           });
           this._add(control);
         } else if (id == "content") {
-          control = new unify.ui.container.Composite(new qx.ui.layout.VBox());
+          control = new unify.ui.container.Composite(new unify.ui.layout.VBox());
           control.set({
             allowGrowX: true,
             allowGrowY: true,
@@ -133,7 +133,7 @@
           });
           this._add(control, { flex: 1 });
         } else if (id == "buttons") {
-          control = new unify.ui.container.Composite(new qx.ui.layout.HBox(10));
+          control = new unify.ui.container.Composite(new unify.ui.layout.HBox(10));
           control.set({
             allowGrowX: true,
             allowGrowY: false,
@@ -171,17 +171,17 @@
        * @param buttons {Array} Array of button configurations to add to buttonContainer
        */
       __createButtons : function(buttonContainer, buttons) {
-        var leftButtonContainer_layout = new qx.ui.layout.HBox();
+        var leftButtonContainer_layout = new unify.ui.layout.HBox();
         leftButtonContainer_layout.setAlignX("left");
         leftButtonContainer_layout.setSpacing(10);
         var leftButtonContainer = new unify.ui.container.Composite(leftButtonContainer_layout);
         
-        var centerButtonContainer_layout = new qx.ui.layout.HBox();
+        var centerButtonContainer_layout = new unify.ui.layout.HBox();
         centerButtonContainer_layout.setAlignX("center");
         centerButtonContainer_layout.setSpacing(10);
         var centerButtonContainer = new unify.ui.container.Composite(centerButtonContainer_layout);
         
-        var rightButtonContainer_layout = new qx.ui.layout.HBox();
+        var rightButtonContainer_layout = new unify.ui.layout.HBox();
         rightButtonContainer_layout.setAlignX("right");
         rightButtonContainer_layout.setSpacing(10);
         var rightButtonContainer = new unify.ui.container.Composite(rightButtonContainer_layout);

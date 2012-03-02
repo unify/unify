@@ -20,7 +20,8 @@ core.Class("unify.ui.layout.VBox", {
     },
     alignY: {
       init: "top"
-    }
+    },
+    spacing : {}
   },
   
   members : {

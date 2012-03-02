@@ -46,13 +46,11 @@ qx.Class.define("unify.ui.container.List", {
     _applyData : function(data) {
       this._removeAll();
 
-      var header, fields, title;
+      var header, fields, title, label;
       for (header in data) {
-        this._add(
-          new unify.ui.basic.Label(header).set({
-            appearance: "list.header"
-          })
-        );
+        label = new unify.ui.basic.Label(header);
+        label.setAppearance("list.header");
+        this._add(label);
 
         var containerLayout = new unify.ui.layout.Grid();
         containerLayout.setColumnFlex(0, 1);
@@ -62,7 +60,8 @@ qx.Class.define("unify.ui.container.List", {
 
         fields = data[header];
         for (title in fields) {
-          var titleLabel = new unify.ui.basic.Label(title).set({
+          var titleLabel = new unify.ui.basic.Label(title);
+          titleLabel.set({
             appearance: "list.description"
           });
 
@@ -75,7 +74,8 @@ qx.Class.define("unify.ui.container.List", {
             value = fields[title].value;
           }
 
-          var valueLabel = new unify.ui.basic.Label(value).set({
+          var valueLabel = new unify.ui.basic.Label(value);
+          valueLabel.set({
             appearance: "list.value"
           });
 

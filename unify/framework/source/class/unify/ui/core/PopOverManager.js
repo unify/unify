@@ -29,8 +29,6 @@ core.Class("unify.ui.core.PopOverManager", {
     this.__overlays={};
     this.__styleRegistry = {};
     
-    var Style = qx.bom.element.Style;
-    
     var pblocker = this.__pblocker = document.createElement("div");
     /* TODO: var pstyle = qx.theme.manager.Appearance.getInstance().styleFrom("POPOVER-BLOCKER");
     pstyle.display = "none";
@@ -151,11 +149,9 @@ core.Class("unify.ui.core.PopOverManager", {
      * @param position {String|Map|unify.ui.Widget?"center"} Position of widget ("center", "window", {left:50,top:50}) or trigger widget
      */
     show : function(widget, position) {
-      if (qx.core.Environment.get("qx.debug")) {
+      if (core.Env.getValue("debug")) {
         this.debug("Show: " + widget);
-        if (!qx.Class.implementsInterface(widget, unify.ui.core.IPopOver)) {
-          this.error(widget + " don't implement IPopOver");
-        }
+        core.Interface.assert(widget, unify.ui.core.IPopOver);
       }
       
       var pos = position || "center";
@@ -178,7 +174,7 @@ core.Class("unify.ui.core.PopOverManager", {
       
       widget.show();
       
-      this.fireDataEvent("show", widget);
+      this.fireEvent("show", widget);
     },
     
     
@@ -191,10 +187,10 @@ core.Class("unify.ui.core.PopOverManager", {
       var self = this;
       
       var hideCallback=function(){
-        qx.lang.Array.remove(self.__visibleOverlays, widget);
+        self.__visibleOverlays.remove(widget);
         self.__sortPopOvers();
         
-        self.fireDataEvent("hide", widget);
+        self.fireEvent("hide", widget);
       };
 
       widget.addListenerOnce("changeVisibility", hideCallback, this);

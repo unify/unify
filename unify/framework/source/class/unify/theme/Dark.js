@@ -22,7 +22,9 @@ core.Class("unify.theme.Dark", {
         "#9a9a9a" : "#9a9a9a",
         "#CBD2D8" : "#CBD2D8",
         "#242424" : "#242424",
-        "#3a3a3a" : "#3a3a3a"
+        "#3a3a3a" : "#3a3a3a",
+        "#000" : "#000000",
+        "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.5)"
       },
       fonts: {
         "default" : {
@@ -253,14 +255,17 @@ core.Class("unify.theme.Dark", {
           }
         },
     
+        /**
+         * #asset(unify/iphoneos/loader.png)
+         */
         "activityindicator/image" : {
           style : function() {
             var url = "unify/iphoneos/loader.png";
-            var ResourceManager = qx.util.ResourceManager.getInstance();
+            var imgSize = core.io.Asset.getImageSize(url);
     
             return {
-              width: ResourceManager.getImageWidth(url),
-              height: ResourceManager.getImageHeight(url),
+              width: imgSize.width,
+              height: imgSize.height,
     
               properties : {
                 source: url
@@ -711,7 +716,7 @@ core.Class("unify.theme.Dark", {
                 /**
                  * #asset(unify/noun/down.png)
                  */
-                image : core.io.Asset.toUri("unify/noun/down.png")
+                image : "unify/noun/down.png"
               }
             };
           }
@@ -719,10 +724,9 @@ core.Class("unify.theme.Dark", {
         
         "combobox/image" : {
           style : function() {
-            var ResourceManager = qx.util.ResourceManager.getInstance();
             return {
-              width: ResourceManager.getImageWidth("unify/noun/down.png"),
-              height: ResourceManager.getImageHeight("unify/noun/down.png"),
+              width: core.io.Asset.getImageWidth("unify/noun/down.png"),
+              height: core.io.Asset.getImageHeight("unify/noun/down.png"),
               margin: "5",
               properties : {
                 allowGrowX: false,

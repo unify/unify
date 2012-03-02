@@ -25,7 +25,7 @@ core.Class("unify.fx.Rotate", {
     
     _setup : function() {
       var to = this.getValue();
-      var from = this.__resetPoint = this._widget.getStyle("transform");
+      var from = this.__resetPoint = this._widget.getOwnStyle("transform");
       
       var matcher = new RegExp("rotate\\(([^)]+)deg\\)");
       var parsed = matcher.exec(from);
@@ -40,7 +40,7 @@ core.Class("unify.fx.Rotate", {
     },
     
     _reset : function(value) {
-      this._widget.setStyle({
+      this._widget.setOwnStyle({
         transform: value||""
       });
     },
@@ -56,7 +56,7 @@ core.Class("unify.fx.Rotate", {
       var mod = this.__mod;
       var anim = this.__anim;
 
-      this._widget.setStyle({
+      this._widget.setOwnStyle({
         transform: "rotate(" + (mod + anim * percent) + "deg)"
       });
     }

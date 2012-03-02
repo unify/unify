@@ -70,14 +70,15 @@ core.Class("unify.ui.other.ActivityIndicator", {
         });
         this._addAt(control, 0);
       } else if (id == "label") {
-        control = new unify.ui.basic.Label().set({
+        control = new unify.ui.basic.Label();
+        control.set({
           alignX: "center",
           appearance: this.getAppearance() + "/" + id
         });
         this._addAt(control, 1);
       }
       
-      return control || this.base(arguments, id);
+      return control || unify.ui.container.Composite.prototype._createChildControlImpl.call(this, id);
     },
     
     _applyText : function(value) {
@@ -86,11 +87,11 @@ core.Class("unify.ui.other.ActivityIndicator", {
     
     show : function() {
       this.getChildControl("image").show();
-      this.base(arguments);
+      unify.ui.container.Composite.prototype.show.call(this);
     },
     
     hide : function() {
-      this.base(arguments);
+      unify.ui.container.Composite.prototype.hide.call(this);
       this.getChildControl("image").hide();
     }
   }

@@ -1511,6 +1511,14 @@ core.Class("unify.ui.core.Widget", {
       return this._getStyle(name, computed);
     },*/
 
+    getOwnStyle : function(name, computed) {
+      return this._getStyle(name, computed);
+    },
+    
+    setOwnStyle : function(map) {
+      this._setStyle(map);
+    },
+
     /**
      * Get style of element
      * @param name {String} Style name to return
