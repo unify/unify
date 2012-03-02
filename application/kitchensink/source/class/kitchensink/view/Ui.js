@@ -38,13 +38,14 @@ qx.Class.define("kitchensink.view.Ui", {
       var button = new unify.ui.form.Button("Button");
       container.add(button);
       
+      // ComboBox -----------------------------------------------------------
       var combobox = new unify.ui.form.Combobox().set({
         width: 300,
         allowGrowX: false
       });
       combobox.setData([{
         id: 1,
-        label: "Test1"
+        label: "Test Value Number 1"
       }, {
         id: 2,
         label: "Test2"
@@ -57,6 +58,13 @@ qx.Class.define("kitchensink.view.Ui", {
         this.debug("COMBO BOX " + e.getData());
       }, this);
       container.add(combobox);
+      
+      // CheckBox -----------------------------------------------------------
+      var checkbox = new unify.ui.form.CheckBox("Do not bother me again").set({
+        width: 300,
+        allowGrowX: false
+      });
+      container.add(checkbox);
       
       // Show Empty Dialog --------------------------------------------------
       var dialogButton = new unify.ui.form.Button("Dialog");
@@ -83,7 +91,7 @@ qx.Class.define("kitchensink.view.Ui", {
             "JavaScript", 
             "VisualBasic",
             function(e) { 
-              btnID = e.getData();
+              var btnID = e.getData();
               if (btnID == 'YES')
                 console.log("Good choice...")
               else
