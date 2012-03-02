@@ -28,13 +28,14 @@ core.Class("kitchensink.view.Ui", {
     
     // overridden
     _createView : function() {
-      var container = new unify.ui.container.Scroll(new unify.ui.layout.VBox(20));
+      /*var container = new unify.ui.container.Scroll(new unify.ui.layout.VBox(20));
       container.set({
         width: 500,
         alignX: "center",
         allowGrowX: false
       });
-      this.add(container, {flex: 1});
+      this.add(container, {flex: 1});*/
+      var container = this;
       
       var label = new unify.ui.basic.Label("Label");
       container.add(label);
@@ -42,7 +43,8 @@ core.Class("kitchensink.view.Ui", {
       var button = new unify.ui.form.Button("Button");
       container.add(button);
       
-      var combobox = new unify.ui.form.Combobox().set({
+      var combobox = new unify.ui.form.Combobox();
+      combobox.set({
         width: 300,
         allowGrowX: false
       });
