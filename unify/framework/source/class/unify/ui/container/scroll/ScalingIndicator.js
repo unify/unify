@@ -18,6 +18,7 @@
  */
 qx.Class.define("unify.ui.container.scroll.ScalingIndicator", {
   extend : unify.ui.core.Widget,
+  implement : [unify.ui.container.scroll.IIndicator],
 
   /*
   *****************************************************************************
@@ -44,6 +45,13 @@ qx.Class.define("unify.ui.container.scroll.ScalingIndicator", {
 
   properties :
   {
+    /** Orientation of the scroll indicator */
+    orientation :
+    {
+      check : ["horizontal", "vertical"],
+      nullable : true
+    },
+    
     /** Whether the indicator is visible */
     visible :
     {

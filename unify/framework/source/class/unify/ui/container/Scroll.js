@@ -39,12 +39,7 @@ qx.Class.define("unify.ui.container.Scroll", {
     this._add(contentWidget, {
       type: "content"
     });
-    var Indicator=unify.ui.container.scroll.Indicator;
-    if(unify.bom.client.System.ANDROID){
-      //android renders the default indicator in a funny way (scaling the middle element does not work correctly for certain values
-      //so we use a specialized one here
-      Indicator=unify.ui.container.scroll.ScalingIndicator;
-    }
+    var Indicator = this._getIndicator();
 
     var scrollIndicatorX = this.__horizontalScrollIndicator = new Indicator("horizontal",this);
     var scrollIndicatorY = this.__verticalScrollIndicator = new Indicator("vertical",this);
@@ -249,6 +244,19 @@ qx.Class.define("unify.ui.container.Scroll", {
         minHeight : this.getMinHeight() || 10,
         maxHeight : this.getMaxHeight() || Infinity
       };
+    },
+    
+    /**
+     * @return {unify.ui.container.scroll.IIndicator} Indicator class
+     */
+    _getIndicator : function() {
+      var Indicator=unify.ui.container.scroll.Indicator;
+      if(unify.bom.client.System.ANDROID){
+        //android renders the default indicator in a funny way (scaling the middle element does not work correctly for certain values
+        //so we use a specialized one here
+        Indicator=unify.ui.container.scroll.ScalingIndicator;
+      }
+      return Indicator;
     },
 
     /**

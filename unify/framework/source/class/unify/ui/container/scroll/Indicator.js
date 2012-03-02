@@ -13,6 +13,7 @@
  */
 qx.Class.define("unify.ui.container.scroll.Indicator", {
   extend : unify.ui.container.Composite,
+  implement : [unify.ui.container.scroll.IIndicator],
 
   /*
   *****************************************************************************
