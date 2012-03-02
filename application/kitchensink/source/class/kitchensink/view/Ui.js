@@ -60,11 +60,17 @@ qx.Class.define("kitchensink.view.Ui", {
       container.add(combobox);
       
       // CheckBox -----------------------------------------------------------
-      var checkbox = new unify.ui.form.CheckBox("Checkbox adds state <checked>").set({
+      var checkbox = new unify.ui.form.CheckBox("Checkbox <default>").set({
         width: 300,
         allowGrowX: false
       });
       container.add(checkbox);
+      
+      var checkboxChecked = new unify.ui.form.CheckBox("Checkbox <checked>", true).set({
+        width: 300,
+        allowGrowX: false
+      });
+      container.add(checkboxChecked);
       
       // Show Empty Dialog --------------------------------------------------
       var dialogButton = new unify.ui.form.Button("Dialog");
