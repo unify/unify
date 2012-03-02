@@ -17,7 +17,7 @@ core.Class("unify.ui.form.Combobox", {
 
   events : {
     /** Execute event when button is tapped */
-    "execute" : "qx.event.type.Event"
+    "execute" : lowland.events.Event
   },
 
   /**
@@ -25,7 +25,7 @@ core.Class("unify.ui.form.Combobox", {
    * @param image {String} Image url
    */
   construct : function(label, image) {
-    unify.ui.form.Combobox.call(this, label, image);
+    unify.ui.basic.Atom.call(this, label, image);
     //unify.ui.core.MChildControl.call(this);
     
     this.addListener("tap", this.__onTap, this);
@@ -113,7 +113,7 @@ core.Class("unify.ui.form.Combobox", {
         control.setRelativeTriggerPosition({x: "left", y: "bottom"});
       }
       
-      return control || this.base(arguments, id);
+      return control || unify.ui.basic.Atom.prototype._createChildControlImpl.call(this, id);
     },
 
     /**

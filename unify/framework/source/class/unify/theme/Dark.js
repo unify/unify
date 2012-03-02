@@ -708,6 +708,9 @@ core.Class("unify.theme.Dark", {
               height: "30px",
               backgroundColor: "white",
               properties : {
+                /**
+                 * #asset(unify/noun/down.png)
+                 */
                 image : core.io.Asset.toUri("unify/noun/down.png")
               }
             };
