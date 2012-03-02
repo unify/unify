@@ -70,13 +70,13 @@ qx.Class.define("unify.view.animation.IOSAnimationManager", {
     
     initModalOut : function(fromView, toView) {
       if (toView) {
-        var posTo = this.__positions.center;
+        var posTo = this.__positions.bottom;
         toView.setStyle({
           transform: unify.bom.Transform.accelTranslate(posTo.left, posTo.top)
         });
       }
       if (fromView) {
-        var posFrom = this.__positions.bottom;
+        var posFrom = this.__positions.center;
         fromView.setStyle({
           transform: unify.bom.Transform.accelTranslate(posFrom.left, posFrom.top)
         });
@@ -125,7 +125,7 @@ qx.Class.define("unify.view.animation.IOSAnimationManager", {
         toView.setAnimatePosition(pos.center);
       }
       if (fromView) {
-        fromView.setAnimationDuration(0);
+        fromView.setAnimatePositionDuration(0);
         fromView.setAnimatePosition(pos.bottom);
       }
     },
@@ -139,7 +139,7 @@ qx.Class.define("unify.view.animation.IOSAnimationManager", {
       }
       if (fromView) {
         fromView.addListenerOnce("animatePositionDone", callback, this);
-        fromView.setAnimationDuration(duration);
+        fromView.setAnimatePositionDuration(duration);
         fromView.setAnimatePosition(pos.bottom);
       }
     }
