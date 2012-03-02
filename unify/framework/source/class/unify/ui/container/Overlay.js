@@ -210,6 +210,12 @@ qx.Class.define("unify.ui.container.Overlay", {
           } else if (arrowDirection=="bottom"||arrowDirection=="top"){
             left-=Math.round(arrowSize.width/2);
           }
+          
+          if (arrowDirection == "bottom") {
+            top -= thisSize.height;
+          } else if (arrowDirection == "right") {
+            left -= thisSize.width;
+          }
         }
       }
 
