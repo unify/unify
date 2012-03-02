@@ -56,6 +56,10 @@ qx.Class.define("unify.ui.layout.special.AtomLayout", {
             labelHeight = labelHint.height;
             labelTop = Math.ceil((availHeight / 2) - (labelHeight / 2));
           }
+          labelWidth = availWidth - imageWidth - 
+                       unify.ui.layout.Util.calculateLeftGap(image) - 
+                       unify.ui.layout.Util.calculateRightGap(image) -
+                       unify.ui.layout.Util.calculateHorizontalGap(label);
         } else {
           if (imageHint.width > availWidth) {
             imageWidth = availWidth;
@@ -71,14 +75,18 @@ qx.Class.define("unify.ui.layout.special.AtomLayout", {
             labelWidth = imageHint.width;
             labelLeft = Math.ceil((availWidth / 2) - (labelWidth / 2));
           }
+          labelHeight = availHeight - imageHeight - 
+                        unify.ui.layout.Util.calculateTopGap(image) - 
+                        unify.ui.layout.Util.calculateBottomGap(image) - 
+                        unify.ui.layout.Util.calculateVerticalGap(label);
         }
         
         if (direction == "left") {
           imageLeft = unify.ui.layout.Util.calculateLeftGap(image);
-          labelLeft = imageHint.width + unify.ui.layout.Util.calculateLeftGap(image) + label.getMarginLeft();
+          labelLeft = imageHint.width + unify.ui.layout.Util.calculateLeftGap(image) + unify.ui.layout.Util.calculateLeftGap(label);
         } else if (direction == "right") {
           labelLeft = label.getMarginLeft();
-          imageLeft = availWidth - imageWidth - unify.ui.layout.Util.calculateRightGap(image) - label.getMarginRight();
+          imageLeft = availWidth - imageWidth - unify.ui.layout.Util.calculateRightGap(image) - unify.ui.layout.Util.calculateRightGap(label);
         } else if (direction == "top") {
           imageTop = unify.ui.layout.Util.calculateTopGap(image);
           labelTop = imageTop + imageHint.height + label.getMarginTop();
@@ -104,13 +112,13 @@ qx.Class.define("unify.ui.layout.special.AtomLayout", {
       } else if (label) {
         var labelHint = label.getSizeHint();
         var labelWidth = labelHint.width;
-        if (labelWidth > availWidth) {
+        //if (labelWidth > availWidth) {
           labelWidth = availWidth;
-        }
+        //}
         var labelHeight = labelHint.height;
-        if (labelHeight > availHeight) {
+        //if (labelHeight > availHeight) {
           labelHeight = availHeight;
-        }
+        //}
         var left = Math.round((availWidth / 2) - (labelWidth / 2));
         var top = Math.round((availHeight / 2) - (labelHeight / 2));
         label.renderLayout(left, top, labelWidth, labelHeight);
