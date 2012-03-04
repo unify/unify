@@ -33,14 +33,6 @@ core.Class("unify.ui.manager.ActivityIndicatorManager", {
       }
       
       ai = this.__activityIndicator  = new unify.ui.other.ActivityIndicator();
-      ai.set({
-        width: 300,
-        height: 300
-      });
-      ai.setStyle({
-        marginLeft: -150,
-        marginTop: -150
-      });
       
       return ai;
     },

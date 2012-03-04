@@ -240,9 +240,7 @@ core.Class("unify.theme.Dark", {
             var size = 144;
     
             return {
-              marginLeft: -Math.round(size/2),
               width: size,
-              marginTop: -Math.round(size/2),
               height: size,
               backgroundColor: "rgba(0,0,0,0.5)",
               borderWidth: "1px",

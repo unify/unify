@@ -93,6 +93,17 @@ core.Class("unify.ui.other.ActivityIndicator", {
     hide : function() {
       unify.ui.container.Composite.prototype.hide.call(this);
       this.getChildControl("image").hide();
+    },
+    
+    renderLayout : function(left, top, width, height) {
+      console.log("RENDER LAYOUT ", left, top, width, height);
+      unify.ui.container.Composite.prototype.renderLayout.apply(this, arguments);
+    },
+    
+    getSizeHint : function(compute) {
+      var e = unify.ui.container.Composite.prototype.getSizeHint.apply(this, arguments);
+      console.log("SIZE HINT: ", JSON.stringify(e));
+      return e;
     }
   }
 });

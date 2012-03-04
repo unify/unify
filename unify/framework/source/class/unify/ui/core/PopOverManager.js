@@ -30,18 +30,18 @@ core.Class("unify.ui.core.PopOverManager", {
     this.__styleRegistry = {};
     
     var pblocker = this.__pblocker = document.createElement("div");
-    /* TODO: var pstyle = qx.theme.manager.Appearance.getInstance().styleFrom("POPOVER-BLOCKER");
+    var pstyle = unify.theme.Manager.get().resolveStyle("POPOVER-BLOCKER");
     pstyle.display = "none";
-    Style.setStyles(pblocker, pstyle);
-    pblocker.id = "popover-blocker"; */
+    core.bom.Style.set(pblocker, pstyle);
+    pblocker.id = "popover-blocker";
     
     var mblocker = this.__mblocker = document.createElement("div");
-    /* TODO: var mstyle = qx.theme.manager.Appearance.getInstance().styleFrom("MODAL-BLOCKER");
+    var mstyle = unify.theme.Manager.get().resolveStyle("MODAL-BLOCKER");
     mstyle.display = "none";
-    Style.setStyles(mblocker, mstyle);
+    core.bom.Style.set(mblocker, mstyle);
     mblocker.id = "modal-blocker";
     
-    qx.event.Registration.addListener(pblocker,'tap',this.__onTapBlocker,this); */
+    lowland.bom.Events.listen(pblocker, "tap", this.__onTapBlocker.bind(this));
     
     var rootElement = root.getElement();
     rootElement.appendChild(pblocker);
@@ -163,7 +163,7 @@ core.Class("unify.ui.core.PopOverManager", {
           pos = null;
         }
       } else if (pos == "center" || pos == "window") {
-        pos = {left: "50%", top: "50%"};
+        pos = {left: "center", top: "center"};
       } else if (pos == "full") {
         pos = {left: 0, top: 0, right: 0, bottom: 0};
       }
