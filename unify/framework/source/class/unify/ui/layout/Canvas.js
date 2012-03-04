@@ -27,9 +27,6 @@ core.Class("unify.ui.layout.Canvas", {
       for (var i=0,ii=cache.length; i<ii; i++) {
         var widget = cache[i];
         
-        var t;
-        if (widget.constructor == "[class unify.ui.other.ActivityIndicator]") {t = true;} else {t=false;}
-        
         var calc = widget.getLayoutProperties();
         var size = widget.getSizeHint();
         

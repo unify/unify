@@ -150,7 +150,7 @@ core.Class("unify.ui.core.PopOverManager", {
      */
     show : function(widget, position) {
       if (core.Env.getValue("debug")) {
-        this.debug("Show: " + widget);
+        this.debug("Show: " + widget&&widget.constructor);
         core.Interface.assert(widget, unify.ui.core.IPopOver);
       }
       
