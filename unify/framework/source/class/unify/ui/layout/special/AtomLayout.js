@@ -56,6 +56,10 @@ qx.Class.define("unify.ui.layout.special.AtomLayout", {
             labelHeight = labelHint.height;
             labelTop = Math.ceil((availHeight / 2) - (labelHeight / 2));
           }
+          labelWidth = availWidth - imageWidth - 
+                       unify.ui.layout.Util.calculateLeftGap(image) - 
+                       unify.ui.layout.Util.calculateRightGap(image) -
+                       unify.ui.layout.Util.calculateHorizontalGap(label);
         } else {
           if (imageHint.width > availWidth) {
             imageWidth = availWidth;
@@ -71,17 +75,21 @@ qx.Class.define("unify.ui.layout.special.AtomLayout", {
             labelWidth = imageHint.width;
             labelLeft = Math.ceil((availWidth / 2) - (labelWidth / 2));
           }
+          labelHeight = availHeight - imageHeight - 
+                        unify.ui.layout.Util.calculateTopGap(image) - 
+                        unify.ui.layout.Util.calculateBottomGap(image) - 
+                        unify.ui.layout.Util.calculateVerticalGap(label);
         }
         
         if (direction == "left") {
           imageLeft = unify.ui.layout.Util.calculateLeftGap(image);
-          labelLeft = imageHint.width;
+          labelLeft = imageWidth + unify.ui.layout.Util.calculateHorizontalGap(image) + unify.ui.layout.Util.calculateLeftGap(label);
         } else if (direction == "right") {
           labelLeft = label.getMarginLeft();
-          imageLeft = availWidth - imageWidth - unify.ui.layout.Util.calculateRightGap(image);
+          imageLeft = availWidth - imageWidth - unify.ui.layout.Util.calculateHorizontalGap(image);
         } else if (direction == "top") {
           imageTop = unify.ui.layout.Util.calculateTopGap(image);
-          labelTop = imageHint.height;
+          labelTop = imageTop + imageHint.height + label.getMarginTop();
         } else if (direction == "bottom") {
           labelTop = label.getMarginTop();
           imageTop = availHeight - imageHeight - unify.ui.layout.Util.calculateBottomGap(image);
@@ -102,18 +110,7 @@ qx.Class.define("unify.ui.layout.special.AtomLayout", {
         var top = Math.round((availHeight / 2) - (imageHeight / 2));
         image.renderLayout(left, top, imageWidth, imageHeight);
       } else if (label) {
-        var labelHint = label.getSizeHint();
-        var labelWidth = labelHint.width;
-        if (labelWidth > availWidth) {
-          labelWidth = availWidth;
-        }
-        var labelHeight = labelHint.height;
-        if (labelHeight > availHeight) {
-          labelHeight = availHeight;
-        }
-        var left = Math.round((availWidth / 2) - (labelWidth / 2));
-        var top = Math.round((availHeight / 2) - (labelHeight / 2));
-        label.renderLayout(left, top, labelWidth, labelHeight);
+        label.renderLayout(0, 0, availWidth, availHeight);
       }
     },
     

@@ -12,6 +12,8 @@
 #asset(unify/iphoneos/navigation-bar/black/navigationbar.png)
 #asset(unify/iphoneos/loader.png)
 #asset(unify/noun/down.png)
+#asset(unify/checkbox.png)
+#asset(unify/checkbox_checked.png)
 */
 
 /**
@@ -704,7 +706,55 @@ qx.Theme.define("unify.theme.dark.Appearance", {
         };
       }
     },
-
+    
+    
+    "checkbox" : {
+      style : function(states) {
+        var ResourceManager = qx.util.ResourceManager.getInstance();
+        var style = {
+          height: "30px",
+          cursor: "pointer",
+          properties : {
+            image : ResourceManager.toUri("unify/checkbox.png")
+          }
+        }; 
+        if (states.checked) {
+          style.properties.image = ResourceManager.toUri("unify/checkbox_checked.png");
+        }        
+        return style;
+      }
+    },
+    "checkbox/image" : {
+      style : function(states) {
+        var ResourceManager = qx.util.ResourceManager.getInstance();
+        return {
+          width: ResourceManager.getImageWidth("unify/checkbox.png"),
+          height: ResourceManager.getImageHeight("unify/checkbox.png"),
+          marginTop: Math.floor((30-ResourceManager.getImageHeight("unify/checkbox.png"))/2) + "px",
+          properties : {
+            allowGrowX: false,
+            allowGrowY: false
+          }
+        };
+      }
+    },
+    "checkbox/label" : {
+      style : function(states) {
+        var ResourceManager = qx.util.ResourceManager.getInstance();
+        return {
+          lineHeight: 1.0,
+          marginLeft: "5px",
+          marginRight: "5px",
+          properties : {
+            allowGrowX: true,
+            allowShrinkX: true,
+            allowGrowY: false,
+            allowShrinkY: false
+          }
+        };
+      }
+    },
+    
     /*
     ---------------------------------------------------------------------------
       DIALOGS
