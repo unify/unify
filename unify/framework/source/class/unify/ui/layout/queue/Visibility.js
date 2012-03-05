@@ -31,8 +31,8 @@
         widgetQueue = widgetQueue.concat(children);
       }
       
-      for (i=0,ii=widgetQueue.length; i<ii; i++) {
-        var widget = widgetQueue[i];
+      var widget;
+      while ((widget = widgetQueue.shift())) {
         if (widget.getVisibility() == "visible") {
           if (!visibilityCache.contains(widget)) {
             visibilityCache.push(widget);

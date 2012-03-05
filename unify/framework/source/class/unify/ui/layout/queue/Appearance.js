@@ -25,9 +25,9 @@
     },
     
     flush : function() {
-      for (var i=0,ii=widgetQueue.length; i<ii; i++) {
-        var widget = widgetQueue[i];
-        
+      var widget;
+      
+      while ((widget = widgetQueue.shift())) {
         widget.syncAppearance();
       }
     }
