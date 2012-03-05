@@ -13,7 +13,7 @@
  */
 qx.Class.define("unify.ui.form.CheckBox", {
   extend: unify.ui.basic.Atom,
-  include : [unify.ui.core.MChildControl],
+  include : [unify.ui.core.MInteractionState],
   
   /**
    * @param label {String} Label on atom
