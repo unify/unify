@@ -35,10 +35,10 @@ core.Class("unify.view.helper.ViewOverlayManager", {
   
   events : {
     /** Show popup event */
-    "show" : lowland.events.DataEvent, //"qx.event.type.Data",
+    "show" : lowland.events.DataEvent,
     
     /** Hide popup event */
-    "hide" : lowland.events.DataEvent //"qx.event.type.Data"
+    "hide" : lowland.events.DataEvent
   },
 
   /*
@@ -94,7 +94,7 @@ core.Class("unify.view.helper.ViewOverlayManager", {
         viewManager.init();
       }
       
-      if (qx.core.Environment.get("qx.debug"))
+      if (core.Env.getValue("debug"))
       {
         if (!viewManager) {
           throw new Error("Unknown view manager: " + id);
@@ -102,14 +102,14 @@ core.Class("unify.view.helper.ViewOverlayManager", {
       }
       
       if (this.__visibleViewManagers.indexOf(viewManager) > -1) {
-        if (qx.core.Environment.get("qx.debug")){
+        if (core.Env.getValue("debug")){
           this.debug("called show with viewmanager that is already visible: "+id);
         }
         
         return; // already visible
       }
       
-      if (qx.core.Environment.get("qx.debug")) {
+      if (core.Env.getValue("debug")) {
         this.debug("Show: " + id);
       }
 
@@ -132,7 +132,7 @@ core.Class("unify.view.helper.ViewOverlayManager", {
         viewManager.show();
         PopOverManager.show(popOverElement, trigger);
       }
-      this.fireDataEvent("show", id);
+      this.fireEvent("show", id);
       this.__visibleViewManagers.push(viewManager);
     },
     
@@ -146,13 +146,13 @@ core.Class("unify.view.helper.ViewOverlayManager", {
     hide : function(id, skipAnimation) {
       var viewManager = unify.view.ViewManager.get(id);
 
-      if (qx.core.Environment.get("qx.debug")) {
+      if (core.Env.getValue("debug")) {
         if (!viewManager) {
           throw new Error("Unknown view manager: " + id);
         }
       }
       if (this.__visibleViewManagers.indexOf(viewManager) < 0) {
-        if (qx.core.Environment.get("qx.debug")){
+        if (core.Env.getValue("debug")){
             this.debug("called hide with viewmanager that is not visible: "+id);
         }
         return;
@@ -162,8 +162,8 @@ core.Class("unify.view.helper.ViewOverlayManager", {
       
       var self = this;
       var finalize = function() {
-        qx.lang.Array.remove(self.__visibleViewManagers, viewManager);
-        self.fireDataEvent("hide", id);
+        self.__visibleViewManagers.remove(viewManager);
+        self.fireEvent("hide", id);
       };
       
       if (viewManager.getModal()) {
@@ -191,12 +191,11 @@ core.Class("unify.view.helper.ViewOverlayManager", {
     __hidePopover : function(e) {
       var overlay = e.getData();
       if (overlay) {
-      var viewManagerHash = overlay.getUserData("viewmanager");
-      
-        var widget = qx.core.ObjectRegistry.fromHashCode(viewManagerHash); //unify.view.ViewManager.get(viewManagerId);
         
-        qx.lang.Array.remove(this.__visibleViewManagers, widget);
-        this.fireDataEvent("hide", widget.getId());
+        var widget = overlay.getUserData("viewmanager");
+        this.__visibleViewManagers.remove(widget);
+        
+        this.fireEvent("hide", widget.getId());
       }
     },
 
@@ -211,8 +210,9 @@ core.Class("unify.view.helper.ViewOverlayManager", {
       if(!overlay){
         overlay = new unify.ui.container.Overlay();
         overlay.setUserData("viewmanager", viewManager.toHashCode());
+
         var appearanceId=viewManager.getId()+"-overlay";
-        var appearance=qx.theme.manager.Appearance.getInstance().styleFrom(appearanceId);
+        var appearance = unify.theme.Theme.resolveStyle(appearanceId);
         if(appearance){
           overlay.setAppearance(appearanceId);
         }

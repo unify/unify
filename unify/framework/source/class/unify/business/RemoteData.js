@@ -312,7 +312,7 @@ qx.Class.define("unify.business.RemoteData",
           {
             start = new Date;
             data = qx.lang.Json.parse(data);
-            if (qx.core.Environment.get("qx.debug")) {
+            if (core.Env.getValue("debug")) {
               this.debug("Restored JSON in: " + (new Date - start) + "ms");
             }
           }
@@ -320,7 +320,7 @@ qx.Class.define("unify.business.RemoteData",
           {
             start = new Date;
             data = qx.xml.Document.fromString(data);
-            if (qx.core.Environment.get("qx.debug")) {
+            if (core.Env.getValue("debug")) {
               this.debug("Recovered XML in: " + (new Date - start) + "ms");
             }
           }
@@ -501,7 +501,7 @@ qx.Class.define("unify.business.RemoteData",
      */
     __getCacheId : function(service, params)
     {
-      if (qx.core.Environment.get("qx.debug"))
+      if (core.Env.getValue("debug"))
       {
         if (service == null) {
           throw new Error("Please define at least a service name!");
@@ -546,7 +546,7 @@ qx.Class.define("unify.business.RemoteData",
         var match = url.match(/^(https|http):\/\//);
         if (match) {
           url = match[0] + this.getProxyUrl() + "/" + url.substring(match[0].length);
-        } else if (qx.core.Environment.get("qx.debug")) {
+        } else if (core.Env.getValue("debug")) {
           throw new Error("Proxy could not be added to url: " + url);
         }
       }
@@ -671,7 +671,7 @@ qx.Class.define("unify.business.RemoteData",
 
       // Every request has a unique identifier
       req.setUserData("id", id);
-      if (qx.core.Environment.get("qx.debug")) {
+      if (core.Env.getValue("debug")) {
         this.debug("Sending request to: " + service + "[id=" + id + "]...");
       }
 
@@ -704,7 +704,7 @@ qx.Class.define("unify.business.RemoteData",
       var params = req.getUserData("params");
 
       // Debug
-      if (qx.core.Environment.get("qx.debug")) {
+      if (core.Env.getValue("debug")) {
         this.debug("Request done: " + service + "[id=" + id + "]");
       }
 
@@ -716,7 +716,7 @@ qx.Class.define("unify.business.RemoteData",
       var isModified = !isMalformed && this.__isModified(req);
       if (isModified)
       {
-        if (qx.core.Environment.get("qx.debug")) {
+        if (core.Env.getValue("debug")) {
           //this.debug("Loaded: " + text.length + " bytes in " + req.getDuration() + "ms");//TODO replace getDuration
         }
 
@@ -736,7 +736,7 @@ qx.Class.define("unify.business.RemoteData",
                 this.error("failed to parse json: "+ex);
                 isMalformed=true;
               }
-              if (qx.core.Environment.get("qx.debug")) {
+              if (core.Env.getValue("debug")) {
                 this.debug("Parsed JSON in: " + (new Date - start) + "ms");
               }
               break;
@@ -748,7 +748,7 @@ qx.Class.define("unify.business.RemoteData",
               {
                 start = new Date;
                 data = unify.util.XmlToJson.convert(data);
-                if (qx.core.Environment.get("qx.debug")) {
+                if (core.Env.getValue("debug")) {
                   this.debug("Converted to JSON in: " + (new Date - start) + "ms");
                 }
                 // Fix type as we now deal with JSON only
@@ -757,7 +757,7 @@ qx.Class.define("unify.business.RemoteData",
                 // Overwrite original text from service with stringified converted json
                 start = new Date;
                 text = Json.stringify(data);
-                if (qx.core.Environment.get("qx.debug")) {
+                if (core.Env.getValue("debug")) {
                   this.debug("Prepared to cache in: " + (new Date - start) + "ms");
                 }
               }
@@ -827,7 +827,7 @@ qx.Class.define("unify.business.RemoteData",
               metaStored=true;
               var storageDataId = this.__storageDataPrefix + cacheId;
               Storage.set(storageDataId, text);
-              if (qx.core.Environment.get("qx.debug")) {
+              if (core.Env.getValue("debug")) {
                 this.debug("Stored in: " + (new Date - start) + "ms");
               }
             }
@@ -885,7 +885,7 @@ qx.Class.define("unify.business.RemoteData",
           this.__purgeCache(serviceName,start-keep*1000);
         }
       }
-      if (qx.core.Environment.get("qx.debug")){
+      if (core.Env.getValue("debug")){
         var end=new Date();
         this.debug('garbage collection took: '+(end-start)+'ms');
       }
@@ -905,7 +905,7 @@ qx.Class.define("unify.business.RemoteData",
         matched,
         meta,
         key;
-      if (qx.core.Environment.get("qx.debug")){
+      if (core.Env.getValue("debug")){
         this.debug('Cached entries of service "' + serviceName + '" are expired when last checked before: ' + new Date(expiredWhenCheckedBefore));
       }
       for (key in localStorage) {
@@ -913,7 +913,7 @@ qx.Class.define("unify.business.RemoteData",
         if (matched) {
           meta = JSON.parse(localStorage.getItem(key));
           if (meta && meta.checked && meta.checked < expiredWhenCheckedBefore) {
-            if (qx.core.Environment.get("qx.debug")){
+            if (core.Env.getValue("debug")){
               this.debug('*** Expired Cache Entry "' + key + '", checked: ' + new Date(meta.checked));
             }
             localStorage.removeItem(dataPrefix + matched[1]);

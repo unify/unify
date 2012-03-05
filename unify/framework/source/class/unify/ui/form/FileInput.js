@@ -111,7 +111,7 @@ qx.Class.define("unify.ui.form.FileInput", {
      * @param e {qx.event.type.Event} Change event
      */
     __fileInputValueChanged : function(e) {
-      this.fireDataEvent("changeValue", e.getData());
+      this.fireEvent("changeValue", e.getData());
     }
   },
 

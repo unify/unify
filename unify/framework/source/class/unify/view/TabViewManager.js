@@ -28,7 +28,7 @@ core.Class("unify.view.TabViewManager", {
   {
     unify.ui.container.Composite.call(this, new unify.ui.layout.special.TabViewLayout());
 
-    this.setUserData("viewManager", this);
+    this.setUserData("viewmanager", this);
 
     if (core.Env.getValue("debug"))
     {

@@ -146,7 +146,7 @@ core.Class("unify.ui.form.Combobox", {
       unify.ui.core.PopOverManager.getInstance().hide(this.getChildControl("overlay"));
       var id = e.getTarget().getUserData("id");
       this.setValue(e.getTarget().getUserData("id"));
-      this.fireDataEvent("execute", id);
+      this.fireEvent("execute", id);
     }
   }
 });

@@ -312,7 +312,7 @@ qx.Class.define("unify.ui.form.Slider", {
         clickedPos = bar;
       }
       
-      this.fireDataEvent("clickOnBar", clickedPos / bar);
+      this.fireEvent("clickOnBar", clickedPos / bar);
     }
   }
 });

@@ -81,7 +81,7 @@ core.Class("unify.business.StaticData",
     _addService : function(service, config)
     {
       var db = this.__services;
-      if (qx.core.Environment.get("qx.debug"))
+      if (core.Env.getValue("debug"))
       {
         if (db[service]) {
           throw new Error("Service " + service + " is already registered!");
@@ -107,7 +107,7 @@ core.Class("unify.business.StaticData",
     _getService : function(service)
     {
       var config = this.__services[service];
-      if (qx.core.Environment.get("qx.debug"))
+      if (core.Env.getValue("debug"))
       {
         if (!config) {
           throw new Error("Unknown service: " + service);

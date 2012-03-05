@@ -70,7 +70,7 @@ qx.Class.define("unify.ui.form.util.HtmlFileInput", {
      * @param e {qx.event.type.Data} Input event
      */
     __onInput : function(e) {
-      this.fireDataEvent("changeValue", e.getTarget().files);
+      this.fireEvent("changeValue", e.getTarget().files);
     }
   }
 });

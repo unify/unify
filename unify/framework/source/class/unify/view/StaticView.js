@@ -318,7 +318,7 @@ core.Class("unify.view.StaticView",
      */
     _createView : function()
     {
-      if (qx.core.Environment.get("qx.debug")) {
+      if (core.Env.getValue("debug")) {
         throw new Error(this.toString() + " needs implementation for _createView()!")
       }
     },

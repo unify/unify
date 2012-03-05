@@ -46,7 +46,7 @@ core.Module("unify.bom.Uri", {
   parse : function(str, mode)
   {
     var parser = this.__urlParsers[mode||"loose"];
-    if (qx.core.Environment.get("qx.debug"))
+    if (core.Env.getValue("debug"))
     {
       if (!parser) {
         throw new Error("Invalid mode: " + mode);

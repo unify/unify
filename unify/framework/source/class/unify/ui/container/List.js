@@ -99,7 +99,7 @@ qx.Class.define("unify.ui.container.List", {
      * @param e {qx.event.type.Event} Tap event
      */
     __onTap : function(e) {
-      this.fireDataEvent("change", e.getTarget().getUserData("id"));
+      this.fireEvent("change", e.getTarget().getUserData("id"));
     }
   }
 });

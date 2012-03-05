@@ -34,7 +34,7 @@ core.Class("unify.view.ViewManager", {
   {
     unify.ui.container.Composite.call(this, layout || new unify.ui.layout.Canvas());
 
-    this.setUserData("viewManager", this);
+    this.setUserData("viewmanager", this);
 
     if (core.Env.getValue("debug"))
     {
@@ -406,7 +406,7 @@ core.Class("unify.view.ViewManager", {
         var cb = function() {
           view.setActive(false);
           view.hide();
-          self.base(selfArguments);
+          unify.ui.container.Composite.prototype.hide.apply(self, selfArguments);
           if(callback){
             callback();
           }
@@ -440,14 +440,14 @@ core.Class("unify.view.ViewManager", {
         }
         // Re-activate view (normally only useful if it was paused before)
         var view = this.__currentView;
-        if (qx.core.Environment.get("qx.debug")) {
+        if (core.Env.getValue("debug")) {
           this.debug("Show with: " + view);
         }
         if (view) {
           view.setActive(true);
         }
   
-        unify.ui.container.Composite.show.call(this);
+        unify.ui.container.Composite.prototype.show.call(this);
         if(this.getAnimateTransitions()) {
           this.__animateModal(view,true);
         } else {
@@ -797,6 +797,9 @@ core.Class("unify.view.ViewManager", {
       };
 
       var startPos = (show) ? this.__positions.bottom : this.__positions.center;
+      if (!view) {
+        console.trace();
+      }
       view.setStyle({
         transform: unify.bom.Transform.accelTranslate(startPos.left, startPos.top)
       });

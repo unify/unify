@@ -89,7 +89,7 @@ qx.Class.define("unify.view.SplitViewManager",
 
       if(isLandscape){
         if(oldOrient != "landscape"){
-          if (qx.core.Environment.get("qx.debug")) {
+          if (core.Env.getValue("debug")) {
             this.debug("Switching to landscape layout");
           }
           ViewOverlayManager.hide(master.getId(),true);
@@ -100,7 +100,7 @@ qx.Class.define("unify.view.SplitViewManager",
         }
       } else {
         if(oldOrient != "portrait"){
-          if (qx.core.Environment.get("qx.debug")) {
+          if (core.Env.getValue("debug")) {
             this.debug("Switching to portrait layout");
           }
           elem.setAttribute("orient", "portrait");

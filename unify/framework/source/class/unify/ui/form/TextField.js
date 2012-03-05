@@ -168,7 +168,7 @@ qx.Class.define("unify.ui.form.TextField", {
         this.__changed = true;
         
         // store the old input value
-        this.fireDataEvent("input", value, this.__oldInputValue);
+        this.fireEvent("input", value, this.__oldInputValue);
         this.__oldInputValue = value;
       }
     },
@@ -178,7 +178,7 @@ qx.Class.define("unify.ui.form.TextField", {
      */
     __onBlur : function() {
       if (this.__changed) {
-        this.fireDataEvent("changeValue", this.getValue());
+        this.fireEvent("changeValue", this.getValue());
         this.__changed = false;
       }
     }
