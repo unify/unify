@@ -88,6 +88,9 @@
       setStyle : function() {
         unify.ui.core.MRemoteChildrenHandling.prototype.setStyle.apply(this, arguments);
       },
+      getStyle : function() {
+        return unify.ui.core.MRemoteChildrenHandling.prototype.getStyle.apply(this, arguments);
+      },
       // TODO DONE
       
       getModal : function() {
