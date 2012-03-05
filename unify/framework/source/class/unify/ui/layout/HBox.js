@@ -46,22 +46,22 @@ core.Class("unify.ui.layout.HBox", {
       
       if (hasFlex.length > 0) {
         var overallFlex = this.__overallFlex;
-        var usedNoFlexHeight = 0;
+        var usedNoFlexWidth = 0;
         var e;
         
         for (i=0,ii=hasNoFlex.length; i<ii; i++) {
           e = sizeCache[hasNoFlex[i]];
           
-          e.size.height = e.size.minHeight;
-          usedNoFlexHeight += e.size.width;
+          e.size.width = e.size.minWidth;
+          usedNoFlexWidth += e.size.width;
         }
         
-        var flexUnit = (availHeight - usedNoFlexHeight) / overallFlex;
+        var flexUnit = (availWidth - usedNoFlexWidth) / overallFlex;
         
         for (i=0,ii=hasFlex.length; i<ii; i++) {
           e = sizeCache[hasFlex[i]];
           
-          e.size.height = Math.round(flexUnit * e.flex);
+          e.size.width = Math.round(flexUnit * e.flex);
         }
       }
 
@@ -71,7 +71,7 @@ core.Class("unify.ui.layout.HBox", {
         var calc = element.properties;
         var size = element.size;
         
-        var alignY = this.getAlignY();
+        var alignY = widget.getAlignY();
         var top;
         var width = size.width;
         var height = availHeight;

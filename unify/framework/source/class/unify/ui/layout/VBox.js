@@ -41,22 +41,23 @@ core.Class("unify.ui.layout.VBox", {
       
       if (hasFlex.length > 0) {
         var overallFlex = this.__overallFlex;
-        var usedNoFlexWidth = 0;
+        var usedNoFlexHeight = 0;
         var e;
         
         for (i=0,ii=hasNoFlex.length; i<ii; i++) {
           e = sizeCache[hasNoFlex[i]];
-          
-          e.size.width = e.size.minWidth;
-          usedNoFlexWidth += e.size.width;
+          console.log("NO FLEX: ", e.widget.constructor);
+          e.size.height = e.size.minHeight;
+          usedNoFlexHeight += e.size.height;
         }
         
-        var flexUnit = (availWidth - usedNoFlexWidth) / overallFlex;
+        var flexUnit = (availHeight - usedNoFlexHeight) / overallFlex;
         
         for (i=0,ii=hasFlex.length; i<ii; i++) {
           e = sizeCache[hasFlex[i]];
           
-          e.size.width = Math.round(flexUnit * e.flex);
+          e.size.height = Math.round(flexUnit * e.flex);
+          console.log("VBOX ", hasFlex.length, overallFlex, e.size.height);
         }
       }
       
@@ -66,11 +67,11 @@ core.Class("unify.ui.layout.VBox", {
         var calc = element.properties;
         var size = element.size;
         
-        var alignX = this.getAlignX();
+        var alignX = widget.getAlignX();
         var left;
         var width = availWidth;
         var height = size.height;
-        
+        console.log(widget.constructor, size.width, size.maxWidth, widget.getAllowGrowX());
         if (size.maxWidth && width > size.maxWidth) {
           width = size.maxWidth;
         }
