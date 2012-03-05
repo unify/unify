@@ -722,9 +722,10 @@ core.Class("unify.theme.Dark", {
         
         "combobox/image" : {
           style : function() {
+            var imgSize = core.io.Asset.getImageSize("unify/noun/down.png");
             return {
-              width: core.io.Asset.getImageWidth("unify/noun/down.png"),
-              height: core.io.Asset.getImageHeight("unify/noun/down.png"),
+              width: imgSize.width,
+              height: imgSize.height,
               margin: "5",
               properties : {
                 allowGrowX: false,
@@ -834,9 +835,7 @@ core.Class("unify.theme.Dark", {
               whiteSpace: "normal",
               backgroundColor: "white",
               width: "500px",
-              height: "400px",
-              marginLeft: "-250px",
-              marginTop: "-200px"
+              height: "400px"
             };
           }
         },
@@ -874,7 +873,7 @@ core.Class("unify.theme.Dark", {
                 allowGrowX: false,
                 alignX: "right"
               }
-            }
+            };
           }
         },
         "dialog/X/label" : {},
