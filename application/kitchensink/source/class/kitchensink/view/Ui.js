@@ -127,6 +127,17 @@ qx.Class.define("kitchensink.view.Ui", {
       
       var textfield = new unify.ui.form.TextField();
       container.add(textfield);
+      
+      var slider = new unify.ui.form.Slider();
+      slider.set({
+        height: 300,
+        allowGrowX: false,
+        allowGrowY: false,
+        allowShrinkX: false,
+        allowShrinkY: false,
+        direction: "vertical"
+      });
+      container.add(slider);
     },
     
     __dialog : null,
