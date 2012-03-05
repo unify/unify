@@ -739,7 +739,7 @@ core.Class("unify.ui.core.Widget", {
           if (layoutParent) {
             parentVirtualPosition = layoutParent.getVirtualPosition();
           } else {
-            if (qx.core.Environment.get("qx.debug")) {
+            if (core.Env.getValue("debug")) {
               this.warn("No parent widget set, so virtual position is set to 0/0")
             }
           }
