@@ -14,12 +14,7 @@
 qx.Class.define("unify.ui.form.CheckBox", {
   extend: unify.ui.basic.Atom,
   include : [unify.ui.core.MChildControl],
-
-  events : {
-    /** Execute event when button is tapped */
-    "execute" : "qx.event.type.DataEvent"
-  },
-
+  
   /**
    * @param label {String} Label on atom
    */
@@ -53,6 +48,7 @@ qx.Class.define("unify.ui.form.CheckBox", {
     checked : {
       check: "Boolean",
       init: false,
+      event: "execute",
       apply: "_applyChecked"
     }
   },
@@ -67,7 +63,6 @@ qx.Class.define("unify.ui.form.CheckBox", {
     __onTap : function(e) {
       // toggle checked state
       this.setChecked(!this.getChecked());
-      this.fireDataEvent("execute", this.getChecked());
     },
     
     /**
