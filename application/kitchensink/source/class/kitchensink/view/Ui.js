@@ -28,14 +28,13 @@ core.Class("kitchensink.view.Ui", {
     
     // overridden
     _createView : function() {
-      /*var container = new unify.ui.container.Scroll(new unify.ui.layout.VBox(20));
+      var container = new unify.ui.container.Scroll(new unify.ui.layout.VBox(20));
       container.set({
         width: 500,
         alignX: "center",
         allowGrowX: false
       });
-      this.add(container, {flex: 1});*/
-      var container = this;
+      this.add(container, {flex: 1});
       
       var label = new unify.ui.basic.Label("Label");
       container.add(label);
