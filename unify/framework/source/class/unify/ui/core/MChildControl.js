@@ -136,12 +136,14 @@ core.Class("unify.ui.core.MChildControl", {
       } else if (this.__childControls[id]) {
         throw new Error("Child control '" + id + "' already created!");
       }
+      
+      var control;
 
       var pos = id.indexOf("#");
       if (pos == -1) {
-        var control = this._createChildControlImpl(id);
+        control = this._createChildControlImpl(id);
       } else {
-        var control = this._createChildControlImpl(
+        control = this._createChildControlImpl(
           id.substring(0, pos), id.substring(pos + 1, id.length)
         );
       }
@@ -150,20 +152,21 @@ core.Class("unify.ui.core.MChildControl", {
         throw new Error("Unsupported control: " + id);
       }
       
-      /*control.setAppearance(this.getAppearance() + "/" + id);
-      / *var appearanceChanged = qx.lang.Function.bind(function(childId, parrentAppearance) {
+      control.setAppearance(this.getAppearance() + "/" + id);
+      /*var appearanceChanged = qx.lang.Function.bind(function(childId, parrentAppearance) {
         this.getChildControl(childId).setAppearance(parrentAppearance + "/" + childId);
-      }, this, id);* /
+      }, this, id);*/
       var appearanceChanged = (function(self, childId) {
         return function(parrentAppearance) {
           console.log(childId, self.constructor, self.getChildControl(childId).constructor, parrentAppearance + "/" + childId);
           self.getChildControl(childId).setAppearance(parrentAppearance + "/" + childId);
         };
       })(this, id);
-      console.log("ADD CHANGE APPEARANCE", this.constructor);
+      
+      
       this.addListener("changeAppearance", function(e) {
         appearanceChanged(e.getData());
-      }, this);*/
+      }, this);
 
       // Establish connection to parent
       control.$$subcontrol = id;
