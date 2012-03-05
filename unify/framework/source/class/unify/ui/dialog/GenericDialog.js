@@ -39,7 +39,7 @@
      
     events: {
       /** This event is fired when the dialog is closed by pressing a button */
-      "execute": lowland.events.DataEvent, //"qx.event.type.Data"
+      "execute": lowland.events.DataEvent
     },
     
     /**
@@ -202,7 +202,7 @@
           });
          
           okBtn.addListener("execute", function() {
-            this.fireDataEvent("execute", BTN_OK);
+            this.fireEvent("execute", BTN_OK);
           }, this);
           
           centerButtonContainer.add(okBtn);
@@ -271,7 +271,7 @@
        * @param e {qx.event.type.Event} Event
        */
       __onButtonExecute : function(e) {
-        this.fireDataEvent("execute", e.getTarget().getUserData("id"));
+        this.fireEvent("execute", e.getTarget().getUserData("id"));
       }
     
     }
