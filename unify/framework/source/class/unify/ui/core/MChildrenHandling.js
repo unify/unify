@@ -23,6 +23,10 @@ core.Class("unify.ui.core.MChildrenHandling", {
       this._setStyle.apply(this, arguments);
     },
     
+    getStyle : function() {
+      return this._getStyle.apply(this, arguments);
+    },
+    
     getChildren : function() {
       return this._getChildren.apply(this, arguments);
     },

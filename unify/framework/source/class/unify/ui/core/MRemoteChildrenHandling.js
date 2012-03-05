@@ -18,15 +18,33 @@ core.Class("unify.ui.core.MRemoteChildrenHandling", {
     getChildren : function() {
       return this.getChildrenContainer().getChildren();
     },
-    hasChildren : function() {},
-    add: function(children, options) {},
-    remove: function(child) {},
-    removeAll: function() {},
-    indexOf: function(child) {},
-    addAt: function(child, index, options) {},
-    addBefore: function(child, beforeChild, options) {},
-    addAfter: function(child, afterChild, options) {},
-    removeAt: function(index) {},
+    hasChildren : function() {
+      return this.getChildrenContainer().hasChildren();
+    },
+    add: function(child, options) {
+      this.getChildrenContainer().add(child, options);
+    },
+    remove: function(child) {
+      this.getChildrenContainer().remove(child);
+    },
+    removeAll: function() {
+      this.getChildrenContainer().removeAll();
+    },
+    indexOf: function(child) {
+      return this.getChildrenContainer().indexOf(child);
+    },
+    addAt: function(child, index, options) {
+      this.getChildrenContainer().addAt(child, index, options);
+    },
+    addBefore: function(child, before, options) {
+      this.getChildrenContainer().addBefore(child, before, options);
+    },
+    addAfter: function(child, after, options) {
+      this.getChildrenContainer().addAfter(child, after, options);
+    },
+    removeAt: function(index) {
+      this.getChildrenContainer().removeAt(index);
+    },
     
     /**
      * Set style on remote container

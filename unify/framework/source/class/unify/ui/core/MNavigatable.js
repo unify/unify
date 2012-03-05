@@ -107,7 +107,7 @@ core.Class("unify.ui.core.MNavigatable", {
       var viewManagerWidget = this.getParentBox();
       var viewManager = null;
       while (!viewManager && viewManagerWidget) {
-        viewManager = viewManagerWidget.getUserData("viewManager");
+        viewManager = viewManagerWidget.getUserData("viewmanager");
         viewManagerWidget = viewManagerWidget.getParentBox();
       }
       
