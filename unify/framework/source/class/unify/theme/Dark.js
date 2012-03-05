@@ -24,7 +24,10 @@ core.Class("unify.theme.Dark", {
         "#242424" : "#242424",
         "#3a3a3a" : "#3a3a3a",
         "#000" : "#000000",
-        "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.5)"
+        "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.5)",
+        "#A4A4A4"  :"#A4A4A4",
+        "#4B4B4B" : "#4B4B4B",
+        "#D0D0D0" : "#D0D0D0"
       },
       fonts: {
         "default" : {
@@ -657,7 +660,7 @@ core.Class("unify.theme.Dark", {
         "button/label" : {
           style : function(state) {
             return {
-              font: "20px bold",
+              font: "big bold",
               textAlign: "center"
             };
           }
@@ -812,7 +815,7 @@ core.Class("unify.theme.Dark", {
         "alert.label" : {
           style : function() {
             return {
-              font: "20px bold",
+              font: "big bold",
               color: "white"
             };
           }
@@ -880,7 +883,7 @@ core.Class("unify.theme.Dark", {
         "dialog/buttons" : {
           style : function(states) {
             return {
-              font: "19px",
+              font: "big bold",
               fontFamily: "Arial",
               color: "#4B4B4B",
               textAlign: "center",
