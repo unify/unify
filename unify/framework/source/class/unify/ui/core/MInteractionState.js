@@ -36,7 +36,7 @@ qx.Mixin.define("unify.ui.core.MInteractionState", {
       if (supportTouch) {
         this.addListener("touchstart", this.__MInteractionStateAddPressed, this);
         this.addListener("touchleave", this.__MInteractionStateRemovePressed, this);
-        this.addListener("touchend", this.__MInteractionStateRemovePressed, this);
+        root.addListener("touchend", this.__MInteractionStateRemovePressed, this);
         this.addListener("touchcancel", this.__MInteractionStateRemovePressed, this);
       } else if (supportMouse) {
         this.addListener("mouseover", this.__MInteractionStateAddHover, this);
