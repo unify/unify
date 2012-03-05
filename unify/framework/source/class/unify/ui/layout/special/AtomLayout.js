@@ -56,6 +56,10 @@ core.Class("unify.ui.layout.special.AtomLayout", {
             labelHeight = labelHint.height;
             labelTop = Math.ceil((availHeight / 2) - (labelHeight / 2));
           }
+          labelWidth = availWidth - imageWidth - 
+                       unify.ui.layout.Util.calculateLeftGap(image) - 
+                       unify.ui.layout.Util.calculateRightGap(image) -
+                       unify.ui.layout.Util.calculateHorizontalGap(label);
         } else {
           if (imageHint.width > availWidth) {
             imageWidth = availWidth;
@@ -73,6 +77,10 @@ core.Class("unify.ui.layout.special.AtomLayout", {
           }*/
           labelLeft = 0;
           labelWidth = availWidth;
+          labelHeight = availHeight - imageHeight - 
+                        unify.ui.layout.Util.calculateTopGap(image) - 
+                        unify.ui.layout.Util.calculateBottomGap(image) - 
+                        unify.ui.layout.Util.calculateVerticalGap(label);
         }
         
         if (direction == "left") {
@@ -105,13 +113,13 @@ core.Class("unify.ui.layout.special.AtomLayout", {
         image.renderLayout(left, top, imageWidth, imageHeight);
       } else if (label) {
         var labelHint = label.getSizeHint();
-        var labelWidth = labelHint.width;
-        if (labelWidth > availWidth) {
-          labelWidth = availWidth;
+        var labelWidth = availWidth;
+        if (labelWidth > labelHint.maxWidth) {
+          labelWidth = labelHint.maxWidth;
         }
-        var labelHeight = labelHint.height;
-        if (labelHeight > availHeight) {
-          labelHeight = availHeight;
+        var labelHeight = availHeight;
+        if (labelHeight > labelHint.maxHeight) {
+          labelHeight = labelHint.maxHeight;
         }
         var left = Math.round((availWidth / 2) - (labelWidth / 2));
         var top = Math.round((availHeight / 2) - (labelHeight / 2));

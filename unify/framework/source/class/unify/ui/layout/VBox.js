@@ -21,7 +21,15 @@ core.Class("unify.ui.layout.VBox", {
     alignY: {
       init: "top"
     },
-    spacing : {}
+    spacing : {
+      init: 0
+    }
+  },
+  
+  construct : function(spacing) {
+    if (spacing) {
+      this.setSpacing(spacing);
+    }
   },
   
   members : {
@@ -32,6 +40,7 @@ core.Class("unify.ui.layout.VBox", {
         this.__rebuildChildrenCache();
       }
       
+      var space = this.getSpacing();
       var top = 0;
       var hasFlex = this.__hasFlex;
       var hasNoFlex = this.__hasNoFlex;
@@ -46,7 +55,6 @@ core.Class("unify.ui.layout.VBox", {
         
         for (i=0,ii=hasNoFlex.length; i<ii; i++) {
           e = sizeCache[hasNoFlex[i]];
-          console.log("NO FLEX: ", e.widget.constructor);
           e.size.height = e.size.minHeight;
           usedNoFlexHeight += e.size.height;
         }
@@ -57,7 +65,6 @@ core.Class("unify.ui.layout.VBox", {
           e = sizeCache[hasFlex[i]];
           
           e.size.height = Math.round(flexUnit * e.flex);
-          console.log("VBOX ", hasFlex.length, overallFlex, e.size.height);
         }
       }
       
@@ -71,7 +78,7 @@ core.Class("unify.ui.layout.VBox", {
         var left;
         var width = availWidth;
         var height = size.height;
-        console.log(widget.constructor, size.width, size.maxWidth, widget.getAllowGrowX());
+        
         if (size.maxWidth && width > size.maxWidth) {
           width = size.maxWidth;
         }
@@ -90,7 +97,7 @@ core.Class("unify.ui.layout.VBox", {
         top += topGap;
         widget.renderLayout(left, top, width, height);
         
-        top += height + bottomGap;
+        top += height + bottomGap + space;
       }
     },
     

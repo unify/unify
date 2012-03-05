@@ -19,7 +19,7 @@ qx.Class.define("unify.ui.layout.Center", {
     __bar : null,
   
     renderLayout : function(availWidth, availHeight) {
-      if (qx.core.Environment.get("qx.debug")) {
+      if (core.Env.getValue("debug")) {
         if (this._getLayoutChildren().length != 1) {
           this.error("Center layout only supports one child");
         }

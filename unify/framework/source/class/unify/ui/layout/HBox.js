@@ -22,7 +22,15 @@ core.Class("unify.ui.layout.HBox", {
       init: "top"
     },
     
-    spacing : {}
+    spacing : {
+      init: 0
+    }
+  },
+  
+  construct : function(spacing) {
+    if (spacing) {
+      this.setSpacing(spacing);
+    }
   },
   
   members : {
@@ -37,6 +45,7 @@ core.Class("unify.ui.layout.HBox", {
         this.__rebuildChildrenCache();
       }
       
+      var space = this.getSpacing();
       var left = 0;
       var hasFlex = this.__hasFlex;
       var hasNoFlex = this.__hasNoFlex;
@@ -94,7 +103,7 @@ core.Class("unify.ui.layout.HBox", {
         left += leftGap;
         widget.renderLayout(left, top, width, height);
         
-        left += width + rightGap;
+        left += width + rightGap + space;
       }
     },
     
