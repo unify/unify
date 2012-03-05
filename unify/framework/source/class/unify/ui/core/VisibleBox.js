@@ -58,7 +58,7 @@
         apply : stretchFnt
       },
       allowShrinkX: {
-        init: true,
+        init: false,
         apply : stretchFnt
       },
       
@@ -67,15 +67,17 @@
         apply : stretchFnt
       },
       allowShrinkY: {
-        init: true,
+        init: false,
         apply : stretchFnt
       },
       
       alignX : {
-        type : ["left", "center", "right"]
+        type : ["left", "center", "right"],
+        init: "left"
       },
       alignY : {
-        type : ["top", "middle", "bottom"]
+        type : ["top", "middle", "bottom"],
+        init: "top"
       }
     },
     
