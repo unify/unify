@@ -750,7 +750,7 @@ core.Class("unify.theme.Dark", {
           }
         },
         
-        "combobox/button" : {
+        "combobox/overlay/container/button" : {
           style : function() {
             return {
               width: "40px"
@@ -758,9 +758,10 @@ core.Class("unify.theme.Dark", {
           }
         },
         
-        "combobox/button/label" : {
+        "combobox/overlay/container/button/label" : {
           style : function() {
             return {
+              padding: "5px"
             };
           }
         },

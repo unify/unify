@@ -153,12 +153,8 @@ core.Class("unify.ui.core.MChildControl", {
       }
       
       control.setAppearance(this.getAppearance() + "/" + id);
-      /*var appearanceChanged = qx.lang.Function.bind(function(childId, parrentAppearance) {
-        this.getChildControl(childId).setAppearance(parrentAppearance + "/" + childId);
-      }, this, id);*/
       var appearanceChanged = (function(self, childId) {
         return function(parrentAppearance) {
-          console.log(childId, self.constructor, self.getChildControl(childId).constructor, parrentAppearance + "/" + childId);
           self.getChildControl(childId).setAppearance(parrentAppearance + "/" + childId);
         };
       })(this, id);

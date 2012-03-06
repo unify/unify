@@ -111,9 +111,17 @@ core.Class("unify.ui.form.Combobox", {
       if (id == "overlay") {
         control = new unify.ui.container.Overlay();
         control.setRelativeTriggerPosition({x: "left", y: "bottom"});
+      } else if (id == "expandable") {
+        control = new unify.ui.container.Composite(new unify.ui.layout.VBox());
       }
       
       return control || unify.ui.basic.Atom.prototype._createChildControlImpl.call(this, id);
+    },
+    
+    _createItem : function(data, parentAppearance) {
+      var b = new unify.ui.form.Button(data.label);
+      b.setAppearance(parentAppearance + "/button");
+      return b;
     },
 
     /**
@@ -127,18 +135,18 @@ core.Class("unify.ui.form.Combobox", {
       var container = overlay.getChildControl("container");
       container.setWidth(this.getWidth());
       container.setAllowGrowX(false);
+      container.setAllowShrinkY(true);
+      container.setLayout(new unify.ui.layout.VBox());
       
-      overlay.removeAll();
-      var container = new unify.ui.container.Composite(new unify.ui.layout.VBox());
+      container.removeAll();
+      
       var data = this.getData();
+      var b;
       for (var i=0,ii=data.length; i<ii; i++) {
-        var b = new unify.ui.form.Button(data[i].label);
-        b.addListener("changeParentBox", function(value) {
-          console.log(this.constructor, "PARENT BOX CHANGE TO " + value);
-        }, b);
+        b = this._createItem(data[i], container.getAppearance());
         b.setUserData("id", data[i].id);
         b.addListener("execute", this.__onButtonExecute, this);
-        container.add(b, {flex: 1});
+        container.add(b);
       }
       overlay.add(container, {edge: 0});
       
