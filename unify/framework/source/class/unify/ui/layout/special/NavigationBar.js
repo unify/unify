@@ -58,41 +58,43 @@ qx.Class.define("unify.ui.layout.special.NavigationBar", {
         e.renderLayout(rightx, top, hint.width, hint.height);
       }
       rightx -= SPACER;
-      
-      var availTitleWidth = rightx - leftx;
-      var leftBiggerThanRight = leftWidth > rightWidth;
-      var optimalTitleWidth = availWidth - (leftBiggerThanRight ? (leftWidth*2) : (rightWidth*2));
-      hint = title.getSizeHint();
-      
-      var titleWidth = hint.width;
-      if (hint.maxWidth && titleWidth > hint.maxWidth) {
-        titleWidth = hint.maxWidth;
+      if(title){
+        var availTitleWidth = rightx - leftx;
+        var leftBiggerThanRight = leftWidth > rightWidth;
+        var optimalTitleWidth = availWidth - (leftBiggerThanRight ? (leftWidth*2) : (rightWidth*2));
+        hint = title.getSizeHint();
+        
+        var titleWidth = hint.width;
+        if (hint.maxWidth && titleWidth > hint.maxWidth) {
+          titleWidth = hint.maxWidth;
+        }
+        if (hint.minWidth && titleWidth < hint.minWidth) {
+          titleWidth = hint.minWidth;
+        }
+        
+        // Center title vertical position in avail room
+        var titleHeight = hint.height;
+        if (titleHeight > availHeight) {
+          titleHeight = availHeight;
+        }
+        var titleTop = Math.floor(availHeight / 2 - titleHeight / 2);
+        var titleLeft;
+        
+        if (titleWidth <= optimalTitleWidth) {
+          // Space for optimal centered title available -> center title
+          titleLeft = Math.floor(availWidth / 2 - titleWidth / 2);
+        } else if (titleWidth <= availTitleWidth) {
+          // Center title in available room
+          titleLeft = leftWidth + Math.round((availTitleWidth - titleWidth) / 2.0);
+        } else {
+          // Title is bigger than avail space
+          titleLeft = leftWidth;
+          titleWidth = availTitleWidth;
+        }
+        
+        title.renderLayout(titleLeft, titleTop, titleWidth, titleHeight);
       }
-      if (hint.minWidth && titleWidth < hint.minWidth) {
-        titleWidth = hint.minWidth;
-      }
-      
-      // Center title vertical position in avail room
-      var titleHeight = hint.height;
-      if (titleHeight > availHeight) {
-        titleHeight = availHeight;
-      }
-      var titleTop = Math.floor(availHeight / 2 - titleHeight / 2);
-      var titleLeft;
 
-      if (titleWidth <= optimalTitleWidth) {
-        // Space for optimal centered title available -> center title
-        titleLeft = Math.floor(availWidth / 2 - titleWidth / 2);
-      } else if (titleWidth <= availTitleWidth) {
-        // Center title in available room
-        titleLeft = leftWidth + Math.round((availTitleWidth - titleWidth) / 2.0);
-      } else {
-        // Title is bigger than avail space
-        titleLeft = leftWidth;
-        titleWidth = availTitleWidth;
-      }
-      
-      title.renderLayout(titleLeft, titleTop, titleWidth, titleHeight);
     },
     
     /**
