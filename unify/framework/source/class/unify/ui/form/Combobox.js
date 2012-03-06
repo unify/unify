@@ -133,6 +133,9 @@ core.Class("unify.ui.form.Combobox", {
       var data = this.getData();
       for (var i=0,ii=data.length; i<ii; i++) {
         var b = new unify.ui.form.Button(data[i].label);
+        b.addListener("changeParentBox", function(value) {
+          console.log(this.constructor, "PARENT BOX CHANGE TO " + value);
+        }, b);
         b.setUserData("id", data[i].id);
         b.addListener("execute", this.__onButtonExecute, this);
         container.add(b, {flex: 1});

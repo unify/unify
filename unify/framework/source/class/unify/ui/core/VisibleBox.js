@@ -78,6 +78,11 @@
       alignY : {
         type : ["top", "middle", "bottom"],
         init: "top"
+      },
+      
+      parentBox : {
+        init: null,
+        nullable: true
       }
     },
     
@@ -206,15 +211,6 @@
         }
       },
       
-      __parentBox : null,
-      
-      getParentBox : function() {
-        return this.__parentBox;
-      },
-      
-      setParentBox : function(parent) {
-        this.__parentBox = parent;
-      },
       
       
       
