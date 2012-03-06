@@ -155,7 +155,8 @@ core.Class("unify.ui.core.PopOverManager", {
       }
       
       var pos = position || "center";
-      if (pos instanceof unify.ui.core.Widget) {
+      // TODO:
+      if (pos.constructor) {
         if (widget.setTrigger) {
           widget.setTrigger(pos);
           pos = widget.getPositionHint();

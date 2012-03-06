@@ -79,7 +79,7 @@ core.Class("unify.ui.container.Overlay", {
    * @param noArrow {Boolean?} set to true if overlay should not have an arrow element
    */
   construct : function(noArrow) {
-    this.base(arguments, new unify.ui.layout.special.OverlayLayout());
+    unify.ui.container.Composite.call(this, new unify.ui.layout.special.OverlayLayout());
     unify.ui.core.MChildControl.call(this);
     
     this.addListener("appearance", this.__syncAppearance, this);
@@ -144,7 +144,8 @@ core.Class("unify.ui.container.Overlay", {
     
     //overridden, calculate overlaysize as content size + arrow size depending on arrow direction
     _computeSizeHint: function(){
-      var hint=this.base(arguments);
+      
+      var hint=unify.ui.container.Composite.prototype._computeSizeHint.call(this);
       
       if(this.getHasArrow()){
         var arrow=this.getChildControl("arrow");
@@ -166,7 +167,7 @@ core.Class("unify.ui.container.Overlay", {
      * if the overlay has an arrow, the arrows pointing edge is used as reference
      */
     getPositionHint : function() {
-      qx.ui.core.queue.Manager.flush();//make sure appearance is applied
+      unify.ui.layout.queue.Manager.flush(); // make sure appearance is applied
       
       var left = 0;
       var top = 0;
@@ -318,7 +319,7 @@ core.Class("unify.ui.container.Overlay", {
      * Shows overlay
      */
     show : function() {
-      this.base(arguments);
+      unify.ui.container.Composite.prototype.show.call(this);
       
       var trigger = this.getTrigger();
       if(trigger){
@@ -331,7 +332,7 @@ core.Class("unify.ui.container.Overlay", {
      * Hides overlay
      */
     hide : function() {
-      this.base(arguments);
+      unify.ui.container.Composite.prototype.hide.call(this);
       
       var trigger = this.getTrigger();
       if(trigger){

@@ -17,7 +17,7 @@ core.Class("unify.ui.form.Combobox", {
 
   events : {
     /** Execute event when button is tapped */
-    "execute" : lowland.events.Event
+    "execute" : lowland.events.DataEvent
   },
 
   /**
@@ -28,7 +28,7 @@ core.Class("unify.ui.form.Combobox", {
     unify.ui.basic.Atom.call(this, label, image);
     //unify.ui.core.MChildControl.call(this);
     
-    this.addListener("tap", this.__onTap, this);
+    //this.addListener("tap", this.__onTap, this);
   },
 
   properties: {
@@ -56,13 +56,13 @@ core.Class("unify.ui.form.Combobox", {
     __selected : null,
     __overlay : null,
     
-    /*_createElement : function() {
-      var e = this.base(arguments);
+    _createElement : function() {
+      var e = unify.ui.basic.Atom.prototype._createElement.call(this);
 
-      qx.event.Registration.addListener(e, "tap", this.__onTap, this);
+      lowland.bom.Events.listen(e, "tap", this.__onTap.bind(this));
 
       return e;
-    },*/
+    },
     
     __getEntryById : function(id) {
       var data = this.getData();

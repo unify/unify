@@ -91,6 +91,9 @@
       getStyle : function() {
         return unify.ui.core.MRemoteChildrenHandling.prototype.getStyle.apply(this, arguments);
       },
+      removeAll : function() {
+        unify.ui.core.MRemoteChildrenHandling.prototype.removeAll.apply(this, arguments);
+      },
       // TODO DONE
       
       getModal : function() {

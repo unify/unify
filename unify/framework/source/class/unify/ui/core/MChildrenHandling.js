@@ -33,6 +33,10 @@ core.Class("unify.ui.core.MChildrenHandling", {
     
     setLayout : function() {
       this._setLayout.apply(this, arguments);
+    },
+    
+    removeAll : function() {
+      this._removeAll.apply(this, arguments);
     }
   }
 });

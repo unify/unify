@@ -2010,7 +2010,9 @@ core.Class("unify.ui.core.Widget", {
     __removeHelper : function(child)
     {
       if (core.Env.getValue("debug")) {
-        this.assertNotUndefined(child);
+        if (!child) {
+          throw new Error("Can not remove undefined child!");
+        }
       }
 
       if (child.getParentBox() !== this) {

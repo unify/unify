@@ -195,7 +195,7 @@ core.Class("unify.view.helper.ViewOverlayManager", {
         var widget = overlay.getUserData("viewmanager");
         this.__visibleViewManagers.remove(widget);
         
-        this.fireEvent("hide", widget.getId());
+        this.fireEvent("hide", (widget&&widget.getId()) || null);
       }
     },
 
