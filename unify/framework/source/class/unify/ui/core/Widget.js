@@ -750,13 +750,15 @@ qx.Class.define("unify.ui.core.Widget", {
      * @param preventSize {Boolean?null} Prevent size of widget and ignore layout hints, use with care!
      */
     renderLayout : function(left, top, width, height, preventSize) {
+      var userOverride = this.getUserData("domElementPositionOverride");
+
       var dimension = this.__dimensionInfo = {
         width: width,
         height: height
       };
       var changes = this.base(arguments, left, top, width, height);
 
-      if(!changes) {
+      if(!changes && !userOverride) {
         return;
       }
 
@@ -780,6 +782,12 @@ qx.Class.define("unify.ui.core.Widget", {
             if (qx.core.Environment.get("qx.debug")) {
               this.warn("No parent widget set, so virtual position is set to 0/0")
             }
+          }
+
+          if (userOverride) {
+            left = userOverride.newPosition.left;
+            top = userOverride.newPosition.top;
+            parentVirtualPosition = {left: 0, top: 0};
           }
 
           qx.bom.element.Style.setStyles(element, {

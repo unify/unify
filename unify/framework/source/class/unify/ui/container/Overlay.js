@@ -327,6 +327,9 @@ qx.Class.define("unify.ui.container.Overlay", {
       if(trigger){
         trigger.addListener("move",this._onTriggerChange,this);
         trigger.addListener("resize",this._onTriggerChange,this);
+        if (trigger.getHoverForPopover && trigger.getHoverForPopover()) {
+          unify.ui.core.Util.domElementToRootLevel(trigger);
+        }
       }
     },
     
@@ -340,6 +343,10 @@ qx.Class.define("unify.ui.container.Overlay", {
       if(trigger){
         trigger.removeListener("move",this._onTriggerChange,this);
         trigger.removeListener("resize",this._onTriggerChange,this);
+        
+        if (trigger.getHoverForPopover && trigger.getHoverForPopover()) {
+          unify.ui.core.Util.domElementToTreeLevel(trigger);
+        }
       }
     },
 

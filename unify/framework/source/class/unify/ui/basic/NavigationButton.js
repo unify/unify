@@ -19,6 +19,12 @@ qx.Class.define("unify.ui.basic.NavigationButton", {
 
   include : [unify.ui.core.MNavigatable],
   
+  properties : {
+    hoverForPopover : {
+      init: false
+    }
+  },
+  
   /**
    * @param label {String} Label on button
    */
