@@ -50,35 +50,34 @@ qx.Class.define("unify.view.SysInfo",
     // overridden
     _createView : function()
     {
-      var layer = new unify.ui.Layer(this);
-
-      var toolbar = new unify.ui.ToolBar;
+      var toolbar = new unify.ui.container.ToolBar();
       toolbar.setItems(
       [
         {
-          kind : "spacer"
-        },
-        {
           kind : "segmented",
           view : this,
+          position: "center",
           buttons :
           [
             { label : "Basics", segment : "basics" },
             { label : "Environment", segment : "env" },
             { label : "Features", segment : "features" }
           ]
-        },
-        {
-          kind : "spacer"
         }
       ]);
-      layer.add(toolbar);
+      this.add(toolbar);
       
-      var scrollview = this.__content = new unify.ui.ScrollView(this);
+      var scrollview = this.__content = new unify.ui.container.Scroll(new unify.ui.layout.VBox());
       scrollview.setEnableScrollX(false);
-      layer.add(scrollview);
-
-      return layer;
+      
+      var list = this.__content = new unify.ui.container.List();
+      scrollview.add(list, {
+        flex: 1
+      });
+      
+      this.add(scrollview, {
+        flex: 1
+      });
     },
 
 
@@ -107,23 +106,7 @@ qx.Class.define("unify.view.SysInfo",
     // overridden
     _renderData : function(data)
     {
-      var html = "";
-      var header, fields, title;
-      for (header in data)
-      {
-        html += "<h2>" + header + "</h2>";
-        html += "<ul>";
-
-        fields = data[header];
-        for (title in fields) {
-          html += "<li><label>" + title + "</label><span>" + fields[title] + "</span></li>";
-        }
-
-        html += "</ul>";
-      }
-
-      this.__content.replace(html);
-      this.__content.scrollTo(0, 0, false);
+      this.__content.setData(data);
     }
   }
 });

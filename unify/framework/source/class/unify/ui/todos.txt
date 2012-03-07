@@ -1,0 +1,4 @@
+Add ActivityIndicator
+Add slide view
+Add segmented control to toolbar
+

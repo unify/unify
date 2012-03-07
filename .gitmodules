@@ -1,9 +1,9 @@
 [submodule "qooxdoo"]
 	path = qooxdoo
-	url = https://github.com/unify/qooxdoo.git
-[submodule "support/phonegap-iphone"]
-	path = support/phonegap-iphone
-	url = https://github.com/unify/phonegap-iphone.git
-[submodule "support/phonegap-android"]
-	path = support/phonegap-android
-	url = https://github.com/unify/phonegap-android.git
+	url = http://github.com/unify/qooxdoo.git
+[submodule "support/cordova-ios"]
+	path = support/cordova-ios
+	url = http://github.com/unify/incubator-cordova-ios
+[submodule "support/cordova-android"]
+	path = support/cordova-android
+	url = http://github.com/unify/incubator-cordova-android

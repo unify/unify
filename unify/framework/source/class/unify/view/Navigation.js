@@ -63,7 +63,7 @@ qx.Class.define("unify.view.Navigation",
      *
      * @param viewManager {unify.view.ViewManager} View manager instance
      */
-    add : function(viewManager)
+    register : function(viewManager)
     {
       var managerId = viewManager.getId();
 
@@ -92,7 +92,13 @@ qx.Class.define("unify.view.Navigation",
 
       // Restore path from storage or use default view
       var path = unify.bom.Storage.get("navigation-path");
-
+      var pathObj=unify.view.Path.fromString(path);
+      if(!this.isValidNavigationPath(pathObj)){
+        if(qx.core.Environment.get("qx.debug")){
+          this.debug("stored path is invalid, using default path instead");
+          path="";
+        }
+      }
       // Call history to initialize application
       this.__historyInit = true;
       History.init(path);
@@ -154,6 +160,9 @@ qx.Class.define("unify.view.Navigation",
         }
       }
 
+      if(!this.isValidNavigationPath(path)){
+        throw new Error("invalid path: "+path.serialize());
+      }
       var usedManagers = {};
       var lastManagerId = null;
       var managers = this.__viewManagers;
@@ -172,16 +181,6 @@ qx.Class.define("unify.view.Navigation",
           }
         }
 
-        if (qx.core.Environment.get("qx.debug"))
-        {
-          if (!viewObj) 
-          {
-            // Navigate to valid path before throwing an exception
-            viewManager.navigate(managerPath);
-            throw new Error("Could not find view: " + fragment.view);
-          }
-        }
-
         if (!lastManagerId) {
           lastManagerId = managerId;
         }
@@ -192,13 +191,6 @@ qx.Class.define("unify.view.Navigation",
         }
         else
         {
-          if (qx.core.Environment.get("qx.debug"))
-          {
-            if (managerId in usedManagers) {
-              throw new Error("View manager was re-used in two different path. Invalid segment!");
-            }
-          }
-
           // Update last manager
           managers[lastManagerId].navigate(managerPath);
 
@@ -217,7 +209,66 @@ qx.Class.define("unify.view.Navigation",
       viewManager.navigate(managerPath);
     },
 
+    /**
+     * tests if path is valid for navigation
+     * 
+     * to be valid, 
+     * 1. all mentioned views need to registered with a viewmanager that is registered for navigation
+     * 2. all views that belong to the same viewmanager have to be a continous subarray 
+     * eg. 
+     * ViewManager 1 has views foo and bar, ViewManager 2 has view baz
+     * valid: foo/bar/baz , foo/bar , foo/baz, /baz/foo/bar
+     * invalid: foo/baz/bar
+     * 
+     * @param path {unify.view.Path} Path object
+     * @return {Boolean] true, if the path is valid for navigation
+     */
+    isValidNavigationPath: function(path){
 
+      var usedManagers = {};
+      var lastManagerId = null;
+      var managers = this.__viewManagers;
+
+
+      for (var i=0, l=path.length; i<l; i++)
+      {
+        var fragment = path[i];
+        var viewId=fragment.view;
+        var view=null;
+        for (var managerId in managers)
+        {
+          var viewManager = managers[managerId];
+          view = viewManager.getView(viewId);
+          if (view) {
+            break;
+          }
+        }
+        if(!view){
+          if (qx.core.Environment.get("qx.debug")){
+            this.debug("invalid path: no viewmanager found that has view with id "+viewId);
+          }
+          return false;
+        }
+
+        if (managerId != lastManagerId)
+        {
+          if (managerId in usedManagers) {
+            if (qx.core.Environment.get("qx.debug")){
+              this.debug("invalid path: views of viewmanager "+managerId+" occur in different sections");
+            }
+            return false;
+          } else {
+            // Remember all used managers (for validity analysis)
+            usedManagers[managerId] = true;
+  
+            // Rotate variable
+            lastManagerId = managerId;
+          }
+        }
+      }
+      return true;
+    },
+    
     /**
      * Reacts on (local) path changes of all registered view managers
      *
@@ -231,16 +282,13 @@ qx.Class.define("unify.view.Navigation",
       }
 
       var changed = e.getTarget();
-      var reset = false;
+
       var path = this.__path = new unify.view.Path;
 
       var viewManagers = this.__viewManagers;
       for (var id in viewManagers)
       {
         var manager = viewManagers[id];
-        if (reset) {
-          manager.reset();
-        }
 
         var localPath = manager.getPath();
         if (localPath != null)
@@ -248,11 +296,6 @@ qx.Class.define("unify.view.Navigation",
           for (var i=0, l=localPath.length; i<l; i++) {
             path.push(localPath[i])
           }
-        }
-
-        // Reset all managers after the changed one
-        if (manager == changed) {
-          reset = true;
         }
       }
 

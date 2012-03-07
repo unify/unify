@@ -13,39 +13,44 @@
 #require(qx.event.handler.Orientation)
 
 *********************************************************************************************** */
-
 /**
  * A manager for a so-called split screen.
  *
  */
 qx.Class.define("unify.view.SplitViewManager",
 {
-  extend : qx.core.Object,
+  extend : unify.ui.container.Composite,
 
   /*
   *****************************************************************************
      CONSTRUCTOR
   *****************************************************************************
   */
-  
+
   /**
-   * @param masterViewManager {unify.view.ViewManager} The master view manager 
+   * @param masterViewManager {unify.view.ViewManager} The master view manager
    * @param detailViewManager {unify.view.ViewManager} The detail view manager
+   * @param layout {qx.ui.layout.Abstract?null} Optional other layout manager than special splitview one
    */
-  construct : function(masterViewManager, detailViewManager)
+  construct : function(masterViewManager, detailViewManager, layout)
   {
-    this.base(arguments);
+    this.base(arguments, layout || new unify.ui.layout.special.SplitView());
 
     this.__masterViewManager = masterViewManager;
     this.__detailViewManager = detailViewManager;
-    
+
     // Configure view manager relation
     detailViewManager.setMaster(masterViewManager);
-    
+
     // Attach to rotate event to control view manager visibility
     qx.event.Registration.addListener(window, "orientationchange", this.__onRotate, this);
+
+    this.add(masterViewManager);
+    this.add(detailViewManager);
+
+    this.__onRotate();
   },
-  
+
 
 
   /*
@@ -53,18 +58,16 @@ qx.Class.define("unify.view.SplitViewManager",
      MEMBERS
   *****************************************************************************
   */
-  
+
   members :
   {
-    __element : null,
-  
     /** {unify.view.ViewManager} The master view manager */
     __masterViewManager : null,
 
     /** {unify.view.ViewManager} The detail view manager */
     __detailViewManager : null,
-    
-    
+
+
     /**
      * Reacts on rotate event of window
      *
@@ -72,28 +75,28 @@ qx.Class.define("unify.view.SplitViewManager",
      */
     __onRotate : function(e)
     {
-      var elem = this.__element;
+      var elem = this.getElement();
       if (!elem) {
         return;
       }
 
       var master = this.__masterViewManager;
-      var masterElem = master.getElement();
-      var PopOverManager = unify.view.PopOverManager.getInstance();
+
+      var ViewOverlayManager = unify.view.helper.ViewOverlayManager.getInstance();
       var oldOrient = elem.getAttribute("orient");
 
-      var isLandscape=qx.bom.Viewport.isLandscape();
+      var isLandscape=!this.isPortrait();
 
       if(isLandscape){
         if(oldOrient != "landscape"){
           if (qx.core.Environment.get("qx.debug")) {
             this.debug("Switching to landscape layout");
           }
-          PopOverManager.hide(master.getId(),true);
+          ViewOverlayManager.hide(master.getId(),true);
           elem.setAttribute("orient", "landscape");
-          elem.insertBefore(masterElem, elem.firstChild);
+
           master.setDisplayMode('default');
-          master.show();
+
         }
       } else {
         if(oldOrient != "portrait"){
@@ -105,39 +108,30 @@ qx.Class.define("unify.view.SplitViewManager",
         }
       }
     },
-    
-  
+
     /**
-     * Returns the root element of the split screen
-     *
-     * @return {Element} DOM element of split screen
+     * Inlines the master view manager into the split view
      */
-    getElement : function()
-    {
-      var elem = this.__element;
-      if (!elem)
-      {
-        var isLandscape=qx.bom.Viewport.isLandscape();
-        var elem = this.__element = document.createElement("div");
-        elem.className = "split-view";
-        elem.setAttribute("orient", isLandscape ? "landscape" : "portrait");
+    inlineMasterView : function() {
+      var masterWidget = this.__masterViewManager;
+      this.addAt(masterWidget, 0);
+      masterWidget.show();
+    },
 
-        var master = this.__masterViewManager;
-        var detail = this.__detailViewManager;
-        
-        if (isLandscape)
-        {
-          elem.insertBefore(master.getElement(), elem.firstChild);
-        } 
-        else 
-        {
-          master.setDisplayMode('popover');
-        }
-        
-        elem.appendChild(detail.getElement());
+    /**
+     * Returns if view is in portrait mode
+     *
+     * @param renderWidth {Number?null} Optional render width if known
+     * @param renderHeight {Number?null} Optional render height if known
+     *
+     * @return {Boolean} View is in portrait mode
+     */
+    isPortrait : function(renderWidth, renderHeight) {
+      if (renderWidth && renderHeight) {
+        return renderWidth < renderHeight;
+      } else {
+        return !qx.bom.Viewport.isLandscape();
       }
-
-      return elem;
     }
   }
 });

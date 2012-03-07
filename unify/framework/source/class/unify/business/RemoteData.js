@@ -4,7 +4,7 @@
 
     Homepage: unify-project.org
     License: MIT + Apache (V2)
-    Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
+    Copyright: 2009-2011 Deutsche Telekom AG, Germany, http://telekom.com
 
 *********************************************************************************************** */
 /**
@@ -376,7 +376,8 @@ qx.Class.define("unify.business.RemoteData",
      * @return {String} Unique ID to identify service/param combination in the "completed" event
      */
     options : function(service, params) {
-      return this.__communicate(service, params, "OPTIONS");
+      var id = this._getCommunicationId();
+      return this._communicate(service, params, "OPTIONS", id);
     },
 
 
@@ -388,7 +389,8 @@ qx.Class.define("unify.business.RemoteData",
      * @return {String} Unique ID to identify service/param combination in the "completed" event
      */
     get : function(service, params) {
-      return this.__communicate(service, params, "GET");
+      var id = this._getCommunicationId();
+      return this._communicate(service, params, "GET", id);
     },
 
 
@@ -401,7 +403,8 @@ qx.Class.define("unify.business.RemoteData",
      * @return {String} Unique ID to identify service/param combination in the "completed" event
      */
     post : function(service, params, data) {
-      return this.__communicate(service, params, "POST", data);
+      var id = this._getCommunicationId();
+      return this._communicate(service, params, "POST", id, data);
     },
 
 
@@ -413,7 +416,8 @@ qx.Class.define("unify.business.RemoteData",
      * @return {String} Unique ID to identify service/param combination in the "completed" event
      */
     put : function(service, params) {
-      return this.__communicate(service, params, "PUT");
+      var id = this._getCommunicationId();
+      return this._communicate(service, params, "PUT", id);
     },
 
 
@@ -425,7 +429,8 @@ qx.Class.define("unify.business.RemoteData",
      * @return {String} Unique ID to identify service/param combination in the "completed" event
      */
     del : function(service, params) {
-      return this.__communicate(service, params, "DELETE");
+      var id = this._getCommunicationId();
+      return this._communicate(service, params, "DELETE", id);
     },
 
 
@@ -437,7 +442,8 @@ qx.Class.define("unify.business.RemoteData",
      * @return {String} Unique ID to identify service/param combination in the "completed" event
      */
     head : function(service, params) {
-      return this.__communicate(service, params, "HEAD");
+      var id = this._getCommunicationId();
+      return this._communicate(service, params, "HEAD", id);
     },
 
 
@@ -452,8 +458,8 @@ qx.Class.define("unify.business.RemoteData",
      * override this if you want to prevent caching of data based on arbitrary conditions
      * use keep: 0 service configuration to prevent caching altogether!
      *
-     * @param data
-     * @return {Boolean}
+     * @param data {Var} Caching data
+     * @return {Boolean} Is caching allowed?
      */
     _allowCaching: function(data){
        return true;
@@ -478,6 +484,11 @@ qx.Class.define("unify.business.RemoteData",
 
     /** {Map} Custom request headers */
     __headers : null,
+
+
+    _getCommunicationId : function() {
+      return this.__requestCounter++;
+    },
 
 
     /**
@@ -553,6 +564,12 @@ qx.Class.define("unify.business.RemoteData",
       this.__headers[name] = value;
     },
 
+    /**
+     * Checks if request is marked as modified
+     *
+     * @param req {qx.io.remote.Request} Request object
+     * @return {Boolean} Whether the resource is modified
+     */
     __isModified : function(req) {
       return !(req.getStatus() === 304 || req.getResponseHeader("Last-Modified") === unify.business.SyncRegistry.get(req.getUrl()));
     },
@@ -563,10 +580,11 @@ qx.Class.define("unify.business.RemoteData",
      * @param service {String} Identifier of the service to communicate to
      * @param params {Map?null} Optional map of parameters to patch URL with / use for filter method
      * @param method {String} Any supported HTTP method: OPTIONS, GET, POST, PUT, DELETE and HEAD
+     * @param id {Integer} Unique id of request, can be generated via _getCommunicationId
      * @param data {var?null} Data to attach to a POST request
      * @return {String} Returns a unique ID based on the service/param combination
      */
-    __communicate : function(service, params, method, data)
+    _communicate : function(service, params, method, id, data)
     {
       var config = this._getService(service);
 
@@ -651,7 +669,6 @@ qx.Class.define("unify.business.RemoteData",
       req.setUserData("params", params);
 
       // Every request has a unique identifier
-      var id = this.__requestCounter++;
       req.setUserData("id", id);
       if (qx.core.Environment.get("qx.debug")) {
         this.debug("Sending request to: " + service + "[id=" + id + "]...");
@@ -677,9 +694,10 @@ qx.Class.define("unify.business.RemoteData",
       // Read event data
       var req = e.getTarget();
       var eventType = e.getType();
-      var isErrornous = eventType == "error" || eventType == "timeout";
+      var status = req.getStatus();
+      var isErrornous = eventType == "error" || eventType == "timeout" || (status >= 400);
       var isMalformed = eventType == "timeout";
-
+      
       // Read request specific data
       var id = req.getUserData("id");
       var service = req.getUserData("service");
@@ -695,7 +713,7 @@ qx.Class.define("unify.business.RemoteData",
       var start;
 
       // Prepare data (Parse JSON/XML)
-      var isModified = !isMalformed && this.__isModified(req);
+      var isModified = !isErrornous && !isMalformed && this.__isModified(req);
       if (isModified)
       {
         if (qx.core.Environment.get("qx.debug")) {
@@ -747,7 +765,7 @@ qx.Class.define("unify.business.RemoteData",
           }
         }
 
-        if (this.getEnableNoContent() && req.getStatusCode() == 204)
+        if (this.getEnableNoContent() && req.getStatus() == 204)
         {
           // pass: not modified + no content
         }
@@ -874,8 +892,9 @@ qx.Class.define("unify.business.RemoteData",
     },
     /**
      * removes localStorage entries of a service that have not been accessed within its keep time
-     * @param serviceName
-     * @param expiredWhenCheckedBefore
+     * 
+     * @param serviceName {String} Service name to purge cache of
+     * @param expiredWhenCheckedBefore {Integer} Last check as timestamp
      */
     __purgeCache : function(serviceName,expiredWhenCheckedBefore) {
 

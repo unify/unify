@@ -27,11 +27,13 @@
 
   "let" :
   {
-    "QOOXDOO_PATH"      : "../../qooxdoo/qooxdoo",
+    "QOOXDOO_PATH"      : "../../qooxdoo",
     "UNIFY_PATH"        : ".",
     "APIVIEWER_PATH"    : "${QOOXDOO_PATH}/component/apiviewer",
     "TESTRUNNER_PATH"   : "${QOOXDOO_PATH}/component/testrunner",
     "APPLICATION"       : "${APP_NAME}",
+    
+    "OPTIMIZE"     : ["basecalls", "variables", "privates", "strings", "variants", "comments"],
     
     "QXVERSION"         : "1.5.0-unify"
   },
@@ -85,7 +87,8 @@
         "qx.mobile.nativescroll" :  false,
         "qx.application" :          "${APP_NAME}.Application",
         "qx.dynlocale" :            false,
-        "qx.aspects" :              false
+        "qx.aspects" :              false,
+        "unify.widgets" :           true
       }
 
     },
@@ -102,11 +105,6 @@
     {
       "extend" : [ "unify-core" ],
       
-      "shell" : 
-      {
-        "command" : "python ${UNIFY_PATH}/tool/sass.py ${APP_PATH}/source/resource/${APP_NAME}/style.sass ${APP_PATH}/source/resource/${APP_NAME}/style.css"
-      },
-
       "include" :
       [
         "${APP_NAME}.Application"
@@ -137,7 +135,7 @@
         {
           "format"   : false,
           "locales"  : "${APP_LOCALES}",
-          "optimize" : [ "variables", "privates", "basecalls" ]
+          "optimize" : "${OPTIMIZE}"
         }
       },     
       

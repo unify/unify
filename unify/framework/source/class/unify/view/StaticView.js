@@ -31,8 +31,9 @@
  */
 qx.Class.define("unify.view.StaticView",
 {
-  extend : qx.core.Object,
-  include : [qx.locale.MTranslation],
+  //extend : qx.core.Object,
+  extend: unify.ui.container.Composite,
+  include : [qx.locale.MTranslation, unify.fx.MWidgetAnimation],
   type : "abstract",
   
   
@@ -42,11 +43,11 @@ qx.Class.define("unify.view.StaticView",
   *****************************************************************************
   */  
   
-  construct : function()
+  construct : function(layout)
   {
-    this.base(arguments);
+    this.base(arguments, layout || new unify.ui.layout.VBox());
     
-    this.__id = qx.lang.String.hyphenate(this.constructor.basename).toLowerCase();
+    this.__id = qx.lang.String.hyphenate(this.constructor.basename).substring(1).toLowerCase();
   },
   
 
@@ -140,6 +141,11 @@ qx.Class.define("unify.view.StaticView",
       nullable : true,
       apply : "_applySegment",
       event : "changeSegment"
+    },
+    
+    appearance : {
+      refine: true,
+      init: "view"
     }
   },
 
@@ -205,7 +211,11 @@ qx.Class.define("unify.view.StaticView",
      * @return {Element} DOM element of the view (root element)
      */
     getElement : function() {
-      return this.getLayer().getElement();
+      //return this.getLayer().getElement();
+      //console.error("getElement");
+      var e = this.base(arguments);
+      qx.bom.element.Class.add(e, "layer");
+      return e;
     },
 
 
@@ -246,29 +256,12 @@ qx.Class.define("unify.view.StaticView",
      */
     create : function()
     {
-      if (qx.core.Environment.get("qx.debug"))
-      {
-        if (this.__layer) {
-          throw new Error(this.toString + ": Is already created!");
-        }
-      }
-
-      // Create and store layer reference
-      var now = (new Date).valueOf();
-      var layer = this.__layer = this._createView();
-      
-      // Configure CSS classes
-      var layerElem = layer.getElement();
-      var Class = qx.bom.element.Class;
-
-      if (this.getParent()) {
-        Class.add(layerElem, "has-parent");
-      }
-
+      var now = +(new Date());
+      this._createView();
       if (qx.core.Environment.get("qx.debug")) {
-        this.debug("Created in: " + ((new Date).valueOf() - now) + "ms");
+        this.debug("Created in: " + ((new Date()) - now) + "ms");
       }
-      return layer;
+      this.__layer = true;
     },
 
 
@@ -345,19 +338,7 @@ qx.Class.define("unify.view.StaticView",
     
     
     // property apply
-    _applyParent : function(value, old)
-    {
-      var layer = this.__layer;
-      if (layer && !!old != !!value) 
-      {
-        var Class = qx.bom.element.Class;
-        var layerElem = layer.getElement();
-        if (value) {
-          Class.add(layerElem, "has-parent");
-        } else {
-          Class.remove(layerElem, "has-parent");
-        }
-      }      
+    _applyParent : function() {   
     },
     
     
@@ -370,24 +351,6 @@ qx.Class.define("unify.view.StaticView",
     // property apply
     _applySegment : function() {
       // nothing to do here
-    }
-  },
-
-
-
-
-  /*
-  *****************************************************************************
-     DESTRUCTOR
-  *****************************************************************************
-  */
-
-  destruct : function() 
-  {
-    if (this.__layer)
-    {
-      this.__layer.dispose();
-      this.__layer = null;
     }
   }
 });

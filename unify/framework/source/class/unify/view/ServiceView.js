@@ -180,6 +180,13 @@ qx.Class.define("unify.view.ServiceView",
       var now = (new Date).valueOf();
       try{
         this._renderData(data);
+        
+        if (qx.core.Environment.get("unify.widgets")) {
+          // Do explicit flush to prevent layouting while animate
+          if (data) {
+            qx.ui.core.queue.Manager.flush();
+          }
+        }
       } catch(ex) {
         this.error("Failed to render \"" + this._getServiceName() + "\" data: " + ex);
         this._errorHandler("renderer", ex);

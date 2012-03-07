@@ -103,7 +103,7 @@ qx.Class.define("unify.view.Path",
     {
       var obj = new unify.view.Path;
 
-      if (str.length > 0)
+      if (str && str.length > 0)
       {
         var fragments = str.split("/");
         for (var i=0, l=fragments.length; i<l; i++) {
@@ -115,8 +115,8 @@ qx.Class.define("unify.view.Path",
     },
 
 
-    /** {RegExp} Matches location fragments */
-    __fragmentMatcher : /^([a-z-]+)?(\.([a-z-]+))?(\:([a-zA-Z0-9_-]+))?$/,
+    /** {RegExp} Matches location fragments (view.segment:param) */
+    __fragmentMatcher : /^([a-z0-9-]+)?(\.([a-z-]+))?(\:([a-zA-Z0-9_%=-]+))?$/,
 
 
     /**
@@ -140,6 +140,21 @@ qx.Class.define("unify.view.Path",
         segment : RegExp.$3 || null,
         param : RegExp.$5 || null
       };
+    },
+    
+    /**
+     * Checks wheter all single chunks of paths are equal.
+     *
+     * @param a {unify.view.Path} Path a
+     * @param b {unify.view.Path} Path b
+     *
+     * @return {Boolean} true if paths are equal, otherwise false
+     */
+    chunkEquals : function(a, b) {
+      if (!a || !b) {
+        return false;
+      }
+      return (a.view == b.view && a.segment == b.segment && a.param == b.param);
     }
   }
 });

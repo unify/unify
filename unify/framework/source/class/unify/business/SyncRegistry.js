@@ -8,6 +8,9 @@
 
 *********************************************************************************************** */
 
+/**
+ * Class to manage syncs
+ */
 qx.Class.define("unify.business.SyncRegistry", {
   statics : {
     /** Cached for modification dates of already loaded URLs */
@@ -22,17 +25,28 @@ qx.Class.define("unify.business.SyncRegistry", {
      * unnecessary data transfers.
      *
      * @param url {String} Any valid URL
-     * @param modification {String} A modification data as send with the
+     * @param modified {String} A modification data as send with the
      *   "Last-Modified" header by the server.
      */
     sync : function(url, modified) {
       this.__modified[url] = modified;
     },
     
+    /**
+     * Clears information
+     *
+     * @param url {String} URL of resource
+     */
     clear : function(url) {
       delete this.__modified[url];
     },
     
+    /**
+     * Get modified object
+     *
+     * @param url {String} URL of resource
+     * @return {String} Modification date string
+     */
     get : function(url) {
       return this.__modified[url];
     }

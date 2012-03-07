@@ -8,11 +8,17 @@
 
 *********************************************************************************************** */
 
+/**
+ * Local storage abstraction and helper class
+ */
 qx.Class.define("unify.bom.Storage",
 {
   statics :
   {
+    /** Local storage object */
     __localStorage : !!window.localStorage,
+    
+    /** Prefix to use in storage */
     __prefix : null,
     
     /**
