@@ -33,8 +33,6 @@ core.Class("unify.ui.layout.VBox", {
   },
   
   members : {
-    __childrenCache : null,
-    
     renderLayout : function(availWidth, availHeight) {
       if (this._invalidChildrenCache) {
         this.__rebuildChildrenCache();
@@ -45,7 +43,6 @@ core.Class("unify.ui.layout.VBox", {
       var hasFlex = this.__hasFlex;
       var hasNoFlex = this.__hasNoFlex;
       var sizeCache = this.__sizeCache;
-      var cache = this.__childrenCache;
       var i, ii;
       
       if (hasFlex.length > 0) {
@@ -68,7 +65,7 @@ core.Class("unify.ui.layout.VBox", {
         }
       }
       
-      for (i=0,ii=cache.length; i<ii; i++) {
+      for (i=0,ii=sizeCache.length; i<ii; i++) {
         var element = sizeCache[i];
         var widget = element.widget;
         var calc = element.properties;
@@ -106,16 +103,52 @@ core.Class("unify.ui.layout.VBox", {
         this.__rebuildChildrenCache();
       }
       
-      var cache = this.__childrenCache;
-      for (var i=0,ii=cache.length; i<ii; i++) {
-        var widget = cache[i];
+      var space = this.getSpacing();
+      var sizeCache = this.__sizeCache;
+      var i, ii;
+      
+      var minWidth = 0;
+      var width = 0;
+      var minHeight = 0;
+      var height = 0;
+      
+      for (i=0,ii=sizeCache.length; i<ii; i++) {
+        var element = sizeCache[i];
+        var widget = element.widget;
+        var calc = element.properties;
+        var size = element.size;
+        
+        var horizontalGap = unify.ui.layout.Util.calculateHorizontalGap(widget);
+        var verticalGap = unify.ui.layout.Util.calculateVerticalGap(widget);
+        var ownMinWidth = size.minWidth + horizontalGap;
+        var ownWidth = size.width + horizontalGap;
+        
+        if (ownMinWidth > minWidth) {
+          minWidth = ownMinWidth;
+        }
+        if (ownWidth > width) {
+          width = ownWidth;
+        }
+        
+        minHeight += verticalGap + size.minHeight;
+        height += verticalGap + size.height;
+        
+        if (i > 0) {
+          minHeight += space;
+          height += space;
+        }
       }
       
-      return null;
+      return {
+        width: width,
+        minWidth: minWidth,
+        height: height,
+        minHeight: minHeight
+      };
     },
     
     __rebuildChildrenCache : function() {
-      var children = this.__childrenCache = this._getLayoutChildren();
+      var children = this._getLayoutChildren();
       var flex = this.__hasFlex = [];
       var noFlex = this.__hasNoFlex = [];
       var sizes = this.__sizeCache = [];

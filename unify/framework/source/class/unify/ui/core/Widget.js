@@ -443,8 +443,8 @@ core.Class("unify.ui.core.Widget", {
     },
 
     // overridden
-    _computeSizeHint : function()
-    {
+    _computeSizeHint : function() {
+      
       // Start with the user defined values
       var width = this.getWidth();
       var minWidth = this.getMinWidth();

@@ -52,7 +52,7 @@ core.Class("unify.ui.layout.Canvas", {
         var cright = calc.right;
         var cbottom = calc.bottom;
         
-        if (cleft) {
+        if (cleft != null) {
           if (cleft == "center") {
             left = Math.round(availWidth / 2 - (size.width+leftGap+rightGap) / 2);
             cright = null;
@@ -63,7 +63,7 @@ core.Class("unify.ui.layout.Canvas", {
           }
         }
         
-        if (ctop) {
+        if (ctop != null) {
           if (ctop == "center") {
             top = Math.round(availHeight / 2 - (size.height+topGap+bottomGap) / 2);
             cbottom = null;
@@ -74,7 +74,7 @@ core.Class("unify.ui.layout.Canvas", {
           }
         }
         
-        if (cright) {
+        if (cright != null) {
           if (typeof(cright) == "string" && cright.indexOf("%") > -1) {
             right = Math.round(availWidth * parseInt(ctop, 10) / 100) - rightGap;
           } else {
@@ -82,7 +82,7 @@ core.Class("unify.ui.layout.Canvas", {
           }
         }
         
-        if (cbottom) {
+        if (cbottom != null) {
           if (typeof(cbottom) == "string" && cbottom.indexOf("%") > -1) {
             bottom = Math.round(availWidth * parseInt(ctop, 10) / 100) - bottomGap;
           } else {
@@ -125,6 +125,8 @@ core.Class("unify.ui.layout.Canvas", {
       var cache = this.__childrenCache;
       for (var i=0,ii=cache.length; i<ii; i++) {
         var widget = cache[i];
+        var calc = widget.getLayoutProperties();
+        var size = widget.getSizeHint();
       }
       
       return null;
