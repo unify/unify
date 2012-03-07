@@ -524,7 +524,7 @@ qx.Class.define("unify.ui.container.Scroll", {
      */
     __onMouseWheel : function(e) {
       var left = this.getScrollLeft();
-      var top = this.getScrollTop() + e.getWheelDelta() * 20;
+      var top = this.getScrollTop() + e.getWheelDelta() * 70;
       
       this.scrollTo(left, top, true);
     },
