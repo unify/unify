@@ -21,6 +21,13 @@ qx.Class.define("unify.ui.basic.Atom", {
    */
   construct : function(label, image) {
     this.base(arguments);
+    
+    this._forwardStates = {
+      "hover" : true,
+      "pressed" : true,
+      "checked" : true
+    };
+    
     this._setLayout(new unify.ui.layout.special.AtomLayout());
     if (label) {
       this.setText(label);
