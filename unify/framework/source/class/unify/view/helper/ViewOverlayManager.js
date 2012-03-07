@@ -62,6 +62,9 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
     
     __overlays : null,
     
+    __currentViewManager : null,
+    __currentOverlay : null,
+    
     /**
      * Set styles for a specific viewManager
      *
@@ -80,6 +83,20 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
      */
     getStyles : function(viewManager) {
       return this.__styleRegistry[viewManager];
+    },
+    
+    /**
+     * Get current visible view manager
+     */
+    getCurrentViewManager : function() {
+      return this.__currentViewManager;
+    },
+    
+    /**
+     * Get current visible overlay
+     */
+    getCurrentOverlay : function() {
+      return this.__currentOverlay;
     },
 
     /**
@@ -118,10 +135,11 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
       
       var PopOverManager = unify.ui.core.PopOverManager.getInstance();
       var registeredStyle = this.__styleRegistry[viewManager];
+      var popOverElement = null;
       if (modal) {
         PopOverManager.show(viewManager,registeredStyle ||"full");
       } else {
-        var popOverElement = this.__getOverlay(viewManager);
+        popOverElement = this.__getOverlay(viewManager);
         popOverElement.set({
           modal: false
         });
@@ -135,6 +153,10 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
         PopOverManager.show(popOverElement, trigger);
       }
       this.fireDataEvent("show", id);
+      
+      this.__currentViewManager = viewManager;
+      this.__currentOverlay = popOverElement;
+      
       this.__visibleViewManagers.push(viewManager);
     },
     
@@ -164,8 +186,12 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
       
       var self = this;
       var finalize = function() {
-        qx.lang.Array.remove(self.__visibleViewManagers, viewManager);
+        var vvm = self.__visibleViewManagers;
+        qx.lang.Array.remove(vvm, viewManager);
         self.fireDataEvent("hide", id);
+        
+        var vm = this.__currentViewManager = vvm[vvm.length-1];
+        this.__currentOverlay = this.__getOverlay(vm, false);
       };
       
       if (viewManager.getModal()) {
@@ -175,8 +201,6 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
         var mode = viewManager.getDisplayMode();
   
         var overlay=this.__overlays[viewManager];
-        
-        PopOverManager.addListenerOnce("", function() {}, this);
         PopOverManager.hide(overlay);
         
         overlay.addListenerOnce("hidden",finalize,this);
@@ -212,9 +236,9 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
      * @param viewManager {unify.view.ViewManager} View manager to generate overlay for
      * @return {unify.ui.container.Overlay} Overlay widget
      */
-    __getOverlay : function(viewManager){
-      var overlay = this.__overlays[viewManager];
-      if(!overlay){
+    __getOverlay : function(viewManager, create){
+      var overlay = this.__overlays[viewManager] || null;
+      if(!overlay && create !== false){
         overlay = new unify.ui.container.Overlay();
         overlay.setUserData("viewmanager", viewManager.toHashCode());
         var appearanceId=viewManager.getId()+"-overlay";
