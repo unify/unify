@@ -33,7 +33,13 @@ qx.Class.define("unify.ui.core.Util", {
     
     domElementToTreeLevel : function(widget) {
       var e = widget.getElement();
-      var origPos = widget.getUserData("domElementPositionOverride").originalPosition;
+      var posOverride = widget.getUserData("domElementPositionOverride");
+      
+      if (!posOverride) {
+        return;
+      }
+      
+      var origPos = posOverride.originalPosition;
       
       var parentElement = widget.getLayoutParent().getContentElement();
       qx.bom.element.Style.setStyles(e, {
