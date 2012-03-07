@@ -10,10 +10,22 @@
 
 (function(global) {
 
-  lowland.bom.Events.listen(global.window, "click", function(e) {
-    console.log("DISPATCH TAP");
-    lowland.bom.Events.dispatch(e.target, "tap");
-  });
+  var emulateTouch = true;
+
+  if (emulateTouch) {
+    lowland.bom.Events.listen(global.window, "click", function(e) {
+      lowland.bom.Events.dispatch(e.target, "tap");
+    });
+    lowland.bom.Events.listen(global.window, "mousedown", function(e) {
+      lowland.bom.Events.dispatch(e.target, "touchstart");
+    });
+    lowland.bom.Events.listen(global.window, "mousemove", function(e) {
+      lowland.bom.Events.dispatch(e.target, "touchmove");
+    });
+    lowland.bom.Events.listen(global.window, "mouseup", function(e) {
+      lowland.bom.Events.dispatch(e.target, "touchend");
+    });
+  }
 
   /*core.Class("unify.ui.core.EventHandler", {
     construct : function(element) {

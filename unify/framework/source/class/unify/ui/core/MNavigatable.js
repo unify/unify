@@ -89,10 +89,9 @@ core.Class("unify.ui.core.MNavigatable", {
      */
     _applyMNavigatable : function() {
       lowland.bom.Events.listen(this.getElement(), "tap", this.__onMNavigatableTap.bind(this), true);
-      this.addListener("tap", this.__onMNavigatableTap, this);
-      this.addListener("touchhold", this.__onMNavigatableTouchHold, this);
-      this.addListener("touchrelease", this.__onMNavigatableTouchRelease, this);
-      this.addListener("touchleave", this.__onMNavigatableTouchRelease, this);
+      lowland.bom.Events.listen(this.getElement(), "touchhold", this.__onMNavigatableTouchHold.bind(this), true);
+      lowland.bom.Events.listen(this.getElement(), "touchrelease", this.__onMNavigatableTouchRelease.bind(this), true);
+      lowland.bom.Events.listen(this.getElement(), "touchleave", this.__onMNavigatableTouchRelease.bind(this), true);
     },
     
     /**

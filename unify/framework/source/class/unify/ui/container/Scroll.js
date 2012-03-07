@@ -66,9 +66,8 @@ core.Class("unify.ui.container.Scroll", {
 
     this.__createScroller();
 
-
-    this.addListener("touchstart", this.__onTouchStart,this);
-    this.addListener("mousewheel", this.__onMouseWheel, this);
+    lowland.bom.Events.listen(this.getElement(), "touchstart", this.__onTouchStart.bind(this));
+    lowland.bom.Events.listen(this.getElement(), "mousewheel", this.__onMouseWheel.bind(this));
     
     this.addListener("resize", this.__updateDimensions, this);
     contentWidget.addListener("resize", this.__updateDimensions, this);
@@ -542,15 +541,16 @@ core.Class("unify.ui.container.Scroll", {
      * @param e {qx.event.type.Touch} Touch event
      */
     __onTouchStart : function(e){
+      console.log("TOUCH START");
       this.__inTouch = true;
       //TODO why is this called here? touchstart should not change the properties, so no need to recache them
       this.__updateProperties();
-
+console.log(1);
       if (!((this.__enableScrollX && this.__contentWidth > this.__clientWidth)
           || (this.__enableScrollY && this.__contentHeight > this.__clientHeight))) {
         return; //neither X nor Y scroll possible, no need to try
       }
-
+console.log(2);
       var ne=e.getNativeEvent();
       var touches=ne.touches;
 
@@ -558,15 +558,19 @@ core.Class("unify.ui.container.Scroll", {
       if (touches[0].target.tagName && touches[0].target.tagName.match(/input|textarea|select/i)) {
         return;
       }
-
+console.log(3);
       this.__scroller.doTouchStart(touches, +ne.timeStamp);
       e.preventDefault();
-      this.addListenerOnce("touchmove",this.__showIndicators,this);
-      
+      var cb = function() {
+        lowland.bom.Events.unlisten(root, "touchmove", cb);
+        this.__showIndicators.apply(this, arguments);
+      }.bind(this);
+      lowland.bom.Events.listen(root, "touchmove", cb);
+      console.log("LISTENERS");
       var root = unify.core.Init.getApplication().getRoot();
-      root.addListener("touchmove", this.__onTouchMove,this);
-      root.addListener("touchend", this.__onTouchEnd,this);
-      root.addListener("touchcancel", this.__onTouchEnd,this);
+      lowland.bom.Events.listen(root, "touchmove", this.__onTouchMove.bind(this));
+      lowland.bom.Events.listen(root, "touchend", this.__onTouchEnd.bind(this));
+      lowland.bom.Events.listen(root, "touchcancel", this.__onTouchEnd.bind(this));
     },
 
     /**
