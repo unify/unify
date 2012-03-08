@@ -39,6 +39,19 @@ qx.Class.define("unify.ui.container.scroll.ScalingIndicator", {
 
   /*
   *****************************************************************************
+     EVENTS
+  *****************************************************************************
+  */
+  
+  events : {
+    indicatorMoveStart : "qx.event.type.Data",
+    indicatorMoveEnd : "qx.event.type.Data",
+    indicatorMove : "qx.event.type.Data"
+  },
+
+
+  /*
+  *****************************************************************************
      PROPERTIES
   *****************************************************************************
   */

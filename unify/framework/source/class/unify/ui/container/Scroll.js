@@ -43,6 +43,14 @@ qx.Class.define("unify.ui.container.Scroll", {
 
     var scrollIndicatorX = this.__horizontalScrollIndicator = new Indicator("horizontal",this);
     var scrollIndicatorY = this.__verticalScrollIndicator = new Indicator("vertical",this);
+    
+    scrollIndicatorX.addListener("indicatorMoveStart", this.__onIndicatorMoveStart, this);
+    scrollIndicatorX.addListener("indicatorMoveEnd", this.__onIndicatorMoveEnd, this);
+    scrollIndicatorX.addListener("indicatorMove", this.__onIndicatorMove, this);
+    
+    scrollIndicatorY.addListener("indicatorMoveStart", this.__onIndicatorMoveStart, this);
+    scrollIndicatorY.addListener("indicatorMoveEnd", this.__onIndicatorMoveEnd, this);
+    scrollIndicatorY.addListener("indicatorMove", this.__onIndicatorMove, this);
 
     var distance = Indicator.DISTANCE;
     var thickness=Indicator.THICKNESS;
@@ -334,9 +342,6 @@ qx.Class.define("unify.ui.container.Scroll", {
      }
    },
 
-
-
-    
     _applyShowIndicatorX : function() {
       this.__updateProperties();
     },
@@ -544,6 +549,38 @@ qx.Class.define("unify.ui.container.Scroll", {
       if(oldTwoAxisScroll!=this.__twoAxisScroll){
         this.__horizontalScrollIndicator.initRenderingCache(this);
         this.__verticalScrollIndicator.initRenderingCache(this);
+      }
+    },
+
+    __indicatorMovePos : null,
+
+    __onIndicatorMoveStart : function(e) {
+      var data = e.getData();
+      
+      if (data.orientation == "horizontal") {
+        var pos = this.__indicatorMovePos = data.pos;
+        this.__scroller.doTouchStart([{pageX: pos, pageY: 0}], +data.nativeEvent.timeStamp);
+      } else {
+        var pos = this.__indicatorMovePos = data.pos;
+        this.__scroller.doTouchStart([{pageX: 0, pageY: pos}], +data.nativeEvent.timeStamp);
+      }
+    },
+    
+    __onIndicatorMoveEnd : function(e) {
+      this.__scroller.doTouchEnd(+e.getData().nativeEvent.timeStamp);
+    },
+    
+    __onIndicatorMove : function(e) {
+      var delta;
+      var pos;
+      var data = e.getData();
+      
+      if (data.orientation == "horizontal") {
+        var pos = data.pos;
+        this.__scroller.doTouchMove([{pageX: pos, pageY: 0}], +data.nativeEvent.timeStamp, 1.0);
+      } else {
+        pos = data.pos;
+        this.__scroller.doTouchMove([{pageX: 0, pageY: pos}], +data.nativeEvent.timeStamp, 1.0);
       }
     },
 

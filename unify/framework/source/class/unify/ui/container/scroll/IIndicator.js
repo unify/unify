@@ -11,6 +11,18 @@ qx.Interface.define("unify.ui.container.scroll.IIndicator", {
     DISTANCE : 2
   },
   
+  /*
+  *****************************************************************************
+     EVENTS
+  *****************************************************************************
+  */
+  
+  events : {
+    indicatorMoveStart : "qx.event.type.Data",
+    indicatorMoveEnd : "qx.event.type.Data",
+    indicatorMove : "qx.event.type.Data"
+  },
+  
   properties : {
     /** Orientation of the scroll indicator */
     orientation : { check : ["horizontal", "vertical"] },
