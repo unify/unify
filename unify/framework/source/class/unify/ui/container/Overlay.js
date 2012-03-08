@@ -350,8 +350,8 @@ core.Class("unify.ui.container.Overlay", {
      */
     __onTriggerMove: function(e){
       if(this.isVisible()){
-        var posHint = this._getPositionHint();
-        this.getLayoutParent().add(this, posHint);
+        var posHint = this.getPositionHint();
+        this.getParentBox().add(this, posHint);
       }
     }
   }
