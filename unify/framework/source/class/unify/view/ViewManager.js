@@ -189,7 +189,6 @@ core.Class("unify.view.ViewManager", {
      * This adds the view manager to the layouting queues.
      */
     init : function() {
-      console.debug("Init");
       if (!this.__path && this.getDisplayMode()!='modal') {
         this.__resetHelper();
       }

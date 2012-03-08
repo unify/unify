@@ -12,18 +12,32 @@
 
   var emulateTouch = true;
 
+  var touchSynthesizer = function(e) {
+    return {
+      myValue: true,
+      touches: [{
+        target: e.target,
+        pageX : e.screenX,
+        pageY : e.screenY
+      }],
+      scale: 1.0
+    };
+  };
+  
+  var eventElement = document.documentElement;
+
   if (emulateTouch) {
-    lowland.bom.Events.listen(global.window, "click", function(e) {
+    lowland.bom.Events.listen(eventElement, "click", function(e) {
       lowland.bom.Events.dispatch(e.target, "tap");
     });
-    lowland.bom.Events.listen(global.window, "mousedown", function(e) {
-      lowland.bom.Events.dispatch(e.target, "touchstart");
+    lowland.bom.Events.listen(eventElement, "mousedown", function(e) {
+      lowland.bom.Events.dispatch(e.target, "touchstart", false, touchSynthesizer(e));
     });
-    lowland.bom.Events.listen(global.window, "mousemove", function(e) {
-      lowland.bom.Events.dispatch(e.target, "touchmove");
+    lowland.bom.Events.listen(eventElement, "mousemove", function(e) {
+      lowland.bom.Events.dispatch(e.target, "touchmove", false, touchSynthesizer(e));
     });
-    lowland.bom.Events.listen(global.window, "mouseup", function(e) {
-      lowland.bom.Events.dispatch(e.target, "touchend");
+    lowland.bom.Events.listen(eventElement, "mouseup", function(e) {
+      lowland.bom.Events.dispatch(e.target, "touchend", false, touchSynthesizer(e));
     });
   }
 

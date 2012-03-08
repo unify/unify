@@ -182,7 +182,17 @@
       __cache : null,
       
       getBounds : function() {
-        return this.__cache || null;
+        var cache = this.__cache;
+        if (!cache) {
+          return null;
+        }
+        
+        return {
+          left: cache[0],
+          top: cache[1],
+          width: [2],
+          height: cache[3]
+        };
       },
       
       renderLayout : function(left, top, width, height) {

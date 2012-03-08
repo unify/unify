@@ -339,7 +339,7 @@ core.Class("unify.ui.container.Scroll", {
     __updateDimensions : function(){
       var scrollerDimension = this.getBounds();
       var contentDimension = this.getChildrenContainer().getBounds();
-      
+
       if (scrollerDimension && contentDimension && scrollerDimension.width>0 && scrollerDimension.height>0) {
         var scrollerWidth = scrollerDimension.width;
         var scrollerHeight = scrollerDimension.height;
@@ -541,33 +541,37 @@ core.Class("unify.ui.container.Scroll", {
      * @param e {qx.event.type.Touch} Touch event
      */
     __onTouchStart : function(e){
-      console.log("TOUCH START");
       this.__inTouch = true;
       //TODO why is this called here? touchstart should not change the properties, so no need to recache them
       this.__updateProperties();
-console.log(1);
+
       if (!((this.__enableScrollX && this.__contentWidth > this.__clientWidth)
           || (this.__enableScrollY && this.__contentHeight > this.__clientHeight))) {
         return; //neither X nor Y scroll possible, no need to try
       }
-console.log(2);
-      var ne=e.getNativeEvent();
+
+      //var ne=e.getNativeEvent();
+      var ne = e;
       var touches=ne.touches;
 
       // Don't react if initial down happens on a form element
       if (touches[0].target.tagName && touches[0].target.tagName.match(/input|textarea|select/i)) {
         return;
       }
-console.log(3);
+
       this.__scroller.doTouchStart(touches, +ne.timeStamp);
       e.preventDefault();
       var cb = function() {
         lowland.bom.Events.unlisten(root, "touchmove", cb);
         this.__showIndicators.apply(this, arguments);
       }.bind(this);
+
+      var root = unify.core.Init.getApplication().getRoot().getEventElement();
       lowland.bom.Events.listen(root, "touchmove", cb);
-      console.log("LISTENERS");
-      var root = unify.core.Init.getApplication().getRoot();
+      
+      this.__onTouchMoveWrapper = this.__onTouchMove.bind(this);
+      this.__onTouchEndWrapper = this.__onTouchEnd.bind(this);
+      
       lowland.bom.Events.listen(root, "touchmove", this.__onTouchMove.bind(this));
       lowland.bom.Events.listen(root, "touchend", this.__onTouchEnd.bind(this));
       lowland.bom.Events.listen(root, "touchcancel", this.__onTouchEnd.bind(this));
@@ -593,7 +597,7 @@ console.log(3);
      * @param e {qx.event.type.Touch} Touch event
      */
     __onTouchMove : function(e){
-      var ne=e.getNativeEvent();
+      var ne=e; //.getNativeEvent();
       this.__scroller.doTouchMove(ne.touches, +ne.timeStamp, ne.scale);
     },
     
@@ -604,12 +608,13 @@ console.log(3);
      */
     __onTouchEnd : function(e){
       this.__inTouch = false;
-      this.__scroller.doTouchEnd(+e.getNativeEvent().timeStamp);
+      this.__scroller.doTouchEnd(+e.timeStamp); //.getNativeEvent().timeStamp);
       
-      var root = qx.core.Init.getApplication().getRoot();
-      root.removeListener("touchmove", this.__onTouchMove,this);
-      root.removeListener("touchend", this.__onTouchEnd,this);
-      root.removeListener("touchcancel", this.__onTouchEnd,this);
+      var root = unify.core.Init.getApplication().getRoot().getEventElement();
+      
+      lowland.bom.Events.unlisten(root, "touchmove", this.__onTouchMoveWrapper);
+      lowland.bom.Events.unlisten(root, "touchend", this.__onTouchEndWrapper);
+      lowland.bom.Events.unlisten(root, "touchcancel", this.__onTouchEndWrapper);
     },
     
     /**

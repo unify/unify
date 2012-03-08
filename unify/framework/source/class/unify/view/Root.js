@@ -61,6 +61,10 @@ core.Class("unify.view.Root", {
       return true;
     },
     
+    getEventElement : function() {
+      return this.__rootEventElement;
+    },
+    
     /**
      * Resize handler to start relayouting
      */

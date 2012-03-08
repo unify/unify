@@ -396,8 +396,6 @@
           var contentWidth = contentDimension.width;
           var contentHeight = contentDimension.height;
           
-          var ScrollIndicator = this.self(arguments);
-  
           // Sum of margins substracted from the client size for computing the indicator size
           var margin = DISTANCE * 2;
           if (scroll.getTwoAxisScroll()) {
