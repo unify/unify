@@ -37,6 +37,7 @@ core.Class("kitchensink.Application",
       // Register your view classes...
       MasterViewManager.register(kitchensink.view.Start, true);
       MasterViewManager.register(kitchensink.view.Ui);
+      MasterViewManager.register(kitchensink.view.Dialog);
       
       var ModalViewManager = new unify.view.ViewManager("modal");
       ModalViewManager.setDisplayMode("modal");
@@ -46,6 +47,7 @@ core.Class("kitchensink.Application",
       var TabView = new unify.view.TabViewManager(MasterViewManager);
       TabView.register(kitchensink.view.Start);
       TabView.register(kitchensink.view.Ui);
+      TabView.register(kitchensink.view.Dialog);
 
       // Add view manager (or SplitView or TabView) to the root
       this.add(TabView);
