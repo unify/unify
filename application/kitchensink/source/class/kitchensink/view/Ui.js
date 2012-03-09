@@ -77,18 +77,18 @@ core.Class("kitchensink.view.Ui", {
       container.add(slider);
       
       var textField = new unify.ui.form.TextField();
+      textField.addListener("changeValue", function(e) {
+        this.debug("Test field changed value to '" + e.getData() + "'");
+      }, this);
       container.add(textField);
       
-      // Open activity indicator
-      var startActivityIndicator = new unify.ui.form.Button("Activity indicator");
-      startActivityIndicator.addListener("execute", function() {
-        unify.ui.manager.ActivityIndicatorManager.getInstance().show();
-        
-        window.setTimeout(function() {
-          unify.ui.manager.ActivityIndicatorManager.getInstance().hide();
-        }, 3000);
+      var textArea = new unify.ui.form.TextArea();
+      textArea.addListener("changeValue", function(e) {
+        this.debug("Test area changed value to '" + e.getData() + "'");
       }, this);
-      container.add(startActivityIndicator);
+      container.add(textArea);
+      
+      
     }
   }
 });

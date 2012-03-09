@@ -78,6 +78,17 @@ core.Class("kitchensink.view.Dialog", {
         goTo: "modal"
       });
       container.add(openModalButton);
+      
+      // Open activity indicator
+      var startActivityIndicator = new unify.ui.form.Button("Activity indicator");
+      startActivityIndicator.addListener("execute", function() {
+        unify.ui.manager.ActivityIndicatorManager.getInstance().show();
+        
+        window.setTimeout(function() {
+          unify.ui.manager.ActivityIndicatorManager.getInstance().hide();
+        }, 3000);
+      }, this);
+      container.add(startActivityIndicator);
     },
     
     __dialog : null,
