@@ -13,46 +13,43 @@
  * Slider widget
  */
  
-qx.Class.define("unify.ui.form.Slider", {
-  extend: unify.ui.container.Composite,
-  include : [unify.ui.core.MInteractionState, unify.ui.core.MChildControl],
+core.Class("unify.ui.form.Slider", {
+  include : [unify.ui.container.Composite, unify.ui.core.MInteractionState, unify.ui.core.MChildControl],
 
   properties: {
     // overridden
     appearance : {
-      refine: true,
       init: "slider"
     },
     
     // overridden
     focusable : {
-      refine: true,
       init: true
     },
     
     /** {Float} Percentual value (0.0 to 1.0) */
     value : {
-      check : "!isNaN(value) && value >= 0.0 && value <= 1.0",
-      apply : "_applyValue",
-      event : "changeValue",
+      //check : "!isNaN(value) && value >= 0.0 && value <= 1.0",
+      apply : function(value, old) { this._applyValue(value, old); },
+      fire : "changeValue",
       init: 0.0
     },
     
     /** {String} Direction of slider (horizontal or vertical) */
     direction : {
-      check: ["horizontal", "vertical"],
-      apply : "_applyDirection",
+      type: ["horizontal", "vertical"],
+      apply : function(value, old) { this._applyDirection(value, old); },
       init: "horizontal"
     }
   },
   
   events : {
     /** Fired when user clicks on bar */
-    clickOnBar: "qx.event.type.Data"
+    clickOnBar: lowland.events.DataEvent //"qx.event.type.Data"
   },
   
   construct : function() {
-    this.base(arguments);
+    unify.ui.container.Composite.call(this, new unify.ui.layout.Canvas());
     unify.ui.core.MChildControl.call(this);
     
     this._forwardStates = {
@@ -68,7 +65,7 @@ qx.Class.define("unify.ui.form.Slider", {
     this._showChildControl("bar");
     this._showChildControl("knob");
     
-    this.addListener("tap", this.__onTap, this);
+    lowland.bom.Events.listen("tap", this.__onTap.bind(this));
     this.addListener("resize", this.__onResize, this);
     
   },
@@ -88,7 +85,8 @@ qx.Class.define("unify.ui.form.Slider", {
       switch(id) {
         case "knob":
           control = new unify.ui.basic.Content();
-          control.addListener("touchstart", this.__touchStart, this);
+          this.__touchStartWrapper = this.__touchStart.bind(this);
+          lowland.bom.Events.listen(control.getElement(), "touchstart", this.__touchStartWrapper, this);
           
           this._add(control);
           break;
@@ -156,15 +154,20 @@ qx.Class.define("unify.ui.form.Slider", {
       return posInfo.height - posInfo.padding.top - posInfo.padding.bottom - posInfo.border.top - posInfo.border.bottom - Math.round(knobPosInfo.height / 2);
     },
     
+    __touchMoveWrapper : null,
+    __touchEndWrapper : null,
+    
     /**
      * Event handler for touch start
      *
      * @param e {Event} Touch event
      */
     __touchStart : function(e) {
-      var root = qx.core.Init.getApplication().getRoot();
-      root.addListener("touchmove", this.__touchMove, this);
-      root.addListener("touchend", this.__touchEnd, this);
+      var root = unify.core.Init.getApplication().getRoot().getEventElement();
+      this.__touchMoveWrapper = this.__touchMove.bind(this);
+      this.__touchEndWrapper = this.__touchEnd.bind(this);
+      lowland.bom.Events.listen(root, "touchmove", this.__touchMoveWrapper);
+      lowland.bom.Events.listen(root, "touchend", this.__touchEndWrapper);
       
       this.__knob = this.getChildControl("knob");
       
@@ -172,12 +175,12 @@ qx.Class.define("unify.ui.form.Slider", {
         var calcWidth = this.__calcWidth = this.__getAvailSliderWidth();
         
         this.__calcLeft = calcWidth * this.getValue();
-        this.__touchLeft = e.getScreenLeft();
+        this.__touchLeft = e.touches[0].pageX; //e.getScreenLeft();
       } else {
         var calcHeight = this.__calcHeight = this.__getAvailSliderHeight();
         
         this.__calcTop = calcHeight * this.getValue();
-        this.__touchTop = e.getScreenTop();
+        this.__touchTop = e.touches[0].pageY; //e.getScreenTop();
       }
     },
     
@@ -192,10 +195,10 @@ qx.Class.define("unify.ui.form.Slider", {
       var diff;
       var calcVal;
       if (horizontal) {
-        diff = this.__calcLeft + e.getScreenLeft() - this.__touchLeft;
+        diff = this.__calcLeft + e.touches[0].pageX /*e.getScreenLeft()*/ - this.__touchLeft;
         calcVal = this.__calcWidth;
       } else {
-        diff = this.__calcTop + e.getScreenTop() - this.__touchTop;
+        diff = this.__calcTop + e.touches[0].pageY /*e.getScreenTop()*/ - this.__touchTop;
         calcVal = this.__calcHeight;
       }
       if (diff < 0 || diff > calcVal) {
@@ -207,7 +210,7 @@ qx.Class.define("unify.ui.form.Slider", {
       } else {
         transform = unify.bom.Transform.accelTranslate(0, Math.round(diff)+"px");
       }
-      this.__knob.setStyle({
+      this.__knob.setOwnStyle({
         transform: transform
       });
       
@@ -219,9 +222,9 @@ qx.Class.define("unify.ui.form.Slider", {
      * Event handler for touch end
      */
     __touchEnd : function() {
-      var root = qx.core.Init.getApplication().getRoot();
-      root.removeListener("touchmove", this.__touchMove, this);
-      root.removeListener("touchend", this.__touchEnd, this);
+      var root = unify.core.Init.getApplication().getRoot().getEventElement();
+      lowland.bom.Events.unlisten(root, "touchmove", this.__touchMoveWrapper);
+      lowland.bom.Events.unlisten(root, "touchend", this.__touchEndWrapper);
 
       this.__knob = null;
     },
@@ -247,7 +250,7 @@ qx.Class.define("unify.ui.form.Slider", {
         avail = this.__getAvailSliderHeight();
         transform = "translate(0, " + Math.round(avail * value + mod) + "px)";
       }
-      this.getChildControl("knob").setStyle({
+      this.getChildControl("knob").setOwnStyle({
         transform: transform
       });
     },
@@ -292,18 +295,21 @@ qx.Class.define("unify.ui.form.Slider", {
       var clickedPos;
       var mod;
       
+      var elemPos = lowland.bom.Element.getLocation(this.getElement());
+      
       if (horizontal) {
         overall = this.getPositionInfo().width;
         bar = this.getChildControl("bar").getPositionInfo().width;
         mod = Math.round((bar - overall) / 2);
         
-        clickedPos = e.getViewportLeft() - qx.bom.element.Location.getLeft(this.getElement()) + mod;
+        
+        clickedPos = e.getViewportLeft() - elemPos.left + mod;
       } else {
         overall = this.getPositionInfo().height;
         bar = this.getChildControl("bar").getPositionInfo().height;
         mod = Math.round((bar - overall) / 2);
         
-        clickedPos = e.getViewportTop() - qx.bom.element.Location.getTop(this.getElement()) + mod;
+        clickedPos = e.getViewportTop() - elemPos.top + mod;
       }
 
       if (clickedPos < 0) {

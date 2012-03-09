@@ -14,16 +14,18 @@
  *
  * Simple content widget based upon html DIV element
  */
-qx.Class.define("unify.ui.basic.Content", {
-  extend : unify.ui.core.Widget,
+core.Class("unify.ui.basic.Content", {
+  include : [unify.ui.core.Widget],
   
   properties : {
     // overridden
-    appearance :
-    {
-      refine: true,
+    appearance : {
       init: "content"
     }
+  },
+  
+  construct : function() {
+    unify.ui.core.Widget.call(this);
   },
   
   members : {

@@ -16,21 +16,23 @@
  * EXPERIMENTAL !
  * Input component
  */
-qx.Class.define("unify.ui.form.util.HtmlFileInput", {
-  extend : unify.ui.core.Widget,
+core.Class("unify.ui.form.util.HtmlFileInput", {
+  include : [unify.ui.core.Widget],
 
   properties : {
     // overridden
-    appearance :
-    {
-      refine: true,
+    appearance : {
       init: "input.file"
     }
   },
 
   events : {
     /** Fired on loosing focus */
-    "changeValue" : "qx.event.type.Data"
+    "changeValue" : lowland.events.DataEvent
+  },
+
+  construct : function() {
+    unify.ui.core.Widget.call(this);
   },
 
   members : {
@@ -38,8 +40,9 @@ qx.Class.define("unify.ui.form.util.HtmlFileInput", {
     __changed : false,
 
     _createElement : function() {
-      var e = qx.bom.Input.create("file");
-      qx.event.Registration.addListener(e, "change", this.__onInput, this);
+      var e = document.createElement("input");
+      e.setAttribute("type", "file");
+      lowland.bom.Events.listen(e, "change", this.__onInput.bind(this));
 
       return e;
     },
@@ -51,7 +54,7 @@ qx.Class.define("unify.ui.form.util.HtmlFileInput", {
      */
     setValue : function(value) {
       this.__changed = true;
-      qx.bom.Input.setValue(this.getElement(), value);
+      this.getElement().value = value;
     },
 
     /**
@@ -60,7 +63,7 @@ qx.Class.define("unify.ui.form.util.HtmlFileInput", {
      * @return {String} Value of input field
      */
     getValue : function() {
-      return qx.bom.Input.getValue(this.getElement());
+      return this.getElement().value;
     },
 
     /**
@@ -70,7 +73,7 @@ qx.Class.define("unify.ui.form.util.HtmlFileInput", {
      * @param e {qx.event.type.Data} Input event
      */
     __onInput : function(e) {
-      this.fireEvent("changeValue", e.getTarget().files);
+      this.fireEvent("changeValue", e.target.files);
     }
   }
 });

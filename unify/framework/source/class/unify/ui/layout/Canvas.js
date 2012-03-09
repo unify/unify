@@ -30,10 +30,10 @@ core.Class("unify.ui.layout.Canvas", {
         var calc = widget.getLayoutProperties();
         var size = widget.getSizeHint();
         
-        var leftGap = unify.ui.layout.Util.calculateLeftGap(widget);
-        var rightGap = unify.ui.layout.Util.calculateRightGap(widget);
-        var topGap = unify.ui.layout.Util.calculateTopGap(widget);
-        var bottomGap = unify.ui.layout.Util.calculateBottomGap(widget);
+        var leftGap = widget.getMarginLeft(); //unify.ui.layout.Util.calculateLeftGap(widget);
+        var rightGap = widget.getMarginRight(); //unify.ui.layout.Util.calculateRightGap(widget);
+        var topGap = widget.getMarginTop(); //unify.ui.layout.Util.calculateTopGap(widget);
+        var bottomGap = widget.getMarginBottom(); //unify.ui.layout.Util.calculateBottomGap(widget);
         
         var left = 0;
         var top = 0;
@@ -78,7 +78,7 @@ core.Class("unify.ui.layout.Canvas", {
           if (typeof(cright) == "string" && cright.indexOf("%") > -1) {
             right = Math.round(availWidth * parseInt(ctop, 10) / 100) - rightGap;
           } else {
-            right = parseInt(cright, 10) - rightGap;
+            right = parseInt(cright, 10) + rightGap;
           }
         }
         
@@ -86,33 +86,35 @@ core.Class("unify.ui.layout.Canvas", {
           if (typeof(cbottom) == "string" && cbottom.indexOf("%") > -1) {
             bottom = Math.round(availWidth * parseInt(ctop, 10) / 100) - bottomGap;
           } else {
-            bottom = parseInt(cbottom, 10) - bottomGap;
+            bottom = parseInt(cbottom, 10) + bottomGap;
           }
         }
         
         var width;
         var height;
-        
+
         if (right == -1) {
-          if (size.width > 0) {
+          var swidth = size.width;
+          if (swidth > 0 && swidth < availWidth) {
             width = size.width;
           } else {
             width = availWidth;
           }
         } else {
-          width = availWidth - right;
+          width = availWidth - right - left;
         }
         
         if (bottom == -1) {
-          if (size.height > 0) {
+          var sheight = size.height;
+          if (sheight > 0 && sheight < availHeight) {
             height = size.height;
           } else {
             height = availHeight;
           }
         } else {
-          height = availHeight - bottom;
+          height = availHeight - bottom - top;
         }
-        
+
         widget.renderLayout(left, top, width, height);
       }
     },

@@ -16,26 +16,23 @@
  * EXPERIMENTAL !
  * Input component
  */
-qx.Class.define("unify.ui.form.FileInput", {
-  extend : unify.ui.container.Composite,
-  include : [unify.ui.core.MChildControl],
+core.Class("unify.ui.form.FileInput", {
+  include : [unify.ui.container.Composite, unify.ui.core.MChildControl],
 
   properties : {
     // overridden
-    appearance :
-    {
-      refine: true,
+    appearance : {
       init: "input.file"
     }
   },
 
   events : {
     /** Fired on loosing focus */
-    "changeValue" : "qx.event.type.Data"
+    "changeValue" : lowland.events.DataEvent
   },
 
   construct : function() {
-    this.base(arguments, new unify.ui.layout.Canvas());
+    unify.ui.container.Composite.call(this, new unify.ui.layout.Canvas());
     unify.ui.core.MChildControl.call(this);
 
     this._showChildControl("filename");
@@ -113,9 +110,9 @@ qx.Class.define("unify.ui.form.FileInput", {
     __fileInputValueChanged : function(e) {
       this.fireEvent("changeValue", e.getData());
     }
-  },
+  }/*,
 
   destruct : function() {
     this.getChildControl("fileinput").removeListener("changeValue", this.__fileInputValueChanged, this);
-  }
+  }*/
 });
