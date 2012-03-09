@@ -190,8 +190,8 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
         qx.lang.Array.remove(vvm, viewManager);
         self.fireDataEvent("hide", id);
         
-        var vm = this.__currentViewManager = vvm[vvm.length-1];
-        this.__currentOverlay = this.__getOverlay(vm, false);
+        var vm = self.__currentViewManager = vvm[vvm.length-1];
+        self.__currentOverlay = self.__getOverlay(vm, false);
       };
       
       if (viewManager.getModal()) {
