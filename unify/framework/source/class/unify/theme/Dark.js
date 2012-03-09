@@ -29,7 +29,9 @@ core.Class("unify.theme.Dark", {
         "#4B4B4B" : "#4B4B4B",
         "#D0D0D0" : "#D0D0D0",
         "#999" : "#999",
-        "#ddd" : "#ddd"
+        "#ddd" : "#ddd",
+        "#e8e8e8": "#e8e8e8",
+        "#888" : "#888"
       },
       fonts: {
         "default" : {

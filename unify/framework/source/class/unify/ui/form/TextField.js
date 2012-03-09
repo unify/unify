@@ -16,8 +16,8 @@
  * EXPERIMENTAL
  * Input component
  */
-qx.Class.define("unify.ui.form.TextField", {
-  extend : unify.ui.core.Widget,
+core.Class("unify.ui.form.TextField", {
+  include : [unify.ui.core.Widget],
   
   properties : {
     /**
@@ -25,14 +25,12 @@ qx.Class.define("unify.ui.form.TextField", {
      */
     type : {
       init : "text",
-      check : ["text", "password", "telephone", "url", "email", "number"],
-      apply : "_applyType"
+      type : ["text", "password", "telephone", "url", "email", "number"],
+      apply : function(value, old) { this._applyType(value, old); }
     },
     
     // overridden
-    appearance :
-    {
-      refine: true,
+    appearance : {
       init: "input"
     },
     
@@ -43,30 +41,30 @@ qx.Class.define("unify.ui.form.TextField", {
      * <pre class='javascript'>field.setFilter(/[0-9]/);</pre>
      */
     filter : {
-      check : "RegExp",
+      type : "RegExp",
       nullable : true,
       init : null
     },
     
     /** Maximal number of characters that can be entered in the TextArea. */
     maxLength : {
-      check : "PositiveInteger",
+      type : "Integer",
       init : Infinity
     }
   },
   
   events : {
     /** Fired on input */
-    "input" : "qx.event.type.Data",
+    "input" : lowland.events.DataEvent,
     
     /** Fired on loosing focus */
-    "changeValue" : "qx.event.type.Data"
+    "changeValue" : lowland.events.DataEvent
   },
   
   construct : function() {
-    this.base(arguments);
+    unify.ui.core.Widget.call(this);
     
-    this.addListener("blur", this.__onBlur, this);
+    lowland.bom.Events.listen(this.getElement(), "blur", this.__onBlur.bind(this));
   },
   
   members : {
@@ -84,15 +82,13 @@ qx.Class.define("unify.ui.form.TextField", {
       };
       
       var type = this.getType();
-      var attrib = {
-        type : map[type]
-      };
-      if (type == "number") {
-        attrib.pattern = "[0-9]*";
-      }
       
-      var e = qx.bom.Input.create("text", attrib);
-      qx.event.Registration.addListener(e, "input", this._onInput, this);
+      var e = document.createElement("input");
+      e.setAttribute("type", map[type]);
+      if (type == "number") {
+        e.setAttribute("pattern", "[0-9]*");
+      }
+      lowland.bom.Events.listen(e, "input", this._onInput.bind(this));
 
       return e;
     },
@@ -104,7 +100,7 @@ qx.Class.define("unify.ui.form.TextField", {
      */
     setValue : function(value) {
       this.__changed = true;
-      qx.bom.Input.setValue(this.getElement(), value);
+      this.getElement().value = value;
     },
     
     /**
@@ -113,11 +109,11 @@ qx.Class.define("unify.ui.form.TextField", {
      * @return {String} Value of input field
      */
     getValue : function() {
-      return qx.bom.Input.getValue(this.getElement());
+      return this.getElement().value;
     },
     
     _applyType : function(value) {
-      qx.bom.element.Attribute.set(this.getElement(), "type", value);
+      this.getElement().setAttribute("type", value);
     },
     
     /**
@@ -127,7 +123,7 @@ qx.Class.define("unify.ui.form.TextField", {
      * @param e {qx.event.type.Data} Input event
      */
     _onInput : function(e) {
-      var value = e.getData();
+      var value = this.getValue();
       var fireEvents = true;
 
       this.__nullValue = false;
@@ -182,9 +178,5 @@ qx.Class.define("unify.ui.form.TextField", {
         this.__changed = false;
       }
     }
-  },
-  
-  destruct : function() {
-    this.removeListener("blur", this.__onBlur, this);
   }
 });

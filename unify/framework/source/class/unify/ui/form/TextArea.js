@@ -16,8 +16,8 @@
  * EXPERIMENTAL
  * Input component
  */
-qx.Class.define("unify.ui.form.TextArea", {
-  extend : unify.ui.core.Widget,
+core.Class("unify.ui.form.TextArea", {
+  include : [unify.ui.core.Widget],
   
   properties : {
     /** {Integer} Number of columns in text area */
@@ -31,25 +31,23 @@ qx.Class.define("unify.ui.form.TextArea", {
     },
     
     // overridden
-    appearance :
-    {
-      refine: true,
+    appearance : {
       init: "input"
     }
   },
   
   events : {
     /** Fired on input */
-    "input" : "qx.event.type.Data",
+    "input" : lowland.events.DataEvent, 
     
     /** Fired on loosing focus */
-    "changeValue" : "qx.event.type.Data"
+    "changeValue" : lowland.events.DataEvent
   },
   
   construct : function() {
-    this.base(arguments);
+    unify.ui.core.Widget.call(this);
     
-    this.addListener("blur", this.__onBlur, this);
+    lowland.bom.Events.listen(this.getElement(), "blur", this.__onBlur.bind(this));
   },
   
   members : {
@@ -57,11 +55,11 @@ qx.Class.define("unify.ui.form.TextArea", {
     __changed : false,
     
     _createElement : function() {
-      var e = qx.bom.Input.create("textarea", {
-        rows: this.getRows(),
-        cols: this.getColumns()
-      });
-      qx.event.Registration.addListener(e, "input", this._onInput, this);
+      var e = document.createElement("textarea");
+      e.setAttribute("rows", this.getRows());
+      e.setAttribute("cols", this.getColumns());
+      
+      lowland.bom.Events.listen(e, "input", this._onInput.bind(this));
       return e;
     },
     
@@ -72,7 +70,7 @@ qx.Class.define("unify.ui.form.TextArea", {
      * @param e {qx.event.type.Data} Input event
      */
     _onInput : function(e) {
-      var value = e.getData();
+      var value = this.getValue();
       var fireEvents = true;
 
       this.__nullValue = false;
@@ -98,7 +96,7 @@ qx.Class.define("unify.ui.form.TextArea", {
      * @param value {String} New value of text area
      */
     setValue : function(value) {
-      qx.bom.Input.setValue(this.getElement(), value);
+      this.getElement().value = value;
     },
     
     /**
@@ -107,7 +105,7 @@ qx.Class.define("unify.ui.form.TextArea", {
      * @return {String} Value of text area
      */
     getValue : function() {
-      return qx.bom.Input.getValue(this.getElement());
+      return this.getElement().value;
     },
     
     /**
@@ -119,9 +117,5 @@ qx.Class.define("unify.ui.form.TextArea", {
         this.__changed = false;
       }
     }
-  },
-  
-  destruct : function() {
-    this.removeListener("blur", this.__onBlur, this);
   }
 });
