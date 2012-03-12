@@ -59,8 +59,7 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
     orientation :
     {
       check : ["horizontal", "vertical"],
-      nullable : true,
-      apply : "_applyOrientation"
+      nullable : true
     },
 
     /** Whether the indicator is visible */
@@ -84,9 +83,9 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
    * @param scroll {unify.ui.container.Scroll} parent scroll container of this indicator
    */
   construct : function(orientation,scroll) {
-    this.base(arguments);
-
+    this.__horizontal=(orientation=="horizontal");
     this.setOrientation(orientation);
+    this.base(arguments);
 
     this.setStyle({
       opacity: 0,
@@ -132,24 +131,13 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
       //elem.className = "scroll-indicator " + this.getOrientation();
 
       // Build sub elements
-      this.__startElem = elem.appendChild(doc.createElement("div"));
-      this.__middleElem = elem.appendChild(doc.createElement("div"));
-      this.__endElem = elem.appendChild(doc.createElement("div"));
-
-      this.__setSliderStyle(this.getOrientation() === "horizontal");
-
-      // Listener for animation purposes
-      qx.event.Registration.addListener(elem, "transitionEnd", this.__onTransitionEnd, this, false);
-
-      return elem;
-    },
-
-    /**
-     * Set style on slider
-     *
-     * @param horizontal {Boolean} Set horizontal styling
-     */
-    __setSliderStyle : function(horizontal) {
+      var startElem = this.__startElem = doc.createElement("div");
+      var middleElem = this.__middleElem = doc.createElement("div");
+      var endElem = this.__endElem = doc.createElement("div");
+      elem.appendChild(startElem);
+      elem.appendChild(middleElem);
+      elem.appendChild(endElem);
+      
       var self = unify.ui.container.scroll.Indicator;
 
       // set scrollbar styles
@@ -160,7 +148,7 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
       var thickness = self.THICKNESS + 'px';
       
       // general styles
-      Style.setStyles(this.__startElem, {
+      Style.setStyles(startElem, {
         background: bgstyle,
         top: '0px',
         left: '0px',
@@ -168,7 +156,7 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
         height: thickness,
         position: 'absolute'
       });
-      Style.setStyles(this.__middleElem, {
+      Style.setStyles(middleElem, {
         background: bgstyle,
         top: '0px',
         left: '0px',
@@ -177,7 +165,7 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
         position: 'absolute',
         transformOrigin: 'left top'
       });
-      Style.setStyles(this.__endElem, {
+      Style.setStyles(endElem, {
         background: bgstyle,
         top: '0px',
         left: '0px',
@@ -186,19 +174,19 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
         position: 'absolute'
       });
       
-      if (horizontal === true) 
+      if (this.__horizontal === true) 
       {
         // vertical scrollbar
-        Style.setStyles(this.__startElem, {
+        Style.setStyles(startElem, {
           borderTopLeftRadius: radiussize,
           borderBottomLeftRadius: radiussize,
           width: endsize
         });
-        Style.setStyles(this.__middleElem, {
+        Style.setStyles(middleElem, {
           width: '1px',
           left: '3px'
         });
-        Style.setStyles(this.__endElem, {
+        Style.setStyles(endElem, {
           borderTopRightRadius: radiussize,
           borderBottomRightRadius: radiussize,
           width: endsize
@@ -207,23 +195,28 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
       else 
       {
         // vertical scrollbar
-        Style.setStyles(this.__startElem, {
+        Style.setStyles(startElem, {
           borderTopLeftRadius: radiussize,
           borderTopRightRadius: radiussize,
           height: endsize
         });
-        Style.setStyles(this.__middleElem, {
+        Style.setStyles(middleElem, {
           height: '1px',
           top: '3px'
         });
-        Style.setStyles(this.__endElem, {
+        Style.setStyles(endElem, {
           borderBottomLeftRadius: radiussize,
           borderBottomRightRadius: radiussize,
           height: endsize
         });
       }
+
+      // Listener for animation purposes
+      qx.event.Registration.addListener(elem, "transitionEnd", this.__onTransitionEnd, this, false);
+
+      return elem;
     },
-    
+
     /*
     ---------------------------------------------------------------------------
       USER API
@@ -318,15 +311,6 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
     ---------------------------------------------------------------------------
     */
 
-    // property apply
-    _applyOrientation : function(value) {
-      // Additional storage, higher memory but reduced number of function calls in render()
-      var horizontal = this.__horizontal = value === "horizontal";
-
-      if (this._hasElement()) {
-        this.__setSliderStyle(horizontal);
-      }
-    },
 
     // property apply
     _applyVisible : function(value) {
