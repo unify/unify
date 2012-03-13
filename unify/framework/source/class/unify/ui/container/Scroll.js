@@ -150,11 +150,18 @@ qx.Class.define("unify.ui.container.Scroll", {
       apply : "_applyScrollerProperty"
     },
     
+    /** Height of needed overscroll to fire update event */
     overscrollHeight :
     {
       init : 60,
       check : "Integer",
       apply : "_applyScrollerProperty"
+    },
+    
+    scrollOnSmallContent :
+    {
+      init : false,
+      check : "Boolean"
     },
 
     // overridden
@@ -623,7 +630,7 @@ qx.Class.define("unify.ui.container.Scroll", {
       //TODO why is this called here? touchstart should not change the properties, so no need to recache them
       this.__updateProperties();
 
-      if (!((this.__enableScrollX && this.__contentWidth > this.__clientWidth)
+      if (!(this.getScrollOnSmallContent() || (this.__enableScrollX && this.__contentWidth > this.__clientWidth)
           || (this.__enableScrollY && this.__contentHeight > this.__clientHeight))) {
         return; //neither X nor Y scroll possible, no need to try
       }
