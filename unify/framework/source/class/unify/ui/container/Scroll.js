@@ -141,6 +141,21 @@ qx.Class.define("unify.ui.container.Scroll", {
       check : "Boolean",
       apply : "_applyShowIndicatorY"
     },
+    
+    /** Whether an overscroll event should be fired on overscroll */
+    updateOnOverscroll :
+    {
+      init : false,
+      check : "Boolean",
+      apply : "_applyScrollerProperty"
+    },
+    
+    overscrollHeight :
+    {
+      init : 60,
+      check : "Integer",
+      apply : "_applyScrollerProperty"
+    },
 
     // overridden
     appearance :
@@ -165,7 +180,9 @@ qx.Class.define("unify.ui.container.Scroll", {
     scrollend: "qx.event.type.Event",
     
     /** Event fired if container snaped */
-    snap: "qx.event.type.Event"
+    snap: "qx.event.type.Event",
+    
+    overscroll: "qx.event.type.Data"
   },
 
   /*
@@ -222,6 +239,7 @@ qx.Class.define("unify.ui.container.Scroll", {
     __twoAxisScroll : true,
 
     __contentWidget : null,
+    
 
     /**
      * Gets inner content container
@@ -265,6 +283,10 @@ qx.Class.define("unify.ui.container.Scroll", {
         Indicator=unify.ui.container.scroll.ScalingIndicator;
       }
       return Indicator;
+    },
+
+    finishUpdateOnOverscroll : function() {
+      this.__scroller.finishUpdateOnOverscroll();
     },
 
     /**
@@ -316,6 +338,13 @@ qx.Class.define("unify.ui.container.Scroll", {
       var currentTop=this.__scrollTop;
       var scroller = this.__scroller = new Scroller(render, options);
       this.__updateDimensions();
+      
+      if (this.getUpdateOnOverscroll) {
+        scroller.activatePullToRefresh(this.getOverscrollHeight(), function(pos) {
+          self.fireDataEvent("overscroll", pos);
+        });
+      }
+      
       //restore old scrollposition
       if(currentLeft||currentTop){
         scroller.scrollTo(currentLeft,currentTop,false);
@@ -1506,10 +1535,17 @@ var Scroller;
 
 									self.__refreshActive = true;
 									if (self.__refreshActivate) {
-										self.__refreshActivate();
+										self.__refreshActivate("top");
+									}
+                                                                        
+                                                                } else if (!self.__refreshActive && scrollTop >= (maxScrollTop + self.__refreshHeight)) {
+                                                                  
+                                                                  	self.__refreshActive = true;
+									if (self.__refreshActivate) {
+										self.__refreshActivate("bottom");
 									}
 
-								} else if (self.__refreshActive && scrollTop > -self.__refreshHeight) {
+								} else if (self.__refreshActive && scrollTop > -self.__refreshHeight && scrollTop < (maxScrollTop + self.__refreshHeight)) {
 
 									self.__refreshActive = false;
 									if (self.__refreshDeactivate) {
