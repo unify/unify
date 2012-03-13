@@ -697,7 +697,7 @@ qx.Class.define("unify.ui.core.Widget", {
     getPositionInfo : function() {
       var e = this.getElement();
 
-      var pos = qx.bom.element.Location.get(e);
+      var pos = unify.ui.core.Util.getWidgetLocation(this); //qx.bom.element.Location.get(e);
       var dim = this.__dimensionInfo || qx.bom.element.Dimension.getSize(e);
 
       return {

@@ -2,9 +2,37 @@ qx.Class.define("unify.ui.core.Util", {
   type: "static",
   
   statics : {
+    getWidgetLocation : function(widget) {
+      var origPos = qx.bom.element.Location.get(widget.getElement());
+      var pos = {
+        left: origPos.left,
+        top: origPos.top
+      };
+      
+      // Firefox don't calculate with transforms! So we have to calculate this and add it to position.
+      if (qx.core.Environment.get("browser.name") == "firefox") {
+        var parent = widget;
+        var left = 0;
+        var top = 0;
+
+        while ((parent = parent.getLayoutParent())) {
+          var transform = qx.bom.element.Style.get(parent.getElement(), "transform").split(",");
+          if (transform && transform[0] != "none") {
+            left += parseFloat(transform[4]);
+            top += parseFloat(transform[5]);
+          }
+        }
+        
+        pos.left += left;
+        pos.top += top;
+      }
+      
+      return pos;
+    },
+    
     domElementToRootLevel : function(widget) {
       var e = widget.getElement();
-      var pos = qx.bom.element.Location.get(e);
+      var pos = unify.ui.core.Util.getWidgetLocation(widget);
       
       var posSave = {
         originalPosition : {
