@@ -274,7 +274,7 @@
       
       /**
        * Handler for tap on buttons
-       * @param e {qx.event.type.Event} Event
+       * @param e {Event} Event
        */
       __onButtonExecute : function(e) {
         this.fireEvent("execute", e.getTarget().getUserData("id"));

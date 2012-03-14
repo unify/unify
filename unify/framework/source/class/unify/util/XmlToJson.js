@@ -16,29 +16,30 @@
  * are simply converted to a map, while elements with children and no attributes
  * are converted to arrays etc.
  */
-qx.Class.define("unify.util.XmlToJson",
-{
-  statics :
-  {
-    /**
-     * {Map} internal converter map for automatic conversion of some special text nodes
-     */
-    __CONVERTXMLMAP :
-    {
-      "FALSE" : false,
-      "false" : false,
-      "False" : false,
 
-      "TRUE" : true,
-      "true" : true,
-      "True" : true,
+(function() {
+  
+  /**
+   * {Map} internal converter map for automatic conversion of some special text nodes
+   */
+  var CONVERTXMLMAP  = {
+    "FALSE" : false,
+    "false" : false,
+    "False" : false,
 
-      "NULL" : null,
-      "null" : null,
-      "Null" : null
-    },
+    "TRUE" : true,
+    "true" : true,
+    "True" : true,
 
+    "NULL" : null,
+    "null" : null,
+    "Null" : null
+  };
 
+  
+  
+  core.Module("unify.util.XmlToJson", {
+  
     /**
      * Converts XML to JSON
      *
@@ -54,9 +55,9 @@ qx.Class.define("unify.util.XmlToJson",
       var json = {};
       var child = xmlNode.childNodes;
       var attrs = xmlNode.attributes;
-      var map = this.__CONVERTXMLMAP;
+      var map = CONVERTXMLMAP;
       var current, key, type, value, i, len;
-
+  
       // Process children
       if ((child.length == 1) && (child[0].nodeType == 3))
       {
@@ -78,7 +79,7 @@ qx.Class.define("unify.util.XmlToJson",
           key = current.nodeName;
           value = current.nodeValue;
           type = current.nodeType;
-
+  
           // If key name is already in json convert to array
           var used = json[key];
           if (used)
@@ -88,7 +89,7 @@ qx.Class.define("unify.util.XmlToJson",
             if (!(used instanceof Array)) {
               used = json[key] = [ used ];
             }
-
+  
             if (type == 3) {
               used.push(value in map ? map[value] : value);
             } else {
@@ -105,26 +106,27 @@ qx.Class.define("unify.util.XmlToJson",
           }
         }
       }
-
+  
       // Add attributes
       if (attrs)
       {
         for (i=0, len=attrs.length; i<len; i++)
         {
           current = attrs[i];
-
+  
           // Check whether key is in json, if so add "@" in front of attribute name
           key = current.name;
           json[key in json ? "@"+key : key] = current.value;
         }
       }
-
+  
       // Quick validation if there is really content which was converted
       for (key in json) {
         return json;
       }
-
+  
       return null;
     }
-  }
-});
+  });
+
+})();

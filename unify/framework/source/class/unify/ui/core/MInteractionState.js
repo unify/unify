@@ -26,18 +26,19 @@ core.Class("unify.ui.core.MInteractionState", {
       var supportTouch = false;
       var supportMouse = true;
       
-      var root = qx.core.Init.getApplication().getRoot();
+      var root = unify.core.Init.getApplication().getRoot().getElement();
+      var element = this.getElement();
       
       if (supportTouch) {
-        this.addListener("touchstart", this.__MInteractionStateAddPressed, this, true);
-        this.addListener("touchleave", this.__MInteractionStateRemovePressed, this, true);
-        this.addListener("touchend", this.__MInteractionStateRemovePressed, this, true);
-        this.addListener("touchcancel", this.__MInteractionStateRemovePressed, this, true);
+        lowland.bom.Events.listen(element, "touchstart", this.__MInteractionStateAddPressed.bind(this), true);
+        lowland.bom.Events.listen(element, "touchleave", this.__MInteractionStateRemovePressed.bind(this), true);
+        lowland.bom.Events.listen(element, "touchend", this.__MInteractionStateRemovePressed.bind(this), true);
+        lowland.bom.Events.listen(element, "touchcancel", this.__MInteractionStateRemovePressed.bind(this), true);
       } else if (supportMouse) {
-        this.addListener("mouseover", this.__MInteractionStateAddHover, this, true);
-        this.addListener("mouseout", this.__MInteractionStateRemoveHover, this, true);
-        this.addListener("mousedown", this.__MInteractionStateAddPressed, this, true);
-        root.addListener("mouseup", this.__MInteractionStateRemovePressed, this, true);
+        lowland.bom.Events.listen(element, "mouseover", this.__MInteractionStateAddHover.bind(this), true);
+        lowland.bom.Events.listen(element, "mouseout", this.__MInteractionStateRemoveHover.bind(this), true);
+        lowland.bom.Events.listen(element, "mousedown", this.__MInteractionStateAddPressed.bind(this), true);
+        lowland.bom.Events.listen(root, "mouseup", this.__MInteractionStateRemovePressed.bind(this), true);
       }
     },
     
@@ -100,20 +101,7 @@ core.Class("unify.ui.core.MInteractionState", {
         InteractionStateManager.setPressedWidget(null);
       }
     }
-  }/*,
-  
-  destruct : function() {
-    var root = qx.core.Init.getApplication().getRoot();
-    
-    this.removeListener("touchstart", this.__MInteractionStateAddPressed, this, true);
-    this.removeListener("touchleave", this.__MInteractionStateRemovePressed, this, true);
-    this.removeListener("touchend", this.__MInteractionStateRemovePressed, this, true);
-    this.removeListener("touchcancel", this.__MInteractionStateRemovePressed, this, true);
-    this.removeListener("mouseover", this.__MInteractionStateAddHover, this, true);
-    this.removeListener("mouseout", this.__MInteractionStateRemoveHover, this, true);
-    this.removeListener("mousedown", this.__MInteractionStateAddPressed, this, true);
-    root.removeListener("mouseup", this.__MInteractionStateRemovePressed, this, true);
-  }*/
+  }
 });
 
 unify.core.Statics.annotate(unify.ui.core.MInteractionState, {

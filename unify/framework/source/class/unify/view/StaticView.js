@@ -31,7 +31,7 @@
  */
 core.Class("unify.view.StaticView",
 {
-  include : [unify.ui.container.Composite, /*qx.locale.MTranslation,*/ unify.fx.MWidgetAnimation],
+  include : [unify.ui.container.Composite, unify.fx.MWidgetAnimation],
   
   
   /*

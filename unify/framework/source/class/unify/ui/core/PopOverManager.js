@@ -197,22 +197,7 @@ core.Class("unify.ui.core.PopOverManager", {
       widget.addListenerOnce("changeVisibility", hideCallback, this);
       widget.hide();
     }
-  }//,
-
-  /*
-  *****************************************************************************
-     DESTRUCTOR
-  *****************************************************************************
-  */
-    
-  /*destruct : function() {
-    qx.event.Registration.removeListener(this.__pblocker, 'tap', this.__onTapBlocker, this);
-    
-    var rootElement = this._root.getElement();
-    rootElement.removeChild(this.__pblocker);
-    rootElement.removeChild(this.__mblocker);
-    this.__root = this.__pblocker = this.__mblocker = this.__overlays = this.__styleRegistry = null;
-  } */
+  }
 });
 
 unify.core.Singleton.annotate(unify.ui.core.PopOverManager);

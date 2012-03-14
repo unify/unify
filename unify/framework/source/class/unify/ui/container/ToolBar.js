@@ -11,24 +11,21 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.ui.container.ToolBar", {
-  extend: unify.ui.container.Bar,
+core.Class("unify.ui.container.ToolBar", {
+  include: [unify.ui.container.Bar],
   
   construct : function() {
-    this.base(arguments);
+    unify.ui.container.Bar.call(this);
     this._setLayout(new unify.ui.layout.special.NavigationBar());
   },
   
   properties : {
     // overridden
-    appearance :
-    {
-      refine: true,
+    appearance : {
       init: "toolbar"
     },
     
     height: {
-      refine: true,
       init: 44
     }
   },
@@ -115,7 +112,7 @@ qx.Class.define("unify.ui.container.ToolBar", {
     /**
      * Change segment handler
      *
-     * @param e {qx.event.type.Data} Event
+     * @param e {lowland.events.Data} Event
      */
     __changeSegment : function(e) {
       var s2w = this.__segmentToWidget;

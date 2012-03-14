@@ -15,13 +15,13 @@ core.Class("unify.fx.MWidgetAnimation", {
   
   events : {
     /** Fired after position animation is done */
-    animatePositionDone : lowland.events.Event, //"qx.event.type.Event",
+    animatePositionDone : lowland.events.Event,
     
     /** Fired after opacity animation is done */
-    animateOpacityDone : lowland.events.Event, //"qx.event.type.Event",
+    animateOpacityDone : lowland.events.Event,
     
     /** Fired after rotation animation is done */
-    animateRotateDone : lowland.events.Event //"qx.event.type.Event"
+    animateRotateDone : lowland.events.Event
   },
   
   properties : {

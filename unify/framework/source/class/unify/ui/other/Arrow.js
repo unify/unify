@@ -37,7 +37,7 @@ core.Class("unify.ui.other.Arrow", {
       var e = document.createElement("div");
       
       var arrowSpan = this.__arrowSpan = document.createElement("span");
-      qx.bom.element.Style.setStyles(arrowSpan,{display:"block",position:"absolute"});
+      core.bom.Style.set(arrowSpan,{display:"block",position:"absolute"});
       e.appendChild(arrowSpan);
       
       return e;
@@ -46,7 +46,7 @@ core.Class("unify.ui.other.Arrow", {
     _applyArrowStyle : function(value) {
       var arrowSpan = this.__arrowSpan;
       if (arrowSpan) {
-        qx.bom.element.Style.setStyles(arrowSpan, value);
+        core.bom.Style.set(arrowSpan, value);
       }
     },
 

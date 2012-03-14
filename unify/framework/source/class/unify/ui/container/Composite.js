@@ -16,13 +16,8 @@
 core.Class("unify.ui.container.Composite", {
   include : [unify.ui.core.Widget, unify.ui.core.MChildrenHandling],
   
-  /*include : [
-    qx.ui.core.MChildrenHandling,
-    qx.ui.core.MLayoutHandling
-  ],*/
-  
   /**
-   * @param layout {qx.ui.layout.Abstract?null} Layout of composite
+   * @param layout {unify.ui.layout.Base?null} Layout of composite
    */
   construct : function(layout) {
     unify.ui.core.Widget.call(this);
@@ -45,9 +40,3 @@ core.Class("unify.ui.container.Composite", {
     }
   }
 });
-
-(function(members) {
-  // DEFER
-  /*qx.ui.core.MLayoutHandling.remap(members);
-  qx.ui.core.MChildrenHandling.remap(members);*/
-})(unify.ui.container.Composite.prototype);

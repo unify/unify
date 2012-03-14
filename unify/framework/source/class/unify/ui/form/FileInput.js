@@ -8,10 +8,6 @@
 
 *********************************************************************************************** */
 
-/*
-#require(qx.event.handler.Input)
-*/
-
 /**
  * EXPERIMENTAL !
  * Input component
@@ -105,7 +101,7 @@ core.Class("unify.ui.form.FileInput", {
     /**
      * Input change handler
      *
-     * @param e {qx.event.type.Event} Change event
+     * @param e {Event} Change event
      */
     __fileInputValueChanged : function(e) {
       this.fireEvent("changeValue", e.getData());

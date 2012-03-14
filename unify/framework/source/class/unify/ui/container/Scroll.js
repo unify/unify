@@ -23,7 +23,7 @@ core.Class("unify.ui.container.Scroll", {
   include : [unify.ui.core.Widget, unify.ui.core.MRemoteChildrenHandling, unify.ui.core.MRemoteLayoutHandling],
 
   /**
-   * @param layout {qx.ui.layout.Abstract} Layout of container element
+   * @param layout {unify.ui.layout.Base} Layout of container element
    */
   construct : function(layout) {
     unify.ui.core.Widget.call(this);
@@ -508,7 +508,7 @@ core.Class("unify.ui.container.Scroll", {
     /**
      * Handler for mouse wheel event
      *
-     * @param e {qx.event.type.MouseWheel} Mouse wheel event
+     * @param e {Event} Mouse wheel event
      */
     __onMouseWheel : function(e) {
       var left = this.getScrollLeft();
@@ -538,7 +538,7 @@ core.Class("unify.ui.container.Scroll", {
     /**
      * Handler for touch start event
      *
-     * @param e {qx.event.type.Touch} Touch event
+     * @param e {Event} Touch event
      */
     __onTouchStart : function(e){
       this.__inTouch = true;
@@ -594,7 +594,7 @@ core.Class("unify.ui.container.Scroll", {
     /**
      * Handler for touch move event
      *
-     * @param e {qx.event.type.Touch} Touch event
+     * @param e {Event} Touch event
      */
     __onTouchMove : function(e){
       var ne=e; //.getNativeEvent();
@@ -604,7 +604,7 @@ core.Class("unify.ui.container.Scroll", {
     /**
      * Handler for touch end event
      *
-     * @param e {qx.event.type.Touch} Touch event
+     * @param e {Event} Touch event
      */
     __onTouchEnd : function(e){
       this.__inTouch = false;
@@ -628,7 +628,7 @@ core.Class("unify.ui.container.Scroll", {
     /**
      * Change visibility handler
      *
-     * @param e {qx.event.type.Event} Visibility event
+     * @param e {Event} Visibility event
      */
     __onChangeVisibility : function(e) {
       if (e.getData() !== "visible") {

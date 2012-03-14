@@ -15,18 +15,19 @@
  * This widgets creates no DOM element but uses DocumentFragment to support less DIVs in final HTML code
  */
 qx.Class.define("unify.ui.container.Virtual", {
-  extend : unify.ui.core.Widget,
-
   include : [
-    qx.ui.core.MChildrenHandling,
-    qx.ui.core.MLayoutHandling
+    unify.ui.core.Widget,
+    unify.ui.core.MChildrenHandling,
+    unify.ui.core.MLayoutHandling
   ],
 
   /**
    * @param layout {qx.ui.layout.Abstract?null} Layout of composite
    */
   construct : function(layout) {
-    this.base(arguments);
+    unify.ui.core.Widget.call(this);
+    unify.ui.core.MChildrenHandling.call(this);
+    unify.ui.core.MLayoutHandling.call(this);
 
     if (layout) {
       this._setLayout(layout);
@@ -35,9 +36,7 @@ qx.Class.define("unify.ui.container.Virtual", {
 
   properties : {
     // overridden
-    appearance :
-    {
-      refine: true,
+    appearance : {
       init: "composite"
     }
   },
@@ -46,10 +45,10 @@ qx.Class.define("unify.ui.container.Virtual", {
     _createElement : function() {
       return document.createDocumentFragment();
     }
-  },
+  }/* TODO: ,
 
   defer : function(statics, members) {
     qx.ui.core.MLayoutHandling.remap(members);
     qx.ui.core.MChildrenHandling.remap(members);
-  }
+  }*/
 });

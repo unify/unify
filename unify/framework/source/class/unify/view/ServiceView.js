@@ -13,11 +13,14 @@
  * available synchronously e.g. through inlining during build. The data
  * itself must not change during runtime of the application.
  */
-qx.Class.define("unify.view.ServiceView",
+core.Class("unify.view.ServiceView",
 {
-  extend : unify.view.StaticView,
-  type : "abstract",
+  include : [unify.view.StaticView],
 
+
+  construct : function() {
+    unify.view.StaticView.call(this);
+  },
 
   /*
   *****************************************************************************
@@ -181,11 +184,9 @@ qx.Class.define("unify.view.ServiceView",
       try{
         this._renderData(data);
         
-        if (qx.core.Environment.get("unify.widgets")) {
-          // Do explicit flush to prevent layouting while animate
-          if (data) {
-            qx.ui.core.queue.Manager.flush();
-          }
+        // Do explicit flush to prevent layouting while animate
+        if (data) {
+          unify.ui.layout.queue.Manager.flush();
         }
       } catch(ex) {
         this.error("Failed to render \"" + this._getServiceName() + "\" data: " + ex);

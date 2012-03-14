@@ -19,7 +19,7 @@ core.Class("unify.view.Root", {
   /**
    * @param rootElement {Element} DOM element the widget root is bound to
    * @param rootEventElement {Element} DOM element to bind global event listeners to
-   * @param layout {qx.ui.layout.Abstract} Layout of root element
+   * @param layout {unify.ui.layout.Base} Layout of root element
    */
   construct : function(rootElement,rootEventElement,layout) {
     this.__rootElement = rootElement;

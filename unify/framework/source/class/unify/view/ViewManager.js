@@ -28,7 +28,7 @@ core.Class("unify.view.ViewManager", {
 
   /**
    * @param managerId {String} globally unique ID of this manager
-   * @param layout {qx.ui.layout.Abstract?null} Layout
+   * @param layout {unify.ui.layout.Base?null} Layout
    */
   construct : function(managerId, layout)
   {
@@ -78,10 +78,10 @@ core.Class("unify.view.ViewManager", {
   events :
   {
     /** Fired whenever the view-local path was modified */
-    changePath : lowland.events.DataEvent, //"qx.event.type.Data",
+    changePath : lowland.events.DataEvent,
     
     /** Fired whenever the displayed view was modified */
-    changeView : lowland.events.Event //"qx.event.type.Event"
+    changeView : lowland.events.Event
   },
   
   
@@ -621,25 +621,6 @@ core.Class("unify.view.ViewManager", {
       right: {left: "100%", top: 0},
       bottom: {left: 0, top: "100%"}
     },
-    /*
-    __positions : qx.core.Environment.select("unify.positionshift",
-    {
-      "3d" :
-      {
-        bottom : unify.bom.Transform.accelTranslate(0, "100%"),
-        right : unify.bom.Transform.accelTranslate("100%", 0),
-        left : unify.bom.Transform.accelTranslate("-100%", 0),
-        center : unify.bom.Transform.accelTranslate(0, 0)
-      },
-
-      "2d" :
-      {
-        bottom : unify.bom.Transform.translate(0, "100%"),
-        right : unify.bom.Transform.translate("100%", 0),
-        left : unify.bom.Transform.translate("-100%", 0),
-        center : unify.bom.Transform.translate(0, 0)
-      }
-    }),*/
 
     /**
      * Internal setter method for view switching

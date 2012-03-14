@@ -96,7 +96,7 @@ core.Class("unify.ui.container.NavigationBar", {
     /**
      * Event listener for parent changes
      *
-     * @param e {qx.event.type.Data} Data event
+     * @param e {Event} Data event
      */
     __onViewChangeParent : function(e)
     {
@@ -116,7 +116,7 @@ core.Class("unify.ui.container.NavigationBar", {
     /**
      * Event listener for master changes
      *
-     * @param e {qx.event.type.Data} Data event
+     * @param e {Event} Data event
      */
     __onViewChangeMaster : function(e)
     {
@@ -162,7 +162,7 @@ core.Class("unify.ui.container.NavigationBar", {
     /**
      * Event listner for <code>changeTitle</code> event of attached view.
      *
-     * @param e {qx.event.type.Data} Property change event
+     * @param e {Event} Property change event
      */
     __onViewChangeTitle : function(e) {
       this.__title.setValue(this.__view.getTitle());

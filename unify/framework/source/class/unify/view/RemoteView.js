@@ -14,11 +14,9 @@
  * data loaded from remote to a minimum. It integrates activity indicators
  * to give the user feedback about server communication.
  */
-qx.Class.define("unify.view.RemoteView",
+core.Class("unify.view.RemoteView",
 {
-  extend : unify.view.ServiceView,
-  type : "abstract",
-
+  include : [unify.view.ServiceView],
 
 
   /*
@@ -27,9 +25,8 @@ qx.Class.define("unify.view.RemoteView",
   *****************************************************************************
   */
 
-  construct : function()
-  {
-    this.base(arguments);
+  construct : function() {
+    unify.view.ServiceView.call(this);
 
     // Connect business object
     this._getBusinessObject().addListener("completed", this.__onBusinessObjectCompleted, this);

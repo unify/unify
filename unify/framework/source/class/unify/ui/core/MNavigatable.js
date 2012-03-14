@@ -97,7 +97,7 @@ core.Class("unify.ui.core.MNavigatable", {
     /**
      * Helper function to handle taps
      *
-     * @param e {qx.event.type.Tap} Tap event
+     * @param e {lowland.events.Event} Tap event
      */
     __onMNavigatableTap : function(e) {
       if(this.hasState("disable")){

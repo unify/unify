@@ -14,14 +14,12 @@
  *
  * Embedded iframe widget
  */
-qx.Class.define("unify.ui.embed.Iframe", {
-  extend : unify.ui.core.Widget,
+core.Class("unify.ui.embed.Iframe", {
+  include : [unify.ui.core.Widget],
   
   properties : {
     // overridden
-    appearance :
-    {
-      refine: true,
+    appearance : {
       init: "iframe"
     }
   },
@@ -32,8 +30,9 @@ qx.Class.define("unify.ui.embed.Iframe", {
     
     // overridden
     _createElement : function() {
-      var e = qx.bom.Iframe.create();
-      qx.event.Registration.addListener(e, "load", this.__iframeLoaded, this);
+      // TODO : IFRAME HANDLING
+      var e = document.createElement("iframe"); //qx.bom.Iframe.create();
+      lowland.bom.Events.listen(e, "load", this.__iframeLoaded.bind(this));
       return e;
     },
     

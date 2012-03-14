@@ -11,11 +11,13 @@
 /**
  * Contains informations about the system and features.
  */
-qx.Class.define("unify.view.SysInfo",
+core.Class("unify.view.SysInfo",
 {
-  extend : unify.view.ServiceView,
-  type : "singleton",
+  include : [unify.view.ServiceView],
 
+  constuct : function() {
+    unify.view.ServiceView.call(this);
+  },
 
   /*
   *****************************************************************************
@@ -110,3 +112,5 @@ qx.Class.define("unify.view.SysInfo",
     }
   }
 });
+
+unify.core.Singleton.annotate(unify.view.SysInfo);

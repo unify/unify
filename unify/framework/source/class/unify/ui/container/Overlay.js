@@ -19,10 +19,10 @@ core.Class("unify.ui.container.Overlay", {
   
   events : {
     /** Event thrown if overlay visibility is changed to hidden */
-    "hidden" : unify.event.type.Event, //"qx.event.type.Event",
+    "hidden" : unify.event.type.Event, 
     
     /** Event thrown if overlay visibility is changed to shown */
-    "shown" : unify.event.type.Event //"qx.event.type.Event"
+    "shown" : unify.event.type.Event
   },
   
   properties : {

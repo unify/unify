@@ -11,11 +11,11 @@
 /**
  * Basic implementation of a list
  */
-qx.Class.define("unify.ui.container.List", {
-  extend: unify.ui.container.Composite,
+core.Class("unify.ui.container.List", {
+  include: [unify.ui.container.Composite],
 
   construct : function() {
-    this.base(arguments);
+    unify.ui.container.Composite.call(this);
 
     var layout = new unify.ui.layout.VBox();
     this._setLayout(layout);
@@ -23,14 +23,12 @@ qx.Class.define("unify.ui.container.List", {
 
   events: {
     /** Event fired if list element is tapped */
-    "change" : "qx.event.type.Data"
+    "change" : lowland.events.DataEvent
   },
 
   properties : {
     // overridden
-    appearance :
-    {
-      refine: true,
+    appearance : {
       init: "list"
     },
 
@@ -38,7 +36,7 @@ qx.Class.define("unify.ui.container.List", {
      * Data of list
      */
     data : {
-      apply: "_applyData"
+      apply: function(value, old) { this._applyData(value, old); }
     }
   },
 

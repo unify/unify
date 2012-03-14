@@ -43,9 +43,9 @@ unify.core.Statics.annotate(unify.core.Init, {
       } else if (typeof target["on" + type] != "undefined") {
         target["on" + type] = listener;
       } else {
-        /*if (core.Env.getValue("debug")) {
-          qx.log.Logger.warn("No method available to add native listener to " + target);
-        }*/
+        if (core.Env.getValue("debug")) {
+          console.warn("No method available to add native listener to " + target);
+        }
       }
     };
 

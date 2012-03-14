@@ -27,7 +27,7 @@ core.Class("unify.ui.basic.AnimatedImage", {
     /**
      * Event handler for visibility changes
      *
-     * @param e {qx.event.type.Data} Change event
+     * @param e {Event} Change event
      */
     __onChangeVisibility : function(e) {
       if (e.getData() == "visible") {

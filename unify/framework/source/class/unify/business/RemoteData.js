@@ -15,7 +15,7 @@
  * * Supports basic HTTP authentification
  * * Make use of modification dates to optimize data loading via GET
  */
-qx.Class.define("unify.business.RemoteData",
+core.Class("unify.business.RemoteData",
 {
   include : [unify.business.StaticData],
 
@@ -31,7 +31,7 @@ qx.Class.define("unify.business.RemoteData",
   construct : function()
   {
     // TODO: RIGHT?
-    unify.business.StaticData.prototype.construct();
+    unify.business.StaticData.call(this);
 
     /** {Map} In-Memory Cache */
     this.__cache = {};
@@ -40,10 +40,10 @@ qx.Class.define("unify.business.RemoteData",
     this.__headers = {};
 
     /** {String} Prefix used for storage */
-    var prefix = qx.lang.String.hyphenate(this.basename).toLowerCase();
+    var prefix = this.basename.hyphenate().toLowerCase();
     this.__storageDataPrefix = prefix + "/data/";
     this.__storageMetaPrefix = prefix + "/meta/";
-    qx.event.Registration.addListener(unify.bom.Storage,"quota_exceeded_err",this.__onQuotaExceeded,this);
+    lowland.events.EventManager.addListener(unify.bom.Storage,"quota_exceeded_err",this.__onQuotaExceeded,this);
   },
 
 
@@ -61,7 +61,7 @@ qx.Class.define("unify.business.RemoteData",
      *
      * Identify whether the event is interesting for you by the events ID property.
      */
-    "completed" : "unify.business.CompletedEvent"
+    "completed" : unify.business.CompletedEvent
   },
 
 
@@ -75,16 +75,14 @@ qx.Class.define("unify.business.RemoteData",
   properties :
   {
     /** Whether client-side storage should be used to keep data when app is relaunched */
-    enableStorage :
-    {
-      check : "Boolean",
+    enableStorage : {
+      type : "Boolean",
       init : true
     },
 
     /** Whether the proxy should be enabled (globally) */
-    enableProxy :
-    {
-      check : "Boolean",
+    enableProxy : {
+      type : "Boolean",
       init : false
     },
 
@@ -92,72 +90,62 @@ qx.Class.define("unify.business.RemoteData",
      * Option for GET request to allow the request to be successful only, if the response
      * has changed since the last request. This is done by checking the Last-Modified header.
      */
-    enableCacheRefresh :
-    {
-      check : "Boolean",
+    enableCacheRefresh : {
+      type : "Boolean",
       init : true
     },
 
     /** Whether automatic conversion of xml format to json format should be executed */
-    enableXmlConverter :
-    {
-      check : "Boolean",
+    enableXmlConverter : {
+      type : "Boolean",
       init : true
     },
 
     /** Whether it's OK no have no content from the service (HTTP 204 response)*/
-    enableNoContent :
-    {
-      check : "Boolean",
+    enableNoContent : {
+      type : "Boolean",
       init : false
     },
 
     /** URL of proxy to fix cross domain communication */
-    proxyUrl :
-    {
-      check : "String",
+    proxyUrl : {
+      type : "String",
       init : "generic-proxy.appspot.com"
     },
 
     /** Request mime type */
-    requestType :
-    {
-      check : ["application/x-www-form-urlencoded", "application/json", "application/xml", "text/plain", "text/javascript", "text/html" ],
+    requestType : {
+      type : ["application/x-www-form-urlencoded", "application/json", "application/xml", "text/plain", "text/javascript", "text/html" ],
       init : "application/x-www-form-urlencoded"
     },
 
     /** Response mime type */
-    responseType :
-    {
-      check : [ "application/json", "application/xml", "text/plain", "text/javascript", "text/html" ],
+    responseType : {
+      type : [ "application/json", "application/xml", "text/plain", "text/javascript", "text/html" ],
       init : "application/json"
     },
 
     /** Time after communication should be regarded as failed (in seconds) */
-    timeout :
-    {
-      check : "Integer",
+    timeout : {
+      type : "Integer",
       init : 10
     },
 
     /** Which authentication method is needed for all services */
-    authMethod :
-    {
-      check : ["basic"],
+    authMethod : {
+      type : ["basic"],
       nullable : true
     },
 
     /** User name for authentification (basic auth) */
-    user :
-    {
-      check : "String",
+    user : {
+      type : "String",
       nullable : true
     },
 
     /** Password for authentification (basic auth) */
-    password :
-    {
-      check : "String",
+    password : {
+      type : "String",
       nullable : true
     }
   },
@@ -269,7 +257,7 @@ qx.Class.define("unify.business.RemoteData",
         var meta = unify.bom.Storage.get(this.__storageMetaPrefix + cacheId);
         if (meta != null)
         {
-          meta = qx.lang.Json.parse(meta);
+          meta = JSON.parse(meta);
           return meta[field] || null;
         }
       }
@@ -303,7 +291,7 @@ qx.Class.define("unify.business.RemoteData",
         entry = unify.bom.Storage.get(this.__storageMetaPrefix + cacheId);
         if (entry)
         {
-          entry = qx.lang.Json.parse(entry);
+          entry = JSON.parse(entry);
 
           // Recover json/xml data
           var data = unify.bom.Storage.get(this.__storageDataPrefix + cacheId);
@@ -311,7 +299,7 @@ qx.Class.define("unify.business.RemoteData",
           if (entry.type == "application/json")
           {
             start = new Date;
-            data = qx.lang.Json.parse(data);
+            data = JSON.parse(data);
             if (core.Env.getValue("debug")) {
               this.debug("Restored JSON in: " + (new Date - start) + "ms");
             }
@@ -319,7 +307,8 @@ qx.Class.define("unify.business.RemoteData",
           else if (entry.type == "application/xml")
           {
             start = new Date;
-            data = qx.xml.Document.fromString(data);
+            throw new Error("XML not supported now"); // TODO!!!
+            data = xml.Document.fromString(data);
             if (core.Env.getValue("debug")) {
               this.debug("Recovered XML in: " + (new Date - start) + "ms");
             }
@@ -508,7 +497,7 @@ qx.Class.define("unify.business.RemoteData",
         }
       }
 
-      return params ? service + "=" + qx.lang.Json.stringify(params) : service;
+      return params ? service + "=" + JSON.stringify(params) : service;
     },
 
 
@@ -568,7 +557,7 @@ qx.Class.define("unify.business.RemoteData",
     /**
      * Checks if request is marked as modified
      *
-     * @param req {qx.io.remote.Request} Request object
+     * @param req {Request} Request object
      * @return {Boolean} Whether the resource is modified
      */
     __isModified : function(req) {
@@ -637,7 +626,7 @@ qx.Class.define("unify.business.RemoteData",
       var auth = this.getAuthMethod();
       if (auth == "basic") {
         var key = this.getEnableProxy() ? "X-Proxy-Authorization" : "Authorization";
-        var value = "Basic " + qx.util.Base64.encode(this.getUser() + ":" + this.getPassword());
+        var value = "Basic " + lowland.util.Base64.encode(this.getUser() + ":" + this.getPassword());
 
         requestHeaders[key] = value;
       }
@@ -653,7 +642,7 @@ qx.Class.define("unify.business.RemoteData",
       {
         var reqType = this.getRequestType();
         if (reqType == "application/json" && typeof data != "string") {
-          data = qx.lang.Json.stringify(data);
+          data = JSON.stringify(data);
         }
 
         requestHeaders["Content-Type"] = reqType;
@@ -686,11 +675,11 @@ qx.Class.define("unify.business.RemoteData",
     /**
      * Event listener for request object
      *
-     * @param e {qx.event.type.Event} Event object of request
+     * @param e {lowland.events.Event} Event object of request
      */
     __onRequestDone : function(e)
     {
-      var Json = qx.lang.Json;
+      var Json = JSON;
 
       // Read event data
       var req = e.getTarget();
@@ -863,7 +852,7 @@ qx.Class.define("unify.business.RemoteData",
       
       // Fire event
       var args = [id, data, isModified, isErrornous, isMalformed, req];
-      this.fireEvent("completed", unify.business.CompletedEvent, args);
+      this.fireSpecialEvent("completed", args);
 
       // Dispose request
       req.dispose();
@@ -935,6 +924,6 @@ qx.Class.define("unify.business.RemoteData",
   {
     // Dereference native binding
     this.__cache = null;
-    qx.event.Registration.removeListener(unify.bom.Storage,"quota_exceeded_err",this.__onQuotaExceeded,this);
+    Registration.removeListener(unify.bom.Storage,"quota_exceeded_err",this.__onQuotaExceeded,this);
   }*/
 });

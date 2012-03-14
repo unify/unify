@@ -11,10 +11,13 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.ui.core.FocusHandler", {
-  extend: qx.core.Object,
-  type: "singleton",
-  
+coe.Class("unify.ui.core.FocusHandler", {
+  extend: unify.core.Object,
+
+  construct : function() {
+    unify.core.Object.call(this);
+  },
+
   members : {
     __currentRoot : null,
     __focusedChild : null,
@@ -25,12 +28,12 @@ qx.Class.define("unify.ui.core.FocusHandler", {
      * roots, but no inline roots (they are typically sitting inside
      * another root).
      *
-     * @param root {qx.ui.root.Abstract} Any root
+     * @param root {unify.ui.view.Root} Any root
      */
     connectTo : function(root) {
       this.__currentRoot = root;
       
-      root.addListener("keypress", this.__onKeyPress, this);
+      lowland.bom.Events.listen(root.getElement(), "keypress", this.__onKeyPress.bind(this));
     },
     
     /**
@@ -109,10 +112,10 @@ qx.Class.define("unify.ui.core.FocusHandler", {
       var el1 = widget1.getElement();
       var el2 = widget2.getElement();
 
-      var Location = qx.bom.element.Location;
+      var Location = unify.bom.Element;
 
-      var loc1 = Location.get(el1);
-      var loc2 = Location.get(el2);
+      var loc1 = Location.getLocation(el1);
+      var loc2 = Location.getLocation(el2);
 
       // Sort-Check #2: Top-Position
       if (loc1.top != loc2.top) {
@@ -379,3 +382,5 @@ qx.Class.define("unify.ui.core.FocusHandler", {
     }
   }
 });
+
+unify.core.Singleton.annotate(unify.ui.core.FocusHandler);

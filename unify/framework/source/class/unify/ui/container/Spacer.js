@@ -11,20 +11,18 @@
 /**
  * Spacer widget
  */
-qx.Class.define("unify.ui.container.Spacer", {
-  extend: unify.ui.core.Widget,
+core.Class("unify.ui.container.Spacer", {
+  include: [unify.ui.core.Widget],
   
   properties : {
     // overridden
-    appearance :
-    {
-      refine: true,
+    appearance : {
       init: "spacer"
     }
   },
   
   construct : function() {
-    this.base(arguments);
+    unify.ui.core.Widget.call(this);
     this.setLayoutProperties({flex: 1});
   },
   

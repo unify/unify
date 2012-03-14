@@ -12,9 +12,8 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.view.TabbedViewManager", {
-  extend : unify.view.ViewManager,
-  include : [unify.ui.core.MChildControl],
+core.Class("unify.view.TabbedViewManager", {
+  include : [unify.view.ViewManager, unify.ui.core.MChildControl],
 
 
   /*
@@ -29,8 +28,9 @@ qx.Class.define("unify.view.TabbedViewManager", {
    */
   construct : function(managerId,layout)
   {
-    this.base(arguments,managerId,layout);
+    unify.view.ViewManager.call(this, managerId, layout);
     unify.ui.core.MChildControl.call(this);
+    
     this.__tabs={};
     this.__currentTab=null;
     this.addListener("changePath", this._onViewManagerChangePath, this);

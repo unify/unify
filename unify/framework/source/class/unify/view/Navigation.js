@@ -219,7 +219,7 @@ core.Class("unify.view.Navigation",
     /**
      * Reacts on (local) path changes of all registered view managers
      *
-     * @param e {qx.event.type.Event} Event object
+     * @param e {lowland.events.Event} Event object
      */
     __onSubPathChange : function(e)
     {

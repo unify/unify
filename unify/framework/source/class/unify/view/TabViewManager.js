@@ -179,7 +179,7 @@ core.Class("unify.view.TabViewManager", {
     /**
      * Reacts on path changes of the view manager and updates "selected" property accordingly.
      *
-     * @param e {qx.event.type.Data} Data event
+     * @param e {lowland.events.DataEvent} Data event
      */
     __onViewManagerChangePath : function(e)
     {
@@ -215,7 +215,7 @@ core.Class("unify.view.TabViewManager", {
     /**
      * Event handler for onTap event
      *
-     * @param e {qx.event.type.Touch} Event
+     * @param e {lowland.events.Event} Event
      */
     _onTap : function(e) {
       var widget = this._getTapFollowElement(e);

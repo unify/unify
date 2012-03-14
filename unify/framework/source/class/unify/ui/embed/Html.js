@@ -11,14 +11,16 @@
 /**
  * A simple widget that shows html content. 
  */
-qx.Class.define("unify.ui.embed.Html", {
-  extend : unify.ui.core.Widget,
+core.Class("unify.ui.embed.Html", {
+  include : [unify.ui.core.Widget],
+  
+  construct : function() {
+    unify.ui.core.Widget.call(this);
+  },
   
   properties : {
     // overridden
-    appearance :
-    {
-      refine: true,
+    appearance : {
       init: "html"
     },
     
@@ -27,7 +29,7 @@ qx.Class.define("unify.ui.embed.Html", {
      */
     html : {
       nullable: true,
-      apply: "_applyHtml"
+      apply: function(value, old) { this._applyHtml(value, old); }
     }
   },
   
@@ -59,7 +61,7 @@ qx.Class.define("unify.ui.embed.Html", {
       el.style.height = null;
       el.style.visibility = "hidden";
       
-      var height = qx.bom.element.Dimension.getHeight(el);
+      var height = lowland.bom.Element.getContentHeight(el);
       
       el.style.width = origWidth;
       el.style.height = origHeight;

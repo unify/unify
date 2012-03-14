@@ -45,7 +45,7 @@ core.Class("unify.business.SysInfo",
       STATIC DATA INTERFACE
     ---------------------------------------------------------------------------
     */
-    //TODO replace unify.bom.client usage with qx.core.Environment.get calls
+    //TODO replace unify.bom.client usage with core.Env.getValue calls
     // overridden
     _readData : function(service, params)
     {
@@ -70,15 +70,15 @@ core.Class("unify.business.SysInfo",
           break;
 
         case "env":
-          var Environment=qx.core.Environment;
+          var Environment=core.Env;
           data =
           {
             "Runtime" :
             {
               "Platform" : unify.bom.client.Platform.NAME,
               "System" : unify.bom.client.System.TITLE,
-              "Engine" : Environment.get('engine.name') + ' ' + Environment.get('engine.version'),
-              "Browser" : Environment.get('browser.name')
+              "Engine" : Environment.getValue('engine.name') + ' ' + Environment.getValue('engine.version'),
+              "Browser" : Environment.getValue('browser.name')
             },
             "Extensions" : this.__fromConstants(unify.bom.client.Extension)
           };
@@ -112,9 +112,12 @@ core.Class("unify.business.SysInfo",
      */
     __fromConstants : function(clazz)
     {
-      var String = qx.lang.String;
       var result = {};
       var title;
+
+      var firstUp = function(str) {
+        return (str[0].toUpperCase() + str.substring(1));
+      };
 
       for (var key in clazz)
       {
@@ -122,7 +125,7 @@ core.Class("unify.business.SysInfo",
         {
           title = key.toLowerCase().split("_");
           for (var i=0, l=title.length; i<l; i++) {
-            title[i] = String.firstUp(title[i]);
+            title[i] = firstUp(title[i]);
           }
 
           result[title.join(" ")] = clazz[key] && "Yes" || "No";

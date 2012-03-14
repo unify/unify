@@ -10,11 +10,7 @@
 /**
  * URI parser and builder class.
  */
-qx.Class.define("unify.util.Uri",
-{
-  extend : Object,
-
-
+core.Class("unify.util.Uri", {
 
   /*
   *****************************************************************************
@@ -27,8 +23,6 @@ qx.Class.define("unify.util.Uri",
    */
   construct : function(str)
   {
-    this.base(arguments);
-
     if (str != null)
     {
       var parsed = unify.bom.Uri.parse(str);
@@ -64,63 +58,56 @@ qx.Class.define("unify.util.Uri",
     /**
      * Any supported protocol e.g. "http", "ftp", "https", etc.
      */
-    protocol :
-    {
-      check : "String",
+    protocol : {
+      type : "String",
       nullable : true
     },
 
     /**
      * A user name for basic authentification
      */
-    user :
-    {
-      check : "String",
+    user : {
+      type : "String",
       nullable : true
     },
 
     /**
      * A password for basic authentification
      */
-    password :
-    {
-      check : "String",
+    password : {
+      type : "String",
       nullable : true
     },
 
     /**
      * The hostname to connect
      */
-    host :
-    {
-      check : "String",
+    host : {
+      type : "String",
       nullable : true
     },
 
     /**
      * The post on the host to connect to.
      */
-    port :
-    {
-      check : "String",
+    port : {
+      type : "String",
       nullable : true
     },
 
     /**
      * The path on the host to send the request to.
      */
-    path :
-    {
-      check : "String",
+    path : {
+      type : "String",
       nullable : true
     },
 
     /**
      * A anchor to show (mainly useful for web sites only)
      */
-    anchor :
-    {
-      check : "String",
+    anchor : {
+      type : "String",
       nullable : true
     }
   },

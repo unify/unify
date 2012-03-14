@@ -26,7 +26,7 @@ core.Class("unify.ui.core.Widget", {
   include : [unify.ui.core.VisibleBox],
 
   /**
-   * @param layout {qx.ui.layout.Abstract} Layout of widget
+   * @param layout {unify.ui.layout.Base} Layout of widget
    */
   construct : function() {
     unify.ui.core.VisibleBox.call(this);
@@ -59,32 +59,11 @@ core.Class("unify.ui.core.Widget", {
      */
     move : lowland.events.Event//,
 
-    /** Fired if a touch at the screen is started. */
-    //touchstart : "qx.event.type.Touch",
-
-    /** Fired if a touch at the screen has ended. */
-    //touchend : "qx.event.type.Touch",
-
-    /** Fired if a touch at the screen is started. */
-    //touchleave : "qx.event.type.Touch",
-
-    /** Fired if a touch at the screen has ended. */
-    //touchrelease : "qx.event.type.Touch",
-
-    /** Fired during a touch at the screen. */
-    //touchmove : "qx.event.type.Touch",
-
-    /** Fired if a touch at the screen is canceled. */
-    //touchcancel : "qx.event.type.Touch",
-
-    /** Fired when a finger taps on the screen. */
-    //tap : "qx.event.type.Touch",
-
     /** Fired if widget is focusable {@link #focusable} and gets focus */
-    //focus : "qx.event.type.Focus",
+    //focus : "event.type.Focus",
 
     /** Fired if widget is focusable {@link #focusable} and looses focus */
-    //blur : "qx.event.type.Focus"
+    //blur : "event.type.Focus"
   },
 
   properties : {
@@ -382,13 +361,13 @@ core.Class("unify.ui.core.Widget", {
      * with one widget. Reset the connection with a previous widget first, if you
      * like to use it in another widget instead.
      *
-     * @param layout {qx.ui.layout.Abstract} The new layout or
+     * @param layout {unify.ui.layout.Base} The new layout or
      *     <code>null</code> to reset the layout.
      */
     _setLayout : function(layout) {
       if (core.Env.getValue("debug")) {
         if (layout) {
-          // TODO : this.assertInstance(layout, qx.ui.layout.Abstract);
+          // TODO : this.assertInstance(layout, unify.ui.layout.Base);
         }
       }
 
@@ -628,7 +607,7 @@ core.Class("unify.ui.core.Widget", {
         unify.ui.layout.queue.Appearance.add(this);
         this.__initialAppearanceApplied = true;
 
-        //qx.bom.element.Style.set(this.getElement(), "visibility", "visible");
+        //core.bom.Style.set(this.getElement(), "visibility", "visible");
       }
 
       // CASE 2: Widget has got an appearance before, but was hidden for some time
@@ -659,8 +638,8 @@ core.Class("unify.ui.core.Widget", {
     getPositionInfo : function() {
       var e = this.getElement();
 
-      var pos = lowland.bom.Element.getLocation(e); //qx.bom.element.Location.get(e);
-      var dim = this.__dimensionInfo || qx.bom.element.Dimension.getSize(e);
+      var pos = lowland.bom.Element.getLocation(e);
+      var dim = this.__dimensionInfo || lowland.bom.Element.getContentSize(e);
 
       return {
         left: pos.left,
@@ -926,7 +905,6 @@ core.Class("unify.ui.core.Widget", {
 
     /**
      * Marks the layout of this widget as invalid and triggers a layout update.
-     * This is a shortcut for <code>qx.ui.core.queue.Layout.add(this);</code>.
      */
     scheduleLayoutUpdate : function() {
       unify.ui.layout.queue.Layout.add(this);
@@ -1391,11 +1369,11 @@ core.Class("unify.ui.core.Widget", {
       if (font) {
         delete map.font;
         //try to resolve the font first, if it fails, parse it
-        var tmpFont = unify.theme.Manager.get().resolveFont(font) || {}; //qx.theme.manager.Font.getInstance().resolve(font);
+        var tmpFont = unify.theme.Manager.get().resolveFont(font) || {};
         /*if(resolvedFont !== font){
-          tmpFont = resolvedFont; //TODO: qx.lang.Object.clone(resolvedFont);
+          tmpFont = resolvedFont; //TODO: Object.clone(resolvedFont);
         } else {
-          tmpFont = font; //TODO :qx.bom.Font.fromString(font);
+          tmpFont = font; //TODO :Font.fromString(font);
         }*/
       } else {
         //no font set, reuse the existing or start from scratch
@@ -1458,7 +1436,7 @@ core.Class("unify.ui.core.Widget", {
         bottom: parseInt(style.paddingBottom, 10) || 0
       };
       /*if (padding.left + padding.top + padding.right + padding.bottom > 0) {
-        qx.ui.core.queue.Layout.add(this);
+        unify.ui.layout.queue.Layout.add(this);
       }*/
 
       var border = this.__border = {
@@ -1468,7 +1446,7 @@ core.Class("unify.ui.core.Widget", {
         bottom: parseInt(style.borderBottomWidth, 10) || 0
       };
       /*if (border.left + border.top + border.right + border.bottom > 0) {
-        qx.ui.core.queue.Layout.add(this);
+        unify.ui.layout.queue.Layout.add(this);
       }*/
 
       core.bom.Style.set(this.getElement(), style);
@@ -1559,8 +1537,6 @@ core.Class("unify.ui.core.Widget", {
       if (parent) {
         parent._remove(this);
       }
-
-      // TODO: qx.ui.core.queue.Dispose.add(this);
     },
 
 
@@ -1700,7 +1676,7 @@ core.Class("unify.ui.core.Widget", {
      *
      * The supported keys of the layout options map depend on the layout manager
      * used to position the widget. The options are documented in the class
-     * documentation of each layout manager {@link qx.ui.layout}.
+     * documentation of each layout manager {@link unify.ui.layout}.
      *
      * @param child {LayoutItem} the widget to add.
      * @param options {Map?null} Optional layout data for widget.
@@ -1854,7 +1830,7 @@ core.Class("unify.ui.core.Widget", {
      * Remove the widget at the specified index.
      *
      * @param index {Integer} Index of the widget to remove.
-     * @return {qx.ui.core.LayoutItem} The removed item.
+     * @return {unify.ui.core.VisibleBox} The removed item.
      */
     _removeAt : function(index)
     {
@@ -1906,7 +1882,7 @@ core.Class("unify.ui.core.Widget", {
      * be overridden to get notified about child adds.
      *
      * @signature function(child)
-     * @param child {qx.ui.core.LayoutItem} The added child.
+     * @param child {unify.ui.core.VisibleBox} The added child.
      */
     _afterAddChild : null,
 
@@ -1916,7 +1892,7 @@ core.Class("unify.ui.core.Widget", {
      * can be overridden to get notified about child removes.
      *
      * @signature function(child)
-     * @param child {qx.ui.core.LayoutItem} The removed child.
+     * @param child {unify.ui.core.VisibleBox} The removed child.
      */
     _afterRemoveChild : null,
 
@@ -1942,10 +1918,10 @@ core.Class("unify.ui.core.Widget", {
      */
     __addHelper : function(child, options,index)
     {
-      /*if (core.Env.getValue("debug"))
+      /* TODO: if (core.Env.getValue("debug"))
       {
-        //this.assertInstance(child, unify.ui.qx.LayoutItem, "Invalid widget to add: " + child);
-        this.assertInstance(child, qx.ui.core.LayoutItem, "Invalid widget to add: " + child);
+        //this.assertInstance(child, unify.ui.core.VisibleBox, "Invalid widget to add: " + child);
+        this.assertInstance(child, unify.ui.core.VisibleBox, "Invalid widget to add: " + child);
         this.assertNotIdentical(child, this, "Could not add widget to itself: " + child);
 
         if (options != null) {
@@ -1959,7 +1935,9 @@ core.Class("unify.ui.core.Widget", {
         parent._remove(child);
       }
       var element = child.getElement();
-      //qx.bom.element.Style.set(element, "visibility", "hidden");
+      
+      //unify.bom.Style.set(element, "visibility", "hidden");
+      
       var contentElem=this.getContentElement();
       var childNodes=contentElem.childNodes;
 
@@ -1971,7 +1949,7 @@ core.Class("unify.ui.core.Widget", {
         } else {
           queue.indexed[index] = [element];
         }
-        //qx.lang.Array.insertAt(queue.indexed, element, index);
+        //Array.insertAt(queue.indexed, element, index);
         //contentElem.insertBefore(element,childNodes[index]);
       } else {
         queue.append.push(element);
@@ -2100,7 +2078,7 @@ unify.core.Statics.annotate(unify.ui.core.Widget, {
   
       // dereference "weak" reference to the widget.
       if (widgetKey != null) {
-        var widget = qx.core.ObjectRegistry.fromHashCode(widgetKey);
+        // TODO : var widget = ObjectRegistry.fromHashCode(widgetKey);
         // check for anonymous widgets
         if (!considerAnonymousState || !widget.getAnonymous()) {
           return widget;

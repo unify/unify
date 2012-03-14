@@ -17,10 +17,10 @@ core.Class("unify.fx.core.Base", {
   
   events : {
     /** Start of animation */
-    start : lowland.events.Event, //"qx.event.type.Event",
+    start : lowland.events.Event,
     
     /** Stop of animation */
-    stop : lowland.events.DataEvent //"qx.event.type.Data"
+    stop : lowland.events.DataEvent
   },
   
   properties : {

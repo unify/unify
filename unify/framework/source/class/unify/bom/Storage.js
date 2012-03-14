@@ -29,7 +29,7 @@
     set : function(key, value)
     {
       if (hasLocalStorage) {
-        /* TODO: if (qx.core.Environment.get("os.name") == "ios" && parseFloat(qx.core.Environment.get("os.version") || 0) < 4.2) {
+        /* TODO: if (core.Evn.getValue("os.name") == "ios" && parseFloat(core.Env.getValue("os.version") || 0) < 4.2) {
             //TODO find out exact version of fix (some time between 3.2 and 4.2)
             //fixes problem with QUOTA_EXCEEDED_ERR on older ios versions see http://stackoverflow.com/questions/2603682/
             localStorage.removeItem(this.__prefix + key, value);
@@ -38,14 +38,14 @@
           localStorage.setItem(prefix + key, value);
         } catch(ex){
           if(ex.name=='QUOTA_EXCEEDED_ERR'){
-            lowland.events.EventManager(this, 'quota_exceeded_err'); //qx.event.Registration.fireEvent(this, 'quota_exceeded_err');
+            lowland.events.EventManager(this, 'quota_exceeded_err');
           } else {
             throw ex;
           }
         }
   
       } else {
-        //TODO: qx.bom.Cookie.set(this.__prefix + key, value);
+        //TODO: Cookie.set(this.__prefix + key, value);
       }
     },
     
@@ -60,7 +60,7 @@
       if (this.hasLocalStorage) {
         return localStorage.getItem(prefix + key);
       } else {
-        //TODO: return qx.bom.Cookie.get(this.__prefix + key);
+        //TODO: return Cookie.get(this.__prefix + key);
       }     
     },
     
@@ -74,7 +74,7 @@
       if (hasLocalStorage) {
         localStorage.removeItem(prefix + key);
       } else {
-        // TODO: qx.bom.Cookie.del(this.__prefix + key);
+        // TODO: Cookie.del(this.__prefix + key);
       }
     }
   });

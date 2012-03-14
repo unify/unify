@@ -8,18 +8,15 @@
 
 *********************************************************************************************** */
 
-/* ***********************************************************************************************
+// TODO: #require(qx.event.handler.Orientation)
 
-#require(qx.event.handler.Orientation)
-
-*********************************************************************************************** */
 /**
  * A manager for a so-called split screen.
  *
  */
-qx.Class.define("unify.view.SplitViewManager",
+core.Class("unify.view.SplitViewManager",
 {
-  extend : unify.ui.container.Composite,
+  include : [unify.ui.container.Composite],
 
   /*
   *****************************************************************************
@@ -30,11 +27,11 @@ qx.Class.define("unify.view.SplitViewManager",
   /**
    * @param masterViewManager {unify.view.ViewManager} The master view manager
    * @param detailViewManager {unify.view.ViewManager} The detail view manager
-   * @param layout {qx.ui.layout.Abstract?null} Optional other layout manager than special splitview one
+   * @param layout {unify.ui.layout.Base?null} Optional other layout manager than special splitview one
    */
   construct : function(masterViewManager, detailViewManager, layout)
   {
-    this.base(arguments, layout || new unify.ui.layout.special.SplitView());
+    unify.ui.container.Composite.call(this, layout || new unify.ui.layout.special.SplitView());
 
     this.__masterViewManager = masterViewManager;
     this.__detailViewManager = detailViewManager;
@@ -43,7 +40,7 @@ qx.Class.define("unify.view.SplitViewManager",
     detailViewManager.setMaster(masterViewManager);
 
     // Attach to rotate event to control view manager visibility
-    qx.event.Registration.addListener(window, "orientationchange", this.__onRotate, this);
+    lowland.bom.Events.listen(window, "orientationchange", this.__onRotate.bind(this));
 
     this.add(masterViewManager);
     this.add(detailViewManager);
@@ -130,7 +127,7 @@ qx.Class.define("unify.view.SplitViewManager",
       if (renderWidth && renderHeight) {
         return renderWidth < renderHeight;
       } else {
-        return !qx.bom.Viewport.isLandscape();
+        return !core.bom.Viewport.isLandscape();
       }
     }
   }

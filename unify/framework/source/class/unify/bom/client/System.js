@@ -74,7 +74,7 @@ core.Module("unify.bom.client.System",
 });
 
 (function(statics){
-  var Platform = unify.bom.client.Platform; //qx.bom.client.Platform;
+  var Platform = unify.bom.client.Platform;
   var agent = navigator.userAgent.replace(/_/g, ".");
   var match, title, version, name;
 

@@ -50,23 +50,23 @@
       _createElement: function(){
         //use a backgroundimage div because android (at least on motorola xoom with 3.1) has problems rotating images around their center
         var elem= document.createElement('div');
-        qx.bom.element.Style.setStyles(elem,{
+        core.bom.Style.set(elem,{
           backgroundColor:"transparent",
           backgroundPosition:"center center",
           backgroundRepeat:"no-repeat",
-          backgroundImage:"url("+qx.util.ResourceManager.getInstance().toUri(this.__source)+")",
+          backgroundImage:"url("+core.io.Asset.toUri(this.__source)+")",
           transformOriginX:"50%",
           transformOriginY:"50%"
         });
         return elem;
       },
       _applySource : function(value) {
-        this.setStyle({backgroundImage:"url("+qx.util.ResourceManager.getInstance().toUri(value)+")"});
+        this.setStyle({backgroundImage:"url("+core.io.Asset.toUri(value)+")"});
       },
       /**
        * Event handler for visibility changes
        *
-       * @param e {qx.event.type.Data} Change event
+       * @param e {Event} Change event
        */
       __onChangeVisibility : function(e) {
         if (e.getData() == "visible") {

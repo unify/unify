@@ -8,10 +8,6 @@
 
 *********************************************************************************************** */
 
-/*
-#require(qx.event.handler.Input)
-*/
-
 /**
  * EXPERIMENTAL
  * Input component
@@ -120,7 +116,7 @@ core.Class("unify.ui.form.TextField", {
      * Event listener for native input events. Redirects the event
      * to the widget. Also checks for the filter and max length.
      *
-     * @param e {qx.event.type.Data} Input event
+     * @param e {Event} Input event
      */
     _onInput : function(e) {
       var value = this.getValue();

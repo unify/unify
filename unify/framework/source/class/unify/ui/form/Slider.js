@@ -45,7 +45,7 @@ core.Class("unify.ui.form.Slider", {
   
   events : {
     /** Fired when user clicks on bar */
-    clickOnBar: lowland.events.DataEvent //"qx.event.type.Data"
+    clickOnBar: lowland.events.DataEvent
   },
   
   construct : function() {

@@ -8,10 +8,6 @@
 
 *********************************************************************************************** */
 
-/*
-#require(qx.event.handler.Input)
-*/
-
 /**
  * EXPERIMENTAL !
  * Input component
@@ -70,7 +66,7 @@ core.Class("unify.ui.form.util.HtmlFileInput", {
      * Event listener for native input events. Redirects the event
      * to the widget. Also checks for the filter and max length.
      *
-     * @param e {qx.event.type.Data} Input event
+     * @param e {Event} Input event
      */
     __onInput : function(e) {
       this.fireEvent("changeValue", e.target.files);

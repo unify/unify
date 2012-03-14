@@ -129,13 +129,13 @@ core.Module("unify.bom.client.Feature",
   var undef = undefined;
   var node = document.createElement("div");
   var style = node.style;
-  var prefix = qx.core.Environment.select("engine.name",
-  {
-    "mshtml" : "Ms",
-    "opera" : "O",
+  var prefix = core.Env.getValue("engine");
+  prefix = {
+    "presto" : "Ms",
+    "trident" : "O",
     "webkit" : "Webkit",
     "gecko" : "Moz"
-  });
+  }[prefix];
 
   statics.CSS_TRANSFORM = style[prefix + "Transform"] !== undef;
   statics.CSS_TRANSFORM3D = style[prefix + "Perspective"] !== undef;

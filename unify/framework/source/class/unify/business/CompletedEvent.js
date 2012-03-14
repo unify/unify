@@ -10,12 +10,16 @@
 /**
  * Fired by business object whenever a data communication is completed.
  */
-qx.Class.define("unify.business.CompletedEvent",
-{
-  extend : qx.event.type.Event,
+core.Class("unify.business.CompletedEvent", {
+  include : [lowland.events.Event],
 
-  members :
-  {
+  construct : function(target, id, data, modified, errornous, malformed, request) {
+    lowland.events.Event.call(this, target);
+    
+    this.init(id, data, modified, errornous, malformed, request);
+  },
+
+  members : {
     __id : null,
     __data : null,
     __errornous : null,
@@ -33,7 +37,7 @@ qx.Class.define("unify.business.CompletedEvent",
      * @param modified {Boolean} Whether the request comes with modified data.
      * @param errornous {Boolean} Whether the request was errornous.
      * @param malformed {Boolean} Whether the response content is malformed
-     * @param request {qx.io.request.Xhr} Request object to query communication details
+     * @param request {Xhr} Request object to query communication details
      * @return {tweet.business.TwitterEvent} The initialized event instance
      */
     init : function(id, data, modified, errornous, malformed, request)
@@ -132,7 +136,7 @@ qx.Class.define("unify.business.CompletedEvent",
      * Returns the request object. Don't rely on this object to persist.
      * It is immediately destroyed after the function is quit.
      *
-     * @return {qx.io.request.Xhr} Request object
+     * @return {Xhr} Request object
      */
     getRequest : function() {
       return this.__request;

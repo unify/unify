@@ -8,17 +8,6 @@
 
 *********************************************************************************************** */
 
-/* ************************************************************************
-
-#require(qx.event.handler.Orientation)
-#require(qx.event.handler.Transition)
-#require(qx.event.handler.Mouse)
-#require(qx.event.handler.Touch)
-#require(qx.log.appender.Native)
-
-
-************************************************************************ */
-
 /**
  * Application class for next generation devices.
  */
@@ -46,10 +35,10 @@ core.Class("unify.Application", {
     main : function() {
 
       // Global error handling (otherwise we see nothing in PhoneGap)
-      /* TODO: if (qx.core.Environment.get("phonegap"))
+      /* TODO: if (core.Env.getValue("phonegap"))
       {
-        qx.event.GlobalError.setErrorHandler(function(ex) {
-          qx.log.Logger.error("" + ex);
+        GlobalError.setErrorHandler(function(ex) {
+          console.error("" + ex);
         });
       }*/
 
@@ -100,7 +89,7 @@ core.Class("unify.Application", {
       lowland.bom.Events.set(window, "resize", this.__onResize.bind(this));
       lowland.bom.Events.set(window, "orientationchange", this.__onRotate.bind(this));
       /*
-      if (qx.core.Environment.get("os.name") == "webos") {
+      if (core.Env.getValue("os.name") == "webos") {
         var palmSystem = window.PalmSystem;
         if (palmSystem) {
           palmSystem.stageReady();
@@ -147,7 +136,7 @@ core.Class("unify.Application", {
      *  Returns the layout for the root view.
      *  Defaults to canvas, override this function with your own implementation if you want a different layout
      *
-     *  @return {qx.ui.layout.Abstract} layout
+     *  @return {unify.ui.layout.Base} layout
      */
     _getRootLayout : function(){
       return new unify.ui.layout.Canvas();
@@ -203,7 +192,7 @@ core.Class("unify.Application", {
      */
     __onClick : function(e) {
       // Prevent click on href
-      /* TODO: var target = qx.bom.Event.getTarget(e);
+      /* TODO: var target = e.target;
       var elem = unify.bom.Hierarchy.closest(target, "a[href]");
       if (elem) {
         e.preventDefault();
@@ -216,10 +205,10 @@ core.Class("unify.Application", {
      * named "orient" which is set to "landscape" or "portrait" depending
      * on the current device orientation.
      *
-     * @param e {qx.event.type.Orientation} Orientation change event
+     * @param e {lowland.events.DataEvent} Orientation change event
      */
     __onRotate : function(e) {
-      /* TODO : var orient=qx.bom.Viewport
+      /* TODO : 
       this._getRootElement().setAttribute("orient", e.isLandscape()?"landscape":"portrait");*/
     },
 
@@ -227,7 +216,7 @@ core.Class("unify.Application", {
     /**
      * Fired whenever the windows is resized or the orientation is changed.
      *
-     * @param e {qx.event.type.Event} Resize event
+     * @param e {lowland.events.Event} Resize event
      */
     __onResize : function(e) {
       this.__setupDocumentSize();
@@ -241,7 +230,7 @@ core.Class("unify.Application", {
      */
     __setupDocumentSize : function()
     {
-      /* TODO: if (qx.core.Environment.get("phonegap") && qx.core.Environment.get("os.name") == "ios")
+      /* TODO: if (core.Evn.getValue("phonegap") && core.Evn.getValue("os.name") == "ios")
       {
         // This is a client-side bugfix for this issue in PhoneGap on iPhone OS:
         // http://phonegap.lighthouseapp.com/projects/20116-iphone/tickets/51-uiwebview-viewport-larger-than-application-viewport
@@ -250,30 +239,5 @@ core.Class("unify.Application", {
         rootStyle.height = window.innerHeight + "px";
       }*/
     }
-  }//,
-
-
-
-  /*
-  *****************************************************************************
-     DEFER
-  *****************************************************************************
-  */
-/*
-  defer : function()
-  {
-    var unifyTouch;
-    var unifyPostitionShift;
-    if (qx.core.Environment.get("os.name") == "android")
-    {
-      qx.bom.element.Class.add(document.documentElement, "android");
-      unifyPostitionShift = "2d";
-    }
-    else
-    {
-      unifyPostitionShift = "3d";
-    }
-
-    qx.core.Environment.add("unify.positionshift", unifyPostitionShift);
-  }*/
+  }
 });
