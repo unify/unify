@@ -153,6 +153,10 @@ qx.Class.define("unify.view.Navigation",
     /** {unify.view.Path} Path object which stores the complete application path */
     __path : null,
 
+    getIt : function() {
+      return this.__serializedPath;
+    },
+
     /**
      * Navigates to the given path. Automatically distributes sub paths
      * to the responsible view managers.
@@ -171,6 +175,7 @@ qx.Class.define("unify.view.Navigation",
       if(!this.isValidNavigationPath(path)){
         throw new Error("invalid path: "+path.serialize());
       }
+      
       var usedManagers = {};
       var lastManagerId = null;
       var managers = this.__viewManagers;
@@ -310,6 +315,7 @@ qx.Class.define("unify.view.Navigation",
 
       var viewManagers = this.__viewManagers;
       var permanentManagers = this.__permanentManagers;
+      var lastViewManager = null;
       for (var id in viewManagers)
       {
         var manager = viewManagers[id];
@@ -324,11 +330,22 @@ qx.Class.define("unify.view.Navigation",
               permanent = false;
             }
           }
+          if (localPath.length > 0) {
+            lastViewManager = manager;
+          }
         }
         
       }
       
       var joined = this.__serializedPath = path.serialize();
+      
+      if (lastViewManager) {
+        var view = lastViewManager.getCurrentView();
+        if (view && !view.getActive()) {
+          view.setActive(true);
+        }
+      }
+      
       // Only save view managers that should be permanent saved to local storage and URL
       if (permanent) {
         unify.bom.History.getInstance().setLocation(joined);

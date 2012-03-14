@@ -692,6 +692,7 @@ qx.Class.define("unify.view.ViewManager", {
       //       Maybe it should be rendered lazy
       var oldView = this.__currentView;
       if (view == oldView) {
+        //view.setActive(true);
         return;
       }
 

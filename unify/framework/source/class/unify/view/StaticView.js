@@ -278,7 +278,7 @@ qx.Class.define("unify.view.StaticView",
         if (!this.__layer) {
           this.create();
         }
-
+        
         this._resumeView();
       }
       else

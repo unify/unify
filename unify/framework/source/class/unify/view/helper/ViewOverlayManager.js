@@ -194,6 +194,11 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
         self.__currentOverlay = self.__getOverlay(vm, false);
       };
       
+      var currentView = viewManager.getCurrentView();
+      if (currentView && currentView.getActive()) {
+        currentView.setActive(false);
+      }
+      
       if (viewManager.getModal()) {
         PopOverManager.hide(viewManager);
         finalize();
