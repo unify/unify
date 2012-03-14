@@ -152,6 +152,14 @@ core.Class("unify.view.ViewManager", {
   members :
   {
     __initialized : false,
+    __isInAnimation: false,
+
+    /**
+     * @return {Boolean} true if this ViewManager currently animates the transition between 2 views
+     */
+    isInAnimation: function(){
+      return this.__isInAnimation;
+    },
     
     getModal : function() {
       return (this.getDisplayMode() == "modal");
@@ -275,7 +283,7 @@ core.Class("unify.view.ViewManager", {
         this.warn("Empty path!");
         return;
       }
-      
+
       var oldPath = this.__path;
       var oldLength = oldPath ? oldPath.length : 0;
       var layerTransition = null;
@@ -635,6 +643,7 @@ core.Class("unify.view.ViewManager", {
       //       Maybe it should be rendered lazy
       var oldView = this.__currentView;
       if (view == oldView) {
+        //view.setActive(true);
         return;
       }
       
@@ -645,7 +654,6 @@ core.Class("unify.view.ViewManager", {
       // Store current view
       this.__currentView = view;
 
-
       // Resuming the view
       view.setActive(true);
       
@@ -654,15 +662,14 @@ core.Class("unify.view.ViewManager", {
       var oldViewElement = oldView;// && oldView.getElement();
 
       // Insert target layer into DOM
-      if (this.indexOf(view) == -1 /*true || currentViewElement.parentNode != elem*/) {
+      if (this.indexOf(view) == -1) {
         this.add(view, {
           left: 0,
           top: 0,
           bottom: 0,
           right: 0
         });
-      }
-      
+      }      
       // Transition specific layer switch
       var positions = this.__positions;
 
@@ -704,19 +711,24 @@ core.Class("unify.view.ViewManager", {
     __animateLayers : function(toView, fromView, direction) {
       var self = this;
       var AnimationDuration = this.getAnimationDuration();
+      var vam = unify.core.Init.getApplication().getViewAnimationManager();
+      
       direction = direction || "in";
 
       var visibilityAction = function() {
         var afterRenderAction = function() {
-          var transitionEndFnt = function() {
+          self.__isInAnimation=true;
+          
+          var callback = function() {
             fromView.setVisibility("hidden");
+            self.__isInAnimation=false;
           };
-          fromView.addListenerOnce("animatePositionDone", transitionEndFnt, this);
-
-          toView.setAnimatePositionDuration(AnimationDuration);
-          toView.setAnimatePosition(self.__positions.center);
-          fromView.setAnimatePositionDuration(AnimationDuration);
-          fromView.setAnimatePosition((direction == "in") ? self.__positions.left : self.__positions.right);
+          
+          if (direction == "in") {
+            vam.animateIn(fromView, toView, AnimationDuration, callback);
+          } else {
+            vam.animateOut(fromView, toView, AnimationDuration, callback);
+          }
         };
         
         if (toView.hasRenderedLayout()) {
@@ -726,20 +738,12 @@ core.Class("unify.view.ViewManager", {
         }
       };
       
-      if (toView) {
-        var posTo = (direction == "in") ? this.__positions.right : this.__positions.left;
-        toView.setStyle({
-          transform: unify.bom.Transform.accelTranslate(posTo.left, posTo.top)
-        });
+      if (direction == "in") {
+        vam.initIn(fromView, toView);
+      } else {
+        vam.initOut(fromView, toView);
       }
-      
-      if (fromView) {
-        var posFrom = this.__positions.center;
-        fromView.setStyle({
-          transform: unify.bom.Transform.accelTranslate(posFrom.left, posFrom.top)
-        });
-      }
-      
+
       if (toView.getVisibility() != "visible") {
         toView.addListenerOnce("changeVisibility", visibilityAction);
         
@@ -759,15 +763,24 @@ core.Class("unify.view.ViewManager", {
     __animateModal: function(view,show,callback){
       var self = this;
       var AnimationDuration = this.getAnimationDuration();
+      var vam = qx.core.Init.getApplication().getViewAnimationManager();
 
       var visibilityAction = function() {
-        var afterRenderAction = function() {
+        self.__isInAnimation=true;
+        var cb = function() {
+          self.__isInAnimation=false;
           if (callback) {
-            view.addListenerOnce("animatePositionDone", callback, this);
+            callback();
           }
-          view.setAnimatePositionDuration(AnimationDuration);
-          view.setAnimatePosition((show) ? self.__positions.center : self.__positions.bottom);
-        }
+        };
+        
+        var afterRenderAction = function() {
+          if (show) {
+            vam.animateModalIn(null, view, AnimationDuration, cb);
+          } else {
+            vam.animateModalOut(view, null, AnimationDuration, cb);
+          }
+        };
 
         if (view.hasRenderedLayout()) {
           afterRenderAction();
@@ -776,14 +789,11 @@ core.Class("unify.view.ViewManager", {
         }
       };
 
-      var startPos = (show) ? this.__positions.bottom : this.__positions.center;
-      if (!view) {
-        console.trace();
+      if (show) {
+        vam.initModalIn(null, view);
+      } else {
+        vam.initModalOut(view, null);
       }
-      view.setStyle({
-        transform: unify.bom.Transform.accelTranslate(startPos.left, startPos.top)
-      });
-
 
       if (view.getVisibility() != "visible") {
         view.addListenerOnce("changeVisibility", visibilityAction);

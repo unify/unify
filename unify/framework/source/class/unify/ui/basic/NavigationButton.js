@@ -17,6 +17,12 @@
 core.Class("unify.ui.basic.NavigationButton", {
   include : [unify.ui.form.Button, unify.ui.core.MNavigatable],
   
+  properties : {
+    hoverForPopover : {
+      init: false
+    }
+  },
+  
   /**
    * @param label {String} Label on button
    */

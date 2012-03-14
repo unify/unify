@@ -57,7 +57,8 @@ core.Class("unify.ui.basic.Label", {
     html : {
       type: "Boolean",
       init: false,
-      fire: "changeHtml"
+      fire: "changeHtml",
+      apply: function(value, old) { this._applyHtml(value, old); }
     },
 
     // overridden
@@ -220,6 +221,24 @@ core.Class("unify.ui.basic.Label", {
         this.addState("wrap");
       } else {
         this.removeState("wrap");
+      }
+    },
+
+    /**
+     * executed on change of the html property
+     * 
+     * reapplies element value if the element was already created
+     * to maintain internal consistency
+     * 
+     * @param value {Boolean} new value
+     */
+    _applyHtml: function(value){
+      var elem=this.getElement();
+      if(elem){
+        var val=this.getValue(); //cache 
+        this._applyValue("");    //unset 
+        elem.useHtml=!!value;    //change qooxdoo interhal flag (see qx.bom.Label)
+        this._applyValue(val);   //apply cached 
       }
     }
   }

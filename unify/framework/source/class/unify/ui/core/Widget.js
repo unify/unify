@@ -319,7 +319,7 @@ core.Class("unify.ui.core.Widget", {
         throw new Error("TabIndex property must be between 1 and 32000");
       }
 
-      this.setAttribute("tabIndex", value);
+      this.getElement().setAttribute("tabIndex", value);
     },
 
     _applyFocusable : function(value, old)
@@ -330,9 +330,9 @@ core.Class("unify.ui.core.Widget", {
           tabIndex = 1;
         }
 
-        this.setAttribute("tabIndex", tabIndex);
+        this.getElement().setAttribute("tabIndex", tabIndex);
       } else if (old) {
-        this.setAttribute("tabIndex", null);
+        this.getElement().setAttribute("tabIndex", null);
       }
     },
 
@@ -638,7 +638,7 @@ core.Class("unify.ui.core.Widget", {
     getPositionInfo : function() {
       var e = this.getElement();
 
-      var pos = lowland.bom.Element.getLocation(e);
+      var pos = unify.ui.core.Util.getWidgetLocation(this);
       var dim = this.__dimensionInfo || lowland.bom.Element.getContentSize(e);
 
       return {
@@ -691,13 +691,15 @@ core.Class("unify.ui.core.Widget", {
      * @param preventSize {Boolean?null} Prevent size of widget and ignore layout hints, use with care!
      */
     renderLayout : function(left, top, width, height, preventSize) {
+      var userOverride = this.getUserData("domElementPositionOverride");
+
       var dimension = this.__dimensionInfo = {
         width: width,
         height: height
       };
       var changes = unify.ui.core.VisibleBox.prototype.renderLayout.call(this, left, top, width, height);
 
-      if(!changes) {
+      if(!changes && !userOverride) {
         return;
       }
 
@@ -721,6 +723,12 @@ core.Class("unify.ui.core.Widget", {
             if (core.Env.getValue("debug")) {
               this.warn("No parent widget set, so virtual position is set to 0/0")
             }
+          }
+          
+          if (userOverride) {
+            left = userOverride.newPosition.left;
+            top = userOverride.newPosition.top;
+            parentVirtualPosition = {left: 0, top: 0};
           }
           
           core.bom.Style.set(element, {

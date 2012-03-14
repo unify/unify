@@ -115,7 +115,7 @@ core.Class("unify.ui.core.MNavigatable", {
           this.warn("Widget " + this + " has no parent view manager!");
         }
       }
-      
+
       var exec = this.getExecute();
       if (exec) {
         viewManager.getCurrentView()[exec](this);
@@ -128,13 +128,16 @@ core.Class("unify.ui.core.MNavigatable", {
           } else {
             window.location = href;
           }
-        } else if (!this.__navigates) {
-          // Lazily navigate (omits navigation during activity)
-          this.__navigates = true;
+        //} else if (!this.__navigates) {
+        } else if (!viewManager.isInAnimation()) {
           /**
            * #require(lowland.ext.Function)
            */
           this.__navigationWidgetHelper.delay(0, this, viewManager);
+        } else {
+          if(core.Env.getValue("debug")){
+            this.debug(viewManager.getId()+ "is currently animating, skipping navigation attempt");
+          }
         }
       }
     },

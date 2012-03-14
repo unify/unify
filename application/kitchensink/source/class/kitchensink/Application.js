@@ -41,6 +41,7 @@ core.Class("kitchensink.Application",
       
       var ModalViewManager = new unify.view.ViewManager("modal");
       ModalViewManager.setDisplayMode("modal");
+      ModalViewManager.setUserData("blockerState", "test");
       ModalViewManager.register(kitchensink.view.Modal);
 
       // Add TabViews or SplitViews...

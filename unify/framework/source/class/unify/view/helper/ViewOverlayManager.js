@@ -60,6 +60,9 @@ core.Class("unify.view.helper.ViewOverlayManager", {
     
     __overlays : null,
     
+    __currentViewManager : null,
+    __currentOverlay : null,
+    
     /**
      * Set styles for a specific viewManager
      *
@@ -78,6 +81,20 @@ core.Class("unify.view.helper.ViewOverlayManager", {
      */
     getStyles : function(viewManager) {
       return this.__styleRegistry[viewManager];
+    },
+    
+    /**
+     * Get current visible view manager
+     */
+    getCurrentViewManager : function() {
+      return this.__currentViewManager;
+    },
+    
+    /**
+     * Get current visible overlay
+     */
+    getCurrentOverlay : function() {
+      return this.__currentOverlay;
     },
 
     /**
@@ -116,10 +133,11 @@ core.Class("unify.view.helper.ViewOverlayManager", {
       
       var PopOverManager = unify.ui.core.PopOverManager.getInstance();
       var registeredStyle = this.__styleRegistry[viewManager];
+      var popOverElement = null;
       if (modal) {
         PopOverManager.show(viewManager,registeredStyle ||"full");
       } else {
-        var popOverElement = this.__getOverlay(viewManager);
+        popOverElement = this.__getOverlay(viewManager);
         popOverElement.set({
           modal: false
         });
@@ -133,6 +151,10 @@ core.Class("unify.view.helper.ViewOverlayManager", {
         PopOverManager.show(popOverElement, trigger);
       }
       this.fireEvent("show", id);
+      
+      this.__currentViewManager = viewManager;
+      this.__currentOverlay = popOverElement;
+      
       this.__visibleViewManagers.push(viewManager);
     },
     
@@ -162,9 +184,18 @@ core.Class("unify.view.helper.ViewOverlayManager", {
       
       var self = this;
       var finalize = function() {
-        self.__visibleViewManagers.remove(viewManager);
+        var vvm = self.__visibleViewManagers;
+        vvm.remove(viewManager);
         self.fireEvent("hide", id);
+        
+        var vm = self.__currentViewManager = vvm[vvm.length-1];
+        self.__currentOverlay = self.__getOverlay(vm, false);
       };
+      
+      var currentView = viewManager.getCurrentView();
+      if (currentView && currentView.getActive()) {
+        currentView.setActive(false);
+      }
       
       if (viewManager.getModal()) {
         PopOverManager.hide(viewManager);
@@ -173,8 +204,6 @@ core.Class("unify.view.helper.ViewOverlayManager", {
         var mode = viewManager.getDisplayMode();
   
         var overlay=this.__overlays[viewManager];
-        
-        PopOverManager.addListenerOnce("", function() {}, this);
         PopOverManager.hide(overlay);
         
         overlay.addListenerOnce("hidden",finalize,this);
@@ -191,11 +220,12 @@ core.Class("unify.view.helper.ViewOverlayManager", {
     __hidePopover : function(e) {
       var overlay = e.getData();
       if (overlay) {
-        
         var widget = overlay.getUserData("viewmanager");
-        this.__visibleViewManagers.remove(widget);
-        
-        this.fireEvent("hide", (widget&&widget.getId()) || null);
+      
+        if (widget) {
+          this.__visibleViewManagers.remove(widget);
+          this.fireEvent("hide", (widget&&widget.getId()) || null);
+        }
       }
     },
 
@@ -205,9 +235,9 @@ core.Class("unify.view.helper.ViewOverlayManager", {
      * @param viewManager {unify.view.ViewManager} View manager to generate overlay for
      * @return {unify.ui.container.Overlay} Overlay widget
      */
-    __getOverlay : function(viewManager){
-      var overlay = this.__overlays[viewManager];
-      if(!overlay){
+    __getOverlay : function(viewManager, create){
+      var overlay = this.__overlays[viewManager] || null;
+      if(!overlay && create !== false){
         overlay = new unify.ui.container.Overlay();
         overlay.setUserData("viewmanager", viewManager.toHashCode());
 

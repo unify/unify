@@ -117,6 +117,16 @@ core.Class("unify.business.StaticData",
       return config;
     },
 
+    /**
+     * Override the config for the given service
+     */
+    _setConfigForService : function(service, config){
+      var db = this.__services;
+      if (db[service]) {
+        db[service] = config || {};
+      }
+    },
+
 
     /**
      * Returns data as stored in cache for the given service.

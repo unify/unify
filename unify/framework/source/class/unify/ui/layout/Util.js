@@ -2,7 +2,7 @@ core.Module("unify.ui.layout.Util", {
   calculateLeftGap : function(widget) {
     return widget.getBorder().left + widget.getMarginLeft() || 0;
   },
-  
+
   calculateTopGap : function(widget) {
     return widget.getBorder().top + widget.getMarginTop() || 0;
   },

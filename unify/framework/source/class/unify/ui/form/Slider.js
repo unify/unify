@@ -201,9 +201,13 @@ core.Class("unify.ui.form.Slider", {
         diff = this.__calcTop + e.touches[0].pageY /*e.getScreenTop()*/ - this.__touchTop;
         calcVal = this.__calcHeight;
       }
-      if (diff < 0 || diff > calcVal) {
-        return;
+      
+      if (diff < 0) {
+        diff = 0;
+      } else if (diff > calcVal) {
+        diff = calcVal;
       }
+      
       var transform;
       if (horizontal) {
         transform = unify.bom.Transform.accelTranslate(Math.round(diff)+"px", 0);

@@ -83,8 +83,8 @@
     fromString : function(str)
     {
       var obj = new unify.view.Path;
-  
-      if (str.length > 0)
+
+      if (str && str.length > 0)
       {
         var fragments = str.split("/");
         for (var i=0, l=fragments.length; i<l; i++) {
@@ -97,9 +97,8 @@
   
   
     /** {RegExp} Matches location fragments (view.segment:param) */
-    __fragmentMatcher : /^([a-z0-9-]+)?(\.([a-z-]+))?(\:([a-zA-Z0-9_-]+))?$/,
-  
-  
+    __fragmentMatcher : /^([a-z0-9-]+)?(\.([a-z-]+))?(\:([a-zA-Z0-9_%=-]+))?$/,
+
     /**
      * Parses a location fragment into a object with the keys "view", "segment" and "param".
      *

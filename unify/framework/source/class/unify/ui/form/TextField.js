@@ -13,7 +13,7 @@
  * Input component
  */
 core.Class("unify.ui.form.TextField", {
-  include : [unify.ui.core.Widget],
+  include : [unify.ui.core.Widget, unify.ui.core.MInteractionState],
   
   properties : {
     /**
@@ -28,6 +28,12 @@ core.Class("unify.ui.form.TextField", {
     // overridden
     appearance : {
       init: "input"
+    },
+    
+    // overridden
+    focusable : {
+      refine: true,
+      init: true
     },
     
     /**
@@ -59,6 +65,7 @@ core.Class("unify.ui.form.TextField", {
   
   construct : function() {
     unify.ui.core.Widget.call(this);
+    unify.ui.core.MInteractionState.call(this);
     
     lowland.bom.Events.listen(this.getElement(), "blur", this.__onBlur.bind(this));
   },

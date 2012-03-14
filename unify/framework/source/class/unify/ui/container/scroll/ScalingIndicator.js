@@ -27,6 +27,7 @@
 
   core.Class("unify.ui.container.scroll.ScalingIndicator", {
     include : [unify.ui.core.Widget],
+    implement : [unify.ui.container.scroll.IIndicator],
   
     /*
     *****************************************************************************

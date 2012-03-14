@@ -150,6 +150,21 @@ core.Class("unify.Application", {
     getRoot : function() {
       return this.__root;
     },
+    
+    __viewAnimationManager : null,
+    
+    _getViewAnimationManager : function() {
+      return new unify.view.animation.IOSAnimationManager();
+    },
+    
+    getViewAnimationManager : function() {
+      var vam = this.__viewAnimationManager;
+      if (!vam) {
+        vam = this.__viewAnimationManager = this._getViewAnimationManager();
+      }
+      
+      return vam;
+    },
 
 
     /*

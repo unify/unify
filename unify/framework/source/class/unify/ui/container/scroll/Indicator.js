@@ -25,6 +25,7 @@
 
   core.Class("unify.ui.container.scroll.Indicator", {
     include : [ unify.ui.container.Composite ],
+    implement : [unify.ui.container.scroll.IIndicator],
   
     /*
     *****************************************************************************

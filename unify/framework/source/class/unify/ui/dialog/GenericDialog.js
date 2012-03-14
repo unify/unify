@@ -211,10 +211,11 @@
             this.fireEvent("execute", BTN_OK);
           }, this);
           
-          centerButtonContainer.add(okBtn);
-        
-        } else  {
-          // generate buttons
+          if (button.appearance) {
+            userBtn.setAppearance(button.appearance);
+          }
+          
+          userBtn.addListener("execute", this.__onButtonExecute, this);
           
           var btnCount = buttons.length;
           

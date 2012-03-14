@@ -85,10 +85,10 @@ core.Class("unify.ui.layout.special.AtomLayout", {
         
         if (direction == "left") {
           imageLeft = unify.ui.layout.Util.calculateLeftGap(image);
-          labelLeft = imageHint.width;
+          labelLeft = imageWidth + unify.ui.layout.Util.calculateHorizontalGap(image) + unify.ui.layout.Util.calculateLeftGap(label);
         } else if (direction == "right") {
           labelLeft = label.getMarginLeft();
-          imageLeft = availWidth - imageWidth - unify.ui.layout.Util.calculateRightGap(image);
+          imageLeft = availWidth - imageWidth - unify.ui.layout.Util.calculateHorizontalGap(image);
         } else if (direction == "top") {
           imageTop = unify.ui.layout.Util.calculateTopGap(image);
           labelTop = imageTop + imageHint.height + unify.ui.layout.Util.calculateBottomGap(image) + unify.ui.layout.Util.calculateTopGap(label);
@@ -123,6 +123,7 @@ core.Class("unify.ui.layout.special.AtomLayout", {
         }
         var left = Math.round((availWidth / 2) - (labelWidth / 2));
         var top = Math.round((availHeight / 2) - (labelHeight / 2));
+        
         label.renderLayout(left, top, labelWidth, labelHeight);
       }
     },

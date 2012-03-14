@@ -49,7 +49,7 @@ core.Class("kitchensink.view.Ui", {
       });
       combobox.setData([{
         id: 1,
-        label: "Test1"
+        label: "Test Value Number 1"
       }, {
         id: 2,
         label: "Test2"
@@ -75,6 +75,56 @@ core.Class("kitchensink.view.Ui", {
       
       var slider = new unify.ui.form.Slider();
       container.add(slider);
+
+      // CheckBox -----------------------------------------------------------
+      var checkbox = new unify.ui.form.CheckBox("Checkbox <default>");
+      checkbox.set({
+        width: 300,
+        allowGrowX: false
+      });
+      container.add(checkbox);
+      
+      var checkboxChecked = new unify.ui.form.CheckBox("Checkbox <checked>", true);
+      checkboxChecked.set({
+        width: 300,
+        allowGrowX: false
+      });
+      container.add(checkboxChecked);
+      
+      // Show Empty Dialog --------------------------------------------------
+      var dialogButton = new unify.ui.form.Button("Dialog");
+      dialogButton.addListener("execute", this.__openDialog, this);
+      container.add(dialogButton);
+      
+      // Show Alert message ------------------------------------------------
+      var alertButton = new unify.ui.form.Button("Alert");
+      alertButton.addListener("execute", function(e) {
+        unify.ui.dialog.Dialog.alert(
+            "Alert", 
+            "Be Alert!", 
+            function() { this.debug("You have been alerted..."); }
+          );
+        }, this);
+      container.add(alertButton);
+      
+      // Show Confirm Dialog ------------------------------------------------
+      var confirmButton = new unify.ui.form.Button("Confirm");
+      confirmButton.addListener("execute", function(e) {
+        unify.ui.dialog.Dialog.confirm(
+            "Please deside...",
+            "Witch programming language is the best?",
+            "JavaScript", 
+            "VisualBasic",
+            function(e) { 
+              var btnID = e.getData();
+              if (btnID == 'YES')
+                this.debug("Good choice...")
+              else
+                this.debug("You ignorant fool! Watch this: http://www.youtube.com/watch?v=hQVTIJBZook")
+            }
+          );
+        }, this);
+      container.add(confirmButton);
       
       var textField = new unify.ui.form.TextField();
       textField.addListener("changeValue", function(e) {
@@ -87,8 +137,24 @@ core.Class("kitchensink.view.Ui", {
         this.debug("Test area changed value to '" + e.getData() + "'");
       }, this);
       container.add(textArea);
-      
-      
+
+      var slider = new unify.ui.form.Slider();
+      slider.set({
+        height: 300,
+        allowGrowX: false,
+        allowGrowY: false,
+        allowShrinkX: false,
+        allowShrinkY: false,
+        direction: "vertical"
+      });
+      container.add(slider);
+    },
+    
+    __dialog : null,
+    
+    __openDialog : function() {
+      var dialog = this.__dialog = new unify.ui.dialog.GenericDialog("Das ist der Titel", []);
+      dialog.addListener("execute", this.__onDialogExecute, this);
     }
   }
 });

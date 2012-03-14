@@ -100,6 +100,13 @@ core.Class("unify.view.TabViewManager", {
     __viewmap : null,
 
     /**
+     * @return {Boolean} true if this ViewManager currently animates the transition between 2 views
+     */
+    isInAnimation : function() {
+      return false;
+    },
+
+    /**
      * Returns the currently selected view instance
      *
      * @return {unify.view.StaticView} View instance which is currently selected

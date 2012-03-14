@@ -37,15 +37,18 @@ core.Class("unify.ui.container.Scroll", {
     this._add(contentWidget, {
       type: "content"
     });
-    var Indicator=unify.ui.container.scroll.Indicator;
-    if(unify.bom.client.System.ANDROID){
-      //android renders the default indicator in a funny way (scaling the middle element does not work correctly for certain values
-      //so we use a specialized one here
-      Indicator=unify.ui.container.scroll.ScalingIndicator;
-    }
+    var Indicator = this._getIndicator();
 
     var scrollIndicatorX = this.__horizontalScrollIndicator = new Indicator("horizontal",this);
     var scrollIndicatorY = this.__verticalScrollIndicator = new Indicator("vertical",this);
+    
+    scrollIndicatorX.addListener("indicatorMoveStart", this.__onIndicatorMoveStart, this);
+    scrollIndicatorX.addListener("indicatorMoveEnd", this.__onIndicatorMoveEnd, this);
+    scrollIndicatorX.addListener("indicatorMove", this.__onIndicatorMove, this);
+    
+    scrollIndicatorY.addListener("indicatorMoveStart", this.__onIndicatorMoveStart, this);
+    scrollIndicatorY.addListener("indicatorMoveEnd", this.__onIndicatorMoveEnd, this);
+    scrollIndicatorY.addListener("indicatorMove", this.__onIndicatorMove, this);
 
     var distance = Indicator.DISTANCE;
     var thickness = Indicator.THICKNESS;
@@ -135,6 +138,28 @@ core.Class("unify.ui.container.Scroll", {
       type : "Boolean",
       apply : function(value) { this._applyShowIndicatorY(value); }
     },
+    
+    /** Whether an overscroll event should be fired on overscroll */
+    updateOnOverscroll :
+    {
+      init : false,
+      check : "Boolean",
+      apply : "_applyScrollerProperty"
+    },
+    
+    /** Height of needed overscroll to fire update event */
+    overscrollHeight :
+    {
+      init : 60,
+      check : "Integer",
+      apply : "_applyScrollerProperty"
+    },
+    
+    scrollOnSmallContent :
+    {
+      init : false,
+      check : "Boolean"
+    },
 
     // overridden
     appearance :
@@ -158,7 +183,9 @@ core.Class("unify.ui.container.Scroll", {
     scrollend: lowland.events.Event,
     
     /** Event fired if container snaped */
-    snap: lowland.events.Event
+    snap: lowland.events.Event,
+    
+    overscroll: lowland.events.DataEvent
   },
 
   /*
@@ -215,6 +242,7 @@ core.Class("unify.ui.container.Scroll", {
     __twoAxisScroll : true,
 
     __contentWidget : null,
+    
 
     /**
      * Gets inner content container
@@ -245,6 +273,23 @@ core.Class("unify.ui.container.Scroll", {
         minHeight : this.getMinHeight() || 10,
         maxHeight : this.getMaxHeight() || Infinity
       };
+    },
+    
+    /**
+     * @return {unify.ui.container.scroll.IIndicator} Indicator class
+     */
+    _getIndicator : function() {
+      var Indicator=unify.ui.container.scroll.Indicator;
+      if(unify.bom.client.System.ANDROID){
+        //android renders the default indicator in a funny way (scaling the middle element does not work correctly for certain values
+        //so we use a specialized one here
+        Indicator=unify.ui.container.scroll.ScalingIndicator;
+      }
+      return Indicator;
+    },
+
+    finishUpdateOnOverscroll : function() {
+      this.__scroller.finishUpdateOnOverscroll();
     },
 
     /**
@@ -296,6 +341,13 @@ core.Class("unify.ui.container.Scroll", {
       var currentTop=this.__scrollTop;
       var scroller = this.__scroller = new Scroller(render, options);
       this.__updateDimensions();
+      
+      if (this.getUpdateOnOverscroll) {
+        scroller.activatePullToRefresh(this.getOverscrollHeight(), function(pos) {
+          self.fireDataEvent("overscroll", pos);
+        });
+      }
+      
       //restore old scrollposition
       if(currentLeft||currentTop){
         scroller.scrollTo(currentLeft,currentTop,false);
@@ -322,9 +374,6 @@ core.Class("unify.ui.container.Scroll", {
      }
    },
 
-
-
-    
     _applyShowIndicatorX : function() {
       this.__updateProperties();
     },
@@ -512,7 +561,7 @@ core.Class("unify.ui.container.Scroll", {
      */
     __onMouseWheel : function(e) {
       var left = this.getScrollLeft();
-      var top = this.getScrollTop() + e.getWheelDelta() * 20;
+      var top = this.getScrollTop() + e.getWheelDelta() * 70;
       
       this.scrollTo(left, top, true);
     },
@@ -535,6 +584,38 @@ core.Class("unify.ui.container.Scroll", {
       }
     },
 
+    __indicatorMovePos : null,
+
+    __onIndicatorMoveStart : function(e) {
+      var data = e.getData();
+      
+      if (data.orientation == "horizontal") {
+        var pos = this.__indicatorMovePos = data.pos;
+        this.__scroller.doTouchStart([{pageX: pos, pageY: 0}], +data.nativeEvent.timeStamp);
+      } else {
+        var pos = this.__indicatorMovePos = data.pos;
+        this.__scroller.doTouchStart([{pageX: 0, pageY: pos}], +data.nativeEvent.timeStamp);
+      }
+    },
+    
+    __onIndicatorMoveEnd : function(e) {
+      this.__scroller.doTouchEnd(+e.getData().nativeEvent.timeStamp);
+    },
+    
+    __onIndicatorMove : function(e) {
+      var delta;
+      var pos;
+      var data = e.getData();
+      
+      if (data.orientation == "horizontal") {
+        var pos = data.pos;
+        this.__scroller.doTouchMove([{pageX: pos, pageY: 0}], +data.nativeEvent.timeStamp, 1.0);
+      } else {
+        pos = data.pos;
+        this.__scroller.doTouchMove([{pageX: 0, pageY: pos}], +data.nativeEvent.timeStamp, 1.0);
+      }
+    },
+
     /**
      * Handler for touch start event
      *
@@ -545,7 +626,7 @@ core.Class("unify.ui.container.Scroll", {
       //TODO why is this called here? touchstart should not change the properties, so no need to recache them
       this.__updateProperties();
 
-      if (!((this.__enableScrollX && this.__contentWidth > this.__clientWidth)
+      if (!(this.getScrollOnSmallContent() || (this.__enableScrollX && this.__contentWidth > this.__clientWidth)
           || (this.__enableScrollY && this.__contentHeight > this.__clientHeight))) {
         return; //neither X nor Y scroll possible, no need to try
       }
@@ -1448,10 +1529,17 @@ var Scroller;
 
 									self.__refreshActive = true;
 									if (self.__refreshActivate) {
-										self.__refreshActivate();
+										self.__refreshActivate("top");
+									}
+                                                                        
+                                                                } else if (!self.__refreshActive && scrollTop >= (maxScrollTop + self.__refreshHeight)) {
+                                                                  
+                                                                  	self.__refreshActive = true;
+									if (self.__refreshActivate) {
+										self.__refreshActivate("bottom");
 									}
 
-								} else if (self.__refreshActive && scrollTop > -self.__refreshHeight) {
+								} else if (self.__refreshActive && scrollTop > -self.__refreshHeight && scrollTop < (maxScrollTop + self.__refreshHeight)) {
 
 									self.__refreshActive = false;
 									if (self.__refreshDeactivate) {
