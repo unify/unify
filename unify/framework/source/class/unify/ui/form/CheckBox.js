@@ -5,43 +5,40 @@
     Homepage: unify-project.org
     License: MIT + Apache (V2)
     Copyright: 2010-2012, Alexander Wunschik, Fürth, Germany, mail@wunschik.it
+               2012       Sebastian Fastner, Mainz, Germany, http://unify-training.com
 
 *********************************************************************************************** */
 
 /**
  * CheckBox
  */
-qx.Class.define("unify.ui.form.CheckBox", {
-  extend: unify.ui.basic.Atom,
-  include : [unify.ui.core.MInteractionState],
+core.Class("unify.ui.form.CheckBox", {
+  include: [unify.ui.basic.Atom, unify.ui.core.MInteractionState],
   
   /**
    * @param label {String} Label on atom
    */
   construct : function(label, checked) {
-    this.base(arguments, label);
+    unify.ui.basic.Atom.call(this, label);
     
     this.setChecked(!!checked);
     
-    this.addListener("tap", this.__onTap, this);
+    lowland.bom.Events.listen("tap", this.__onTap.bind(this));
   },
 
   properties: {
     // overridden
     appearance : {
-      refine: true,
       init: "checkbox"
     },
     
     /** Position of image */
     direction : {
-      refine : true,
       init : "left"
     },
     
     // overridden
     focusable : {
-      refine: true,
       init: true
     },
     
@@ -49,7 +46,7 @@ qx.Class.define("unify.ui.form.CheckBox", {
       check: "Boolean",
       init: false,
       event: "execute",
-      apply: "_applyChecked"
+      apply: function(value) { this._applyChecked(value); }
     }
   },
 
