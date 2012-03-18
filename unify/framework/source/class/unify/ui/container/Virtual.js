@@ -14,7 +14,7 @@
  * Generic virtual composite container widget
  * This widgets creates no DOM element but uses DocumentFragment to support less DIVs in final HTML code
  */
-qx.Class.define("unify.ui.container.Virtual", {
+core.Class("unify.ui.container.Virtual", {
   include : [
     unify.ui.core.Widget,
     unify.ui.core.MChildrenHandling,

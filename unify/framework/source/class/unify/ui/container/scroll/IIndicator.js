@@ -1,15 +1,4 @@
-qx.Interface.define("unify.ui.container.scroll.IIndicator", {
-  
-  statics : {
-    /** {Integer} Size of the scroll indicator */
-    THICKNESS : 5,
-
-    /** {Integer} Size of the end pieces */
-    ENDSIZE : 3,
-
-    /** {Integer} Distance from edges */
-    DISTANCE : 2
-  },
+core.Interface("unify.ui.container.scroll.IIndicator", {
   
   /*
   *****************************************************************************
@@ -18,9 +7,9 @@ qx.Interface.define("unify.ui.container.scroll.IIndicator", {
   */
   
   events : {
-    indicatorMoveStart : "qx.event.type.Data",
-    indicatorMoveEnd : "qx.event.type.Data",
-    indicatorMove : "qx.event.type.Data"
+    indicatorMoveStart : lowland.events.DataEvent,
+    indicatorMoveEnd : lowland.events.DataEvent,
+    indicatorMove : lowland.events.DataEvent
   },
   
   properties : {
