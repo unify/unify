@@ -11,8 +11,12 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.ui.layout.Center", {
-  extend : qx.ui.layout.Abstract,
+core.Class("unify.ui.layout.Canvas", {
+  include : [unify.ui.layout.Base],
+  
+  construct : function() {
+    unify.ui.layout.Base.call(this);
+  },
   
   members : {
     __content : null,

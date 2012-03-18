@@ -590,8 +590,7 @@ core.Class("unify.business.RemoteData",
       }
 
       // Create request object
-      var HttpRequest = qx.io.request.Xhr;
-      var req = new HttpRequest();
+      var req = new lowland.bom.Xhr();
       req.setUrl(url);
 
       var requestHeaders = req.getRequestHeaders() || {};
@@ -650,9 +649,10 @@ core.Class("unify.business.RemoteData",
       }
 
       // Add listeners
-      req.addListener("load", this.__onRequestDone, this);
+      /*req.addListener("load", this.__onRequestDone, this);
       req.addListener("error", this.__onRequestDone, this);
-      req.addListener("timeout", this.__onRequestDone, this);
+      req.addListener("timeout", this.__onRequestDone, this);*/
+      req.addListener("done", this.__onRequestDone, this);
 
       // Attach incoming data to request
       req.setUserData("service", service);
