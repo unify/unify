@@ -94,8 +94,9 @@ core.Class("unify.ui.container.List", {
     /**
      * Event handler to support tapping on list items
      *
-     * @param e {qx.event.type.Event} Tap event
+     * @param e {TouchEvent} Tap event
      */
+     // TODO: API
     __onTap : function(e) {
       this.fireEvent("change", e.getTarget().getUserData("id"));
     }

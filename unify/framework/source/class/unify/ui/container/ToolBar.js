@@ -120,7 +120,7 @@ core.Class("unify.ui.container.ToolBar", {
       
       for (var key in s2w) {
         var v = s2w[key];
-        var w = v && qx.core.ObjectRegistry.fromHashCode(v);
+        var w = v && lowland.ObjectManager.find(v);
         
         if (w) {
           if (key == segment) {

@@ -156,7 +156,7 @@ core.Class("unify.util.Uri", {
       var clone = this.base(arguments);
 
       if (this.__params) {
-        clone.__params = qx.lang.Object.clone(this.__params);
+        clone.__params = lowland.util.Object.clone(this.__params);
       }
 
       return clone;

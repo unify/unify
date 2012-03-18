@@ -4,5 +4,6 @@ core.Class("unify.core.Object", {
   
   construct : function() {
     lowland.Object.call(this);
+    lowland.ObjectManager.register(this);
   }
 });
