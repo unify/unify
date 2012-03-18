@@ -104,10 +104,10 @@ core.Class("unify.ui.core.PopOverManager", {
               styleState[val] = true;
             }
             
-            var style = qx.theme.manager.Appearance.getInstance().styleFrom("MODAL-BLOCKER", styleState) || {};
+            var style = unify.theme.Manager.get().resolveStyle("MODAL-BLOCKER") || {};
             style.zIndex = (zIndexBase-1)+2*i;
             style.display = 'block';
-            qx.bom.element.Style.setStyles(mblocker, style);
+            core.bom.Style.set(mblocker, style);
             
             mSet = true;
           } else if (!pSet && !modal){
@@ -118,10 +118,10 @@ core.Class("unify.ui.core.PopOverManager", {
               styleState[val] = true;
             }
             
-            var style = qx.theme.manager.Appearance.getInstance().styleFrom("POPOVER-BLOCKER", styleState) || {};
+            var style = unify.theme.Manager.get().resolveStyle("POPOVER-BLOCKER") || {};
             style.zIndex = (zIndexBase-1)+2*i;
             style.display = 'block';
-            qx.bom.element.Style.setStyles(pblocker, style);
+            core.bom.Style.set(pblocker, style);
             
             pSet = true;
           }
