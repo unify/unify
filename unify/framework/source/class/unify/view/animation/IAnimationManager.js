@@ -12,7 +12,7 @@
  * Interface for animation manager that handles view transitions. This is used
  * in unify.Application#getViewAnimationManager
  */
-qx.Interface.define("unify.view.animation.IAnimationManager", {
+core.Interface("unify.view.animation.IAnimationManager", {
   members : {
     /**
      * Initialisation of view in transition

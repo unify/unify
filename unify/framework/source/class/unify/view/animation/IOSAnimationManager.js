@@ -11,9 +11,13 @@
 /**
  * Implementation of iOS style animations
  */
-qx.Class.define("unify.view.animation.IOSAnimationManager", {
-  extend: qx.core.Object,
+core.Class("unify.view.animation.IOSAnimationManager", {
+  include: [unify.core.Object],
   implement: [unify.view.animation.IAnimationManager],
+  
+  construct : function() {
+    unify.core.Object.call(this);
+  },
   
   members :{
     __positions : {

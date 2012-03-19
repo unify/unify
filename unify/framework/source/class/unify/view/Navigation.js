@@ -99,7 +99,7 @@ core.Class("unify.view.Navigation",
       var path = unify.bom.Storage.get("navigation-path");
       var pathObj=unify.view.Path.fromString(path);
       if(!this.isValidNavigationPath(pathObj)){
-        if(qx.core.Environment.get("qx.debug")){
+        if(core.Env.getValue("debug")){
           this.debug("stored path is invalid, using default path instead");
           path="";
         }
@@ -286,7 +286,7 @@ core.Class("unify.view.Navigation",
           }
         }
         if(!view){
-          if (qx.core.Environment.get("qx.debug")){
+          if (core.Env.getValue("debug")){
             this.debug("invalid path: no viewmanager found that has view with id "+viewId);
           }
           return false;
@@ -295,7 +295,7 @@ core.Class("unify.view.Navigation",
         if (managerId != lastManagerId)
         {
           if (managerId in usedManagers) {
-            if (qx.core.Environment.get("qx.debug")){
+            if (core.Env.getValue("debug")){
               this.debug("invalid path: views of viewmanager "+managerId+" occur in different sections");
             }
             return false;

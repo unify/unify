@@ -763,7 +763,7 @@ core.Class("unify.view.ViewManager", {
     __animateModal: function(view,show,callback){
       var self = this;
       var AnimationDuration = this.getAnimationDuration();
-      var vam = qx.core.Init.getApplication().getViewAnimationManager();
+      var vam = unify.core.Init.getApplication().getViewAnimationManager();
 
       var visibilityAction = function() {
         self.__isInAnimation=true;

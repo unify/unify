@@ -11,14 +11,14 @@
 /**
  * EXPERIMENTAL
  */
-qx.Class.define("unify.ui.layout.special.SplitView", {
-  extend : qx.ui.layout.Abstract,
+core.Class("unify.ui.layout.special.SplitView", {
+  include : [unify.ui.layout.Base], 
 
   /**
    * @param splitLevel {Float?0.33} Set width of left part in percent
    */
   construct : function(splitLevel) {
-    this.base(arguments);
+    unify.ui.layout.Base.call(this);
 
     if (splitLevel) {
       this.setSplitLevel(splitLevel);
