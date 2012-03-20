@@ -14,10 +14,7 @@ core.Class("unify.bom.Font", {
   }
 });
 
-/**
- * Font size normalizer
- */
-unify.core.Statics.annotate("unify.bom.Font", {
+core.Main.addStatics("unify.bom.Font", {
   /** {Integer} Base font size to calculate relative font sizes from */
   BaseFontSize : 16,
   

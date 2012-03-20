@@ -115,8 +115,7 @@ core.Class("unify.view.StaticView",
      * Whether the view is active 
      * (This is automatically set up through the {@link ViewManager}) 
      */
-    active :
-    {
+    active : {
       type : "Boolean",
       init : false,
       apply : function(value, old) { this._applyActive(value, old) },

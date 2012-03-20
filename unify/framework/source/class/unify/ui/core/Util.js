@@ -12,7 +12,7 @@ core.Module("unify.ui.core.Util", {
       var left = 0;
       var top = 0;
 
-      while ((parent = parent.getLayoutParent())) {
+      while ((parent = parent.getParentBox())) {
         var transform = core.bom.Style.get(parent.getElement(), "transform").split(",");
         if (transform && transform[0] != "none") {
           left += parseFloat(transform[4]);
@@ -66,7 +66,7 @@ core.Module("unify.ui.core.Util", {
     
     var origPos = posOverride.originalPosition;
     
-    var parentElement = widget.getLayoutParent().getContentElement();
+    var parentElement = widget.getParentBox().getContentElement();
     core.bom.Style.set(e, {
       left: origPos.left,
       top: origPos.top,

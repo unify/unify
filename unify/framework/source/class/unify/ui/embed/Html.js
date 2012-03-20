@@ -75,7 +75,7 @@ core.Class("unify.ui.embed.Html", {
      */
     __invalidateParentLayout : function() {
       this.scheduleLayoutUpdate();
-      var layoutParent = this.getLayoutParent();
+      var layoutParent = this.getParentBox();
       if (layoutParent) {
         layoutParent.getLayout().invalidateLayoutCache();
       }

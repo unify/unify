@@ -42,7 +42,7 @@ core.Class("unify.business.CompletedEvent", {
      */
     init : function(id, data, modified, errornous, malformed, request)
     {
-      this.base(arguments, false, false);
+      //this.base(arguments, false, false);
 
       this.__id = id;
       this.__data = data;
@@ -67,7 +67,8 @@ core.Class("unify.business.CompletedEvent", {
      */
     clone : function(embryo)
     {
-      var clone = this.base(arguments, embryo);
+      //var clone = this.base(arguments, embryo);
+      var clone = {};
 
       clone.__id = this.__id;
       clone.__data = this.__data;

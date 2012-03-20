@@ -11,8 +11,9 @@
  * Basic data related business object to offline available data
  * (compiled into script block for example)
  */
-core.Class("unify.business.StaticData",
-{
+core.Class("unify.business.StaticData", {
+  include : [unify.core.Object],
+  
   /*
   *****************************************************************************
      CONSTRUCTOR
@@ -20,8 +21,8 @@ core.Class("unify.business.StaticData",
   */
 
   // overridden
-  construct : function()
-  {
+  construct : function() {
+    unify.core.Object.call(this);
     // Initialize service list
     this.__services = {};
   },

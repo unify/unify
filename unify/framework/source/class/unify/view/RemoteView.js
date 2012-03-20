@@ -69,7 +69,7 @@ core.Class("unify.view.RemoteView",
     {
       this.__requestId = this._getBusinessObject().get(this._getServiceName(), this._getServiceParams());
       if (this.__requestId !== false) {
-        this.__activityIndicator.show(this.toHashCode());
+        this.__activityIndicator.show(this.getHash());
       }
     },
 
@@ -147,7 +147,7 @@ core.Class("unify.view.RemoteView",
         else
         {
           delete this.__requestId;
-          this.__activityIndicator.hide(this.toHashCode());
+          this.__activityIndicator.hide(this.getHash());
           this.__appliedVersion = cachedEntry.created;
           this._wrappedRenderData(cachedEntry.data);
         }
@@ -190,7 +190,7 @@ core.Class("unify.view.RemoteView",
       }
 
       delete this.__requestId;
-      this.__activityIndicator.hide(this.toHashCode());
+      this.__activityIndicator.hide(this.getHash());
 
       if (e.isErrornous()) {
         this._errorHandler("communication", e.getRequest());

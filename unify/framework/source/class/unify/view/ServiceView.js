@@ -51,7 +51,7 @@ core.Class("unify.view.ServiceView",
     // overridden
     _applyParam : function(value, old)
     {
-      if (this.isActive()) {
+      if (this.getActive()) {
         this._checkStatus();
       }
     },
@@ -59,7 +59,7 @@ core.Class("unify.view.ServiceView",
     // overridden
     _applySegment : function(value, old)
     {
-      if (this.isActive()) {
+      if (this.getActive()) {
         this._checkStatus();
       }
     },

@@ -40,10 +40,10 @@ core.Class("unify.business.RemoteData",
     this.__headers = {};
 
     /** {String} Prefix used for storage */
-    var prefix = this.basename.hyphenate().toLowerCase();
+    var prefix = this.constructor.className.hyphenate().toLowerCase();
     this.__storageDataPrefix = prefix + "/data/";
     this.__storageMetaPrefix = prefix + "/meta/";
-    lowland.events.EventManager.addListener(unify.bom.Storage,"quota_exceeded_err",this.__onQuotaExceeded,this);
+    // TODO : lowland.events.EventManager.addListener(unify.bom.Storage,"quota_exceeded_err",this.__onQuotaExceeded,this);
   },
 
 

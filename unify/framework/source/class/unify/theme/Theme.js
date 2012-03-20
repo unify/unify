@@ -10,11 +10,11 @@
 
 core.Class("unify.theme.Theme", {
   construct : function(theme) {
-    this.__colors = {};
-    this.__fonts = {};
-    this.__styles = {};
+    var colors = this.__colors = {};
+    var fonts = this.__fonts = {};
+    var styles = this.__styles = {};
 
-    this._parse(theme);
+    this._parse(theme, colors, fonts, styles);
   },
   
   members : {
@@ -44,6 +44,30 @@ core.Class("unify.theme.Theme", {
       return result;
     },
     
+    __runFunctionsFromArray : function(arrayOrFnt, states) {
+      var res;
+      
+      if (typeof(arrayOrFnt) == "function") {
+        res = arrayOrFnt(states);
+      } else {
+        res = {};
+        for (var i=0,ii=arrayOrFnt.length; i<ii; i++) {
+          var aof = arrayOrFnt[i];
+          
+          if (aof) {
+            var r = this.__runFunctionsFromArray(aof, states);
+            var k = Object.keys(r);
+            for (var j=0, jj=k.length; j<jj; j++) {
+              var key = k[j];
+              res[key] = r[key]
+            }
+          }
+        }
+      }
+      
+      return res;
+    },
+    
     resolveStyle : function(name, states) {
       var style = this.__styles[name];
       
@@ -55,12 +79,13 @@ core.Class("unify.theme.Theme", {
         states = {};
       }
       
-      var res = {};
+      /*var res = {};
       if (typeof style == "function") {
         res = style(states);
       } else {
         for (var j=0,jj=style.length; j<jj; j++) {
           if (style[j]) {
+            console.log(name);
             var newStyles = style[j](states);
             var newKeys = Object.keys(newStyles);
             for (var i=0,ii=newKeys.length; i<ii; i++) {
@@ -71,7 +96,17 @@ core.Class("unify.theme.Theme", {
         }
       }
       
-      return res;
+      return res;*/
+      
+      return this.__runFunctionsFromArray(style, states);
+    },
+    
+    getParsedTheme : function() {
+      return {
+        colors: this.__colors,
+        fonts: this.__fonts,
+        styles: this.__styles
+      };
     },
     
     /* PRIVATE */
@@ -81,7 +116,7 @@ core.Class("unify.theme.Theme", {
     __styles : null,
     __name : null,
     
-    _parse : function(theme) {
+    _parse : function(theme, themeColors, themeFonts, themeStyles) {
       if (core.Env.getValue("debug")) {
         if (!theme) {
           throw new Error("No theme given!");
@@ -97,10 +132,28 @@ core.Class("unify.theme.Theme", {
         this.__name = name;
       }
       
+      if (theme.include) {
+        var includedTheme = theme.include.getParsedTheme();
+        var colors = includedTheme.colors;
+        var fonts = includedTheme.fonts;
+        var styles = includedTheme.styles;
+        var key;
+        
+        for (key in colors) {
+          themeColors[key] = colors[key];
+        }
+        for (key in fonts) {
+          themeFonts[key] = fonts[key];
+        }
+        for (key in styles) {
+          themeStyles[key] = styles[key];
+        }
+      }
+      
       var colors = theme.colors;
       if (colors) {
         keys = Object.keys(colors);
-        var colorMap = this.__colors;
+        var colorMap = themeColors;
         
         for (i=0,ii=keys.length; i<ii; i++) {
           var colorName = keys[i];
@@ -113,7 +166,7 @@ core.Class("unify.theme.Theme", {
       var fonts = theme.fonts;
       if (fonts) {
         keys = Object.keys(fonts);
-        var fontMap = this.__fonts;
+        var fontMap = themeFonts;
         
         for (i=0,ii=keys.length; i<ii; i++) {
           var fontName = keys[i];
@@ -125,8 +178,16 @@ core.Class("unify.theme.Theme", {
       
       var styles = theme.styles;
       if (styles) {
-        this.__parseStyles(styles);
+        this.__parseStyles(styles, themeStyles);
       }
+      
+      /** #require(ext.sugar.Array) */
+      /*for (var key in themeStyles) {
+        var v = themeStyles[key]
+        if (v instanceof Array) {
+          themeStyles[key] = v.flatten();
+        }
+      }*/
     },
     
     __parseFont : function(font) {
@@ -164,8 +225,8 @@ core.Class("unify.theme.Theme", {
       return def;
     },
     
-    __parseStyles : function(styles) {
-      var styleMap = this.__styles;
+    __parseStyles : function(styles, themeStyles) {
+      var styleMap = themeStyles;
       
       var includeHelper = [];
       var includes = {};

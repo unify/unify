@@ -239,7 +239,7 @@ core.Class("unify.view.helper.ViewOverlayManager", {
       var overlay = this.__overlays[viewManager] || null;
       if(!overlay && create !== false){
         overlay = new unify.ui.container.Overlay();
-        overlay.setUserData("viewmanager", viewManager.toHashCode());
+        overlay.setUserData("viewmanager", viewManager.getHash());
 
         var appearanceId=viewManager.getId()+"-overlay";
         var appearance = unify.theme.Theme.resolveStyle(appearanceId);

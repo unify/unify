@@ -8,6 +8,10 @@
 
 *********************************************************************************************** */
 
+/*
+ * #require(core.ext.sugar.String)
+ */
+
 /**
  * Application class for next generation devices.
  */

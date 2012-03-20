@@ -97,7 +97,7 @@ core.Class("unify.ui.container.ToolBar", {
             el.addState("active");
           }
           
-          this.__segmentToWidget[button.segment] = el.toHashCode();
+          this.__segmentToWidget[button.segment] = el.getHash();
           itemElem.add(el);
         }
       }

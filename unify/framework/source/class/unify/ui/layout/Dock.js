@@ -15,6 +15,13 @@ core.Class("unify.ui.layout.Dock", {
     unify.ui.layout.Base.call(this);
   },
   
+  properties : {
+    sort : {
+      type : ["auto", "x", "y"],
+      init: "auto"
+    }
+  },
+  
   members : {
     __childrenCache : null,
     
@@ -35,7 +42,6 @@ core.Class("unify.ui.layout.Dock", {
         var widget = cache[i];
         
         var prop = widget.getLayoutProperties();
-        
         if (prop.edge == "center") {
           if (core.Env.getValue("debug") && centerElement) {
             throw new Error("Dock layout only supports one center!");
@@ -90,13 +96,15 @@ core.Class("unify.ui.layout.Dock", {
           widget.renderLayout(left, top, width, height);
         }
         
-        var centerMarginLeft = centerElement.getMarginLeft();
-        var centerMarginTop = centerElement.getMarginTop();
-        var centerMarginRight = centerElement.getMarginRight();
-        var centerMarginBottom = centerElement.getMarginBottom();
-        centerElement.renderLayout(allocatedLeft + centerMarginLeft, allocatedTop + centerMarginTop, 
-          availWidth - allocatedLeft - allocatedRight - centerMarginLeft - centerMarginRight,
-          availHeight - allocatedTop - allocatedBottom - centerMarginTop - centerMarginBottom);
+        if (centerElement) {
+          var centerMarginLeft = centerElement.getMarginLeft();
+          var centerMarginTop = centerElement.getMarginTop();
+          var centerMarginRight = centerElement.getMarginRight();
+          var centerMarginBottom = centerElement.getMarginBottom();
+          centerElement.renderLayout(allocatedLeft + centerMarginLeft, allocatedTop + centerMarginTop, 
+            availWidth - allocatedLeft - allocatedRight - centerMarginLeft - centerMarginRight,
+            availHeight - allocatedTop - allocatedBottom - centerMarginTop - centerMarginBottom);
+        }
       }
     },
     

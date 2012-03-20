@@ -638,7 +638,6 @@ core.Class("unify.view.ViewManager", {
      */
     __setView : function(view, transition)
     {
-      console.log("SET VIEW ", this.constructor, view.constructor);
       // TODO: view.getElement() is also called if view is in popover
       //       Maybe it should be rendered lazy
       var oldView = this.__currentView;

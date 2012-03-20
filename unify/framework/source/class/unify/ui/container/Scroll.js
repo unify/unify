@@ -144,7 +144,7 @@ core.Class("unify.ui.container.Scroll", {
     {
       init : false,
       check : "Boolean",
-      apply : "_applyScrollerProperty"
+      apply : function(value) { this._applyScrollerProperty(value); }
     },
     
     /** Height of needed overscroll to fire update event */
@@ -152,7 +152,7 @@ core.Class("unify.ui.container.Scroll", {
     {
       init : 60,
       check : "Integer",
-      apply : "_applyScrollerProperty"
+      apply : function(value) { this._applyScrollerProperty(value); }
     },
     
     scrollOnSmallContent :
