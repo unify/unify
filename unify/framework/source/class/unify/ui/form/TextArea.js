@@ -35,6 +35,12 @@ qx.Class.define("unify.ui.form.TextArea", {
     {
       refine: true,
       init: "input"
+    },
+    
+    placeholderValue: {
+      check: 'String',
+      init: '',
+      apply: '_applyPlaceholderValue'
     }
   },
   
@@ -49,10 +55,13 @@ qx.Class.define("unify.ui.form.TextArea", {
   construct : function() {
     this.base(arguments);
     
+    // Register event listeners
+    this.addListener('focus', this.__onFocus, this);
     this.addListener("blur", this.__onBlur, this);
   },
   
   members : {
+    __placeholderValue: null,
     __oldInputValue : null,
     __changed : false,
     
@@ -63,6 +72,14 @@ qx.Class.define("unify.ui.form.TextArea", {
       });
       qx.event.Registration.addListener(e, "input", this._onInput, this);
       return e;
+    },
+    
+    /**
+     * Apply placeholder value
+     */
+    _applyPlaceholderValue: function(placeholder) {
+      this.__placeholderValue = placeholder;
+      this.__onBlur();
     },
     
     /**
@@ -118,10 +135,35 @@ qx.Class.define("unify.ui.form.TextArea", {
         this.fireDataEvent("changeValue", this.getValue());
         this.__changed = false;
       }
+      
+      // Restore placeholder value if the currently set text is empty
+      var currentValue = this.getValue();
+      if (currentValue == '') {
+        this.setValue(this.__placeholderValue);
+      }
+    },
+    
+    
+    /**
+     * Focus handler
+     *
+     * If this text area receives focus, we check if the current value of
+     * the text area is equal to the placeholder value. If that is the case,
+     * we empty the box so the user may enter some text.
+     *
+     * @param e {qx.event.type.Focus} The focus event
+     */
+    __onFocus: function(e) {
+      var currentValue = this.getValue();
+      if (this.__placeholderValue != '' &&
+          currentValue == this.__placeholderValue) {
+        this.setValue('');
+      }
     }
   },
   
   destruct : function() {
     this.removeListener("blur", this.__onBlur, this);
+    this.removeListener('focus', this.__onFocus, this);
   }
 });
