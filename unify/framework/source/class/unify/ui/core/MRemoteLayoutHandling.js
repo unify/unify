@@ -18,7 +18,6 @@ core.Class("unify.ui.core.MRemoteLayoutHandling", {
      * Set layout on children container
      */
     setLayout : function(layout) {
-      console.log(this.getChildrenContainer().constructor);
       return this.getChildrenContainer().setLayout(layout);
     },
     

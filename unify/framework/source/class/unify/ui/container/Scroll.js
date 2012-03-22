@@ -29,7 +29,7 @@ core.Class("unify.ui.container.Scroll", {
     unify.ui.core.Widget.call(this);
 
     // Child container layout  
-    this.setLayout(layout ||new unify.ui.layout.Basic());
+    this.setLayout(layout ||new unify.ui.layout.VBox());
     // Scroller layout
     this._setLayout(new unify.ui.layout.special.ScrollLayout());
 
@@ -69,11 +69,14 @@ core.Class("unify.ui.container.Scroll", {
 
     this.__createScroller();
 
-    lowland.bom.Events.listen(this.getElement(), "touchstart", this.__onTouchStart.bind(this));
-    lowland.bom.Events.listen(this.getElement(), "mousewheel", this.__onMouseWheel.bind(this));
+    this.addNativeListener(this.getElement(), "touchstart", this.__onTouchStart, this);
+    this.addNativeListener(this.getElement(), "mousewheel", this.__onMouseWheel, this);
     
     this.addListener("resize", this.__updateDimensions, this);
     contentWidget.addListener("resize", this.__updateDimensions, this);
+    contentWidget.addListener("resize", function(e) {
+      console.log("FIRED RESIZE ", e.getData());
+    }, this);
     
     this.addListener("changeVisibility", this.__onChangeVisibility, this);
   },
@@ -143,7 +146,7 @@ core.Class("unify.ui.container.Scroll", {
     updateOnOverscroll :
     {
       init : false,
-      check : "Boolean",
+      type : "Boolean",
       apply : function(value) { this._applyScrollerProperty(value); }
     },
     
@@ -151,14 +154,14 @@ core.Class("unify.ui.container.Scroll", {
     overscrollHeight :
     {
       init : 60,
-      check : "Integer",
+      type : "Integer",
       apply : function(value) { this._applyScrollerProperty(value); }
     },
     
     scrollOnSmallContent :
     {
       init : false,
-      check : "Boolean"
+      type : "Boolean"
     },
 
     // overridden
@@ -344,7 +347,7 @@ core.Class("unify.ui.container.Scroll", {
       
       if (this.getUpdateOnOverscroll) {
         scroller.activatePullToRefresh(this.getOverscrollHeight(), function(pos) {
-          self.fireDataEvent("overscroll", pos);
+          self.fireEvent("overscroll", pos);
         });
       }
       
@@ -561,7 +564,8 @@ core.Class("unify.ui.container.Scroll", {
      */
     __onMouseWheel : function(e) {
       var left = this.getScrollLeft();
-      var top = this.getScrollTop() + e.getWheelDelta() * 70;
+      console.log(e);
+      var top = this.getScrollTop() + (-e.wheelDelta) * 70;
       
       this.scrollTo(left, top, true);
     },
@@ -622,6 +626,7 @@ core.Class("unify.ui.container.Scroll", {
      * @param e {Event} Touch event
      */
     __onTouchStart : function(e){
+      console.log("touch start");
       this.__inTouch = true;
       //TODO why is this called here? touchstart should not change the properties, so no need to recache them
       this.__updateProperties();
@@ -643,19 +648,19 @@ core.Class("unify.ui.container.Scroll", {
       this.__scroller.doTouchStart(touches, +ne.timeStamp);
       e.preventDefault();
       var cb = function() {
-        lowland.bom.Events.unlisten(root, "touchmove", cb);
+        this.removeNativeListener(root, "touchmove", cb);
         this.__showIndicators.apply(this, arguments);
       }.bind(this);
 
       var root = unify.core.Init.getApplication().getRoot().getEventElement();
-      lowland.bom.Events.listen(root, "touchmove", cb);
+      this.addNativeListener(root, "touchmove", cb, this);
       
-      this.__onTouchMoveWrapper = this.__onTouchMove.bind(this);
-      this.__onTouchEndWrapper = this.__onTouchEnd.bind(this);
-      
-      lowland.bom.Events.listen(root, "touchmove", this.__onTouchMove.bind(this));
+      /*lowland.bom.Events.listen(root, "touchmove", this.__onTouchMove.bind(this));
       lowland.bom.Events.listen(root, "touchend", this.__onTouchEnd.bind(this));
-      lowland.bom.Events.listen(root, "touchcancel", this.__onTouchEnd.bind(this));
+      lowland.bom.Events.listen(root, "touchcancel", this.__onTouchEnd.bind(this));*/
+      this.addNativeListener(root, "touchmove", this.__onTouchMove, this);
+      this.addNativeListener(root, "touchend", this.__onTouchEnd, this);
+      this.addNativeListener(root, "touchcancel", this.__onTouchEnd, this);
     },
 
     /**
@@ -693,9 +698,9 @@ core.Class("unify.ui.container.Scroll", {
       
       var root = unify.core.Init.getApplication().getRoot().getEventElement();
       
-      lowland.bom.Events.unlisten(root, "touchmove", this.__onTouchMoveWrapper);
-      lowland.bom.Events.unlisten(root, "touchend", this.__onTouchEndWrapper);
-      lowland.bom.Events.unlisten(root, "touchcancel", this.__onTouchEndWrapper);
+      this.removeNativeListener(root, "touchmove", this.__onTouchMove, this);
+      this.removeNativeListener(root, "touchend", this.__onTouchEnd, this);
+      this.removeNativeListener(root, "touchcancel", this.__onTouchEnd, this);
     },
     
     /**

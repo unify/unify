@@ -1093,7 +1093,7 @@ core.Class("unify.ui.core.Widget", {
       if (!unify.ui.layout.queue.Visibility.isVisible(this)) {
         this.$$stateChanges = true;
       } else {
-        unify.ui.layout.queue.Visibility.Appearance.add(this);
+        unify.ui.layout.queue.Appearance.add(this);
       }
     },
 

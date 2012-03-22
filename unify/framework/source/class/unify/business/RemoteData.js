@@ -576,6 +576,7 @@ core.Class("unify.business.RemoteData",
      */
     _communicate : function(service, params, method, id, data)
     {
+      console.log("COMMUNICATE ", service, params, method, id, data);
       var config = this._getService(service);
 
       var url;

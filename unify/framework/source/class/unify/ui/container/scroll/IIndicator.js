@@ -6,21 +6,21 @@ core.Interface("unify.ui.container.scroll.IIndicator", {
   *****************************************************************************
   */
   
-  events : {
+  /*events : {
     indicatorMoveStart : lowland.events.DataEvent,
     indicatorMoveEnd : lowland.events.DataEvent,
     indicatorMove : lowland.events.DataEvent
-  },
+  },*/
   
   properties : {
     /** Orientation of the scroll indicator */
-    orientation : { check : ["horizontal", "vertical"] },
+    //orientation : { type : ["horizontal", "vertical"] },
 
     /** Whether the indicator is visible */
-    visible : { check : "Boolean" },
+    visible : { type : "Boolean" },
     
     /** parent scroll container of this indicator */
-    scroll : { check:"unify.ui.container.Scroll" }
+    scroll : { type:"unify.ui.container.Scroll" }
   },
   
   members : {

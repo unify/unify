@@ -19,6 +19,10 @@ core.Class("unify.Application", {
   
   include : [unify.core.Init],
   
+  construct : function() {
+    unify.core.Init.call(this);
+  },
+  
   /*
   *****************************************************************************
      MEMBERS
@@ -60,7 +64,8 @@ core.Class("unify.Application", {
 
       var rootElement = this._getRootElement();
       var rootLayout = this._getRootLayout();
-      lowland.bom.Events.set(rootElement, "click", this.__onClick.bind(this));
+      this.addNativeListener(rootElement, "click", this.__onClick, this);
+      //lowland.bom.Events.set(rootElement, "click", this.__onClick.bind(this));
       var root = this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), rootLayout);
       core.bom.Style.set(rootElement, "visibility", "hidden");
       
@@ -90,8 +95,8 @@ core.Class("unify.Application", {
       this.__setupDocumentSize();
 
       // Event listeners
-      lowland.bom.Events.set(window, "resize", this.__onResize.bind(this));
-      lowland.bom.Events.set(window, "orientationchange", this.__onRotate.bind(this));
+      this.addNativeListener(window, "resize", this.__onResize, this);
+      this.addNativeListener(window, "orientationchange", this.__onRotate, this);
       /*
       if (core.Env.getValue("os.name") == "webos") {
         var palmSystem = window.PalmSystem;

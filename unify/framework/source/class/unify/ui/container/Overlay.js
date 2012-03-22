@@ -35,7 +35,7 @@ core.Class("unify.ui.container.Overlay", {
     hasArrow : {
       type: "Boolean",
       init: true,
-      apply: this._applyHasArrow
+      apply: function(value, old) { this._applyHasArrow(value, old); }
     },
 
     /** relative position of the arrow on its axis
@@ -45,7 +45,7 @@ core.Class("unify.ui.container.Overlay", {
     relativeArrowPosition : {
       init: "left",
       nullable: true,
-      apply:"_applyPositionProperty"
+      apply: function(value, old) { this._applyPositionProperty(value, old); }
     },
     
     /** optional reference to widget that triggers show/hide of this overlay */
@@ -53,7 +53,7 @@ core.Class("unify.ui.container.Overlay", {
       type: "unify.ui.core.Widget",
       init: null,
       nullable: true,
-      apply: "_applyTrigger"
+      apply: function(value, old) { this._applyTrigger(value, old); }
     },
 
      /** optional strategy to ponsition overlay relative to trigger
@@ -63,7 +63,7 @@ core.Class("unify.ui.container.Overlay", {
     relativeTriggerPosition : {
       init: {y:"bottom",x:"center"},
       nullable: true,
-      apply:"_applyPositionProperty"
+      apply: function(value, old) { this._applyPositionProperty(value, old); }
     },
     
     modal : {
@@ -74,7 +74,7 @@ core.Class("unify.ui.container.Overlay", {
     staticPosition : {
       init: null,
       nullable: true,
-      apply: "_applyPositionProperty"
+      apply: function(value, old) { this._applyPositionProperty(value, old); }
     }
   },
 
@@ -410,11 +410,11 @@ core.Class("unify.ui.container.Overlay", {
         this.setLayoutProperties(posHint);
       }
     }
-  },
+  }/*,
 
   /**
    * destructor
-   */
+   * /
   destruct: function(){
     var arrow=this.getChildControl("arrow");
     if(arrow){
@@ -425,5 +425,5 @@ core.Class("unify.ui.container.Overlay", {
       trigger.removeListener("move",this._onTriggerChange,this);
       trigger.removeListener("resize",this._onTriggerChange,this);
     }
-  }
+  }*/
 });

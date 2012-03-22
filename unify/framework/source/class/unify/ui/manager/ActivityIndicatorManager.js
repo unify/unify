@@ -58,7 +58,8 @@ core.Class("unify.ui.manager.ActivityIndicatorManager", {
         }
       }
       am[id]--;
-      if (am[id] == 0) {
+      // TODO !!
+      if (true || am[id] == 0) {
         this.__activeIds.remove(id);
       }
       

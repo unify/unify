@@ -1,4 +1,10 @@
 core.Class("unify.core.Init", {
+  include : [unify.core.Object],
+  
+  construct : function() {
+    unify.core.Object.call(this);
+  },
+  
   members : {
     main : function() {
       throw new Error("main is not implemented");

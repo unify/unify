@@ -36,7 +36,7 @@ core.Class("unify.bom.History", {
       if (core.Env.getValue("debug")) {
         this.debug("Using HTML5 hashchange");
       }
-      lowland.bom.Events.set(window, "hashchange", this.__onCallbackWrapped);
+      this.addNativeListener(window, "hashchange", this.__onCallbackWrapped);
     } else {
       if (core.Env.getValue("debug")) {
         console.debug("Using interval");

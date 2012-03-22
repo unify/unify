@@ -38,6 +38,7 @@ core.Class("unify.ui.layout.special.TabViewLayout", {
       var barOuterHeight = barSizeHint.height + barMarginTop + barMarginBottom;
       
       bar.renderLayout(barMarginLeft, availHeight-barSizeHint.height-barMarginBottom, availWidth-barMarginLeft-barMarginRight, barSizeHint.height);
+      
       content.renderLayout(contentMarginLeft, contentMarginTop, availWidth-contentMarginLeft-contentMarginRight, availHeight-barOuterHeight);
     },
     

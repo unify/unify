@@ -60,29 +60,29 @@ core.Class("unify.ui.layout.Dock", {
           var width;
           var height;
           
-          if (prop.edge == "left") {
-            width = size.width;
-            height = availHeight;
+          if (prop.edge == "west") {
+            width = Math.max(size.width, size.minWidth);
+            height = availHeight - allocatedTop - allocatedBottom;
             left = leftGap + allocatedLeft;
-            top = 0;
+            top = allocatedTop;
             allocatedLeft += leftGap + rightGap + width;
-          } else if (prop.edge == "right") {
-            width = size.width;
-            height = availHeight;
+          } else if (prop.edge == "east") {
+            width = Math.max(size.width, size.minWidth);
+            height = availHeight - allocatedTop - allocatedBottom;
             left = availWidth - (rightGap + allocatedRight + width);
-            top = 0;
+            top = allocatedTop;
             allocatedRight += leftGap + rightGap + width;
-          } else if (prop.edge == "top") {
-            width = availWidth;
-            height = size.height;
+          } else if (prop.edge == "north") {
+            width = availWidth - allocatedLeft - allocatedRight;
+            height = Math.max(size.height, size.minHeight);
             top = topGap + allocatedTop;
-            left = 0;
+            left = allocatedLeft;
             allocatedTop += topGap + bottomGap + height;
-          } else if (prop.edge == "right") {
-            width = availWidth;
-            height = size.height;
+          } else if (prop.edge == "south") {
+            width = availWidth - allocatedLeft - allocatedRight;
+            height = Math.max(size.height, size.minHeight);
             top = availHeight - (bottomGap + allocatedBottom + height);
-            left = 0;
+            left = allocatedLeft;
             allocatedBottom += topGap + bottomGap + height;
           }
           
@@ -95,16 +95,15 @@ core.Class("unify.ui.layout.Dock", {
   
           widget.renderLayout(left, top, width, height);
         }
-        
-        if (centerElement) {
-          var centerMarginLeft = centerElement.getMarginLeft();
-          var centerMarginTop = centerElement.getMarginTop();
-          var centerMarginRight = centerElement.getMarginRight();
-          var centerMarginBottom = centerElement.getMarginBottom();
-          centerElement.renderLayout(allocatedLeft + centerMarginLeft, allocatedTop + centerMarginTop, 
-            availWidth - allocatedLeft - allocatedRight - centerMarginLeft - centerMarginRight,
-            availHeight - allocatedTop - allocatedBottom - centerMarginTop - centerMarginBottom);
-        }
+      }
+      if (centerElement) {
+        var centerMarginLeft = centerElement.getMarginLeft();
+        var centerMarginTop = centerElement.getMarginTop();
+        var centerMarginRight = centerElement.getMarginRight();
+        var centerMarginBottom = centerElement.getMarginBottom();
+        centerElement.renderLayout(allocatedLeft + centerMarginLeft, allocatedTop + centerMarginTop, 
+          availWidth - allocatedLeft - allocatedRight - centerMarginLeft - centerMarginRight,
+          availHeight - allocatedTop - allocatedBottom - centerMarginTop - centerMarginBottom);
       }
     },
     
@@ -124,7 +123,42 @@ core.Class("unify.ui.layout.Dock", {
     },
     
     __rebuildChildrenCache : function() {
-      this.__childrenCache = this._getLayoutChildren();
+      var sort = this.getSort();
+      var cache = this._getLayoutChildren();
+      
+      if (sort == "x") {
+        var first = [];
+        var second = [];
+        
+        for (var i=0,ii=cache.length; i<ii; i++) {
+          var e = cache[i];
+          var edge = e.getLayoutProperties();
+          if (edge == "west" || edge == "east") {
+            first.push(e);
+          } else {
+            second.push(e);
+          }
+        }
+        
+        cache = first.concat(second);
+      } else if (sort == "y") {
+        var first = [];
+        var second = [];
+        
+        for (var i=0,ii=cache.length; i<ii; i++) {
+          var e = cache[i];
+          var edge = e.getLayoutProperties();
+          if (edge == "north" || edge == "south") {
+            first.push(e);
+          } else {
+            second.push(e);
+          }
+        }
+        
+        cache = first.concat(second);
+      }
+      
+      this.__childrenCache = cache;
     }
   }
 });

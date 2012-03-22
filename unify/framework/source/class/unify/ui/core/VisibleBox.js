@@ -117,6 +117,12 @@
         
         hint = this.__sizeHint = this._computeSizeHint();
         
+        if (this.__computedHeightForWidth && this.getHeight() === null) {
+          console.trace();
+          hint.height = this.__computedHeightForWidth;
+          console.log("MORE SIZE: ", hint.height);
+        }
+        
         if (hint.width < hint.minWidth) {
           hint.width = hint.minWidth;
         }
@@ -180,6 +186,7 @@
       },
       
       __cache : null,
+      __computerHeightForWidth : null,
       
       getBounds : function() {
         var cache = this.__cache;
@@ -190,12 +197,34 @@
         return {
           left: cache[0],
           top: cache[1],
-          width: [2],
+          width: cache[2],
           height: cache[3]
         };
       },
       
       renderLayout : function(left, top, width, height) {
+        
+        // Height for width support
+        // Results into a relayout which means that width/height is applied in the next iteration.
+        var flowHeight = null;
+        if (this.getHeight() == null && this._hasHeightForWidth()) {
+          flowHeight = this._getHeightForWidth(width);
+        }
+  
+        if (flowHeight != null && flowHeight !== this.__computedHeightForWidth)
+        {
+          // This variable is used in the next computation of the size hint
+          this.__computedHeightForWidth = flowHeight;
+          this.__sizeHint = null;
+          
+          console.log("RERENDER " + this.constructor, flowHeight);
+          
+          // Re-add to layout queue
+          unify.ui.layout.queue.Layout.add(this);
+  
+          return null;
+        }
+        
         var cache = this.__cache;
         
         if (!cache) {
@@ -221,7 +250,20 @@
         }
       },
       
+      _hasHeightForWidth : function() {
+        return false;
+      },
       
+      _getHeightForWidth : function(width) {
+        var layout = this._getLayout();
+        if (layout && layout.hasHeightForWidth()) {
+          var e = layout.getHeightForWidth(width);
+          console.log("hfw layout: ", e);
+          return e;
+        }
+  
+        return null;
+      },
       
       
       _getLayout : function() {

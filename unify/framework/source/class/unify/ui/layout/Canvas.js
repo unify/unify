@@ -124,14 +124,23 @@ core.Class("unify.ui.layout.Canvas", {
         this.__rebuildChildrenCache();
       }
       
+      var width = 0;
+      var height = 0;
+      
       var cache = this.__childrenCache;
       for (var i=0,ii=cache.length; i<ii; i++) {
         var widget = cache[i];
         var calc = widget.getLayoutProperties();
         var size = widget.getSizeHint();
+        
+        width = Math.max(width, size.minWidth);
+        height = Math.max(height, size.minHeight);
       }
       
-      return null;
+      return {
+        width: width,
+        height: height
+      };
     },
     
     __rebuildChildrenCache : function() {

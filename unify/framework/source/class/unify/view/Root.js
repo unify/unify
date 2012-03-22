@@ -21,13 +21,12 @@ core.Class("unify.view.Root", {
    * @param rootEventElement {Element} DOM element to bind global event listeners to
    * @param layout {unify.ui.layout.Base} Layout of root element
    */
-  construct : function(rootElement,rootEventElement,layout) {
+  construct : function(rootElement,rootEventElement) {
     this.__rootElement = rootElement;
     this.__rootEventElement = rootEventElement;
     
     unify.ui.core.Widget.call(this);
-    
-    this._setLayout(layout||new unify.ui.layout.Canvas());
+    this._setLayout(new unify.ui.layout.Canvas());
     
     lowland.bom.Events.set(window, "resize", this.__onResize.bind(this));
     

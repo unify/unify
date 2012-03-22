@@ -33,7 +33,12 @@ core.Class("unify.ui.layout.VBox", {
   },
   
   members : {
+    hasHeightForWidth : function() {
+      return true;
+    },
+    
     renderLayout : function(availWidth, availHeight) {
+      if (isNaN(availWidth)) console.trace();
       if (this._invalidChildrenCache) {
         this.__rebuildChildrenCache();
       }

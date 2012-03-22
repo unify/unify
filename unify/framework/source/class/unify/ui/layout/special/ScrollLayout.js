@@ -53,7 +53,7 @@ core.Class("unify.ui.layout.special.ScrollLayout", {
       var contentWidth = enableScrollX ? Math.max(availWidth, contentSizeHint.width) : availWidth;
       var contentHeight = enableScrollY ? Math.max(availHeight, contentSizeHint.height) : availHeight;
 
-      content.renderLayout(0,0, contentWidth, contentHeight);
+      content.renderLayout(0, 0, contentWidth, contentHeight);
     },
 
     /**

@@ -67,6 +67,9 @@ core.Class("unify.view.RemoteView",
      */
     refresh : function()
     {
+      if (this.__requestId) {
+        this.__activityIndicator.hide(this.getHash());
+      }
       this.__requestId = this._getBusinessObject().get(this._getServiceName(), this._getServiceParams());
       if (this.__requestId !== false) {
         this.__activityIndicator.show(this.getHash());
@@ -147,6 +150,7 @@ core.Class("unify.view.RemoteView",
         else
         {
           delete this.__requestId;
+          console.log("HIDE ACTIVITY INDICATOR ", this.getHash(), this.__requestId);
           this.__activityIndicator.hide(this.getHash());
           this.__appliedVersion = cachedEntry.created;
           this._wrappedRenderData(cachedEntry.data);
@@ -188,7 +192,7 @@ core.Class("unify.view.RemoteView",
       if (e.getId() !== this.__requestId) {
         return;
       }
-
+console.log("HIDE ACTIVITY INDICATOR ", this.getHash(), this.__requestId);
       delete this.__requestId;
       this.__activityIndicator.hide(this.getHash());
 
@@ -210,7 +214,7 @@ core.Class("unify.view.RemoteView",
         this.debug("Data was not modified!");
       }
     }
-  },
+  }/*,
 
 
 
@@ -218,7 +222,7 @@ core.Class("unify.view.RemoteView",
   *****************************************************************************
      DESTRUCTOR
   *****************************************************************************
-  */
+  * /
 
   destruct : function()
   {
@@ -226,5 +230,5 @@ core.Class("unify.view.RemoteView",
     if (business) {
       business.removeListener("completed", this.__onBusinessObjectCompleted, this);
     }
-  }
+  } */
 });

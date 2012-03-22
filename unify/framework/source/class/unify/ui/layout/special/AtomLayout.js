@@ -110,6 +110,7 @@ core.Class("unify.ui.layout.special.AtomLayout", {
         }
         var left = Math.round((availWidth / 2) - (imageWidth / 2));
         var top = Math.round((availHeight / 2) - (imageHeight / 2));
+        
         image.renderLayout(left, top, imageWidth, imageHeight);
       } else if (label) {
         var labelHint = label.getSizeHint();
