@@ -29,7 +29,7 @@ core.Class("unify.ui.container.Scroll", {
     unify.ui.core.Widget.call(this);
 
     // Child container layout  
-    this.setLayout(layout ||new unify.ui.layout.VBox());
+    this.setLayout(layout ||new unify.ui.layout.Basic());
     // Scroller layout
     this._setLayout(new unify.ui.layout.special.ScrollLayout());
 
@@ -74,9 +74,6 @@ core.Class("unify.ui.container.Scroll", {
     
     this.addListener("resize", this.__updateDimensions, this);
     contentWidget.addListener("resize", this.__updateDimensions, this);
-    contentWidget.addListener("resize", function(e) {
-      console.log("FIRED RESIZE ", e.getData());
-    }, this);
     
     this.addListener("changeVisibility", this.__onChangeVisibility, this);
   },
@@ -626,7 +623,6 @@ core.Class("unify.ui.container.Scroll", {
      * @param e {Event} Touch event
      */
     __onTouchStart : function(e){
-      console.log("touch start");
       this.__inTouch = true;
       //TODO why is this called here? touchstart should not change the properties, so no need to recache them
       this.__updateProperties();

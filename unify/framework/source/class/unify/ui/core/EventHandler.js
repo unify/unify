@@ -27,17 +27,21 @@
   var eventElement = document.documentElement;
 
   if (emulateTouch) {
-    lowland.bom.Events.listen(eventElement, "click", function(e) {
+    lowland.bom.Events.set(eventElement, "click", function(e) {
       lowland.bom.Events.dispatch(e.target, "tap");
+      e.preventDefault();
     });
-    lowland.bom.Events.listen(eventElement, "mousedown", function(e) {
+    lowland.bom.Events.set(eventElement, "mousedown", function(e) {
       lowland.bom.Events.dispatch(e.target, "touchstart", false, touchSynthesizer(e));
+      e.preventDefault();
     });
-    lowland.bom.Events.listen(eventElement, "mousemove", function(e) {
+    lowland.bom.Events.set(eventElement, "mousemove", function(e) {
       lowland.bom.Events.dispatch(e.target, "touchmove", false, touchSynthesizer(e));
+      e.preventDefault();
     });
-    lowland.bom.Events.listen(eventElement, "mouseup", function(e) {
+    lowland.bom.Events.set(eventElement, "mouseup", function(e) {
       lowland.bom.Events.dispatch(e.target, "touchend", false, touchSynthesizer(e));
+      e.preventDefault();
     });
   }
 

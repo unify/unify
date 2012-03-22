@@ -118,9 +118,7 @@
         hint = this.__sizeHint = this._computeSizeHint();
         
         if (this.__computedHeightForWidth && this.getHeight() === null) {
-          console.trace();
           hint.height = this.__computedHeightForWidth;
-          console.log("MORE SIZE: ", hint.height);
         }
         
         if (hint.width < hint.minWidth) {
@@ -217,16 +215,20 @@
           this.__computedHeightForWidth = flowHeight;
           this.__sizeHint = null;
           
-          console.log("RERENDER " + this.constructor, flowHeight);
-          
           // Re-add to layout queue
           unify.ui.layout.queue.Layout.add(this);
+          
+          // TODO: Check if this could be done more efficient
+          var e = this;
+          while ((e = e.getParentBox())) {
+            //e.invalidateLayoutCache();
+            unify.ui.layout.queue.Layout.add(e);
+          }
   
           return null;
         }
         
         var cache = this.__cache;
-        
         if (!cache) {
           cache = this.__cache = [left, top, width, height];
           
@@ -258,7 +260,6 @@
         var layout = this._getLayout();
         if (layout && layout.hasHeightForWidth()) {
           var e = layout.getHeightForWidth(width);
-          console.log("hfw layout: ", e);
           return e;
         }
   
