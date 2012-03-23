@@ -189,16 +189,12 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
         var vvm = self.__visibleViewManagers;
         qx.lang.Array.remove(vvm, viewManager);
         self.fireDataEvent("hide", id);
-        
+
         var vm = self.__currentViewManager = vvm[vvm.length-1];
         self.__currentOverlay = self.__getOverlay(vm, false);
       };
       
-      var currentView = viewManager.getCurrentView();
-      if (currentView && currentView.getActive()) {
-        currentView.setActive(false);
-      }
-      
+
       if (viewManager.getModal()) {
         PopOverManager.hide(viewManager);
         finalize();
@@ -210,7 +206,7 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
         
         overlay.addListenerOnce("hidden",finalize,this);
         if (mode == "modal") {
-          viewManager.hideModal(function() {
+          viewManager.hide(function() {
             overlay.hide();
           });
         } else {
@@ -225,11 +221,12 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
         var viewManagerHash = overlay.getUserData("viewmanager");
       
         if (viewManagerHash) {
-          var widget = qx.core.ObjectRegistry.fromHashCode(viewManagerHash);
+          var viewManager = qx.core.ObjectRegistry.fromHashCode(viewManagerHash);
           
-          if (widget) {
-            qx.lang.Array.remove(this.__visibleViewManagers, widget);
-            this.fireDataEvent("hide", widget.getId());
+          if (viewManager) {
+            qx.lang.Array.remove(this.__visibleViewManagers, viewManager);
+            this.fireDataEvent("hide", viewManager.getId());
+            viewManager.hide(); //TODO only deactivate instead of hide?
           }
         }
       }

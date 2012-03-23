@@ -29,7 +29,6 @@ qx.Class.define("unify.view.Navigation",
 
     // Initialize storage
     this.__viewManagers = {};
-    this.__permanentManagers = [];
   },
 
 
@@ -57,17 +56,14 @@ qx.Class.define("unify.view.Navigation",
      * in each navigation object.
      */
     __viewManagers : null,
-    
-    __permanentManagers : null,
 
     /**
      * Adds a view manager to the global navigation. All views
      * of this view manager will be globally accessible by their name.
      *
      * @param viewManager {unify.view.ViewManager} View manager instance
-     * @param permanent {Boolean?true} Should path be permanent in URL and local storage
      */
-    register : function(viewManager, permanent)
+    register : function(viewManager)
     {
       var managerId = viewManager.getId();
 
@@ -79,9 +75,6 @@ qx.Class.define("unify.view.Navigation",
       }
 
       this.__viewManagers[managerId] = viewManager;
-      if (permanent !== false) {
-        this.__permanentManagers.push(managerId);
-      }
       viewManager.addListener("changePath", this.__onSubPathChange, this);
     },
 
@@ -112,11 +105,6 @@ qx.Class.define("unify.view.Navigation",
       History.init(path);
       delete this.__historyInit;
 
-      // Be sure that every view manager which is part of the navigation is correctly initialized
-      var managers = this.__viewManagers;
-      for (var id in managers) {
-        managers[id].init();
-      }
     },
 
 
@@ -153,10 +141,6 @@ qx.Class.define("unify.view.Navigation",
     /** {unify.view.Path} Path object which stores the complete application path */
     __path : null,
 
-    getIt : function() {
-      return this.__serializedPath;
-    },
-
     /**
      * Navigates to the given path. Automatically distributes sub paths
      * to the responsible view managers.
@@ -175,13 +159,10 @@ qx.Class.define("unify.view.Navigation",
       if(!this.isValidNavigationPath(path)){
         throw new Error("invalid path: "+path.serialize());
       }
-      
       var usedManagers = {};
       var lastManagerId = null;
       var managers = this.__viewManagers;
       var managerPath = new unify.view.Path;
-
-      var activeManagers = [];
 
       for (var i=0, l=path.length; i<l; i++)
       {
@@ -192,7 +173,6 @@ qx.Class.define("unify.view.Navigation",
           var viewManager = managers[managerId];
           var viewObj = viewManager.getView(fragment.view);
           if (viewObj) {
-            activeManagers.push(managerId);
             break;
           }
         }
@@ -218,17 +198,6 @@ qx.Class.define("unify.view.Navigation",
 
           // Rotate variable
           lastManagerId = managerId;
-        }
-      }
-      
-      // Deactivate active views who's view manager gets inactive
-      for (var managerId in managers) {
-        if (activeManagers.indexOf(managerId) == -1) {
-          var manager = managers[managerId];
-          var currentView = manager.getCurrentView();
-          if (currentView && currentView.getActive()) {
-            currentView.setActive(false);
-          }
         }
       }
 
@@ -311,11 +280,8 @@ qx.Class.define("unify.view.Navigation",
       var changed = e.getTarget();
 
       var path = this.__path = new unify.view.Path;
-      var permanent = true;
 
       var viewManagers = this.__viewManagers;
-      var permanentManagers = this.__permanentManagers;
-      var lastViewManager = null;
       for (var id in viewManagers)
       {
         var manager = viewManagers[id];
@@ -324,37 +290,18 @@ qx.Class.define("unify.view.Navigation",
         if (localPath != null)
         {
           for (var i=0, l=localPath.length; i<l; i++) {
-            path.push(localPath[i]);
-            
-            if (permanentManagers.indexOf(id) == -1) {
-              permanent = false;
-            }
-          }
-          if (localPath.length > 0) {
-            lastViewManager = manager;
+            path.push(localPath[i])
           }
         }
-        
       }
-      
+
       var joined = this.__serializedPath = path.serialize();
-      
-      if (lastViewManager) {
-        var view = lastViewManager.getCurrentView();
-        if (view && !view.getActive()) {
-          view.setActive(true);
-        }
-      }
-      
-      // Only save view managers that should be permanent saved to local storage and URL
-      if (permanent) {
-        unify.bom.History.getInstance().setLocation(joined);
-  
-        try {
-          unify.bom.Storage.set("navigation-path", joined);
-        } catch(ex) {
-          this.error('failed to store navigation-path'+ex);
-        }
+      unify.bom.History.getInstance().setLocation(joined);
+
+      try {
+        unify.bom.Storage.set("navigation-path", joined);
+      } catch(ex) {
+        this.error('failed to store navigation-path'+ex);
       }
     },
 

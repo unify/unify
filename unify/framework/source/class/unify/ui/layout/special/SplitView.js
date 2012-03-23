@@ -52,18 +52,15 @@ qx.Class.define("unify.ui.layout.special.SplitView", {
           //still in portrait, use whole area for detail
           children[0].renderLayout(0, 0, availWidth, availHeight);
         } else {
-          //back to landscape, readd the master
-          baseWidget.inlineMasterView();
+          //do nothing, master will be readded and layout
         }
       } else { //2 children -> currently in landscape
         if (isPortrait) {
-          //switch to portrait, hide master
-          children[0].hide();
+          //switch to portrait, render detail only
           children[1].renderLayout(0, 0, availWidth, availHeight);
         } else {
           //stay in landscape, calculate split
           var leftWidth = Math.round(availWidth * this.getSplitLevel());
-          children[0].show();
           children[0].renderLayout(0, 0, leftWidth, availHeight);
           children[1].renderLayout(leftWidth, 0, availWidth-leftWidth, availHeight);
         }
