@@ -223,7 +223,7 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
         if (viewManagerHash) {
           var viewManager = qx.core.ObjectRegistry.fromHashCode(viewManagerHash);
           
-          if (widget) {
+          if (viewManager) {
             qx.lang.Array.remove(this.__visibleViewManagers, viewManager);
             this.fireDataEvent("hide", viewManager.getId());
             viewManager.hide(); //TODO only deactivate instead of hide?
