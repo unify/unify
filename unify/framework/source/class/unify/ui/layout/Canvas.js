@@ -19,6 +19,7 @@ core.Class("unify.ui.layout.Canvas", {
     __childrenCache : null,
     
     renderLayout : function(availWidth, availHeight) {
+      console.log("===============");
       if (this._invalidChildrenCache) {
         this.__rebuildChildrenCache();
       }
@@ -115,6 +116,9 @@ core.Class("unify.ui.layout.Canvas", {
           height = availHeight - bottom - top;
         }
 
+        if (this._getWidget().constructor == "[class ppbase.ui.NavigationControls]") {
+          console.log(widget.constructor, left, top, width, height, widget.getAppearance());
+        }
         widget.renderLayout(left, top, width, height);
       }
     },

@@ -90,8 +90,6 @@ core.Class("unify.ui.layout.Dock", {
         }
         
         if (prop.edge != "center") {
-          console.log(widget.constructor, widget.getLayoutProperties());
-          
           var leftGap = widget.getMarginLeft();
           var rightGap = widget.getMarginRight();
           var topGap = widget.getMarginTop();
