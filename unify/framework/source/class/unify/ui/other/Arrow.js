@@ -28,6 +28,10 @@ core.Class("unify.ui.other.Arrow", {
     }
   },
   
+  construct : function() {
+    unify.ui.core.Widget.call(this);
+  },
+  
   members : {
     /** Arrow DOM element */
     __arrowSpan : null,

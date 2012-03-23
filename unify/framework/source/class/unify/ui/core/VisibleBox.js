@@ -2,7 +2,9 @@
   
   var dimensionFnt;
   var stretchFnt;
-  dimmensionFnt = stretchFnt = function(value) { unify.ui.layout.queue.Layout.add(this); };
+  dimmensionFnt = stretchFnt = function(value) {
+    unify.ui.layout.queue.Layout.add(this);
+  };
   
   var marginFnt = function() { this._applyMargin(); };
   

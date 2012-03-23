@@ -12,7 +12,7 @@
  * EXPERIMENTAL
  */
 core.Class("unify.ui.basic.Atom", {
-  include: [unify.ui.core.Widget, unify.ui.core.MChildControl],
+  include: [unify.ui.core.Widget, unify.ui.core.MChildControl, unify.ui.core.MChildrenHandling],
   
   /**
    * @param label {String} Label on atom

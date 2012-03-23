@@ -220,7 +220,7 @@ core.Class("unify.view.helper.ViewOverlayManager", {
     __hidePopover : function(e) {
       var overlay = e.getData();
       if (overlay) {
-        var widget = overlay.getUserData("viewmanager");
+        var widget = lowland.ObjectManager.find(overlay.getUserData("viewmanager"));
       
         if (widget) {
           this.__visibleViewManagers.remove(widget);
@@ -242,7 +242,7 @@ core.Class("unify.view.helper.ViewOverlayManager", {
         overlay.setUserData("viewmanager", viewManager.getHash());
 
         var appearanceId=viewManager.getId()+"-overlay";
-        var appearance = unify.theme.Theme.resolveStyle(appearanceId);
+        var appearance = unify.theme.Manager.get().resolveStyle(appearanceId);
         if(appearance){
           overlay.setAppearance(appearanceId);
         }

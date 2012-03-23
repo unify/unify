@@ -254,6 +254,9 @@ core.Class("unify.ui.core.Widget", {
     _applyAppearance : function(value) {
       if (core.Env.getValue("debug")) {
         var e = this.getElement();
+        if (!e) {
+          console.error("NO ELEMENT : ", this.constructor);
+        }
         e.setAttribute("appearance",value);
       }
       this.updateAppearance();

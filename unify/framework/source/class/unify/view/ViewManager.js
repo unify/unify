@@ -439,7 +439,7 @@ core.Class("unify.view.ViewManager", {
      */
     show : function() {
       if (!this.getModal()) {
-        unify.ui.container.Composite.show.call(this);
+        unify.ui.container.Composite.prototype.show.call(this);
       } else {
         // Be sure that we show a view (if possible)
         if(!this.__initialized){
@@ -593,7 +593,8 @@ core.Class("unify.view.ViewManager", {
      * @param remove {Boolean}  true: the state is removed; false: the state is added
      */
     __changeChildState: function (widget,state,remove){
-      var children = widget.getChildren();
+      console.log(widget.constructor, !!widget.getChildren);
+      var children = widget.getChildren && widget.getChildren();
       if(children){
         for (var i = 0,l=children.length;i<l;i++){
           var child=children[i];

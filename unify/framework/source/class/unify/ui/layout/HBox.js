@@ -16,10 +16,12 @@ core.Class("unify.ui.layout.HBox", {
   
   properties : {
     alignX: {
-      init: "left"
+      init: "left",
+      type: ["left", "center", "right"]
     },
     alignY: {
-      init: "top"
+      init: "top",
+      type: ["top", "middle", "bottom"]
     },
     
     spacing : {
@@ -28,6 +30,8 @@ core.Class("unify.ui.layout.HBox", {
   },
   
   construct : function(spacing) {
+    unify.ui.layout.Base.call(this);
+    
     if (spacing) {
       this.setSpacing(spacing);
     }
@@ -91,7 +95,7 @@ core.Class("unify.ui.layout.HBox", {
         
         if (alignY == "top") {
           top = widget.getMarginTop();
-        } else if (alignY == "center") {
+        } else if (alignY == "middle") {
           top = Math.round(availHeight / 2 - height / 2);
         } else {
           top = availHeight - height - widget.getMarginBottom();
@@ -101,9 +105,32 @@ core.Class("unify.ui.layout.HBox", {
         var rightGap = unify.ui.layout.Util.calculateRightGap(widget);
         
         left += leftGap;
-        widget.renderLayout(left, top, width, height);
+        element.realPos = [left, top, width, height];
         
         left += width + rightGap + space;
+      }
+      
+      var modLeft = 0;
+      var alignX = this.getAlignX();
+      var alignY = this.getAlignY();
+      if (alignX == "center") {
+        modLeft = Math.ceil((availWidth - left) / 2);
+      } else if (alignX == "right") {
+        modLeft = availWidth - left;
+      }
+      
+      for (i=0,ii=sizeCache.length; i<ii; i++) {
+        var element = sizeCache[i];
+        var pos = element.realPos;
+        
+        var top = pos[1];
+        if (alignY == "middle") {
+          top = Math.ceil((availHeight - top) / 2);
+        } else if (alignY == "bottom") {
+          top = availHeight - top;
+        }
+        
+        element.widget.renderLayout(modLeft + pos[0], top, pos[2], pos[3]);
       }
     },
     

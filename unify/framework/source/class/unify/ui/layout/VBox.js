@@ -27,6 +27,8 @@ core.Class("unify.ui.layout.VBox", {
   },
   
   construct : function(spacing) {
+    unify.ui.layout.Base.call(this);
+    
     if (spacing) {
       this.setSpacing(spacing);
     }
@@ -97,9 +99,32 @@ core.Class("unify.ui.layout.VBox", {
         var bottomGap = unify.ui.layout.Util.calculateBottomGap(widget);
         
         top += topGap;
-        widget.renderLayout(left, top, width, height);
+        element.realPos = [left, top, width, height];
         
         top += height + bottomGap + space;
+      }
+      
+      var modTop = 0;
+      var alignX = this.getAlignX();
+      var alignY = this.getAlignY();
+      if (alignY == "middle") {
+        modTop = Math.ceil((availHeight - top) / 2);
+      } else if (alignY == "bottom") {
+        modTop = availHeight - top;
+      }
+      
+      for (i=0,ii=sizeCache.length; i<ii; i++) {
+        var element = sizeCache[i];
+        var pos = element.realPos;
+        
+        var left = pos[0];
+        if (alignX == "center") {
+          left = Math.ceil((availWidth - left) / 2);
+        } else if (alignX == "right") {
+          left = availWidth - left;
+        }
+        
+        element.widget.renderLayout(left, modTop + pos[1], pos[2], pos[3]);
       }
     },
     
