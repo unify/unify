@@ -71,7 +71,7 @@ qx.Class.define("unify.view.SplitViewManager",
     //overridden
     show: function(){
       this.base(arguments);
-      if(this.isPortrait()){
+      if(!this.isPortrait()){
         this.__masterViewManager.show();
       }
       this.__detailViewManager.show();

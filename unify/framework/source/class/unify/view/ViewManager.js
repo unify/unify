@@ -843,6 +843,10 @@ qx.Class.define("unify.view.ViewManager", {
       if(view){
         view.setActive(true);
       }
+      
+      if(callee && callee.getModal()){
+        return;// got activated by a  modal viewmanager
+      }
 
       if(this.getModal()){
         //deactivate all other active viewmanagers
