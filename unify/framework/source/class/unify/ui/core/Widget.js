@@ -585,6 +585,8 @@ core.Class("unify.ui.core.Widget", {
         this._setStyle(styleData);
       }
 
+      this.invalidateLayoutCache();
+      
       this.fireEvent("appearance", this.__states);
     },
 

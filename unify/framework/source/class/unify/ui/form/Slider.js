@@ -94,7 +94,7 @@ core.Class("unify.ui.form.Slider", {
           break;
         case "bar":
           control = new unify.ui.basic.Content();
-          
+
           this._add(control, {
             left: 0,
             top: 0,

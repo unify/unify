@@ -53,7 +53,7 @@
       
       /** parent scroll container of this indicator */
       scroll:{
-        type : "unify.ui.container.Scroll",
+        /*type : "unify.ui.container.Scroll",*/
         init: null,
         apply: function(value) { this._applyScroll(value); }
       }

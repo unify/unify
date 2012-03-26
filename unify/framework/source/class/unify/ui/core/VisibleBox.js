@@ -3,6 +3,9 @@
   var dimensionFnt;
   var stretchFnt;
   dimmensionFnt = stretchFnt = function(value) {
+    this.__invalidateParent();
+    
+    this.invalidateLayoutCache();
     unify.ui.layout.queue.Layout.add(this);
   };
   
@@ -94,6 +97,15 @@
     
     members : {
       __sizeHint : null,
+      
+      __invalidateParent : function() {
+        var parent = this;
+        
+        while ((parent = parent.getParentBox())) {
+          parent.invalidateLayoutCache();
+          unify.ui.layout.queue.Layout.add(parent);
+        }
+      },
       
       invalidateLayoutCache : function() {
         this.__sizeHint = null;

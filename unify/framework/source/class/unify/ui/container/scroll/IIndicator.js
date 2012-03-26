@@ -20,7 +20,7 @@ core.Interface("unify.ui.container.scroll.IIndicator", {
     visible : { type : "Boolean" },
     
     /** parent scroll container of this indicator */
-    scroll : { type:"unify.ui.container.Scroll" }
+    scroll : { /*type:"unify.ui.container.Scroll"*/ }
   },
   
   members : {

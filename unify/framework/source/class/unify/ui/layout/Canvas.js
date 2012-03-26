@@ -19,7 +19,6 @@ core.Class("unify.ui.layout.Canvas", {
     __childrenCache : null,
     
     renderLayout : function(availWidth, availHeight) {
-      console.log("===============");
       if (this._invalidChildrenCache) {
         this.__rebuildChildrenCache();
       }
@@ -36,8 +35,8 @@ core.Class("unify.ui.layout.Canvas", {
         var topGap = widget.getMarginTop(); //unify.ui.layout.Util.calculateTopGap(widget);
         var bottomGap = widget.getMarginBottom(); //unify.ui.layout.Util.calculateBottomGap(widget);
         
-        var left = 0;
-        var top = 0;
+        var left = -1;
+        var top = -1;
         var right = -1;
         var bottom = -1;
 
@@ -53,47 +52,60 @@ core.Class("unify.ui.layout.Canvas", {
         var cright = calc.right;
         var cbottom = calc.bottom;
         
-        if (cleft != null) {
-          if (cleft == "center") {
-            left = Math.round(availWidth / 2 - (size.width+leftGap+rightGap) / 2);
-            cright = null;
-          } else if (typeof(cleft) == "string" && cleft.indexOf("%") > -1) {
-            left = Math.round(availWidth * parseInt(cleft, 10) / 100) + leftGap;
-          } else {
-            left = parseInt(cleft, 10) + leftGap;
+        if (cleft == null && ctop == null && cright == null && cbottom == null) {
+          left = 0;
+          top = 0;
+        } else {
+          if (cleft != null) {
+            if (cleft == "center") {
+              left = Math.round(availWidth / 2 - (size.width+leftGap+rightGap) / 2);
+              cright = null;
+            } else if (typeof(cleft) == "string" && cleft.indexOf("%") > -1) {
+              left = Math.round(availWidth * parseInt(cleft, 10) / 100) + leftGap;
+            } else {
+              left = parseInt(cleft, 10) + leftGap;
+            }
           }
-        }
-        
-        if (ctop != null) {
-          if (ctop == "center") {
-            top = Math.round(availHeight / 2 - (size.height+topGap+bottomGap) / 2);
-            cbottom = null;
-          } else if (typeof(ctop) == "string" && ctop.indexOf("%") > -1) {
-            top = Math.round(availHeight * parseInt(ctop, 10) / 100) + topGap;
-          } else {
-            top = parseInt(ctop, 10) + topGap;
+          
+          if (ctop != null) {
+            if (ctop == "center") {
+              top = Math.round(availHeight / 2 - (size.height+topGap+bottomGap) / 2);
+              cbottom = null;
+            } else if (typeof(ctop) == "string" && ctop.indexOf("%") > -1) {
+              top = Math.round(availHeight * parseInt(ctop, 10) / 100) + topGap;
+            } else {
+              top = parseInt(ctop, 10) + topGap;
+            }
           }
-        }
-        
-        if (cright != null) {
-          if (typeof(cright) == "string" && cright.indexOf("%") > -1) {
-            right = Math.round(availWidth * parseInt(ctop, 10) / 100) - rightGap;
-          } else {
-            right = parseInt(cright, 10) + rightGap;
+          
+          if (cright != null) {
+            if (typeof(cright) == "string" && cright.indexOf("%") > -1) {
+              right = Math.round(availWidth * parseInt(ctop, 10) / 100) - rightGap;
+            } else {
+              right = parseInt(cright, 10) + rightGap;
+            }
           }
-        }
-        
-        if (cbottom != null) {
-          if (typeof(cbottom) == "string" && cbottom.indexOf("%") > -1) {
-            bottom = Math.round(availWidth * parseInt(ctop, 10) / 100) - bottomGap;
-          } else {
-            bottom = parseInt(cbottom, 10) + bottomGap;
+          
+          if (cbottom != null) {
+            if (typeof(cbottom) == "string" && cbottom.indexOf("%") > -1) {
+              bottom = Math.round(availHeight * parseInt(cbottom, 10) / 100) - bottomGap;
+            } else {
+              bottom = parseInt(cbottom, 10) + bottomGap;
+            }
           }
         }
         
         var width;
         var height;
 
+        if (top == -1) {
+          top = availHeight - (bottom + size.height + bottomGap);
+        }
+        
+        if (left == -1) {
+          left = availWidth - (right + size.width + rightGap);
+        }
+        
         if (right == -1) {
           var swidth = size.width;
           if (swidth > 0 && swidth < availWidth) {
@@ -103,22 +115,27 @@ core.Class("unify.ui.layout.Canvas", {
           }
         } else {
           width = availWidth - right - left;
+          var sMaxWidth = size.maxWidth;
+          if (width > sMaxWidth) {
+            width = sMaxWidth;
+          }
         }
         
         if (bottom == -1) {
           var sheight = size.height;
           if (sheight > 0 && sheight < availHeight) {
-            height = size.height;
+            height = sheight;
           } else {
             height = availHeight;
           }
         } else {
           height = availHeight - bottom - top;
+          var sMaxHeight = size.maxHeight;
+          if (height > sMaxHeight) {
+            height = sMaxHeight;
+          }
         }
-
-        if (this._getWidget().constructor == "[class ppbase.ui.NavigationControls]") {
-          console.log(widget.constructor, left, top, width, height, widget.getAppearance());
-        }
+        
         widget.renderLayout(left, top, width, height);
       }
     },
@@ -130,6 +147,8 @@ core.Class("unify.ui.layout.Canvas", {
       
       var width = 0;
       var height = 0;
+      var minWidth = 0;
+      var minHeight = 0;
       
       var cache = this.__childrenCache;
       for (var i=0,ii=cache.length; i<ii; i++) {
@@ -137,13 +156,17 @@ core.Class("unify.ui.layout.Canvas", {
         var calc = widget.getLayoutProperties();
         var size = widget.getSizeHint();
         
-        width = Math.max(width, size.minWidth);
-        height = Math.max(height, size.minHeight);
+        width = Math.max(width, size.width);
+        height = Math.max(height, size.height);
+        minWidth = Math.max(minWidth, size.minWidth);
+        minHeight = Math.max(minHeight, size.minHeight);
       }
       
       return {
         width: width,
-        height: height
+        height: height,
+        minWidth: minWidth,
+        minHeight: minHeight
       };
     },
     

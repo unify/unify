@@ -14,7 +14,7 @@
  * Overlay container widget
  */
 core.Class("unify.ui.container.Overlay", {
-  include : [unify.ui.container.Composite, unify.ui.core.MChildControl], //, unify.ui.core.MRemoteChildrenHandling],
+  include : [unify.ui.container.Composite, unify.ui.core.MChildControl, unify.ui.core.MRemoteChildrenHandling],
   implement : [unify.ui.core.IPopOver],
   
   events : {
@@ -94,6 +94,13 @@ core.Class("unify.ui.container.Overlay", {
   
   members : {
     
+    getChildren : unify.ui.core.MRemoteChildrenHandling.prototype.getChildren,
+    add : unify.ui.core.MRemoteChildrenHandling.prototype.add,
+    removeAll : unify.ui.core.MRemoteChildrenHandling.prototype.removeAll,
+    indexOf : unify.ui.core.MRemoteChildrenHandling.prototype.indexOf,
+    setStyle : unify.ui.core.MRemoteChildrenHandling.prototype.setStyle,
+    getStyle : unify.ui.core.MRemoteChildrenHandling.prototype.getStyle,
+    
     /**
      * Gets inner content container
      *
@@ -162,7 +169,7 @@ core.Class("unify.ui.container.Overlay", {
           hint.height+=arrowHint.height;
         }
       }
-      
+      console.log("OVERLAY: ", JSON.stringify(hint), this.getHasArrow());
       return hint;
     },
     
