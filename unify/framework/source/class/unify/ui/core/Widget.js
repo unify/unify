@@ -1397,10 +1397,11 @@ core.Class("unify.ui.core.Widget", {
       if (fontSize) {
         delete map.fontSize;
         if (typeof(fontSize) == "string" && fontSize.substr(-2) != "px") {
-          tmpFont.size = unify.bom.Font.resolveRelativeSize(fontSize);
+          tmpFont.fontSize = unify.bom.Font.resolveRelativeSize(fontSize);
         } else {
-          tmpFont.size = parseInt(fontSize, 10);
+          tmpFont.fontSize = parseInt(fontSize, 10);
         }
+        tmpFont.fontSize += "px";
       }
 
       if(fontWeight){
