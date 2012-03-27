@@ -54,7 +54,6 @@ core.Class("unify.ui.layout.HBox", {
       var hasFlex = this.__hasFlex;
       var hasNoFlex = this.__hasNoFlex;
       var sizeCache = this.__sizeCache;
-      var cache = this.__childrenCache;
       var i, ii;
       
       if (hasFlex.length > 0) {
@@ -64,17 +63,20 @@ core.Class("unify.ui.layout.HBox", {
         
         for (i=0,ii=hasNoFlex.length; i<ii; i++) {
           e = sizeCache[hasNoFlex[i]];
-          
           e.size.width = e.size.minWidth;
           usedNoFlexWidth += e.size.width;
         }
         
-        var flexUnit = (availWidth - usedNoFlexWidth) / overallFlex;
+        var flexUnit = (availWidth - ((sizeCache.length-1) * space) - usedNoFlexWidth) / overallFlex;
         
         for (i=0,ii=hasFlex.length; i<ii; i++) {
           e = sizeCache[hasFlex[i]];
-          
-          e.size.width = Math.round(flexUnit * e.flex);
+          var flexWidth = Math.round(flexUnit * e.flex);
+          if (flexWidth > e.size.minWidth) {
+            e.size.width = e.size.minWidth = flexWidth;
+          } else {
+            e.size.width = e.size.minWidth;
+          }
         }
       }
 
@@ -109,6 +111,7 @@ core.Class("unify.ui.layout.HBox", {
         
         left += width + rightGap + space;
       }
+      left -= space;
       
       var modLeft = 0;
       var alignX = this.getAlignX();
@@ -139,12 +142,48 @@ core.Class("unify.ui.layout.HBox", {
         this.__rebuildChildrenCache();
       }
       
-      var cache = this.__childrenCache;
-      for (var i=0,ii=cache.length; i<ii; i++) {
-        var widget = cache[i];
+      var space = this.getSpacing();
+      var sizeCache = this.__sizeCache;
+      var i, ii;
+      
+      var minWidth = 0;
+      var width = 0;
+      var minHeight = 0;
+      var height = 0;
+      
+      for (i=0,ii=sizeCache.length; i<ii; i++) {
+        var element = sizeCache[i];
+        var widget = element.widget;
+        var calc = element.properties;
+        var size = element.size;
+        
+        var horizontalGap = unify.ui.layout.Util.calculateHorizontalGap(widget);
+        var verticalGap = unify.ui.layout.Util.calculateVerticalGap(widget);
+        var ownMinHeight = size.minHeight + verticalGap;
+        var ownHeight = size.height + verticalGap;
+        
+        if (ownMinHeight > minHeight) {
+          minHeight = ownMinHeight;
+        }
+        if (ownHeight > height) {
+          height = ownHeight;
+        }
+        
+        minWidth += horizontalGap + size.minWidth;
+        width += horizontalGap + size.width;
+        
+        if (i > 0) {
+          minWidth += space;
+          width += space;
+        }
       }
       
-      return null;
+      return {
+        width: width,
+        minWidth: minWidth,
+        height: height,
+        minHeight: minHeight
+      };
     },
     
     __rebuildChildrenCache : function() {

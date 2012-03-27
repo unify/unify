@@ -398,6 +398,7 @@ core.Class("unify.ui.core.Widget", {
           var hint = layout.getSizeHint();
 
           if (!hint) {
+            this.error("Layout " + layout.constructor + " has no size hint!");
             return {
               width: 0,
               height: 0
@@ -452,6 +453,7 @@ core.Class("unify.ui.core.Widget", {
       var insetY = border.top + border.bottom + padding.top + padding.bottom;
 
       var contentHint = {};
+      
       if (width == null || height == null) {
         // Ask content
         contentHint = this._getContentHint();

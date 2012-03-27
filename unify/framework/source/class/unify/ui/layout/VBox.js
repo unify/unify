@@ -40,7 +40,6 @@ core.Class("unify.ui.layout.VBox", {
     },
     
     renderLayout : function(availWidth, availHeight) {
-      if (isNaN(availWidth)) console.trace();
       if (this._invalidChildrenCache) {
         this.__rebuildChildrenCache();
       }
@@ -63,12 +62,16 @@ core.Class("unify.ui.layout.VBox", {
           usedNoFlexHeight += e.size.height;
         }
         
-        var flexUnit = (availHeight - usedNoFlexHeight) / overallFlex;
+        var flexUnit = (availHeight - ((sizeCache.length-1) * space) - usedNoFlexHeight) / overallFlex;
         
         for (i=0,ii=hasFlex.length; i<ii; i++) {
           e = sizeCache[hasFlex[i]];
-          
-          e.size.height = Math.round(flexUnit * e.flex);
+          var flexHeight = Math.round(flexUnit * e.flex);
+          if (flexHeight > e.size.minHeight) {
+            e.size.height = e.size.minHeight = flexHeight;
+          } else {
+            e.size.height = e.size.minHeight;
+          }
         }
       }
       
@@ -88,11 +91,11 @@ core.Class("unify.ui.layout.VBox", {
         }
         
         if (alignX == "left") {
-          left = 0;
+          left = widget.getMarginLeft();
         } else if (alignX == "center") {
           left = Math.round(availWidth / 2 - width / 2);
         } else {
-          left = availWidth - width;
+          left = availWidth - width - widget.getMarginRight();
         }
         
         var topGap = unify.ui.layout.Util.calculateTopGap(widget);
@@ -103,6 +106,7 @@ core.Class("unify.ui.layout.VBox", {
         
         top += height + bottomGap + space;
       }
+      top -= space;
       
       var modTop = 0;
       var alignX = this.getAlignX();
@@ -178,7 +182,7 @@ core.Class("unify.ui.layout.VBox", {
     },
     
     __rebuildChildrenCache : function() {
-      var children = this._getLayoutChildren();
+      var children = this.__childrenCache = this._getLayoutChildren();
       var flex = this.__hasFlex = [];
       var noFlex = this.__hasNoFlex = [];
       var sizes = this.__sizeCache = [];

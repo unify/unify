@@ -173,6 +173,9 @@ core.Class("unify.ui.layout.Dock", {
       
       var w;
       while ((w = renderQueue.pop())) {
+        if (this._getWidget().constructor == "[class ppbase.ui.epub.EPubReader]") {
+          console.log(w[0].getElement(), JSON.stringify(w[0].getSizeHint()));
+        }
         w[0].renderLayout(w[1], w[2], w[3], w[4]);
       }
     },
@@ -182,14 +185,47 @@ core.Class("unify.ui.layout.Dock", {
         this.__rebuildChildrenCache();
       }
       
+      var allocatedLeft = 0;
+      var allocatedRight = 0;
+      var allocatedTop = 0;
+      var allocatedBottom = 0;
+      
+      var allocatedMinLeft = 0;
+      var allocatedMinRight = 0;
+      var allocatedMinTop = 0;
+      var allocatedMinBottom = 0;
+      
+      var center;
+      
       var cache = this.__childrenCache;
       for (var i=0,ii=cache.length; i<ii; i++) {
         var widget = cache[i];
-        var calc = widget.getLayoutProperties();
+        var prop = widget.getLayoutProperties();
         var size = widget.getSizeHint();
+        
+        if (prop.edge == "north") {
+          allocatedTop += size.height;
+          allocatedMinTop += size.minHeight;
+        } else if (prop.edge == "east") {
+          allocatedRight += size.width;
+          allocatedMinRight += size.minWidth;
+        } else if (prop.edge == "south") {
+          allocatedBottom += size.height;
+          allocatedMinBottom += size.minHeight;
+        } else if (prop.edge == "west") {
+          allocatedLeft += size.width;
+          allocatedMinLeft += size.minWidth;
+        } else {
+          center = size;
+        }
       }
       
-      return null;
+      return {
+        width: allocatedLeft + allocatedRight + (center?center.width:0),
+        height: allocatedTop + allocatedBottom + (center?center.height:0),
+        minWidth: allocatedMinLeft + allocatedMinRight + (center?center.minWidth:0),
+        minHeight: allocatedMinTop + allocatedMinBottom + (center?center.minHeight:0)
+      };
     },
     
     __rebuildChildrenCache : function() {
