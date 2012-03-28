@@ -5,6 +5,7 @@
  Homepage: unify-project.org
  License: MIT + Apache (V2)
  Copyright: 2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+ Additional Authors: Dominik Göpel
 
  *********************************************************************************************** */
 
@@ -22,7 +23,7 @@
 qx.Class.define("unify.ui.container.Scroll", {
   extend : unify.ui.core.Widget,
 
-  include : [unify.ui.core.MRemoteChildrenHandling, qx.ui.core.MRemoteLayoutHandling],
+  include : [unify.ui.core.MChildControl,unify.ui.core.MRemoteChildrenHandling, qx.ui.core.MRemoteLayoutHandling],
 
   /**
    * @param layout {qx.ui.layout.Abstract} Layout of container element
@@ -35,41 +36,15 @@ qx.Class.define("unify.ui.container.Scroll", {
     // Scroller layout
     this._setLayout(new unify.ui.layout.special.ScrollLayout());
 
-    var contentWidget = this.getChildrenContainer();
-    this._add(contentWidget, {
-      type: "content"
-    });
-    var Indicator = this._getIndicator();
-
-    var scrollIndicatorX = this.__horizontalScrollIndicator = new Indicator("horizontal",this);
-    var scrollIndicatorY = this.__verticalScrollIndicator = new Indicator("vertical",this);
-    
-    scrollIndicatorX.addListener("indicatorMoveStart", this.__onIndicatorMoveStart, this);
-    scrollIndicatorX.addListener("indicatorMoveEnd", this.__onIndicatorMoveEnd, this);
-    scrollIndicatorX.addListener("indicatorMove", this.__onIndicatorMove, this);
-    
-    scrollIndicatorY.addListener("indicatorMoveStart", this.__onIndicatorMoveStart, this);
-    scrollIndicatorY.addListener("indicatorMoveEnd", this.__onIndicatorMoveEnd, this);
-    scrollIndicatorY.addListener("indicatorMove", this.__onIndicatorMove, this);
-
-    var distance = Indicator.DISTANCE;
-    var thickness=Indicator.THICKNESS;
-    scrollIndicatorX.setHeight(thickness);
-    this._add(scrollIndicatorX, {
-      type: "indicatorX",
-      distance: distance
-    });
-    scrollIndicatorY.setWidth(thickness);
-    this._add(scrollIndicatorY, {
-      type: "indicatorY",
-      distance: distance
-    });
 
     this._setStyle({
       overflow: "hidden"
     });
-
-    this.__createScroller();
+    var contentWidget = this.__contentWidget = this._showChildControl("content");
+    this.__horizontalScrollIndicator = this._createChildControl("indicatorX");
+    this.__verticalScrollIndicator = this._createChildControl("indicatorY");
+    
+    this._createScroller();
 
 
     this.addListener("touchstart", this.__onTouchStart,this);
@@ -141,23 +116,8 @@ qx.Class.define("unify.ui.container.Scroll", {
       check : "Boolean",
       apply : "_applyShowIndicatorY"
     },
-    
-    /** Whether an overscroll event should be fired on overscroll */
-    updateOnOverscroll :
-    {
-      init : false,
-      check : "Boolean",
-      apply : "_applyScrollerProperty"
-    },
-    
-    /** Height of needed overscroll to fire update event */
-    overscrollHeight :
-    {
-      init : 60,
-      check : "Integer",
-      apply : "_applyScrollerProperty"
-    },
-    
+
+
     scrollOnSmallContent :
     {
       init : false,
@@ -247,6 +207,62 @@ qx.Class.define("unify.ui.container.Scroll", {
 
     __contentWidget : null,
     
+    /**
+     * Returns child control widget identified by id
+     *
+     * @param id {String} ID of child widget
+     * @return {unify.ui.core.Widget}  widget
+     */
+    _createChildControlImpl : function(id) {
+      var child;
+
+      switch(id){
+        case "content":{
+          child = this.getChildrenContainer();
+          this._add(child, {
+                type: "content"
+              });
+        }
+        break;
+        case "indicatorX":{
+          var Indicator = this._getIndicator();
+          child = new Indicator("horizontal",this);
+          child.addListener("indicatorMoveStart", this.__onIndicatorMoveStart, this);
+          child.addListener("indicatorMoveEnd", this.__onIndicatorMoveEnd, this);
+          child.addListener("indicatorMove", this.__onIndicatorMove, this);
+          var distance = Indicator.DISTANCE;
+          var thickness= Indicator.THICKNESS;
+          child.setHeight(thickness);
+          this._add(child, {
+            type: "indicatorX",
+            distance: distance
+          });
+          
+        }
+        break;
+        case "indicatorY":{
+          var Indicator = this._getIndicator();
+          var child = new Indicator("vertical",this);
+          child.addListener("indicatorMoveStart", this.__onIndicatorMoveStart, this);
+          child.addListener("indicatorMoveEnd", this.__onIndicatorMoveEnd, this);
+          child.addListener("indicatorMove", this.__onIndicatorMove, this);
+          var distance = Indicator.DISTANCE;
+          var thickness= Indicator.THICKNESS;
+          child.setWidth(thickness);
+              this._add(child, {
+                type: "indicatorY",
+                distance: distance
+              });
+        }
+        break;
+        default:{
+          child=this.base(arguments,id);
+        }
+      }
+      
+      return child;
+    },
+    
 
     /**
      * Gets inner content container
@@ -292,19 +308,16 @@ qx.Class.define("unify.ui.container.Scroll", {
       return Indicator;
     },
 
-    finishUpdateOnOverscroll : function() {
-      this.__scroller.finishUpdateOnOverscroll();
-    },
 
     /**
      * (re)creates the scroller object and restores scroll position if required
      *
      * @return {Scroller} Zynga scroller object
      */
-    __createScroller : function() {
+    _createScroller : function() {
       this.__updateProperties();
       delete this.__scroller;
-      var contentWidget = this.getChildrenContainer();
+      var contentWidget = this._getScrollerContentWidget();
       var contentElement= contentWidget.getElement();
       var Style=qx.bom.element.Style;
       var Transform=unify.bom.Transform;
@@ -346,11 +359,6 @@ qx.Class.define("unify.ui.container.Scroll", {
       var scroller = this.__scroller = new Scroller(render, options);
       this.__updateDimensions();
       
-      if (this.getUpdateOnOverscroll) {
-        scroller.activatePullToRefresh(this.getOverscrollHeight(), function(pos) {
-          self.fireDataEvent("overscroll", pos);
-        });
-      }
       
       //restore old scrollposition
       if(currentLeft||currentTop){
@@ -360,6 +368,17 @@ qx.Class.define("unify.ui.container.Scroll", {
       return scroller;
     },
 
+    /**
+     * get the content widget for the scroller.
+     * 
+     * defaults to the childrencontainer, override this if you want to add a custom implementation
+     * 
+     * @return {unify.ui.core.Widget} the widget that will be used as content for the scroller
+     */
+    _getScrollerContentWidget: function(){
+      return this.getChildrenContainer();
+    },
+    
     /*
      ---------------------------------------------------------------------------
      PROPERTY APPLY ROUTINES
@@ -372,9 +391,9 @@ qx.Class.define("unify.ui.container.Scroll", {
      */
    _applyScrollerProperty : function(){
      if(this.__inAnimation){
-       this.addListenerOnce("scrollend",this.__createScroller,this);
+       this.addListenerOnce("scrollend",this._createScroller,this);
      } else {
-       this.__createScroller();
+       this._createScroller();
      }
    },
 
@@ -910,8 +929,8 @@ var Scroller;
 		/** {Integer} Height to assign to refresh area */
 		__refreshHeight: null,
 
-		/** {Boolean} Whether the refresh process is enabled when the event is released now */
-		__refreshActive: false,
+		/** {String} the refresh process that starts when the event is released now */
+		__refreshActive: null,
 
 		/** {Function} Callback to execute on activation. This is for signalling the user about a refresh is about to happen when he release */
 		__refreshActivate: null,
@@ -1093,7 +1112,22 @@ var Scroller;
 
 		},
 
+    /**
+     * executes pull-to-refresh programmatically
+     * @param location {String} "top" or "bottom", the location to execute it
+     */
+    executePullToRefresh: function(location){
+      var self=this;
+      self.__refreshActive=location;
+      // Use publish instead of scrollTo to allow scrolling to out of boundary position
+      // We don't need to normalize scrollLeft, zoomLevel, etc. here because we only y-scrolling when pull-to-refresh is enabled
+      var posY=(self.__refreshActive=="top")?(-self.__refreshHeight):(self.__maxScrollTop+self.__refreshHeight);
+      self.__publish(self.__scrollLeft, posY , self.__zoomLevel, true);
 
+      if (self.__refreshStart) {
+        self.__refreshStart(self.__refreshActive);
+      }
+    },
 		/**
 		 * Signalizes that pull-to-refresh is finished.
 		 */
@@ -1101,10 +1135,10 @@ var Scroller;
 
 			var self = this;
 
-			self.__refreshActive = false;
 			if (self.__refreshDeactivate) {
-				self.__refreshDeactivate();
+				self.__refreshDeactivate(self.__refreshActive);
 			}
+      self.__refreshActive = null;
 
 			self.scrollTo(self.__scrollLeft, self.__scrollTop, true);
 
@@ -1540,25 +1574,23 @@ var Scroller;
 
 								if (!self.__refreshActive && scrollTop <= -self.__refreshHeight) {
 
-									self.__refreshActive = true;
+									self.__refreshActive = "top";
 									if (self.__refreshActivate) {
-										self.__refreshActivate("top");
+										self.__refreshActivate(self.__refreshActive);
 									}
-                                                                        
-                                                                } else if (!self.__refreshActive && scrollTop >= (maxScrollTop + self.__refreshHeight)) {
-                                                                  
-                                                                  	self.__refreshActive = true;
+                } else if (!self.__refreshActive && scrollTop >= (maxScrollTop + self.__refreshHeight)) {
+                  self.__refreshActive = "bottom";
 									if (self.__refreshActivate) {
-										self.__refreshActivate("bottom");
+										self.__refreshActivate(self.__refreshActive);
 									}
 
 								} else if (self.__refreshActive && scrollTop > -self.__refreshHeight && scrollTop < (maxScrollTop + self.__refreshHeight)) {
 
-									self.__refreshActive = false;
+									
 									if (self.__refreshDeactivate) {
-										self.__refreshDeactivate();
+										self.__refreshDeactivate(self.__refreshActive);
 									}
-
+                  self.__refreshActive=null;
 								}
 							}
 
@@ -1692,13 +1724,7 @@ var Scroller;
 
 				if (self.__refreshActive && self.__refreshStart) {
 
-					// Use publish instead of scrollTo to allow scrolling to out of boundary position
-					// We don't need to normalize scrollLeft, zoomLevel, etc. here because we only y-scrolling when pull-to-refresh is enabled
-					self.__publish(self.__scrollLeft, -self.__refreshHeight, self.__zoomLevel, true);
-
-					if (self.__refreshStart) {
-						self.__refreshStart();
-					}
+          self.executePullToRefresh(self.__refreshActive);
 
 				} else {
 
@@ -1710,10 +1736,11 @@ var Scroller;
 					// Directly signalize deactivation (nothing todo on refresh?)
 					if (self.__refreshActive) {
 
-						self.__refreshActive = false;
+						
 						if (self.__refreshDeactivate) {
-							self.__refreshDeactivate();
+							self.__refreshDeactivate(self.__refreshActive);
 						}
+            self.__refreshActive = null;
 
 					}
 				}
