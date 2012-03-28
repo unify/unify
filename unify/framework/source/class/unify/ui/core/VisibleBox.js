@@ -63,7 +63,7 @@
         apply : stretchFnt
       },
       allowShrinkX: {
-        init: false,
+        init: true,
         apply : stretchFnt
       },
       
@@ -72,7 +72,7 @@
         apply : stretchFnt
       },
       allowShrinkY: {
-        init: false,
+        init: true,
         apply : stretchFnt
       },
       

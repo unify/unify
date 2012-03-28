@@ -144,8 +144,7 @@ core.Class("unify.ui.layout.Canvas", {
 
 
     // overridden
-    renderLayout : function(availWidth, availHeight)
-    {
+    renderLayout : function(availWidth, availHeight) {
       var children = this._getLayoutChildren();
 
       var child, size, props;
