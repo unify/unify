@@ -69,8 +69,8 @@ core.Class("unify.ui.container.Scroll", {
 
     this.__createScroller();
 
-    this.addNativeListener(this.getElement(), "touchstart", this.__onTouchStart, this);
-    this.addNativeListener(this.getElement(), "mousewheel", this.__onMouseWheel, this);
+    this.addNativeListener("touchstart", this.__onTouchStart, this);
+    this.addNativeListener("mousewheel", this.__onMouseWheel, this);
     
     this.addListener("resize", this.__updateDimensions, this);
     contentWidget.addListener("resize", this.__updateDimensions, this);
@@ -561,8 +561,7 @@ core.Class("unify.ui.container.Scroll", {
      */
     __onMouseWheel : function(e) {
       var left = this.getScrollLeft();
-      console.log(e);
-      var top = this.getScrollTop() + (-e.wheelDelta) * 70;
+      var top = this.getScrollTop() + (-e.wheelDelta)/* * 70*/;
       
       this.scrollTo(left, top, true);
     },

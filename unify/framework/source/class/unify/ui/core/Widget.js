@@ -156,6 +156,17 @@ core.Class("unify.ui.core.Widget", {
   },
 
   members: {
+    addNativeListener:  function(type) {
+      var args = arguments;
+      if (typeof(type) == "string") {
+        args = [this.getElement()];
+        for (var i=0,ii=arguments.length; i<ii; i++) {
+          args.push(arguments[i]);
+        }
+      }
+      unify.ui.core.VisibleBox.prototype.addNativeListener.apply(this, args);
+    },
+    
     /** {Map} Padding of element */
     __padding : null,
 
