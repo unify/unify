@@ -1,177 +1,373 @@
-/* ***********************************************************************************************
+/* ************************************************************************
 
-    Unify Project
+   qooxdoo - the new era of web development
 
-    Homepage: unify-project.org
-    License: MIT + Apache (V2)
-    Copyright: 2012, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+   http://qooxdoo.org
 
-*********************************************************************************************** */
+   Copyright:
+     2004-2008 1&1 Internet AG, Germany, http://www.1und1.de
 
+   License:
+     LGPL: http://www.gnu.org/licenses/lgpl.html
+     EPL: http://www.eclipse.org/org/documents/epl-v10.php
+     See the LICENSE file in the project's top-level directory for details.
+
+   Authors:
+     * Sebastian Werner (wpbasti)
+     * Fabian Jakobs (fjakobs)
+
+************************************************************************ */
+
+/**
+ * The Canvas is an extended Basic layout.
+ *
+ * It is possible to position a widget relative to the right or bottom edge of
+ * the available space. It further supports stretching between left and right
+ * or top and bottom e.g. <code>left=20</code> and <code>right=20</code> would
+ * keep a margin of 20 pixels to both edges. The Canvas layout has support for
+ * percent dimensions and locations.
+ *
+ * *Features*
+ *
+ * * Pixel dimensions and locations
+ * * Percent dimensions and locations
+ * * Stretching between left+right and top+bottom
+ * * Minimum and maximum dimensions
+ * * Children are automatically shrunk to their minimum dimensions if not enough space is available
+ * * Auto sizing (ignoring percent values)
+ * * Margins (also negative ones)
+ *
+ * *Item Properties*
+ *
+ * <ul>
+ * <li><strong>left</strong> <em>(Integer|String)</em>: The left coordinate in pixel or as a percent string e.g. <code>20</code> or <code>30%</code>.</li>
+ * <li><strong>top</strong> <em>(Integer|String)</em>: The top coordinate in pixel or as a percent string e.g. <code>20</code> or <code>30%</code>.</li>
+ * <li><strong>right</strong> <em>(Integer|String)</em>: The right coordinate in pixel or as a percent string e.g. <code>20</code> or <code>30%</code>.</li>
+ * <li><strong>bottom</strong> <em>(Integer|String)</em>: The bottom coordinate in pixel or as a percent string e.g. <code>20</code> or <code>30%</code>.</li>
+ * <li><strong>width</strong> <em>(String)</em>: A percent width e.g. <code>40%</code>.</li>
+ * <li><strong>height</strong> <em>(String)</em>: A percent height e.g. <code>60%</code>.</li>
+ * </ul>
+ *
+ * *Notes*
+ *
+ * <ul>
+ * <li>Stretching (<code>left</code>-><code>right</code> or <code>top</code>-><code>bottom</code>)
+ *   has a higher priority than the preferred dimensions</li>
+ * <li>Stretching has a lower priority than the min/max dimensions.</li>
+ * <li>Percent values have no influence on the size hint of the layout.</li>
+ * </ul>
+ *
+ * *Example*
+ *
+ * Here is a little example of how to use the canvas layout.
+ *
+ * <pre class="javascript">
+ * var container = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
+ *
+ * // simple positioning
+ * container.add(new qx.ui.core.Widget(), {top: 10, left: 10});
+ *
+ * // stretch vertically with 10 pixel distance to the parent's top
+ * // and bottom border
+ * container.add(new qx.ui.core.Widget(), {top: 10, left: 10, bottom: 10});
+ *
+ * // percent positioning and size
+ * container.add(new qx.ui.core.Widget(), {left: "50%", top: "50%", width: "25%", height: "40%"});
+ * </pre>
+ *
+ * *External Documentation*
+ *
+ * <a href='http://manual.qooxdoo.org/${qxversion}/pages/layout/canvas.html'>
+ * Extended documentation</a> and links to demos of this layout in the qooxdoo manual.
+ */
 core.Class("unify.ui.layout.Canvas", {
   include : [unify.ui.layout.Base],
-  
+
+
   construct : function() {
     unify.ui.layout.Base.call(this);
   },
-  
-  members : {
-    __childrenCache : null,
-    
-    renderLayout : function(availWidth, availHeight) {
-      if (this._invalidChildrenCache) {
-        this.__rebuildChildrenCache();
-      }
-      
-      var cache = this.__childrenCache;
-      for (var i=0,ii=cache.length; i<ii; i++) {
-        var widget = cache[i];
-        
-        var calc = widget.getLayoutProperties();
-        var size = widget.getSizeHint();
-        
-        var leftGap = widget.getMarginLeft(); //unify.ui.layout.Util.calculateLeftGap(widget);
-        var rightGap = widget.getMarginRight(); //unify.ui.layout.Util.calculateRightGap(widget);
-        var topGap = widget.getMarginTop(); //unify.ui.layout.Util.calculateTopGap(widget);
-        var bottomGap = widget.getMarginBottom(); //unify.ui.layout.Util.calculateBottomGap(widget);
-        
-        var left = -1;
-        var top = -1;
-        var right = -1;
-        var bottom = -1;
 
-        if (calc.edge) {
-          calc.left = edge;
-          calc.top = edge;
-          calc.right = edge;
-          calc.bottom = edge;
-        }
-        
-        var cleft = calc.left;
-        var ctop = calc.top;
-        var cright = calc.right;
-        var cbottom = calc.bottom;
-        
-        if (cleft == null && ctop == null && cright == null && cbottom == null) {
-          left = 0;
-          top = 0;
-        } else {
-          if (cleft != null) {
-            if (cleft == "center") {
-              left = Math.round(availWidth / 2 - (size.width+leftGap+rightGap) / 2);
-              cright = null;
-            } else if (typeof(cleft) == "string" && cleft.indexOf("%") > -1) {
-              left = Math.round(availWidth * parseInt(cleft, 10) / 100) + leftGap;
-            } else {
-              left = parseInt(cleft, 10) + leftGap;
-            }
-          }
-          
-          if (ctop != null) {
-            if (ctop == "center") {
-              top = Math.round(availHeight / 2 - (size.height+topGap+bottomGap) / 2);
-              cbottom = null;
-            } else if (typeof(ctop) == "string" && ctop.indexOf("%") > -1) {
-              top = Math.round(availHeight * parseInt(ctop, 10) / 100) + topGap;
-            } else {
-              top = parseInt(ctop, 10) + topGap;
-            }
-          }
-          
-          if (cright != null) {
-            if (typeof(cright) == "string" && cright.indexOf("%") > -1) {
-              right = Math.round(availWidth * parseInt(ctop, 10) / 100) - rightGap;
-            } else {
-              right = parseInt(cright, 10) + rightGap;
-            }
-          }
-          
-          if (cbottom != null) {
-            if (typeof(cbottom) == "string" && cbottom.indexOf("%") > -1) {
-              bottom = Math.round(availHeight * parseInt(cbottom, 10) / 100) - bottomGap;
-            } else {
-              bottom = parseInt(cbottom, 10) + bottomGap;
-            }
-          }
-        }
-        
-        var width;
-        var height;
+  /*
+  *****************************************************************************
+     MEMBERS
+  *****************************************************************************
+  */
 
-        if (top == -1) {
-          top = availHeight - (bottom + size.height + bottomGap);
+  members :
+  {
+    /*
+    ---------------------------------------------------------------------------
+      LAYOUT INTERFACE
+    ---------------------------------------------------------------------------
+    */
+
+    // overridden
+    /*verifyLayoutProperty : qx.core.Environment.select("qx.debug",
+    {
+      "true" : function(item, name, value)
+      {
+        var layoutProperties =
+        {
+          top : 1,
+          left : 1,
+          bottom : 1,
+          right : 1,
+          width : 1,
+          height : 1,
+          edge : 1
+        };
+
+        this.assert(layoutProperties[name] == 1, "The property '"+name+"' is not supported by the Canvas layout!");
+
+        if (name =="width" || name == "height")
+        {
+          this.assertMatch(value, qx.ui.layout.Util.PERCENT_VALUE);
         }
-        
-        if (left == -1) {
-          left = availWidth - (right + size.width + rightGap);
+        else
+        {
+          if (typeof value === "number") {
+            this.assertInteger(value);
+          } else if (qx.lang.Type.isString(value)) {
+            this.assertMatch(value, qx.ui.layout.Util.PERCENT_VALUE);
+          } else {
+            this.fail(
+              "Bad format of layout property '" + name + "': " + value +
+              ". The value must be either an integer or an percent string."
+            );
+          }
         }
-        
-        if (right == -1) {
-          var swidth = size.width;
-          if (swidth > 0 && swidth < availWidth) {
+      },
+
+      "false" : null
+    }),*/
+
+
+    // overridden
+    renderLayout : function(availWidth, availHeight)
+    {
+      var children = this._getLayoutChildren();
+
+      var child, size, props;
+      var left, top, right, bottom, width, height;
+      var marginTop, marginRight, marginBottom, marginLeft;
+
+      for (var i=0, l=children.length; i<l; i++)
+      {
+        child = children[i];
+        size = child.getSizeHint();
+        props = child.getLayoutProperties();
+
+        // Cache margins
+        marginTop = child.getMarginTop();
+        marginRight = child.getMarginRight();
+        marginBottom = child.getMarginBottom();
+        marginLeft = child.getMarginLeft();
+
+
+
+        // **************************************
+        //   Processing location
+        // **************************************
+
+        left = props.left != null ? props.left : props.edge;
+        if (qx.lang.Type.isString(left)) {
+          left = Math.round(parseFloat(left) * availWidth / 100);
+        }
+
+        right = props.right != null ? props.right : props.edge;
+        if (qx.lang.Type.isString(right)) {
+          right = Math.round(parseFloat(right) * availWidth / 100);
+        }
+
+        top = props.top != null ? props.top : props.edge;
+        if (qx.lang.Type.isString(top)) {
+          top = Math.round(parseFloat(top) * availHeight / 100);
+        }
+
+        bottom = props.bottom != null ? props.bottom : props.edge;
+        if (qx.lang.Type.isString(bottom)) {
+          bottom = Math.round(parseFloat(bottom) * availHeight / 100);
+        }
+
+
+
+        // **************************************
+        //   Processing dimension
+        // **************************************
+
+        // Stretching has higher priority than dimension data
+        if (left != null && right != null)
+        {
+          width = availWidth - left - right - marginLeft - marginRight;
+
+          // Limit computed value
+          if (width < size.minWidth) {
+            width = size.minWidth;
+          } else if (width > size.maxWidth) {
+            width = size.maxWidth;
+          }
+
+          // Add margin
+          left += marginLeft;
+        }
+        else
+        {
+          // Layout data has higher priority than data from size hint
+          width = props.width;
+
+          if (width == null)
+          {
             width = size.width;
-          } else {
-            width = availWidth;
           }
-        } else {
-          width = availWidth - right - left;
-          var sMaxWidth = size.maxWidth;
-          if (width > sMaxWidth) {
-            width = sMaxWidth;
+          else
+          {
+            width = Math.round(parseFloat(width) * availWidth / 100);
+
+            // Limit computed value
+            if (width < size.minWidth) {
+              width = size.minWidth;
+            } else if (width > size.maxWidth) {
+              width = size.maxWidth;
+            }
+          }
+
+          if (right != null) {
+            left = availWidth - width - right - marginRight - marginLeft;
+          } else if (left == null) {
+            left = marginLeft;
+          } else {
+            left += marginLeft;
           }
         }
-        
-        if (bottom == -1) {
-          var sheight = size.height;
-          if (sheight > 0 && sheight < availHeight) {
-            height = sheight;
-          } else {
-            height = availHeight;
+
+        // Stretching has higher priority than dimension data
+        if (top != null && bottom != null)
+        {
+          height = availHeight - top - bottom - marginTop - marginBottom;
+
+          // Limit computed value
+          if (height < size.minHeight) {
+            height = size.minHeight;
+          } else if (height > size.maxHeight) {
+            height = size.maxHeight;
           }
-        } else {
-          height = availHeight - bottom - top;
-          var sMaxHeight = size.maxHeight;
-          if (height > sMaxHeight) {
-            height = sMaxHeight;
+
+          // Add margin
+          top += marginTop;
+        }
+        else
+        {
+          // Layout data has higher priority than data from size hint
+          height = props.height;
+
+          if (height == null)
+          {
+            height = size.height;
+          }
+          else
+          {
+            height = Math.round(parseFloat(height) * availHeight / 100);
+
+            // Limit computed value
+            if (height < size.minHeight) {
+              height = size.minHeight;
+            } else if (height > size.maxHeight) {
+              height = size.maxHeight;
+            }
+          }
+
+          if (bottom != null) {
+            top = availHeight - height - bottom - marginBottom - marginTop;
+          } else if (top == null) {
+            top = marginTop;
+          } else {
+            top += marginTop;
           }
         }
-        
-        widget.renderLayout(left, top, width, height);
+
+        // Apply layout
+        child.renderLayout(left, top, width, height);
       }
     },
-    
-    _computeSizeHint : function() {
-      if (this._invalidChildrenCache) {
-        this.__rebuildChildrenCache();
+
+
+    // overridden
+    _computeSizeHint : function()
+    {
+      var neededWidth=0, neededMinWidth=0;
+      var neededHeight=0, neededMinHeight=0;
+
+      var width, minWidth;
+      var height, minHeight;
+
+      var children = this._getLayoutChildren();
+      var child, props, hint;
+
+      var left, top, right, bottom;
+
+      for (var i=0,l=children.length; i<l; i++)
+      {
+        child = children[i];
+        props = child.getLayoutProperties();
+        hint = child.getSizeHint();
+
+
+        // Cache margins
+        var marginX = child.getMarginLeft() + child.getMarginRight();
+        var marginY = child.getMarginTop() + child.getMarginBottom();
+
+
+        // Compute width
+        width = hint.width+marginX;
+        minWidth = hint.minWidth+marginX;
+
+        left = props.left != null ? props.left : props.edge;
+        if (left && typeof left === "number")
+        {
+          width += left;
+          minWidth += left;
+        }
+
+        right = props.right != null ? props.right : props.edge;
+        if (right && typeof right === "number")
+        {
+          width += right;
+          minWidth += right;
+        }
+
+        neededWidth = Math.max(neededWidth, width);
+        neededMinWidth = Math.max(neededMinWidth, minWidth);
+
+
+        // Compute height
+        height = hint.height+marginY;
+        minHeight = hint.minHeight+marginY;
+
+        top = props.top != null ? props.top : props.edge;
+        if (top && typeof top === "number")
+        {
+          height += top;
+          minHeight += top;
+        }
+
+        bottom = props.bottom != null ? props.bottom : props.edge;
+        if (bottom && typeof bottom === "number")
+        {
+          height += bottom;
+          minHeight += bottom;
+        }
+
+        neededHeight = Math.max(neededHeight, height);
+        neededMinHeight = Math.max(neededMinHeight, minHeight);
       }
-      
-      var width = 0;
-      var height = 0;
-      var minWidth = 0;
-      var minHeight = 0;
-      
-      var cache = this.__childrenCache;
-      for (var i=0,ii=cache.length; i<ii; i++) {
-        var widget = cache[i];
-        var calc = widget.getLayoutProperties();
-        var size = widget.getSizeHint();
-        
-        width = Math.max(width, size.width);
-        height = Math.max(height, size.height);
-        minWidth = Math.max(minWidth, size.minWidth);
-        minHeight = Math.max(minHeight, size.minHeight);
-      }
-      
+
       return {
-        width: width,
-        height: height,
-        minWidth: minWidth,
-        minHeight: minHeight
+        width : neededWidth,
+        minWidth : neededMinWidth,
+        height : neededHeight,
+        minHeight : neededMinHeight
       };
-    },
-    
-    __rebuildChildrenCache : function() {
-      this.__childrenCache = this._getLayoutChildren();
     }
   }
 });
