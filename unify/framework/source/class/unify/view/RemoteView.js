@@ -74,6 +74,7 @@ qx.Class.define("unify.view.RemoteView",
       if (this.__requestId !== false) {
         this.__activityIndicator.show(this.toHashCode());
       }
+      return this.__requestId;
     },
 
 
