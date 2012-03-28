@@ -889,6 +889,41 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           overflow: "hidden"
         };
       }
+    },
+
+  /*
+    ---------------------------------------------------------------------------
+      Scroll
+    ---------------------------------------------------------------------------
+    */
+    
+    "scroll/content":{},
+    "scroll/indicatorX":{},
+    "scroll/indicatorY":{},
+    "scroll/wrapper":{},
+    "scroll/topNotification":{},
+    "scroll/topNotification/label":{
+      include:"label"
+    },
+    "scroll/topNotification/pullicon":{
+      //TODO: add default icons for states initial, activated and executing   
+      //sugestion:
+      // use transition animation rotate(-180) for changing arrow direction on initial/activating
+    },
+    "scroll/topNotification/activityicon":{
+      //TODO: add default icons for states initial, activated and executing   
+      //sugestion:
+      // use keyframe animation with infinite rotation (see KeframeAnimatedImage for example)
+    },
+    "scroll/bottomNotification":{},
+    "scroll/bottomNotification/label":{
+      include:"label"
+    },
+    "scroll/bottomNotification/pullicon":{
+      //TODO: add default icons for states initial, activated and executing
+    },
+    "scroll/bottomNotification/activityicon":{
+      //TODO: add default icons for states initial, activated and executing
     }
   }
 });
