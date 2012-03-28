@@ -19,12 +19,12 @@ core.Class("unify.ui.other.Arrow", {
     direction : {
       type : ["left", "top", "right", "bottom"],
       init: "top",
-      apply: this._applyDirection
+      apply: function(value, old) { this._applyDirection(value, old); }
     },
 
     /** {Map[]} Speacial css styles for arrow element */
     arrowStyle : {
-      apply: this._applyArrowStyle
+      apply: function(value, old) { this._applyArrowStyle(value, old); }
     }
   },
   
