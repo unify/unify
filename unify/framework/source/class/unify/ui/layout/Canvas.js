@@ -151,7 +151,8 @@ core.Class("unify.ui.layout.Canvas", {
       var child, size, props;
       var left, top, right, bottom, width, height;
       var marginTop, marginRight, marginBottom, marginLeft;
-
+      var horizontalCentered, verticalCentered;
+      
       for (var i=0, l=children.length; i<l; i++)
       {
         child = children[i];
@@ -172,7 +173,13 @@ core.Class("unify.ui.layout.Canvas", {
 
         left = props.left != null ? props.left : props.edge;
         if (typeof(left) == "string") {
-          left = Math.round(parseFloat(left) * availWidth / 100);
+          if (left == "center") {
+            horizontalCentered = true;
+            left = Math.round(availWidth / 2);
+            marginLeft -= Math.round(size.width / 2);
+          } else {
+            left = Math.round(parseFloat(left) * availWidth / 100);
+          }
         }
 
         right = props.right != null ? props.right : props.edge;
@@ -182,7 +189,13 @@ core.Class("unify.ui.layout.Canvas", {
 
         top = props.top != null ? props.top : props.edge;
         if (typeof(top) == "string") {
-          top = Math.round(parseFloat(top) * availHeight / 100);
+          if (top == "center") {
+            verticalCentered = true;
+            top = Math.round(availHeight / 2);
+            marginTop -= Math.round(size.height / 2);
+          } else {
+            top = Math.round(parseFloat(top) * availHeight / 100);
+          }
         }
 
         bottom = props.bottom != null ? props.bottom : props.edge;
