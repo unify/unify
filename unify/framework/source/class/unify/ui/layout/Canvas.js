@@ -171,22 +171,22 @@ core.Class("unify.ui.layout.Canvas", {
         // **************************************
 
         left = props.left != null ? props.left : props.edge;
-        if (qx.lang.Type.isString(left)) {
+        if (typeof(left) == "string") {
           left = Math.round(parseFloat(left) * availWidth / 100);
         }
 
         right = props.right != null ? props.right : props.edge;
-        if (qx.lang.Type.isString(right)) {
+        if (typeof(right) == "string") {
           right = Math.round(parseFloat(right) * availWidth / 100);
         }
 
         top = props.top != null ? props.top : props.edge;
-        if (qx.lang.Type.isString(top)) {
+        if (typeof(top) == "string") {
           top = Math.round(parseFloat(top) * availHeight / 100);
         }
 
         bottom = props.bottom != null ? props.bottom : props.edge;
-        if (qx.lang.Type.isString(bottom)) {
+        if (typeof(bottom) == "string") {
           bottom = Math.round(parseFloat(bottom) * availHeight / 100);
         }
 

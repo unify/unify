@@ -19,6 +19,12 @@ core.Class("unify.ui.layout.Base", {
       return this.__widget;
     },
     
+    _applyLayoutChange : function() {
+      if (this.__widget) {
+        this.__widget.scheduleLayoutUpdate();
+      }
+    },
+    
     hasHeightForWidth : function() {
       return false;
     },

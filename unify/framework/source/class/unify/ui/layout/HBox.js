@@ -395,9 +395,6 @@ core.Class("unify.ui.layout.HBox", {
       var hint, top, height, width, marginRight, marginTop, marginBottom;
       var spacing = this.getSpacing();
 
-      // Pre configure separators
-      this._clearSeparators();
-
       // Compute separator width
       if (separator)
       {

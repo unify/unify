@@ -184,7 +184,7 @@ core.Class("unify.ui.layout.Dock", {
     {
       type : "Integer",
       init : 0,
-      apply : "_applyLayoutChange"
+      apply : function(value, old) { this._applyLayoutChange(value, old); }
     },
 
 
@@ -577,11 +577,9 @@ core.Class("unify.ui.layout.Dock", {
       //   Layout children
       // **************************************
 
-      // Pre configure separators
-      this._clearSeparators();
 
       // Prepare loop
-      var separatorX=this.getSeparatorX(), separatorY=this.getSeparatorY();
+      var separatorX=null, separatorY=null;
       var connectSeparators=this.getConnectSeparators();
       var nextTop=0, nextLeft=0;
       var left, top, width, height, used, edge;
@@ -776,7 +774,8 @@ core.Class("unify.ui.layout.Dock", {
      */
     _getSeparatorWidths : function()
     {
-      var separatorX=this.getSeparatorX(), separatorY=this.getSeparatorY();
+      //var separatorX=this.getSeparatorX(), separatorY=this.getSeparatorY();
+      var separatorX=null, separatorY=null;
       if (separatorX || separatorY) {
         var decorationManager = qx.theme.manager.Decoration.getInstance();
       }

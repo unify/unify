@@ -395,9 +395,6 @@ core.Class("unify.ui.layout.VBox", {
       // Layouting children
       var hint, left, width, height, marginBottom, marginLeft, marginRight;
 
-      // Pre configure separators
-      this._clearSeparators();
-
       // Compute separator height
       if (separator)
       {
