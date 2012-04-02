@@ -43,9 +43,9 @@ core.Class("unify.ui.form.CheckBox", {
     },
     
     checked : {
-      check: "Boolean",
+      type: "Boolean",
       init: false,
-      event: "execute",
+      fire: "execute",
       apply: function(value) { this._applyChecked(value); }
     }
   },

@@ -195,6 +195,8 @@ core.Class("unify.ui.container.Scroll", {
    */
 
   members: {
+    setStyle : unify.ui.core.MChildrenHandling.prototype.setStyle,
+    
     __scroller : null,
     __verticalScrollIndicator : null,
     __horizontalScrollIndicator : null,

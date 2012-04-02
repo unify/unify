@@ -684,7 +684,7 @@ core.Class("unify.business.RemoteData",
 
       // Read event data
       var req = e.getTarget();
-      var eventType = e.getType();
+      var eventType = e.getData();
       var status = req.getStatus();
       var isErrornous = eventType == "error" || eventType == "timeout" || (status >= 400);
       var isMalformed = eventType == "timeout";
@@ -712,6 +712,7 @@ core.Class("unify.business.RemoteData",
         }
 
         var type = this.getResponseType();
+        //debugger;
         if (text.length > 0)
         {
           // data is only defined if response text is available

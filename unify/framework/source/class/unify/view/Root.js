@@ -41,6 +41,8 @@ core.Class("unify.view.Root", {
   },
   
   members : {
+    setStyle : unify.ui.core.MChildrenHandling.prototype.setStyle,
+    
     // Root element the whole application is based upon
     __rootElement : null,
     

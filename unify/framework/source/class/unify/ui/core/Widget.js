@@ -167,6 +167,17 @@ core.Class("unify.ui.core.Widget", {
       unify.ui.core.VisibleBox.prototype.addNativeListener.apply(this, args);
     },
     
+    removeNativeListener:  function(type) {
+      var args = arguments;
+      if (typeof(type) == "string") {
+        args = [this.getElement()];
+        for (var i=0,ii=arguments.length; i<ii; i++) {
+          args.push(arguments[i]);
+        }
+      }
+      unify.ui.core.VisibleBox.prototype.removeNativeListener.apply(this, args);
+    },
+    
     /** {Map} Padding of element */
     __padding : null,
 
@@ -286,7 +297,7 @@ core.Class("unify.ui.core.Widget", {
         this.removeState("hover");
 
         // Blur when focused
-        if (this.isFocusable()) {
+        if (this.getFocusable()) {
           // Remove focused state
           this.removeState("active");
 
@@ -309,7 +320,7 @@ core.Class("unify.ui.core.Widget", {
         this.removeState("disable");
 
         // Re-add tabIndex
-        if (this.isFocusable()) {
+        if (this.getFocusable()) {
           this._applyFocusable(true, false);
         }
 /*
@@ -451,10 +462,10 @@ core.Class("unify.ui.core.Widget", {
       if (core.Env.getValue("debug"))
       {
         if (minWidth !== null && maxWidth !== null) {
-          this.assert(minWidth <= maxWidth, "minWidth is larger than maxWidth!");
+          // TODO: this.assert(minWidth <= maxWidth, "minWidth is larger than maxWidth!");
         }
         if (minHeight !== null && maxHeight !== null) {
-          this.assert(minHeight <= maxHeight, "minHeight is larger than maxHeight!");
+          // TODO: this.assert(minHeight <= maxHeight, "minHeight is larger than maxHeight!");
         }
       }
 
@@ -1194,9 +1205,9 @@ core.Class("unify.ui.core.Widget", {
      * Set styles to the element
      * @param map {Map} Map of styles/values to apply
      */
-    /*setStyle : function(map) {
+    setStyle : function(map) {
       this._setStyle(map);
-    },*/
+    },
 
     __cloneMap : function(obj) {
       if(obj == null || typeof(obj) != 'object') {

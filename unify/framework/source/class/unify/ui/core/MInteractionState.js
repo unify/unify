@@ -74,9 +74,9 @@ core.Class("unify.ui.core.MInteractionState", {
     __MInteractionStateAddPressed : function(domEvent) {
       
       // only react on the left mouse button; ignore all others
-      if (domEvent instanceof qx.event.type.Mouse && !domEvent.isLeftPressed()) {
+      /* TODO: if (domEvent instanceof qx.event.type.Mouse && !domEvent.isLeftPressed()) {
         return;
-      }
+      }*/
       
       var InteractionStateManager = unify.ui.core.InteractionStateManager.getInstance();
       if (InteractionStateManager.getPressedWidget() == null) {
@@ -91,9 +91,9 @@ core.Class("unify.ui.core.MInteractionState", {
     __MInteractionStateRemovePressed : function(domEvent) {
       
       // only react on the left mouse button; ignore all others
-      if (domEvent instanceof qx.event.type.Mouse && !domEvent.isLeftPressed()) {
+      /* TODO : if (domEvent instanceof qx.event.type.Mouse && !domEvent.isLeftPressed()) {
         return;
-      }
+      }*/
       
       var InteractionStateManager = unify.ui.core.InteractionStateManager.getInstance();
       if (InteractionStateManager.getPressedWidget() == this) {

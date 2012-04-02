@@ -32,7 +32,6 @@ core.Class("unify.ui.form.TextField", {
     
     // overridden
     focusable : {
-      refine: true,
       init: true
     },
     
