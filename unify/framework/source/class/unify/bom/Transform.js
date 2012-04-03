@@ -67,6 +67,31 @@ qx.Class.define("unify.bom.Transform",
      */
     scale : function (x,y){
       return "scale("+x+","+y+")";
+    },
+    
+    /**
+     * Generates rotate string to have accelerated rotate (if supported)
+     *
+     * @param deg {Integer} deg value to rotate to
+     * @return {String} Accelerated rotate
+     */
+    accelRotate : function(deg){
+      // Fix resize bug with translate3d on google chrome 15.0.874.121 m
+      if (qx.core.Environment.get("browser.name") == "chrome" || qx.core.Environment.get("engine.name") != "webkit") {
+        return "rotate("+deg+"deg)";
+      } else {
+        return "rotate3d(0,0,1,"+deg+"deg)";
+      }
+    },
+
+    /**
+     * Generates rotate string
+     *
+     * @param deg {Integer} deg  value to rotate to
+     * @return {String} rotate
+     */
+    rotate : function (deg){
+      return "rotate("+deg+"deg)";
     }
   }
 });
