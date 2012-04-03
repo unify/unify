@@ -54,6 +54,10 @@ qx.Class.define("unify.ui.container.Scroll", {
     contentWidget.addListener("resize", this.__updateDimensions, this);
     
     this.addListener("changeVisibility", this.__onChangeVisibility, this);
+    var root = qx.core.Init.getApplication().getRoot();
+    root.addListener("touchmove", this.__onTouchMove,this);
+    root.addListener("touchend", this.__onTouchEnd,this);
+    root.addListener("touchcancel", this.__onTouchEnd,this);
   },
 
   /*
@@ -162,6 +166,7 @@ qx.Class.define("unify.ui.container.Scroll", {
     __horizontalScrollIndicator : null,
     
     __inTouch : false,
+    __showIndicatorsOnNextTouchMove: false,
 
     /*
      ---------------------------------------------------------------------------
@@ -644,6 +649,7 @@ qx.Class.define("unify.ui.container.Scroll", {
      */
     __onTouchStart : function(e){
       this.__inTouch = true;
+      this.__showIndicatorsOnNextTouchMove=true;
       //TODO why is this called here? touchstart should not change the properties, so no need to recache them
       this.__updateProperties();
 
@@ -662,12 +668,6 @@ qx.Class.define("unify.ui.container.Scroll", {
 
       this.__scroller.doTouchStart(touches, +ne.timeStamp);
       e.preventDefault();
-      this.addListenerOnce("touchmove",this.__showIndicators,this);
-      
-      var root = qx.core.Init.getApplication().getRoot();
-      root.addListener("touchmove", this.__onTouchMove,this);
-      root.addListener("touchend", this.__onTouchEnd,this);
-      root.addListener("touchcancel", this.__onTouchEnd,this);
     },
 
     /**
@@ -690,6 +690,14 @@ qx.Class.define("unify.ui.container.Scroll", {
      * @param e {qx.event.type.Touch} Touch event
      */
     __onTouchMove : function(e){
+      if(!this.__inTouch){
+        return;
+      }
+      if(this.__showIndicatorsOnNextTouchMove){
+        this.__showIndicatorsOnNextTouchMove=false;
+        this.__showIndicators();
+        
+      }
       var ne=e.getNativeEvent();
       this.__scroller.doTouchMove(ne.touches, +ne.timeStamp, ne.scale);
     },
@@ -700,13 +708,12 @@ qx.Class.define("unify.ui.container.Scroll", {
      * @param e {qx.event.type.Touch} Touch event
      */
     __onTouchEnd : function(e){
+      if(!this.__inTouch){
+        return;
+      }
       this.__inTouch = false;
+      this.__showIndicatorsOnNextTouchMove=false;
       this.__scroller.doTouchEnd(+e.getNativeEvent().timeStamp);
-      
-      var root = qx.core.Init.getApplication().getRoot();
-      root.removeListener("touchmove", this.__onTouchMove,this);
-      root.removeListener("touchend", this.__onTouchEnd,this);
-      root.removeListener("touchcancel", this.__onTouchEnd,this);
     },
     
     /**
@@ -736,6 +743,10 @@ qx.Class.define("unify.ui.container.Scroll", {
     this.removeListener("resize", this.__updateDimensions, this);
     this.getChildrenContainer().removeListener("resize", this.__updateDimensions, this);
     this.removeListener("changeVisibility", this.__onChangeVisibility, this);
+    var root = qx.core.Init.getApplication().getRoot();
+    root.removeListener("touchmove", this.__onTouchMove,this);
+    root.removeListener("touchend", this.__onTouchEnd,this);
+    root.removeListener("touchcancel", this.__onTouchEnd,this);
   }
 });
 

@@ -37,18 +37,16 @@ qx.Class.define("unify.ui.container.scroll.ActionNotification", {
   },
   
   construct: function(scroll,location,layout){
-    this._forwardStates=qx.lang.Object.merge(this._forwardStates||{},{
-      initial:true,
-      activated:true,
-      executing:true
-    });
+
     this.base(arguments,layout||new unify.ui.layout.HBox);
-    this._showChildControl("pullicon");
-    this._showChildControl("activityicon");
+    this._showChildControl("iconcontainer");
     this._showChildControl("label");
+    this.__pullIconElem=this.getChildControl("pullicon").getElement();
+    this.__activityIconElem=this.getChildControl("activityicon").getElement();
     this.setScroll(scroll);
-    this.setPhase("initial");
     this.setLocation(location);
+    this.setPhase("initial");
+
     this.__labelValues={};
     //TODO translate?
     this.setLabelValue("initial","pull to refresh ...");
@@ -61,6 +59,10 @@ qx.Class.define("unify.ui.container.scroll.ActionNotification", {
     
     //map of label values for phases
     __labelValues:null,
+    
+    //cached for performance reasons
+    __pullIconElem:null,
+    __activityIconElem:null,
 
     /**
      * set label value for a phase
@@ -80,18 +82,23 @@ qx.Class.define("unify.ui.container.scroll.ActionNotification", {
       var child;
       switch(id){
         case "label":{
-          child=new unify.ui.basic.Label((this.__labelValues)?(this.labelValues.initial):(""));
-          this.addAt(child,2,{flex:1});
+          child=new unify.ui.basic.Label((this.__labelValues)?(this.__labelValues.initial):(""));
+          this.addAt(child,1,{flex:1});
+        }
+        break;
+        case "iconcontainer":{
+          child=new unify.ui.container.Composite(new unify.ui.layout.Canvas);
+          child.add(this.getChildControl("pullicon"));
+          child.add(this.getChildControl("activityicon"));
+          this.addAt(child,0);
         }
         break;
         case "pullicon":{
           child=new unify.ui.basic.Content();
-          this.addAt(child,0);
         }
         break;
         case "activityicon":{
           child=new unify.ui.basic.Content();
-          this.addAt(child,1);
         }
         break;
         default:{
@@ -106,32 +113,61 @@ qx.Class.define("unify.ui.container.scroll.ActionNotification", {
      * 
      * @param phase {String} new value for phase
      */
-    _applyPhase : function(phase){
-      var activityIcon=this.getChildControl("activityicon");
-      var pullIcon=this.getChildControl("pullicon");
+    _applyPhase : function(phase,old){
+      var activityIcon=this.__activityIconElem;
+      var pullIcon=this.__pullIconElem;
+      var label = this.__labelElem;
+      var Style=qx.bom.element.Style;
+      var labelValue="";
+      var location=this.getLocation();
+      //start regular and rotate 180° counter-clockwise
+      var rotateStr=unify.bom.Transform.accelRotate;
+      var initialTranform=rotateStr(0);
+      var activatedTranform=rotateStr(-180);
+      if(location=="bottom"){
+        //start 180° rotated and rotate clockwise
+        initialTranform=rotateStr(180);
+        activatedTranform=rotateStr(360);
+      }
+      
       switch(phase){
         case "initial":{
-          pullIcon.show();
-          activityIcon.exclude();
-          this.addState("initial");
-          this.removeState("activated");
-          this.removeState("executing");
+          Style.setStyles(pullIcon,{
+            display:"",
+            transitionDuration:((old=="activated")?("350ms"):("0ms")),
+            transform:initialTranform
+          });
+          Style.setStyles(activityIcon,{
+            display:"none",
+            animationName:"",
+            animationIterationCount:""
+          });
         }
         break;
         case "activated":{
-          pullIcon.show();
-          activityIcon.exclude();
-          this.addState("activated");
-          this.removeState("initial");
-          this.removeState("executing");
+          Style.setStyles(pullIcon,{
+            display:"",
+            transitionDuration:((old=="initial")?("350ms"):("0ms")),
+            transform:activatedTranform
+          });
+          Style.setStyles(activityIcon,{
+            display:"none",
+            animationName:"",
+            animationIterationCount:""
+          });
         }
         break;
         case "executing":{
-          pullIcon.exclude();
-          activityIcon.show();
-          this.addState("executing");
-          this.removeState("initial");
-          this.removeState("activated");
+          Style.setStyles(pullIcon,{
+            display:"none",
+            transitionDuration:"0ms",
+            transform:initialTranform
+          });
+          Style.setStyles(activityIcon,{
+            display:"",
+            animationName:"rotateZ",
+            animationIterationCount:"infinite"
+          });
         }
         break;
         default:{
