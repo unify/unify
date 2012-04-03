@@ -905,25 +905,23 @@ qx.Theme.define("unify.theme.dark.Appearance", {
     "scroll/topNotification/label":{
       include:"label"
     },
+    "scroll/topNotification/iconcontainer":{},
     "scroll/topNotification/pullicon":{
-      //TODO: add default icons for states initial, activated and executing   
-      //sugestion:
-      // use transition animation rotate(-180) for changing arrow direction on initial/activating
+      //TODO: add default icons 
     },
     "scroll/topNotification/activityicon":{
-      //TODO: add default icons for states initial, activated and executing   
-      //sugestion:
-      // use keyframe animation with infinite rotation (see KeframeAnimatedImage for example)
+      //TODO: add default icons 
     },
     "scroll/bottomNotification":{},
     "scroll/bottomNotification/label":{
       include:"label"
     },
+    "scroll/bottomNotification/iconcontainer":{},
     "scroll/bottomNotification/pullicon":{
-      //TODO: add default icons for states initial, activated and executing
+      //TODO: add default icons 
     },
     "scroll/bottomNotification/activityicon":{
-      //TODO: add default icons for states initial, activated and executing
+      //TODO: add default icons 
     }
   }
 });

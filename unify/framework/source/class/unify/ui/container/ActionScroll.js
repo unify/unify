@@ -32,15 +32,23 @@ qx.Class.define("unify.ui.container.ActionScroll", {
     this.__notificationsEnabled={
       top: !!notifications["top"],
       bottom: !!notifications["bottom"]
-    }
+    };
     this.__actions={
       top: topAction,
       bottom: bottomAction
-    }
+    };
     this.__actionsEnabled={
       top:!!topAction,
       bottom:!!bottomAction
-    }
+    };
+    this.__actionsRunning={
+      top:false,
+      bottom:false
+    };
+    
+    this.__activateCallback=qx.lang.Function.bind(this._onActivatePullAction,this);
+    this.__deactivateCallback=qx.lang.Function.bind(this._onDeactivatePullAction,this);
+    this.__executeCallback=qx.lang.Function.bind(this._onExecutePullAction,this);
     this.base(arguments,layout);
     this._showChildControl("wrapper");
   },
@@ -77,6 +85,9 @@ qx.Class.define("unify.ui.container.ActionScroll", {
     
     //map of booleans by location that defines which actions are enabled  e.g. {top: true, bottom: false}
     __actionsEnabled:null,
+    
+    //map of booleans by location that shows which actions are currently running
+    __actionsRunning:null,
     
     //height of the notification widgets and triggerpoint for activation (scroll more than this and action will be executed)
     __notificationHeight:null,
@@ -218,10 +229,8 @@ qx.Class.define("unify.ui.container.ActionScroll", {
         if(!this.getBounces()){
           this.setBounces(true);
         }
-        var activateCallback=qx.lang.Function.bind(this._onActivatePullAction,this);
-        var deactivateCallback=qx.lang.Function.bind(this._onDeactivatePullAction,this);
-        var executeCallback=qx.lang.Function.bind(this._onExecutePullAction,this);
-        scroller.activatePullToRefresh(this.__notificationHeight, activateCallback, deactivateCallback, executeCallback);
+
+        scroller.activatePullToRefresh(this.__notificationHeight, this.__activateCallback, this.__deactivateCallback, this.__executeCallback);
       } 
       
       return scroller;
@@ -232,6 +241,9 @@ qx.Class.define("unify.ui.container.ActionScroll", {
      * @param location {String} the location of the action
      */
     _onActivatePullAction: function(location){
+      if(this.__actionsRunning[location]){
+        return;
+      }
       var notification=this.__notifications[location];
       if(notification){
         notification.setPhase("activated");
@@ -244,6 +256,9 @@ qx.Class.define("unify.ui.container.ActionScroll", {
      * @param location {String} the location of the action
      */
     _onDeactivatePullAction: function(location){
+      if(this.__actionsRunning[location]){
+        return;
+      }
       var notification=this.__notifications[location];
       if(notification){
         notification.setPhase("initial");
@@ -256,7 +271,10 @@ qx.Class.define("unify.ui.container.ActionScroll", {
      * @param location {String} the location of the action
      */
     _onExecutePullAction: function(location){
-
+      if(this.__actionsRunning[location]){
+        return;
+      }
+      
       var action=this.__actions[location];
       var actionEnabled=this.__actionsEnabled[location];
       if(action && actionEnabled){
@@ -264,6 +282,7 @@ qx.Class.define("unify.ui.container.ActionScroll", {
         if(notification){
           notification.setPhase("executing");
         }
+        this.__actionsRunning[location]=true;
         action();
         this.fireDataEvent("actionExecuted",location);
       } else {
@@ -279,6 +298,9 @@ qx.Class.define("unify.ui.container.ActionScroll", {
      * @param location {String} the location of the action
      */
     executeAction: function(location){
+      if(this.__actionsRunning[location]){
+        return;
+      }
       if(this.__actionsEnabled[location]){
         this.__baseScroller.executePullToRefresh(location);
       }
@@ -290,6 +312,7 @@ qx.Class.define("unify.ui.container.ActionScroll", {
      * @param location {String} location of the completed action
      */
     finishedPullAction : function(location){
+      this.__actionsRunning[location]=false;
       this.fireDataEvent("actionFinished",location);
       this.__baseScroller.finishPullToRefresh(location);
     }
