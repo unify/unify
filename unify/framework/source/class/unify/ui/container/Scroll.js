@@ -147,9 +147,7 @@ qx.Class.define("unify.ui.container.Scroll", {
     scrollend: "qx.event.type.Event",
     
     /** Event fired if container snaped */
-    snap: "qx.event.type.Event",
-    
-    overscroll: "qx.event.type.Data"
+    snap: "qx.event.type.Event"
   },
 
   /*
