@@ -5,6 +5,7 @@
  Homepage: unify-project.org
  License: MIT + Apache (V2)
  Copyright: 2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+ Additional Authors: Dominik Göpel
 
  *********************************************************************************************** */
 
@@ -63,15 +64,19 @@ qx.Class.define("unify.fx.core.AnimationFrame", {
  * License: MIT + Apache (V2)
  *
  * Inspired by: https://github.com/inexorabletash/raf-shim/blob/master/raf.js
+ * 
+ * Updated with ideas from Paul Irish and Erik Möller http://paulirish.com/2011/requestanimationframe-for-smart-animating/
  */
 (function(global)
 {
   // requestAnimationFrame polyfill
-  global.requestAnimationFrame = global.requestAnimationFrame
-      || global.webkitRequestAnimationFrame
-      || global.mozRequestAnimationFrame
-      || global.oRequestAnimationFrame
-      || global.msRequestAnimationFrame;
+
+  var vendors = ['webkit','moz','ms','o'];
+  for(var x = 0; x < vendors.length && !global.requestAnimationFrame; ++x) {
+      global.requestAnimationFrame = global[vendors[x]+'RequestAnimationFrame'];
+      global.cancelAnimationFrame = global[vendors[x]+'CancelAnimationFrame'] 
+        || global[vendors[x]+'CancelRequestAnimationFrame'];
+  }
   if(!global.requestAnimationFrame){
     // Custom implementation
     // Basic emulation of native methods for internal use
@@ -96,60 +101,55 @@ qx.Class.define("unify.fx.core.AnimationFrame", {
     
     //internal fields
     var TARGET_FPS = 60;
-    var requests = {};
+    var DESIRED_TIMEOUT=Math.floor(1000/TARGET_FPS);
+    var pendingRequests = {};
     var rafHandle = 1;
     var timeoutHandle = null;
+    var executeAnimationFrame=function(){
+      var executionStart = now();
+      var requestsToExecute = pendingRequests;
+      var keys = getKeys(requestsToExecute);
+      
+      // Reset data structure before executing callbacks
+      pendingRequests = {};
+      
+      // Process all callbacks
+      for (var i=0, l=keys.length; i<l; i++) {
+        requestsToExecute[keys[i]](executionStart);
+      }
+      
+      // check if new requests have been queued 
+      if(isEmpty(pendingRequests)){
+        //no more requests, stop now
+        timeoutHandle = null;
+      } else {
+        //additional requests, continue with timeout loop
+        timeoutHandle = setTimeout(executeAnimationFrame, Math.max(0,DESIRED_TIMEOUT-(now()-executionStart)));
+      }
+    }
+    
     //emulation
     global.requestAnimationFrame=function(callback, root){
       var callbackHandle = rafHandle++;
       
-      // Store callback
-      requests[callbackHandle] = callback;
+      // add callback to list of pending requests
+      pendingRequests[callbackHandle] = callback;
       
-      // Create timeout at first request
-      if (timeoutHandle === null)
-      {
-        timeoutHandle = setTimeout(function()
-        {
-          var time = now();
-          var currentRequests = requests;
-          var keys = getKeys(currentRequests);
-          
-          // Reset data structure before executing callbacks
-          requests = {};
-          timeoutHandle = null;
-          
-          // Process all callbacks
-          for (var i=0, l=keys.length; i<l; i++) {
-            currentRequests[keys[i]](time);
-          }
-        }, 1000 / TARGET_FPS);
+      // start timeout loop if not running
+      if (timeoutHandle === null) {
+        timeoutHandle = setTimeout(executeAnimationFrame, 0);//use 0, we want the first frame to start asap
       }
-      
       return callbackHandle;
     };
     
     global.cancelAnimationFrame=function(handle){
-      delete requests[handle];
+      delete pendingRequests[handle];
       
-      // Stop timeout if all where removed
-      if (isEmpty(requests))
-      {
+      // Stop loop if no more are pending
+      if (isEmpty(pendingRequests)) {
         clearTimeout(timeoutHandle);
         timeoutHandle = null;
       }
     };
-  } else {
-    global.cancelAnimationFrame = global.cancelAnimationFrame
-        ||global.webkitCancelAnimationFrame
-        ||global.mozCancelAnimationFrame
-        ||global.oCancelAnimationFrame
-        ||global.msCancelAnimationFrame
-      //legacy support (cancelRequestAnimationFrame got renamed to cancelAnimationFrame)
-        ||global.cancelRequestAnimationFrame
-        ||global.webkitCancelRequestAnimationFrame
-        ||global.mozCancelRequestAnimationFrame
-        ||global.oCancelRequestAnimationFrame
-        ||global.msCancelRequestAnimationFrame
-  }
+  } 
 })(this);
