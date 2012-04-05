@@ -51,6 +51,11 @@ qx.Class.define("${Namespace}.Application",
       var Navigation = unify.view.Navigation.getInstance();
       Navigation.register(MasterViewManager);
       Navigation.init();
+    },
+    
+    // overridden
+    _getTheme : function() {
+      return unify.theme.Dark;
     }
   }
 });
