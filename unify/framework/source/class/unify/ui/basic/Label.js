@@ -197,7 +197,7 @@ core.Class("unify.ui.basic.Label", {
     _applyValue : function(value) {
       this.__contentSize = null;
       this.invalidateLayoutChildren();
-      lowland.bom.Label.setValue(this.getElement(), value);
+      lowland.bom.Label.setValue(this.getElement(), value, this.getHtml());
     },
 
     /**

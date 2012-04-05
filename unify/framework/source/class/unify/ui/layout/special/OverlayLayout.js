@@ -63,6 +63,54 @@ core.Class("unify.ui.layout.special.OverlayLayout", {
       }
     },
     
+    _computeSizeHint : function() {
+      if (this._invalidChildrenCache) {
+        this.__rebuildCache();
+      }
+      
+      var arrow = this.__arrow;
+      var content = this.__content;
+      
+      var contentHint = content.getSizeHint();
+      
+      var Util = unify.ui.layout.Util;
+      var horizontalGap = Util.calculateHorizontalGap(content);
+      var verticalGap = Util.calculateVerticalGap(content);
+      
+      var width = contentHint.width + horizontalGap;
+      var minWidth = contentHint.minWidth + horizontalGap;
+      var height = contentHint.height + verticalGap;
+      var minHeight = contentHint.minHeight + verticalGap;
+      
+      if (arrow) {
+        var arrowHint = arrow.getSizeHint();
+        var arrowDirection = arrow.getDirection();
+        
+        var arrowWidth = arrowHint.width;
+        var arrowHeight = arrowHint.height;
+
+        if (arrowDirection == "left" || arrowDirection == "right") {
+          var arrowHorizontalGap = Util.calculateHorizontalGap(arrow);
+          
+          width += arrowHint.width + arrowHorizontalGap;
+          minWidth += arrowHint.minWidth + arrowHorizontalGap;
+        } else if (arrowDirection == "top" || arrowDirection == "bottom") {
+          var arrowVerticalGap = Util.calculateVerticalGap(arrow);
+          
+          height += arrowHint.height + arrowVerticalGap;
+          minHeight += arrowHint.minHeight + arrowVerticalGap;
+        }
+      }
+      
+      // Return hint
+      return {
+        minWidth : minWidth,
+        width : width,
+        minHeight : minHeight,
+        height : height
+      };
+    },
+    
     /**
      * Rebuilds cache of layout children
      */

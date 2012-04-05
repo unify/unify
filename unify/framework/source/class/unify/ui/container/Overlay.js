@@ -169,7 +169,6 @@ core.Class("unify.ui.container.Overlay", {
           hint.height+=arrowHint.height;
         }
       }
-      console.log("OVERLAY: ", JSON.stringify(hint), this.getHasArrow());
       return hint;
     },
     

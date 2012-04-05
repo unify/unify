@@ -78,11 +78,13 @@
       
       alignX : {
         type : ["left", "center", "right"],
-        init: "left"
+        init: null,
+        nullable: true
       },
       alignY : {
         type : ["top", "middle", "bottom"],
-        init: "top"
+        init: null,
+        nullable: true
       },
       
       parentBox : {

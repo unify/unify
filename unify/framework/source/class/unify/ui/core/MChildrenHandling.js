@@ -37,6 +37,10 @@ core.Class("unify.ui.core.MChildrenHandling", {
     
     removeAll : function() {
       this._removeAll.apply(this, arguments);
+    },
+    
+    getLayout : function() {
+      return this._getLayout();
     }
   }
 });
