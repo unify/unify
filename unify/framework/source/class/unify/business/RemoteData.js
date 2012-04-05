@@ -599,7 +599,7 @@ core.Class("unify.business.RemoteData",
       requestHeaders.Accept = this.getResponseType();
 
       // Sync timeout
-      req.setTimeout(this.getTimeout());
+      req.setTimeout(this.getTimeout()*1000);
 
       // Enable load cache
       if (method == "GET")

@@ -83,6 +83,10 @@ core.Class("unify.ui.core.MNavigatable", {
     }
   },
   
+  construct : function() {
+    this._applyMNavigatable();
+  },
+  
   members : {
     /**
      * Applies event listeners on widget to support navigation

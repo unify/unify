@@ -29,8 +29,6 @@ core.Class("unify.view.Root", {
     this._setLayout(new unify.ui.layout.Canvas());
     
     lowland.bom.Events.set(window, "resize", this.__onResize.bind(this));
-    
-    //this.setAppearance("root");
   },
   
   properties : {
@@ -58,8 +56,19 @@ core.Class("unify.view.Root", {
     },
     
     // overridden
-    isRootWidget : function() {
-      return true;
+    getBounds : function() {
+      var size = this.getSizeHint();
+      
+      return {
+        left: 0,
+        top: 0,
+        width: size.width,
+        height: size.height
+      };
+    },
+    
+    getNestingLevel : function() {
+      return 0;
     },
     
     getEventElement : function() {

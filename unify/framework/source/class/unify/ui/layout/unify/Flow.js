@@ -322,6 +322,7 @@ core.Class("unify.ui.layout.Flow",
 
     // overridden
     getHeightForWidth : function(width) {
+      console.log("FLOW HEIGHT FOR WIDTH");
       return this.__computeSize(width).height;
     },
 

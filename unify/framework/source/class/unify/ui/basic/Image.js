@@ -30,6 +30,11 @@ core.Class("unify.ui.basic.Image", {
     source : {
       apply : function(value) { this._applySource(value); }
     },
+    
+    fitToSize : {
+      init: false
+    },
+    
     // overridden
     appearance :
     {
@@ -47,11 +52,21 @@ core.Class("unify.ui.basic.Image", {
 
       if (this._hasElement()) {
         var e = this.getElement();
-        var src = ResourceManager.toUri(value);
+        
+        var src = value;
+        if (ResourceManager.has(value)) {
+          src = ResourceManager.toUri(value);
+        }
 
-        core.bom.Style.set(e, {
+        var style = {
           backgroundImage: "url(" + src + ")"
-        });
+        };
+        
+        if (this.getFitToSize()) {
+          style.backgroundSize = "contain";
+        }
+        
+        core.bom.Style.set(e, style);
       }
     }
   }

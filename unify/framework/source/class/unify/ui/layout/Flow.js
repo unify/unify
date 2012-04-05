@@ -247,7 +247,7 @@ core.Class("unify.ui.layout.Flow",
         children = children.concat().reverse();
       }
 
-      var lineCalculator = new qx.ui.layout.LineSizeIterator(
+      var lineCalculator = new unify.ui.layout.LineSizeIterator(
         children,
         this.getSpacingX()
       );
@@ -272,7 +272,7 @@ core.Class("unify.ui.layout.Flow",
      */
     __renderLine : function(line, lineTop, availWidth)
     {
-      var util = qx.ui.layout.Util;
+      var util = unify.ui.layout.Util;
 
       var left = 0;
       if (this.getAlignX() != "left") {
@@ -334,7 +334,7 @@ core.Class("unify.ui.layout.Flow",
      */
     __computeSize : function(availWidth)
     {
-      var lineCalculator = new qx.ui.layout.LineSizeIterator(
+      var lineCalculator = new unify.ui.layout.LineSizeIterator(
         this._getLayoutChildren(),
         this.getSpacingX()
       );

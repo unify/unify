@@ -185,10 +185,6 @@
       },
       
       getNestingLevel : function() {
-        if (this.isRootWidget()) {
-          return 0;
-        }
-        
         var parent = this.getParentBox();
         if (parent) {
           return parent.getNestingLevel()+1;
@@ -267,6 +263,11 @@
       },
       
       _hasHeightForWidth : function() {
+        var layout = this._getLayout();
+        if (layout) {
+          return layout.hasHeightForWidth();
+        }
+  
         return false;
       },
       
@@ -284,11 +285,6 @@
       _getLayout : function() {
         return null;
       },
-      
-      isRootWidget : function() {
-        return false;
-      },
-      
       
       __properties : null,
       

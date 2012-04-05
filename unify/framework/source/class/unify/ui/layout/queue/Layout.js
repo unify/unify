@@ -46,15 +46,10 @@
       
       var widget;
       while ((widget = widgetQueue.shift())) {
-        if (widget.isRootWidget()) {
-          var sizeHint = widget.getSizeHint(true);
-          widget.renderLayout(0, 0, sizeHint.width, sizeHint.height);
-        } else {
-          var bounds = widget.getBounds();
+        var bounds = widget.getBounds();
 
-          if (bounds) {
-            widget.renderLayout(bounds.left, bounds.top, bounds.width, bounds.height);
-          }
+        if (bounds) {
+          widget.renderLayout(bounds.left, bounds.top, bounds.width, bounds.height);
         }
       }
     }

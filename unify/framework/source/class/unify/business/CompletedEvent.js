@@ -13,9 +13,9 @@
 core.Class("unify.business.CompletedEvent", {
   include : [lowland.events.Event],
 
-  construct : function(target, context, args) { //id, data, modified, errornous, malformed, request) {
+  construct : function(target, id, data, modified, errornous, malformed, request) {
     lowland.events.Event.call(this, target);
-    this.init.apply(this, args); //id, data, modified, errornous, malformed, request);
+    this.init(id, data, modified, errornous, malformed, request);
   },
 
   members : {
@@ -41,8 +41,6 @@ core.Class("unify.business.CompletedEvent", {
      */
     init : function(id, data, modified, errornous, malformed, request)
     {
-      //this.base(arguments, false, false);
-
       this.__id = id;
       this.__data = data;
       this.__modified = modified;

@@ -45,7 +45,7 @@ core.Class("unify.ui.layout.special.ScrollLayout", {
 
       var content = this.__content;
       var contentSizeHint = content.getSizeHint();
-
+      
       var widget = this._getWidget();
       var enableScrollX = widget.getEnableScrollX();
       var enableScrollY = widget.getEnableScrollY();

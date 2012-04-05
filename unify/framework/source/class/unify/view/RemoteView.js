@@ -192,7 +192,7 @@ core.Class("unify.view.RemoteView",
       if (e.getId() !== this.__requestId) {
         return;
       }
-console.log("HIDE ACTIVITY INDICATOR ", this.getHash(), this.__requestId);
+
       delete this.__requestId;
       this.__activityIndicator.hide(this.getHash());
 
