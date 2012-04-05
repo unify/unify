@@ -76,10 +76,16 @@ core.Class("unify.fx.core.Animation", {
       // Compacting running db automatically every few new animations
       if (id % 20 === 0) {
         var newRunning = {};
+        var newPercent = {};
+        var currentPercent=this.__percent;
         for (var usedId in running) {
-          newRunning[usedId] = true;
+          if(running[usedId]){
+            newRunning[usedId] = true;
+            newPercent[usedId] = currentPercent[usedId];
+          }
         }
-        running = newRunning;
+        running = this.__running = newRunning;
+        this.__percent = newPercent;
       }
 
       // This is the internal step method which is called every few milliseconds
@@ -117,7 +123,7 @@ core.Class("unify.fx.core.Animation", {
         if (duration) {
           percent = self.__percent[id] = (now - start) / duration + startPosition;
           if (percent > 1) {
-            percent = 1;
+            percent = self.__percent[id] = 1;
           }
         }
         if(repeat && percent==1){

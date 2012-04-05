@@ -74,6 +74,7 @@ core.Class("unify.view.RemoteView",
       if (this.__requestId !== false) {
         this.__activityIndicator.show(this.getHash());
       }
+      return this.__requestId;
     },
 
 

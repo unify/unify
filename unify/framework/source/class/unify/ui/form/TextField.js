@@ -51,6 +51,12 @@ core.Class("unify.ui.form.TextField", {
     maxLength : {
       type : "Integer",
       init : Infinity
+    },
+    
+    placeholderValue: {
+      check: 'String',
+      init: '',
+      apply: '_applyPlaceholderValue'
     }
   },
   
@@ -66,10 +72,12 @@ core.Class("unify.ui.form.TextField", {
     unify.ui.core.Widget.call(this);
     unify.ui.core.MInteractionState.call(this);
     
+    lowland.bom.Events.listen(this.getElement(), "focus", this.__onFocus.bind(this));
     lowland.bom.Events.listen(this.getElement(), "blur", this.__onBlur.bind(this));
   },
   
   members : {
+    __placeholderValue: null,
     __oldInputValue : null,
     __changed : false,
     
@@ -93,6 +101,14 @@ core.Class("unify.ui.form.TextField", {
       lowland.bom.Events.listen(e, "input", this._onInput.bind(this));
 
       return e;
+    },
+    
+    /**
+     * Apply placeholder value
+     */
+    _applyPlaceholderValue: function(placeholder) {
+      this.__placeholderValue = placeholder;
+      this.__onBlur();
     },
     
     /**
@@ -179,6 +195,35 @@ core.Class("unify.ui.form.TextField", {
         this.fireEvent("changeValue", this.getValue());
         this.__changed = false;
       }
+      
+      // Restore placeholder value if the currently set text is empty
+      var currentValue = this.getValue();
+      if (currentValue == '') {
+        this.setValue(this.__placeholderValue);
+      }
+    },
+    
+    
+     /**
+     * Focus handler
+     *
+     * If this text area receives focus, we check if the current value of
+     * the text area is equal to the placeholder value. If that is the case,
+     * we empty the box so the user may enter some text.
+     *
+     * @param e {qx.event.type.Focus} The focus event
+     */
+    __onFocus: function(e) {
+      var currentValue = this.getValue();
+      if (this.__placeholderValue != '' &&
+          currentValue == this.__placeholderValue) {
+        this.setValue('');
+      }
     }
-  }
+  }/*,
+  
+  destruct : function() {
+    this.removeListener("blur", this.__onBlur, this);
+    this.removeListener('focus', this.__onFocus, this);
+  }*/
 });

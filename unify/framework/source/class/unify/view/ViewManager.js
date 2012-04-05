@@ -201,6 +201,7 @@ core.Class("unify.view.ViewManager", {
         this.__resetHelper();
       }
 
+      // TODO : Neccessary?
       unify.ui.layout.queue.Visibility.add(this);
       unify.ui.layout.queue.Layout.add(this);
       //unify.ui.layout.queue.Manager.flush();
@@ -396,24 +397,20 @@ core.Class("unify.view.ViewManager", {
     hide : function(callback) {
       if (!this.getModal()) {
         this.base(arguments);
+        this.__deactivate();
       } else {
-        if(this.getDisplayMode() != "modal"){
-          throw new Error("hideModal called on ViewManager without displaymode modal: "+this);
-        }
+        
         var view = this.__currentView;
-        if (view) {
-          view.setActive(false);
-        }
         this.__path=null;
-        this.__currentView=null;
+
         this.fireEvent("changePath", this.__path);
         
         var self = this;
         var selfArguments = arguments;
         var cb = function() {
-          view.setActive(false);
           view.hide();
           unify.ui.container.Composite.prototype.hide.apply(self, selfArguments);
+          self.__deactivate();
           if(callback){
             callback();
           }
@@ -423,12 +420,6 @@ core.Class("unify.view.ViewManager", {
           this.__animateModal(view,false,cb);
         } else {
           cb();
-          /*view.setActive(false);
-          view.hide();
-          this.base(arguments);
-          if(callback){
-            callback();
-          }*/
         }
       }
     },
@@ -438,22 +429,21 @@ core.Class("unify.view.ViewManager", {
      * Shows the view manager and resumes selected view
      */
     show : function() {
+      // Be sure that we show a view (if possible)
+      if(!this.__initialized){
+        this.init();
+      }
       if (!this.getModal()) {
-        unify.ui.container.Composite.prototype.show.call(this);
+        this.__activate();
+        this.base(arguments);
       } else {
-        // Be sure that we show a view (if possible)
-        if(!this.__initialized){
-          this.init();
-        }
         // Re-activate view (normally only useful if it was paused before)
         var view = this.__currentView;
         if (core.Env.getValue("debug")) {
           this.debug("Show with: " + view);
         }
-        if (view) {
-          view.setActive(true);
-        }
-  
+
+        this.__activate();
         unify.ui.container.Composite.prototype.show.call(this);
         if(this.getAnimateTransitions()) {
           this.__animateModal(view,true);
@@ -802,6 +792,104 @@ core.Class("unify.view.ViewManager", {
       } else {
         visibilityAction();
       }
+    },
+    
+  /* ---------------------------------------------------------------------------
+      ACTIVE/DEACTIVE MANAGMENT
+     ---------------------------------------------------------------------------*/
+    // viewmanager state
+    __active:null,
+    
+    //list of viewmanagers that got deactivated when this instance got activated
+    __deactivatedManagers: null,
+
+    /**
+     * 
+     * getter for viewmanager state
+     * 
+     * @return {Boolean}  if viewmanager is active
+     */
+    getActive: function(){
+      return !!this.__active;
+    },
+
+    /**
+     * activate this viewmanager and it's current view
+     * 
+     * @param callee {ViewManager|undefined} other viewmanager instance that wants to activate this viewmanager 
+     */
+    __activate: function(callee){
+      if(this.__active){
+        if(qx.core.Environment.get("qx.debug")){
+          this.debug("tried to activate viewmanager "+this.getId()+" but it is already active");
+        }
+        return;//already active
+      }
+
+      if(qx.core.Environment.get("qx.debug")){
+        this.debug("activate viewmanager "+this.getId());
+      }
+      this.__active=true;
+
+      var view=this.__currentView;
+
+      if(view){
+        view.setActive(true);
+      }
+      
+      if(callee && callee.getModal()){
+        return;// got activated by a  modal viewmanager
+      }
+
+      if(this.getModal()){
+        //deactivate all other active viewmanagers
+        var deactivated= this.__deactivatedManagers={};
+        var managers=unify.view.ViewManager.__managers;
+        for(var id in managers){
+          var manager=managers[id];
+          if(manager!==this && manager.getActive() &&manager.getDisplayMode()!=="popover"){
+            manager.__deactivate(this);
+            deactivated[id]=manager;
+          }
+        }
+      }
+      
+    },
+    
+    /**
+     * deactivate this viewmanager and it's current view
+     * 
+     * @param callee {ViewManager|undefined} other viewmanager instance that wants to deactivate this viewmanager 
+     */
+    __deactivate: function(callee){
+      if(!this.__active){
+        if(qx.core.Environment.get("qx.debug")){
+          this.debug("tried to deactivate viewmanager "+this.getId()+" but it is already deactive");
+        }
+        return;//already active
+      }
+      if(qx.core.Environment.get("qx.debug")){
+        this.debug("deactivate viewmanager "+this.getId());
+      }
+      this.__active=false;
+      var view=this.__currentView;
+      if(view){
+        view.setActive(false);
+      }
+      
+      if(callee && callee.getModal()){
+        return;// got deactivated by a  modal viewmanager
+      }
+      if(this.getModal()){
+        //reactivate the viewmanagers that got deactivated by this viewmanager
+        var managers=this.__deactivatedManagers;
+        for(var id in managers){
+          var manager=managers[id];
+          manager.__activate(this);
+        }
+        this.__deactivatedManagers={};
+      }
+
     }
   }
 });

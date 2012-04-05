@@ -192,11 +192,7 @@ core.Class("unify.view.helper.ViewOverlayManager", {
         self.__currentOverlay = self.__getOverlay(vm, false);
       };
       
-      var currentView = viewManager.getCurrentView();
-      if (currentView && currentView.getActive()) {
-        currentView.setActive(false);
-      }
-      
+
       if (viewManager.getModal()) {
         PopOverManager.hide(viewManager);
         finalize();
@@ -208,7 +204,7 @@ core.Class("unify.view.helper.ViewOverlayManager", {
         
         overlay.addListenerOnce("hidden",finalize,this);
         if (mode == "modal") {
-          viewManager.hideModal(function() {
+          viewManager.hide(function() {
             overlay.hide();
           });
         } else {
@@ -225,6 +221,7 @@ core.Class("unify.view.helper.ViewOverlayManager", {
         if (widget) {
           this.__visibleViewManagers.remove(widget);
           this.fireEvent("hide", (widget&&widget.getId()) || null);
+          widget.hide();
         }
       }
     },

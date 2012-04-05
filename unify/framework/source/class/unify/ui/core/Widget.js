@@ -1637,7 +1637,7 @@ core.Class("unify.ui.core.Widget", {
      * Applies test id to element to help autmatic ui tests
      */
     _applyTestId : function(value) {
-      if(core.Env.getValue("debug")) {
+      if(core.Env.getValue("debug") || core.Env.getValue("unify.testid")) {
         this.getElement().setAttribute("testid", value);
       }
     },

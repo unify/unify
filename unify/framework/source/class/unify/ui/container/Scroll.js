@@ -5,6 +5,7 @@
  Homepage: unify-project.org
  License: MIT + Apache (V2)
  Copyright: 2011, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+ Additional Authors: Dominik Göpel
 
  *********************************************************************************************** */
 
@@ -33,41 +34,14 @@ core.Class("unify.ui.container.Scroll", {
     // Scroller layout
     this._setLayout(new unify.ui.layout.special.ScrollLayout());
 
-    var contentWidget = this.getChildrenContainer();
-    this._add(contentWidget, {
-      type: "content"
-    });
-    var Indicator = this._getIndicator();
-
-    var scrollIndicatorX = this.__horizontalScrollIndicator = new Indicator("horizontal",this);
-    var scrollIndicatorY = this.__verticalScrollIndicator = new Indicator("vertical",this);
-    
-    scrollIndicatorX.addListener("indicatorMoveStart", this.__onIndicatorMoveStart, this);
-    scrollIndicatorX.addListener("indicatorMoveEnd", this.__onIndicatorMoveEnd, this);
-    scrollIndicatorX.addListener("indicatorMove", this.__onIndicatorMove, this);
-    
-    scrollIndicatorY.addListener("indicatorMoveStart", this.__onIndicatorMoveStart, this);
-    scrollIndicatorY.addListener("indicatorMoveEnd", this.__onIndicatorMoveEnd, this);
-    scrollIndicatorY.addListener("indicatorMove", this.__onIndicatorMove, this);
-
-    var distance = Indicator.DISTANCE;
-    var thickness = Indicator.THICKNESS;
-    scrollIndicatorX.setHeight(thickness);
-    this._add(scrollIndicatorX, {
-      type: "indicatorX",
-      distance: distance
-    });
-    scrollIndicatorY.setWidth(thickness);
-    this._add(scrollIndicatorY, {
-      type: "indicatorY",
-      distance: distance
-    });
-
     this._setStyle({
       overflow: "hidden"
     });
-
-    this.__createScroller();
+    var contentWidget = this.__contentWidget = this._showChildControl("content");
+    this.__horizontalScrollIndicator = this._createChildControl("indicatorX");
+    this.__verticalScrollIndicator = this._createChildControl("indicatorY");
+    
+    this._createScroller();
 
     this.addNativeListener("touchstart", this.__onTouchStart, this);
     this.addNativeListener("mousewheel", this.__onMouseWheel, this);
@@ -76,6 +50,10 @@ core.Class("unify.ui.container.Scroll", {
     contentWidget.addListener("resize", this.__updateDimensions, this);
     
     this.addListener("changeVisibility", this.__onChangeVisibility, this);
+    var root = qx.core.Init.getApplication().getRoot();
+    root.addListener("touchmove", this.__onTouchMove,this);
+    root.addListener("touchend", this.__onTouchEnd,this);
+    root.addListener("touchcancel", this.__onTouchEnd,this);
   },
 
   /*
@@ -138,23 +116,7 @@ core.Class("unify.ui.container.Scroll", {
       type : "Boolean",
       apply : function(value) { this._applyShowIndicatorY(value); }
     },
-    
-    /** Whether an overscroll event should be fired on overscroll */
-    updateOnOverscroll :
-    {
-      init : false,
-      type : "Boolean",
-      apply : function(value) { this._applyScrollerProperty(value); }
-    },
-    
-    /** Height of needed overscroll to fire update event */
-    overscrollHeight :
-    {
-      init : 60,
-      type : "Integer",
-      apply : function(value) { this._applyScrollerProperty(value); }
-    },
-    
+
     scrollOnSmallContent :
     {
       init : false,
@@ -183,9 +145,7 @@ core.Class("unify.ui.container.Scroll", {
     scrollend: lowland.events.Event,
     
     /** Event fired if container snaped */
-    snap: lowland.events.Event,
-    
-    overscroll: lowland.events.DataEvent
+    snap: lowland.events.Event
   },
 
   /*
@@ -202,6 +162,7 @@ core.Class("unify.ui.container.Scroll", {
     __horizontalScrollIndicator : null,
     
     __inTouch : false,
+    __showIndicatorsOnNextTouchMove: false,
 
     /*
      ---------------------------------------------------------------------------
@@ -244,6 +205,62 @@ core.Class("unify.ui.container.Scroll", {
     __twoAxisScroll : true,
 
     __contentWidget : null,
+    
+    /**
+     * Returns child control widget identified by id
+     *
+     * @param id {String} ID of child widget
+     * @return {unify.ui.core.Widget}  widget
+     */
+    _createChildControlImpl : function(id) {
+      var child;
+
+      switch(id){
+        case "content":{
+          child = this.getChildrenContainer();
+          this._add(child, {
+                type: "content"
+              });
+        }
+        break;
+        case "indicatorX":{
+          var Indicator = this._getIndicator();
+          child = new Indicator("horizontal",this);
+          child.addListener("indicatorMoveStart", this.__onIndicatorMoveStart, this);
+          child.addListener("indicatorMoveEnd", this.__onIndicatorMoveEnd, this);
+          child.addListener("indicatorMove", this.__onIndicatorMove, this);
+          var distance = Indicator.DISTANCE;
+          var thickness= Indicator.THICKNESS;
+          child.setHeight(thickness);
+          this._add(child, {
+            type: "indicatorX",
+            distance: distance
+          });
+          
+        }
+        break;
+        case "indicatorY":{
+          var Indicator = this._getIndicator();
+          var child = new Indicator("vertical",this);
+          child.addListener("indicatorMoveStart", this.__onIndicatorMoveStart, this);
+          child.addListener("indicatorMoveEnd", this.__onIndicatorMoveEnd, this);
+          child.addListener("indicatorMove", this.__onIndicatorMove, this);
+          var distance = Indicator.DISTANCE;
+          var thickness= Indicator.THICKNESS;
+          child.setWidth(thickness);
+              this._add(child, {
+                type: "indicatorY",
+                distance: distance
+              });
+        }
+        break;
+        default:{
+          child=this.base(arguments,id);
+        }
+      }
+      
+      return child;
+    },
     
 
     /**
@@ -290,19 +307,16 @@ core.Class("unify.ui.container.Scroll", {
       return Indicator;
     },
 
-    finishUpdateOnOverscroll : function() {
-      this.__scroller.finishUpdateOnOverscroll();
-    },
 
     /**
      * (re)creates the scroller object and restores scroll position if required
      *
      * @return {Scroller} Zynga scroller object
      */
-    __createScroller : function() {
+    _createScroller : function() {
       this.__updateProperties();
       delete this.__scroller;
-      var contentWidget = this.getChildrenContainer();
+      var contentWidget = this._getScrollerContentWidget();
       var contentElement= contentWidget.getElement();
       var Style=core.bom.Style;
       var Transform=unify.bom.Transform;
@@ -344,12 +358,6 @@ core.Class("unify.ui.container.Scroll", {
       var scroller = this.__scroller = new Scroller(render, options);
       this.__updateDimensions();
       
-      if (this.getUpdateOnOverscroll) {
-        scroller.activatePullToRefresh(this.getOverscrollHeight(), function(pos) {
-          self.fireEvent("overscroll", pos);
-        });
-      }
-      
       //restore old scrollposition
       if(currentLeft||currentTop){
         scroller.scrollTo(currentLeft,currentTop,false);
@@ -358,6 +366,17 @@ core.Class("unify.ui.container.Scroll", {
       return scroller;
     },
 
+    /**
+     * get the content widget for the scroller.
+     * 
+     * defaults to the childrencontainer, override this if you want to add a custom implementation
+     * 
+     * @return {unify.ui.core.Widget} the widget that will be used as content for the scroller
+     */
+    _getScrollerContentWidget: function(){
+      return this.getChildrenContainer();
+    },
+    
     /*
      ---------------------------------------------------------------------------
      PROPERTY APPLY ROUTINES
@@ -370,9 +389,9 @@ core.Class("unify.ui.container.Scroll", {
      */
    _applyScrollerProperty : function(){
      if(this.__inAnimation){
-       this.addListenerOnce("scrollend",this.__createScroller,this);
+       this.addListenerOnce("scrollend",this._createScroller,this);
      } else {
-       this.__createScroller();
+       this._createScroller();
      }
    },
 
@@ -625,6 +644,7 @@ core.Class("unify.ui.container.Scroll", {
      */
     __onTouchStart : function(e){
       this.__inTouch = true;
+      this.__showIndicatorsOnNextTouchMove=true;
       //TODO why is this called here? touchstart should not change the properties, so no need to recache them
       this.__updateProperties();
 
@@ -644,7 +664,7 @@ core.Class("unify.ui.container.Scroll", {
 
       this.__scroller.doTouchStart(touches, +ne.timeStamp);
       e.preventDefault();
-      var cb = function() {
+/* NEW:      var cb = function() {
         this.removeNativeListener(root, "touchmove", cb);
         this.__showIndicators.apply(this, arguments);
       }.bind(this);
@@ -654,10 +674,10 @@ core.Class("unify.ui.container.Scroll", {
       
       /*lowland.bom.Events.listen(root, "touchmove", this.__onTouchMove.bind(this));
       lowland.bom.Events.listen(root, "touchend", this.__onTouchEnd.bind(this));
-      lowland.bom.Events.listen(root, "touchcancel", this.__onTouchEnd.bind(this));*/
+      lowland.bom.Events.listen(root, "touchcancel", this.__onTouchEnd.bind(this));* /
       this.addNativeListener(root, "touchmove", this.__onTouchMove, this);
       this.addNativeListener(root, "touchend", this.__onTouchEnd, this);
-      this.addNativeListener(root, "touchcancel", this.__onTouchEnd, this);
+      this.addNativeListener(root, "touchcancel", this.__onTouchEnd, this);*/
     },
 
     /**
@@ -680,7 +700,15 @@ core.Class("unify.ui.container.Scroll", {
      * @param e {Event} Touch event
      */
     __onTouchMove : function(e){
-      var ne=e; //.getNativeEvent();
+      if(!this.__inTouch){
+        return;
+      }
+      if(this.__showIndicatorsOnNextTouchMove){
+        this.__showIndicatorsOnNextTouchMove=false;
+        this.__showIndicators();
+        
+      }
+      var ne=e;
       this.__scroller.doTouchMove(ne.touches, +ne.timeStamp, ne.scale);
     },
     
@@ -690,14 +718,19 @@ core.Class("unify.ui.container.Scroll", {
      * @param e {Event} Touch event
      */
     __onTouchEnd : function(e){
+      if(!this.__inTouch){
+        return;
+      }
       this.__inTouch = false;
-      this.__scroller.doTouchEnd(+e.timeStamp); //.getNativeEvent().timeStamp);
+/* NEW:      this.__scroller.doTouchEnd(+e.timeStamp); //.getNativeEvent().timeStamp);
       
       var root = unify.core.Init.getApplication().getRoot().getEventElement();
       
       this.removeNativeListener(root, "touchmove", this.__onTouchMove, this);
       this.removeNativeListener(root, "touchend", this.__onTouchEnd, this);
-      this.removeNativeListener(root, "touchcancel", this.__onTouchEnd, this);
+      this.removeNativeListener(root, "touchcancel", this.__onTouchEnd, this);*/
+      this.__showIndicatorsOnNextTouchMove=false;
+      this.__scroller.doTouchEnd(+e.getNativeEvent().timeStamp);
     },
     
     /**
@@ -727,6 +760,12 @@ core.Class("unify.ui.container.Scroll", {
     this.removeListener("resize", this.__updateDimensions, this);
     this.getChildrenContainer().removeListener("resize", this.__updateDimensions, this);
     this.removeListener("changeVisibility", this.__onChangeVisibility, this);
+  }
+======= ORIGIN:
+    var root = qx.core.Init.getApplication().getRoot();
+    root.removeListener("touchmove", this.__onTouchMove,this);
+    root.removeListener("touchend", this.__onTouchEnd,this);
+    root.removeListener("touchcancel", this.__onTouchEnd,this);
   }*/
 });
 
@@ -899,8 +938,8 @@ var Scroller;
 		/** {Integer} Height to assign to refresh area */
 		__refreshHeight: null,
 
-		/** {Boolean} Whether the refresh process is enabled when the event is released now */
-		__refreshActive: false,
+		/** {String} the refresh process that starts when the event is released now */
+		__refreshActive: null,
 
 		/** {Function} Callback to execute on activation. This is for signalling the user about a refresh is about to happen when he release */
 		__refreshActivate: null,
@@ -1082,7 +1121,22 @@ var Scroller;
 
 		},
 
+    /**
+     * executes pull-to-refresh programmatically
+     * @param location {String} "top" or "bottom", the location to execute it
+     */
+    executePullToRefresh: function(location){
+      var self=this;
+      self.__refreshActive=location;
+      // Use publish instead of scrollTo to allow scrolling to out of boundary position
+      // We don't need to normalize scrollLeft, zoomLevel, etc. here because we only y-scrolling when pull-to-refresh is enabled
+      var posY=(self.__refreshActive=="top")?(-self.__refreshHeight):(self.__maxScrollTop+self.__refreshHeight);
+      self.__publish(self.__scrollLeft, posY , self.__zoomLevel, true);
 
+      if (self.__refreshStart) {
+        self.__refreshStart(self.__refreshActive);
+      }
+    },
 		/**
 		 * Signalizes that pull-to-refresh is finished.
 		 */
@@ -1090,10 +1144,10 @@ var Scroller;
 
 			var self = this;
 
-			self.__refreshActive = false;
 			if (self.__refreshDeactivate) {
-				self.__refreshDeactivate();
+				self.__refreshDeactivate(self.__refreshActive);
 			}
+      self.__refreshActive = null;
 
 			self.scrollTo(self.__scrollLeft, self.__scrollTop, true);
 
@@ -1529,25 +1583,23 @@ var Scroller;
 
 								if (!self.__refreshActive && scrollTop <= -self.__refreshHeight) {
 
-									self.__refreshActive = true;
+									self.__refreshActive = "top";
 									if (self.__refreshActivate) {
-										self.__refreshActivate("top");
+										self.__refreshActivate(self.__refreshActive);
 									}
-                                                                        
-                                                                } else if (!self.__refreshActive && scrollTop >= (maxScrollTop + self.__refreshHeight)) {
-                                                                  
-                                                                  	self.__refreshActive = true;
+                } else if (!self.__refreshActive && scrollTop >= (maxScrollTop + self.__refreshHeight)) {
+                  self.__refreshActive = "bottom";
 									if (self.__refreshActivate) {
-										self.__refreshActivate("bottom");
+										self.__refreshActivate(self.__refreshActive);
 									}
 
 								} else if (self.__refreshActive && scrollTop > -self.__refreshHeight && scrollTop < (maxScrollTop + self.__refreshHeight)) {
 
-									self.__refreshActive = false;
+									
 									if (self.__refreshDeactivate) {
-										self.__refreshDeactivate();
+										self.__refreshDeactivate(self.__refreshActive);
 									}
-
+                  self.__refreshActive=null;
 								}
 							}
 
@@ -1681,13 +1733,7 @@ var Scroller;
 
 				if (self.__refreshActive && self.__refreshStart) {
 
-					// Use publish instead of scrollTo to allow scrolling to out of boundary position
-					// We don't need to normalize scrollLeft, zoomLevel, etc. here because we only y-scrolling when pull-to-refresh is enabled
-					self.__publish(self.__scrollLeft, -self.__refreshHeight, self.__zoomLevel, true);
-
-					if (self.__refreshStart) {
-						self.__refreshStart();
-					}
+          self.executePullToRefresh(self.__refreshActive);
 
 				} else {
 
@@ -1699,10 +1745,11 @@ var Scroller;
 					// Directly signalize deactivation (nothing todo on refresh?)
 					if (self.__refreshActive) {
 
-						self.__refreshActive = false;
+						
 						if (self.__refreshDeactivate) {
-							self.__refreshDeactivate();
+							self.__refreshDeactivate(self.__refreshActive);
 						}
+            self.__refreshActive = null;
 
 					}
 				}

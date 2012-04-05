@@ -29,6 +29,14 @@ core.Class("unify.Application", {
   *****************************************************************************
   */
 
+  construct : function() {
+    this.base(arguments);
+    
+    if (window.location.search.indexOf("testid=true") > 0) {
+      qx.core.Environment.add("unify.testid", true);
+    }
+  },
+  
   members :
   {
     __root : null,

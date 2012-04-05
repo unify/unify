@@ -889,6 +889,39 @@ qx.Theme.define("unify.theme.dark.Appearance", {
           overflow: "hidden"
         };
       }
+    },
+
+  /*
+    ---------------------------------------------------------------------------
+      Scroll
+    ---------------------------------------------------------------------------
+    */
+    
+    "scroll/content":{},
+    "scroll/indicatorX":{},
+    "scroll/indicatorY":{},
+    "scroll/wrapper":{},
+    "scroll/topNotification":{},
+    "scroll/topNotification/label":{
+      include:"label"
+    },
+    "scroll/topNotification/iconcontainer":{},
+    "scroll/topNotification/pullicon":{
+      //TODO: add default icons 
+    },
+    "scroll/topNotification/activityicon":{
+      //TODO: add default icons 
+    },
+    "scroll/bottomNotification":{},
+    "scroll/bottomNotification/label":{
+      include:"label"
+    },
+    "scroll/bottomNotification/iconcontainer":{},
+    "scroll/bottomNotification/pullicon":{
+      //TODO: add default icons 
+    },
+    "scroll/bottomNotification/activityicon":{
+      //TODO: add default icons 
     }
   }
 });

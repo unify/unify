@@ -65,6 +65,22 @@ core.Class("unify.view.SplitViewManager",
     __detailViewManager : null,
 
 
+    //overridden
+    show: function(){
+      this.base(arguments);
+      if(!this.isPortrait()){
+        this.__masterViewManager.show();
+      }
+      this.__detailViewManager.show();
+    },
+    
+    //overridden
+    hide: function(){
+      this.__masterViewManager.hide();
+      this.__detailViewManager.hide();
+      this.base(arguments);
+    },
+
     /**
      * Reacts on rotate event of window
      *
@@ -93,6 +109,8 @@ core.Class("unify.view.SplitViewManager",
           elem.setAttribute("orient", "landscape");
 
           master.setDisplayMode('default');
+          this.addAt(master,0);//readd master viewmanager (may have been excluded by popovermanager)
+          master.show();
 
         }
       } else {
@@ -102,17 +120,9 @@ core.Class("unify.view.SplitViewManager",
           }
           elem.setAttribute("orient", "portrait");
           master.setDisplayMode('popover');
+          master.hide();
         }
       }
-    },
-
-    /**
-     * Inlines the master view manager into the split view
-     */
-    inlineMasterView : function() {
-      var masterWidget = this.__masterViewManager;
-      this.addAt(masterWidget, 0);
-      masterWidget.show();
     },
 
     /**
