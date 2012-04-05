@@ -1637,7 +1637,7 @@ qx.Class.define("unify.ui.core.Widget", {
      * Applies test id to element to help autmatic ui tests
      */
     _applyTestId : function(value) {
-      if(qx.core.Environment.get("qx.debug") || qx.core.Environment.get("testid")) {
+      if(qx.core.Environment.get("qx.debug") || qx.core.Environment.get("unify.testid")) {
         this.getElement().setAttribute("testid", value);
       }
     },
