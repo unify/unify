@@ -41,6 +41,7 @@ core.Class("unify.ui.form.Button", {
   
   construct : function(label, image) {
     unify.ui.basic.Atom.call(this, label, image);
+    unify.ui.core.MInteractionState.call(this);
   },
 
   members: {

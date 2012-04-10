@@ -17,13 +17,13 @@ core.Class("unify.ui.container.NavigationBar", {
   /**
    * @param view {unify.view.StaticView} View the navigation bar is attached to
    */
-  construct : function(view) {
+  construct : function(view, layout) {
     unify.ui.container.Bar.call(this);
     unify.ui.core.MChildControl.call(this);
     
-    this._setLayout(new unify.ui.layout.special.NavigationBar());
+    this._setLayout(layout || new unify.ui.layout.special.NavigationBar());
 
-    if (!view || !(core.Class.includesClass(view.constructor, unify.view.StaticView))) {
+    if (!view) {
       throw new Error("Invalid view! NavigationBar must be attached to a view!")
     }
 

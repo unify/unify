@@ -704,7 +704,7 @@ core.Class("unify.business.RemoteData",
       var start;
 
       // Prepare data (Parse JSON/XML)
-      var isModified = !isErrornous && !isMalformed && this.__isModified(req);
+      var isModified = !isErrornous && !isMalformed; // TODO : && this.__isModified(req);
       if (isModified)
       {
         if (core.Env.getValue("debug")) {

@@ -49,11 +49,11 @@ core.Module("unify.test.ui.core.VisibleBox", {
       equal(c.size, true, "Size changed");
       
       var b = v.getBounds();
-      
-      equal(b[0], 5, "Left position");
-      equal(b[1], 10, "Top position");
-      equal(b[2], 20, "Width");
-      equal(b[3], 30, "Height");
+
+      equal(b.left, 5, "Left position");
+      equal(b.top, 10, "Top position");
+      equal(b.width, 20, "Width");
+      equal(b.height, 30, "Height");
       
     });
     
@@ -65,7 +65,7 @@ core.Module("unify.test.ui.core.VisibleBox", {
       
       v2.setParentBox(v1);
       v3.setParentBox(v2);
-      v1.isRootWidget = function() { return true; };
+      v1.getNestingLevel = function() { return 0; };
       
       equal(v1.getNestingLevel(), 0, "Nesting level of root widget");
       equal(v2.getNestingLevel(), 1, "Nesting level of second widget");
@@ -90,8 +90,10 @@ core.Module("unify.test.ui.core.VisibleBox", {
       v.setHeight(20);
       
       d = v.getSizeHint();
-      equal(d.width, 0);
-      equal(d.height, 0);
+      //equal(d.width, 0);
+      //equal(d.height, 0);
+      equal(d.width, 10);
+      equal(d.height, 20);
       equal(d.minWidth, 0);
       equal(d.minHeight, 0);
       equal(d.maxWidth, Infinity);

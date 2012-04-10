@@ -19,10 +19,6 @@ core.Class("unify.Application", {
   
   include : [unify.core.Init],
   
-  construct : function() {
-    unify.core.Init.call(this);
-  },
-  
   /*
   *****************************************************************************
      MEMBERS
@@ -30,10 +26,10 @@ core.Class("unify.Application", {
   */
 
   construct : function() {
-    this.base(arguments);
+    unify.core.Init.call(this);
     
     if (window.location.search.indexOf("testid=true") > 0) {
-      qx.core.Environment.add("unify.testid", true);
+      core.Env.define("unify.testid", true);
     }
   },
   
@@ -91,6 +87,9 @@ core.Class("unify.Application", {
       var Style = core.bom.Style;
       var rootStyle = unify.theme.Manager.get().resolveStyle("BODY") || {};
       Style.set(rootElement, rootStyle);
+      if (rootStyle.font) {
+        Style.set(rootElement, unify.theme.Manager.get().resolveFont(rootStyle.font));
+      }
       
       // <html>
       Style.set(rootElement.parentNode, {

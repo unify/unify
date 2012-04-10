@@ -179,7 +179,7 @@
       //overridden
       renderLayout : function(left, top, width, height, preventSize) {
         //don't let the layout mess with our height/width calculations, this is taken care of in initRenderingCache
-        return this.base(arguments,left,top,width,height,true);
+        return unify.ui.core.Widget.prototype.renderLayout.call(this,left,top,width,height,true);
       },
   
       /*

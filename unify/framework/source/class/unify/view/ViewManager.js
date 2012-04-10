@@ -435,7 +435,7 @@ core.Class("unify.view.ViewManager", {
       }
       if (!this.getModal()) {
         this.__activate();
-        this.base(arguments);
+        unify.ui.container.Composite.prototype.show.call(this);
       } else {
         // Re-activate view (normally only useful if it was paused before)
         var view = this.__currentView;
@@ -820,13 +820,13 @@ core.Class("unify.view.ViewManager", {
      */
     __activate: function(callee){
       if(this.__active){
-        if(qx.core.Environment.get("qx.debug")){
+        if(core.Env.getValue("debug")){
           this.debug("tried to activate viewmanager "+this.getId()+" but it is already active");
         }
         return;//already active
       }
 
-      if(qx.core.Environment.get("qx.debug")){
+      if(core.Env.getValue("debug")){
         this.debug("activate viewmanager "+this.getId());
       }
       this.__active=true;
