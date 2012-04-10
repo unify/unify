@@ -192,7 +192,7 @@ core.Class("unify.theme.Theme", {
     
     __parseFont : function(font) {
       var def = {
-        fontFamily: "serif",
+        //fontFamily: "serif",
         fontSize: "16px",
         fontStyle: "normal",
         fontWeight: "normal",
@@ -260,7 +260,11 @@ core.Class("unify.theme.Theme", {
             });
           }
           if (value.style) {
-            styleMap[key] = value.style;
+            if (styleMap[key]) {
+              styleMap[key] = [styleMap[key], value.style];
+            } else {
+              styleMap[key] = value.style;
+            }
           }
         }
       }

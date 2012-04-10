@@ -53,14 +53,21 @@ core.Class("unify.ui.basic.Image", {
       if (this._hasElement()) {
         var e = this.getElement();
         
+        var size = null;
+        
         var src = value;
         if (ResourceManager.has(value)) {
           src = ResourceManager.toUri(value);
+          size = ResourceManager.getImageSize(value);
         }
 
         var style = {
           backgroundImage: "url(" + src + ")"
         };
+        
+        if (size) {
+          style.backgroundSize = size.width + "px " + size.height + "px";
+        }
         
         if (this.getFitToSize()) {
           style.backgroundSize = "contain";

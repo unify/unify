@@ -57,19 +57,6 @@ core.Class("unify.theme.Dark", {
         },
         "huge" : {
           size: 17
-        },
-        font0: {},
-        font1: {
-          family: "sans-serif",
-          size: 12,
-          style: "italic",
-          weight: "bold",
-          decoration: "underline",
-          lineHeight: 1.5
-        },
-        font2: {
-          family: "Droid",
-          src: "Droid.ttf"
         }
       },
       styles: {

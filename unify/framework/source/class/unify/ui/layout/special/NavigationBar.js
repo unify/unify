@@ -97,6 +97,59 @@
         title.renderLayout(titleLeft, titleTop, titleWidth, titleHeight);
       },
       
+      _computeSizeHint : function() {
+        if (this._invalidChildrenCache) {
+          this.__rebuildCache();
+        }
+        
+        var left = this.__left;
+        var right = this.__right;
+        var title = this.__title;
+        
+        var minWidth = 0;
+        var width = 0;
+        var minHeight = 0;
+        var height = 0;
+        
+        var i, ii;
+        var hint;
+        
+        for (i=0,ii=left.length; i<ii; i++) {
+          hint = left[i].getSizeHint();
+          
+          minWidth += hint.minWidth;
+          width += hint.width;
+          minHeight = Math.max(minHeight, hint.minHeight);
+          height = Math.max(height, hint.height);
+        }
+        for (i=0,ii=right.length; i<ii; i++) {
+          hint = right[i].getSizeHint();
+          
+          minWidth += hint.minWidth;
+          width += hint.width;
+          minHeight = Math.max(minHeight, hint.minHeight);
+          height = Math.max(height, hint.height);
+        }
+        
+        hint = title.getSizeHint();
+          
+        minWidth += hint.minWidth;
+        width += hint.width;
+        minHeight = Math.max(minHeight, hint.minHeight);
+        height = Math.max(height, hint.height);
+        
+        var spacer = (left.length + right.length) * SPACER;
+        minWidth += spacer;
+        width += spacer;
+        
+        return {
+          width: width,
+          minWidth: minWidth,
+          height: height,
+          minHeight: minHeight
+        };
+      },
+      
       /**
        * Rebuilds cache of layout children
        */

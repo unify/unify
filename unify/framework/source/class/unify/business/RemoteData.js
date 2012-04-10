@@ -576,7 +576,6 @@ core.Class("unify.business.RemoteData",
      */
     _communicate : function(service, params, method, id, data)
     {
-      console.log("COMMUNICATE ", service, params, method, id, data);
       var config = this._getService(service);
 
       var url;
@@ -704,7 +703,7 @@ core.Class("unify.business.RemoteData",
       var start;
 
       // Prepare data (Parse JSON/XML)
-      var isModified = !isErrornous && !isMalformed && this.__isModified(req);
+      var isModified = !isErrornous && !isMalformed; // TODO : && this.__isModified(req);
       if (isModified)
       {
         if (core.Env.getValue("debug")) {

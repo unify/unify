@@ -67,8 +67,9 @@ core.Class("unify.view.RemoteView",
      */
     refresh : function()
     {
-      if (this.__requestId) {
-        this.__activityIndicator.hide(this.getHash());
+      if (this.__requestId != null) {
+        return;
+        //this.__activityIndicator.hide(this.getHash());
       }
       this.__requestId = this._getBusinessObject().get(this._getServiceName(), this._getServiceParams());
       if (this.__requestId !== false) {

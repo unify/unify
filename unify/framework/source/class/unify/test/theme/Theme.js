@@ -158,5 +158,37 @@ core.Module("unify.test.theme.Theme", {
       equal(t.resolveStyle("c/test").ctest, true, "Appearance c/test style ctest");
     });
     
+    test("inherited styles", function() {
+      var t1 = new unify.theme.Theme({
+        styles: {
+          "a" : {
+            style : function(state) {
+              return {
+                a1 : true,
+                a3 : "1"
+              };
+            }
+          }
+        }
+      });
+      var t2 = new unify.theme.Theme({
+        include: t1,
+        styles: {
+          "a" : {
+            style : function(state) {
+              return {
+                a2 : true,
+                a3 : "2"
+              };
+            }
+          }
+        }
+      });
+      
+      equal(t2.resolveStyle("a").a1, true, "Appearance a style a1");
+      equal(t2.resolveStyle("a").a2, true, "Appearance a style a2");
+      equal(t2.resolveStyle("a").a3, "2", "Appearance a style a3");
+    });
+    
   }
 });
