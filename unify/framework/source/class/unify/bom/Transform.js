@@ -78,7 +78,7 @@
      */
     accelRotate : function(deg){
       // Fix resize bug with translate3d on google chrome 15.0.874.121 m
-      if (qx.core.Environment.get("browser.name") == "chrome" || qx.core.Environment.get("engine.name") != "webkit") {
+      if (chrome || core.Env.getValue("engine") != "webkit") {
         return "rotate("+deg+"deg)";
       } else {
         return "rotate3d(0,0,1,"+deg+"deg)";

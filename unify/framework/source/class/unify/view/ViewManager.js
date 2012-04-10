@@ -396,7 +396,7 @@ core.Class("unify.view.ViewManager", {
      */
     hide : function(callback) {
       if (!this.getModal()) {
-        this.base(arguments);
+        unify.ui.container.Composite.prototype.hide.call(this);
         this.__deactivate();
       } else {
         
@@ -435,7 +435,7 @@ core.Class("unify.view.ViewManager", {
       }
       if (!this.getModal()) {
         this.__activate();
-        this.base(arguments);
+        unify.ui.container.Composite.prototype.show.call(this);
       } else {
         // Re-activate view (normally only useful if it was paused before)
         var view = this.__currentView;
@@ -820,13 +820,13 @@ core.Class("unify.view.ViewManager", {
      */
     __activate: function(callee){
       if(this.__active){
-        if(qx.core.Environment.get("qx.debug")){
+        if(core.Env.getValue("debug")){
           this.debug("tried to activate viewmanager "+this.getId()+" but it is already active");
         }
         return;//already active
       }
 
-      if(qx.core.Environment.get("qx.debug")){
+      if(core.Env.getValue("debug")){
         this.debug("activate viewmanager "+this.getId());
       }
       this.__active=true;
@@ -863,12 +863,12 @@ core.Class("unify.view.ViewManager", {
      */
     __deactivate: function(callee){
       if(!this.__active){
-        if(qx.core.Environment.get("qx.debug")){
+        if(core.Env.getValue("debug")){
           this.debug("tried to deactivate viewmanager "+this.getId()+" but it is already deactive");
         }
         return;//already active
       }
-      if(qx.core.Environment.get("qx.debug")){
+      if(core.Env.getValue("debug")){
         this.debug("deactivate viewmanager "+this.getId());
       }
       this.__active=false;

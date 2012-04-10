@@ -30,10 +30,10 @@ core.Class("unify.Application", {
   */
 
   construct : function() {
-    this.base(arguments);
+    unify.core.Init.call(this);
     
     if (window.location.search.indexOf("testid=true") > 0) {
-      qx.core.Environment.add("unify.testid", true);
+      core.Env.define("unify.testid", true);
     }
   },
   

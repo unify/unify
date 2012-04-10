@@ -21,13 +21,16 @@
 #ignore(Scroller)
  */
 core.Class("unify.ui.container.Scroll", {
-  include : [unify.ui.core.Widget, unify.ui.core.MRemoteChildrenHandling, unify.ui.core.MRemoteLayoutHandling],
+  include : [unify.ui.core.Widget, unify.ui.core.MRemoteChildrenHandling, unify.ui.core.MRemoteLayoutHandling, unify.ui.core.MChildControl],
 
   /**
    * @param layout {unify.ui.layout.Base} Layout of container element
    */
   construct : function(layout) {
     unify.ui.core.Widget.call(this);
+    unify.ui.core.MRemoteChildrenHandling.call(this);
+    unify.ui.core.MRemoteLayoutHandling.call(this);
+    unify.ui.core.MChildControl.call(this);
 
     // Child container layout  
     this.setLayout(layout ||new unify.ui.layout.Basic());
@@ -50,10 +53,10 @@ core.Class("unify.ui.container.Scroll", {
     contentWidget.addListener("resize", this.__updateDimensions, this);
     
     this.addListener("changeVisibility", this.__onChangeVisibility, this);
-    var root = qx.core.Init.getApplication().getRoot();
-    root.addListener("touchmove", this.__onTouchMove,this);
-    root.addListener("touchend", this.__onTouchEnd,this);
-    root.addListener("touchcancel", this.__onTouchEnd,this);
+    var root = unify.core.Init.getApplication().getRoot();
+    root.addNativeListener("touchmove", this.__onTouchMove,this);
+    root.addNativeListener("touchend", this.__onTouchEnd,this);
+    root.addNativeListener("touchcancel", this.__onTouchEnd,this);
   },
 
   /*
@@ -730,7 +733,7 @@ core.Class("unify.ui.container.Scroll", {
       this.removeNativeListener(root, "touchend", this.__onTouchEnd, this);
       this.removeNativeListener(root, "touchcancel", this.__onTouchEnd, this);*/
       this.__showIndicatorsOnNextTouchMove=false;
-      this.__scroller.doTouchEnd(+e.getNativeEvent().timeStamp);
+      this.__scroller.doTouchEnd(+e.timeStamp);
     },
     
     /**

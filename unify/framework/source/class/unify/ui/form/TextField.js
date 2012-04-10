@@ -56,7 +56,7 @@ core.Class("unify.ui.form.TextField", {
     placeholderValue: {
       check: 'String',
       init: '',
-      apply: '_applyPlaceholderValue'
+      apply: function(value, old) { this._applyPlaceholderValue(value, old); }
     }
   },
   
@@ -72,8 +72,12 @@ core.Class("unify.ui.form.TextField", {
     unify.ui.core.Widget.call(this);
     unify.ui.core.MInteractionState.call(this);
     
-    lowland.bom.Events.listen(this.getElement(), "focus", this.__onFocus.bind(this));
-    lowland.bom.Events.listen(this.getElement(), "blur", this.__onBlur.bind(this));
+    this.addNativeListener("focus", this.__onFocus, this);
+    this.addNativeListener("blur", this.__onBlur, this);
+    
+    this.addNativeListener("tap", function(e) {
+      this.focus();
+    }, this);
   },
   
   members : {

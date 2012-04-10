@@ -82,14 +82,14 @@ core.Class("unify.ui.container.scroll.ActionNotification", {
       switch(id){
         case "label":{
           child=new unify.ui.basic.Label((this.__labelValues)?(this.__labelValues.initial):(""));
-          this.addAt(child,1,{flex:1});
+          this._addAt(child,1,{flex:1});
         }
         break;
         case "iconcontainer":{
           child=new unify.ui.container.Composite(new unify.ui.layout.Canvas);
           child.add(this.getChildControl("pullicon"));
           child.add(this.getChildControl("activityicon"));
-          this.addAt(child,0);
+          this._addAt(child,0);
         }
         break;
         case "pullicon":{
