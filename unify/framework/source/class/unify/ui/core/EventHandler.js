@@ -226,7 +226,7 @@ qx.Class.define("unify.ui.core.EventHandler",
       elem = target.getElement();
 
       if (elem) {
-        qx.event.Registration.addListener(elem, type, this._dispatchEvent, this, capture);
+        qx.event.Registration.removeListener(elem, type, this._dispatchEvent, this, capture);
       }
     }
   },

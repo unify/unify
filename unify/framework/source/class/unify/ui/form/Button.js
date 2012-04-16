@@ -42,14 +42,16 @@ qx.Class.define("unify.ui.form.Button", {
     }
   },
 
+  /**
+   * @param label {String} Label on atom
+   * @param image {String} Image url
+   */
+  construct : function(label, image) {
+    this.base(arguments,label,image);
+    this.addListener("tap",this.__onTap,this);
+  },
+  
   members: {
-    _createElement : function() {
-      var e = this.base(arguments);
-
-      qx.event.Registration.addListener(e, "tap", this.__onTap, this);
-
-      return e;
-    },
 
     /**
      * Set button text
