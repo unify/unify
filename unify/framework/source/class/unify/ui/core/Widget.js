@@ -2083,7 +2083,20 @@ qx.Class.define("unify.ui.core.Widget", {
     this._disposeArray("__widgetChildren");
     this._disposeObjects(
       "__layoutManager",
-      "__element"
+      "__font"
     );
+
+    this.__element
+      = this.__renderQueue
+      = this.__appearanceSelector
+      = this.__border 
+      = this.__dimensionInfo 
+      = this.__padding  
+      = this.__virtualPosition 
+      = this.__style
+      = this.__states
+      = this._forwardStates
+      = null;
+    
   }
 });
