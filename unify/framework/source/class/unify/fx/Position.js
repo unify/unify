@@ -107,5 +107,9 @@ qx.Class.define("unify.fx.Position", {
         transform: unify.bom.Transform.accelTranslate(left+"px", top+"px")
       });
     }
+  },
+  
+  destruct: function(){
+    this.__mod=this.__anim=this.__resetPoint=null;
   }
 });

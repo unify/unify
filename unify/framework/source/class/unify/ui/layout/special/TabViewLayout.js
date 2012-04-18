@@ -63,5 +63,9 @@ qx.Class.define("unify.ui.layout.special.TabViewLayout", {
         }
       }
     }
+  },
+  
+  destruct: function(){
+    this.__content=this.__bar=null;
   }
 });

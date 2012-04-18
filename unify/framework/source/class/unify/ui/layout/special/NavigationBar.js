@@ -128,5 +128,9 @@ qx.Class.define("unify.ui.layout.special.NavigationBar", {
       this.__right = right;
       this.__title = title;
     }
+  },
+  
+  destruct: function(){
+    this.__left = this.__right = this.__title = null;
   }
 });

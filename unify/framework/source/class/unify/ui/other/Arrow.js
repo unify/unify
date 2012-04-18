@@ -24,7 +24,8 @@ qx.Class.define("unify.ui.other.Arrow", {
 
     /** {Map[]} Speacial css styles for arrow element */
     arrowStyle : {
-      apply: "_applyArrowStyle"
+      apply: "_applyArrowStyle",
+      dereference : true
     }
   },
   
@@ -66,5 +67,9 @@ qx.Class.define("unify.ui.other.Arrow", {
         });
       }
     }
+  },
+  
+  destruct: function(){
+    this.__arrowSpan=null;
   }
 });

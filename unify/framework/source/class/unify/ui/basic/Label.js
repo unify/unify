@@ -246,5 +246,8 @@ qx.Class.define("unify.ui.basic.Label", {
         this._applyValue(val);   //apply cached 
       }
     }
+  },
+  destruct: function(){
+    this.__contentSize=null;
   }
 });

@@ -165,6 +165,7 @@ qx.Class.define("unify.view.Root", {
   
   destruct : function() {
     qx.event.Registration.removeListener(window, "resize", this.__onResize, this);
+    this.__rootElement=this.__rootEventElement=this.__rootSizeHint=null;
   },
   
   defer : function(statics, members) {

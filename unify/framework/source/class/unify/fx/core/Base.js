@@ -31,11 +31,13 @@ qx.Class.define("unify.fx.core.Base", {
     /** Easing method of animation */
     easing : {
       check : "Function",
-      nullable: true
+      nullable: true,
+      dereference: true
     },
     
     /** Value to animate to */
     value : {
+      dereference: true
     }
   },
   
@@ -173,5 +175,9 @@ qx.Class.define("unify.fx.core.Base", {
         this.fireDataEvent("stop", "done");
       }
     }
+  },
+  
+  destruct: function(){
+    this._disposeObjects("_widget");
   }
 });
