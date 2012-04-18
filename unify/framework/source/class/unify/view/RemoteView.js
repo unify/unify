@@ -230,5 +230,6 @@ qx.Class.define("unify.view.RemoteView",
     if (business) {
       business.removeListener("completed", this.__onBusinessObjectCompleted, this);
     }
+    this.__activityIndicator = null;
   }
 });

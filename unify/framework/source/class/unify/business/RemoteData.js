@@ -934,7 +934,7 @@ qx.Class.define("unify.business.RemoteData",
   destruct : function()
   {
     // Dereference native binding
-    this.__cache = null;
+    this.__cache = this.__headers = null;
     qx.event.Registration.removeListener(unify.bom.Storage,"quota_exceeded_err",this.__onQuotaExceeded,this);
   }
 });

@@ -93,7 +93,8 @@ qx.Class.define("unify.view.StaticView",
     manager : 
     {
       check : "unify.view.ViewManager",
-      nullable : true
+      nullable : true,
+      dereference: true
     },
 
     /** 
@@ -105,7 +106,8 @@ qx.Class.define("unify.view.StaticView",
       check : "unify.view.StaticView",
       nullable : true,
       apply : "_applyParent",
-      event : "changeParent"
+      event : "changeParent",
+      dereference: true
     },
     
     /** 

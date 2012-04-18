@@ -33,9 +33,6 @@ qx.Class.define("unify.ui.layout.special.SplitView", {
   },
 
   members : {
-    __left : null,
-    __right : null,
-    __title : null,
 
     renderLayout : function(availWidth, availHeight) {
       var children = this._getLayoutChildren();

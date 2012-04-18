@@ -153,7 +153,8 @@ qx.Class.define("unify.view.ViewManager", {
     master : {
       check : "unify.view.ViewManager",
       nullable : true,
-      apply: "_applyMaster"
+      apply: "_applyMaster",
+      dereference: true
     },
 
     /**
@@ -898,5 +899,11 @@ qx.Class.define("unify.view.ViewManager", {
       }
 
     }
+  },
+  
+  destruct: function(){
+    this._disposeObjects("__currentView");
+    this._disposeMap("__views");
+    this.__path= this.__deactivatedManagers = null;
   }
 });

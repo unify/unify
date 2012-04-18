@@ -25,10 +25,7 @@ qx.Class.define("unify.ui.container.ActionScroll", {
    */
   construct: function(notificationHeight,topAction,bottomAction,layout){
     this.__notificationHeight=notificationHeight||100;
-    var notifications=this.__notifications={ 
-      top:this.getChildControl("topNotification"),
-      bottom:this.getChildControl("bottomNotification")
-    }
+    var notifications= this.__notifications= this.__createNotifications();
     this.__notificationsEnabled={
       top: !!notifications["top"],
       bottom: !!notifications["bottom"]
@@ -51,6 +48,7 @@ qx.Class.define("unify.ui.container.ActionScroll", {
     this.__executeCallback=qx.lang.Function.bind(this._onExecutePullAction,this);
     this.base(arguments,layout);
     this._showChildControl("wrapper");
+    this.addListener("changeAppearance",this.__updateNotificationAppearance,this);
   },
   
   events:{
@@ -144,19 +142,11 @@ qx.Class.define("unify.ui.container.ActionScroll", {
         case "wrapper":{
           var baseContent=this.getChildControl("content")//get base content element
           child= this.__contentWrapper=new unify.ui.container.Composite(new unify.ui.layout.Canvas);//create wrapper
-          child.add(this.getChildControl("topNotification"),{top:0,left:0,right:0});
+          child.add(this.getNotification("top"),{top:0,left:0,right:0});
           child.add(baseContent,{top:0,bottom:0,right:0,left:0});//removes baseContent from its original parent!
-          child.add(this.getChildControl("bottomNotification"),{bottom:0,left:0,right:0});
+          child.add(this.getNotification("bottom"),{bottom:0,left:0,right:0});
           child.setStyle({overflowY:"visible"});
           this._addAt(child,0,{type:"content"});//add wrapper where content was
-        }
-        break;
-        case "topNotification":{
-          child=this._createNotification("top");
-        }
-        break;
-        case "bottomNotification":{
-          child=this._createNotification("bottom");
         }
         break;
         default:
@@ -176,6 +166,31 @@ qx.Class.define("unify.ui.container.ActionScroll", {
     _createNotification: function(location){
       return new unify.ui.container.scroll.ActionNotification(this,location);
     },
+    
+    __updateNotificationAppearance: function(e){
+      var notifications=this.__notifications;
+      var appearance=e.getData();
+      for(var location in notifications){
+        notifications[location].setAppearance(appearance+"/"+location+"Notification");
+      }
+    },
+    
+    __createNotifications : function(){
+      var topNotification=this._createNotification("top");
+      var bottomNotification=this._createNotification("bottom");
+      topNotification.setAppearance(this.getAppearance() + "/topNotification" );
+      bottomNotification.setAppearance(this.getAppearance() + "/bottomNotification" );
+      var notifications={ 
+            top:topNotification,
+            bottom:bottomNotification
+          };
+      return notifications;
+    },
+    
+    getNotification: function(location){
+      return this.__notifications[location];
+    },
+    
     //overridden
     _getScrollerContentWidget: function(){
       return this.__contentWrapper||this.getChildControl("wrapper");
@@ -316,5 +331,19 @@ qx.Class.define("unify.ui.container.ActionScroll", {
       this.fireDataEvent("actionFinished",location);
       this.__baseScroller.finishPullToRefresh(location);
     }
+  },
+  
+  destruct: function(){
+    this._disposeMap("__notifications");
+    this._disposeObjects("__contentWrapper","__content");
+    this.__notificationsEnabled
+      =this.__actions
+      =this.__actionsEnabled
+      =this.__actionsRunning
+      =this.__baseScroller
+      =this.__activateCallback
+      =this.__deactivateCallback
+      =this.__executeCallback
+      =null;
   }
 });

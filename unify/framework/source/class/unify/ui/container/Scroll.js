@@ -747,6 +747,8 @@ qx.Class.define("unify.ui.container.Scroll", {
     root.removeListener("touchmove", this.__onTouchMove,this);
     root.removeListener("touchend", this.__onTouchEnd,this);
     root.removeListener("touchcancel", this.__onTouchEnd,this);
+    this._disposeObjects("__contentWidget","__horizontalScrollIndicator","__verticalScrollIndicator");
+    this.__scroller=null;
   }
 });
 

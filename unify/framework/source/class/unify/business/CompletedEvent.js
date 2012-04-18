@@ -137,5 +137,9 @@ qx.Class.define("unify.business.CompletedEvent",
     getRequest : function() {
       return this.__request;
     }
+  },
+  
+  destruct: function(){
+    this.__data=this.__request=null;
   }
 });

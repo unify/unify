@@ -56,5 +56,9 @@ qx.Class.define("unify.fx.Rotate", {
         transform: "rotate(" + (mod + anim * percent) + "deg)"
       });
     }
+  },
+    
+  destruct: function(){
+    this.__mod=this.__anim=this.__resetPoint=null;
   }
 });

@@ -147,7 +147,9 @@ qx.Class.define("unify.business.StaticData",
     _readData : function(service, params) {
       throw new Error("Please implement _readData()!");
     }
-    
-
+  },
+  
+  destruct: function(){
+    this.__services=null;
   }
 });

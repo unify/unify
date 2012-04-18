@@ -74,7 +74,8 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
     scroll:{
       check:"unify.ui.container.Scroll",
       init: null,
-      apply: "_applyScroll"
+      apply: "_applyScroll",
+      dereference: true
     }
   },
 
@@ -423,5 +424,9 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
       }
 
     }
+  },
+  
+  destruct: function(){
+    this._disposeObjects("__startElem","__middleElem","__endElem");
   }
 });

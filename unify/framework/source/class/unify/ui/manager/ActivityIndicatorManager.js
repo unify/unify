@@ -76,5 +76,9 @@ qx.Class.define("unify.ui.manager.ActivityIndicatorManager", {
         unify.ui.core.PopOverManager.getInstance().hide(overlay);
       }
     }
+  },
+  
+  destruct: function(){
+    this.__activeMap=this.__activeIds=null;
   }
 });

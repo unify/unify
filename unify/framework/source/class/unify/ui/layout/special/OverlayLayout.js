@@ -83,5 +83,9 @@ qx.Class.define("unify.ui.layout.special.OverlayLayout", {
         }
       }
     }
+  },
+  
+  destruct: function(){
+    this.__arrow=this.__content=null;
   }
 });

@@ -110,7 +110,8 @@ qx.Class.define("unify.ui.core.Widget", {
      * Parent's inset to apply to child
      */
     parentInset : {
-      init : null
+      init : null,
+      dereference:true
     },
 
     /**
@@ -2080,12 +2081,26 @@ qx.Class.define("unify.ui.core.Widget", {
   },
 
   destruct : function() {
-    this._disposeArray("__widgetChildren");
+
+    if (!qx.core.ObjectRegistry.inShutDown)
+    {
+      // Remove widget pointer from element
+      this.__element.$$widget=null;
+
+      // Remove from ui queues
+      qx.ui.core.queue.Appearance.remove(this);
+      qx.ui.core.queue.Layout.remove(this);
+      qx.ui.core.queue.Visibility.remove(this);
+    }
+    
+    
     this._disposeObjects(
       "__layoutManager",
       "__font"
     );
-
+    
+    this._disposeArray("__widgetChildren");
+    
     this.__element
       = this.__renderQueue
       = this.__appearanceSelector

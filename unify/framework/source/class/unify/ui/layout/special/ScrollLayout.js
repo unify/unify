@@ -69,7 +69,6 @@ qx.Class.define("unify.ui.layout.special.ScrollLayout", {
 
         if (type == "content") {
           this.__content = child;
-          this.__contentProp = childProp;
         } else if (type == "indicatorX") {
           this.__indicatorX = child;
           this.__indicatorXProp = childProp;
@@ -81,5 +80,10 @@ qx.Class.define("unify.ui.layout.special.ScrollLayout", {
         }
       }
     }
+  },
+  
+  destruct: function(){
+    this._disposeObjects("__indicatorX","__indicatorY","__content");
+    this.__indicatorXProp=this.__indicatorYProp=null;
   }
 });

@@ -285,7 +285,9 @@ qx.Class.define("unify.Application",
     }
   },
 
-
+  destruct: function(){
+    this._disposeObjects("__viewAnimationManager","__root");
+  },
 
   /*
   *****************************************************************************

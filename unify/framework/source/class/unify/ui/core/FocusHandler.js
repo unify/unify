@@ -377,5 +377,9 @@ qx.Class.define("unify.ui.core.FocusHandler", {
 
       return lastWidget;
     }
+  },
+  
+  destruct: function(){
+    this.__currentRoot=this.__focusedChild=null;
   }
 });
