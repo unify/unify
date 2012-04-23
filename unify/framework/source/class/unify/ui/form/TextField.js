@@ -110,6 +110,14 @@ qx.Class.define("unify.ui.form.TextField", {
       var e = qx.bom.Input.create("text", attrib);
       qx.event.Registration.addListener(e, "input", this._onInput, this);
 
+      var value = true;
+      if (qx.core.Environment.get("engine.name") == "webkit") {
+        qx.bom.element.Style.set(e, "userSelect", value?"text":"none");
+      } else if (qx.core.Environment.get("engine.name") == "gecko") {
+        qx.bom.element.Style.set(e, "MozUserSelect", value?"text":"-moz-none");
+      }
+      e.setAttribute("qxSelectable", value ? "on" : "off");
+
       return e;
     },
     
