@@ -276,7 +276,7 @@ core.Class("unify.view.ViewManager", {
       if (core.Env.getValue("debug"))
       {
         if (!(path instanceof unify.view.Path)) {
-          throw new Error("Invalid path to navigate() to: " + path);
+          throw new Error("Invalid path to navigate() to: " + path.serialize());
         }
       }
 
