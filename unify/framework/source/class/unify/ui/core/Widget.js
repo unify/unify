@@ -2100,6 +2100,18 @@ qx.Class.define("unify.ui.core.Widget", {
     );
     
     this._disposeArray("__widgetChildren");
+
+    
+    // remove event listeners before removal of __element reference 
+    // because that reference is required to find the listeners that have to be removed
+    // this duplicates functionality from qx.core.Object#destruct, but that is called after this function where __element is already null
+    if (!qx.core.ObjectRegistry.inShutDown) {
+      // Cleanup event listeners
+      qx.event.Registration.removeAllListeners(this);
+    } else {
+      // on shutdown, just clear the internal listener map
+      qx.event.Registration.deleteAllListeners(this);
+    }
     
     this.__element
       = this.__renderQueue
