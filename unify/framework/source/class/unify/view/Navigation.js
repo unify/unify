@@ -240,7 +240,6 @@ core.Class("unify.view.Navigation",
       var lastManagerId = null;
       var managers = this.__viewManagers;
 
-
       for (var i=0, l=path.length; i<l; i++)
       {
         var fragment = path[i];
@@ -325,7 +324,11 @@ core.Class("unify.view.Navigation",
      * @param e {unify.event.type.History} History event
      */
     __onHistoryChange : function(e) {
-      var currentLocation = decodeURI(e.getData());
+      var currentLocation = e.getData();
+      if (currentLocation == null) {
+        return;
+      }
+      currentLocation = decodeURI(currentLocation);
       if (currentLocation != "" && currentLocation != this.__serializedPath) {
         this.navigate(unify.view.Path.fromString(currentLocation));
       }

@@ -18,7 +18,9 @@
  */
 (function(global) {
   
-  core.Main.declareNamespace("unify.view.Path", Array);
+  core.Class("unify.view.Path", {});
+  unify.view.Path.prototype = new Array();
+  
   core.Main.addMembers("unify.view.Path", {
     /**
      * Deep clones a Path instance.

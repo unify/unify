@@ -142,11 +142,19 @@ core.Class("unify.ui.container.ActionScroll", {
       var child;
       switch(id){
         case "wrapper":{
-          var baseContent=this.getChildControl("content")//get base content element
+          /*var baseContent=this.getChildControl("content")//get base content element
           child= this.__contentWrapper=new unify.ui.container.Composite(new unify.ui.layout.Canvas);//create wrapper
           child.add(this.getChildControl("topNotification"),{top:0,left:0,right:0});
           child.add(baseContent,{top:0,bottom:0,right:0,left:0});//removes baseContent from its original parent!
           child.add(this.getChildControl("bottomNotification"),{bottom:0,left:0,right:0});
+          child.setStyle({overflowY:"visible"});
+          this._addAt(child,0,{type:"content"});//add wrapper where content was*/
+          
+          var baseContent=this.getChildControl("content")//get base content element
+          child= this.__contentWrapper=new unify.ui.container.Composite(new unify.ui.layout.VBox);//create wrapper
+          child.add(this.getChildControl("topNotification"));
+          child.add(baseContent);//removes baseContent from its original parent!
+          child.add(this.getChildControl("bottomNotification"));
           child.setStyle({overflowY:"visible"});
           this._addAt(child,0,{type:"content"});//add wrapper where content was
         }
@@ -248,7 +256,7 @@ core.Class("unify.ui.container.ActionScroll", {
       if(notification){
         notification.setPhase("activated");
       }
-      this.fireDataEvent("actionActivated",location);
+      this.fireEvent("actionActivated",location);
     },
     
     /**
@@ -263,7 +271,7 @@ core.Class("unify.ui.container.ActionScroll", {
       if(notification){
         notification.setPhase("initial");
       }
-      this.fireDataEvent("actionDeactivated",location);
+      this.fireEvent("actionDeactivated",location);
     },
     
     /**
@@ -284,7 +292,7 @@ core.Class("unify.ui.container.ActionScroll", {
         }
         this.__actionsRunning[location]=true;
         action();
-        this.fireDataEvent("actionExecuted",location);
+        this.fireEvent("actionExecuted",location);
       } else {
         this.finishedPullAction(location);
       }
@@ -313,7 +321,7 @@ core.Class("unify.ui.container.ActionScroll", {
      */
     finishedPullAction : function(location){
       this.__actionsRunning[location]=false;
-      this.fireDataEvent("actionFinished",location);
+      this.fireEvent("actionFinished",location);
       this.__baseScroller.finishPullToRefresh(location);
     }
   }

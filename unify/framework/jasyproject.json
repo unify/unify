@@ -7,5 +7,6 @@
 			"check" : "String",
 			"default" : "default"
 		}
-	}
+	},
+  "requires" : [{"source":"../../support/core"},{"source" : "../../support/lowland"}]
 }

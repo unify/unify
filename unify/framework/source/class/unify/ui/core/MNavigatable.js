@@ -241,7 +241,7 @@ core.Class("unify.ui.core.MNavigatable", {
       } else {
         // Read current path and make non-deep copy of path
         var path = viewManager.getPath();
-        var clone = path.concat();
+        var clone = path.clone();
         var cloneLast = clone.length-1;
         
         // Select right modification point

@@ -170,7 +170,7 @@ core.Class("unify.ui.core.Widget", {
     removeNativeListener:  function(type) {
       var args = arguments;
       if (typeof(type) == "string") {
-        args = [this.getElement()];
+        args = [this.getEventElement()];
         for (var i=0,ii=arguments.length; i<ii; i++) {
           args.push(arguments[i]);
         }

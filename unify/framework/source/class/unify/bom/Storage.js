@@ -57,8 +57,9 @@
      */
     get : function(key) 
     {
-      if (this.hasLocalStorage) {
-        return localStorage.getItem(prefix + key);
+      if (hasLocalStorage) {
+        var val = localStorage.getItem(prefix + key);
+        return val;
       } else {
         //TODO: return Cookie.get(this.__prefix + key);
       }     

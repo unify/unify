@@ -181,17 +181,17 @@ core.Class("unify.view.ServiceView",
     _wrappedRenderData : function(data)
     {
       var now = (new Date).valueOf();
-      try{
+      /*try{*/
         this._renderData(data);
         
         // Do explicit flush to prevent layouting while animate
         if (data) {
           unify.ui.layout.queue.Manager.flush();
         }
-      } catch(ex) {
+      /*} catch(ex) {
         this.error("Failed to render \"" + this._getServiceName() + "\" data: " + ex);
         this._errorHandler("renderer", ex);
-      }
+      }*/
       if (core.Env.getValue("debug")) {
         this.debug("Rendered in: " + ((new Date).valueOf() - now) + "ms");
       }

@@ -32,7 +32,7 @@ core.Class("unify.ui.form.TextArea", {
     },
     
     placeholderValue: {
-      check: 'String',
+      type: 'String',
       init: '',
       apply: function(value, old) { this._applyPlaceholderValue(value, old); }
     }

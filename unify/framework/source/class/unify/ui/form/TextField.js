@@ -42,7 +42,7 @@ core.Class("unify.ui.form.TextField", {
      * <pre class='javascript'>field.setFilter(/[0-9]/);</pre>
      */
     filter : {
-      type : "RegExp",
+      //type : "RegExp",
       nullable : true,
       init : null
     },
@@ -54,7 +54,7 @@ core.Class("unify.ui.form.TextField", {
     },
     
     placeholderValue: {
-      check: 'String',
+      type: 'String',
       init: '',
       apply: function(value, old) { this._applyPlaceholderValue(value, old); }
     }
