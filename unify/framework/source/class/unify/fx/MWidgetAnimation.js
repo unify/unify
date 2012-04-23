@@ -28,7 +28,8 @@ qx.Mixin.define("unify.fx.MWidgetAnimation", {
     /** {Map} Position to animate to */
     animatePosition : {
       apply : "__mwaApplyAnimationPosition",
-      nullable: true
+      nullable: true,
+      dereference:true
     },
     
     /** {Integer} Duration of position animation in milliseconds */
@@ -158,5 +159,11 @@ qx.Mixin.define("unify.fx.MWidgetAnimation", {
         animation.start(0,this.getAnimateRotateInfinite());
       }
     }
+  },
+  
+  destruct: function(){
+    this._disposeObjects("__mwAnimationRotate");
+    this._disposeMap("__mwAnimationMap");
+    this.__mwAnimationResetMap=null;
   }
 });

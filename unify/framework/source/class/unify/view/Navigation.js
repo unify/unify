@@ -333,5 +333,7 @@ qx.Class.define("unify.view.Navigation",
   {
     var History = unify.bom.History.getInstance();
     History.removeListener("change", this.__onHistoryChange, this);
+    this._disposeMap("__viewManagers");
+    this.__path=null;
   }
 });

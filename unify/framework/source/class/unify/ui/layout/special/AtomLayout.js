@@ -189,5 +189,9 @@ qx.Class.define("unify.ui.layout.special.AtomLayout", {
         }
       }
     }
+  },
+  
+  destruct: function(){
+    this.__image=this.__label=null;
   }
 });

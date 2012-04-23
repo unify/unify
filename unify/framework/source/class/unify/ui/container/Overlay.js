@@ -48,7 +48,8 @@ qx.Class.define("unify.ui.container.Overlay", {
       check: "unify.ui.core.Widget",
       init: null,
       nullable: true,
-      apply: "_applyTrigger"
+      apply: "_applyTrigger",
+      dereference:true
     },
 
      /** optional strategy to ponsition overlay relative to trigger
@@ -58,7 +59,8 @@ qx.Class.define("unify.ui.container.Overlay", {
     relativeTriggerPosition : {
       init: {y:"bottom",x:"center"},
       nullable: true,
-      apply:"_applyPositionProperty"
+      apply:"_applyPositionProperty",
+      dereference: true
     },
     
     modal : {

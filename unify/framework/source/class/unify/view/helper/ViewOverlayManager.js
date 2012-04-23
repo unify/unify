@@ -261,6 +261,6 @@ qx.Class.define("unify.view.helper.ViewOverlayManager", {
   */
     
   destruct : function() {
-    this.__root = this.__pblocker= this.__mblocker=this.__viewManagers=this.__overlays=this.__styleRegistry = null;
+    this.__root = this.__pblocker= this.__mblocker=this.__viewManagers=this.__overlays= this.__visibleViewManagers=this.__styleRegistry = null;
   } 
 });

@@ -143,5 +143,10 @@ qx.Class.define("unify.view.SplitViewManager",
         return !qx.bom.Viewport.isLandscape();
       }
     }
+  },
+  
+  destruct: function(){
+    qx.event.Registration.removeListener(window, "orientationchange", this.__onRotate, this);
+    this._disposeObjects("__masterViewManager","__detailViewManager");
   }
 });

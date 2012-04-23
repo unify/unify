@@ -48,5 +48,9 @@ qx.Class.define("unify.fx.Opacity", {
         opacity: (mod + anim * percent)
       });
     }
+  },
+    
+  destruct: function(){
+    this.__mod=this.__anim=this.__resetPoint=null;
   }
 });

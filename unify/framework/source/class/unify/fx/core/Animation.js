@@ -193,5 +193,9 @@ qx.Class.define("unify.fx.core.Animation", {
     getPosition : function(id) {
       return this.__percent[id];
     }
+  },
+  
+  destruct: function(){
+    this.__running=this.__percent=null;
   }
 });
