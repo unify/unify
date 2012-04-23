@@ -96,8 +96,8 @@ qx.Class.define("unify.view.Navigation",
       if(!this.isValidNavigationPath(pathObj)){
         if(qx.core.Environment.get("qx.debug")){
           this.debug("stored path is invalid, using default path instead");
-          path="";
         }
+        path="";
       }
       // Call history to initialize application
       this.__historyInit = true;
