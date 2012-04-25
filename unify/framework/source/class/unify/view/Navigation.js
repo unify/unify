@@ -54,6 +54,11 @@ core.Class("unify.view.Navigation",
      * in each navigation object.
      */
     __viewManagers : null,
+    
+    /**
+     * id of the start view. Used if no valid view has been found for this navigation
+     */
+    __startPath : null,
 
     /**
      * Adds a view manager to the global navigation. All views
@@ -75,8 +80,7 @@ core.Class("unify.view.Navigation",
       this.__viewManagers[managerId] = viewManager;
       viewManager.addListener("changePath", this.__onSubPathChange, this);
     },
-
-
+    
     /**
      * Initialized previous state from history or client-side storage.
      *
@@ -91,6 +95,7 @@ core.Class("unify.view.Navigation",
       // Restore path from storage or use default view
       var path = unify.bom.Storage.get("navigation-path");
       var pathObj=unify.view.Path.fromString(path);
+      
       if(!this.isValidNavigationPath(pathObj)){
         if(core.Env.getValue("debug")){
           this.debug("stored path is invalid, using default path instead");
@@ -99,13 +104,27 @@ core.Class("unify.view.Navigation",
       }
       // Call history to initialize application
       this.__historyInit = true;
-      
-      History.init(path);
+      if(path){
+        History.init(path);
+      } else {
+        History.init(this.__startPath);
+      }
       delete this.__historyInit;
-
     },
-
-
+    
+    /**
+     * Sets the start view for theis navigation.
+     * The start view will be used if Navigation.init doesn't find a
+     * suitable view.
+     * @param viewClass {Class} Class of the view which should be the start view
+     */
+    setStartView : function(viewClass){
+      var instance = viewClass.getInstance();
+      var classname = viewClass.className;
+      var id = classname.substring(classname.lastIndexOf(".")+1).hyphenate().substring(1).toLowerCase();
+      this.__startPath = id;
+    },
+    
     /**
      * Returns the view manager which controls the given view
      *
@@ -235,7 +254,6 @@ core.Class("unify.view.Navigation",
      * @return {Boolean] true, if the path is valid for navigation
      */
     isValidNavigationPath: function(path){
-
       var usedManagers = {};
       var lastManagerId = null;
       var managers = this.__viewManagers;
