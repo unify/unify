@@ -275,9 +275,10 @@ core.Class("unify.view.ViewManager", {
       console.log("NAVIGATE: ", path);
       if (core.Env.getValue("debug"))
       {
-        if (!(path instanceof unify.view.Path)) {
+        //TODO Instance check here
+        /*if (!(path instanceof unify.view.Path)) {
           throw new Error("Invalid path to navigate() to: " + path.serialize());
-        }
+        }*/
       }
 
       var length = path.length;
