@@ -79,26 +79,25 @@ core.Class("unify.theme.Theme", {
         states = {};
       }
       
-      /*var res = {};
-      if (typeof style == "function") {
-        res = style(states);
-      } else {
-        for (var j=0,jj=style.length; j<jj; j++) {
-          if (style[j]) {
-            console.log(name);
-            var newStyles = style[j](states);
-            var newKeys = Object.keys(newStyles);
-            for (var i=0,ii=newKeys.length; i<ii; i++) {
-              var k = newKeys[i];
-              res[k] = newStyles[k];
-            }
-          }
+      var styles = this.__runFunctionsFromArray(style, states);
+      
+      var colorTags = ["color", "backgroundColor", "borderColor", "borderTopColor", "borderLeftColor", "borderRightColor", "borderBottomColor"];
+      for (var i=0,ii=colorTags.length; i<ii; i++) {
+        var tag = colorTags[i];
+        if (styles[tag]) {
+          styles[tag] = this.resolveColor(styles[tag]);
         }
       }
+      var textColor = styles.font && styles.font.textColor;
+      var color = styles.font && styles.font.color;
+      if (textColor) {
+        styles.font.textColor = this.resolveColor(textColor);
+      }
+      if (color) {
+        styles.font.color = this.resolveColor(color);
+      }
       
-      return res;*/
-      
-      return this.__runFunctionsFromArray(style, states);
+      return styles;
     },
     
     getParsedTheme : function() {
@@ -180,19 +179,10 @@ core.Class("unify.theme.Theme", {
       if (styles) {
         this.__parseStyles(styles, themeStyles);
       }
-      
-      /** #require(ext.sugar.Array) */
-      /*for (var key in themeStyles) {
-        var v = themeStyles[key]
-        if (v instanceof Array) {
-          themeStyles[key] = v.flatten();
-        }
-      }*/
     },
     
     __parseFont : function(font) {
       var def = {
-        //fontFamily: "serif",
         fontSize: "16px",
         fontStyle: "normal",
         fontWeight: "normal",

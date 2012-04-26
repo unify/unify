@@ -1377,17 +1377,6 @@ core.Class("unify.ui.core.Widget", {
         delete map.borderBottom;
       }
 
-      // Colors
-      
-      var colorTags = ["color", "backgroundColor", "borderColor", "borderTopColor", "borderLeftColor", "borderRightColor", "borderBottomColor"];
-      for (var i=0,ii=colorTags.length; i<ii; i++) {
-        var tag = colorTags[i];
-        if (map[tag]) {
-          map[tag] = unify.theme.Manager.get().resolveColor(map[tag]);
-        }
-      }
-      
-
       // font
 
       //read font properties
@@ -1440,11 +1429,7 @@ core.Class("unify.ui.core.Widget", {
 
       if (textColor) {
         delete map.textColor;
-        tmpFont.setColor(unify.theme.Manager.get().resolveColor(textColor));
-      }
-
-      if(color){
-        map.color = unify.theme.Manager.get().resolveColor(map.color);
+        tmpFont.setColor(/*unify.theme.Manager.get().resolveColor(*/textColor/*)*/);
       }
 
       if(fontStyle){
