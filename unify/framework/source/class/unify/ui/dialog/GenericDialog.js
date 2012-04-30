@@ -166,8 +166,9 @@
         this._showChildControl("title").setValue(title);
         this._showChildControl("content");
         var buttonContainer = this._showChildControl("buttons");
-        
-        this.__createButtons(buttonContainer, buttons);
+        if(buttons){
+          this.__createButtons(buttonContainer, buttons);
+        }
       },
       
       /**
