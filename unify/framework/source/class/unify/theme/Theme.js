@@ -83,7 +83,7 @@ core.Class("unify.theme.Theme", {
       var style = this.__styles[name];
       
       if (!style) {
-        if (core.Env.getValue("debug")) {
+        if (core.Env.getValue("debug") && style !== null) {
           console.log("No style '" + name + "' found");
         }
         return null;
@@ -268,6 +268,8 @@ core.Class("unify.theme.Theme", {
             } else {
               styleMap[key] = value.style;
             }
+          } else {
+            styleMap[key] = null;
           }
         }
       }
