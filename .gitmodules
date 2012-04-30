@@ -7,9 +7,3 @@
 [submodule "support/lowland"]
 	path = support/lowland
 	url = https://github.com/fastner/lowland.git
-[submodule "support/cordova-ios"]
-	path = support/cordova-ios
-	url = https://github.com/unify/incubator-cordova-ios
-[submodule "support/cordova-android"]
-	path = support/cordova-android
-	url = https://github.com/unify/incubator-cordova-android
