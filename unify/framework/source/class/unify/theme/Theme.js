@@ -14,10 +14,14 @@ core.Class("unify.theme.Theme", {
     var fonts = this.__fonts = {};
     var styles = this.__styles = {};
 
+    this.__styleCache = {};
+
     this._parse(theme, colors, fonts, styles);
   },
   
   members : {
+    __styleCache : null,
+    
     /* PUBLIC API */
     
     name : function() {
@@ -69,14 +73,20 @@ core.Class("unify.theme.Theme", {
     },
     
     resolveStyle : function(name, states) {
+      states = states || {};
+      var id = name + "-" + Object.keys(states).sort().join("-");
+      var result = this.__styleCache[id];
+      if (result) {
+        return result;
+      }
+      
       var style = this.__styles[name];
       
       if (!style) {
+        if (core.Env.getValue("debug")) {
+          console.log("No style '" + name + "' found");
+        }
         return null;
-      }
-      
-      if (!states) {
-        states = {};
       }
       
       var styles = this.__runFunctionsFromArray(style, states);
@@ -96,6 +106,9 @@ core.Class("unify.theme.Theme", {
       if (color) {
         styles.font.color = this.resolveColor(color);
       }
+      
+      // Cache only if not in debug mode
+      this.__styleCache[id] = styles;
       
       return styles;
     },
