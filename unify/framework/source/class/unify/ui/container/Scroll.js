@@ -47,6 +47,7 @@ core.Class("unify.ui.container.Scroll", {
     this._createScroller();
 
     this.addNativeListener("touchstart", this.__onTouchStart, this);
+    /** #require(lowland.bom.event.MouseWheel) */
     this.addNativeListener("mousewheel", this.__onMouseWheel, this);
     
     this.addListener("resize", this.__updateDimensions, this);
@@ -578,16 +579,38 @@ core.Class("unify.ui.container.Scroll", {
       return this.__twoAxisScroll;
     },
 
+    __newWheelScrollPos : null,
+
     /**
      * Handler for mouse wheel event
      *
      * @param e {Event} Mouse wheel event
      */
     __onMouseWheel : function(e) {
-      var left = this.getScrollLeft();
-      var top = this.getScrollTop() + (-e.wheelDelta)/* * 70*/;
+      var newScrollPos = this.__newWheelScrollPos;
+      var top;
       
-      this.scrollTo(left, top, true);
+      if (newScrollPos) {
+        console.log("OLD SCROLL POS: ", newScrollPos);
+        top = newScrollPos + e.wheelDelta * 60;
+      } else {
+        console.log("NO OLD SCROLL");
+        var top = this.getScrollTop() + e.wheelDelta * 60;
+      }
+      if (top < 0) {
+        top = 0;
+      }
+      
+      this.__newWheelScrollPos = top;
+      
+      this.scrollTo(null, top, false);
+      
+      this.addListenerOnce("scrollend", function() {
+        //(function() {
+          console.log("RESET NEW WHEEL POS");
+          this.__newWheelScrollPos = null;
+        //}).delay(100);
+      }, this);
     },
 
     /**
