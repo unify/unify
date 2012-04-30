@@ -590,15 +590,19 @@ core.Class("unify.ui.container.Scroll", {
       var newScrollPos = this.__newWheelScrollPos;
       var top;
       
+      var delta = e.wheelDelta * (-60);
+      
       if (newScrollPos) {
-        console.log("OLD SCROLL POS: ", newScrollPos);
-        top = newScrollPos + e.wheelDelta * 60;
+        top = newScrollPos + delta;
       } else {
-        console.log("NO OLD SCROLL");
-        var top = this.getScrollTop() + e.wheelDelta * 60;
+        var top = this.getScrollTop() + delta;
       }
+      
+      var maxTop = this.__contentHeight - this.__clientHeight;
       if (top < 0) {
         top = 0;
+      } else if (top > maxTop) {
+        top = maxTop;
       }
       
       this.__newWheelScrollPos = top;
@@ -606,10 +610,7 @@ core.Class("unify.ui.container.Scroll", {
       this.scrollTo(null, top, false);
       
       this.addListenerOnce("scrollend", function() {
-        //(function() {
-          console.log("RESET NEW WHEEL POS");
-          this.__newWheelScrollPos = null;
-        //}).delay(100);
+        this.__newWheelScrollPos = null;
       }, this);
     },
 
