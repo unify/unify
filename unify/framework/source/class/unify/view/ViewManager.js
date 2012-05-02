@@ -272,7 +272,6 @@ core.Class("unify.view.ViewManager", {
      * @param path {unify.view.Path} Path object
      */
     navigate : function(path) {
-      console.log("NAVIGATE: ", path);
       if (core.Env.getValue("debug"))
       {
         //TODO Instance check here
