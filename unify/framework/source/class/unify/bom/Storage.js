@@ -17,6 +17,8 @@
   var hasLocalStorage = !!localStorage;
   
   core.Module("unify.bom.Storage", {
+    prefix : prefix,
+    
     /**
      * Stores the give value under the given key. The storage is permanentely but might
      * be limited in overall available size.

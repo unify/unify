@@ -115,7 +115,6 @@ core.Class("unify.ui.container.scroll.ActionNotification", {
     _applyPhase : function(phase,old){
       var activityIcon=this.__activityIconElem;
       var pullIcon=this.__pullIconElem;
-      var label = this.__labelElem;
       var Style=core.bom.Style;
       var labelValue="";
       var location=this.getLocation();

@@ -890,8 +890,8 @@ core.Class("unify.business.RemoteData",
     __purgeCache : function(serviceName,expiredWhenCheckedBefore) {
 
       var
-        dataPrefix = unify.bom.Storage.__prefix + this.__storageDataPrefix + serviceName,
-        metaPrefix = unify.bom.Storage.__prefix + this.__storageMetaPrefix + serviceName,
+        dataPrefix = unify.bom.Storage.prefix + this.__storageDataPrefix + serviceName,
+        metaPrefix = unify.bom.Storage.prefix + this.__storageMetaPrefix + serviceName,
         metaRegExp = new RegExp("^" + metaPrefix + "(.*)"),
         matched,
         meta,
