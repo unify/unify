@@ -1,1 +1,0 @@
-Application specific view controllers (a view is a part of the application which is shown in an area of the application)
