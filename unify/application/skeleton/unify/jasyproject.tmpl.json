@@ -1,0 +1,6 @@
+{
+    "name": "${NAMESPACE}",
+    "kind" : "full",
+    "package" : "",
+    "requires" : [ "${UNIFYPATH}", "https://github.com/zynga/apibrowser.git" ]
+}
