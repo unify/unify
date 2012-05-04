@@ -13,7 +13,7 @@
 /**
  * Application class for next generation devices.
  * 
- * #require(core.ext.sugar.String)
+ * #require(ext.sugar.String)
  */
 core.Class("unify.Application", {
   
