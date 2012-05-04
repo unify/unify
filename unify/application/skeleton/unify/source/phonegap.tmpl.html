@@ -3,12 +3,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>${Name}</title>
+    <title>${NAMESPACE}</title>
     <style type="text/css">
       * { box-sizing: border-box; }
     </style>
     <script type="text/javascript" src="phonegap.js"></script>
-    <script type="text/javascript" src="script/${Namespace}-webkit-False.js"></script>
+    <script type="text/javascript" src="script/kernel.js"></script>
+    <script type="text/javascript">
+      core.io.Script.load(["script/${NAMESPACE}-", core.Env.CHECKSUM, ".js"].join(""));
+    </script>
   </head>
   <body>
   </body>
