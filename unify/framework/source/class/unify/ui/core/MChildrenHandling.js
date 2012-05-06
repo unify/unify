@@ -13,6 +13,10 @@
 core.Class("unify.ui.core.MChildrenHandling", {
   members: {
     // TODO !!
+    addAt : function() {
+      this._addAt.apply(this, arguments);
+    },
+    
     add : function() {
       this._add.apply(this, arguments);
     },
