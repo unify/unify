@@ -1,6 +1,6 @@
 /* ************************************************************************
 
-   ${Name}
+   header
 
    Copyright:
      2010 Deutsche Telekom AG, Germany, http://telekom.com
@@ -9,53 +9,72 @@
 
 /* ************************************************************************
 
-#asset(${NamespacePath}/*)
+#asset(${NAMESPACE}/*)
 
 ************************************************************************ */
 
 /**
  * Unify application class
  */
-qx.Class.define("${Namespace}.Application",
-{
-  extend : unify.Application,
-
-  members :
-  {
-    // overridden
-    main : function()
-    {
-      // Call super class
-      this.base(arguments);
-
-      // Set theme
-      qx.theme.manager.Meta.getInstance().setTheme(unify.theme.Dark);
-
-      // Configure application
-      document.title = "${Name}";
-
-      // Create view managers
-      var MasterViewManager = new unify.view.ViewManager("master");
-
-      // Register your view classes...
-      MasterViewManager.register(${Namespace}.view.Start, true);
-
-      // Add TabViews or SplitViews...
-      var TabView = new unify.view.TabViewManager(MasterViewManager);
-      TabView.register(${Namespace}.view.Start);
-
-      // Add view manager (or SplitView or TabView) to the root
-      this.add(TabView);
-
-      // Add at least one view manager to the navigation managment
-      var Navigation = unify.view.Navigation.getInstance();
-      Navigation.register(MasterViewManager);
-      Navigation.init();
+core.Class("${NAMESPACE}.Application", {
+  include : [unify.Application],
+  
+  
+  construct : function() {
+    unify.Application.call(this);
+  },
+  
+  /*
+  *****************************************************************************
+    MEMBERS
+  *****************************************************************************
+  */
+  members: {
+    
+    //Overidden
+    _getTheme : function() {
+      return new unify.theme.Dark();
     },
     
-    // overridden
-    _getTheme : function() {
-      return unify.theme.Dark;
+    /*
+    ---------------------------------------------------------------------------
+      PRIVATE
+    ---------------------------------------------------------------------------
+    */
+    
+    
+    /*
+    ---------------------------------------------------------------------------
+      PUBLIC
+    ---------------------------------------------------------------------------
+    */
+    
+    /**
+     * This is the main function of the application. It will get
+     * automatically get called after everything is loaded.
+     */
+    main: function() {
+      // Call super class
+      unify.Application.prototype.main.call(this);
+      
+      //Set style for header pseudo root element
+      core.bom.Style.set(this._getRootElement(), {
+        width : "100%",
+        height : "100px",
+        overflow : "hidden",
+        padding : 0
+      });
+      
+      // Create view managers
+      var masterViewManager = new unify.view.ViewManager("master");
+      masterViewManager.register(header.view.Header, true);
+      this.add(masterViewManager);
+      
+      // Add at least one view manager to the navigation managment
+      var navigation = unify.view.Navigation.getInstance();
+      navigation.register(masterViewManager);
+      navigation.setStartView(header.view.Header);
+      navigation.init();
     }
   }
 });

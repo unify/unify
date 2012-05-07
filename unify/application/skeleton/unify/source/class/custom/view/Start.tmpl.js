@@ -1,18 +1,18 @@
 /* ************************************************************************
 
-  ${Name}
-
-  Copyright:
-    2009 Deutsche Telekom AG, Germany, http://telekom.com
+  ${NAMESPACE}
 
  ************************************************************************ */
 
 /**
  * Start View
  */
-qx.Class.define("${Namespace}.view.Start", {
-  extend : unify.view.StaticView,
-  type : "singleton",
+unify.Class("${NAMESPACE}.view.Start", {
+  include : [unify.view.StaticView],
+
+  constructor : function() {
+    unify.view.StaticView.call(this);
+  },
 
   members : 
   {
@@ -23,10 +23,11 @@ qx.Class.define("${Namespace}.view.Start", {
 
     
     // overridden
-    _createView : function() 
-    {
+    _createView : function() {
       var content = new unify.ui.basic.Label("Hello World");
       this.add(content);
     }
   }
 });
+
+unify.core.Singleton.annotate(${NAMESPACE}.view.Start);
