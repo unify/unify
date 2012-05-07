@@ -8,5 +8,10 @@
 			"default" : "default"
 		}
 	},
-  "requires" : ["https://github.com/zynga/core.git", "https://github.com/fastner/lowland.git"]
+  "requires" : [{
+		"source" : "https://github.com/fastner/core.git",
+		"version" : "fixed"
+	}, {
+		"source" : "https://github.com/fastner/lowland.git"
+	}]
 }
