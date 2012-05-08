@@ -170,7 +170,7 @@ core.Class("unify.view.Navigation",
     {
       if (core.Env.getValue("debug"))
       {
-        if (!(path instanceof unify.view.Path)) {
+        if (!(path.constructor instanceof unify.view.Path.constructor)) {
           throw new Error("Invalid path to navigate() to: " + path);
         }
       }

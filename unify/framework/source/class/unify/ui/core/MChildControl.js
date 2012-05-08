@@ -174,7 +174,7 @@ core.Class("unify.ui.core.MChildControl", {
       var states = this.getAllStates();
       var forward = this._forwardStates;
 
-      if (states && forward && control instanceof unify.ui.core.Widget)
+      if (states && forward && control.constructor instanceof unify.ui.core.Widget.constructor)
       {
         for (var state in states)
         {
@@ -254,7 +254,7 @@ core.Class("unify.ui.core.MChildControl", {
           for (var id in controls) {
             obj = controls[id];
   
-            if (obj instanceof unify.ui.core.Widget) {
+            if (obj.constructor instanceof unify.ui.core.Widget.constructor) {
               obj.updateAppearance();
             }
           }
@@ -285,7 +285,7 @@ core.Class("unify.ui.core.MChildControl", {
           for (var id in controls)
           {
             control = controls[id];
-            if (control instanceof unify.ui.core.Widget) {
+            if (control.constructor instanceof unify.ui.core.Widget.constructor) {
               controls[id].addState(state);
             }
           }
@@ -345,7 +345,7 @@ core.Class("unify.ui.core.MChildControl", {
           for (var id in controls)
           {
             var control = controls[id];
-            if (control instanceof unify.ui.core.Widget) {
+            if (control.constructor instanceof unify.ui.core.Widget.constructor) {
               control.replaceState(old, value);
             }
           }

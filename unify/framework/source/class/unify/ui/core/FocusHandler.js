@@ -252,7 +252,7 @@ coe.Class("unify.ui.core.FocusHandler", {
         child = children[i];
 
         // Filter spacers etc.
-        if (!(child instanceof unify.ui.core.Widget)) {
+        if (!(child.constructor instanceof unify.ui.core.Widget.constructor)) {
           continue;
         }
 
@@ -288,7 +288,7 @@ coe.Class("unify.ui.core.FocusHandler", {
         child = children[i];
 
         // Filter spacers etc.
-        if (!(child instanceof unify.ui.core.Widget)) {
+        if (!(child.constructor instanceof unify.ui.core.Widget.constructor)) {
           continue;
         }
 
@@ -321,7 +321,7 @@ coe.Class("unify.ui.core.FocusHandler", {
         child = children[i];
 
         // Filter spacers etc.
-        if (!(child instanceof unify.ui.core.Widget)) {
+        if (!(child.constructor instanceof unify.ui.core.Widget.constructor)) {
           continue;
         }
 
@@ -361,7 +361,7 @@ coe.Class("unify.ui.core.FocusHandler", {
         child = children[i];
 
         // Filter spacers etc.
-        if (!(child instanceof unify.ui.core.Widget)) {
+        if (!(child.constructor instanceof unify.ui.core.Widget.constructor)) {
           continue;
         }
 
