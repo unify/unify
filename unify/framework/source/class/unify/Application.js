@@ -75,9 +75,14 @@ core.Class("unify.Application", {
       
       // Add box sizing css node
       var st = document.createElement("style");
-      st.type = "text/css";
       var prop = core.bom.Style.property("boxSizing").hyphenate();
-      st.innerHTML = " * { " + prop + ": border-box; } ";
+      var rule = document.createTextNode(" * { " + prop + ": border-box; } ");
+      st.type = "text/css";
+      if (st.styleSheet) {
+        st.styleSheet.cssText = rule.nodeValue;
+      } else {
+        st.appendChild(rule);
+      }
       document.head.appendChild(st);
       
       // Support focus handling

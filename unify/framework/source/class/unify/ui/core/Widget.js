@@ -741,7 +741,13 @@ core.Class("unify.ui.core.Widget", {
       }
       if (!preventSize) {
         var element = this.getElement();
-        if (element instanceof DocumentFragment) {
+        var isDocFragment;
+        if (core.Env.getValue("engine") == "trident") {
+          isDocFragment = element.nodeName == "#document-fragment";
+        } else {
+          isDocFragment = element instanceof DocumentFragment;
+        }
+        if (isDocFragment) {
           // Only virtual layouter, so save calculated values. There is no element to set position infos on.
           this.__virtualPosition = {left: left, top: top};
         } else {
@@ -1609,7 +1615,13 @@ core.Class("unify.ui.core.Widget", {
 
         //element.$$widget = this.toHashCode();
 
-        if (!(element instanceof DocumentFragment)) {
+        var isDocFragment;
+        if (core.Env.getValue("engine") == "trident") {
+          isDocFragment = element.nodeName == "#document-fragment";
+        } else {
+          isDocFragment = element instanceof DocumentFragment;
+        }
+        if (!(isDocFragment)) {
           if(core.Env.getValue("debug")){
             element.setAttribute("unifyclass",this.constructor.toString());
             element.setAttribute("appearance",this.getAppearance());

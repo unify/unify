@@ -16,12 +16,9 @@ core.Class("unify.core.Init", {
 unify.core.Statics.annotate(unify.core.Init, {
   getApplication : function() {
     return unify.core.Init.$$application;
-  }
-});
-
-
-(function() {
-  var load = function() {
+  },
+  
+  startUp : function() {
     var Application = core.Class.getByName(core.Env.getValue("application") + ".Application");
     var init = new Application();
     
@@ -29,31 +26,5 @@ unify.core.Statics.annotate(unify.core.Init, {
 
     init.main();
     init.finalize();
-  };
-  
-  //lowland.bom.Events.set(element, type, handler, capture);
-  
-  var events = ["error",
-      "load",
-      "beforeunload",
-      "unload",
-      "resize",
-      "scroll",
-      "beforeshutdown"];
-      
-  var addNativeListener = function(target, type, listener, useCapture) {
-      if (target.addEventListener) {
-        target.addEventListener(type, listener, !!useCapture);
-      } else if (target.attachEvent) {
-        target.attachEvent("on" + type, listener);
-      } else if (typeof target["on" + type] != "undefined") {
-        target["on" + type] = listener;
-      } else {
-        if (core.Env.getValue("debug")) {
-          console.warn("No method available to add native listener to " + target);
-        }
-      }
-    };
-
-  addNativeListener(window, "load", load);
-})();
+  }
+});

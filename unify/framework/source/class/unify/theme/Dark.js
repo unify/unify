@@ -82,7 +82,7 @@ core.Class("unify.theme.Dark", {
               border : 0,
               padding : 0,
               margin : 0,
-              boxSizing : "borderBox",
+              boxSizing : "border-box",
               font: "default",
               color : "black",
               background : "white",
