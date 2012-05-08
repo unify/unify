@@ -48,7 +48,7 @@ def source():
         resolver = Resolver().addClassName("%s.Application" % NAMESPACE).excludeClasses(includedByKernel)
 
         # Building class loader
-        storeLoader("script/%s-%s.js" % (NAMESPACE, permutation.getChecksum()), Sorter(resolver).getSortedClasses())
+        storeLoader("script/%s-%s.js" % (NAMESPACE, permutation.getChecksum()), Sorter(resolver).getSortedClasses(), bootCode="unify.core.Init.startUp();")
 
 
 @task("Build version")
@@ -69,5 +69,5 @@ def build():
         resolver = Resolver().addClassName("%s.Application" % NAMESPACE).excludeClasses(includedByKernel)
 
         # Compressing classes
-        storeCompressed("script/%s-%s.js" % (NAMESPACE, permutation.getChecksum()), Sorter(resolver).getSortedClasses(), bootCode="new apibrowser.Browser;")
+        storeCompressed("script/%s-%s.js" % (NAMESPACE, permutation.getChecksum()), Sorter(resolver).getSortedClasses(), bootCode="unify.core.Init.startUp();")
 
