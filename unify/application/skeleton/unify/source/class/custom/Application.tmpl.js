@@ -57,23 +57,15 @@ core.Class("${NAMESPACE}.Application", {
       // Call super class
       unify.Application.prototype.main.call(this);
       
-      //Set style for header pseudo root element
-      core.bom.Style.set(this._getRootElement(), {
-        width : "100%",
-        height : "100px",
-        overflow : "hidden",
-        padding : 0
-      });
-      
       // Create view managers
       var masterViewManager = new unify.view.ViewManager("master");
-      masterViewManager.register(header.view.Header, true);
+      masterViewManager.register(${NAMESPACE}.view.Start, true);
       this.add(masterViewManager);
       
       // Add at least one view manager to the navigation managment
       var navigation = unify.view.Navigation.getInstance();
       navigation.register(masterViewManager);
-      navigation.setStartView(header.view.Header);
+      navigation.setStartView(${NAMESPACE}.view.Start);
       navigation.init();
     }
   }

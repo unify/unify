@@ -10,7 +10,7 @@
 unify.Class("${NAMESPACE}.view.Start", {
   include : [unify.view.StaticView],
 
-  constructor : function() {
+  construct : function() {
     unify.view.StaticView.call(this);
   },
 
