@@ -21,14 +21,15 @@ core.Class("unify.view.Root", {
   /**
    * @param rootElement {Element} DOM element the widget root is bound to
    * @param rootEventElement {Element} DOM element to bind global event listeners to
-   * @param layout {unify.ui.layout.Base} Layout of root element
+   * @param viewportElement {Element} DOM element all popovers and out of layouting elements are bound to
    */
-  construct : function(rootElement,rootEventElement) {
+  construct : function(rootElement,rootEventElement,viewportElement,layout) {
     this.__rootElement = rootElement;
     this.__rootEventElement = rootEventElement;
+    this.__viewportElement = viewportElement;
     
     unify.ui.core.Widget.call(this);
-    this._setLayout(new unify.ui.layout.Canvas());
+    this._setLayout(layout || new unify.ui.layout.Canvas());
     
     lowland.bom.Events.set(window, "resize", this.__onResize.bind(this));
   },
@@ -75,6 +76,10 @@ core.Class("unify.view.Root", {
     
     getEventElement : function() {
       return this.__rootEventElement;
+    },
+    
+    getViewportElement : function() {
+      return this.__viewportElement;
     },
     
     /**

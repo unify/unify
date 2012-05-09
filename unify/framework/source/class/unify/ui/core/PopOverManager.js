@@ -45,7 +45,7 @@ core.Class("unify.ui.core.PopOverManager", {
     
     lowland.bom.Events.listen(pblocker, "tap", this.__onTapBlocker.bind(this));
     
-    var rootElement = root.getElement();
+    var rootElement = root.getViewportElement();
     rootElement.appendChild(pblocker);
     rootElement.appendChild(mblocker);
   },

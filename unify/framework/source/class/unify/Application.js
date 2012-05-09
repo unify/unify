@@ -68,9 +68,10 @@ core.Class("unify.Application", {
 
       var rootElement = this._getRootElement();
       var rootLayout = this._getRootLayout();
+      var viewportElement = this._getViewportElement();
       this.addNativeListener(rootElement, "click", this.__onClick, this);
       //lowland.bom.Events.set(rootElement, "click", this.__onClick.bind(this));
-      var root = this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), rootLayout);
+      this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), viewportElement, rootLayout);
       core.bom.Style.set(rootElement, "visibility", "hidden");
       
       // Add box sizing css node
@@ -135,6 +136,13 @@ core.Class("unify.Application", {
      */
     _getRootElement : function() {
       return document.body;
+    },
+    
+    /**
+     * {Element} Returns viewport element all popovers and out of layout widgets are bound to.
+     */
+    _getViewportElement : function() {
+      return this._getRootElement();
     },
     
     _getTheme : function() {
