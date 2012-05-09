@@ -7,7 +7,7 @@
 /**
  * Start View
  */
-unify.Class("${NAMESPACE}.view.Start", {
+core.Class("${NAMESPACE}.view.Start", {
   include : [unify.view.StaticView],
 
   construct : function() {
