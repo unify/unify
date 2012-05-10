@@ -71,7 +71,8 @@ core.Class("unify.ui.form.Slider", {
     
     lowland.bom.Events.listen("tap", this.__onTap.bind(this));
     this.addListener("resize", this.__onResize, this);
-    
+    this.__touchMoveWrapper = this.__touchMove.bind(this);
+    this.__touchEndWrapper = this.__touchEnd.bind(this);
   },
   
   members: {
@@ -168,8 +169,6 @@ core.Class("unify.ui.form.Slider", {
      */
     __touchStart : function(e) {
       var root = unify.core.Init.getApplication().getRoot().getEventElement();
-      this.__touchMoveWrapper = this.__touchMove.bind(this);
-      this.__touchEndWrapper = this.__touchEnd.bind(this);
       lowland.bom.Events.listen(root, "touchmove", this.__touchMoveWrapper);
       lowland.bom.Events.listen(root, "touchend", this.__touchEndWrapper);
       
