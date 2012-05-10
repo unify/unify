@@ -214,12 +214,6 @@
             this.fireEvent("execute", BTN_OK);
           }, this);
           
-          if (button.appearance) {
-            userBtn.setAppearance(button.appearance);
-          }
-          
-          userBtn.addListener("execute", this.__onButtonExecute, this);
-          
           var btnCount = buttons.length;
           
           if (btnCount > 4) {
@@ -253,6 +247,10 @@
               allowGrowY: false,
               alignY: "middle"
             });
+            
+            if (button.appearance) {
+              userBtn.setAppearance(button.appearance);
+            }
             
             userBtn.addListener("execute", this.__onButtonExecute, this);
             
