@@ -213,7 +213,7 @@ core.Class("unify.ui.form.TextField", {
      /**
      * Focus handler
      *
-     * If this text area receives focus, we check if the current value of
+     * If this text field receives focus, we check if the current value of
      * the text area is equal to the placeholder value. If that is the case,
      * we empty the box so the user may enter some text.
      *
@@ -224,7 +224,10 @@ core.Class("unify.ui.form.TextField", {
       if (this.__placeholderValue != '' &&
           currentValue == this.__placeholderValue) {
         this.setValue('');
+        return;
       }
+      //Fix for mousecatch after input
+      this.setValue(currentValue);
     }
   }/*,
   
