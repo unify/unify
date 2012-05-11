@@ -98,7 +98,20 @@ core.Class("unify.view.helper.ViewOverlayManager", {
     getCurrentOverlay : function() {
       return this.__currentOverlay;
     },
-
+    
+    /**
+     * Check if a id is already visible
+     * @param id {String} ID of view manager as string or overlay widget
+     */
+    isVisible : function(id){
+      var viewManager = unify.view.ViewManager.get(id);
+      if (this.__visibleViewManagers.indexOf(viewManager) > -1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    
     /**
      * Shows the view manager with the given ID.
      *
