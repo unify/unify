@@ -74,7 +74,7 @@ core.Class("unify.view.RemoteView",
         //this.__activityIndicator.hide(this.getHash());
       }
       this.__requestId = this._getBusinessObject().get(this._getServiceName(), this._getServiceParams());
-      if (this.__requestId !== false) {
+      if (this.__requestId !== false && this.__activityIndicator) {
         this.__activityIndicator.show(this.getHash());
       }
       return this.__requestId;
@@ -136,7 +136,6 @@ core.Class("unify.view.RemoteView",
       var business = this._getBusinessObject();
       var service = this._getServiceName();
       var params = this._getServiceParams();
-
       var renderVariant = this._getRenderVariant();
       if (renderVariant !== this.__appliedVariant)
       {
@@ -154,8 +153,9 @@ core.Class("unify.view.RemoteView",
         else
         {
           delete this.__requestId;
-          console.log("HIDE ACTIVITY INDICATOR ", this.getHash(), this.__requestId);
-          this.__activityIndicator.hide(this.getHash());
+          if(this.__activityIndicator){
+            this.__activityIndicator.hide(this.getHash());
+          }
           this.__appliedVersion = cachedEntry.created;
           this._wrappedRenderData(cachedEntry.data);
         }
@@ -193,13 +193,16 @@ core.Class("unify.view.RemoteView",
      */
     __onBusinessObjectCompleted : function(e)
     {
+      
       if (e.getId() !== this.__requestId) {
         return;
       }
-
+      
       delete this.__requestId;
-      this.__activityIndicator.hide(this.getHash());
-
+      if(this.__activityIndicator){
+        this.__activityIndicator.hide(this.getHash());
+      }
+      
       if (e.isErrornous()) {
         this._errorHandler("communication", e.getRequest());
       } else if (e.isMalformed()) {
