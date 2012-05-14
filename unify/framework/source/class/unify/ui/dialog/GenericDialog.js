@@ -84,6 +84,9 @@
       add : function() {
         unify.ui.core.MRemoteChildrenHandling.prototype.add.apply(this, arguments);
       },
+      addAt : function() {
+        unify.ui.core.MRemoteChildrenHandling.prototype.addAt.apply(this, arguments);
+      },
       getChildren : function() {
         return unify.ui.core.MRemoteChildrenHandling.prototype.getChildren.apply(this, arguments);
       },
