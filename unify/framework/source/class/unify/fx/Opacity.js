@@ -27,7 +27,7 @@ core.Class("unify.fx.Opacity", {
     
     _setup : function() {
       var to = this.getValue();
-      var from = this.__resetPoint = this._widget.getStyle("opacity") || 1;
+      var from = this.__resetPoint = parseFloat(this._widget.getStyle("opacity")) || 1;
       
       this.__mod = from;
       this.__anim = to - from

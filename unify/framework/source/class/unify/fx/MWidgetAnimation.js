@@ -93,7 +93,8 @@ core.Class("unify.fx.MWidgetAnimation", {
      */
     __mwaDoAnimation : function(value, animationName, Animation, doneEvent, duration) {
       var animation = this.__mwAnimationMap[animationName];
-      if (value) {
+      console.log("Animation ", animationName, value, animation);
+      if (value != null) {
         if (animation) {
           animation.stop();
         } else {
@@ -145,7 +146,7 @@ core.Class("unify.fx.MWidgetAnimation", {
         animation.stop();
         animation.reset(this.__mwAnimationRotateReset);
       }
-      if (value) {
+      if (value != null) {
         if (!animation) {
           animation = this.__mwAnimationRotate = new unify.fx.Rotate(this);
           this.__mwAnimationRotateReset = animation.getResetValue();
