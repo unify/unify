@@ -1554,20 +1554,20 @@ core.Class("unify.ui.core.Widget", {
       return this.getVisibility() === "excluded";
     },
 
-
-
     /**
      * Removes widget from parent widget and adds it to dispose queue
      */
     destroy : function() {
-      if (this.$$disposed) {
+      if (this.isDisposed()) {
         return;
       }
 
-      var parent = this.$$parent;
+      var parent = this.getParentBox();
       if (parent) {
         parent._remove(this);
       }
+      
+      unify.ui.layout.queue.Dispose.add(this);
     },
 
 
@@ -2088,16 +2088,18 @@ core.Class("unify.ui.core.Widget", {
       if (this.__layoutManager) {
         this.__layoutManager.invalidateLayoutCache();
       }
+    },
+    
+    destruct : function() {
+      this._disposeArray("__widgetChildren");
+      this._disposeObjects(
+        "__layoutManager",
+        "__element"
+      );
+      
+      unify.ui.core.VisibleBox.prototype.destruct.call(this);
     }
-  }/*,
-
-  destruct : function() {
-    this._disposeArray("__widgetChildren");
-    this._disposeObjects(
-      "__layoutManager",
-      "__element"
-    );
-  }*/
+  }
 });
 
 

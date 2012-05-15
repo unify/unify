@@ -17,13 +17,14 @@
 (function() {
   
   var widgetQueue = [];
+  var name = "appearance";
 
   core.Module("unify.ui.layout.queue.Appearance", {
-    name : "appearance",
+    name : name,
     
     add : function(widget) {
       widgetQueue.push(widget);
-      unify.ui.layout.queue.Manager.run(unify.ui.layout.queue.Appearance.name);
+      unify.ui.layout.queue.Manager.run(name);
     },
     
     flush : function() {

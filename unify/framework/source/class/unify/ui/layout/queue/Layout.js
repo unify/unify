@@ -17,6 +17,7 @@
 (function() {
   
   var widgetQueue = [];
+  var name = "layout";
   
   var sortWidgets = function(a,b) {
     if (!a) {
@@ -29,11 +30,11 @@
   };
   
   core.Module("unify.ui.layout.queue.Layout", {
-    name : "layout",
+    name : name,
     
     add : function(widget) {
       widgetQueue.push(widget);
-      unify.ui.layout.queue.Manager.run(unify.ui.layout.queue.Layout.name);
+      unify.ui.layout.queue.Manager.run(name);
     },
     
     flush : function() {

@@ -17,10 +17,9 @@
 (function() {
   
   var widgetQueue = [];
-  var visibilityCache = [];
-  var name = "visibility";
+  var name = "dispose";
 
-  core.Module("unify.ui.layout.queue.Visibility", {
+  core.Module("unify.ui.layout.queue.Dispose", {
     name : name,
     
     add : function(widget) {
@@ -29,26 +28,10 @@
     },
     
     flush : function() {
-      for (var i=0,ii=widgetQueue.length; i<ii; i++) {
-        var children = widgetQueue[i].getLayoutChildren();
-        widgetQueue = widgetQueue.concat(children);
-      }
-      
       var widget;
       while ((widget = widgetQueue.shift())) {
-        if (widget.getVisibility() == "visible") {
-          if (!visibilityCache.contains(widget)) {
-            visibilityCache.push(widget);
-          }
-        } else {
-          visibilityCache.remove(widget);
-        }
-        widget.checkAppearanceNeeds();
+        widget.dispose();
       }
-    },
-    
-    isVisible : function(widget) {
-      return visibilityCache.contains(widget);
     }
   });
 
