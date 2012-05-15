@@ -52,7 +52,7 @@ core.Class("unify.ui.container.Overlay", {
     
     /** optional reference to widget that triggers show/hide of this overlay */
     trigger : {
-      type: "unify.ui.core.Widget",
+      // TODO: type: "unify.ui.core.Widget",
       init: null,
       nullable: true,
       apply: function(value, old) { this._applyTrigger(value, old); }
