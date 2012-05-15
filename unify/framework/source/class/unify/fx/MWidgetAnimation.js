@@ -93,7 +93,6 @@ core.Class("unify.fx.MWidgetAnimation", {
      */
     __mwaDoAnimation : function(value, animationName, Animation, doneEvent, duration) {
       var animation = this.__mwAnimationMap[animationName];
-      console.log("Animation ", animationName, value, animation);
       if (value != null) {
         if (animation) {
           animation.stop();
