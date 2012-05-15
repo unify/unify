@@ -214,7 +214,7 @@ core.Class("unify.view.helper.ViewOverlayManager", {
       } else {
         var mode = viewManager.getDisplayMode();
   
-        var overlay=this.__overlays[viewManager];
+        var overlay=this.__overlays[viewManager.getHash()];
         PopOverManager.hide(overlay);
         
         overlay.addListenerOnce("hidden",finalize,this);
@@ -230,9 +230,10 @@ core.Class("unify.view.helper.ViewOverlayManager", {
     
     __hidePopover : function(e) {
       var overlay = e.getData();
+      
       if (overlay) {
         var widget = lowland.ObjectManager.find(overlay.getUserData("viewmanager"));
-      
+        
         if (widget) {
           this.__visibleViewManagers.remove(widget);
           this.fireEvent("hide", (widget&&widget.getId()) || null);
@@ -248,7 +249,7 @@ core.Class("unify.view.helper.ViewOverlayManager", {
      * @return {unify.ui.container.Overlay} Overlay widget
      */
     __getOverlay : function(viewManager, create){
-      var overlay = this.__overlays[viewManager] || null;
+      var overlay = this.__overlays[viewManager.getHash()] || null;
       if(!overlay && create !== false){
         overlay = new unify.ui.container.Overlay();
         overlay.setUserData("viewmanager", viewManager.getHash());
@@ -258,7 +259,7 @@ core.Class("unify.view.helper.ViewOverlayManager", {
         if(appearance){
           overlay.setAppearance(appearanceId);
         }
-        this.__overlays[viewManager] = overlay;
+        this.__overlays[viewManager.getHash()] = overlay;
       }
       return overlay;
     }

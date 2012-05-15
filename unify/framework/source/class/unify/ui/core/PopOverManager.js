@@ -43,7 +43,7 @@ core.Class("unify.ui.core.PopOverManager", {
     core.bom.Style.set(mblocker, mstyle);
     mblocker.id = "modal-blocker";
     
-    lowland.bom.Events.listen(pblocker, "tap", this.__onTapBlocker.bind(this));
+    this.addNativeListener(pblocker, "tap", this.__onTapBlocker, this);
     
     var rootElement = root.getViewportElement();
     rootElement.appendChild(pblocker);
@@ -155,7 +155,6 @@ core.Class("unify.ui.core.PopOverManager", {
       
       if (numVisible > 0) {
         var topMost = this.__visibleOverlays[numVisible-1];
-
         this.hide(topMost);
       } else {
         this.error("tapped on blocker without visible viewmanager");
@@ -191,7 +190,6 @@ core.Class("unify.ui.core.PopOverManager", {
         pos = {left: 0, top: 0, right: 0, bottom: 0};
       }
       this.__root.add(widget, pos);
-      
       this.__visibleOverlays.push(widget);
       this.__sortPopOvers();
       
