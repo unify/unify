@@ -203,8 +203,12 @@ core.Class("unify.view.helper.ViewOverlayManager", {
         vvm.remove(viewManager);
         self.fireEvent("hide", id);
         
-        var vm = self.__currentViewManager = vvm[vvm.length-1];
-        self.__currentOverlay = self.__getOverlay(vm, false);
+        if (vvm.length > 0) {
+          var vm = self.__currentViewManager = vvm[vvm.length-1];
+          self.__currentOverlay = self.__getOverlay(vm, false);
+        } else {
+          self.__currentOverlay = null;
+        }
       };
       
 
