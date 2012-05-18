@@ -23,8 +23,10 @@
     name : name,
     
     add : function(widget) {
-      widgetQueue.push(widget);
-      unify.ui.layout.queue.Manager.run(name);
+      if (!widgetQueue.contains(widget)) {
+        widgetQueue.push(widget);
+        unify.ui.layout.queue.Manager.run(name);
+      }
     },
     
     flush : function() {

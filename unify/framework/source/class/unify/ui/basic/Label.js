@@ -111,8 +111,6 @@ core.Class("unify.ui.basic.Label", {
   },
 
   members : {
-    __contentSize : null,
-
     // overridden
     _createElement : function() {
       return lowland.bom.Label.create(this.getValue(), this.getHtml());
@@ -124,11 +122,7 @@ core.Class("unify.ui.basic.Label", {
       var contentSize = unify.ui.core.Widget.prototype._getContentHint.call(this);
 
       if (this.getAutoCalculateSize()) {
-        contentSize = this.__contentSize;
-        if (!contentSize)
-        {
-          contentSize = this.__contentSize = this.__computeContentSize();
-        }
+        contentSize = this.__computeContentSize();
       } else if (!this.getWrap()) {
         var lineHeight = this.getFont().lineHeight;
         if (!lineHeight) {
@@ -143,7 +137,7 @@ core.Class("unify.ui.basic.Label", {
         }
         contentSize.height = Math.ceil(fontSize  * lineHeight);
       }
-
+      
       return {
         width : contentSize.width,
         height : contentSize.height
@@ -197,7 +191,6 @@ core.Class("unify.ui.basic.Label", {
      * @param value {String} New value to set
      */
     _applyValue : function(value) {
-      this.__contentSize = null;
       this.invalidateLayoutChildren();
       lowland.bom.Label.setValue(this.getElement(), value, this.getHtml());
     },
