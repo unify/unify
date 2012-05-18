@@ -56,10 +56,10 @@ core.Class("unify.ui.container.Scroll", {
     contentWidget.addListener("resize", this.__updateDimensions, this);
     
     this.addListener("changeVisibility", this.__onChangeVisibility, this);
-    var root = unify.core.Init.getApplication().getRoot();
-    root.addNativeListener("touchmove", this.__onTouchMove,this);
+    var root = this.__root = unify.core.Init.getApplication().getRoot();
+    /*root.addNativeListener("touchmove", this.__onTouchMove,this);
     root.addNativeListener("touchend", this.__onTouchEnd,this);
-    root.addNativeListener("touchcancel", this.__onTouchEnd,this);
+    root.addNativeListener("touchcancel", this.__onTouchEnd,this);*/
   },
 
   /*
@@ -666,6 +666,9 @@ core.Class("unify.ui.container.Scroll", {
       }
     },
 
+    __startPos : null,
+    __isMoved : false,
+
     /**
      * Handler for touch start event
      *
@@ -673,6 +676,9 @@ core.Class("unify.ui.container.Scroll", {
      */
     __onTouchStart : function(e){
       this.__inTouch = true;
+      
+      var touch = e.touches[0];
+      this.__startPos = [touch.pageX, touch.pageY];
       this.__showIndicatorsOnNextTouchMove=true;
       //TODO why is this called here? touchstart should not change the properties, so no need to recache them
       this.__updateProperties();
@@ -693,20 +699,19 @@ core.Class("unify.ui.container.Scroll", {
 
       this.__scroller.doTouchStart(touches, +ne.timeStamp);
       e.preventDefault();
+      
+      var root = this.__root;
+      root.addNativeListener("touchmove", this.__onTouchMove,this);
+      root.addNativeListener("touchend", this.__onTouchEnd,this);
+      root.addNativeListener("touchcancel", this.__onTouchEnd,this);
+      
 /* NEW:      var cb = function() {
         this.removeNativeListener(root, "touchmove", cb);
         this.__showIndicators.apply(this, arguments);
       }.bind(this);
 
       var root = unify.core.Init.getApplication().getRoot().getEventElement();
-      this.addNativeListener(root, "touchmove", cb, this);
-      
-      /*lowland.bom.Events.listen(root, "touchmove", this.__onTouchMove.bind(this));
-      lowland.bom.Events.listen(root, "touchend", this.__onTouchEnd.bind(this));
-      lowland.bom.Events.listen(root, "touchcancel", this.__onTouchEnd.bind(this));* /
-      this.addNativeListener(root, "touchmove", this.__onTouchMove, this);
-      this.addNativeListener(root, "touchend", this.__onTouchEnd, this);
-      this.addNativeListener(root, "touchcancel", this.__onTouchEnd, this);*/
+      this.addNativeListener(root, "touchmove", cb, this); */
     },
 
     /**
@@ -732,6 +737,19 @@ core.Class("unify.ui.container.Scroll", {
       if(!this.__inTouch){
         return;
       }
+      
+      var touch = e.touches[0];
+      var x = touch.pageX;
+      var y = touch.pageY;
+      
+      var startPos = this.__startPos;
+      
+      if (Math.abs(x-startPos[0]) > 10) {
+        this.__isMoved = true;
+      } else if (Math.abs(y-startPos[1]) > 10) {
+        this.__isMoved = true;
+      }
+      
       if(this.__showIndicatorsOnNextTouchMove){
         this.__showIndicatorsOnNextTouchMove=false;
         this.__showIndicators();
@@ -751,15 +769,16 @@ core.Class("unify.ui.container.Scroll", {
         return;
       }
       this.__inTouch = false;
-/* NEW:      this.__scroller.doTouchEnd(+e.timeStamp); //.getNativeEvent().timeStamp);
       
-      var root = unify.core.Init.getApplication().getRoot().getEventElement();
-      
-      this.removeNativeListener(root, "touchmove", this.__onTouchMove, this);
-      this.removeNativeListener(root, "touchend", this.__onTouchEnd, this);
-      this.removeNativeListener(root, "touchcancel", this.__onTouchEnd, this);*/
+      var root = this.__root;
+      root.removeNativeListener("touchmove", this.__onTouchMove,this);
+      root.removeNativeListener("touchend", this.__onTouchEnd,this);
+      root.removeNativeListener("touchcancel", this.__onTouchEnd,this);
       this.__showIndicatorsOnNextTouchMove=false;
-      this.__scroller.doTouchEnd(+e.timeStamp);
+      if (this.__isMoved) {
+        this.__isMoved = false;
+        this.__scroller.doTouchEnd(+e.timeStamp);
+      }
     },
     
     /**
@@ -1805,7 +1824,6 @@ var Scroller;
 		 * @param animate {Boolean?false} Whether animation should be used to move to the new coordinates
 		 */
 		__publish: function(left, top, zoom, animate) {
-
 			var self = this;
 
 			// Remember whether we had an animation, then we try to continue based on the current "drive" of the animation
