@@ -57,6 +57,14 @@ core.Class("unify.ui.core.PopOverManager", {
     /** Hide popup event */
     "hide" : lowland.events.DataEvent
   },
+  
+  properties : {
+    "autoResize" : {
+      type: "Boolean",
+      init: false,
+      apply : function(value, old) { if (value !== old) { this.__applyAutoResize(value); }}
+    }
+  },
 
   /*
   ----------------------------------------------------------------------------
@@ -70,6 +78,29 @@ core.Class("unify.ui.core.PopOverManager", {
     __visibleOverlays : null,
     __pblocker : null,
     __mblocker : null,
+    
+    __getDocHeight : function() {
+      return Math.max(
+        Math.max(document.body.scrollHeight, document.documentElement.scrollHeight),
+        Math.max(document.body.offsetHeight, document.documentElement.offsetHeight),
+        Math.max(document.body.clientHeight, document.documentElement.clientHeight)
+      );
+    },
+    
+    __resizeHandler : function(e) {
+      var height = this.__getDocHeight() + "px";
+      core.bom.Style.set(this.__mblocker, "height", height);
+      core.bom.Style.set(this.__pblocker, "height", height);
+    },
+    
+    __applyAutoResize : function(value) {
+      if (value) {
+        this.addNativeListener(window, "resize", this.__resizeHandler, this);
+        this.__resizeHandler();
+      } else {
+        this.removeNativeListener(window, "resize", this.__resizeHandler, this);
+      }
+    },
     
     /**
      * Applies correct zIndex to all visible pop-overs
