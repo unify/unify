@@ -2,6 +2,14 @@
 # Part of Unify
 # Copyright (C) 2012 Sebastian Fastner, Mainz, Germany
 
+# Import unify build helper
+from jasy.core import Project
+unify_project = Project.getProjectByName("unify")
+exec(compile(open(os.path.realpath(os.path.abspath(unify_project.getPath() + "/../support/jasy/unify.py"))).read(), "unify.py", 'exec'))
+
+
+
+
 NAMESPACE = "${NAMESPACE}"
 
 session.permutateField("debug")
@@ -28,46 +36,9 @@ def api():
 
 @task("Source version")
 def source():
-    # Permutation independend config
-    formatting.enable("comma")
-    formatting.enable("semicolon")
-    optimization.disable("privates")
-    optimization.disable("variables")
-    optimization.disable("declarations")
-    optimization.disable("blocks")
-    
-    # Assets
-    asset = AssetManager(Resolver().addClassName("%s.Application" % NAMESPACE).getIncludedClasses())
-    
-    # Store loader script
-    includedByKernel = storeKernel("script/kernel.js", assets=asset.exportSource())
-    
-    # Process every possible permutation
-    for permutation in session.permutate():
-        # Resolving dependencies
-        resolver = Resolver().addClassName("%s.Application" % NAMESPACE).excludeClasses(includedByKernel)
-
-        # Building class loader
-        storeLoader("script/%s-%s.js" % (NAMESPACE, permutation.getChecksum()), Sorter(resolver).getSortedClasses(), bootCode="unify.core.Init.startUp();")
+    unify_source()
 
 
 @task("Build version")
 def build():
-  
-    # Assets
-    asset = AssetManager(Resolver().addClassName("%s.Application" % NAMESPACE).getIncludedClasses())
-    
-    # Store loader script
-    includedByKernel = storeKernel("script/kernel.js", assets=asset.exportBuild())
-    
-    # Copy files from source
-    updateFile("source/index.html", "index.html")
-    
-    # Process every possible permutation
-    for permutation in session.getPermutations():
-        # Resolving dependencies
-        resolver = Resolver().addClassName("%s.Application" % NAMESPACE).excludeClasses(includedByKernel)
-
-        # Compressing classes
-        storeCompressed("script/%s-%s.js" % (NAMESPACE, permutation.getChecksum()), Sorter(resolver).getSortedClasses(), bootCode="unify.core.Init.startUp();")
-
+    unify_build()
