@@ -2,5 +2,5 @@
     "name": "${NAMESPACE}",
     "kind" : "full",
     "package" : "",
-    "requires" : [ { "source": "https://github.com/unify/unify.git", "version": "jasy/core", "subpath": "unify/framework" }, "https://github.com/zynga/apibrowser.git" ]
+    "requires" : [ { "source": "https://github.com/unify/unify.git", "version": "3-latest-stable" }, "https://github.com/zynga/apibrowser.git" ]
 }
