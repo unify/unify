@@ -758,7 +758,7 @@ core.Class("unify.business.RemoteData",
           }
         }
 
-        if (this.getEnableNoContent() && req.getStatus() == 204)
+        if (this.getEnableNoContent() && (req.getStatus() == 204 || req.getStatus() == 200))
         {
           // pass: not modified + no content
         }
