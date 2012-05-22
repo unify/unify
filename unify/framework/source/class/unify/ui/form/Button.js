@@ -33,6 +33,11 @@ core.Class("unify.ui.form.Button", {
       init: true
     },
     
+    directEvent : {
+      type: "Boolean",
+      init: false
+    },
+    
     /** Wheter the button should calculate it's size -> property forwarded to label */
     autoCalculateSize : {
       type: "Boolean",
@@ -79,7 +84,11 @@ core.Class("unify.ui.form.Button", {
      * @param e {Event} Tap event
      */
     __onTap : function(e) {
-      this.fireEvent("execute");
+      if (this.getDirectEvent()) {
+        this.fireDirectEvent("execute");
+      } else {
+        this.fireEvent("execute");
+      }
     },
     
     /**
