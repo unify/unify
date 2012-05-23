@@ -69,8 +69,6 @@ core.Class("unify.Application", {
       var rootElement = this._getRootElement();
       var rootLayout = this._getRootLayout();
       var viewportElement = this._getViewportElement();
-      this.addNativeListener(rootElement, "click", this.__onClick, this);
-      //lowland.bom.Events.set(rootElement, "click", this.__onClick.bind(this));
       this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), viewportElement, rootLayout);
       core.bom.Style.set(rootElement, "visibility", "hidden");
       
@@ -227,21 +225,6 @@ core.Class("unify.Application", {
     {
       var clazz = this.classname;
       return clazz.substring(0, clazz.indexOf("."));
-    },
-
-
-    /**
-     * Prevent clicking on <a> tags to stop browser from relocate to another website
-     *
-     * @param e {Event} Native click event
-     */
-    __onClick : function(e) {
-      // Prevent click on href
-      /* TODO: var target = e.target;
-      var elem = unify.bom.Hierarchy.closest(target, "a[href]");
-      if (elem) {
-        e.preventDefault();
-      }*/
     },
     
 
