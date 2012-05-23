@@ -78,13 +78,19 @@
     }
   });
   lowland.bom.Events.listen(eventElement, "touchend", function(e) {
+    var removeTouchElement = [];
     for (var i=0,ii=touchElement.length; i<ii; i++) {
       var touch = touchElement[i];
       
       if (e.target == touch.target) {
+        removeTouchElement.push(touch);
         lowland.bom.Events.dispatch(e.target, "tap");
       }
     }
+    for (i=removeTouchElement.length-1; i>=0; i--) {
+      touchElement.remove(removeTouchElement[i]);
+    }
+    removeTouchElement = null;
   });
 
 })(this);
