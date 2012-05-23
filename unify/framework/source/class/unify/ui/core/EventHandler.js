@@ -30,8 +30,16 @@
   var eventElement = document.documentElement;
 
   if (emulateTouch) {
+    var root = null;
     lowland.bom.Events.set(eventElement, "click", function(e) {
-      e.preventDefault();
+      if (!root) {
+        root = unify.core.Init.getApplication().getRoot().getElement();
+      }
+      var target = e.target;
+      if (target.unify || unify.bom.Element.contains(root, target)) {
+        target.unify = true;
+        e.preventDefault();
+      }
     });
     lowland.bom.Events.set(eventElement, "mousedown", function(e) {
       if (e.button == 0) {
