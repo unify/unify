@@ -1,3 +1,4 @@
+import webbrowser, http.server, os, multiprocessing
 
 def unify_source():
     # Permutation independend config
@@ -39,3 +40,25 @@ def unify_build():
 
         # Compressing classes
         storeCompressed("script/%s-%s.js" % (NAMESPACE, permutation.getChecksum()), Sorter(resolver).getSortedClasses(), bootCode="unify.core.Init.startUp();")
+        
+        
+def run_server(port):
+  Handler = http.server.SimpleHTTPRequestHandler
+  httpd = http.server.HTTPServer(("",port), Handler)
+  print("Serve on 8095")
+  httpd.serve_forever()
+
+
+
+@task("Open help in browser")
+def help():
+    # Clearing cache
+    webbrowser.open("http://unify-training.com/")
+
+@task("Start webserver on localhost")
+def server(port=8000):
+    p = multiprocessing.Process(target=run_server, args=(port,))
+    p.start()
+    webbrowser.open("http://localhost:%d/" % port)
+
+    
