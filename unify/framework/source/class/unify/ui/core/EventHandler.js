@@ -12,7 +12,7 @@
 
 (function(global) {
 
-  var emulateTouch = true;
+  var emulateTouch = unify.bom.client.Device.DESKTOP;
 
   var touchSynthesizer = function(e) {
     return {
@@ -84,6 +84,7 @@
       
       if (e.target == touch.target) {
         removeTouchElement.push(touch);
+        
         lowland.bom.Events.dispatch(e.target, "tap");
       }
     }
