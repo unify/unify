@@ -189,7 +189,10 @@ core.Class("unify.ui.core.MChildControl", {
       // Register control and return
       return this.__childControls[id] = control;
     },
-
+    
+    _createChildControlImpl : function(id) {
+      console.error("No child control " + id);
+    },
 
     /**
      * Dispose all registered controls. This is automatically

@@ -261,7 +261,7 @@ core.Class("unify.ui.container.Scroll", {
         }
         break;
         default:{
-          child=this.base(arguments,id);
+          child = unify.ui.core.MChildControl.prototype._createChildControlImpl(this,id);
         }
       }
       
