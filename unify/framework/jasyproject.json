@@ -6,7 +6,11 @@
 		"application" : {
 			"check" : "String",
 			"default" : "default"
-		}
+		},
+    "os.name" : {
+      "check" : ["win", "mac", "unix", "android", "ios", "webos", "qnx"],
+      "detect" : "unify.bom.detect.OsName"
+    }
 	},
   "requires" : [{
 		"source" : "https://github.com/fastner/core.git",
