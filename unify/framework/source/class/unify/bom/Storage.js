@@ -29,8 +29,9 @@
      *
      * @param key {String} Application-wide unique key
      * @param value {String} String value to store (JSON needs serialization first)
+     * @param otherPrefix {String?null} Optional overwrite of prefix
      */
-    set : function(key, value)
+    set : function(key, value, otherPrefix)
     {
       if (hasLocalStorage) {
         /* TODO: if (core.Evn.getValue("os.name") == "ios" && parseFloat(core.Env.getValue("os.version") || 0) < 4.2) {
@@ -39,7 +40,7 @@
             localStorage.removeItem(this.__prefix + key, value);
         }*/
         try{
-          localStorage.setItem(prefix + key, value);
+          localStorage.setItem((otherPrefix || prefix) + key, value);
         } catch(ex){
           if(ex.name=='QUOTA_EXCEEDED_ERR'){
             lowland.events.EventManager(this, 'quota_exceeded_err');
@@ -57,12 +58,13 @@
      * Returns the data stored under the given key.
      *
      * @param key {String} Application-wide unique key
+     * @param otherPrefix {String?null} Optional overwrite of prefix
      * @return {String} Returns the string value (JSON data needs parsing afterwards)
      */
-    get : function(key) 
+    get : function(key, otherPrefix) 
     {
       if (hasLocalStorage) {
-        var val = localStorage.getItem(prefix + key);
+        var val = localStorage.getItem((otherPrefix || prefix) + key);
         return val;
       } else {
         //TODO: return Cookie.get(this.__prefix + key);
@@ -73,11 +75,12 @@
      * Removes the key under the given name
      *
      * @param key {String} Application-wide unique key
+     * @param otherPrefix {String?null} Optional overwrite of prefix
      */
-    remove : function(key) 
+    remove : function(key, otherPrefix) 
     {
       if (hasLocalStorage) {
-        localStorage.removeItem(prefix + key);
+        localStorage.removeItem((otherPrefix || prefix) + key);
       } else {
         // TODO: Cookie.del(this.__prefix + key);
       }
