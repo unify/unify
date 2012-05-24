@@ -1,48 +1,25 @@
-/**
-================================================================================
+/*
+===============================================================================================
 
-  Unify Project
-  
-  Homepage: unify-project.org
-  License: MIT + Apache (v2)
-  
-  Author(s):
-    * Stefan Kolb <stefan.kolb at indiginox.com>
+    Unify Project
 
-================================================================================
- */
+    Homepage: unify-project.org
+    License: MIT + Apache (V2)
+    Copyright: 2012, Stefan Kolb <stefan.kolb at indiginox.com>
+    
+    Modified by Sebastian Fastner, Mainz, Germany, http://unify-training.com
+    
+===============================================================================================
+*/
 
-/**
- * Fullscreen support
- *
- * Module to utilize the W3C Fullscreen API (if the browser supports it.)
- *
- * @see http://dvcs.w3.org/hg/fullscreen/raw-file/tip/Overview.html
- */
-core.Module('unify.bom.Fullscreen', {
-  
-  /*
-  ------------------------------------------------------------------------------
-    PRIVATE
-  ------------------------------------------------------------------------------
-  */
-  
-  /**
-   * Get fullscreen change event name
-   *
-   * Based on the currently used browser, this method tries to determine the
-   * name of the event that is fired if the browser changes from normal/window
-   * view to fullscreen view and vice versa.
-   *
-   * @return {String ? null } The name of the change event
-   */
-  __getFullscreenChangeEventName: function() {
-    var name = document.cancelFullScreen ? ' fullscreenchange' :
-               document.mozCancelFullScreen ? 'mozfullscreenchange' :
-               document.webkitCancelFullScreen ? 'webkitfullscreenchange' :
-               null;
-    return name;
-  },
+(function() {
+
+  var eventName = document.cancelFullScreen ? ' fullscreenchange' :
+                  document.mozCancelFullScreen ? 'mozfullscreenchange' :
+                  document.webkitCancelFullScreen ? 'webkitfullscreenchange' :
+                  null;
+
+
   
   
   /*
@@ -60,7 +37,7 @@ core.Module('unify.bom.Fullscreen', {
    * @return {Boolean} true: the browser supports fullscreen;
    *                   false: otherwise
    */
-  isSupported: function() {
+  var isSupported = function() {
     var isGoogleChromeFrame = !!window.externalHost;
     var supportedEngines = [ 'webkit', 'gecko' ];
     
@@ -88,7 +65,7 @@ core.Module('unify.bom.Fullscreen', {
     }
     
     return false;
-  },
+  };
   
   
   /**
@@ -99,7 +76,7 @@ core.Module('unify.bom.Fullscreen', {
    * @return {Boolean} true: fullscreen is enabled;
    *                   false: otherwise
    */
-  isEnabled: function() {
+  var isEnabled = function() {
     var isEnabled = !!document.fullScreenEnabled ||
                     !!document.mozFullScreenEnabled ||
                     !!document.webkitCancelFullScreen;  // webkit has no
@@ -108,7 +85,7 @@ core.Module('unify.bom.Fullscreen', {
                                                         // is enabled
     
     return isEnabled;
-  },
+  };
   
   
   /**
@@ -119,14 +96,14 @@ core.Module('unify.bom.Fullscreen', {
    * @return {Boolean} true: the browser is currently in fullscreen mode;
    *                   false otherwise
    */
-  isFullscreen: function() {
+  var isFullscreen = function() {
     if ((document.fullScreenElement && document.fullScreenElement != null) ||
         document.mozFullScreen || document.webkitIsFullScreen) {
       return true;
     }
     
     return false;
-  },
+  };
   
   
   /**
@@ -139,12 +116,11 @@ core.Module('unify.bom.Fullscreen', {
    * @see #__getFullscreenChangeEventName
    * @param callback {Function} Callback to execute after fullscreen change
    */
-  addChangeListener: function(callback) {
-    var event = unify.bom.Fullscreen.__getFullscreenChangeEventName();
-    if (!event) return;
+  var addChangeListener = function(callback) {
+    if (!eventName) return;
     
-    lowland.bom.Events.set(document, event, callback);
-  },
+    lowland.bom.Events.set(document, eventName, callback);
+  };
   
   
   /**
@@ -157,12 +133,11 @@ core.Module('unify.bom.Fullscreen', {
    * @see #__getFullscreenChangeEventName
    * @param callback {Function} Callback to remove
    */
-  removeChangeListener: function(callback) {
-    var event = unify.bom.Fullscreen.__getFullscreenChangeEventName();
-    if (!event) return;
+  var removeChangeListener = function(callback) {
+    if (!eventName) return;
     
-    lowland.bom.Events.unset(document, event, callback);
-  },
+    lowland.bom.Events.unset(document, eventName, callback);
+  };
   
   
   /**
@@ -174,7 +149,7 @@ core.Module('unify.bom.Fullscreen', {
    * @param node {Element} A DOM node that should function as root element
    *                       for the fullscreen mode
    */
-  enter: function(node) {
+  var enter = function(node) {
     if (node.requestFullScreen) {
       node.requestFullScreen();
     } else if (node.mozRequestFullScreen) {
@@ -182,7 +157,7 @@ core.Module('unify.bom.Fullscreen', {
     } else if (node.webkitRequestFullScreen) {
       node.webkitRequestFullScreen();
     }
-  },
+  };
   
   
   /**
@@ -190,15 +165,14 @@ core.Module('unify.bom.Fullscreen', {
    *
    * Cancels fullscreen mode and returns to normal/windowed mode
    */
-  exit: function() {
-    if (document.cancelFullScreen) {
-      document.cancelFullScreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
-    } else if (document.webkitCancelFullScreen) {
-      document.webkitCancelFullScreen();
-    }
-  },
+  var exit;
+  if (document.cancelFullScreen) {
+    exit = document.cancelFullScreen;
+  } else if (core.Env.isSet("engine", "gecko") && document.mozCancelFullScreen) {
+    exit = document.mozCancelFullScreen;
+  } else if (core.Env.isSet("engine", "webkit") && document.webkitCancelFullScreen) {
+    exit = document.webkitCancelFullScreen;
+  }
   
   
   /**
@@ -211,13 +185,30 @@ core.Module('unify.bom.Fullscreen', {
    * @param node {Element} A DOM node that should function as root element
    *                       for the fullscreen mode
    */
-  toggle: function(node) {
-    var isFullscreen = unify.bom.Fullscreen.isFullscreen();
-    
-    if (isFullscreen) {
-      unify.bom.Fullscreen.exit();
+  var toggle = function(node) {
+    if (isFullscreen()) {
+      exit();
     } else {
-      unify.bom.Fullscren.enter(node);
+      enter(node);
     }
-  }
-});
+  };
+  
+  /**
+   * Fullscreen support
+   *
+   * Module to utilize the W3C Fullscreen API (if the browser supports it.)
+   *
+   * @see http://dvcs.w3.org/hg/fullscreen/raw-file/tip/Overview.html
+   */
+  core.Module('unify.bom.Fullscreen', {
+    isSupported: isSupported,
+    isEnabled: isEnabled,
+    isFullscreen: isFullscreen,
+    addChangeListener: addChangeListener,
+    removeChangeListener: removeChangeListener,
+    enter: enter,
+    exit: exit,
+    toggle: toggle
+  });
+
+})();
