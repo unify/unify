@@ -31,7 +31,7 @@ core.Class("unify.view.Root", {
     unify.ui.core.Widget.call(this);
     this._setLayout(layout || new unify.ui.layout.Canvas());
     
-    lowland.bom.Events.set(window, "resize", this.__onResize.bind(this));
+    this.addNativeListener(window, "resize", this.__onResize, this);
   },
   
   properties : {
@@ -114,7 +114,18 @@ core.Class("unify.view.Root", {
      * @return {Map} Calculated size of root element
      */
     _getSizeHint : function() {
-      return lowland.bom.Element.getContentSize(this.__rootElement);
+      var e;
+      if (core.Env.getValue("os.name") == "ios") {
+        var root = this.__rootElement;
+        e = {
+          width: root.clientWidth,
+          height: root.clientHeight
+        };
+      } else {
+        e = lowland.bom.Element.getContentSize(this.__rootElement);
+      }
+      
+      return e;
     },
     
     // overridden
