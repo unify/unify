@@ -119,6 +119,7 @@ core.Class("unify.view.Root", {
     
     // overridden
     renderLayout : function(left, top, width, height, preventSize) {
+      console.log("ROOT RENDER LAYOUT ", this.getElement(), left, top, width, height);
       unify.ui.core.Widget.prototype.renderLayout.call(this, left, top, width, height, true);
     }
   }/*,

@@ -816,12 +816,15 @@ core.Class("unify.ui.core.Widget", {
             if(insertCount>1){
               elementToInsert = document.createDocumentFragment();
               for (var i=0; i<insertCount; i++) {
+                console.log("INSERT1 : ", e[i]);
                 elementToInsert.appendChild(e[i]);
               }
             }
             if (childNode) {
+              console.log("INSERT2 : ", elementToInsert);
               contentElement.insertBefore(elementToInsert,childNode);
             } else {
+              console.log("INSERT3 : ", elementToInsert);
               contentElement.appendChild(elementToInsert);
             }
           }
@@ -833,9 +836,11 @@ core.Class("unify.ui.core.Widget", {
         if(appendCount>1){
           elementToAppend = document.createDocumentFragment();
           for (var j=0; j<appendCount; j++) {
+            console.log("APPEND : ", append[j]);
             elementToAppend.appendChild(append[j]);
           }
         }
+        console.log("APPEND : ", elementToAppend);
         contentElement.appendChild(elementToAppend);
       }
 

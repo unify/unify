@@ -69,7 +69,14 @@ core.Class("unify.Application", {
       var rootElement = this._getRootElement();
       var rootLayout = this._getRootLayout();
       var viewportElement = this._getViewportElement();
-      this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), viewportElement, rootLayout);
+      
+      if (viewportElement === rootElement) {
+        this.__popoverRoot = this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), viewportElement, rootLayout);
+      } else {
+        var popoverRoot = this.__popoverRoot = new unify.view.Root(viewportElement, this._getRootEventElement(), viewportElement, rootLayout);
+        unify.ui.layout.queue.Layout.add(popoverRoot);
+        this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), viewportElement, rootLayout);
+      }
       core.bom.Style.set(rootElement, "visibility", "hidden");
       
       // Add box sizing css node
@@ -89,6 +96,7 @@ core.Class("unify.Application", {
 
       // Configure document
       var Style = core.bom.Style;
+      
       var rootStyle = unify.theme.Manager.get().resolveStyle("BODY") || {};
       Style.set(rootElement, rootStyle);
       if (rootStyle.font) {
@@ -177,6 +185,15 @@ core.Class("unify.Application", {
      */
     getRoot : function() {
       return this.__root;
+    },
+    
+    /**
+     * Returns the popover root widget element
+     *
+     * @return {unify.view.Root} Root widget
+     */
+    getPopOverRoot : function() {
+      return this.__popoverRoot;
     },
     
     __viewAnimationManager : null,

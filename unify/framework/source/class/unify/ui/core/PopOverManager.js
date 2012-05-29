@@ -26,7 +26,7 @@ core.Class("unify.ui.core.PopOverManager", {
   construct : function() {
     unify.core.Object.call(this);
     
-    var root = this.__root = unify.core.Init.getApplication().getRoot();
+    var root = this.__root = unify.core.Init.getApplication().getPopOverRoot();
     this.__visibleOverlays = [];
     this.__overlays={};
     this.__styleRegistry = {};
@@ -220,6 +220,7 @@ core.Class("unify.ui.core.PopOverManager", {
       } else if (pos == "full") {
         pos = {left: 0, top: 0, right: 0, bottom: 0};
       }
+      console.log("POP OVER SHOW: ", widget.getElement(), this.__root.getElement());
       this.__root.add(widget, pos);
       this.__visibleOverlays.push(widget);
       this.__sortPopOvers();

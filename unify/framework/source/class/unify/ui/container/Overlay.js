@@ -122,6 +122,11 @@ core.Class("unify.ui.container.Overlay", {
       }
     },
 
+    renderLayout : function() {
+      console.log("---- render layout ", arguments);
+      unify.ui.container.Composite.renderLayout.apply(this, arguments);
+    },
+
     /**
      * Returns child control widget identified by id
      *

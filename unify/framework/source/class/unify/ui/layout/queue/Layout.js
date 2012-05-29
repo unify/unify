@@ -55,6 +55,8 @@
 
         if (bounds) {
           widget.renderLayout(bounds.left, bounds.top, bounds.width, bounds.height);
+        } else {
+          console.log("NO BOUND: ", widget.getAppearance());
         }
       }
     }

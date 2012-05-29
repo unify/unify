@@ -213,7 +213,7 @@
       },
       
       renderLayout : function(left, top, width, height) {
-        
+        console.log("render layout ", this.getElement().id, this.getAppearance());
         // Height for width support
         // Results into a relayout which means that width/height is applied in the next iteration.
         var flowHeight = null;
@@ -236,7 +236,7 @@
             //e.invalidateLayoutCache();
             unify.ui.layout.queue.Layout.add(e);
           }
-  
+  console.log("RET NULL");
           return null;
         }
         
