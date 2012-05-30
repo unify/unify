@@ -11,6 +11,12 @@
 ===============================================================================================
 */
 
+
+(function() {
+  
+  var zIndexBase = 100;
+  
+
 /**
  * Handles pop over stacking (and blocking elements)
  */
@@ -30,6 +36,8 @@ core.Class("unify.ui.core.PopOverManager", {
     this.__visibleOverlays = [];
     this.__overlays={};
     this.__styleRegistry = {};
+    
+    zIndexBase = core.Env.getValue("unify.config.zIndexBase") || zIndexBase;
     
     var pblocker = this.__pblocker = document.createElement("div");
     var pstyle = unify.theme.Manager.get().resolveStyle("POPOVER-BLOCKER");
@@ -108,7 +116,6 @@ core.Class("unify.ui.core.PopOverManager", {
      */
     __sortPopOvers : function()
     {
-      var zIndexBase = 100; //TODO read base value from config or some other global strategy to play nice with other zIndex dependant features like transition animations
       var visible = this.__visibleOverlays;
       var pblocker = this.__pblocker;
       var mblocker = this.__mblocker;
@@ -252,3 +259,5 @@ core.Class("unify.ui.core.PopOverManager", {
 });
 
 unify.core.Singleton.annotate(unify.ui.core.PopOverManager);
+
+})();
