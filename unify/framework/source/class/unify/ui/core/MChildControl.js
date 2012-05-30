@@ -318,7 +318,7 @@ core.Class("unify.ui.core.MChildControl", {
           for (var id in controls)
           {
             var control = controls[id];
-            if (control instanceof unify.ui.core.Widget) {
+            if (control.constructor instanceof unify.ui.core.Widget.constructor) {
               control.removeState(state);
             }
           }
