@@ -20,7 +20,13 @@
  */
 (function(global) {
   
-  core.Class("unify.view.Path", {});
+  core.Class("unify.view.Path", {
+    construct : function(params) {
+      if (params) {
+        this.push(params);
+      }
+    }
+  });
   unify.view.Path.prototype = new Array();
   
   core.Main.addMembers("unify.view.Path", {
