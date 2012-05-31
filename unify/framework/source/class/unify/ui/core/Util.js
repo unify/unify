@@ -4,13 +4,21 @@ core.Module("unify.ui.core.Util", {
   },
   
   domElementToRootLevel : function(widget) {
+    var posOverride = widget.getUserData("domElementPositionOverride");
+    
+    if (posOverride) {
+      return;
+    }
+    
     var e = widget.getElement();
     var pos = unify.ui.core.Util.getWidgetLocation(widget);
     
+    var origPos = widget.getPosition();
+
     var posSave = {
       originalPosition : {
-        left: core.bom.Style.get(e, "left"),
-        top: core.bom.Style.get(e, "top"),
+        left: origPos[0],
+        top: origPos[1],
         zIndex: core.bom.Style.get(e, "zIndex")
       },
       newPosition : {
@@ -24,8 +32,8 @@ core.Module("unify.ui.core.Util", {
     
     var rootElement = unify.core.Init.getApplication().getRoot().getElement();
     core.bom.Style.set(e, {
-      left: pos.left,
-      top: pos.top,
+      left: pos.left + "px",
+      top: pos.top + "px",
       zIndex: 20000
     });
     
@@ -44,12 +52,12 @@ core.Module("unify.ui.core.Util", {
     
     var parentElement = widget.getParentBox().getContentElement();
     core.bom.Style.set(e, {
-      left: origPos.left,
-      top: origPos.top,
+      left: origPos.left + "px",
+      top: origPos.top + "px",
       zIndex: origPos.zIndex
     });
     parentElement.appendChild(e);
     
-    widget.setUserData("domElementPositionOverride", null);
+    widget.setUserData("domElementPositionOverride", false);
   }
 });

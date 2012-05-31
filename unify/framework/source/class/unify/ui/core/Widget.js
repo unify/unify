@@ -715,6 +715,12 @@ core.Class("unify.ui.core.Widget", {
     hasRenderedLayout : function() {
       return !!this.__renderLayoutDone;
     },
+    
+    __elementPos : null,
+    
+    getPosition : function() {
+      return this.__elementPos;
+    },
 
 /*
 #ignore(DocumentFragment)
@@ -775,10 +781,15 @@ core.Class("unify.ui.core.Widget", {
             parentVirtualPosition = {left: 0, top: 0};
           }
           
+          var newLeft = (left + parentVirtualPosition.left);
+          var newTop = (top + parentVirtualPosition.top);
+          
+          this.__elementPos = [newLeft, newTop];
+          
           core.bom.Style.set(element, {
             position: "absolute",
-            left: (left + parentVirtualPosition.left) + "px",
-            top: (top + parentVirtualPosition.top) + "px",
+            left: newLeft + "px",
+            top: newTop + "px",
             width: width + "px",
             height: height + "px"
           });
