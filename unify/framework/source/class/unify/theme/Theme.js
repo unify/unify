@@ -65,7 +65,7 @@ core.Class("unify.theme.Theme", {
             var k = Object.keys(r);
             for (var j=0, jj=k.length; j<jj; j++) {
               var key = k[j];
-              res[key] = r[key]
+              res[key] = r[key];
             }
           }
         }

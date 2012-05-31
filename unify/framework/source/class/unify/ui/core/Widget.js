@@ -577,7 +577,6 @@ core.Class("unify.ui.core.Widget", {
           selector = null;
         }
       }
-
       // Build selector
       if (!selector) {
         selector = this.__appearanceSelector = this.getAppearance();
@@ -594,12 +593,16 @@ core.Class("unify.ui.core.Widget", {
       if (newStyle) {
         if (oldStyle) {
           var oldStyleData = {};
+          var hasOldStyleData = false;
           for (key in oldStyle) {
             if (newStyle[key] === undefined) {
-              oldStyleData[key] = undefined;
+              hasOldStyleData = true;
+              oldStyleData[key] = null;
             }
           }
-          this._setStyle(oldStyleData);
+          if (hasOldStyleData) {
+            this._setStyle(oldStyleData);
+          }
         }
         this._setStyle(newStyle);
 
@@ -612,7 +615,12 @@ core.Class("unify.ui.core.Widget", {
       }
 
       this.invalidateLayoutCache();
-      
+
+      if (!this.__initialAppearanceApplied) {
+        core.bom.Style.set(this.getElement(), "visibility", "visible");
+        this.__initialAppearanceApplied = true;
+      }
+        
       this.fireEvent("appearance", this.__states);
     },
 
@@ -627,6 +635,8 @@ core.Class("unify.ui.core.Widget", {
       unify.ui.layout.queue.Appearance.add(this);
     },
 
+    __initialAppearanceApplied : false,
+
     /**
      * Checks if appearance need to be applied to widget
      */
@@ -636,9 +646,6 @@ core.Class("unify.ui.core.Widget", {
       if (!this.__initialAppearanceApplied)
       {
         unify.ui.layout.queue.Appearance.add(this);
-        this.__initialAppearanceApplied = true;
-
-        //core.bom.Style.set(this.getElement(), "visibility", "visible");
       }
 
       // CASE 2: Widget has got an appearance before, but was hidden for some time
@@ -1247,7 +1254,6 @@ core.Class("unify.ui.core.Widget", {
      * @param map {Map} Map of styles/values to apply
      */
     _setStyle : function(map) {
-
       //validation
 
       map = this.__cloneMap(map);
@@ -1629,8 +1635,9 @@ core.Class("unify.ui.core.Widget", {
 
           var style = this.__style;
           if (style) {
-            core.bom.Style.set(element, style);
+            this._setStyle(style);
           }
+          core.bom.Style.set(element, "visibility", "hidden");
         }
 
         return element;
