@@ -107,7 +107,7 @@ core.Class("unify.Application", {
 
       // Event listeners
       this.addNativeListener(window, "resize", this.__onResize, this);
-      this.addNativeListener(document, "touchmove", function(e) { e.preventDefault(); }, this);
+      this.addNativeListener(rootElement, "touchmove", function(e) { e.preventDefault(); }, this);
       this.addNativeListener(window, "orientationchange", this.__onRotate, this);
       /*
       if (core.Env.getValue("os.name") == "webos") {
