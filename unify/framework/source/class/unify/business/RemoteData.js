@@ -149,7 +149,12 @@ core.Class("unify.business.RemoteData",
     password : {
       type : "String",
       nullable : true
-    }
+    },
+    
+    domainRequest : {
+      type: "Boolean",
+  	  init: false
+  	}
   },
 
 
@@ -593,6 +598,7 @@ core.Class("unify.business.RemoteData",
 
       // Create request object
       var req = new lowland.bom.Xhr();
+      req.setDomainRequest(this.getDomainRequest());
       req.setUrl(url);
 
       var requestHeaders = req.getRequestHeaders() || {};
