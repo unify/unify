@@ -216,7 +216,7 @@
           okBtn.addListener("execute", function() {
             this.fireEvent("execute", BTN_OK);
           }, this);
-          
+        } else { // buttons.length > 0  
           var btnCount = buttons.length;
           
           if (btnCount > 4) {
