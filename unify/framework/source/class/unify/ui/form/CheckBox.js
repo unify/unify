@@ -25,7 +25,7 @@ core.Class("unify.ui.form.CheckBox", {
     
     this.setChecked(!!checked);
     
-    lowland.bom.Events.listen("tap", this.__onTap.bind(this));
+    this.addNativeListener("tap", this.__onTap, this);
   },
 
   properties: {
