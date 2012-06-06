@@ -104,7 +104,7 @@ core.Class("unify.ui.form.TextField", {
       if (type == "number") {
         e.setAttribute("pattern", "[0-9]*");
       }
-      lowland.bom.Events.listen(e, "input", this._onInput.bind(this));
+      this.addNativeListener(e, "input", this._onInput, this);
 
       return e;
     },

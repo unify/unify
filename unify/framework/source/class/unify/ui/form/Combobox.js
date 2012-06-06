@@ -61,7 +61,7 @@ core.Class("unify.ui.form.Combobox", {
     _createElement : function() {
       var e = unify.ui.basic.Atom.prototype._createElement.call(this);
 
-      lowland.bom.Events.listen(e, "tap", this.__onTap.bind(this));
+      this.addNativeListener(e, "tap", this.__onTap, this);
 
       return e;
     },

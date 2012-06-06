@@ -40,7 +40,7 @@ core.Class("unify.ui.form.util.HtmlFileInput", {
     _createElement : function() {
       var e = document.createElement("input");
       e.setAttribute("type", "file");
-      lowland.bom.Events.listen(e, "change", this.__onInput.bind(this));
+      this.addNativeListener(e, "change", this.__onInput, this);
 
       return e;
     },

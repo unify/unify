@@ -34,7 +34,7 @@ core.Class("unify.ui.embed.Iframe", {
     _createElement : function() {
       // TODO : IFRAME HANDLING
       var e = document.createElement("iframe"); //qx.bom.Iframe.create();
-      lowland.bom.Events.listen(e, "load", this.__iframeLoaded.bind(this));
+      this.addNativeListener(e, "load", this.__iframeLoaded, this);
       return e;
     },
     

@@ -68,7 +68,7 @@ core.Class("unify.ui.form.TextArea", {
       e.setAttribute("rows", this.getRows());
       e.setAttribute("cols", this.getColumns());
       
-      lowland.bom.Events.listen(e, "input", this._onInput.bind(this));
+      this.addNativeListener(e, "input", this._onInput, this);
       return e;
     },
     

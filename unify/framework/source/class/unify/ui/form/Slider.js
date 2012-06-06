@@ -69,10 +69,8 @@ core.Class("unify.ui.form.Slider", {
     this._showChildControl("bar");
     this._showChildControl("knob");
     
-    lowland.bom.Events.listen("tap", this.__onTap.bind(this));
+    this.addNativeListener("tap", this.__onTap, this);
     this.addListener("resize", this.__onResize, this);
-    this.__touchMoveWrapper = this.__touchMove.bind(this);
-    this.__touchEndWrapper = this.__touchEnd.bind(this);
   },
   
   members: {
@@ -91,7 +89,7 @@ core.Class("unify.ui.form.Slider", {
         case "knob":
           control = new unify.ui.basic.Content();
           this.__touchStartWrapper = this.__touchStart.bind(this);
-          lowland.bom.Events.listen(control.getElement(), "touchstart", this.__touchStartWrapper, this);
+          control.addNativeListener("touchstart", this.__touchStartWrapper, this);
           
           this._add(control);
           break;
@@ -159,9 +157,6 @@ core.Class("unify.ui.form.Slider", {
       return posInfo.height - posInfo.padding.top - posInfo.padding.bottom - posInfo.border.top - posInfo.border.bottom - Math.round(knobPosInfo.height / 2);
     },
     
-    __touchMoveWrapper : null,
-    __touchEndWrapper : null,
-    
     /**
      * Event handler for touch start
      *
@@ -169,8 +164,8 @@ core.Class("unify.ui.form.Slider", {
      */
     __touchStart : function(e) {
       var root = unify.core.Init.getApplication().getRoot().getEventElement();
-      lowland.bom.Events.listen(root, "touchmove", this.__touchMoveWrapper);
-      lowland.bom.Events.listen(root, "touchend", this.__touchEndWrapper);
+      this.addNativeListener(root, "touchmove", this.__touchMove, this);
+      this.addNativeListener(root, "touchend", this.__touchEnd, this);
       
       this.__knob = this.getChildControl("knob");
       
@@ -230,8 +225,8 @@ core.Class("unify.ui.form.Slider", {
      */
     __touchEnd : function() {
       var root = unify.core.Init.getApplication().getRoot().getEventElement();
-      lowland.bom.Events.unlisten(root, "touchmove", this.__touchMoveWrapper);
-      lowland.bom.Events.unlisten(root, "touchend", this.__touchEndWrapper);
+      this.removeNativeListener(root, "touchmove", this.__touchMove, this);
+      this.removeNativeListener(root, "touchend", this.__touchEnd, this);
 
       this.__knob = null;
     },

@@ -35,7 +35,7 @@ coe.Class("unify.ui.core.FocusHandler", {
     connectTo : function(root) {
       this.__currentRoot = root;
       
-      lowland.bom.Events.listen(root.getElement(), "keypress", this.__onKeyPress.bind(this));
+      root.addNativeListener("keypress", this.__onKeyPress, this);
     },
     
     /**

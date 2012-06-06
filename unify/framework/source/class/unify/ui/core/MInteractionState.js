@@ -32,15 +32,15 @@ core.Class("unify.ui.core.MInteractionState", {
       var element = this.getElement();
       
       if (supportTouch) {
-        lowland.bom.Events.listen(element, "touchstart", this.__MInteractionStateAddPressed.bind(this), true);
-        lowland.bom.Events.listen(element, "touchleave", this.__MInteractionStateRemovePressed.bind(this), true);
-        lowland.bom.Events.listen(element, "touchend", this.__MInteractionStateRemovePressed.bind(this), true);
-        lowland.bom.Events.listen(element, "touchcancel", this.__MInteractionStateRemovePressed.bind(this), true);
+        this.addNativeListener("touchstart", this.__MInteractionStateAddPressed, this);
+        this.addNativeListener("touchleave", this.__MInteractionStateRemovePressed, this);
+        this.addNativeListener("touchend", this.__MInteractionStateRemovePressed, this);
+        this.addNativeListener("touchcancel", this.__MInteractionStateRemovePressed, this);
       } else if (supportMouse) {
-        lowland.bom.Events.listen(element, "mouseover", this.__MInteractionStateAddHover.bind(this), true);
-        lowland.bom.Events.listen(element, "mouseout", this.__MInteractionStateRemoveHover.bind(this), true);
-        lowland.bom.Events.listen(element, "mousedown", this.__MInteractionStateAddPressed.bind(this), true);
-        lowland.bom.Events.listen(root, "mouseup", this.__MInteractionStateRemovePressed.bind(this), true);
+        this.addNativeListener("mouseover", this.__MInteractionStateAddHover, this);
+        this.addNativeListener("mouseout", this.__MInteractionStateRemoveHover, this);
+        this.addNativeListener("mousedown", this.__MInteractionStateAddPressed, this);
+        this.addNativeListener(root, "mouseup", this.__MInteractionStateRemovePressed, this);
       }
     },
     

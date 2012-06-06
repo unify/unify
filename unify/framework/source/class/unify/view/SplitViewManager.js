@@ -42,7 +42,7 @@ core.Class("unify.view.SplitViewManager",
     detailViewManager.setMaster(masterViewManager);
 
     // Attach to rotate event to control view manager visibility
-    lowland.bom.Events.listen(window, "orientationchange", this.__onRotate.bind(this));
+    this.addNativeListener(window, "orientationchange", this.__onRotate, this);
 
     this.add(masterViewManager);
     this.add(detailViewManager);

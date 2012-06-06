@@ -94,10 +94,10 @@ core.Class("unify.ui.core.MNavigatable", {
      * Applies event listeners on widget to support navigation
      */
     _applyMNavigatable : function() {
-      lowland.bom.Events.listen(this.getElement(), "tap", this.__onMNavigatableTap.bind(this), true);
-      lowland.bom.Events.listen(this.getElement(), "touchhold", this.__onMNavigatableTouchHold.bind(this), true);
-      lowland.bom.Events.listen(this.getElement(), "touchrelease", this.__onMNavigatableTouchRelease.bind(this), true);
-      lowland.bom.Events.listen(this.getElement(), "touchleave", this.__onMNavigatableTouchRelease.bind(this), true);
+      this.addNativeListener("tap", this.__onMNavigatableTap, this);
+      this.addNativeListener("touchhold", this.__onMNavigatableTouchHold, this);
+      this.addNativeListener("touchrelease", this.__onMNavigatableTouchRelease, this);
+      this.addNativeListener("touchleave", this.__onMNavigatableTouchRelease, this);
     },
     
     /**

@@ -121,7 +121,7 @@
         this.__setSliderStyle(this.getOrientation() === "horizontal");
   
         // Listener for animation purposes
-        lowland.bom.Events.listen(elem, "transitionEnd", this.__onTransitionEnd.bind(this));
+        this.addListener(elem, "transitionEnd", this.__onTransitionEnd, this);
   
         return elem;
       },
