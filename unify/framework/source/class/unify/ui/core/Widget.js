@@ -158,7 +158,14 @@ core.Class("unify.ui.core.Widget", {
   },
 
   members: {
+    __nativeListenerRegistry : null,
+    
     addNativeListener:  function(type) {
+      var nlr = this.__nativeListenerRegistry;
+      if (!nlr) {
+        nlr = this.__nativeListenerRegistry = [];
+      }
+      
       var args = arguments;
       if (typeof(type) == "string") {
         args = [this.getEventElement()];
@@ -166,10 +173,24 @@ core.Class("unify.ui.core.Widget", {
           args.push(arguments[i]);
         }
       }
+      
+      // Save global error bound method to native listener registry to find on removeNativeListener
+      var nlrObj = {
+        element : args[0],
+        event: args[1], 
+        callback: lowland.ObjectManager.getHash(args[2]),
+        context: lowland.ObjectManager.getHash(args[3]),
+      };
+      
+      nlrObj.observer = args[2] = unify.core.GlobalError.observeMethod(args[2]);
+      nlr.unshift(nlrObj);
+      
       unify.ui.core.VisibleBox.prototype.addNativeListener.apply(this, args);
     },
     
     removeNativeListener:  function(type) {
+      var nlr = this.__nativeListenerRegistry;
+      
       var args = arguments;
       if (typeof(type) == "string") {
         args = [this.getEventElement()];
@@ -177,6 +198,27 @@ core.Class("unify.ui.core.Widget", {
           args.push(arguments[i]);
         }
       }
+      
+      var found = null;
+      if (nlr) {
+        for (var i=0,ii=nlr.length; i<ii; i++) {
+          var nlrObj = nlr[i];
+          
+          if (nlrObj.element === args[0] &&
+              nlrObj.event === args[1] &&
+              nlrObj.callback === lowland.ObjectManager.getHash(args[2]) &&
+              nlrObj.context === lowland.ObjectManager.getHash(args[3])) {
+            args[2] = nlrObj.observer;
+            found = i;
+            break;
+          }
+        }
+      }
+      
+      if (found !== null) {
+        nlr.splice(found, 1);
+      }
+      
       unify.ui.core.VisibleBox.prototype.removeNativeListener.apply(this, args);
     },
     
