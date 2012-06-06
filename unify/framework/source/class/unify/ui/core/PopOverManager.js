@@ -27,7 +27,7 @@ qx.Class.define("unify.ui.core.PopOverManager",
   construct : function() {
     this.base(arguments);
     
-    var root = this.__root = qx.core.Init.getApplication().getRoot();
+    var root = this.__root = qx.core.Init.getApplication().createRootWidget();
     this.__visibleOverlays = [];
     this.__overlays={};
     this.__styleRegistry = {};

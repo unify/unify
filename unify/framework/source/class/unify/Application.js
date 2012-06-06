@@ -75,9 +75,8 @@ qx.Class.define("unify.Application",
       }
 
       var rootElement = this._getRootElement();
-      var rootLayout = this._getRootLayout();
       qx.bom.Event.addNativeListener(rootElement, "click", this.__onClick);
-      var root = this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), rootLayout);
+      var root = this.__root = this.createRootWidget();
       qx.bom.element.Style.set(rootElement, "visibility", "hidden");
       
       // Add box sizing css node
@@ -178,6 +177,23 @@ qx.Class.define("unify.Application",
      */
     getRoot : function() {
       return this.__root;
+    },
+
+    /**
+     * creates a root widget
+     * 
+     * used by PopOverManager to create an additional root widget to layout popovers relative to application root
+     * without relayouting the whole application
+     * 
+     * created widgets share the same dom element, event element and layout
+     * @see _getRootElement
+     * @see _getRootEventElement
+     * @see _getRootLayout
+     * 
+     * @return {unify.view.Root}
+     */
+    createRootWidget: function(){
+      return new unify.view.Root(this._getRootElement(), this._getRootEventElement(), this._getRootLayout());
     },
     
     __viewAnimationManager : null,
