@@ -3,19 +3,21 @@
   "kind" : "full",
   "package" : "",
   "fields" : {
-		"application" : {
-			"check" : "String",
-			"default" : "default"
-		},
+    "application" : {
+      "check" : "String",
+      "default" : "default"
+    },
     "os.name" : {
       "check" : ["win", "mac", "unix", "android", "ios", "webos", "qnx"],
       "detect" : "unify.bom.detect.OsName"
     }
-	},
+  },
   "requires" : [{
-		"source" : "https://github.com/fastner/core.git",
-		"version" : "fixed"
-	}, {
-		"source" : "https://github.com/fastner/lowland.git"
-	}]
+    "source" : "https://github.com/fastner/core.git",
+    "version" : "fixed2"
+  }, {
+    "source" : "https://github.com/fastner/lowland.git"
+  }, {
+    "source" : "https://github.com/zynga/apibrowser.git"
+  }]
 }
