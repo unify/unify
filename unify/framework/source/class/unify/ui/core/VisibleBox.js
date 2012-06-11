@@ -98,6 +98,7 @@
     },
     
     members : {
+      /** {Object} Calculated size hint map */
       __sizeHint : null,
       
       __invalidateParent : function() {
@@ -195,8 +196,11 @@
         }
       },
       
+      /** {Array} Cached position and size of element */
       __cache : null,
-      __computerHeightForWidth : null,
+      
+      /** {Integer} Cached height for width applied to element */
+      __computedHeightForWidth : null,
       
       getBounds : function() {
         var cache = this.__cache;
@@ -288,6 +292,7 @@
         return null;
       },
       
+      /** {Object} Cached layout property map */
       __properties : null,
       
       updateLayoutProperties : function(props) {

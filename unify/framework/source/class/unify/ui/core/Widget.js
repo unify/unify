@@ -677,6 +677,7 @@ core.Class("unify.ui.core.Widget", {
       unify.ui.layout.queue.Appearance.add(this);
     },
 
+    /** {Boolean} Flag if initial appearance is applied */
     __initialAppearanceApplied : false,
 
     /**
@@ -764,9 +765,6 @@ core.Class("unify.ui.core.Widget", {
       return this.__elementPos;
     },
 
-/*
-#ignore(DocumentFragment)
-*/
     /**
      * Render method to apply layout on widget
      *
@@ -2154,7 +2152,8 @@ core.Class("unify.ui.core.Widget", {
       this._disposeArray("__widgetChildren");
       this._disposeObjects(
         "__layoutManager",
-        "__element"
+        "__element",
+        "__nativeListenerRegistry"
       );
       
       unify.ui.core.VisibleBox.prototype.destruct.call(this);
