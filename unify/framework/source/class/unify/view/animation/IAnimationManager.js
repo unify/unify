@@ -16,75 +16,56 @@
  */
 core.Interface("unify.view.animation.IAnimationManager", {
   members : {
+    
     /**
-     * Initialisation of view in transition
-     *
-     * @param fromView {unify.view.StaticView?null} View to push out
-     * @param toView {unify.view.StaticView?null} View to pull in
+     * Initialisation of "view in" transition.
+     * @fromView {unify.view.StaticView?}if view to push out,
+     * @toView {unify.view.StaticView?} is view to pull in.
      */
     initIn : function(fromView, toView) {},
     
     /**
-     * Initialisation of view out transition
-     *
-     * @param fromView {unify.view.StaticView?null} View to push out
-     * @param toView {unify.view.StaticView?null} View to pull in
+     * Initialisation of "view out" transition.
+     * @fromView {unify.view.StaticView?}if view to push out,
+     * @toView {unify.view.StaticView?} is view to pull in.
      */
     initOut : function(fromView, toView) {},
     
     /**
-     * Initialisation of modal view in transition
-     *
-     * @param fromView {unify.view.StaticView?null} View to push out
-     * @param toView {unify.view.StaticView?null} View to pull in
+     * Initialisation of "modal view in" transition.
+     * @fromView {unify.view.StaticView?}if view to push out,
+     * @toView {unify.view.StaticView?} is view to pull in.
      */
     initModalIn : function(fromView, toView) {},
     
     /**
-     * Initialisation of modal view out transition
-     *
-     * @param fromView {unify.view.StaticView?null} View to push out
-     * @param toView {unify.view.StaticView?null} View to pull in
+     * Initialisation of "modal view out" transition.
+     * @fromView {unify.view.StaticView?}if view to push out,
+     * @toView {unify.view.StaticView?} is view to pull in.
      */
     initModalOut : function(fromView, toView) {},
     
     /**
-     * Animate in views from fromView to toView
-     *
-     * @param fromView {unify.view.StaticView?null} View to push out
-     * @param toView {unify.view.StaticView?null} View to pull in
-     * @param duration {Integer} Duration of animation in milliseconds
-     * @param callback {Function?null} Call back function called after animation is done
+     * Animate in views from @fromView {unify.view.StaticView?} to @toView {unify.view.StaticView?}
+     * in @duration {Integer} milliseconds. After animation is done @callback {Function} is called.
      */
     animateIn : function(fromView, toView, duration, callback) {},
     
     /**
-     * Animate out views from fromView to toView
-     *
-     * @param fromView {unify.view.StaticView?null} View to push out
-     * @param toView {unify.view.StaticView?null} View to pull in
-     * @param duration {Integer} Duration of animation in milliseconds
-     * @param callback {Function?null} Call back function called after animation is done
+     * Animate out views from @fromView {unify.view.StaticView?} to @toView {unify.view.StaticView?}
+     * in @duration {Integer} milliseconds. After animation is done @callback {Function} is called.
      */
     animateOut : function(fromView, toView, duration, callback) {},
     
     /**
-     * Modal animate in views from fromView to toView
-     *
-     * @param fromView {unify.view.StaticView?null} View to push out
-     * @param toView {unify.view.StaticView?null} View to pull in
-     * @param duration {Integer} Duration of animation in milliseconds
-     * @param callback {Function?null} Call back function called after animation is done
+     * Animate in modal views from @fromView {unify.view.StaticView?} to @toView {unify.view.StaticView?}
+     * in @duration {Integer} milliseconds. After animation is done @callback {Function} is called.
      */
     animateModalIn : function(fromView, toView, duration, callback) {},
     
     /**
-     * Modal animate out views from fromView to toView
-     *
-     * @param fromView {unify.view.StaticView?null} View to push out
-     * @param toView {unify.view.StaticView?null} View to pull in
-     * @param duration {Integer} Duration of animation in milliseconds
-     * @param callback {Function?null} Call back function called after animation is done
+     * Animate out modal views from @fromView {unify.view.StaticView?} to @toView {unify.view.StaticView?}
+     * in @duration {Integer} milliseconds. After animation is done @callback {Function} is called.
      */
     animateModalOut : function(fromView, toView, duration, callback) {}
   }

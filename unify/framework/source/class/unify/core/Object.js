@@ -11,10 +11,16 @@ core.Class("unify.core.Object", {
     
     __disposed : false,
     
+    /**
+     * {Boolean} Returns if class instance is disposed and nothing should be executed on it.
+     */
     isDisposed : function() {
       return this.__disposed;
     },
     
+    /**
+     * Dispose class instance.
+     */
     dispose : function() {
       if (this.__disposed) {
         return;
@@ -54,6 +60,9 @@ core.Class("unify.core.Object", {
       }
     },
     
+    /**
+     * Destructor
+     */
     destruct : function() {
       lowland.ObjectManager.unregister(this);
       lowland.Object.prototype.destruct.call(this);

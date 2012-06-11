@@ -66,20 +66,14 @@ core.Class("unify.view.helper.ViewOverlayManager", {
     __currentOverlay : null,
     
     /**
-     * Set styles for a specific viewManager
-     *
-     * @param viewManager {unify.view.ViewManager} View manager to get styles for
-     * @param styleMap {Map[]} CSS style map for specific view manager
+     * Set css styles defined in @styleMap {Map[]} for a specific @viewManager {unify.view.ViewManager}.
      */
     setStyles : function(viewManager, styleMap) {
       this.__styleRegistry[viewManager] = styleMap;
     },
     
     /**
-     * Return styles set via setStyles for a specific viewManager
-     *
-     * @param viewManager {unify.view.ViewManager} View manager to get styles for
-     * @return {Map[]} CSS style map for specific view manager
+     * {var} Return styles set via setStyles for a specific @viewManager {unify.view.ViewManager}.
      */
     getStyles : function(viewManager) {
       return this.__styleRegistry[viewManager];
@@ -100,8 +94,7 @@ core.Class("unify.view.helper.ViewOverlayManager", {
     },
     
     /**
-     * Check if a id is already visible
-     * @param id {String} ID of view manager as string or overlay widget
+     * {Boolean} Check if a view manager or overlay widget with @id {String} is already visible.
      */
     isVisible : function(id){
       var viewManager = unify.view.ViewManager.get(id);
@@ -113,10 +106,9 @@ core.Class("unify.view.helper.ViewOverlayManager", {
     },
     
     /**
-     * Shows the view manager with the given ID.
-     *
-     * @param id {String} ID of view manager as string or overlay widget
-     * @param trigger {unify.ui.Widget?null} Widget that triggers the opening of the popover
+     * Shows the view manager with the given @id {String}. 
+     * Optional a @trigger {unify.ui.core.Widget?} element can be defined. The view manager
+     * is located next to the trigger.
      */
     show : function(id, trigger) {
       var viewManager = unify.view.ViewManager.get(id);
@@ -175,12 +167,9 @@ core.Class("unify.view.helper.ViewOverlayManager", {
     
     
     /**
-     * Hides the view manager with the given ID.
-     *
-     * @param id {String} ID of view manager as string or overlay widget
-     * @param skipAnimation {Boolean?false} True if the animation should be skipped
+     * Hides the view manager with the given @id {String}.
      */
-    hide : function(id, skipAnimation) {
+    hide : function(id) {
       var viewManager = unify.view.ViewManager.get(id);
 
       if (core.Env.getValue("debug")) {
@@ -266,18 +255,16 @@ core.Class("unify.view.helper.ViewOverlayManager", {
         this.__overlays[viewManager.getHash()] = overlay;
       }
       return overlay;
-    }
-  }//,
-
-  /*
-  ----------------------------------------------------------------------------
-     DESTRUCTOR
-  ----------------------------------------------------------------------------
-  */
+    },
     
-  /*destruct : function() {
-    this.__root = this.__pblocker= this.__mblocker=this.__viewManagers=this.__overlays=this.__styleRegistry = null;
-  } */
+    /**
+     * Destructor
+     */
+    destruct : function() {
+      this.__root = this.__pblocker= this.__mblocker=this.__viewManagers=this.__overlays=this.__styleRegistry = null;
+      unify.core.Object.prototype.destruct.call(this);
+    }
+  }
 });
 
 unify.core.Singleton.annotate(unify.view.helper.ViewOverlayManager);
