@@ -363,9 +363,9 @@ core.Class("unify.ui.layout.Grid", {
     {
       if (core.Env.getValue("debug"))
       {
-        this.assertInteger(column, "Invalid parameter 'column'");
+        /*this.assertInteger(column, "Invalid parameter 'column'");
         this.assertInArray(hAlign, ["left", "center", "right"]);
-        this.assertInArray(vAlign, ["top", "middle", "bottom"]);
+        this.assertInArray(vAlign, ["top", "middle", "bottom"]);*/
       }
 
       this._setColumnData(column, "hAlign", hAlign);

@@ -19,8 +19,8 @@
 core.Class("unify.ui.container.Virtual", {
   include : [
     unify.ui.core.Widget,
-    unify.ui.core.MChildrenHandling,
-    unify.ui.core.MLayoutHandling
+    unify.ui.core.MChildrenHandling/*,
+    unify.ui.core.MLayoutHandling*/
   ],
 
   /**
@@ -29,7 +29,7 @@ core.Class("unify.ui.container.Virtual", {
   construct : function(layout) {
     unify.ui.core.Widget.call(this);
     unify.ui.core.MChildrenHandling.call(this);
-    unify.ui.core.MLayoutHandling.call(this);
+    /*unify.ui.core.MLayoutHandling.call(this);*/
 
     if (layout) {
       this._setLayout(layout);
@@ -44,6 +44,8 @@ core.Class("unify.ui.container.Virtual", {
   },
 
   members : {
+    setStyle : unify.ui.core.MChildrenHandling.prototype.setStyle,
+      
     _createElement : function() {
       return document.createDocumentFragment();
     }

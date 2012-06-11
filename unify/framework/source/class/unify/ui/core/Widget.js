@@ -51,8 +51,14 @@ core.Class("unify.ui.core.Widget", {
      */
     appearance : lowland.events.DataEvent,
     
+    /**
+     * Fired on change of appearance property
+     */
     changeAppearance : lowland.events.DataEvent,
     
+    /**
+     * Fired on change of visibility property
+     */
     changeVisibility : lowland.events.DataEvent,
 
 
@@ -70,14 +76,11 @@ core.Class("unify.ui.core.Widget", {
 
   properties : {
     /**
-     * Controls the visibility. Valid values are:
+     * {String} Controls the visibility. Valid values are:
      *
-     * <ul>
-     *   <li><b>visible</b>: Render the widget</li>
-     *   <li><b>hidden</b>: Hide the widget but don't relayout the widget's parent.</li>
-     *   <li><b>excluded</b>: Hide the widget and relayout the parent as if the
-     *     widget was not a child of its parent.</li>
-     * </ul>
+     * * visible: Render the widget
+     * * hidden: Hide the widget but don't relayout the widget's parent.
+     * * excluded: Hide the widget and relayout the parent as if the widget was not a child of its parent.</li>
      */
     visibility : {
       type : ["visible", "hidden", "excluded"],
@@ -89,7 +92,7 @@ core.Class("unify.ui.core.Widget", {
     },
 
     /**
-     * Appearance ID of widget used by theme system
+     * {String?null} Appearance ID of widget used by theme system
      */
     appearance : {
       init : null,
@@ -160,6 +163,10 @@ core.Class("unify.ui.core.Widget", {
   members: {
     __nativeListenerRegistry : null,
     
+    /**
+     * Adds native listener with @type {String} on element of widget.
+     * TODO: Signature
+     */
     addNativeListener:  function(type) {
       var nlr = this.__nativeListenerRegistry;
       if (!nlr) {
@@ -188,6 +195,10 @@ core.Class("unify.ui.core.Widget", {
       unify.ui.core.VisibleBox.prototype.addNativeListener.apply(this, args);
     },
     
+    /**
+     * Removes native listener with @type {String} on element of widget.
+     * TODO: Signature
+     */
     removeNativeListener:  function(type) {
       var nlr = this.__nativeListenerRegistry;
       
@@ -421,17 +432,18 @@ core.Class("unify.ui.core.Widget", {
 
     __layoutManager : null,
 
+    /**
+     * {unify.ui.layout.Base} Returns layout manager attached to widget
+     */
     _getLayout : function() {
       return this.__layoutManager;
     },
 
     /**
-     * Set a layout manager for the widget. A a layout manager can only be connected
-     * with one widget. Reset the connection with a previous widget first, if you
-     * like to use it in another widget instead.
-     *
-     * @param layout {unify.ui.layout.Base} The new layout or
-     *     <code>null</code> to reset the layout.
+     * Set a layout manager @layout {unify.ui.layout.Base} for the widget. 
+     * A layout manager can only be connected with one widget. Reset the 
+     * connection with a previous widget first, if you like to use it in 
+     * another widget instead.
      */
     _setLayout : function(layout) {
       if (core.Env.getValue("debug")) {
@@ -1301,8 +1313,7 @@ core.Class("unify.ui.core.Widget", {
     },
 
     /**
-     * Set styles to the element
-     * @param map {Map} Map of styles/values to apply
+     * Set styles of @map {Map} to the element.
      */
     _setStyle : function(map) {
       //validation
@@ -1586,9 +1597,8 @@ core.Class("unify.ui.core.Widget", {
     },
 
     /**
-     * Get style of element
-     * @param name {String} Style name to return
-     * @param computed {Boolean?false} Value should be computed
+     * {var} Get style @name {String} of element. If @computed {Boolean?false} flag
+     * is true style is calculated by browser.
      */
     _getStyle : function(name, computed) {
       var style = this.__style;
@@ -1714,8 +1724,7 @@ core.Class("unify.ui.core.Widget", {
     },*/
 
     /**
-     * Returns children of widget
-     * @return {unify.ui.core.Widget[]} Child widgets
+     * {unify.ui.core.VisibleBox[]} Returns children of widget.
      */
     _getChildren : function() {
       return this.__widgetChildren;
@@ -1753,12 +1762,8 @@ core.Class("unify.ui.core.Widget", {
     },
 
     /**
-     * Returns the index position of the given widget if it is
-     * a child widget. Otherwise it returns <code>-1</code>.
-     *
-     * @param child {Widget} the widget to query for
-     * @return {Integer} The index position or <code>-1</code> when
-     *   the given widget is no child of this layout.
+     * {Integer} Returns the index position of the given widget @child {unify.ui.core.VisibleBox}
+     * if it is a child widget. Otherwise it returns <code>-1</code>.
      */
     _indexOf : function(child)
     {
@@ -1771,15 +1776,9 @@ core.Class("unify.ui.core.Widget", {
     },
 
     /**
-     * Adds a new child widget.
-     *
-     * The supported keys of the layout options map depend on the layout manager
-     * used to position the widget. The options are documented in the class
-     * documentation of each layout manager {@link unify.ui.layout}.
-     *
-     * @param child {LayoutItem} the widget to add.
-     * @param options {Map?null} Optional layout data for widget.
-     * @return {void}
+     * Adds new a @child {unify.ui.core.VisibleBox} widget to this widget.
+     * Optional an @options {Map?} map can be given defining layout data for widget.
+     * This parameters are documented in each layout manager.
      */
     _add : function(child, options) {
       // When moving in the same widget, remove widget first
@@ -1798,11 +1797,8 @@ core.Class("unify.ui.core.Widget", {
 
 
     /**
-     * Add a child widget at the specified index
-     *
-     * @param child {LayoutItem} widget to add
-     * @param index {Integer} Index, at which the widget will be inserted
-     * @param options {Map?null} Optional layout data for widget.
+     * Adds a new @child {unify.ui.core.VisibleBox} widget at the specified @index {Integer}.
+     * Optional an @options {Map?} map can be given defining layout data for widget.
      */
     _addAt : function(child, index, options)
     {

@@ -19,7 +19,7 @@ core.Class("unify.ui.container.Composite", {
   include : [unify.ui.core.Widget, unify.ui.core.MChildrenHandling],
   
   /**
-   * @param layout {unify.ui.layout.Base?null} Layout of composite
+   * Constructor. A @layout {unify.ui.layout.Base?null} can be given.
    */
   construct : function(layout) {
     unify.ui.core.Widget.call(this);
@@ -41,6 +41,9 @@ core.Class("unify.ui.container.Composite", {
       return document.createElement("div");
     },
     
+    /**
+     * Set styles of @map {Map} to the element.
+     */
     setStyle : unify.ui.core.MChildrenHandling.prototype.setStyle
   }
 });

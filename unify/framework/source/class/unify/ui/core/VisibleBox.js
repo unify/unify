@@ -15,78 +15,105 @@
     include : [unify.core.Object],
     
     properties : {
+      /** {Integer} Width of widget */
       width: {
         init: null,
         apply : dimmensionFnt
       },
+      
+      /** {Integer} Minimal width of widget */
       minWidth: {
         init: null,
         apply : dimmensionFnt
       },
+      
+      /** {Integer} Maximal width of widget */
       maxWidth: {
         init: null,
         apply : dimmensionFnt
       },
       
+      /** {Integer} Height of widget */
       height: {
         init: null,
         apply : dimmensionFnt
       },
+      
+      /** {Integer} Minimal height of widget */
       minHeight: {
         init: null,
         apply : dimmensionFnt
       },
+      
+      /** {Integer} Maximal height of widget */
       maxHeight: {
         init: null,
         apply : dimmensionFnt
       },
       
+      /** {Integer} Left margin of widget */
       marginLeft: {
         init: 0,
         apply : marginFnt
       },
+      
+      /** {Integer} Top margin of widget */
       marginTop: {
         init: 0,
         apply : marginFnt
       },
+      
+      /** {Integer} Right margin of widget */
       marginRight: {
         init: 0,
         apply : marginFnt
       },
+      
+      /** {Integer} Bottom margin of widget */
       marginBottom: {
         init: 0,
         apply : marginFnt
       },
       
+      /** {Boolean} Allow grow of widget in horizontal direction */
       allowGrowX: {
         init: true,
         apply : stretchFnt
       },
+      
+      /** {Boolean} Allow shrink of widget in horizontal direction */
       allowShrinkX: {
         init: true,
         apply : stretchFnt
       },
       
+      /** {Boolean} Allow grow of widget in vertical direction */
       allowGrowY: {
         init: true,
         apply : stretchFnt
       },
+      
+      /** {Boolean} Allow shrink of widget in vertical direction */
       allowShrinkY: {
         init: true,
         apply : stretchFnt
       },
       
+      /** {String} Horizontal alignment of widget */
       alignX : {
         type : ["left", "center", "right"],
         init: null,
         nullable: true
       },
+      
+      /** {String} Vertical alignment of widget */
       alignY : {
         type : ["top", "middle", "bottom"],
         init: null,
         nullable: true
       },
       
+      /** {unify.ui.core.VisibleBox} Parent widget */
       parentBox : {
         init: null,
         nullable: true
@@ -121,6 +148,11 @@
         }
       },
       
+      /**
+       * Get size hint for widget. If @compute {Boolean?false} flag is given
+       * the value is calculated, otherwise null is returned if not calculated
+       * before.
+       */
       getSizeHint : function(compute) {
         var hint = this.__sizeHint;
         
@@ -187,6 +219,9 @@
         };
       },
       
+      /**
+       * {Integer} Get nesting level (= depth in widget tree).
+       */
       getNestingLevel : function() {
         var parent = this.getParentBox();
         if (parent) {
@@ -202,6 +237,9 @@
       /** {Integer} Cached height for width applied to element */
       __computedHeightForWidth : null,
       
+      /**
+       * {Map} Return calculated and cached width and size of visible box.
+       */
       getBounds : function() {
         var cache = this.__cache;
         if (!cache) {
@@ -295,7 +333,11 @@
       /** {Object} Cached layout property map */
       __properties : null,
       
-      updateLayoutProperties : function(props) {
+      /**
+       * Update layout properties by invalidating layout cache and
+       * add element to layout queue.
+       */
+      updateLayoutProperties : function() {
         var layout = this._getLayout();
         
         if (layout) {
@@ -305,6 +347,9 @@
         unify.ui.layout.queue.Layout.add(this);
       },
       
+      /**
+       * Set layout settings to properties @props {Map}
+       */
       setLayoutProperties : function(props) {
         if (!props) {
           return;
@@ -333,6 +378,9 @@
         }
       },
       
+      /**
+       * {Map} Returns layout properties set on visible box.
+       */
       getLayoutProperties : function() {
         return this.__properties || {};
       }

@@ -29,11 +29,10 @@ core.Class("unify.view.ViewManager", {
   */
 
   /**
-   * @param managerId {String} globally unique ID of this manager
-   * @param layout {unify.ui.layout.Base?null} Layout
+   * Constructor. @managerId {String} is the application global unique ID of this manager.
+   * Optional a @layout {unify.ui.layout.Base?null} can be given.
    */
-  construct : function(managerId, layout)
-  {
+  construct : function(managerId, layout) {
     unify.ui.container.Composite.call(this, layout || new unify.ui.layout.Canvas());
 
     this.setUserData("viewmanager", this);
@@ -163,6 +162,9 @@ core.Class("unify.view.ViewManager", {
       return this.__isInAnimation;
     },
     
+    /**
+     * {Boolean} Returns if view manager handles modal views
+     */
     getModal : function() {
       return (this.getDisplayMode() == "modal");
     },
@@ -269,9 +271,7 @@ core.Class("unify.view.ViewManager", {
     },
 
     /**
-     * Navigates to the given path
-     *
-     * @param path {unify.view.Path} Path object
+     * Navigates to the given @path {unify.view.Path} .
      */
     navigate : function(path) {
       if (core.Env.getValue("debug"))
@@ -393,9 +393,8 @@ core.Class("unify.view.ViewManager", {
     */
 
     /**
-     * Hides the view manager and pauses active view
-     *
-     * @param callback {Function} optional callback to execute after hidianimation is done
+     * Hides the view manager and pauses active view. After everything is finished
+     * an optional @callback {Function?null} is called.
      */
     hide : function(callback) {
       if (!this.getModal()) {
@@ -488,10 +487,9 @@ core.Class("unify.view.ViewManager", {
     __currentView: null,
     
     /**
-     * Registers a new view. All views must be registered before being used.
-     *
-     * @param viewClass {Class} Class of the view to register
-     * @param isDefault {Boolean?false} Whether the added view functions as the default view for this manager.
+     * Registers a new view @viewClass {Function}. All views must be registered before being used.
+     * If @isDefault {Boolean?false} is set to true it is the first visible view if no path is
+     * given in URL.
      */
     register : function(viewClass, isDefault)
     {
@@ -517,19 +515,14 @@ core.Class("unify.view.ViewManager", {
     },
 
     /**
-     * Returns the view instance stored behind the given ID.
-     *
-     * @param id {String} Identifier of the view.
-     * @return {unify.view.Abstract} Instance derived from the StaticView class.
+     * {unify.view.StaticView} Returns the view instance stored behind the given @id {String}.
      */
     getView : function(id) {
       return id && this.__views[id] || null;
     },
 
     /**
-     * helper function to find out if this viewmanager displays its default view
-     * 
-     * @return {Boolean} true if current view is the default view
+     * {Boolean} Returns true if this viewmanager displays its default view.
      */
     isInDefaultView: function(){
       return (this.__currentView && this.__currentView.getId()===this.__defaultViewId);  
