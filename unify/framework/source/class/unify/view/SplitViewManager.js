@@ -139,7 +139,7 @@ core.Class("unify.view.SplitViewManager",
       if (renderWidth && renderHeight) {
         return renderWidth < renderHeight;
       } else {
-        return !core.bom.Viewport.isLandscape();
+        return !unify.bom.Viewport.isLandscape();
       }
     }
   }
