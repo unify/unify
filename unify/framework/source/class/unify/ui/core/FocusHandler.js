@@ -59,8 +59,8 @@ coe.Class("unify.ui.core.FocusHandler", {
       }
 
       // Stop all key-events with a TAB keycode
-      e.stopPropagation();
-      e.preventDefault();
+      lowland.bom.Events.stopPropagation(e);
+      lowland.bom.Events.preventDefault(e);
 
       // Support shift key to reverse widget detection order
       var current = this.__focusedChild;

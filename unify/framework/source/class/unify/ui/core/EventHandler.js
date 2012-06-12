@@ -19,7 +19,7 @@
       myValue: true,
       touches: [{
         identifier : 1,
-        target: e.target,
+        target: lowland.bom.Events.getTarget(e),
         pageX : e.screenX,
         pageY : e.screenY
       }],
@@ -35,7 +35,7 @@
       if (!root) {
         root = unify.core.Init.getApplication().getRoot().getElement();
       }
-      var target = e.target;
+      var target = lowland.bom.Events.getTarget(e);
       if (target.unify || unify.bom.Element.contains(root, target)) {
         target.unify = true;
         e.preventDefault();
@@ -43,15 +43,15 @@
     });
     lowland.bom.Events.set(eventElement, "mousedown", function(e) {
       if (e.button == 0) {
-        lowland.bom.Events.dispatch(e.target, "touchstart", false, touchSynthesizer(e));
+        lowland.bom.Events.dispatch(lowland.bom.Events.getTarget(e), "touchstart", false, touchSynthesizer(e));
       }
     });
     lowland.bom.Events.set(eventElement, "mousemove", function(e) {
-      lowland.bom.Events.dispatch(e.target, "touchmove", false, touchSynthesizer(e));
+      lowland.bom.Events.dispatch(lowland.bom.Events.getTarget(e), "touchmove", false, touchSynthesizer(e));
     });
     lowland.bom.Events.set(eventElement, "mouseup", function(e) {
       if (e.button == 0) {
-        lowland.bom.Events.dispatch(e.target, "touchend", false, touchSynthesizer(e));
+        lowland.bom.Events.dispatch(lowland.bom.Events.getTarget(e), "touchend", false, touchSynthesizer(e));
       }
     });
   }
@@ -86,10 +86,10 @@
     for (var i=0,ii=touchElement.length; i<ii; i++) {
       var touch = touchElement[i];
       
-      if (e.target == touch.target) {
+      if (lowland.bom.Events.getTarget(e) == touch.target) {
         removeTouchElement.push(touch);
         
-        lowland.bom.Events.dispatch(e.target, "tap");
+        lowland.bom.Events.dispatch(lowland.bom.Events.getTarget(e), "tap");
       }
     }
     for (i=removeTouchElement.length-1; i>=0; i--) {

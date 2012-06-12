@@ -16,19 +16,21 @@
 
 (function() {
   
-  var styleNode = document.createElement('style');
-  styleNode.type = 'text/css';
-  //TODO write keyframe rule with correct prefix depending on browser engine
-  var rules = document.createTextNode(
-      '@-webkit-keyframes KAI_rotateZ{' +//use a unique name to avoid overriding other keyframe definitions
-        'from{' +
-          '-webkit-transform:rotate3d(0,0,1,0deg)}' +
-        'to{' +
-          '-webkit-transform:rotate3d(0,0,1,360deg)' +
-        '}' +
-      '}');
-  styleNode.appendChild(rules);
-  document.head.appendChild(styleNode);
+  if (core.Env.getValue("engine") == "webkit") {
+    var styleNode = document.createElement('style');
+    styleNode.type = 'text/css';
+    //TODO write keyframe rule with correct prefix depending on browser engine
+    var rules = document.createTextNode(
+        '@-webkit-keyframes KAI_rotateZ{' +//use a unique name to avoid overriding other keyframe definitions
+          'from{' +
+            '-webkit-transform:rotate3d(0,0,1,0deg)}' +
+          'to{' +
+            '-webkit-transform:rotate3d(0,0,1,360deg)' +
+          '}' +
+        '}');
+    styleNode.appendChild(rules);
+    document.head.appendChild(styleNode);
+  }
   
   core.Class("unify.ui.basic.KeyframeAnimatedImage", {
     include : [unify.ui.basic.Image],
@@ -82,24 +84,28 @@
        * starts rotation by adding the required css styles
        */
       __startRotate : function(){
-        this.setStyle({
-            animationName: "KAI_rotateZ",
-            animationDuration: this.getAnimateRotateDuration()+"ms",
-            animationIterationCount: "infinite",
-            animationTimingFunction: "linear"
-        });
+        if (core.Env.getValue("engine") == "webkit") {
+          this.setStyle({
+              animationName: "KAI_rotateZ",
+              animationDuration: this.getAnimateRotateDuration()+"ms",
+              animationIterationCount: "infinite",
+              animationTimingFunction: "linear"
+          });
+        }
       },
   
       /**
        * stops rotation by removing the required css styles
        */
       __stopRotate : function(){
-        this.setStyle({
-          animationName: "",
-          animationDuration: "",
-          animationIterationCount: "",
-          animationTimingFunction: ""
-        });
+        if (core.Env.getValue("engine") == "webkit") {
+          this.setStyle({
+            animationName: "",
+            animationDuration: "",
+            animationIterationCount: "",
+            animationTimingFunction: ""
+          });
+        }
       }
     }
   });
