@@ -14,7 +14,7 @@
   },
   "requires" : [{
     "source" : "https://github.com/fastner/core.git",
-    "version" : "fixed2"
+    "version" : "m/0.7"
   }, {
     "source" : "https://github.com/fastner/lowland.git"
   }, {
