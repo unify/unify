@@ -2,18 +2,18 @@ import webbrowser, http.server, os, multiprocessing
 
 def unify_source():
     # Permutation independend config
-    formatting.enable("comma")
-    formatting.enable("semicolon")
-    optimization.disable("privates")
-    optimization.disable("variables")
-    optimization.disable("declarations")
-    optimization.disable("blocks")
+    jsFormatting.enable("comma")
+    jsFormatting.enable("semicolon")
+    jsOptimization.disable("privates")
+    jsOptimization.disable("variables")
+    jsOptimization.disable("declarations")
+    jsOptimization.disable("blocks")
     
     # Assets
-    asset = AssetManager(Resolver().addClassName("%s.Application" % NAMESPACE).getIncludedClasses())
+    assetManager.addSourceProfile()
     
     # Store loader script
-    includedByKernel = storeKernel("script/kernel.js", assets=asset.exportSource())
+    includedByKernel = storeKernel("script/kernel.js")
     
     # Process every possible permutation
     for permutation in session.permutate():
@@ -21,14 +21,15 @@ def unify_source():
         resolver = Resolver().addClassName("%s.Application" % NAMESPACE).excludeClasses(includedByKernel)
 
         # Building class loader
-        storeLoader("script/%s-%s.js" % (NAMESPACE, permutation.getChecksum()), Sorter(resolver).getSortedClasses(), bootCode="unify.core.Init.startUp();")
+        storeLoader(resolver.getSortedClasses(), "script/%s-%s.js" % (NAMESPACE, permutation.getChecksum()), "unify.core.Init.startUp();")
 
-def unify_build():
+def unify_build(cdnPrefix="asset"):
     # Assets
-    asset = AssetManager(Resolver().addClassName("%s.Application" % NAMESPACE).getIncludedClasses())
+    assetManager.addBuildProfile(cdnPrefix)
+    assetManager.deploy(Resolver().addClassName("%s.Application" % NAMESPACE).getIncludedClasses())
     
     # Store loader script
-    includedByKernel = storeKernel("script/kernel.js", assets=asset.exportBuild())
+    includedByKernel = storeKernel("script/kernel.js")
     
     # Copy files from source
     updateFile("source/index.html", "index.html")    
@@ -39,7 +40,7 @@ def unify_build():
         resolver = Resolver().addClassName("%s.Application" % NAMESPACE).excludeClasses(includedByKernel)
 
         # Compressing classes
-        storeCompressed("script/%s-%s.js" % (NAMESPACE, permutation.getChecksum()), Sorter(resolver).getSortedClasses(), bootCode="unify.core.Init.startUp();")
+        storeCompressed(resolver.getSortedClasses(), "script/%s-%s.js" % (NAMESPACE, permutation.getChecksum()), "unify.core.Init.startUp();")
         
         
 def run_server(port):
