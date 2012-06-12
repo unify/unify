@@ -773,18 +773,19 @@ core.Class("unify.ui.core.Widget", {
     
     __elementPos : null,
     
+    /**
+     * {Map} Returns rendered position of element.
+     */
     getPosition : function() {
       return this.__elementPos;
     },
 
     /**
-     * Render method to apply layout on widget
-     *
-     * @param left {Integer} Left absolute position of widget
-     * @param top {Integer} Top absolute position of widget
-     * @param width {Integer} Width of widget
-     * @param height {Integer} Height of widget
-     * @param preventSize {Boolean?null} Prevent size of widget and ignore layout hints, use with care!
+     * Render method to apply layout on widget's DOM element. This method applies
+     * @left {Integer} and @top {Integer} position and @width {Integer} and 
+     * @height {Integer} of element. Optional if @preventSize {Boolean?false} is
+     * set to true the original DOM element size is not changed. This is only
+     * useful if element is an root DOM element.
      */
     renderLayout : function(left, top, width, height, preventSize) {
       var userOverride = this.getUserData("domElementPositionOverride");
@@ -1128,19 +1129,14 @@ core.Class("unify.ui.core.Widget", {
 
 
     /**
-     * Returns all current states of widget
-     *
-     * @return {Map} States
+     * {Map} Returns all current states of widget.
      */
     getAllStates : function() {
       return this.__states;
     },
 
     /**
-     * Returns whether a state is set.
-     *
-     * @param state {String} the state to check.
-     * @return {Boolean} whether the state is set.
+     * {Boolean} Returns whether @state {String} is set on widget.
      */
     hasState : function(state)
     {
@@ -1150,10 +1146,7 @@ core.Class("unify.ui.core.Widget", {
 
 
     /**
-     * Sets a state.
-     *
-     * @param state {String} The state to add
-     * @return {void}
+     * Add the state @state {String} to widget.
      */
     addState : function(state)
     {
@@ -1180,10 +1173,7 @@ core.Class("unify.ui.core.Widget", {
 
 
     /**
-     * Clears a state.
-     *
-     * @param state {String} the state to clear.
-     * @return {void}
+     * Removes @state {String} from widget.
      */
     removeState : function(state)
     {
@@ -1206,13 +1196,7 @@ core.Class("unify.ui.core.Widget", {
 
 
     /**
-     * Replaces the first state with the second one.
-     *
-     * This method is ideal for state transitions e.g. normal => selected.
-     *
-     * @param old {String} Previous state
-     * @param value {String} New state
-     * @return {void}
+     * Replaces the state @old {String} with @value {String} as new state.
      */
     replaceState : function(old, value)
     {
@@ -1571,9 +1555,7 @@ core.Class("unify.ui.core.Widget", {
     },
 
     /**
-     * Get font of widget
-     *
-     * @return {Map[]} CSS font styles applied on widget
+     * {Map} Get font of widget
      */
     getFont : function() {
       return font = this.__font || {};
@@ -1588,10 +1570,18 @@ core.Class("unify.ui.core.Widget", {
       return this._getStyle(name, computed);
     },*/
 
+    /**
+     * {String} Get style @name {String} of container element. If @computed {Boolean?false} flag
+     * is true style is calculated by browser.
+     */
     getOwnStyle : function(name, computed) {
       return this._getStyle(name, computed);
     },
     
+    /**
+     * Set style @map {Map} of container element, only useful if widget does remote 
+     * children handling.
+     */
     setOwnStyle : function(map) {
       this._setStyle(map);
     },
@@ -1612,11 +1602,16 @@ core.Class("unify.ui.core.Widget", {
     },
 
 
-
+    /**
+     * TODO: Does nothing
+     */
     hasUserBounds : function() {
 
     },
 
+    /**
+     * {Boolean} Returns if widget is excluded from view
+     */
     isExcluded : function() {
       return this.getVisibility() === "excluded";
     },
@@ -1643,12 +1638,15 @@ core.Class("unify.ui.core.Widget", {
     __element : null,
 
     /**
-     * Returns the DOM element this widget creates
+     * {Element} Returns the DOM element this widget creates
      */
     getElement : function() {
       return this.__element;
     },
     
+    /**
+     * {Element} Returns the base element events should be bound to
+     */
     getEventElement : function() {
       return this.__element;
     },
@@ -1731,9 +1729,7 @@ core.Class("unify.ui.core.Widget", {
     },
 
     /**
-     * Recursively adds all children to the given queue
-     *
-     * @param queue {Map} The queue to add widgets to
+     * Recursively adds all children to the given @queue {Map}.
      */
     addChildrenToQueue : function(queue)
     {
@@ -2135,7 +2131,10 @@ core.Class("unify.ui.core.Widget", {
       }
     },
     
-    // overridden
+    /**
+     * Invalidates layout cache so this visible box is layouted in next running
+     * of layout queue if added.
+     */
     invalidateLayoutCache : function() {
       unify.ui.core.VisibleBox.prototype.invalidateLayoutCache.call(this);
 
@@ -2144,6 +2143,9 @@ core.Class("unify.ui.core.Widget", {
       }
     },
     
+    /**
+     * Destructor
+     */
     destruct : function() {
       this._disposeArray("__widgetChildren");
       this._disposeObjects(
