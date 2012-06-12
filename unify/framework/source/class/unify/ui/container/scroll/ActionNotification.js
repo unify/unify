@@ -18,7 +18,7 @@
  */
 core.Class("unify.ui.container.scroll.ActionNotification", {
   include: [unify.ui.container.Composite, unify.ui.core.MChildControl],
-  implement:  [unify.ui.container.scroll.IActionNotification],
+  // TODO: implement:  [unify.ui.container.scroll.IActionNotification],
   
   
   properties : {
