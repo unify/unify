@@ -698,7 +698,7 @@ core.Class("unify.ui.container.Scroll", {
       }
 
       this.__scroller.doTouchStart(touches, +ne.timeStamp);
-      e.preventDefault();
+      lowland.bom.Events.preventDefault(e);
       
       var root = this.__root;
       root.addNativeListener("touchmove", this.__onTouchMove,this);

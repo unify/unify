@@ -38,7 +38,7 @@
       var target = lowland.bom.Events.getTarget(e);
       if (target.unify || unify.bom.Element.contains(root, target)) {
         target.unify = true;
-        e.preventDefault();
+        lowland.bom.Events.preventDefault(e);
       }
     });
     lowland.bom.Events.set(eventElement, "mousedown", function(e) {
