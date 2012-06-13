@@ -16,20 +16,13 @@
  */
 core.Class("unify.view.TabbedViewManager", {
   include : [unify.view.ViewManager, unify.ui.core.MChildControl],
-
-
-  /*
-  ----------------------------------------------------------------------------
-     CONSTRUCTOR
-  ----------------------------------------------------------------------------
-  */
+  implement : [unify.view.IViewManager],
 
   /**
-   * @param managerId {String} globally unique ID of this manager
-   * @param layout {qx.ui.layout.Abstract?null} Layout
+   * Constructor. @managerId {String} is the application global unique ID of this manager.
+   * Optional a @layout {unify.ui.layout.Base?null} can be given.
    */
-  construct : function(managerId,layout)
-  {
+  construct : function(managerId,layout) {
     unify.view.ViewManager.call(this, managerId, layout);
     unify.ui.core.MChildControl.call(this);
     
@@ -40,9 +33,8 @@ core.Class("unify.view.TabbedViewManager", {
 
   properties :
   {
-    // overwritten
+    /** {Stirng} Appearance ID */
     appearance : {
-      refine: true,
       init: "tabbedviewmanager"
     }
   },

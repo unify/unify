@@ -1561,7 +1561,7 @@ core.Class("unify.ui.core.Widget", {
       return font = this.__font || {};
     },
 
-    /**
+    /* *
      * Get style of element
      * @param name {String} Style name to return
      * @param computed {Boolean?false} Value should be computed

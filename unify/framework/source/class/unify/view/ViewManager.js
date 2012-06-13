@@ -95,22 +95,18 @@ core.Class("unify.view.ViewManager", {
   
   properties :
   {
-    // overwritten
+    /** {String} Appearance ID */
     appearance : {
       init: "viewmanager"
     },
     
-    /**
-     * switch to disable view transition animations
-     */
+    /** {Boolean} switch to disable view transition animations */
     animateTransitions: {
       type:"Boolean",
       init: true
     },
     
-    /**
-     * Duration of layer animation
-     */
+    /** {Integer} Duration of layer animation */
     animationDuration : {
       type: "Integer",
       init: 350
@@ -155,9 +151,6 @@ core.Class("unify.view.ViewManager", {
     __initialized : false,
     __isInAnimation: false,
 
-    /**
-     * @return {Boolean} true if this ViewManager currently animates the transition between 2 views
-     */
     isInAnimation: function(){
       return this.__isInAnimation;
     },
@@ -169,11 +162,6 @@ core.Class("unify.view.ViewManager", {
       return (this.getDisplayMode() == "modal");
     },
     
-    /**
-     * Returns the currently selected view instance
-     *
-     * @return {unify.view.StaticView} View instance which is currently selected
-     */
     getCurrentView : function() {
       return this.__currentView;
     },
@@ -270,9 +258,6 @@ core.Class("unify.view.ViewManager", {
       this.fireEvent("changePath", this.__path);
     },
 
-    /**
-     * Navigates to the given @path {unify.view.Path} .
-     */
     navigate : function(path) {
       if (core.Env.getValue("debug"))
       {
@@ -486,11 +471,6 @@ core.Class("unify.view.ViewManager", {
     /** current view instance */
     __currentView: null,
     
-    /**
-     * Registers a new view @viewClass {Function}. All views must be registered before being used.
-     * If @isDefault {Boolean?false} is set to true it is the first visible view if no path is
-     * given in URL.
-     */
     register : function(viewClass, isDefault)
     {
       if (core.Env.getValue("debug"))
@@ -514,9 +494,6 @@ core.Class("unify.view.ViewManager", {
       this.__views[id] = viewClass;
     },
 
-    /**
-     * {unify.view.StaticView} Returns the view instance stored behind the given @id {String}.
-     */
     getView : function(id) {
       return id && this.__views[id] || null;
     },

@@ -26,10 +26,7 @@ core.Class("unify.ui.core.MChildControl", {
     __childControls : null,
   
     /**
-     * Checks the child with given ID for availability.
-     *
-     * @param id {String} ID of the child control
-     * @return {Boolean} <code>true</code> if the child control if available
+     * {Boolean} Checks the child with given @id {String} for availability.
      */
     hasChildControl : function(id) {
       if (!this.__childControls) {
@@ -41,9 +38,7 @@ core.Class("unify.ui.core.MChildControl", {
 
 
     /**
-     * Returns a map of all already created child controls
-     *
-     * @return {Map} mapping of child control id to the child widget.
+     * {Map} Returns a map of all already created child controls
      */
     _getCreatedChildControls : function() {
       return this.__childControls;
@@ -51,11 +46,9 @@ core.Class("unify.ui.core.MChildControl", {
 
 
     /**
-     * Get child control
-     *
-     * @param id {String} ID of the child control
-     * @param notcreate {Boolean?false} If true the widget is created if not existent.
-     * @return {unify.ui.core.Widget} Child control
+     * {unify.core.Widget} Get child control with ID @id {String}. 
+     * If @notcreate {Boolean?false} is set to true the widget is 
+     * created if not exist.
      */
     getChildControl : function(id, notcreate) {
       if (!this.__childControls)
@@ -378,10 +371,14 @@ core.Class("unify.ui.core.MChildControl", {
           childs[id].setAppearance(e.getData() + "/" + id);
         }
       }, this);
+    },
+    
+    /**
+     * Destructor
+     */
+    destruct : function() {
+      this._disposeChildControls();
     }
-  }/*,
+  }
   
-  destruct : function() {
-    this._disposeChildControls();
-  }*/
 });
