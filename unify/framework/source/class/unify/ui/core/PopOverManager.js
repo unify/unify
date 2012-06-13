@@ -170,16 +170,16 @@ core.Class("unify.ui.core.PopOverManager", {
           }
         }
         if(!mSet){
-          mblocker.style.zIndex = undefined;
+          mblocker.style.zIndex = null;
           mblocker.style.display = 'none';
         }
         if(!pSet){
-          pblocker.style.zIndex = undefined;
+          pblocker.style.zIndex = null;
           pblocker.style.display = 'none';
         }
       } else {
-        pblocker.style.zIndex = undefined;
-        mblocker.style.zIndex = undefined;
+        pblocker.style.zIndex = null;
+        mblocker.style.zIndex = null;
         pblocker.style.display = 'none';
         mblocker.style.display = 'none';
       }
