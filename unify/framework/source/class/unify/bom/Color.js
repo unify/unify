@@ -9,26 +9,46 @@
     
 ===============================================================================================
 */
-/**
- * Creates browser specific gradients
- */
-core.Module('unify.bom.Color', {
-  
-  /*
-  ----------------------------------------------------------------------------
-    STATICS
-  ----------------------------------------------------------------------------
-  */
 
-  /**
-   * Creates a browser specific color code based upon @red {Integer}, @green {Integer}, 
-   * @blue {Integer} and @alpha {Float}, ignoring alpha on IE<9
-   */
-  rgba: function(red,green,blue,alpha) {
-    if (core.Env.getValue("engine") == "trident") {
-      return "rgb(" + red + "," + green + "," + blue + ")";
+(function() {
+
+
+  var rgba = function(red,green,blue,alpha) {
+    return "rgba(" + red + "," + green + "," + blue + "," + alpha + ")";
+  };
+  var rgb = function(red,green,blue) {
+    return "rgb(" + red + "," + green + "," + blue + ")";
+  };
+  var colorFnt;
+  
+  if (core.Env.getValue("engine") == "trident") {
+    var version = /MSIE.(\d+)/.exec(navigator.userAgent);
+    if (version[1] && parseInt(version[1],10) < 9) {
+      colorFnt = rgb;
     } else {
-      return "rgba(" + red + "," + green + "," + blue + "," + alpha + ")";
+      colorFnt = rgba;
     }
+  } else {
+    colorFnt = rgba;
   }
-});
+  
+  /**
+   * Creates browser specific gradients
+   */
+  core.Module('unify.bom.Color', {
+    
+    /*
+    ----------------------------------------------------------------------------
+      STATICS
+    ----------------------------------------------------------------------------
+    */
+  
+    /**
+     * Creates a browser specific color code based upon @red {Integer}, @green {Integer}, 
+     * @blue {Integer} and @alpha {Float}, ignoring alpha on IE<9
+     */
+    rgba: colorFnt
+  });
+
+
+})();
