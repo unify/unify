@@ -200,10 +200,6 @@ core.Module('unify.bom.Gradient', {
       gradient = "-moz-linear-gradient(" + geckoAngle + "deg, " + colorStops.join(",") + ")";
     }
     if (core.Env.getValue("engine") == "presto") {
-      var version = /MSIE.(\d+)/.exec(navigator.userAgent);
-      if (version[1] && parseInt(version[1],10) < 9) {
-        return null;
-      }
       
       var geckoAngle = 90 - angle;
       if (geckoAngle < -90) {
@@ -221,6 +217,10 @@ core.Module('unify.bom.Gradient', {
       gradient = "-o-linear-gradient(" + geckoAngle + "deg, " + colorStops.join(",") + ")";
     }
     if (core.Env.getValue("engine") == "trident") {
+      var version = /MSIE.(\d+)/.exec(navigator.userAgent);
+      if (version[1] && parseInt(version[1],10) < 9) {
+        return null;
+      }
       var geckoAngle = 90 - angle;
       if (geckoAngle < -90) {
         geckoAngle += 180;
