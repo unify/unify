@@ -46,7 +46,7 @@ core.Class("unify.ui.core.MChildControl", {
 
 
     /**
-     * {unify.core.Widget} Get child control with ID @id {String}. 
+     * {unify.ui.core.Widget} Get child control with ID @id {String}. 
      * If @notcreate {Boolean?false} is set to true the widget is 
      * created if not exist.
      */
@@ -371,14 +371,14 @@ core.Class("unify.ui.core.MChildControl", {
           childs[id].setAppearance(e.getData() + "/" + id);
         }
       }, this);
-    },
+    }/*,
     
     /**
      * Destructor
-     */
+     * /
     destruct : function() {
       this._disposeChildControls();
-    }
+    }*/
   }
   
 });
