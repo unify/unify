@@ -13,6 +13,14 @@
 (function(global) {
 
   var emulateTouch = unify.bom.client.Device.DESKTOP;
+  
+  var leftMouseButton;
+  
+  if (core.Env.getValue("engine") == "trident") {
+    leftMouseButton = 1;
+  } else {
+    leftMouseButton = 0;
+  }
 
   var touchSynthesizer = function(e) {
     return {
@@ -42,7 +50,7 @@
       }
     });
     lowland.bom.Events.set(eventElement, "mousedown", function(e) {
-      if (e.button == 0) {
+      if (e.button == leftMouseButton) {
         lowland.bom.Events.dispatch(lowland.bom.Events.getTarget(e), "touchstart", false, touchSynthesizer(e));
       }
     });
@@ -50,7 +58,7 @@
       lowland.bom.Events.dispatch(lowland.bom.Events.getTarget(e), "touchmove", false, touchSynthesizer(e));
     });
     lowland.bom.Events.set(eventElement, "mouseup", function(e) {
-      if (e.button == 0) {
+      if (e.button == leftMouseButton) {
         lowland.bom.Events.dispatch(lowland.bom.Events.getTarget(e), "touchend", false, touchSynthesizer(e));
       }
     });
