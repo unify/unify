@@ -170,18 +170,26 @@ core.Class("unify.ui.core.PopOverManager", {
           }
         }
         if(!mSet){
-          mblocker.style.zIndex = null;
-          mblocker.style.display = 'none';
+          core.bom.Style.set(mblocker, {
+            zIndex: null,
+            display: "none"
+          });
         }
         if(!pSet){
-          pblocker.style.zIndex = null;
-          pblocker.style.display = 'none';
+          core.bom.Style.set(pblocker, {
+            zIndex: null,
+            display: "none"
+          });
         }
       } else {
-        pblocker.style.zIndex = null;
-        mblocker.style.zIndex = null;
-        pblocker.style.display = 'none';
-        mblocker.style.display = 'none';
+        core.bom.Style.set(mblocker, {
+          zIndex: null,
+          display: "none"
+        });
+        core.bom.Style.set(pblocker, {
+          zIndex: null,
+          display: "none"
+        });
       }
     },
 
