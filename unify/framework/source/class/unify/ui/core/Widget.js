@@ -186,13 +186,31 @@ core.Class("unify.ui.core.Widget", {
         element : args[0],
         event: args[1], 
         callback: lowland.ObjectManager.getHash(args[2]),
-        context: lowland.ObjectManager.getHash(args[3]),
+        context: lowland.ObjectManager.getHash(args[3])
       };
       
-      nlrObj.observer = args[2] = unify.core.GlobalError.observeMethod(args[2]);
-      nlr.unshift(nlrObj);
+      //Check if this listener is already bound
+      var found = null;
+      for (var i=0,ii=nlr.length; i<ii; i++) {
+        var nlrOldObj = nlr[i];
+        if (nlrOldObj.element === nlrObj.element &&
+            nlrOldObj.event === nlrObj.event &&
+            nlrOldObj.callback === nlrObj.callback &&
+            nlrOldObj.context === nlrObj.context) {
+              found = i;
+              if (core.Env.getValue("debug")) {
+                this.debug(this.toString() + " binds " + nlrOldObj.event + " twice");
+              }
+              break;
+          }
+        }
       
-      unify.ui.core.VisibleBox.prototype.addNativeListener.apply(this, args);
+      //Only add Listener if not bound twice
+      if (found === null) {
+        nlrObj.observer = args[2] = unify.core.GlobalError.observeMethod(args[2]);
+        nlr.unshift(nlrObj);
+        unify.ui.core.VisibleBox.prototype.addNativeListener.apply(this, args);
+      }
     },
     
     /**
