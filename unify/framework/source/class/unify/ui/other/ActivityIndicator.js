@@ -18,7 +18,9 @@ core.Class("unify.ui.other.ActivityIndicator", {
   implement : [unify.ui.core.IPopOver],
   
   properties : {
-    // overridden
+    /**
+     * {String} Appearance ID of widget used by theme system
+     */
     appearance : {
       init: "activityindicator"
     },
@@ -29,6 +31,7 @@ core.Class("unify.ui.other.ActivityIndicator", {
       apply: function(value) { this._applyText(value); }
     },
     
+    /** {Boolean} Is activity indicator modal */
     modal : {
       type: "Boolean",
       init: true
@@ -87,11 +90,17 @@ core.Class("unify.ui.other.ActivityIndicator", {
       this.getChildControl("label").setValue(value);
     },
     
+    /**
+     * Shows the activity indicator
+     */
     show : function() {
       this.getChildControl("image").show();
       unify.ui.container.Composite.prototype.show.call(this);
     },
     
+    /**
+     * Hides the activity indicator
+     */
     hide : function() {
       unify.ui.container.Composite.prototype.hide.call(this);
       this.getChildControl("image").hide();

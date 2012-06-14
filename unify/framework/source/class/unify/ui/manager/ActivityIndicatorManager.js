@@ -39,6 +39,9 @@ core.Class("unify.ui.manager.ActivityIndicatorManager", {
       return ai;
     },
     
+    /**
+     * Shows an activity indicator for activity @id {String}.
+     */
     show : function(id) {
       if (!id) id = "undef";
       var am = this.__activeMap;
@@ -51,6 +54,9 @@ core.Class("unify.ui.manager.ActivityIndicatorManager", {
       am[id]++;
     },
     
+    /**
+     * Hides activity indicator of activity @id {String}.
+     */
     hide : function(id) {
       if (!id) id = "undef";
       var am = this.__activeMap;

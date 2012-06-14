@@ -30,7 +30,7 @@ core.Class("unify.ui.container.Composite", {
   },
   
   properties : {
-    // overridden
+    /** {String} Appearance ID of widget used by theme system */
     appearance : {
       init: "composite"
     }

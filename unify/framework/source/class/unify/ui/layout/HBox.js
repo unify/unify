@@ -94,10 +94,10 @@ core.Class("unify.ui.layout.HBox", {
   */
 
   /**
-   * @param spacing {Integer?0} The spacing between child widgets {@link #spacing}.
-   * @param alignX {String?"left"} Horizontal alignment of the whole children
+   * @spacing {Integer?0} The spacing between child widgets {@link #spacing}.
+   * @alignX {String?"left"} Horizontal alignment of the whole children
    *     block {@link #alignX}.
-   * @param separator {Decorator} A separator to render between the items
+   * @separator {Decorator} A separator to render between the items
    */
   construct : function(spacing, alignX, separator) {
     unify.ui.layout.Base.call(this);
@@ -299,7 +299,10 @@ core.Class("unify.ui.layout.HBox", {
     }),*/
 
 
-    // overridden
+    /**
+     * Render part of layout stack that is managed by this layout manager. The part
+     * has size @availWidth {Integer} and @availHeight {Integer}.
+     */
     renderLayout : function(availWidth, availHeight)
     {
       // Rebuild flex/width caches

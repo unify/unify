@@ -1067,8 +1067,6 @@ core.Class("unify.ui.core.Widget", {
 
     /**
      * Shows the widgets.
-     *
-     * @return {void}
      */
     show : function() {
       this.setVisibility("visible");
@@ -1282,8 +1280,7 @@ core.Class("unify.ui.core.Widget", {
     __font : null,
 
     /**
-     * Set styles to the element
-     * @param map {Map} Map of styles/values to apply
+     * Set styles @map {Map} to the element
      */
     setStyle : function(map) {
       this._setStyle(map);

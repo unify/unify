@@ -19,9 +19,11 @@ core.Class("unify.view.Root", {
   include : [unify.ui.core.Widget, unify.ui.core.MChildrenHandling],
   
   /**
-   * @param rootElement {Element} DOM element the widget root is bound to
-   * @param rootEventElement {Element} DOM element to bind global event listeners to
-   * @param viewportElement {Element} DOM element all popovers and out of layouting elements are bound to
+   * Constructor of root widget with @rootElement {Element} as root element everything
+   * is painted to, @rootEventElement {Element} as element all root events are bound to and
+   * @viewportElement {Element} as calculation base for out of layout elements like
+   * popovers.
+   * Optional a @layout {unify.ui.layout.Base?null} can be given.
    */
   construct : function(rootElement,rootEventElement,viewportElement,layout) {
     this.__rootElement = rootElement;
@@ -35,13 +37,16 @@ core.Class("unify.view.Root", {
   },
   
   properties : {
-    // overridden
+    /** {String} Appearance ID of widget used by theme system */
     appearance : {
       init: "root"
     }
   },
   
   members : {
+    /**
+     * Set styles of @map {Map} to the element.
+     */
     setStyle : unify.ui.core.MChildrenHandling.prototype.setStyle,
     
     // Root element the whole application is based upon
@@ -58,7 +63,9 @@ core.Class("unify.view.Root", {
       return this.__rootElement;
     },
     
-    // overridden
+    /**
+     * {Map} Return calculated and cached width and size of root element.
+     */
     getBounds : function() {
       var size = this.getSizeHint();
       
@@ -70,14 +77,23 @@ core.Class("unify.view.Root", {
       };
     },
     
+    /**
+     * {Integer} Get nesting level (= depth in widget tree).
+     */
     getNestingLevel : function() {
       return 0;
     },
     
+    /**
+     * {Element} Returns root event element every root event is bound to.
+     */
     getEventElement : function() {
       return this.__rootEventElement;
     },
     
+    /**
+     * {Element} Returns viewport element every out of layout element is painted into, e.g. popovers.
+     */
     getViewportElement : function() {
       return this.__viewportElement;
     },
@@ -97,7 +113,7 @@ core.Class("unify.view.Root", {
       }
     },
     
-    /** Returns fixed size hint of base layer size */
+    /** {Map} Returns fixed size hint of base layer size */
     getSizeHint : function() {
       var rootSizeHint = this.__rootSizeHint;
       if (rootSizeHint) {
@@ -128,7 +144,13 @@ core.Class("unify.view.Root", {
       return e;
     },
     
-    // overridden
+    /**
+     * Render method to apply layout on widget's DOM element. This method applies
+     * @left {Integer} and @top {Integer} position and @width {Integer} and 
+     * @height {Integer} of element. Optional if @preventSize {Boolean?false} is
+     * set to true the original DOM element size is not changed. This is only
+     * useful if element is an root DOM element.
+     */
     renderLayout : function(left, top, width, height, preventSize) {
       unify.ui.core.Widget.prototype.renderLayout.call(this, left, top, width, height, true);
     }

@@ -17,7 +17,7 @@ core.Class("unify.ui.layout.special.SplitView", {
   include : [unify.ui.layout.Base], 
 
   /**
-   * @param splitLevel {Float?0.33} Set width of left part in percent
+   * @splitLevel {Float?0.33} Set width of left part in percent
    */
   construct : function(splitLevel) {
     unify.ui.layout.Base.call(this);
@@ -39,6 +39,10 @@ core.Class("unify.ui.layout.special.SplitView", {
     __right : null,
     __title : null,
 
+    /**
+     * Render part of layout stack that is managed by this layout manager. The part
+     * has size @availWidth {Integer} and @availHeight {Integer}.
+     */
     renderLayout : function(availWidth, availHeight) {
       var children = this._getLayoutChildren();
 

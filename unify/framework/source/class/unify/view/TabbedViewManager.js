@@ -68,12 +68,10 @@ core.Class("unify.view.TabbedViewManager", {
       return control || this.base(arguments,id);
     },
 
-    /**
-     * Registers a new view. All views must be registered before being used.
-     *
-     * @param viewClass {Class} Class of the view to register
-     * @param isDefault {Boolean?false} Whether the added view functions as the default view for this manager.
-     * @param excludeFromTabs {Boolean?false} Whether the added view is excluded from the tabbed navigation (useful for views that are not first level)
+     /**
+     * Registers a new view @viewClass {Function}. All views must be registered before being used.
+     * If @isDefault {Boolean?false} is set to true it is the first visible view if no path is
+     * given in URL. Optional @excludeFromTabs {Boolean?false} exclude tab from tabbed navigation. This is useful for views that are not first level.
      */
     register : function(viewClass, isDefault, excludeFromTabs){
       this.base(arguments,viewClass,isDefault);

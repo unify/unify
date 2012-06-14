@@ -27,9 +27,9 @@ core.Class("unify.view.SplitViewManager",
   */
 
   /**
-   * @param masterViewManager {unify.view.ViewManager} The master view manager
-   * @param detailViewManager {unify.view.ViewManager} The detail view manager
-   * @param layout {unify.ui.layout.Base?null} Optional other layout manager than special splitview one
+   * Manages split views, defines @masterViewManager {unify.view.ViewManager} as master view manager,
+   * @detailViewManager {unify.view.ViewManager} as detail view manager and optional
+   * @layout {unify.ui.layout.Base?unify.ui.layout.special.SplitView} as layout manager for split view.
    */
   construct : function(masterViewManager, detailViewManager, layout)
   {
@@ -67,7 +67,9 @@ core.Class("unify.view.SplitViewManager",
     __detailViewManager : null,
 
 
-    //overridden
+    /**
+     * Shows split view.
+     */
     show: function(){
       this.base(arguments);
       if(!this.isPortrait()){
@@ -76,7 +78,9 @@ core.Class("unify.view.SplitViewManager",
       this.__detailViewManager.show();
     },
     
-    //overridden
+    /**
+     * Hides split view.
+     */
     hide: function(){
       this.__masterViewManager.hide();
       this.__detailViewManager.hide();
@@ -128,12 +132,9 @@ core.Class("unify.view.SplitViewManager",
     },
 
     /**
-     * Returns if view is in portrait mode
-     *
-     * @param renderWidth {Number?null} Optional render width if known
-     * @param renderHeight {Number?null} Optional render height if known
-     *
-     * @return {Boolean} View is in portrait mode
+     * {Boolean} Returns if view is in portrait mode, optional with
+     * @renderWidth {Number?null} and @renderHeight {Number?null}
+     * set as calculation base, otherwise use system sizes.
      */
     isPortrait : function(renderWidth, renderHeight) {
       if (renderWidth && renderHeight) {

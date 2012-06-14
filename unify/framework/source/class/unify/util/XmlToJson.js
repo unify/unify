@@ -43,14 +43,9 @@
   core.Module("unify.util.XmlToJson", {
   
     /**
-     * Converts XML to JSON
+     * {Object|null} Converts XML @xmlNode {Node|Document} to JSON data.
      *
      * TODO: CDATA sections???
-     *
-     * @param xmlNode
-     *            {Node|Document} XML document or XML node to convert to
-     *            JSON
-     * @return {Object|null} JSON object or null when element is empty
      */
     convert : function(xmlNode)
     {

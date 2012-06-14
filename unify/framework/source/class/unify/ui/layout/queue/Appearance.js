@@ -17,11 +17,16 @@
 (function() {
   
   var widgetQueue = [];
+  
+  /** {String} Name of queue */
   var name = "appearance";
 
   core.Module("unify.ui.layout.queue.Appearance", {
     name : name,
     
+    /**
+     * Add @widget {unify.ui.core.Widget} to queue.
+     */
     add : function(widget) {
       if (!widgetQueue.contains(widget)) {
         widgetQueue.push(widget);
@@ -29,6 +34,9 @@
       }
     },
     
+    /**
+     * Flushes queue. 
+     */
     flush : function() {
       var widget;
       

@@ -63,10 +63,8 @@ core.Class("unify.view.Navigation",
     __startPath : null,
 
     /**
-     * Adds a view manager to the global navigation. All views
+     * Adds a view manager @viewManager {unify.view.ViewManager} to the global navigation. All views
      * of this view manager will be globally accessible by their name.
-     *
-     * @param viewManager {unify.view.ViewManager} View manager instance
      */
     register : function(viewManager)
     {
@@ -115,10 +113,9 @@ core.Class("unify.view.Navigation",
     },
     
     /**
-     * Sets the start view for theis navigation.
+     * Sets @viewClass {Class} as start view for theis navigation.
      * The start view will be used if Navigation.init doesn't find a
      * suitable view.
-     * @param viewClass {Class} Class of the view which should be the start view
      */
     setStartView : function(viewClass){
       var instance = viewClass.getInstance();
@@ -128,10 +125,7 @@ core.Class("unify.view.Navigation",
     },
     
     /**
-     * Returns the view manager which controls the given view
-     *
-     * @param viewId {String} ID of view
-     * @return {unify.view.ViewManager} Instance of view manager
+     * {unify.view.ViewManager} Returns the view manager which controls the given view with ID @viewId {String}
      */
     getViewManager : function(viewId)
     {
@@ -161,10 +155,8 @@ core.Class("unify.view.Navigation",
     __path : null,
 
     /**
-     * Navigates to the given path. Automatically distributes sub paths
+     * Navigates to the given @path {unify.view.Path}. Automatically distributes sub paths
      * to the responsible view managers.
-     *
-     * @param path {unify.view.Path} Path object
      */
     navigate : function(path)
     {
@@ -242,18 +234,15 @@ core.Class("unify.view.Navigation",
     },
 
     /**
-     * tests if path is valid for navigation
+     * {Boolean} Tests if @path {unify.view.Path} is valid for navigation.
      * 
      * to be valid, 
-     * 1. all mentioned views need to registered with a viewmanager that is registered for navigation
-     * 2. all views that belong to the same viewmanager have to be a continous subarray 
-     * eg. 
+     * 
+     * * all mentioned views need to registered with a viewmanager that is registered for navigation
+     * * all views that belong to the same viewmanager have to be a continous subarray eg. 
      * ViewManager 1 has views foo and bar, ViewManager 2 has view baz
      * valid: foo/bar/baz , foo/bar , foo/baz, /baz/foo/bar
      * invalid: foo/baz/bar
-     * 
-     * @param path {unify.view.Path} Path object
-     * @return {Boolean] true, if the path is valid for navigation
      */
     isValidNavigationPath: function(path){
       var usedManagers = {};

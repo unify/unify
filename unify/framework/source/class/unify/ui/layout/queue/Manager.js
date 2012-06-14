@@ -11,10 +11,16 @@
   lowland.QueueManager.register(Dispose.name, Dispose.flush, null, [Visibility.name, Appearance.name, Layout.name]);
 
   core.Module("unify.ui.layout.queue.Manager", {
+    /**
+     * Flushes all queues.
+     */
     flush : function() {
       lowland.QueueManager.flush();
     },
     
+    /**
+     * Mark queue @name {String} to flush next time.
+     */
     run : function(name) {
       lowland.QueueManager.run(name);
     }

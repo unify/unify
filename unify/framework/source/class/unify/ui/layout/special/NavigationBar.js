@@ -30,6 +30,10 @@
       __right : null,
       __title : null,
     
+      /**
+       * Render part of layout stack that is managed by this layout manager. The part
+       * has size @availWidth {Integer} and @availHeight {Integer}.
+       */
       renderLayout : function(availWidth, availHeight) {
         if (this._invalidChildrenCache) {
           this.__rebuildCache();

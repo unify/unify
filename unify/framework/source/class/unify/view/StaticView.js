@@ -36,12 +36,9 @@ core.Class("unify.view.StaticView",
   include : [unify.ui.container.Composite, unify.fx.MWidgetAnimation],
   
   
-  /*
-  ----------------------------------------------------------------------------
-     CONSTRUCTOR
-  ----------------------------------------------------------------------------
-  */  
-  
+  /**
+   * Constructor. A @layout {unify.ui.layout.Base?null} can be given.
+   */
   construct : function(layout)
   {
     unify.ui.container.Composite.call(this, layout || new unify.ui.layout.VBox());
@@ -147,6 +144,7 @@ core.Class("unify.view.StaticView",
       fire : "changeSegment"
     },
     
+    /** {String?null} Appearance ID of widget used by theme system */
     appearance : {
       init: "view"
     }
@@ -183,11 +181,9 @@ core.Class("unify.view.StaticView",
 
 
     /**
-     * Parametrized views may have a default parameter which is
+     * {String|null} Parametrized views may have a default parameter which is
      * auto-selected by the view manager when no explicit parameter
      * is given.
-     *
-     * @return {String|null} Default to <code>null</code>
      */
     getDefaultSegment : function() {
       return null;
@@ -223,20 +219,16 @@ core.Class("unify.view.StaticView",
 
 
     /**
-     * Returns the title of the view
-     *
-     * @param type {String} One of "short", "title-bar", "tab-bar", "up", etc. Support depends on view.
-     * @return {String} Title of the view
+     * {String} Returns the title of the view. @type {String?null} is an optional parameter defining position for title.
+     * This is helpful for short title, title for titlebar, tabbar etc. and depends on view.
      */
     getTitle : function(type) {
       return "Default";
     },
     
     /**
-     * Returns the icon of the view
-     *
-     * @param type {String} One of "short", "title-bar", "tab-bar", "up", etc. Support depends on view.
-     * @return {String?null} URL of icon
+     * {String|null} Returns the icon of the view. @type {String?null} is an optional parameter defining position for title.
+     * This is helpful for short title, title for titlebar, tabbar etc. and depends on view.
      */
     getIcon : function(type) {
       return null;

@@ -20,6 +20,10 @@ core.Class("unify.ui.layout.special.AtomLayout", {
     __image : null,
     __label : null,
     
+    /**
+     * Render part of layout stack that is managed by this layout manager. The part
+     * has size @availWidth {Integer} and @availHeight {Integer}.
+     */
     renderLayout : function(availWidth, availHeight) {
       if (this._invalidChildrenCache) {
         this.__rebuildCache();

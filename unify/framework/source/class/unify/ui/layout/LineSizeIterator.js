@@ -24,9 +24,8 @@
  */
 core.Class("unify.ui.layout.LineSizeIterator", {
   /**
-   * @param children {qx.ui.core.Widget[]} The children of the flow layout to
-   *    compute the lines from
-   * @param spacing {Integer} The horizontal spacing between the children
+   * @children {Array} The children of the flow layout to compute the lines from
+   * @spacing {Integer} The horizontal spacing between the children
    */
   construct : function(children, spacing)
   {
@@ -46,11 +45,8 @@ core.Class("unify.ui.layout.LineSizeIterator", {
 
 
     /**
-     * Computes the properties of the next line taking the available width into
+     * {Map} Computes the properties of the next line taking the available width @availWidth {Integer} into
      * account
-     *
-     * @param availWidth {Integer} The available width for the next line
-     * @return {Map} A map containing the line's properties.
      */
     computeNextLine : function(availWidth)
     {

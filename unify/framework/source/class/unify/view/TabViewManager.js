@@ -24,7 +24,7 @@ core.Class("unify.view.TabViewManager", {
   */
 
   /**
-   * @param viewManager {unify.view.ViewManager} ViewManager to attach to
+   * @viewManager {unify.view.ViewManager} ViewManager to attach to
    */
   construct : function(viewManager)
   {

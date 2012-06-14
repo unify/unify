@@ -29,11 +29,7 @@ core.Module("unify.util.Cookie", {
   */
 
   /**
-   * Returns the string value of a cookie.
-   *
-   * @param key {String} The key for the saved string value.
-   * @return {null | String} Returns the saved string value, if the cookie
-   *    contains a value for the key, <code>null</code> otherwise.
+   * {String|null} Returns the string value of a cookie with key value @key {String}.
    */
   get : function(key)
   {
@@ -59,16 +55,12 @@ core.Module("unify.util.Cookie", {
 
 
   /**
-   * Sets the string value of a cookie.
-   *
-   * @param key {String} The key for the string value.
-   * @param value {String} The string value.
-   * @param expires {Number?null} The expires in days starting from now,
-   *    or <code>null</code> if the cookie should deleted after browser close.
-   * @param path {String?null} Path value.
-   * @param domain {String?null} Domain value.
-   * @param secure {Boolean?null} Secure flag.
-   * @return {void}
+   * Sets the string value of a cookie. Mendatory parameters are
+   * @key {String} and @value {String}. Optional an expiry date
+   * @expires {Number?null} defines days the cookie is valid, otherwise
+   * the cookie is deleted after browser is closed. @path {String},
+   * @domain {String?null} and @secure {Boolean?null} are other allowed
+   * flags for cookie.
    */
   set : function(key, value, expires, path, domain, secure)
   {
@@ -101,12 +93,9 @@ core.Module("unify.util.Cookie", {
 
 
   /**
-   * Deletes the string value of a cookie.
-   *
-   * @param key {String} The key for the string value.
-   * @param path {String?null} Path value.
-   * @param domain {String?null} Domain value.
-   * @return {void}
+   * Deletes the cookie with key @key {String}. If @path {String?null}
+   * and @domain {String?null} is set during set call this must also be
+   * set on deletion.
    */
   del : function(key, path, domain)
   {

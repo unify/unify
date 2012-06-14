@@ -93,10 +93,10 @@ core.Class("unify.ui.layout.VBox", {
   */
 
   /**
-   * @param spacing {Integer?0} The spacing between child widgets {@link #spacing}.
-   * @param alignY {String?"top"} Vertical alignment of the whole children
+   * @spacing {Integer?0} The spacing between child widgets {@link #spacing}.
+   * @alignY {String?"top"} Vertical alignment of the whole children
    *     block {@link #alignY}.
-   * @param separator {Decorator} A separator to render between the items
+   * @separator {Decorator} A separator to render between the items
    */
   construct : function(spacing, alignY, separator)
   {
@@ -300,7 +300,10 @@ core.Class("unify.ui.layout.VBox", {
     }),*/
 
 
-    // overridden
+    /**
+     * Render part of layout stack that is managed by this layout manager. The part
+     * has size @availWidth {Integer} and @availHeight {Integer}.
+     */
     renderLayout : function(availWidth, availHeight)
     {
       // Rebuild flex/height caches

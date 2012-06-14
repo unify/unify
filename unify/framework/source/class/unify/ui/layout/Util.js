@@ -21,27 +21,46 @@
 
 
 core.Module("unify.ui.layout.Util", {
+    
+  /**
+   * {Integer} Calculate left gap of @widget {unify.ui.core.Widget}
+   */
   calculateLeftGap : function(widget) {
     return widget.getBorder().left + widget.getMarginLeft() || 0;
   },
 
+  /**
+   * {Integer} Calculate top gap of @widget {unify.ui.core.Widget}
+   */
   calculateTopGap : function(widget) {
     return widget.getBorder().top + widget.getMarginTop() || 0;
   },
   
+  /**
+   * {Integer} Calculate right gap of @widget {unify.ui.core.Widget}
+   */
   calculateRightGap : function(widget) {
     return widget.getBorder().right + widget.getMarginRight() || 0;
   },
   
+  /**
+   * {Integer} Calculate bottom gap of @widget {unify.ui.core.Widget}
+   */
   calculateBottomGap : function(widget) {
     return widget.getBorder().bottom + widget.getMarginBottom() || 0;
   },
   
+  /**
+   * {Integer} Calculate horizontal gap of @widget {unify.ui.core.Widget}
+   */
   calculateHorizontalGap : function(widget) {
     var border = widget.getBorder();
     return border.left + widget.getMarginLeft() + border.right + widget.getMarginRight() || 0;
   },
   
+  /**
+   * {Integer} Calculate vertical gap of @widget {unify.ui.core.Widget}
+   */
   calculateVerticalGap : function(widget) {
     var border = widget.getBorder();
     return border.top + widget.getMarginTop() + border.bottom + widget.getMarginBottom() || 0;
@@ -51,22 +70,20 @@ core.Module("unify.ui.layout.Util", {
   PERCENT_VALUE : /[0-9]+(?:\.[0-9]+)?%/,
   
   /**
-   * Computes the flex offsets needed to reduce the space
+   * {Map} Computes the flex offsets needed to reduce the space
    * difference as much as possible by respecting the
    * potential of the given elements (being in the range of
    * their min/max values)
    *
-   * @param flexibles {Map} Each entry must have these keys:
+   * @flexibles {Map} Each entry must have these keys:
    *   <code>id</code>, <code>potential</code> and <code>flex</code>.
    *   The ID is used in the result map as the key for the user to work
    *   with later (e.g. upgrade sizes etc. to respect the given offset)
    *   The potential is an integer value which is the difference of the
    *   currently interesting direction (e.g. shrinking=width-minWidth, growing=
    *   maxWidth-width). The flex key holds the flex value of the item.
-   * @param avail {Integer} Full available space to allocate (ignoring used one)
-   * @param used {Integer} Size of already allocated space
-   * @return {Map} A map which contains the calculated offsets under the key
-   *   which is identical to the ID given in the incoming map.
+   * @avail {Integer} Full available space to allocate (ignoring used one)
+   * @used {Integer} Size of already allocated space
    */
   computeFlexOffsets : function(flexibles, avail, used) {
     var child, key, flexSum, flexStep;
@@ -156,16 +173,15 @@ core.Module("unify.ui.layout.Util", {
   },
   
   /**
-   * Computes the offset which needs to be added to the top position
+   * {Integer} Computes the offset which needs to be added to the top position
    * to result in the stated vertical alignment. Also respects
    * existing margins (without collapsing).
    *
-   * @param align {String} One of <code>top</code>, <code>center</code> or <code>bottom</code>.
-   * @param width {Integer} The visible width of the widget
-   * @param availWidth {Integer} The available inner width of the parent
-   * @param marginLeft {Integer?0} Optional left margin of the widget
-   * @param marginRight {Integer?0} Optional right margin of the widget
-   * @return {Integer} Computed top coordinate
+   * @align {String} One of <code>top</code>, <code>center</code> or <code>bottom</code>.
+   * @width {Integer} The visible width of the widget
+   * @availWidth {Integer} The available inner width of the parent
+   * @marginLeft {Integer?0} Optional left margin of the widget
+   * @marginRight {Integer?0} Optional right margin of the widget
    */
   computeHorizontalAlignOffset : function(align, width, availWidth, marginLeft, marginRight)
   {
@@ -209,16 +225,15 @@ core.Module("unify.ui.layout.Util", {
 
 
   /**
-   * Computes the offset which needs to be added to the top position
+   * {Integer} Computes the offset which needs to be added to the top position
    * to result in the stated vertical alignment. Also respects
    * existing margins (without collapsing).
    *
-   * @param align {String} One of <code>top</code>, <code>middle</code> or <code>bottom</code>.
-   * @param height {Integer} The visible height of the widget
-   * @param availHeight {Integer} The available inner height of the parent
-   * @param marginTop {Integer?0} Optional top margin of the widget
-   * @param marginBottom {Integer?0} Optional bottom margin of the widget
-   * @return {Integer} Computed top coordinate
+   * @align {String} One of <code>top</code>, <code>middle</code> or <code>bottom</code>.
+   * @height {Integer} The visible height of the widget
+   * @availHeight {Integer} The available inner height of the parent
+   * @marginTop {Integer?0} Optional top margin of the widget
+   * @marginBottom {Integer?0} Optional bottom margin of the widget
    */
   computeVerticalAlignOffset : function(align, height, availHeight, marginTop, marginBottom)
   {
@@ -262,15 +277,14 @@ core.Module("unify.ui.layout.Util", {
 
 
   /**
-   * Collapses two margins.
+   * {Integer} Collapses two margins.
    *
    * Supports positive and negative margins.
    * Collapsing find the largest positive and the largest
    * negative value. Afterwards the result is computed through the
    * subtraction of the negative from the positive value.
    *
-   * @param varargs {arguments} Any number of configured margins
-   * @return {Integer} The collapsed margin
+   * @varargs {arguments} Any number of configured margins
    */
   collapseMargins : function(varargs)
   {
@@ -291,16 +305,15 @@ core.Module("unify.ui.layout.Util", {
 
 
   /**
-   * Computes the sum of all horizontal gaps. Normally the
+   * {Integer} Computes the sum of all horizontal gaps. Normally the
    * result is used to compute the available width in a widget.
    *
    * The method optionally respects margin collapsing as well. In
    * this mode the spacing is collapsed together with the margins.
    *
-   * @param children {Array} List of children
-   * @param spacing {Integer?0} Spacing between every child
-   * @param collapse {Boolean?false} Optional margin collapsing mode
-   * @return {Integer} Sum of all gaps in the final layout.
+   * @children {Array} List of children
+   * @spacing {Integer?0} Spacing between every child
+   * @collapse {Boolean?false} Optional margin collapsing mode
    */
   computeHorizontalGaps : function(children, spacing, collapse)
   {
@@ -338,16 +351,15 @@ core.Module("unify.ui.layout.Util", {
 
 
   /**
-   * Computes the sum of all vertical gaps. Normally the
+   * {Integer} Computes the sum of all vertical gaps. Normally the
    * result is used to compute the available height in a widget.
    *
    * The method optionally respects margin collapsing as well. In
    * this mode the spacing is collapsed together with the margins.
    *
-   * @param children {Array} List of children
-   * @param spacing {Integer?0} Spacing between every child
-   * @param collapse {Boolean?false} Optional margin collapsing mode
-   * @return {Integer} Sum of all gaps in the final layout.
+   * @children {Array} List of children
+   * @spacing {Integer?0} Spacing between every child
+   * @collapse {Boolean?false} Optional margin collapsing mode
    */
   computeVerticalGaps : function(children, spacing, collapse)
   {
@@ -385,12 +397,11 @@ core.Module("unify.ui.layout.Util", {
 
 
   /**
-   * Computes the gaps together with the configuration of separators.
+   * {Integer} Computes the gaps together with the configuration of separators.
    *
-   * @param children {qx.ui.core.LayoutItem[]} List of children
-   * @param spacing {Integer} Configured spacing
-   * @param separator {Separator} Separator to render
-   * @return {Integer} Sum of gaps
+   * @children {Array} List of children
+   * @spacing {Integer} Configured spacing
+   * @separator {var} Separator to render
    */
   computeHorizontalSeparatorGaps : function(children, spacing, separator)
   {
@@ -412,12 +423,11 @@ core.Module("unify.ui.layout.Util", {
 
 
   /**
-   * Computes the gaps together with the configuration of separators.
+   * {Integer} Computes the gaps together with the configuration of separators.
    *
-   * @param children {qx.ui.core.LayoutItem[]} List of children
-   * @param spacing {Integer} Configured spacing
-   * @param separator {Separator} Separator to render
-   * @return {Integer} Sum of gaps
+   * @children {Array} List of children
+   * @spacing {Integer} Configured spacing
+   * @separator {var} Separator to render
    */
   computeVerticalSeparatorGaps : function(children, spacing, separator)
   {
@@ -439,19 +449,17 @@ core.Module("unify.ui.layout.Util", {
 
 
   /**
-   * Arranges two sizes in one box to best respect their individual limitations.
+   * {Map} Arranges two sizes in one box to best respect their individual limitations.
    *
    * Mainly used by split layouts (Split Panes) where the layout is mainly defined
    * by the outer dimensions.
    *
-   * @param beginMin {Integer} Minimum size of first widget (from size hint)
-   * @param beginIdeal {Integer} Ideal size of first widget (maybe after dragging the splitter)
-   * @param beginMax {Integer} Maximum size of first widget (from size hint)
-   * @param endMin {Integer} Minimum size of second widget (from size hint)
-   * @param endIdeal {Integer} Ideal size of second widget (maybe after dragging the splitter)
-   * @param endMax {Integer} Maximum size of second widget (from size hint)
-   * @return {Map} Map with the keys <code>begin</code and <code>end</code> with the
-   *   arranged dimensions.
+   * @beginMin {Integer} Minimum size of first widget (from size hint)
+   * @beginIdeal {Integer} Ideal size of first widget (maybe after dragging the splitter)
+   * @beginMax {Integer} Maximum size of first widget (from size hint)
+   * @endMin {Integer} Minimum size of second widget (from size hint)
+   * @endIdeal {Integer} Ideal size of second widget (maybe after dragging the splitter)
+   * @endMax {Integer} Maximum size of second widget (from size hint)
    */
   arrangeIdeals : function(beginMin, beginIdeal, beginMax, endMin, endIdeal, endMax)
   {

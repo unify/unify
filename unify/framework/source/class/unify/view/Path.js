@@ -21,6 +21,9 @@
 (function(global) {
   
   core.Class("unify.view.Path", {
+    /**
+     * Constructor, optional with parameters @params {var}.
+     */
     construct : function(params) {
       if (params) {
         this.push(params);
@@ -82,13 +85,10 @@
   
   core.Main.addStatics("unify.view.Path", {
     /**
-     * Converts a location string into a path object.
+     * {unify.view.Path} Converts a location string @str {String} into a path object.
      *
      * Format is "fragment1/fragment2/fragment3".
      * Each fragment has the format "view.segment:param".
-     *
-     * @param str {String} A location string with supported special charaters
-     * @return {unify.view.Path} Returns the path object
      */
     fromString : function(str)
     {
@@ -110,10 +110,7 @@
     __fragmentMatcher : /^([a-z0-9-]+)?(\.([a-z-]+))?(\:([a-zA-Z0-9_%=-]+))?$/,
 
     /**
-     * Parses a location fragment into a object with the keys "view", "segment" and "param".
-     *
-     * @param fragment {String} Location fragment to parse
-     * @return {Map} The parsed fragment.
+     * {Map} Parses a location fragment @fragment {String} into a object with the keys "view", "segment" and "param".
      */
     parseFragment : function(fragment)
     {
@@ -133,12 +130,7 @@
     },
     
     /**
-     * Checks wheter all single chunks of paths are equal.
-     *
-     * @param a {unify.view.Path} Path a
-     * @param b {unify.view.Path} Path b
-     *
-     * @return {Boolean} true if paths are equal, otherwise false
+     * {Boolean} Checks wheter all single chunks of path @a {unify.view.Path} and path @b {unify.view.Path} are equal.
      */
     chunkEquals : function(a, b) {
       if (!a || !b) {

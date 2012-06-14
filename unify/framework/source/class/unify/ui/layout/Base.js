@@ -11,6 +11,9 @@ core.Class("unify.ui.layout.Base", {
     _invalidChildrenCache : true,
     __sizeHint : null,
     
+    /**
+     * Connects @widget {unify.ui.core.Widget} to layout
+     */
     connectWidget : function(widget) {
       this.__widget = widget;
     },
@@ -25,23 +28,40 @@ core.Class("unify.ui.layout.Base", {
       }
     },
     
+    /**
+     * {Boolean} If layout can calculate height for a given width this function returns true.
+     */
     hasHeightForWidth : function() {
       return false;
     },
     
+    /**
+     * {Integer} Returns calculated height for given @width {Integer}. Please check hasHeightForWidth as
+     * not every layout supports this calculation.
+     */
     getHeightForWidth : function(width) {
       console.error("getHeightForWidth is not implemented!", this.constructor);
       return null;
     },
     
+    /**
+     * Sets flag to invalidate children cache. This is done in next layouting phase.
+     */
     invalidateChildrenCache : function() {
       this._invalidChildrenCache = true;
     },
     
+    /**
+     * Invalidates cached layouting size hint.
+     */
     invalidateLayoutCache : function() {
       this.__sizeHint = null;
     },
     
+    /**
+     * Render part of layout stack that is managed by this layout manager. The part
+     * has size @availWidth {Integer} and @availHeight {Integer}.
+     */
     renderLayout : function(availWidth, availHeight) {
       console.error("renderLayout is not implemented! ", this.constructor);
     },
@@ -50,6 +70,9 @@ core.Class("unify.ui.layout.Base", {
       
     },
     
+    /**
+     * {Map} Calculates size of child widgets in this layout.
+     */
     getSizeHint : function() {
       var sizeHint = this.__sizeHint;
       

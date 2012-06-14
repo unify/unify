@@ -18,11 +18,16 @@
   
   var widgetQueue = [];
   var visibilityCache = [];
+  
+  /** {String} Name of queue */
   var name = "visibility";
 
   core.Module("unify.ui.layout.queue.Visibility", {
     name : name,
     
+    /**
+     * Add @widget {unify.ui.core.Widget} to queue.
+     */
     add : function(widget) {
       if (!widgetQueue.contains(widget)) {
         widgetQueue.push(widget);
@@ -30,6 +35,9 @@
       }
     },
     
+    /**
+     * Flushes queue. 
+     */
     flush : function() {
       for (var i=0,ii=widgetQueue.length; i<ii; i++) {
         var children = widgetQueue[i].getLayoutChildren();
@@ -49,6 +57,9 @@
       }
     },
     
+    /**
+     * {Boolean} Return if @widget {unify.ui.core.Widget} is visible.
+     */
     isVisible : function(widget) {
       return visibilityCache.contains(widget);
     }

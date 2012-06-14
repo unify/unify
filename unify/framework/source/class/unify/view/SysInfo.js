@@ -31,21 +31,20 @@ core.Class("unify.view.SysInfo",
   {
     __content : null,
 
-
-
-    /*
-    ---------------------------------------------------------------------------
-      STATIC VIEW INTERFACE
-    ---------------------------------------------------------------------------
-    */
-
-    // overridden
+    /**
+     * {String} Returns the title of the view. @type {String?null} is an optional parameter defining position for title.
+     * This is helpful for short title, title for titlebar, tabbar etc. and depends on view.
+     */
     getTitle : function(type) {
       return "System Info";
     },
 
 
-    // overridden
+    /**
+     * {String|null} Parametrized views may have a default parameter which is
+     * auto-selected by the view manager when no explicit parameter
+     * is given.
+     */
     getDefaultSegment : function() {
       return "basics";
     },
