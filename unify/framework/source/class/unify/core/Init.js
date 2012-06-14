@@ -20,7 +20,7 @@
     init.finalize();
     
     //lowland.bom.Events.listen(window, "shutdown", shutDown);
-    lowland.bom.Events.listen(window, "beforeunload", shutDown);
+    //lowland.bom.Events.listen(window, "beforeunload", shutDown);
   };
   
 
