@@ -790,6 +790,7 @@ core.Class("unify.ui.core.Widget", {
     },
     
     __elementPos : null,
+    __modificationPosition : null,
     
     /**
      * {Map} Returns rendered position of element.
@@ -807,6 +808,12 @@ core.Class("unify.ui.core.Widget", {
      */
     renderLayout : function(left, top, width, height, preventSize) {
       var userOverride = this.getUserData("domElementPositionOverride");
+      var userModification = this.getUserData("domElementPositionModification");
+
+      if (userModification) {
+        left += userModification.left;
+        top += userModification.top;
+      }
 
       var dimension = this.__dimensionInfo = {
         width: width,
@@ -855,7 +862,14 @@ core.Class("unify.ui.core.Widget", {
           var newLeft = (left + parentVirtualPosition.left);
           var newTop = (top + parentVirtualPosition.top);
           
+          
           this.__elementPos = [newLeft, newTop];
+          
+          var modPos = this.__modificationPosition;
+          if (modPos) {
+            newLeft += modPos[0];
+            newTop += modPos[1];
+          }
           
           core.bom.Style.set(element, {
             position: "absolute",
@@ -1546,7 +1560,27 @@ core.Class("unify.ui.core.Widget", {
       /*if (border.left + border.top + border.right + border.bottom > 0) {
         unify.ui.layout.queue.Layout.add(this);
       }*/
-
+      
+      if (core.Env.getValue("engine") == "trident") {
+        var version = /MSIE.(\d+)/.exec(navigator.userAgent);
+        if (version[1] && parseInt(version[1],10) < 9) {
+          // IE<9 only transform translation
+          
+          if (style.transform) {
+            var res = /translate.*(\d+).*(\d+)/.exec(style.transform);
+            if (res) {
+              var transformLeft = parseInt(res[1],10);
+              var transformTop = parseInt(res[2],10);
+              delete style.transform;
+              var origPos = this.__elementPos || [0,0];
+              this.__modificationPosition = [transformLeft, transformTop];
+              style.left = (transformLeft + origPos[0]) + "px";
+              style.top = (transformTop + origPos[1]) + "px";
+            }
+          }
+        }
+      }
+      
       core.bom.Style.set(this.getElement(), style);
 
       if (properties) {
