@@ -139,7 +139,7 @@ core.Class("unify.ui.core.MNavigatable", {
           /**
            * #require(lowland.ext.Function)
            */
-          this.__navigationWidgetHelper.delay(0, this, viewManager);
+          this.__navigationWidgetHelper.lowDelay(0, this, viewManager);
         } else {
           if(core.Env.getValue("debug")){
             this.debug(viewManager.getId()+ "is currently animating, skipping navigation attempt");
