@@ -17,7 +17,12 @@
   var leftMouseButton;
   
   if (core.Env.getValue("engine") == "trident") {
-    leftMouseButton = 1;
+    var version = /MSIE.(\d+)/.exec(navigator.userAgent);
+    if (version[1] && parseInt(version[1],10) < 9) {
+      leftMouseButton = 1;
+    } else {
+      leftMouseButton = 0;
+    }
   } else {
     leftMouseButton = 0;
   }
