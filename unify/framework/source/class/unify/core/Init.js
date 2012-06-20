@@ -1,4 +1,4 @@
-(function() {
+﻿(function() {
 
   var app;
   
@@ -10,7 +10,14 @@
     lowland.ObjectManager.dispose();
   };
   
-  var DOMReadyEvent = (core.Env.getValue("engine") == "trident") ? "readystatechange" : "DOMContentLoaded";
+  var DOMReadyEvent;
+  var DOMReadyState;
+  
+  if (core.Env.getValue("engine") == "trident") {
+    DOMReadyEvent = "readystatechange";
+  } else {
+    DOMReadyEvent = "DOMContentLoaded";
+  }
   
   var runStartup = function() {
     if (document.readyState === "interactive" || document.readyState === "complete") {
@@ -29,11 +36,25 @@
     }
   };
   
-  var startUp = function() {
-    if (document.readyState === "interactive" || document.readyState === "complete") {
-      runStartup();
+  var readyStateChange = function() {
+    if (core.Env.getValue("engine") == "trident") {
+      if (document.readyState === "complete") {
+        runStartup();
+      }
     } else {
-      lowland.bom.Events.listen(document, DOMReadyEvent, runStartup);
+      runStartup();
+    }
+  };
+  
+  var startUp = function() {
+    if (core.Env.getValue("engine") == "trident") {
+      lowland.bom.Events.listen(document, "readystatechange", readyStateChange);
+    } else {
+      if (document.readyState === "interactive" || document.readyState === "complete") {
+        runStartup();
+      } else {
+        lowland.bom.Events.listen(document, "DOMContentLoaded", readyStateChange);
+      }
     }
   };
   
