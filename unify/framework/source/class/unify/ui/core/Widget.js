@@ -854,8 +854,8 @@ core.Class("unify.ui.core.Widget", {
           }
           
           if (userOverride) {
-            left = userOverride.newPosition.left;
-            top = userOverride.newPosition.top;
+            left = userOverride.left;
+            top = userOverride.top;
             parentVirtualPosition = {left: 0, top: 0};
           }
           
