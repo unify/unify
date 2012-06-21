@@ -363,10 +363,6 @@ core.Class("unify.ui.core.Widget", {
       if (value===false)
       {
         this.addState("disable");
-
-        // hovered not configured in widget, but as this is a
-        // standardized name in qooxdoo and we never want a hover
-        // state for disabled widgets, remove this state everytime
         this.removeState("hover");
 
         // Blur when focused
@@ -1266,6 +1262,10 @@ core.Class("unify.ui.core.Widget", {
      */
     focus : function()
     {
+      if (this.hasState("disable")) {
+        return;
+      }
+      
       this.getContentElement().focus();
     },
 

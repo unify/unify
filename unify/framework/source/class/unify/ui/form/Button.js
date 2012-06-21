@@ -84,6 +84,10 @@ core.Class("unify.ui.form.Button", {
      * @param e {Event} Tap event
      */
     __onTap : function(e) {
+      if (this.hasState("disable")) {
+        return;
+      }
+      
       if (this.getDirectEvent()) {
         this.fireDirectEvent("execute");
       } else {

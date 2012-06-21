@@ -132,6 +132,10 @@ core.Class("unify.ui.form.Combobox", {
      * @param e {Event} Tap event
      */
     __onTap : function(e) {
+      if (this.hasState("disable")) {
+        return;
+      }
+      
       var overlay = this.getChildControl("overlay");
       overlay.setModal(false);
       var container = overlay.getChildControl("container");

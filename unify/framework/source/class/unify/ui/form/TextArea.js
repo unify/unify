@@ -54,6 +54,10 @@ core.Class("unify.ui.form.TextArea", {
     this.addNativeListener("focus", this.__onFocus, this);
     this.addNativeListener("blur", this.__onBlur, this);
     this.addNativeListener("tap", function() {
+      if (this.hasState("disable")) {
+        return;
+      }
+      
       this.focus();
     }, this);
   },
@@ -87,6 +91,10 @@ core.Class("unify.ui.form.TextArea", {
      * @param e {Event} Input event
      */
     _onInput : function(e) {
+      if (this.hasState("disable")) {
+        return;
+      }
+      
       var value = this.getValue();
       var fireEvents = true;
 
@@ -152,6 +160,10 @@ core.Class("unify.ui.form.TextArea", {
      * @param e {qx.event.type.Focus} The focus event
      */
     __onFocus: function(e) {
+      if (this.hasState("disable")) {
+        return;
+      }
+      
       var currentValue = this.getValue();
       if (this.__placeholderValue != '' &&
           currentValue == this.__placeholderValue) {

@@ -60,6 +60,9 @@ core.Class("unify.ui.form.CheckBox", {
      * @param e {Event} Tap event
      */
     __onTap : function(e) {
+      if (this.hasState("disable")) {
+        return;
+      }
       // toggle checked state
       this.setChecked(!this.getChecked());
     },
