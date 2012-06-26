@@ -7,6 +7,10 @@
       "check" : "String",
       "default" : "default"
     },
+    "application.version" : {
+      "check" : "String",
+      "default" : "none"
+    },
     "os.name" : {
       "check" : ["win", "mac", "unix", "android", "ios", "webos", "qnx"],
       "detect" : "unify.bom.detect.OsName"
