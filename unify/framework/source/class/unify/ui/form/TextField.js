@@ -36,6 +36,10 @@ core.Class("unify.ui.form.TextField", {
     focusable : {
       init: true
     },
+
+    autocomplete : {
+      init: false
+    },
     
     /**
      * Regular expression responsible for filtering the value of the input.
@@ -70,7 +74,9 @@ core.Class("unify.ui.form.TextField", {
     "changeValue" : lowland.events.DataEvent
   },
   
-  construct : function() {
+  construct : function(autocomplete) {
+    this.__autocomplete = !(autocomplete === false);
+
     unify.ui.core.Widget.call(this);
     unify.ui.core.MInteractionState.call(this);
     
@@ -90,6 +96,7 @@ core.Class("unify.ui.form.TextField", {
     __placeholderValue: null,
     __oldInputValue : null,
     __changed : false,
+    __autocomplete : false,
     
     _createElement : function() {
       var map = {
@@ -104,6 +111,9 @@ core.Class("unify.ui.form.TextField", {
       var type = this.getType();
       
       var e = document.createElement("input");
+      if (!this.__autocomplete) {
+        e.setAttribute("autocomplete", "off");
+      }
       e.setAttribute("type", map[type]);
       if (type == "number") {
         e.setAttribute("pattern", "[0-9]*");
