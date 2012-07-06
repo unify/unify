@@ -23,5 +23,7 @@
     "source" : "https://github.com/fastner/lowland.git"
   }, {
     "source" : "https://github.com/zynga/apibrowser.git"
+  }, {
+    "source" : "https://github.com/fastner/jasy-appcache.git"
   }]
 }
