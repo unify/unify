@@ -1,4 +1,8 @@
 import webbrowser, http.server, os, multiprocessing
+from jasy.core import Project
+
+appcache_project = Project.getProjectByName("appcache")
+exec(compile(open(os.path.realpath(os.path.abspath(appcache_project.getPath() + "/jasyhelper.py"))).read(), "jasyhelper.py", 'exec'))
 
 def unify_source():
     # Permutation independend config
