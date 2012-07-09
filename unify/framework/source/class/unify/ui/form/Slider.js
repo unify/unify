@@ -42,6 +42,11 @@ core.Class("unify.ui.form.Slider", {
       type: ["horizontal", "vertical"],
       apply : function(value, old) { this._applyDirection(value, old); },
       init: "horizontal"
+    },
+
+    /** {Boolean} Whether or not to allow knob to exceed bar limits */
+    showKnobOnlyWithinBar: {
+      init: false
     }
   },
   
@@ -137,10 +142,12 @@ core.Class("unify.ui.form.Slider", {
     __getAvailSliderWidth : function() {
       var knob = this.getChildControl("knob");
       var knobPosInfo = knob.getPositionInfo();
+      var knobMod = this.getShowKnobOnlyWithinBar() === false ?
+                    Math.round(knobPosInfo.width / 2) : knobPosInfo.width;
       var bar = this.getChildControl("bar");
       var posInfo = bar.getPositionInfo();
       
-      return posInfo.width - posInfo.padding.left - posInfo.padding.right - posInfo.border.left - posInfo.border.right - Math.round(knobPosInfo.width / 2);
+      return posInfo.width - posInfo.padding.left - posInfo.padding.right - posInfo.border.left - posInfo.border.right - knobMod;
     },
     
     /**
@@ -151,10 +158,12 @@ core.Class("unify.ui.form.Slider", {
     __getAvailSliderHeight : function() {
       var knob = this.getChildControl("knob");
       var knobPosInfo = knob.getPositionInfo();
+      var knobMod = this.getShowKnobOnlyWithinBar() === false ?
+                    Math.round(knobPosInfo.height / 2) : knobPosInfo.height;
       var bar = this.getChildControl("bar");
       var posInfo = bar.getPositionInfo();
       
-      return posInfo.height - posInfo.padding.top - posInfo.padding.bottom - posInfo.border.top - posInfo.border.bottom - Math.round(knobPosInfo.height / 2);
+      return posInfo.height - posInfo.padding.top - posInfo.padding.bottom - posInfo.border.top - posInfo.border.bottom - knobMod;
     },
     
     /**
