@@ -852,7 +852,6 @@ qx.Class.define("unify.business.RemoteData",
           }
         }
       }
-
       
       if (!(isErrornous || isMalformed)) {
         var lastModified = req.getResponseHeader("Last-Modified");
@@ -861,12 +860,29 @@ qx.Class.define("unify.business.RemoteData",
         }
       }
       
+      this._fireCompletedEvent(id, data, isModified, isErrornous, isMalformed, req);
+      
+      // Dispose request
+      req.dispose();
+    },
+    /**
+     * 
+     * fires completed event for request.
+     * 
+     * Applications can override this function if they want to add additional logic as to when a request is complete
+     * 
+     * @param id {Number} the id of the request
+     * @param data {Object} the response data
+     * @param isModified {Boolean} modified
+     * @param isErrornous {Boolean} errornous
+     * @param isMalformed {Boolean} malformed
+     * @param req {qx.io.request.Xhr} 
+     * @private
+     */
+    _fireCompletedEvent: function(id, data, isModified, isErrornous, isMalformed, req){
       // Fire event
       var args = [id, data, isModified, isErrornous, isMalformed, req];
       this.fireEvent("completed", unify.business.CompletedEvent, args);
-
-      // Dispose request
-      req.dispose();
     },
 
     /**
