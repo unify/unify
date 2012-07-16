@@ -33,8 +33,10 @@
       touches: [{
         identifier : 1,
         target: lowland.bom.Events.getTarget(e),
-        pageX : e.screenX,
-        pageY : e.screenY
+        screenX: e.screenX,
+        screenY: e.screenY,
+        pageX : e.pageX,
+        pageY : e.pageY
       }],
       scale: 1.0
     };
