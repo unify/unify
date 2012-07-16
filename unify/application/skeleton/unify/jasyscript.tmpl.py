@@ -4,7 +4,11 @@
 
 # Import unify build helper
 from jasy.core import Project
-unify_project = Project.getProjectByName("unify")
+if "getProjectByName" in dir(Project):
+    projectSource = Project
+else:
+    projectSource = session
+unify_project = projectSource.getProjectByName("unify")
 exec(compile(open(os.path.realpath(os.path.abspath(unify_project.getPath() + "/../support/jasy/unify.py"))).read(), "unify.py", 'exec'))
 
 
