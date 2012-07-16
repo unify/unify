@@ -102,7 +102,7 @@
       if (lowland.bom.Events.getTarget(e) == touch.target) {
         removeTouchElement.push(touch);
         
-        lowland.bom.Events.dispatch(lowland.bom.Events.getTarget(e), "tap");
+        lowland.bom.Events.dispatch(lowland.bom.Events.getTarget(e), "tap", false, e);
       }
     }
     for (i=removeTouchElement.length-1; i>=0; i--) {
