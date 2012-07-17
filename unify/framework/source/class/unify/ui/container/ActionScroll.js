@@ -106,7 +106,7 @@ qx.Class.define("unify.ui.container.ActionScroll", {
       var changed=((map.top!=actionsEnabled.top)||(map.bottom!=actionsEnabled.bottom));
       this.__actionsEnabled=map;
       if(changed){
-        this._createScroller();
+        this.__setupActions();
       }
     },
     
@@ -123,7 +123,7 @@ qx.Class.define("unify.ui.container.ActionScroll", {
       var changed=((map.top!=notificationsEnabled.top)||(map.bottom!=notificationsEnabled.bottom));
       this.__notificationsEnabled=map;
       if(changed){
-        this._createScroller();
+        this.__setupActions();
       }
     },
 
@@ -195,15 +195,21 @@ qx.Class.define("unify.ui.container.ActionScroll", {
     _getScrollerContentWidget: function(){
       return this.__contentWrapper||this.getChildControl("wrapper");
     },
-    
-    //overridden
-    _createScroller: function(){
-      var scroller=this.__baseScroller=this.base(arguments);
+
+    /**
+     * setup actions based on current configuration
+     * 
+     * shows/excludes notifications
+     * 
+     * @return {Boolean} true if at least one action is enabled
+     * @private
+     */
+    __setupActions: function(){
       var actions=this.__actions;
       var actionsEnabled=this.__actionsEnabled;
       var notifications=this.__notifications;
       var notificationsEnabled=this.__notificationsEnabled;
-      
+
       var actionlocations=["top","bottom"];
       var hasAction=false;
       for (var i =0,ii=actionlocations.length;i<ii;i++){
@@ -212,7 +218,7 @@ qx.Class.define("unify.ui.container.ActionScroll", {
         var actionEnabled=actionsEnabled[location];
         var notification=notifications[location];
         var notificationEnabled=notificationsEnabled[location];
-        
+
         if(action && actionEnabled){
           hasAction=true;
           if(notification){
@@ -221,14 +227,21 @@ qx.Class.define("unify.ui.container.ActionScroll", {
             } else {
               notification.exclude();
             }
-          } 
+          }
         } else {
           if(notification){
             notification.exclude();
           }
         }
       }
-
+      return hasAction;
+    },
+    
+    //overridden
+    _createScroller: function(){
+      var scroller=this.__baseScroller=this.base(arguments);
+      
+      var hasAction=this.__setupActions();
       if(hasAction){
         
         //make sure scroller properties are set correctly (allow bouncing, scrollY, no scrollX, scroll on small content)
