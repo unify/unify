@@ -560,7 +560,7 @@ core.Class("unify.business.RemoteData",
     setRequestHeader : function(name, value) {
       this.__headers[name] = value;
       
-      if(!value){ //if no value is supplied, we delete the request header from the map
+      if(value === null){ //if no value is supplied, we delete the request header from the map
         delete this.__headers[name];
       }
     },
