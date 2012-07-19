@@ -559,6 +559,10 @@ core.Class("unify.business.RemoteData",
      */
     setRequestHeader : function(name, value) {
       this.__headers[name] = value;
+      
+      if(value === null){ //if no value is supplied, we delete the request header from the map
+        delete this.__headers[name];
+      }
     },
 
     /**
@@ -619,7 +623,7 @@ core.Class("unify.business.RemoteData",
             requestHeaders["If-Modified-Since"] = cacheModified;
           } else {
             unify.business.SyncRegistry.clear(url);
-            requestHeaders["If-Modified-Since"] = "Thu, 01 Jan 1970 00:00:00 GMT"
+            requestHeaders["If-Modified-Since"] = "Thu, 01 Jan 1970 00:00:00 GMT";
           }
         }
       }
