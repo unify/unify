@@ -416,7 +416,7 @@ core.Class("unify.business.RemoteData",
      * @param params {Map?null} Optional map of params
      * @return {String} Unique ID to identify service/param combination in the "completed" event
      */
-    put : function(service, params) {
+    put : function(service, params, data) {
       var id = this._getCommunicationId();
       return this._communicate(service, params, "PUT", id, data);
     },
