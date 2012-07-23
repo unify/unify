@@ -10,6 +10,8 @@
 ===============================================================================================
 */
 
+/** #require(lowland.bom.event.MouseEvents) */
+
 (function(global) {
 
   var emulateTouch = unify.bom.client.Device.DESKTOP;
@@ -35,6 +37,8 @@
         target: lowland.bom.Events.getTarget(e),
         screenX: e.screenX,
         screenY: e.screenY,
+        clientX: e.clientX,
+        clientY: e.clientY,
         pageX : e.pageX,
         pageY : e.pageY
       }],
@@ -96,6 +100,7 @@
       touchElement.splice(removes[i], 1);
     }
   });
+  
   lowland.bom.Events.listen(eventElement, "touchend", function(e) {
     var removeTouchElement = [];
     for (var i=0,ii=touchElement.length; i<ii; i++) {
