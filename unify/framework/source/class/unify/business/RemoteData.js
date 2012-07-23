@@ -367,6 +367,7 @@ core.Class("unify.business.RemoteData",
 
     /**
      * Sends a OPTIONS request to the given service
+     * http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.2
      *
      * @param service {String} One the supported services
      * @param params {Map?null} Optional map of params
@@ -380,6 +381,7 @@ core.Class("unify.business.RemoteData",
 
     /**
      * Sends a GET request to the given service
+     * http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.3
      *
      * @param service {String} One the supported services
      * @param params {Map?null} Optional map of params
@@ -393,6 +395,7 @@ core.Class("unify.business.RemoteData",
 
     /**
      * Sends a POST request to the given service. Attaches the given data to the request.
+     * http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.5
      *
      * @param service {String} One the supported services
      * @param params {Map?null} Optional map of params
@@ -407,19 +410,21 @@ core.Class("unify.business.RemoteData",
 
     /**
      * Sends a PUT request to the given service
-     *
+     * http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6
+     * 
      * @param service {String} One the supported services
      * @param params {Map?null} Optional map of params
      * @return {String} Unique ID to identify service/param combination in the "completed" event
      */
     put : function(service, params) {
       var id = this._getCommunicationId();
-      return this._communicate(service, params, "PUT", id);
+      return this._communicate(service, params, "PUT", id, data);
     },
 
 
     /**
      * Sends a DELETE request to the given service
+     * http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.7
      *
      * @param service {String} One the supported services
      * @param params {Map?null} Optional map of params
@@ -433,6 +438,7 @@ core.Class("unify.business.RemoteData",
 
     /**
      * Sends a HEAD request to the given service
+     * http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.4
      *
      * @param service {String} One the supported services
      * @param params {Map?null} Optional map of params
@@ -648,8 +654,8 @@ core.Class("unify.business.RemoteData",
         requestHeaders[name] = headers[name];
       }
 
-      // Add post data
-      if (method == "POST")
+      // Add post and put data
+      if (method == "POST" || method == "PUT")
       {
         var reqType = this.getRequestType();
         if (reqType == "application/json" && typeof data != "string") {
