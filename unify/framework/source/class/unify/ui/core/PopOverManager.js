@@ -32,7 +32,7 @@ core.Class("unify.ui.core.PopOverManager", {
   construct : function() {
     unify.core.Object.call(this);
     
-    var root = this.__root = unify.core.Init.getApplication().getRoot();
+    var root = this.__root = unify.core.Init.getApplication().getViewportRoot();
     this.__visibleOverlays = [];
     this.__overlays={};
     this.__styleRegistry = {};
@@ -108,6 +108,15 @@ core.Class("unify.ui.core.PopOverManager", {
       } else {
         this.removeNativeListener(window, "resize", this.__resizeHandler, this);
       }
+    },
+    
+    move : function(left, top) {
+      var style = {
+        left: left + "px",
+        top: top + "px"
+      };
+      core.bom.Style.set(this.__mblocker, style);
+      core.bom.Style.set(this.__pblocker, style);
     },
     
     /**
@@ -220,7 +229,6 @@ core.Class("unify.ui.core.PopOverManager", {
         this.debug("Show: " + (widget&&widget.constructor));
         core.Interface.assert(widget, unify.ui.core.IPopOver);
       }
-      
       var pos = position || "center";
 
       if (core.Class.isClass(pos.constructor) && pos.constructor instanceof unify.ui.core.Widget.constructor) {

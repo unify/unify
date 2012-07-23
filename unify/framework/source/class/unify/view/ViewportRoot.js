@@ -15,7 +15,7 @@
  *
  * Root widget bound to the root DOM element
  */
-core.Class("unify.view.Root", {
+core.Class("unify.view.ViewportRoot", {
   include : [unify.ui.core.Widget, unify.ui.core.MChildrenHandling],
   
   /**
@@ -34,6 +34,7 @@ core.Class("unify.view.Root", {
     this._setLayout(layout || new unify.ui.layout.Canvas());
     
     this.addNativeListener(window, "resize", this.__onResize, this);
+    this.addNativeListener(window, "scroll", this.__onScroll, this);
   },
   
   properties : {
@@ -60,7 +61,18 @@ core.Class("unify.view.Root", {
     
     // overridden
     _createElement : function() {
-      return this.__rootElement;
+      var div = document.createElement("div");
+      
+      var pos = {
+        position: "absolute",
+        left: 0,
+        top: 0
+      };
+      core.bom.Style.set(div, pos);
+      
+      this.__viewportElement.appendChild(div);
+      
+      return div;
     },
     
     /**
@@ -98,16 +110,6 @@ core.Class("unify.view.Root", {
       return this.__viewportElement;
     },
     
-    __viewportRoot : null,
-    getViewport : function() {
-      var viewportRoot = this.__viewportRoot;
-      if (!viewportRoot) {
-        viewportRoot = this.__viewportRoot = new unify.view.ViewportRoot(this.__viewportElement, this.__rootEventElement, this.__viewportElement, new unify.ui.layout.Canvas());
-      }
-      
-      return viewportRoot;
-    },
-    
     /**
      * Resize handler to start relayouting
      */
@@ -121,6 +123,27 @@ core.Class("unify.view.Root", {
         this.invalidateLayoutChildren();
         unify.ui.layout.queue.Layout.add(this);
       }
+    },
+    
+    __onScroll : function(e) {
+      var children = this.getChildren();
+      
+      var left = window.pageXOffset + "px";
+      var top = window.pageYOffset + "px";
+      
+      for (var i=0,ii=children.length; i<ii; i++) {
+        var child = children[i];
+        
+        var trigger = child.getTrigger && child.getTrigger();
+        
+        if (!trigger) {
+          core.bom.Style.set(child.getElement(), {
+            "transform" : "translate(" + left + "," + top + ")"
+          });
+        }
+      }
+      
+      unify.ui.core.PopOverManager.getInstance().move(window.pageXOffset, window.pageYOffset);
     },
     
     /** {Map} Returns fixed size hint of base layer size */
@@ -140,18 +163,25 @@ core.Class("unify.view.Root", {
      * @return {Map} Calculated size of root element
      */
     _getSizeHint : function() {
-      var e;
-      if (core.Env.getValue("os.name") == "ios") {
-        var root = this.__rootElement;
-        e = {
-          width: root.clientWidth,
-          height: root.clientHeight
-        };
-      } else {
-        e = lowland.bom.Element.getContentSize(this.__rootElement);
+      var myWidth = 0, myHeight = 0;
+      if( typeof( window.innerWidth ) == 'number' ) {
+        //Non-IE
+        myWidth = window.innerWidth;
+        myHeight = window.innerHeight;
+      } else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+        //IE 6+ in 'standards compliant mode'
+        myWidth = document.documentElement.clientWidth;
+        myHeight = document.documentElement.clientHeight;
+      } else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
+        //IE 4 compatible
+        myWidth = document.body.clientWidth;
+        myHeight = document.body.clientHeight;
       }
       
-      return e;
+      return {
+        width: myWidth,
+        height: myHeight
+      };
     },
     
     /**

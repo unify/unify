@@ -179,6 +179,10 @@ core.Class("unify.Application", {
       return this.__root;
     },
     
+    getViewportRoot : function() {
+      return this.__root.getViewport();
+    },
+    
     __viewAnimationManager : null,
     
     _getViewAnimationManager : function() {
