@@ -216,6 +216,8 @@
           okBtn.addListener("execute", function() {
             this.fireEvent("execute", BTN_OK);
           }, this);
+
+          centerButtonContainer.add(okBtn);
         } else { // buttons.length > 0  
           var btnCount = buttons.length;
           
