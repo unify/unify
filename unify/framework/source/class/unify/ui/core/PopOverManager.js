@@ -52,10 +52,15 @@ core.Class("unify.ui.core.PopOverManager", {
     mblocker.id = "modal-blocker";
     
     this.addNativeListener(pblocker, "tap", this.__onTapBlocker, this);
-    
-    var rootElement = root.getViewportElement();
-    rootElement.appendChild(pblocker);
-    rootElement.appendChild(mblocker);
+
+    // Give the browser some time to do stuff to be ready to insert the
+    // blocker elements. This way, the UI seems much more responsive,
+    // especially on 'slow' devices, e.g. iPad
+    (function fn() {
+      var rootElement = root.getViewportElement();
+      rootElement.appendChild(pblocker);
+      rootElement.appendChild(mblocker);
+    }.lazy());
   },
   
   events : {
