@@ -60,7 +60,7 @@ core.Class("unify.ui.core.PopOverManager", {
       var rootElement = root.getViewportElement();
       rootElement.appendChild(pblocker);
       rootElement.appendChild(mblocker);
-    }.lowDelay(0));
+    }.lazy());
   },
   
   events : {
