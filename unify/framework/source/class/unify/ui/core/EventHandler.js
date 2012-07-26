@@ -45,6 +45,19 @@
       scale: 1.0
     };
   };
+  var filterTouchProperties = function(e) {
+    var touch = e.touches[0];
+    return {
+      identifier: touch.identifier,
+      target: touch.target,
+      screenX: touch.screenX,
+      screenY: touch.screenY,
+      clientX: touch.clientX,
+      clientY: touch.clientY,
+      pageX: touch.pageX,
+      pageY: touch.pageY
+    };
+  };
   
   var eventElement = document.documentElement;
 
@@ -109,7 +122,7 @@
       if (lowland.bom.Events.getTarget(e) == touch.target) {
         removeTouchElement.push(touch);
         
-        lowland.bom.Events.dispatch(lowland.bom.Events.getTarget(e), "tap", false, e);
+        lowland.bom.Events.dispatch(lowland.bom.Events.getTarget(e), "tap", false, filterTouchProperties(e));
       }
     }
     for (i=removeTouchElement.length-1; i>=0; i--) {
