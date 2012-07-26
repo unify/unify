@@ -49,7 +49,6 @@
     var touch = e.touches[0];
     return {
       identifier: touch.identifier,
-      target: touch.target,
       screenX: touch.screenX,
       screenY: touch.screenY,
       clientX: touch.clientX,
