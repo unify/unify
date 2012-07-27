@@ -271,9 +271,14 @@ qx.Class.define("unify.ui.core.Widget", {
 
 
       if (value === "visible") {
-        Style.set(container, "display", "block"); // TODO: Block right? or simply null?
+        Style.setStyles(container, {"display":"block","visibility":""}); // TODO: Block right? or simply null?
+      } else if(value=== "hidden") {
+        //use visibility:hidden because browsers do not reflow for visibility changes
+        //downside is, that a child with visibility:visible would 'shine through', so make sure not to use it
+        //if that effect is not intended
+        Style.setStyles(container, {"display":"block","visibility":"hidden"});
       } else {
-        Style.set(container, "display", "none");
+        Style.setStyles(container, {"display":"none","visibility":""});
       }
 
       // only force a layout update if visibility change from/to "exclude"

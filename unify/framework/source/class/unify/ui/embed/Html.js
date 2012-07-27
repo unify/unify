@@ -28,6 +28,15 @@ qx.Class.define("unify.ui.embed.Html", {
     html : {
       nullable: true,
       apply: "_applyHtml"
+    },
+    /**
+     * flag indicating if html content should be stripped of 'visibility:visible' style on elements
+     * @see _applyHtml
+     */
+    removeVisibilityStyle: {
+      check:"Boolean",
+      nullable: false,
+      init:true
     }
   },
   
@@ -85,7 +94,33 @@ qx.Class.define("unify.ui.embed.Html", {
      * @param value {String} apply HTML content to the inner DOM element
      */
     _applyHtml : function(value) {
-      this.getContentElement().innerHTML = value;
+      var el=this.getContentElement();
+      
+      if(this.getRemoveVisibilityStyle() && value.indexOf("visible")>-1){
+        //new content possibly uses element level style of visibility:visible, 
+        //create nodes in an element outside of dom, and filter children style before insertion
+        var d=document.createElement('div');
+        d.innerHTML=value;
+
+        var allChildren= d.getElementsByTagName('*');
+
+        for(var i= 0,ii=allChildren.length;i<ii;i++){
+          var child=allChildren[i];
+          if(child.style && child.style["visibility"] === "visible"){
+            child.style["visibility"]="";
+          }
+        }
+        //move nodes into documentFragment and append that to avoid multiple dom updates
+        var f=document.createDocumentFragment();
+        while(d.firstChild){
+          f.appendChild(d.firstChild);
+        }
+        el.innerHTML="";
+        el.appendChild(f);
+      } else {
+        el.innerHTML=value;
+      }
+      
       this.__invalidateParentLayout();
     },
     
