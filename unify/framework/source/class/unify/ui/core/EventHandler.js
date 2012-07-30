@@ -30,23 +30,26 @@
   }
 
   var touchSynthesizer = function(e) {
+    var touch = {
+      identifier : 1,
+      target: lowland.bom.Events.getTarget(e),
+      screenX: e.screenX,
+      screenY: e.screenY,
+      clientX: e.clientX,
+      clientY: e.clientY,
+      pageX : e.pageX,
+      pageY : e.pageY
+    };
+      
     return {
       myValue: true,
-      touches: [{
-        identifier : 1,
-        target: lowland.bom.Events.getTarget(e),
-        screenX: e.screenX,
-        screenY: e.screenY,
-        clientX: e.clientX,
-        clientY: e.clientY,
-        pageX : e.pageX,
-        pageY : e.pageY
-      }],
+      touches: [touch],
+      changedTouches: [touch],
       scale: 1.0
     };
   };
   var filterTouchProperties = function(e) {
-    var touch = e.touches[0];
+    var touch = e.changedTouches[0];
     return {
       identifier: touch.identifier,
       screenX: touch.screenX,
