@@ -150,6 +150,14 @@ core.Class("unify.ui.form.TextField", {
       return this.getElement().value;
     },
     
+    /**
+     * Select whole text in text field
+     */
+    selectAll : function() {
+      this.getElement().focus();
+      this.getElement().select();
+    },
+    
     _applyType : function(value) {
       this.getElement().setAttribute("type", value);
     },
