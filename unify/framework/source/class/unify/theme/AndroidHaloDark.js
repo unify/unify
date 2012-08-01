@@ -11,8 +11,9 @@
 */
 
 /** 
- * #asset(unify/android/halo/textfield-underline.png) 
- * #asset(unify/android/halo/textfield-underline-gray.png) 
+ * #asset(unify/android/halo/textfield-underline.png)
+ * #asset(unify/android/halo/textfield-underline-gray.png)
+ * #asset(unify/android/halo/button-selected.png)
  */
 
 (function() {
@@ -31,6 +32,8 @@
         colors: {
           "android_bg_black" : "#000000",
           "android_bg_gray"  : "#272C33",
+          "android_bg_darkgray" : "#3D3D3D",
+          "android_bg_highlight" : "#2C9FC9",
           "android_head_text" : "#B9B9B9",
           "android_text" : "#FFFFFF"
         },
@@ -60,8 +63,6 @@
           
           "input" : {
             style : function(state) {
-              console.log("URI", JSON.stringify(state));
-              
               var url;
               
               if (state.active) {
@@ -79,6 +80,31 @@
                 borderRight: "2px",
                 borderColor: "transparent",
                 borderImage: "url("+url+") 0 2 5 2"
+              };
+            }
+          },
+          
+          "button" : {
+            style : function(state) {
+              console.log("URI", JSON.stringify(state));
+              var url, backgroundColor;
+              
+              if (state.active) {
+                backgroundColor = "android_bg_highlight";
+                url = core.io.Asset.toUri("unify/android/halo/button-selected.png");
+              } else {
+                backgroundColor = "android_bg_darkgray";
+                url = core.io.Asset.toUri("unify/android/halo/button-normal.png");
+              }
+              
+              return {
+                borderTop: "5px",
+                borderRight: "5px",
+                borderBottom: "5px",
+                borderLeft: "5px",
+                borderImage: "url("+url+") 5",
+                backgroundColor: backgroundColor,
+                backgroundImage: "none"
               };
             }
           }
