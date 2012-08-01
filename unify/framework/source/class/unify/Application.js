@@ -69,7 +69,7 @@ core.Class("unify.Application", {
       var rootElement = this._getRootElement();
       var rootLayout = this._getRootLayout();
       var viewportElement = this._getViewportElement();
-      this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), viewportElement, rootLayout);
+      var root = this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), viewportElement, rootLayout);
       core.bom.Style.set(rootElement, "visibility", "hidden");
       
       // Add box sizing css node
@@ -85,7 +85,7 @@ core.Class("unify.Application", {
       document.head.appendChild(st);
       
       // Support focus handling
-      //TODO: unify.ui.core.FocusHandler.getInstance().connectTo(root);
+      unify.ui.core.FocusHandler.getInstance().connectTo(root);
 
       // Configure document
       var Style = core.bom.Style;

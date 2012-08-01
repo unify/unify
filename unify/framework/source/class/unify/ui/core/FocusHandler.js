@@ -13,8 +13,8 @@
 /**
  * EXPERIMENTAL
  */
-coe.Class("unify.ui.core.FocusHandler", {
-  extend: unify.core.Object,
+core.Class("unify.ui.core.FocusHandler", {
+  include: [unify.core.Object],
 
   construct : function() {
     unify.core.Object.call(this);
@@ -23,6 +23,15 @@ coe.Class("unify.ui.core.FocusHandler", {
   members : {
     __currentRoot : null,
     __focusedChild : null,
+    __deactivateFocusEvents : false,
+    
+    stopFocusHandler : function() {
+      this.__deactivateFocusEvents = true;
+    },
+    
+    startFocusHandler : function() {
+      this.__deactivateFocusEvents = false;
+    },
     
     /**
      * Connects to a top-level root element (which initially receives
@@ -35,7 +44,32 @@ coe.Class("unify.ui.core.FocusHandler", {
     connectTo : function(root) {
       this.__currentRoot = root;
       
-      root.addNativeListener("keypress", this.__onKeyPress, this);
+      root.addNativeListener("keydown", this.__onKeyPress, this);
+      root.addNativeListener("focus",this.__onFocusChange, this, true);
+      root.addNativeListener("blur",this.__onBlurChange, this, true);
+    },
+    
+    __onFocusChange : function(e) {
+      if (!this.__deactivateFocusEvents) {
+        var target = lowland.bom.Events.getTarget(e);
+
+        if ((!this.__focusedChild) || (target != this.__focusedChild.getElement())) {
+          var newFocus = unify.ui.core.Widget.getByElement(target);
+          this.__focusedChild = newFocus;
+          newFocus.tabFocus();
+        }
+      }
+    },
+    
+    __onBlurChange : function(e) {
+      if (!this.__deactivateFocusEvents) {
+        var target = lowland.bom.Events.getTarget(e);
+        
+        if ((this.__focusedChild) && (target == this.__focusedChild.getElement())) {
+          this.__focusedChild.tabBlur();
+          this.__focusedChild = null;
+        }
+      }
     },
     
     /**
@@ -54,17 +88,20 @@ coe.Class("unify.ui.core.FocusHandler", {
      * @param e {Event} Key press event
      */
     __onKeyPress : function(e) {
-      if (e.getKeyIdentifier() != "Tab") {
+      if (e.keyCode != 9) {
         return;
       }
-
+      
+      this.__deactivateFocusEvents = true;
+      
       // Stop all key-events with a TAB keycode
       lowland.bom.Events.stopPropagation(e);
       lowland.bom.Events.preventDefault(e);
 
       // Support shift key to reverse widget detection order
       var current = this.__focusedChild;
-      if (!e.isShiftPressed()) {
+
+      if (!e.shiftKey) {
         var next = current ? this.__getWidgetAfter(current) : this.__getFirstWidget();
       } else {
         var next = current ? this.__getWidgetBefore(current) : this.__getLastWidget();
@@ -72,10 +109,14 @@ coe.Class("unify.ui.core.FocusHandler", {
 
       // If there was a widget found, focus it
       if (next) {
+        next.getElement().focus();
         next.tabFocus();
         this.__focusedChild = next;
         current && current.tabBlur();
+        current && current.getElement().blur();
       }
+      
+      this.__deactivateFocusEvents = false;
     },
     
     
@@ -101,7 +142,7 @@ coe.Class("unify.ui.core.FocusHandler", {
       if (widget1 === widget2) {
         return 0;
       }
-
+      
       // Sort-Check #1: Tab-Index
       var tab1 = widget1.getTabIndex() || 0;
       var tab2 = widget2.getTabIndex() || 0;
@@ -109,12 +150,12 @@ coe.Class("unify.ui.core.FocusHandler", {
       if (tab1 != tab2) {
         return tab1 - tab2;
       }
-
+      
       // Computing location
       var el1 = widget1.getElement();
       var el2 = widget2.getElement();
 
-      var Location = unify.bom.Element;
+      var Location = lowland.bom.Element;
 
       var loc1 = Location.getLocation(el1);
       var loc2 = Location.getLocation(el2);
@@ -128,7 +169,7 @@ coe.Class("unify.ui.core.FocusHandler", {
       if (loc1.left != loc2.left) {
         return loc1.left - loc2.left;
       }
-
+      
       // Sort-Check #4: zIndex
       var z1 = widget1.getZIndex();
       var z2 = widget2.getZIndex();
@@ -250,18 +291,16 @@ coe.Class("unify.ui.core.FocusHandler", {
       for (var i=0, l=children.length; i<l; i++)
       {
         child = children[i];
-
+        
         // Filter spacers etc.
         if (!(child.constructor instanceof unify.ui.core.Widget.constructor)) {
           continue;
         }
-
-        if (!this.isFocusRoot(child) && child.isEnabled() && child.isVisible())
+        if (!this.isFocusRoot(child) && child.getEnabled() && child.isVisible())
         {
-          if (child.isFocusable() && this.__compareTabOrder(widget, child) < 0) {
+          if (child.getFocusable() && this.__compareTabOrder(widget, child) < 0) {
             result.push(child);
           }
-
           this.__collectAllAfter(child, widget, result);
         }
       }
@@ -324,11 +363,10 @@ coe.Class("unify.ui.core.FocusHandler", {
         if (!(child.constructor instanceof unify.ui.core.Widget.constructor)) {
           continue;
         }
-
+        
         // Ignore focus roots completely
-        if (!this.isFocusRoot(child) && child.isEnabled() && child.isVisible())
-        {
-          if (child.isFocusable())
+        if (!this.isFocusRoot(child) && child.getEnabled() && child.isVisible()) {
+          if (child.getFocusable())
           {
             if (firstWidget == null || this.__compareTabOrder(child, firstWidget) < 0) {
               firstWidget = child;

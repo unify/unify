@@ -443,6 +443,14 @@ core.Class("unify.ui.core.Widget", {
     tabBlur : function() {
       this.removeState("active");
     },
+    
+    _startFocusHandler: function() {
+      unify.ui.core.FocusHandler.getInstance().startFocusHandler();
+    },
+    
+    _stopFocusHandler : function() {
+      unify.ui.core.FocusHandler.getInstance().stopFocusHandler();
+    },
 
     __layoutManager : null,
 
@@ -1728,7 +1736,7 @@ core.Class("unify.ui.core.Widget", {
           return null;
         }
 
-        //element.$$widget = this.toHashCode();
+        element.$$widget = this.getHash();
 
         var isDocFragment;
         if (core.Env.getValue("engine") == "trident") {
@@ -2221,7 +2229,10 @@ unify.core.Statics.annotate(unify.ui.core.Widget, {
    * @return {unify.ui.core.Widget} The widget containing the element.
    */
   getByElement : function(element, considerAnonymousState) {
-    throw Error("NOT WORKING NOW");
+    var widgetKey = element.$$widget;
+    return lowland.ObjectManager.find(widgetKey);
+    /*
+    
     // TODO
     while(element) {
       var widgetKey = element.$$widget;
@@ -2242,7 +2253,7 @@ unify.core.Statics.annotate(unify.ui.core.Widget, {
         return null;
       }
     }
-    return null;
+    return null;*/
   },
   
   /**
