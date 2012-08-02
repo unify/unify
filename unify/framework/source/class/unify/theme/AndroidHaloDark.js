@@ -14,6 +14,7 @@
  * #asset(unify/android/halo/textfield-underline.png)
  * #asset(unify/android/halo/textfield-underline-gray.png)
  * #asset(unify/android/halo/button-selected.png)
+ * #asset(unify/android/halo/button-normal.png)
  */
 
 (function() {
@@ -70,7 +71,7 @@
               } else {
                 url = core.io.Asset.toUri("unify/android/halo/textfield-underline-gray.png");
               }
-              
+             
               return {
                 color: "android_text",
                 background: "none",

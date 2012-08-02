@@ -606,32 +606,6 @@ core.Class("unify.theme.Base", {
           style : function(state) {
             var e = {
               color: "white",
-              backgroundImage: unify.bom.Gradient.createGradient({
-                angle: "to bottom",
-                colorStops : [{
-                  position: 0,
-                  color: "rgba(255, 255, 255, 0.61)"
-                }, {
-                  position: 0.05,
-                  color: "rgba(255, 255, 255, 0.45)"
-                }, {
-                  position: 0.5,
-                  color: "rgba(255, 255, 255, 0.27)"
-                }, {
-                  position: 0.5,
-                  color: "rgba(255, 255, 255, 0.2)"
-                }, {
-                  position: 1,
-                  color: "rgba(255, 255, 255, 0)"
-                }]
-              }),
-              borderLeft: "3px solid",
-              borderTop: "3px solid",
-              borderRight: "3px solid",
-              borderBottom: "3px solid",
-              borderColor: "#3a3a3a",
-              backgroundColor: "#242424",
-              borderRadius: "12px",
               textAlign: "center"
             };
     
