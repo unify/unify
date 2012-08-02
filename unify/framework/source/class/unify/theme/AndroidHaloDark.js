@@ -95,7 +95,7 @@
               if (state.pressed) {
                 backgroundColor = "android_bg_highlight";
                 url = core.io.Asset.toUri("unify/android/halo/button-pressed.png");
-              } else if (state.active) {
+              } else if (state.active || state.hover) {
                 backgroundColor = "android_bg_focus";
                 url = core.io.Asset.toUri("unify/android/halo/button-focused.png");
               } else {

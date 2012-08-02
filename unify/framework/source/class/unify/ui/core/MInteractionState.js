@@ -34,13 +34,15 @@ core.Class("unify.ui.core.MInteractionState", {
       if (supportTouch) {
         this.addNativeListener("touchstart", this.__MInteractionStateAddPressed, this);
         this.addNativeListener("touchleave", this.__MInteractionStateRemovePressed, this);
-        this.addNativeListener("touchend", this.__MInteractionStateRemovePressed, this);
-        this.addNativeListener("touchcancel", this.__MInteractionStateRemovePressed, this);
+        this.addNativeListener(root, "touchend", this.__MInteractionStateRemovePressed, this);
+        this.addNativeListener(root, "touchcancel", this.__MInteractionStateRemovePressed, this);
       }
       if (supportMouse) {
         this.addNativeListener("mouseover", this.__MInteractionStateAddHover, this);
         this.addNativeListener("mouseout", this.__MInteractionStateRemoveHover, this);
       }
+      
+      this.addListener("blur", this.__MInteractionStateRemoveHover, this);
     },
     
     /**
@@ -101,8 +103,4 @@ core.Class("unify.ui.core.MInteractionState", {
       }
     }
   }
-});
-
-unify.core.Statics.annotate(unify.ui.core.MInteractionState, {
-  MInteractionStateIsHovered : null
 });
