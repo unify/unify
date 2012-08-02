@@ -25,7 +25,7 @@ core.Class("unify.ui.core.MInteractionState", {
      * Set up event listener for interaction states
      */
     _applyMInteractionState : function() {
-      var supportTouch = false;
+      var supportTouch = true;
       var supportMouse = true;
       
       var root = unify.core.Init.getApplication().getRoot().getElement();
@@ -36,11 +36,10 @@ core.Class("unify.ui.core.MInteractionState", {
         this.addNativeListener("touchleave", this.__MInteractionStateRemovePressed, this);
         this.addNativeListener("touchend", this.__MInteractionStateRemovePressed, this);
         this.addNativeListener("touchcancel", this.__MInteractionStateRemovePressed, this);
-      } else if (supportMouse) {
+      }
+      if (supportMouse) {
         this.addNativeListener("mouseover", this.__MInteractionStateAddHover, this);
         this.addNativeListener("mouseout", this.__MInteractionStateRemoveHover, this);
-        this.addNativeListener("mousedown", this.__MInteractionStateAddPressed, this);
-        this.addNativeListener(root, "mouseup", this.__MInteractionStateRemovePressed, this);
       }
     },
     
@@ -79,7 +78,6 @@ core.Class("unify.ui.core.MInteractionState", {
       /* TODO: if (domEvent instanceof qx.event.type.Mouse && !domEvent.isLeftPressed()) {
         return;
       }*/
-      
       var InteractionStateManager = unify.ui.core.InteractionStateManager.getInstance();
       if (InteractionStateManager.getPressedWidget() == null) {
         this.addState("pressed");
@@ -96,7 +94,6 @@ core.Class("unify.ui.core.MInteractionState", {
       /* TODO : if (domEvent instanceof qx.event.type.Mouse && !domEvent.isLeftPressed()) {
         return;
       }*/
-      
       var InteractionStateManager = unify.ui.core.InteractionStateManager.getInstance();
       if (InteractionStateManager.getPressedWidget() == this) {
         this.removeState("pressed");

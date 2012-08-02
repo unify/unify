@@ -13,7 +13,8 @@
 /** 
  * #asset(unify/android/halo/textfield-underline.png)
  * #asset(unify/android/halo/textfield-underline-gray.png)
- * #asset(unify/android/halo/button-selected.png)
+ * #asset(unify/android/halo/button-focused.png)
+ * #asset(unify/android/halo/button-pressed.png)
  * #asset(unify/android/halo/button-normal.png)
  */
 
@@ -34,7 +35,8 @@
           "android_bg_black" : "#000000",
           "android_bg_gray"  : "#272C33",
           "android_bg_darkgray" : "#3D3D3D",
-          "android_bg_highlight" : "#2C9FC9",
+          "android_bg_highlight" : "rgb(44, 159, 201)",
+          "android_bg_focus" : "rgba(44, 159, 201, 0.5)",
           "android_head_text" : "#B9B9B9",
           "android_text" : "#FFFFFF"
         },
@@ -71,7 +73,7 @@
               } else {
                 url = core.io.Asset.toUri("unify/android/halo/textfield-underline-gray.png");
               }
-             
+              
               return {
                 color: "android_text",
                 background: "none",
@@ -90,22 +92,26 @@
               console.log("URI", JSON.stringify(state));
               var url, backgroundColor;
               
-              if (state.active) {
+              if (state.pressed) {
                 backgroundColor = "android_bg_highlight";
-                url = core.io.Asset.toUri("unify/android/halo/button-selected.png");
+                url = core.io.Asset.toUri("unify/android/halo/button-pressed.png");
+              } else if (state.active) {
+                backgroundColor = "android_bg_focus";
+                url = core.io.Asset.toUri("unify/android/halo/button-focused.png");
               } else {
                 backgroundColor = "android_bg_darkgray";
                 url = core.io.Asset.toUri("unify/android/halo/button-normal.png");
               }
               
               return {
-                borderTop: "5px",
-                borderRight: "5px",
-                borderBottom: "5px",
-                borderLeft: "5px",
-                borderImage: "url("+url+") 5",
+                borderTop: "6px",
+                borderRight: "6px",
+                borderBottom: "6px",
+                borderLeft: "6px",
+                borderImage: "url("+url+") 6",
                 backgroundColor: backgroundColor,
-                backgroundImage: "none"
+                backgroundImage: "none",
+                backgroundClip: "padding-box"
               };
             }
           }
