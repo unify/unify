@@ -313,13 +313,13 @@ core.Class("unify.ui.form.Slider", {
         bar = this.getChildControl("bar").getPositionInfo().width;
         mod = Math.round((bar - overall) / 2);
 
-        tapPos = e.touches[0].pageX /* e.getViewportLeft() */ - elemPos.left + mod;
+        tapPos = e.pageX /* e.getViewportLeft() */ - elemPos.left + mod;
       } else {
         overall = this.getPositionInfo().height;
         bar = this.getChildControl("bar").getPositionInfo().height;
         mod = Math.round((bar - overall) / 2);
 
-        tapPos = e.touches[0].pageY /* e.getViewportTop() */ - elemPos.top + mod;
+        tapPos = e.pageY /* e.getViewportTop() */ - elemPos.top + mod;
       }
 
       if (tapPos < 0) {
@@ -328,7 +328,7 @@ core.Class("unify.ui.form.Slider", {
         tapPos = bar;
       }
 
-      this.fireEvent("clickOnBar", { tapValue: tapPos / bar, tapInfo: e.touches[0] });
+      this.fireEvent("clickOnBar", { tapValue: tapPos / bar, tapInfo: e });
     }
   }
 });
