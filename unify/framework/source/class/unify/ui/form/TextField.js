@@ -118,7 +118,15 @@ core.Class("unify.ui.form.TextField", {
       if (type == "number") {
         e.setAttribute("pattern", "[0-9]*");
       }
-      this.addNativeListener(e, "input", this._onInput, this);
+
+      if (core.Env.getValue('engine') == 'trident') {
+        // IE < 8 does not support oninput event, so we listen to
+        // onkeyup instead (for now, in every IE version)
+        this.addNativeListener(e, "keyup", this._onInput, this);
+      } else {
+        this.addNativeListener(e, "input", this._onInput, this);
+      }
+
 
       return e;
     },
