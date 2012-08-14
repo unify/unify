@@ -49,7 +49,6 @@ core.Class("unify.ui.container.Scroll", {
     this._createScroller();
 
     this.addNativeListener("touchstart", this.__onTouchStart, this);
-    /** #require(lowland.bom.event.MouseWheel) */
     this.addNativeListener("mousewheel", this.__onMouseWheel, this);
     
     this.addListener("resize", this.__updateDimensions, this);
