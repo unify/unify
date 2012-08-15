@@ -780,6 +780,12 @@ core.Class("unify.ui.container.Scroll", {
       }
     },
     
+    abortTouch : function() {
+      this.__onTouchEnd({
+        timeStamp: (new Date).valueOf()
+      });
+    },
+    
     /**
      * Hides indicators
      */
