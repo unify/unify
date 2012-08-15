@@ -99,6 +99,7 @@ core.Class("unify.ui.container.Overlay", {
     getChildren : unify.ui.core.MRemoteChildrenHandling.prototype.getChildren,
     add : unify.ui.core.MRemoteChildrenHandling.prototype.add,
     addAt : unify.ui.core.MRemoteChildrenHandling.prototype.addAt,
+    remove : unify.ui.core.MRemoteChildrenHandling.prototype.remove,
     removeAll : unify.ui.core.MRemoteChildrenHandling.prototype.removeAll,
     indexOf : unify.ui.core.MRemoteChildrenHandling.prototype.indexOf,
     setStyle : unify.ui.core.MRemoteChildrenHandling.prototype.setStyle,

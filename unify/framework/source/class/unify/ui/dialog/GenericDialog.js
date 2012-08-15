@@ -77,29 +77,14 @@
      */
     members : {
       
-      // TODO:
-      indexOf : function() {
-        return unify.ui.core.MRemoteChildrenHandling.prototype.indexOf.apply(this, arguments);
-      },
-      add : function() {
-        unify.ui.core.MRemoteChildrenHandling.prototype.add.apply(this, arguments);
-      },
-      addAt : function() {
-        unify.ui.core.MRemoteChildrenHandling.prototype.addAt.apply(this, arguments);
-      },
-      getChildren : function() {
-        return unify.ui.core.MRemoteChildrenHandling.prototype.getChildren.apply(this, arguments);
-      },
-      setStyle : function() {
-        unify.ui.core.MRemoteChildrenHandling.prototype.setStyle.apply(this, arguments);
-      },
-      getStyle : function() {
-        return unify.ui.core.MRemoteChildrenHandling.prototype.getStyle.apply(this, arguments);
-      },
-      removeAll : function() {
-        unify.ui.core.MRemoteChildrenHandling.prototype.removeAll.apply(this, arguments);
-      },
-      // TODO DONE
+      indexOf : unify.ui.core.MRemoteChildrenHandling.prototype.indexOf,
+      add : unify.ui.core.MRemoteChildrenHandling.prototype.add,
+      addAt : unify.ui.core.MRemoteChildrenHandling.prototype.addAt,
+      getChildren : unify.ui.core.MRemoteChildrenHandling.prototype.getChildren,
+      setStyle : unify.ui.core.MRemoteChildrenHandling.prototype.setStyle,
+      getStyle : unify.ui.core.MRemoteChildrenHandling.prototype.getStyle,
+      removeAll : unify.ui.core.MRemoteChildrenHandling.prototype.removeAll,
+      remove : unify.ui.core.MRemoteChildrenHandling.prototype.remove,
       
       getModal : function() {
         return true;
