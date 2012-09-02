@@ -18,11 +18,19 @@
    *                   false: otherwise
    */
   var isDocReady = function() {
-    if (document.readyState === 'interactive' || document.readyState === 'complete') {
-      return true;
+    var isReady = false;
+
+    if (core.Env.getValue('engine') === 'trident') {
+      if (document.readyState === 'complete') {
+        isReady = true;
+      }
+    } else {
+      if (document.readyState === 'interactive' || document.readyState === 'complete') {
+        isReady = true;
+      }
     }
 
-    return false;
+    return isReady;
   };
 
 

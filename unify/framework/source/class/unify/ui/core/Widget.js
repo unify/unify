@@ -766,6 +766,10 @@ core.Class("unify.ui.core.Widget", {
       };
     },
     
+    getRenderedDimension : function() {
+      return this.__dimensionInfo;
+    },
+    
     /**
      * Returns padding information of widget
      *

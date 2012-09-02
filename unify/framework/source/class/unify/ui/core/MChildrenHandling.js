@@ -70,6 +70,10 @@ core.Class("unify.ui.core.MChildrenHandling", {
       this._setLayout.apply(this, arguments);
     },
     
+    remove : function() {
+      this._remove.apply(this, arguments);
+    },
+    
     /**
      * Remove all children.
      */
