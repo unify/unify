@@ -37,8 +37,10 @@
           "android_bg_darkgray" : "#3D3D3D",
           "android_bg_highlight" : "rgb(44, 159, 201)",
           "android_bg_focus" : "rgba(44, 159, 201, 0.5)",
+          "android_section_border" : "#393939",
           "android_head_text" : "#B9B9B9",
-          "android_text" : "#FFFFFF"
+          "android_text" : "#FFFFFF",
+          "android_text_mute": "#393939"
         },
         fonts: {
         },
@@ -64,9 +66,27 @@
             }
           },
           
+          "label_section" : {
+            include : "label",
+            style : function() {
+              return {
+                color: "android_head_text",
+                height: (BU * 8) + "px",
+                marginTop: (BU * 4) + "px",
+                marginLeft: (BU * 4 - 2) + "px",
+                marginRight: (BU * 4 - 2) + "px",
+                paddingLeft: "8px",
+                paddingTop: "6px",
+                borderBottom: "2px solid",
+                borderColor: "android_section_border"
+              };
+            }
+          },
+          
           "input" : {
             style : function(state) {
               var url;
+              var color;
               
               if (state.active) {
                 url = core.io.Asset.toUri("unify/android/halo/textfield-underline.png");
@@ -74,15 +94,27 @@
                 url = core.io.Asset.toUri("unify/android/halo/textfield-underline-gray.png");
               }
               
+              if (state.placeholder) {
+                  color = "android_text_mute";
+              } else {
+                  color = "android_text";
+              }
+              
               return {
-                color: "android_text",
+                color: color,
                 background: "none",
                 borderBottom: "5px",
                 borderLeft: "2px",
                 borderTop: "0px",
                 borderRight: "2px",
                 borderColor: "transparent",
-                borderImage: "url("+url+") 0 2 5 2"
+                borderImage: "url("+url+") 0 2 5 2",
+                marginTop: BU + "px",
+                marginBottom: BU + "px",
+                marginLeft: (BU * 4 - 2) + "px",
+                marginRight: (BU * 4 - 2) + "px",
+                height: (BU * 10) + "px",
+                paddingLeft: "7px"
               };
             }
           },
@@ -111,7 +143,21 @@
                 borderImage: "url("+url+") 6",
                 backgroundColor: backgroundColor,
                 backgroundImage: "none",
-                backgroundClip: "padding-box"
+                backgroundClip: "padding-box",
+                marginTop: BU + "px",
+                marginBottom: BU + "px",
+                marginLeft: (BU * 4 - 6) + "px",
+                marginRight: (BU * 4 - 6) + "px",
+                height: (BU * 10) + "px"
+              };
+            }
+          },
+          
+          "button/label" : {
+            style : function() {
+              return {
+                paddingTop: "2px",
+                font: "default"
               };
             }
           }

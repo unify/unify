@@ -232,6 +232,9 @@ core.Class("unify.ui.form.TextField", {
       var currentValue = this.getValue();
       if (currentValue == '') {
         this.setValue(this.__placeholderValue);
+        if (this.__placeholderValue) {
+          this.addState("placeholder");
+        }
       }
     },
     
@@ -250,9 +253,12 @@ core.Class("unify.ui.form.TextField", {
         return;
       }
       
+      
       var currentValue = this.getValue();
       if (this.__placeholderValue != '' &&
           currentValue == this.__placeholderValue) {
+            
+        this.removeState("placeholder");
         this.setValue('');
         return;
       }
