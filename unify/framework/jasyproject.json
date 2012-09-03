@@ -17,12 +17,7 @@
     }
   },
   "requires" : [{
-    "source" : "https://github.com/fastner/core.git",
-    "version" : "m/0.7"
-  }, {
     "source" : "https://github.com/fastner/lowland.git"
-  }, {
-    "source" : "https://github.com/zynga/apibrowser.git"
   }, {
     "source" : "https://github.com/fastner/jasy-appcache.git"
   }]
