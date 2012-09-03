@@ -1,28 +1,28 @@
 import webbrowser, http.server, os, multiprocessing
 
 @share
-def unify_source():
+def unify_source(glob):
     # Permutation independend config
-    jsFormatting.enable("comma")
-    jsFormatting.enable("semicolon")
-    jsOptimization.disable("privates")
-    jsOptimization.disable("variables")
-    jsOptimization.disable("declarations")
-    jsOptimization.disable("blocks")
+    glob.jsFormatting.enable("comma")
+    glob.jsFormatting.enable("semicolon")
+    glob.jsOptimization.disable("privates")
+    glob.jsOptimization.disable("variables")
+    glob.jsOptimization.disable("declarations")
+    glob.jsOptimization.disable("blocks")
     
     # Assets
-    assetManager.addSourceProfile()
+    glob.assetManager.addSourceProfile()
     
     # Store loader script
-    includedByKernel = storeKernel("script/kernel.js")
+    includedByKernel = glob.storeKernel("script/kernel.js")
     
     # Process every possible permutation
-    for permutation in session.permutate():
+    for permutation in glob.session.permutate():
         # Resolving dependencies
-        resolver = Resolver().addClassName("%s.Application" % NAMESPACE).excludeClasses(includedByKernel)
+        resolver = glob.Resolver().addClassName("%s.Application" % NAMESPACE).excludeClasses(includedByKernel)
 
         # Building class loader
-        storeLoader(resolver.getSortedClasses(), "script/%s-%s.js" % (NAMESPACE, permutation.getChecksum()), "unify.core.Init.startUp();")
+        glob.storeLoader(resolver.getSortedClasses(), "script/%s-%s.js" % (NAMESPACE, permutation.getChecksum()), "unify.core.Init.startUp();")
 
 @share
 def unify_build(cdnPrefix="asset"):
