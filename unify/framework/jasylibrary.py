@@ -1,48 +1,47 @@
 import webbrowser, http.server, os, multiprocessing
-from jasy.env.State import *
 
 @share
-def unify_source():
+def unify_source(state, NAMESPACE):
     # Permutation independend config
-    jsFormatting.enable("comma")
-    jsFormatting.enable("semicolon")
-    jsOptimization.disable("privates")
-    jsOptimization.disable("variables")
-    jsOptimization.disable("declarations")
-    jsOptimization.disable("blocks")
+    state.jsFormatting.enable("comma")
+    state.jsFormatting.enable("semicolon")
+    state.jsOptimization.disable("privates")
+    state.jsOptimization.disable("variables")
+    state.jsOptimization.disable("declarations")
+    state.jsOptimization.disable("blocks")
     
     # Assets
-    assetManager.addSourceProfile()
+    state.assetManager.addSourceProfile()
     
     # Store loader script
-    includedByKernel = storeKernel("script/kernel.js")
+    includedByKernel = state.storeKernel("script/kernel.js")
     
     # Process every possible permutation
-    for permutation in session.permutate():
+    for permutation in state.session.permutate():
         # Resolving dependencies
-        resolver = Resolver().addClassName("%s.Application" % NAMESPACE).excludeClasses(includedByKernel)
+        resolver = state.Resolver().addClassName("%s.Application" % NAMESPACE).excludeClasses(includedByKernel)
 
         # Building class loader
-        storeLoader(resolver.getSortedClasses(), "script/%s-%s.js" % (NAMESPACE, permutation.getChecksum()), "unify.core.Init.startUp();")
+        state.storeLoader(resolver.getSortedClasses(), "script/%s-%s.js" % (NAMESPACE, permutation.getChecksum()), "unify.core.Init.startUp();")
 
 @share
-def unify_build(cdnPrefix="asset"):
+def unify_build(state, NAMESPACE, cdnPrefix="asset"):
     # Assets
-    assetManager.addBuildProfile(cdnPrefix)
-    assetManager.deploy(Resolver().addClassName("%s.Application" % NAMESPACE).getIncludedClasses())
+    state.assetManager.addBuildProfile(cdnPrefix)
+    state.assetManager.deploy(state.Resolver().addClassName("%s.Application" % NAMESPACE).getIncludedClasses())
     
     # Store loader script
-    includedByKernel = storeKernel("script/kernel.js")
+    includedByKernel = state.storeKernel("script/kernel.js")
     
     # Copy files from source
-    updateFile("source/index.html", "index.html")    
+    state.updateFile("source/index.html", "index.html")    
     
     # Process every possible permutation
-    for permutation in session.getPermutations():
+    for permutation in state.session.getPermutations():
         # Resolving dependencies
-        resolver = Resolver().addClassName("%s.Application" % NAMESPACE).excludeClasses(includedByKernel)
+        resolver = state.Resolver().addClassName("%s.Application" % NAMESPACE).excludeClasses(includedByKernel)
 
         # Compressing classes
-        storeCompressed(resolver.getSortedClasses(), "script/%s-%s.js" % (NAMESPACE, permutation.getChecksum()), "unify.core.Init.startUp();")
+        state.storeCompressed(resolver.getSortedClasses(), "script/%s-%s.js" % (NAMESPACE, permutation.getChecksum()), "unify.core.Init.startUp();")
         
         
