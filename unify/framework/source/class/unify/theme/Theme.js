@@ -259,10 +259,16 @@ core.Class("unify.theme.Theme", {
           });
         } else {
           if (value.include) {
-            includeHelper.push({
-              key: key,
-              include: value.include
-            });
+            if (typeof value.include === 'string') {
+              value.include = [ value.include ];
+            }
+
+            for (var k = 0, l = value.include.length; k < l; k++) {
+              includeHelper.push({
+                key: key,
+                include: value.include[k]
+              });
+            }
           }
           if (value.style) {
             if (styleMap[key]) {
