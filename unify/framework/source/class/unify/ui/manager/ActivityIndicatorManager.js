@@ -39,6 +39,13 @@ core.Class("unify.ui.manager.ActivityIndicatorManager", {
       return ai;
     },
     
+    isShown : function(id) {
+      if (!id) id = "undef";
+      var am = this.__activeMap;
+      
+      return !!am[id];
+    },
+    
     /**
      * Shows an activity indicator for activity @id {String}.
      */
@@ -62,7 +69,8 @@ core.Class("unify.ui.manager.ActivityIndicatorManager", {
       var am = this.__activeMap;
       if (core.Env.getValue("debug")) {
         if (!am[id]) {
-          throw new Error("Activity indicator " + id + " is not shown!");
+          console.error("Activity indicator " + id + " is not shown!");
+          return;
         }
       }
       am[id]--;

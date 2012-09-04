@@ -153,8 +153,9 @@ core.Class("unify.view.RemoteView",
         else
         {
           delete this.__requestId;
-          if(this.__activityIndicator){
-            this.__activityIndicator.hide(this.getHash());
+          var hash = this.getHash();
+          if(this.__activityIndicator.isShown(hash)){
+            this.__activityIndicator.hide(hash);
           }
           this.__appliedVersion = cachedEntry.created;
           this._wrappedRenderData(cachedEntry.data);
