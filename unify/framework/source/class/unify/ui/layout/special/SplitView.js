@@ -71,6 +71,15 @@ core.Class("unify.ui.layout.special.SplitView", {
           children[1].renderLayout(leftWidth, 0, availWidth-leftWidth, availHeight);
         }
       }
-    }
+    },
+    
+    _computeSizeHint : function() {
+        return {
+          width: 10,
+          minWidth: 1,
+          height: 10,
+          minHeight: 1
+        };
+      }
   }
 });

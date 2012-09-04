@@ -117,11 +117,18 @@ core.Class("unify.view.Navigation",
      * The start view will be used if Navigation.init doesn't find a
      * suitable view.
      */
-    setStartView : function(viewClass){
-      var instance = viewClass.getInstance();
-      var classname = viewClass.className;
-      var id = classname.substring(classname.lastIndexOf(".")+1).hyphenate().substring(1).toLowerCase();
-      this.__startPath = id;
+    setStartView : function(viewClass) {
+      if (!viewClass instanceof Array) {
+        viewClass = [viewClass];
+      }
+      
+      var viewIds = [];
+      for (var i=0,ii=viewClass.length; i<ii; i++) {
+        var classname = viewClass[i].className;
+        var id = classname.substring(classname.lastIndexOf(".")+1).hyphenate().substring(1).toLowerCase();
+        viewIds.push(id);
+      }
+      this.__startPath = viewIds.join("/");
     },
     
     /**

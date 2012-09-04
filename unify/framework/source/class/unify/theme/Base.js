@@ -33,7 +33,8 @@ core.Class("unify.theme.Base", {
         "#999" : "#999",
         "#ddd" : "#ddd",
         "#e8e8e8": "#e8e8e8",
-        "#888" : "#888"
+        "#888" : "#888",
+        "#aaa" : "#aaa"
       },
       fonts: {
         "default" : {
@@ -256,10 +257,10 @@ core.Class("unify.theme.Base", {
           style : function() {
             var url = "unify/iphoneos/loader.png";
             var imgSize = core.io.Asset.getImageSize(url);
-    
+
             return {
-              width: imgSize.width,
-              height: imgSize.height,
+              width: imgSize[0],
+              height: imgSize[1],
     
               properties : {
                 source: url
@@ -626,6 +627,9 @@ core.Class("unify.theme.Base", {
               textAlign: "center"
             };
           }
+        },
+        "button/image" : {
+        	
         },
     
     

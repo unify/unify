@@ -117,8 +117,7 @@ core.Class("unify.ui.basic.Label", {
     },
 
     // overridden
-    _getContentHint : function()
-    {
+    _getContentHint : function() {
       var contentSize = unify.ui.core.Widget.prototype._getContentHint.call(this);
 
       if (this.getAutoCalculateSize()) {
@@ -191,7 +190,8 @@ core.Class("unify.ui.basic.Label", {
      * @param value {String} New value to set
      */
     _applyValue : function(value) {
-      this.invalidateLayoutChildren();
+      this.invalidateLayoutChildren(); // TODO
+      this.invalidateLayoutCache();
       lowland.bom.Label.setValue(this.getElement(), value, this.getHtml());
     },
 

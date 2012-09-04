@@ -48,6 +48,14 @@
           "view" : {
             style : function() {
               return {
+                background: "none"
+              };
+            }
+          },
+          
+          "viewmanager" : {
+            style : function() {
+              return {
                 backgroundImage: unify.bom.Gradient.createGradient({
                   colorStops: [
                     {position: 0, color: unify.theme.Manager.get().resolveColor("android_bg_black")}, 
@@ -121,7 +129,6 @@
           
           "button" : {
             style : function(state) {
-              console.log("URI", JSON.stringify(state));
               var url, backgroundColor;
               
               if (state.pressed) {
@@ -158,6 +165,14 @@
               return {
                 paddingTop: "2px",
                 font: "default"
+              };
+            }
+          },
+          
+          "navigationbar/parent" : {
+            style : function() {
+              return {
+                backgroundColor: "android_bg_highlight"
               };
             }
           }

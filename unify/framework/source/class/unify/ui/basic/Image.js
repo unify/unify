@@ -37,6 +37,11 @@ core.Class("unify.ui.basic.Image", {
       init: false
     },
     
+    changeSizeAfterLoad : {
+      init: false,
+      apply : function(value) { this._applyChangeSizeAfterLoad(value); }
+    },
+    
     // overridden
     appearance :
     {
@@ -47,6 +52,16 @@ core.Class("unify.ui.basic.Image", {
   members: {
     _createElement : function() {
       return document.createElement("div");
+    },
+    
+    _applyChangeSizeAfterLoad : function(value) {
+    	var src = this.getSource();
+      if (value && src) {
+        core.io.Image.load(src, function(uri, error, params) {
+          this.setWidth(params.width);
+          this.setHeight(params.height);
+        }, this);
+      }
     },
     
     _applySource : function(value) {
