@@ -37,6 +37,11 @@ core.Class("unify.ui.basic.Image", {
       init: false
     },
     
+    scale : {
+      init: false,
+      apply : function(value) { this._applyScale(value); }
+    },
+    
     changeSizeAfterLoad : {
       init: false,
       apply : function(value) { this._applyChangeSizeAfterLoad(value); }
@@ -51,7 +56,15 @@ core.Class("unify.ui.basic.Image", {
   
   members: {
     _createElement : function() {
-      return document.createElement("div");
+      var e = document.createElement("div");
+      
+      core.bom.Style.set(e, {
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        backgroundSize: null
+      });
+      
+      return e;
     },
     
     _applyChangeSizeAfterLoad : function(value) {
@@ -62,6 +75,22 @@ core.Class("unify.ui.basic.Image", {
           this.setHeight(params.height);
         }, this);
       }
+    },
+    
+    _applyScale : function(value) {
+      var e = this.getElement();
+      
+      var style = {
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        backgroundSize: null
+      };
+      
+      if (value) {
+        style.backgroundSize = "contain"
+      }
+      
+      core.bom.Style.set(e, style);
     },
     
     _applySource : function(value) {

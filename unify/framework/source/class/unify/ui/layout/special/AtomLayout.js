@@ -106,13 +106,13 @@ core.Class("unify.ui.layout.special.AtomLayout", {
         label.renderLayout(labelLeft, labelTop, labelWidth, labelHeight);
       } else if (image) {
         var imageHint = image.getSizeHint();
-        var imageWidth = imageHint.width;
-        if (imageWidth > availWidth) {
-          imageWidth = availWidth;
+        var imageWidth = availWidth;
+        if (imageWidth > imageHint.maxWidth) {
+          imageWidth = imageHint.maxWidth;
         }
-        var imageHeight = imageHint.height;
-        if (imageHeight > availHeight) {
-          imageHeight = availHeight;
+        var imageHeight = availHeight;
+        if (imageHeight > imageHint.maxHeight) {
+          imageHeight = imageHint.maxHeight;
         }
         var left = Math.round((availWidth / 2) - (imageWidth / 2));
         var top = Math.round((availHeight / 2) - (imageHeight / 2));

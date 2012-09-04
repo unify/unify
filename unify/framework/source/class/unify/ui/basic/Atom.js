@@ -86,6 +86,7 @@ core.Class("unify.ui.basic.Atom", {
         this._add(control, {type: "label"});
       } else if (id == "image") {
         control = new unify.ui.basic.Image();
+        control.setScale(true);
         this._add(control, {type: "image"});
       }
 
