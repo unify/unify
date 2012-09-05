@@ -1,20 +1,20 @@
 /* ========================================================================
 
-   qooxdoo - the new era of web development
+	 qooxdoo - the new era of web development
 
-   http://qooxdoo.org
+	 http://qooxdoo.org
 
-   Copyright:
-     2004-2008 1&1 Internet AG, Germany, http://www.1und1.de
+	 Copyright:
+		 2004-2008 1&1 Internet AG, Germany, http://www.1und1.de
 
-   License:
-     LGPL: http://www.gnu.org/licenses/lgpl.html
-     EPL: http://www.eclipse.org/org/documents/epl-v10.php
-     See the LICENSE file in the project's top-level directory for details.
+	 License:
+		 LGPL: http://www.gnu.org/licenses/lgpl.html
+		 EPL: http://www.eclipse.org/org/documents/epl-v10.php
+		 See the LICENSE file in the project's top-level directory for details.
 
-   Authors:
-     * Sebastian Werner (wpbasti)
-     * Fabian Jakobs (fjakobs)
+	 Authors:
+		 * Sebastian Werner (wpbasti)
+		 * Fabian Jakobs (fjakobs)
 
 ======================================================================== */
 
@@ -81,305 +81,305 @@
  * Extended documentation</a> and links to demos of this layout in the qooxdoo manual.
  */
 core.Class("unify.ui.layout.Canvas", {
-  include : [unify.ui.layout.Base],
+	include : [unify.ui.layout.Base],
 
 
-  construct : function() {
-    unify.ui.layout.Base.call(this);
-  },
+	construct : function() {
+		unify.ui.layout.Base.call(this);
+	},
 
-  /*
-  ----------------------------------------------------------------------------
-     MEMBERS
-  ----------------------------------------------------------------------------
-  */
+	/*
+	----------------------------------------------------------------------------
+		 MEMBERS
+	----------------------------------------------------------------------------
+	*/
 
-  members :
-  {
-    /*
-    ---------------------------------------------------------------------------
-      LAYOUT INTERFACE
-    ---------------------------------------------------------------------------
-    */
+	members :
+	{
+		/*
+		---------------------------------------------------------------------------
+			LAYOUT INTERFACE
+		---------------------------------------------------------------------------
+		*/
 
-    // overridden
-    /*verifyLayoutProperty : qx.core.Environment.select("qx.debug",
-    {
-      "true" : function(item, name, value)
-      {
-        var layoutProperties =
-        {
-          top : 1,
-          left : 1,
-          bottom : 1,
-          right : 1,
-          width : 1,
-          height : 1,
-          edge : 1
-        };
+		// overridden
+		/*verifyLayoutProperty : qx.core.Environment.select("qx.debug",
+		{
+			"true" : function(item, name, value)
+			{
+				var layoutProperties =
+				{
+					top : 1,
+					left : 1,
+					bottom : 1,
+					right : 1,
+					width : 1,
+					height : 1,
+					edge : 1
+				};
 
-        this.assert(layoutProperties[name] == 1, "The property '"+name+"' is not supported by the Canvas layout!");
+				this.assert(layoutProperties[name] == 1, "The property '"+name+"' is not supported by the Canvas layout!");
 
-        if (name =="width" || name == "height")
-        {
-          this.assertMatch(value, qx.ui.layout.Util.PERCENT_VALUE);
-        }
-        else
-        {
-          if (typeof value === "number") {
-            this.assertInteger(value);
-          } else if (qx.lang.Type.isString(value)) {
-            this.assertMatch(value, qx.ui.layout.Util.PERCENT_VALUE);
-          } else {
-            this.fail(
-              "Bad format of layout property '" + name + "': " + value +
-              ". The value must be either an integer or an percent string."
-            );
-          }
-        }
-      },
+				if (name =="width" || name == "height")
+				{
+					this.assertMatch(value, qx.ui.layout.Util.PERCENT_VALUE);
+				}
+				else
+				{
+					if (typeof value === "number") {
+						this.assertInteger(value);
+					} else if (qx.lang.Type.isString(value)) {
+						this.assertMatch(value, qx.ui.layout.Util.PERCENT_VALUE);
+					} else {
+						this.fail(
+							"Bad format of layout property '" + name + "': " + value +
+							". The value must be either an integer or an percent string."
+						);
+					}
+				}
+			},
 
-      "false" : null
-    }),*/
-
-
-    // overridden
-    renderLayout : function(availWidth, availHeight) {
-      var children = this._getLayoutChildren();
-
-      var child, size, props;
-      var left, top, right, bottom, width, height;
-      var marginTop, marginRight, marginBottom, marginLeft;
-      var horizontalCentered, verticalCentered;
-      
-      for (var i=0, l=children.length; i<l; i++)
-      {
-        child = children[i];
-        size = child.getSizeHint();
-        props = child.getLayoutProperties();
-
-        // Cache margins
-        marginTop = child.getMarginTop();
-        marginRight = child.getMarginRight();
-        marginBottom = child.getMarginBottom();
-        marginLeft = child.getMarginLeft();
+			"false" : null
+		}),*/
 
 
+		// overridden
+		renderLayout : function(availWidth, availHeight) {
+			var children = this._getLayoutChildren();
 
-        // **************************************
-        //   Processing location
-        // **************************************
+			var child, size, props;
+			var left, top, right, bottom, width, height;
+			var marginTop, marginRight, marginBottom, marginLeft;
+			var horizontalCentered, verticalCentered;
+			
+			for (var i=0, l=children.length; i<l; i++)
+			{
+				child = children[i];
+				size = child.getSizeHint();
+				props = child.getLayoutProperties();
 
-        left = props.left != null ? props.left : props.edge;
-        if (typeof(left) == "string") {
-          if (left == "center") {
-            horizontalCentered = true;
-            left = Math.round(availWidth / 2);
-            marginLeft -= Math.round(size.width / 2);
-          } else {
-            left = Math.round(parseFloat(left) * availWidth / 100);
-          }
-        }
-
-        right = props.right != null ? props.right : props.edge;
-        if (typeof(right) == "string") {
-          right = Math.round(parseFloat(right) * availWidth / 100);
-        }
-
-        top = props.top != null ? props.top : props.edge;
-        if (typeof(top) == "string") {
-          if (top == "center") {
-            verticalCentered = true;
-            top = Math.round(availHeight / 2);
-            marginTop -= Math.round(size.height / 2);
-          } else {
-            top = Math.round(parseFloat(top) * availHeight / 100);
-          }
-        }
-
-        bottom = props.bottom != null ? props.bottom : props.edge;
-        if (typeof(bottom) == "string") {
-          bottom = Math.round(parseFloat(bottom) * availHeight / 100);
-        }
+				// Cache margins
+				marginTop = child.getMarginTop();
+				marginRight = child.getMarginRight();
+				marginBottom = child.getMarginBottom();
+				marginLeft = child.getMarginLeft();
 
 
 
-        // **************************************
-        //   Processing dimension
-        // **************************************
+				// **************************************
+				//   Processing location
+				// **************************************
 
-        // Stretching has higher priority than dimension data
-        if (left != null && right != null)
-        {
-          width = availWidth - left - right - marginLeft - marginRight;
+				left = props.left != null ? props.left : props.edge;
+				if (typeof(left) == "string") {
+					if (left == "center") {
+						horizontalCentered = true;
+						left = Math.round(availWidth / 2);
+						marginLeft -= Math.round(size.width / 2);
+					} else {
+						left = Math.round(parseFloat(left) * availWidth / 100);
+					}
+				}
 
-          // Limit computed value
-          if (width < size.minWidth) {
-            width = size.minWidth;
-          } else if (width > size.maxWidth) {
-            width = size.maxWidth;
-          }
+				right = props.right != null ? props.right : props.edge;
+				if (typeof(right) == "string") {
+					right = Math.round(parseFloat(right) * availWidth / 100);
+				}
 
-          // Add margin
-          left += marginLeft;
-        }
-        else
-        {
-          // Layout data has higher priority than data from size hint
-          width = props.width;
+				top = props.top != null ? props.top : props.edge;
+				if (typeof(top) == "string") {
+					if (top == "center") {
+						verticalCentered = true;
+						top = Math.round(availHeight / 2);
+						marginTop -= Math.round(size.height / 2);
+					} else {
+						top = Math.round(parseFloat(top) * availHeight / 100);
+					}
+				}
 
-          if (width == null)
-          {
-            width = size.width;
-          }
-          else
-          {
-            width = Math.round(parseFloat(width) * availWidth / 100);
-
-            // Limit computed value
-            if (width < size.minWidth) {
-              width = size.minWidth;
-            } else if (width > size.maxWidth) {
-              width = size.maxWidth;
-            }
-          }
-
-          if (right != null) {
-            left = availWidth - width - right - marginRight - marginLeft;
-          } else if (left == null) {
-            left = marginLeft;
-          } else {
-            left += marginLeft;
-          }
-        }
-
-        // Stretching has higher priority than dimension data
-        if (top != null && bottom != null)
-        {
-          height = availHeight - top - bottom - marginTop - marginBottom;
-
-          // Limit computed value
-          if (height < size.minHeight) {
-            height = size.minHeight;
-          } else if (height > size.maxHeight) {
-            height = size.maxHeight;
-          }
-
-          // Add margin
-          top += marginTop;
-        }
-        else
-        {
-          // Layout data has higher priority than data from size hint
-          height = props.height;
-
-          if (height == null)
-          {
-            height = size.height;
-          }
-          else
-          {
-            height = Math.round(parseFloat(height) * availHeight / 100);
-
-            // Limit computed value
-            if (height < size.minHeight) {
-              height = size.minHeight;
-            } else if (height > size.maxHeight) {
-              height = size.maxHeight;
-            }
-          }
-
-          if (bottom != null) {
-            top = availHeight - height - bottom - marginBottom - marginTop;
-          } else if (top == null) {
-            top = marginTop;
-          } else {
-            top += marginTop;
-          }
-        }
-
-        // Apply layout
-        child.renderLayout(left, top, width, height);
-      }
-    },
+				bottom = props.bottom != null ? props.bottom : props.edge;
+				if (typeof(bottom) == "string") {
+					bottom = Math.round(parseFloat(bottom) * availHeight / 100);
+				}
 
 
-    // overridden
-    _computeSizeHint : function()
-    {
-      var neededWidth=0, neededMinWidth=0;
-      var neededHeight=0, neededMinHeight=0;
 
-      var width, minWidth;
-      var height, minHeight;
+				// **************************************
+				//   Processing dimension
+				// **************************************
 
-      var children = this._getLayoutChildren();
-      var child, props, hint;
+				// Stretching has higher priority than dimension data
+				if (left != null && right != null)
+				{
+					width = availWidth - left - right - marginLeft - marginRight;
 
-      var left, top, right, bottom;
+					// Limit computed value
+					if (width < size.minWidth) {
+						width = size.minWidth;
+					} else if (width > size.maxWidth) {
+						width = size.maxWidth;
+					}
 
-      for (var i=0,l=children.length; i<l; i++)
-      {
-        child = children[i];
-        props = child.getLayoutProperties();
-        hint = child.getSizeHint();
+					// Add margin
+					left += marginLeft;
+				}
+				else
+				{
+					// Layout data has higher priority than data from size hint
+					width = props.width;
+
+					if (width == null)
+					{
+						width = size.width;
+					}
+					else
+					{
+						width = Math.round(parseFloat(width) * availWidth / 100);
+
+						// Limit computed value
+						if (width < size.minWidth) {
+							width = size.minWidth;
+						} else if (width > size.maxWidth) {
+							width = size.maxWidth;
+						}
+					}
+
+					if (right != null) {
+						left = availWidth - width - right - marginRight - marginLeft;
+					} else if (left == null) {
+						left = marginLeft;
+					} else {
+						left += marginLeft;
+					}
+				}
+
+				// Stretching has higher priority than dimension data
+				if (top != null && bottom != null)
+				{
+					height = availHeight - top - bottom - marginTop - marginBottom;
+
+					// Limit computed value
+					if (height < size.minHeight) {
+						height = size.minHeight;
+					} else if (height > size.maxHeight) {
+						height = size.maxHeight;
+					}
+
+					// Add margin
+					top += marginTop;
+				}
+				else
+				{
+					// Layout data has higher priority than data from size hint
+					height = props.height;
+
+					if (height == null)
+					{
+						height = size.height;
+					}
+					else
+					{
+						height = Math.round(parseFloat(height) * availHeight / 100);
+
+						// Limit computed value
+						if (height < size.minHeight) {
+							height = size.minHeight;
+						} else if (height > size.maxHeight) {
+							height = size.maxHeight;
+						}
+					}
+
+					if (bottom != null) {
+						top = availHeight - height - bottom - marginBottom - marginTop;
+					} else if (top == null) {
+						top = marginTop;
+					} else {
+						top += marginTop;
+					}
+				}
+
+				// Apply layout
+				child.renderLayout(left, top, width, height);
+			}
+		},
 
 
-        // Cache margins
-        var marginX = child.getMarginLeft() + child.getMarginRight();
-        var marginY = child.getMarginTop() + child.getMarginBottom();
+		// overridden
+		_computeSizeHint : function()
+		{
+			var neededWidth=0, neededMinWidth=0;
+			var neededHeight=0, neededMinHeight=0;
+
+			var width, minWidth;
+			var height, minHeight;
+
+			var children = this._getLayoutChildren();
+			var child, props, hint;
+
+			var left, top, right, bottom;
+
+			for (var i=0,l=children.length; i<l; i++)
+			{
+				child = children[i];
+				props = child.getLayoutProperties();
+				hint = child.getSizeHint();
 
 
-        // Compute width
-        width = hint.width+marginX;
-        minWidth = hint.minWidth+marginX;
-
-        left = props.left != null ? props.left : props.edge;
-        if (left && typeof left === "number")
-        {
-          width += left;
-          minWidth += left;
-        }
-
-        right = props.right != null ? props.right : props.edge;
-        if (right && typeof right === "number")
-        {
-          width += right;
-          minWidth += right;
-        }
-
-        neededWidth = Math.max(neededWidth, width);
-        neededMinWidth = Math.max(neededMinWidth, minWidth);
+				// Cache margins
+				var marginX = child.getMarginLeft() + child.getMarginRight();
+				var marginY = child.getMarginTop() + child.getMarginBottom();
 
 
-        // Compute height
-        height = hint.height+marginY;
-        minHeight = hint.minHeight+marginY;
+				// Compute width
+				width = hint.width+marginX;
+				minWidth = hint.minWidth+marginX;
 
-        top = props.top != null ? props.top : props.edge;
-        if (top && typeof top === "number")
-        {
-          height += top;
-          minHeight += top;
-        }
+				left = props.left != null ? props.left : props.edge;
+				if (left && typeof left === "number")
+				{
+					width += left;
+					minWidth += left;
+				}
 
-        bottom = props.bottom != null ? props.bottom : props.edge;
-        if (bottom && typeof bottom === "number")
-        {
-          height += bottom;
-          minHeight += bottom;
-        }
+				right = props.right != null ? props.right : props.edge;
+				if (right && typeof right === "number")
+				{
+					width += right;
+					minWidth += right;
+				}
 
-        neededHeight = Math.max(neededHeight, height);
-        neededMinHeight = Math.max(neededMinHeight, minHeight);
-      }
+				neededWidth = Math.max(neededWidth, width);
+				neededMinWidth = Math.max(neededMinWidth, minWidth);
 
-      return {
-        width : neededWidth,
-        minWidth : neededMinWidth,
-        height : neededHeight,
-        minHeight : neededMinHeight
-      };
-    }
-  }
+
+				// Compute height
+				height = hint.height+marginY;
+				minHeight = hint.minHeight+marginY;
+
+				top = props.top != null ? props.top : props.edge;
+				if (top && typeof top === "number")
+				{
+					height += top;
+					minHeight += top;
+				}
+
+				bottom = props.bottom != null ? props.bottom : props.edge;
+				if (bottom && typeof bottom === "number")
+				{
+					height += bottom;
+					minHeight += bottom;
+				}
+
+				neededHeight = Math.max(neededHeight, height);
+				neededMinHeight = Math.max(neededMinHeight, minHeight);
+			}
+
+			return {
+				width : neededWidth,
+				minWidth : neededMinWidth,
+				height : neededHeight,
+				minHeight : neededMinHeight
+			};
+		}
+	}
 });

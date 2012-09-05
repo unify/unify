@@ -1,11 +1,11 @@
 /*
 ===============================================================================================
 
-    Unify Project
+		Unify Project
 
-    Homepage: unify-project.org
-    License: MIT + Apache (V2)
-    Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
+		Homepage: unify-project.org
+		License: MIT + Apache (V2)
+		Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
 ===============================================================================================
 */
@@ -19,40 +19,40 @@
  */
 core.Module("unify.bom.client.Runtime",
 {
-  /*
-  ----------------------------------------------------------------------------
-     STATICS
-  ----------------------------------------------------------------------------
-  */
+	/*
+	----------------------------------------------------------------------------
+		 STATICS
+	----------------------------------------------------------------------------
+	*/
 
-  /** {String} The type of the runtime */
-  TYPE : "browser",
+	/** {String} The type of the runtime */
+	TYPE : "browser",
 
-  /** {Boolean} Whether the application is running in a typical browser application */
-  BROWSER : false,
+	/** {Boolean} Whether the application is running in a typical browser application */
+	BROWSER : false,
 
-  /** {Boolean} Whether the application is running in a widget e.g. Adobe AIR, custom widget manager, etc. */
-  WIDGET : false,
+	/** {Boolean} Whether the application is running in a widget e.g. Adobe AIR, custom widget manager, etc. */
+	WIDGET : false,
 
-  /** {Boolean} Whether the application is running inside a basic web view without browser controls */
-  WEBVIEW : false,
+	/** {Boolean} Whether the application is running inside a basic web view without browser controls */
+	WEBVIEW : false,
 
-  /** {Boolean} Whether the app is running as a native app e.g. PhoneGap */
-  NATIVE : false
+	/** {Boolean} Whether the app is running as a native app e.g. PhoneGap */
+	NATIVE : false
 });
 
 (function(statics) {
-  var Extension = unify.bom.client.Extension;
-  var type = "browser";
+	var Extension = unify.bom.client.Extension;
+	var type = "browser";
 
-  if (Extension.PHONEGAP) {
-    type = "native";
-  } else if (Extension.AIR || Extension.PRISM || Extension.TITANIUM || Extension.BONDI) {
-    type = "widget";
-  } else if (navigator.standalone) {
-    type = "webview";
-  }
+	if (Extension.PHONEGAP) {
+		type = "native";
+	} else if (Extension.AIR || Extension.PRISM || Extension.TITANIUM || Extension.BONDI) {
+		type = "widget";
+	} else if (navigator.standalone) {
+		type = "webview";
+	}
 
-  statics.TYPE = type;
-  statics[type.toUpperCase()] = true;
+	statics.TYPE = type;
+	statics[type.toUpperCase()] = true;
 })(unify.bom.client.Runtime);

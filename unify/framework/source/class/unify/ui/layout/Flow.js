@@ -1,20 +1,20 @@
 /* ========================================================================
 
-   qooxdoo - the new era of web development
-   
-   http://qooxdoo.org
+	 qooxdoo - the new era of web development
+	 
+	 http://qooxdoo.org
 
-   Copyright:
-     2008 Dihedrals.com, http://www.dihedrals.com
+	 Copyright:
+		 2008 Dihedrals.com, http://www.dihedrals.com
 
-   License:
-     LGPL: http://www.gnu.org/licenses/lgpl.html
-     EPL: http://www.eclipse.org/org/documents/epl-v10.php
-     See the LICENSE file in the project's top-level directory for details.
+	 License:
+		 LGPL: http://www.gnu.org/licenses/lgpl.html
+		 EPL: http://www.eclipse.org/org/documents/epl-v10.php
+		 See the LICENSE file in the project's top-level directory for details.
 
-   Authors:
-     * Chris Banford (zermattchris)
-     * Fabian Jakobs (fjakobs)
+	 Authors:
+		 * Chris Banford (zermattchris)
+		 * Fabian Jakobs (fjakobs)
 
 ======================================================================== */
 
@@ -95,267 +95,267 @@
  */
 core.Class("unify.ui.layout.Flow",
 {
-  include : [unify.ui.layout.Base],
+	include : [unify.ui.layout.Base],
 
 
-  /*
-  ----------------------------------------------------------------------------
-     CONSTRUCTOR
-  ----------------------------------------------------------------------------
-  */
+	/*
+	----------------------------------------------------------------------------
+		 CONSTRUCTOR
+	----------------------------------------------------------------------------
+	*/
 
-  /**
-   * @param spacingX {Integer?0} The spacing between child widgets {@link #spacingX}.
-   * @param spacingY {Integer?0} The spacing between the lines {@link #spacingY}.
-   * @param alignX {String?"left"} Horizontal alignment of the whole children
-   *     block {@link #alignX}.
-   */
-  construct : function(spacingX, spacingY, alignX)
-  {
-    unify.ui.layout.Base.call(this);
+	/**
+	 * @param spacingX {Integer?0} The spacing between child widgets {@link #spacingX}.
+	 * @param spacingY {Integer?0} The spacing between the lines {@link #spacingY}.
+	 * @param alignX {String?"left"} Horizontal alignment of the whole children
+	 *     block {@link #alignX}.
+	 */
+	construct : function(spacingX, spacingY, alignX)
+	{
+		unify.ui.layout.Base.call(this);
 
-    if (spacingX) {
-      this.setSpacingX(spacingX);
-    }
+		if (spacingX) {
+			this.setSpacingX(spacingX);
+		}
 
-    if (spacingY) {
-      this.setSpacingY(spacingY);
-    }
+		if (spacingY) {
+			this.setSpacingY(spacingY);
+		}
 
-    if (alignX) {
-      this.setAlignX(alignX);
-    }
-  },
-
-
-
-  /*
-  ----------------------------------------------------------------------------
-     PROPERTIES
-  ----------------------------------------------------------------------------
-  */
-
-  properties :
-  {
-    /**
-     * Horizontal alignment of the whole children block. The horizontal
-     * alignment of the child is completely ignored in HBoxes (
-     * {@link qx.ui.core.LayoutItem#alignX}).
-     */
-    alignX :
-    {
-      type : [ "left", "center", "right" ],
-      init : "left",
-      apply : function(value) { this._applyLayoutChange(value); }
-    },
-
-    /**
-     * Vertical alignment of each child. Can be overridden through
-     * {@link qx.ui.core.LayoutItem#alignY}.
-     */
-    alignY :
-    {
-      type : [ "top", "middle", "bottom"],
-      init : "top",
-      apply : function(value) { this._applyLayoutChange(value); }
-    },
-
-    /** Horizontal spacing between two children */
-    spacingX :
-    {
-      type : "Integer",
-      init : 0,
-      apply : function(value) { this._applyLayoutChange(value); }
-    },
-
-    /**
-     * The vertical spacing between the lines.
-     */
-    spacingY :
-    {
-      type : "Integer",
-      init : 0,
-      apply : function(value) { this._applyLayoutChange(value); }
-    },
-
-    /** Whether the actual children list should be laid out in reversed order. */
-    reversed :
-    {
-      type : "Boolean",
-      init : false,
-      apply : function(value) { this._applyLayoutChange(value); }
-    }
-
-  },
+		if (alignX) {
+			this.setAlignX(alignX);
+		}
+	},
 
 
 
-  /*
-  ----------------------------------------------------------------------------
-     MEMBERS
-  ----------------------------------------------------------------------------
-  */
+	/*
+	----------------------------------------------------------------------------
+		 PROPERTIES
+	----------------------------------------------------------------------------
+	*/
 
-  members :
-  {
-    /*
-    ---------------------------------------------------------------------------
-      LAYOUT INTERFACE
-    ---------------------------------------------------------------------------
-    */
+	properties :
+	{
+		/**
+		 * Horizontal alignment of the whole children block. The horizontal
+		 * alignment of the child is completely ignored in HBoxes (
+		 * {@link qx.ui.core.LayoutItem#alignX}).
+		 */
+		alignX :
+		{
+			type : [ "left", "center", "right" ],
+			init : "left",
+			apply : function(value) { this._applyLayoutChange(value); }
+		},
 
-    // overridden
-    /*verifyLayoutProperty : qx.core.Environment.select("qx.debug",
-    {
-      "true" : function(item, name, value) {
-        this.assertEquals("lineBreak", name, "The property '"+name+"' is not supported by the flow layout!" );
-      },
+		/**
+		 * Vertical alignment of each child. Can be overridden through
+		 * {@link qx.ui.core.LayoutItem#alignY}.
+		 */
+		alignY :
+		{
+			type : [ "top", "middle", "bottom"],
+			init : "top",
+			apply : function(value) { this._applyLayoutChange(value); }
+		},
 
-      "false" : null
-    }),*/
+		/** Horizontal spacing between two children */
+		spacingX :
+		{
+			type : "Integer",
+			init : 0,
+			apply : function(value) { this._applyLayoutChange(value); }
+		},
 
+		/**
+		 * The vertical spacing between the lines.
+		 */
+		spacingY :
+		{
+			type : "Integer",
+			init : 0,
+			apply : function(value) { this._applyLayoutChange(value); }
+		},
 
-    // overridden
-    connectWidget : function(widget)
-    {
-      unify.ui.layout.Base.prototype.connectWidget.call(this, widget);
+		/** Whether the actual children list should be laid out in reversed order. */
+		reversed :
+		{
+			type : "Boolean",
+			init : false,
+			apply : function(value) { this._applyLayoutChange(value); }
+		}
 
-      // Necessary to be able to calculate the lines for the flow layout.
-      // Otherwise the layout calculates the needed width and height by using
-      // only one line of items which is leading to the wrong height. This
-      // wrong height does e.g. surpress scrolling since the scroll pane does
-      // not know about the correct needed height.
-      widget.setAllowShrinkY(false);
-    },
-
-
-    /**
-     * The FlowLayout tries to add as many Children as possible to the current 'Line'
-     * and when it sees that the next Child won't fit, it starts on a new Line, continuing
-     * until all the Children have been added.
-     * To enable alignX "left", "center", "right" renderLayout has to calculate the positions
-     * of all a Line's children before it draws them.
-     *
-     * @param availWidth {Integer} Final width available for the content (in pixel)
-     * @param availHeight {Integer} Final height available for the content (in pixel)
-     * @return {void}
-     */
-    renderLayout : function(availWidth, availHeight)
-    {
-      var children = this._getLayoutChildren();
-
-      if (this.getReversed()) {
-        children = children.concat().reverse();
-      }
-
-      var lineCalculator = new unify.ui.layout.LineSizeIterator(
-        children,
-        this.getSpacingX()
-      );
-
-      var lineTop = 0;
-      while (lineCalculator.hasMoreLines())
-      {
-        var line = lineCalculator.computeNextLine(availWidth);
-        this.__renderLine(line, lineTop, availWidth);
-        lineTop += line.height + this.getSpacingY();
-      }
-    },
+	},
 
 
-    /**
-     * Render a line in the flow layout
-     *
-     * @param line {Map} A line configuration as returned by
-     *    {@link LineSizeIterator#computeNextLine}.
-     * @param lineTop {Integer} The line's top position
-     * @param availWidth {Integer} The available line width
-     */
-    __renderLine : function(line, lineTop, availWidth)
-    {
-      var util = unify.ui.layout.Util;
 
-      var left = 0;
-      if (this.getAlignX() != "left") {
-        left = availWidth - line.width;
-        if (this.getAlignX() == "center") {
-          left = Math.round(left / 2);
-        }
-      }
+	/*
+	----------------------------------------------------------------------------
+		 MEMBERS
+	----------------------------------------------------------------------------
+	*/
 
-      for (var i=0; i<line.children.length; i++)
-      {
-        var child = line.children[i];
-        var size = child.getSizeHint();
-        var marginTop = child.getMarginTop();
-        var marginBottom = child.getMarginBottom();
+	members :
+	{
+		/*
+		---------------------------------------------------------------------------
+			LAYOUT INTERFACE
+		---------------------------------------------------------------------------
+		*/
 
-        var top = util.computeVerticalAlignOffset(
-          child.getAlignY() || this.getAlignY(),
-          marginTop + size.height + marginBottom,
-          line.height,
-          marginTop, marginBottom
-        );
+		// overridden
+		/*verifyLayoutProperty : qx.core.Environment.select("qx.debug",
+		{
+			"true" : function(item, name, value) {
+				this.assertEquals("lineBreak", name, "The property '"+name+"' is not supported by the flow layout!" );
+			},
 
-        child.renderLayout(
-          left + line.gapsBefore[i],
-          lineTop + top,
-          size.width,
-          size.height
-        );
-
-        left += line.gapsBefore[i] + size.width;
-      }
-    },
+			"false" : null
+		}),*/
 
 
-    // overridden
-    _computeSizeHint : function() {
-      return this.__computeSize(Infinity);
-    },
+		// overridden
+		connectWidget : function(widget)
+		{
+			unify.ui.layout.Base.prototype.connectWidget.call(this, widget);
+
+			// Necessary to be able to calculate the lines for the flow layout.
+			// Otherwise the layout calculates the needed width and height by using
+			// only one line of items which is leading to the wrong height. This
+			// wrong height does e.g. surpress scrolling since the scroll pane does
+			// not know about the correct needed height.
+			widget.setAllowShrinkY(false);
+		},
 
 
-    // overridden
-    hasHeightForWidth : function() {
-      return true;
-    },
+		/**
+		 * The FlowLayout tries to add as many Children as possible to the current 'Line'
+		 * and when it sees that the next Child won't fit, it starts on a new Line, continuing
+		 * until all the Children have been added.
+		 * To enable alignX "left", "center", "right" renderLayout has to calculate the positions
+		 * of all a Line's children before it draws them.
+		 *
+		 * @param availWidth {Integer} Final width available for the content (in pixel)
+		 * @param availHeight {Integer} Final height available for the content (in pixel)
+		 * @return {void}
+		 */
+		renderLayout : function(availWidth, availHeight)
+		{
+			var children = this._getLayoutChildren();
+
+			if (this.getReversed()) {
+				children = children.concat().reverse();
+			}
+
+			var lineCalculator = new unify.ui.layout.LineSizeIterator(
+				children,
+				this.getSpacingX()
+			);
+
+			var lineTop = 0;
+			while (lineCalculator.hasMoreLines())
+			{
+				var line = lineCalculator.computeNextLine(availWidth);
+				this.__renderLine(line, lineTop, availWidth);
+				lineTop += line.height + this.getSpacingY();
+			}
+		},
 
 
-    // overridden
-    getHeightForWidth : function(width) {
-      return this.__computeSize(width).height;
-    },
+		/**
+		 * Render a line in the flow layout
+		 *
+		 * @param line {Map} A line configuration as returned by
+		 *    {@link LineSizeIterator#computeNextLine}.
+		 * @param lineTop {Integer} The line's top position
+		 * @param availWidth {Integer} The available line width
+		 */
+		__renderLine : function(line, lineTop, availWidth)
+		{
+			var util = unify.ui.layout.Util;
+
+			var left = 0;
+			if (this.getAlignX() != "left") {
+				left = availWidth - line.width;
+				if (this.getAlignX() == "center") {
+					left = Math.round(left / 2);
+				}
+			}
+
+			for (var i=0; i<line.children.length; i++)
+			{
+				var child = line.children[i];
+				var size = child.getSizeHint();
+				var marginTop = child.getMarginTop();
+				var marginBottom = child.getMarginBottom();
+
+				var top = util.computeVerticalAlignOffset(
+					child.getAlignY() || this.getAlignY(),
+					marginTop + size.height + marginBottom,
+					line.height,
+					marginTop, marginBottom
+				);
+
+				child.renderLayout(
+					left + line.gapsBefore[i],
+					lineTop + top,
+					size.width,
+					size.height
+				);
+
+				left += line.gapsBefore[i] + size.width;
+			}
+		},
 
 
-    /**
-     * Compute the preferred size optionally constrained by the available width
-     *
-     * @param availWidth {Integer} The available width
-     * @return {Map} Map containing the preferred height and width of the layout
-     */
-    __computeSize : function(availWidth)
-    {
-      var lineCalculator = new unify.ui.layout.LineSizeIterator(
-        this._getLayoutChildren(),
-        this.getSpacingX()
-      );
+		// overridden
+		_computeSizeHint : function() {
+			return this.__computeSize(Infinity);
+		},
 
-      var height = 0;
-      var width = 0;
-      var lineCount = 0;
 
-      while (lineCalculator.hasMoreLines())
-      {
-        var line = lineCalculator.computeNextLine(availWidth);
-        lineCount += 1;
-        width = Math.max(width, line.width);
-        height += line.height;
-      }
+		// overridden
+		hasHeightForWidth : function() {
+			return true;
+		},
 
-      return {
-        width : width,
-        height : height + this.getSpacingY() * (lineCount-1)
-      };
-    }
-  }
+
+		// overridden
+		getHeightForWidth : function(width) {
+			return this.__computeSize(width).height;
+		},
+
+
+		/**
+		 * Compute the preferred size optionally constrained by the available width
+		 *
+		 * @param availWidth {Integer} The available width
+		 * @return {Map} Map containing the preferred height and width of the layout
+		 */
+		__computeSize : function(availWidth)
+		{
+			var lineCalculator = new unify.ui.layout.LineSizeIterator(
+				this._getLayoutChildren(),
+				this.getSpacingX()
+			);
+
+			var height = 0;
+			var width = 0;
+			var lineCount = 0;
+
+			while (lineCalculator.hasMoreLines())
+			{
+				var line = lineCalculator.computeNextLine(availWidth);
+				lineCount += 1;
+				width = Math.max(width, line.width);
+				height += line.height;
+			}
+
+			return {
+				width : width,
+				height : height + this.getSpacingY() * (lineCount-1)
+			};
+		}
+	}
 });

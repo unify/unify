@@ -1,11 +1,11 @@
 /*
 ===============================================================================================
 
-    Unify Project
+		Unify Project
 
-    Homepage: unify-project.org
-    License: MIT + Apache (V2)
-    Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
+		Homepage: unify-project.org
+		License: MIT + Apache (V2)
+		Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
 ===============================================================================================
 */
@@ -14,137 +14,137 @@
  * (compiled into script block for example)
  */
 core.Class("unify.business.StaticData", {
-  include : [unify.core.Object],
-  
-  /*
-  ----------------------------------------------------------------------------
-     CONSTRUCTOR
-  ----------------------------------------------------------------------------
-  */
+	include : [unify.core.Object],
+	
+	/*
+	----------------------------------------------------------------------------
+		 CONSTRUCTOR
+	----------------------------------------------------------------------------
+	*/
 
-  // overridden
-  construct : function() {
-    unify.core.Object.call(this);
-    // Initialize service list
-    this.__services = {};
-  },
-
-
-
-  /*
-  ----------------------------------------------------------------------------
-     MEMBERS
-  ----------------------------------------------------------------------------
-  */
-
-  members : {
-    /*
-    ---------------------------------------------------------------------------
-      PUBLIC API
-    ---------------------------------------------------------------------------
-    */
-
-    /**
-     * Returns data from the given service
-     *
-     * @param service {String} One the supported services
-     * @param params {Map?null} Optional map of params
-     * @return {var} Service data
-     */
-    read : function(service, params)
-    {
-      if (core.Env.getValue("debug"))
-      {
-        if (!service || !this.__services[service]) {
-          throw new Error("Unsupported service: " + service);
-        }
-      }
-
-      return this._readData(service, params);
-    },
+	// overridden
+	construct : function() {
+		unify.core.Object.call(this);
+		// Initialize service list
+		this.__services = {};
+	},
 
 
 
-    /*
-    ---------------------------------------------------------------------------
-      PROTECTED API
-    ---------------------------------------------------------------------------
-    */
+	/*
+	----------------------------------------------------------------------------
+		 MEMBERS
+	----------------------------------------------------------------------------
+	*/
 
-    /** {Map} Dictionary of all supported services */
-    __services : null,
+	members : {
+		/*
+		---------------------------------------------------------------------------
+			PUBLIC API
+		---------------------------------------------------------------------------
+		*/
 
+		/**
+		 * Returns data from the given service
+		 *
+		 * @param service {String} One the supported services
+		 * @param params {Map?null} Optional map of params
+		 * @return {var} Service data
+		 */
+		read : function(service, params)
+		{
+			if (core.Env.getValue("debug"))
+			{
+				if (!service || !this.__services[service]) {
+					throw new Error("Unsupported service: " + service);
+				}
+			}
 
-    /**
-     * Adds the given service
-     *
-     * @param service {String} Unique name of service
-     * @param config {Map} Optional service configuration
-     */
-    _addService : function(service, config)
-    {
-      var db = this.__services;
-      if (core.Env.getValue("debug"))
-      {
-        if (db[service]) {
-          throw new Error("Service " + service + " is already registered!");
-        }
-      }
-
-      db[service] = config || {};
-    },
-
-    /**
-     * Returns all service configurations
-     */
-    _getServices: function(){
-      return this.__services;
-    },
-
-    /**
-     * Returns the service configuration of the given service
-     *
-     * @param service {String} Name of service
-     * @return {Map} Configuration map
-     */
-    _getService : function(service)
-    {
-      var config = this.__services[service];
-      if (core.Env.getValue("debug"))
-      {
-        if (!config) {
-          throw new Error("Unknown service: " + service);
-        }
-      }
-
-      return config;
-    },
-
-    /**
-     * Override the config for the given service
-     */
-    _setConfigForService : function(service, config){
-      var db = this.__services;
-      if (db[service]) {
-        db[service] = config || {};
-      }
-    },
+			return this._readData(service, params);
+		},
 
 
-    /**
-     * Returns data as stored in cache for the given service.
-     *
-     * Please keep in mind that the data returned by this function might
-     * be old (e.g. last check was some time ago).
-     *
-     * @param service {String} One the supported services
-     * @param params {Map?null} Optional map of params
-     * @return {var|null} Cached data or <code>null</code> if nothing is cached
-     */
-    _readData : function(service, params) {
-      throw new Error("Please implement _readData()!");
-    }
-    
 
-  }
+		/*
+		---------------------------------------------------------------------------
+			PROTECTED API
+		---------------------------------------------------------------------------
+		*/
+
+		/** {Map} Dictionary of all supported services */
+		__services : null,
+
+
+		/**
+		 * Adds the given service
+		 *
+		 * @param service {String} Unique name of service
+		 * @param config {Map} Optional service configuration
+		 */
+		_addService : function(service, config)
+		{
+			var db = this.__services;
+			if (core.Env.getValue("debug"))
+			{
+				if (db[service]) {
+					throw new Error("Service " + service + " is already registered!");
+				}
+			}
+
+			db[service] = config || {};
+		},
+
+		/**
+		 * Returns all service configurations
+		 */
+		_getServices: function(){
+			return this.__services;
+		},
+
+		/**
+		 * Returns the service configuration of the given service
+		 *
+		 * @param service {String} Name of service
+		 * @return {Map} Configuration map
+		 */
+		_getService : function(service)
+		{
+			var config = this.__services[service];
+			if (core.Env.getValue("debug"))
+			{
+				if (!config) {
+					throw new Error("Unknown service: " + service);
+				}
+			}
+
+			return config;
+		},
+
+		/**
+		 * Override the config for the given service
+		 */
+		_setConfigForService : function(service, config){
+			var db = this.__services;
+			if (db[service]) {
+				db[service] = config || {};
+			}
+		},
+
+
+		/**
+		 * Returns data as stored in cache for the given service.
+		 *
+		 * Please keep in mind that the data returned by this function might
+		 * be old (e.g. last check was some time ago).
+		 *
+		 * @param service {String} One the supported services
+		 * @param params {Map?null} Optional map of params
+		 * @return {var|null} Cached data or <code>null</code> if nothing is cached
+		 */
+		_readData : function(service, params) {
+			throw new Error("Please implement _readData()!");
+		}
+		
+
+	}
 });

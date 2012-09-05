@@ -1,11 +1,11 @@
 /*
 ===============================================================================================
 
-    Unify Project
+		Unify Project
 
-    Homepage: unify-project.org
-    License: MIT + Apache (V2)
-    Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
+		Homepage: unify-project.org
+		License: MIT + Apache (V2)
+		Copyright: 2009-2010 Deutsche Telekom AG, Germany, http://telekom.com
 
 ===============================================================================================
 */
@@ -19,24 +19,24 @@
  */
 core.Module("unify.bom.client.Extension",
 {
-  /*
-  ----------------------------------------------------------------------------
-     STATICS
-  ----------------------------------------------------------------------------
-  */
+	/*
+	----------------------------------------------------------------------------
+		 STATICS
+	----------------------------------------------------------------------------
+	*/
 
-  /** {Boolean} Whether the application is running inside a Adobe AIR package */
-  AIR : navigator.userAgent.match(/adobeair/i) !== null,
+	/** {Boolean} Whether the application is running inside a Adobe AIR package */
+	AIR : navigator.userAgent.match(/adobeair/i) !== null,
 
-  /** {Boolean} Whether the application is running inside a Mozilla Prism package */
-  PRISM : !!window.platform,
+	/** {Boolean} Whether the application is running inside a Mozilla Prism package */
+	PRISM : !!window.platform,
 
-  /** {Boolean} Whether the application is running inside a Titanium Desktop package */
-  TITANIUM : !!window.Titanium,
+	/** {Boolean} Whether the application is running inside a Titanium Desktop package */
+	TITANIUM : !!window.Titanium,
 
-  /** {Boolean} Whether the application is running inside a PhoneGap application right now. */
-  PHONEGAP : !!(window.PhoneGap || window.DroidGap),
+	/** {Boolean} Whether the application is running inside a PhoneGap application right now. */
+	PHONEGAP : !!(window.PhoneGap || window.DroidGap),
 
-  /** {Boolean} Whether the BONDI API is supported */
-  BONDI : !!window.bondi
+	/** {Boolean} Whether the BONDI API is supported */
+	BONDI : !!window.bondi
 });

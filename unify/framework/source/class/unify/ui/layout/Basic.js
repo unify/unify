@@ -1,20 +1,20 @@
 /* ========================================================================
 
-   qooxdoo - the new era of web development
+	 qooxdoo - the new era of web development
 
-   http://qooxdoo.org
+	 http://qooxdoo.org
 
-   Copyright:
-     2004-2008 1&1 Internet AG, Germany, http://www.1und1.de
+	 Copyright:
+		 2004-2008 1&1 Internet AG, Germany, http://www.1und1.de
 
-   License:
-     LGPL: http://www.gnu.org/licenses/lgpl.html
-     EPL: http://www.eclipse.org/org/documents/epl-v10.php
-     See the LICENSE file in the project's top-level directory for details.
+	 License:
+		 LGPL: http://www.gnu.org/licenses/lgpl.html
+		 EPL: http://www.eclipse.org/org/documents/epl-v10.php
+		 See the LICENSE file in the project's top-level directory for details.
 
-   Authors:
-     * Sebastian Werner (wpbasti)
-     * Fabian Jakobs (fjakobs)
+	 Authors:
+		 * Sebastian Werner (wpbasti)
+		 * Fabian Jakobs (fjakobs)
 
 ======================================================================== */
 
@@ -61,90 +61,90 @@
  * Extended documentation</a> and links to demos of this layout in the qooxdoo manual.
  */
 core.Class("unify.ui.layout.Basic", {
-  include : [unify.ui.layout.Base],
+	include : [unify.ui.layout.Base],
 
 
-  construct : function() {
-    unify.ui.layout.Base.call(this);
-  },
+	construct : function() {
+		unify.ui.layout.Base.call(this);
+	},
 
-  /*
-  ----------------------------------------------------------------------------
-     MEMBERS
-  ----------------------------------------------------------------------------
-  */
+	/*
+	----------------------------------------------------------------------------
+		 MEMBERS
+	----------------------------------------------------------------------------
+	*/
 
-  members :
-  {
-    /*
-    ---------------------------------------------------------------------------
-      LAYOUT INTERFACE
-    ---------------------------------------------------------------------------
-    */
+	members :
+	{
+		/*
+		---------------------------------------------------------------------------
+			LAYOUT INTERFACE
+		---------------------------------------------------------------------------
+		*/
 
-    // overridden
-    verifyLayoutProperty : core.Env.getValue("debug") ? function(item, name, value)
-      {
-        this.assert(name == "left" || name == "top", "The property '"+name+"' is not supported by the Basic layout!");
-        this.assertInteger(value);
-      } : null,
-
-
-    // overridden
-    renderLayout : function(availWidth, availHeight)
-    {
-      var children = this._getLayoutChildren();
-      var child, size, props, left, top;
-
-      // Render children
-      for (var i=0, l=children.length; i<l; i++)
-      {
-        child = children[i];
-        size = child.getSizeHint();
-        props = child.getLayoutProperties();
-
-        left = (props.left || 0) + child.getMarginLeft();
-        top = (props.top || 0) + child.getMarginTop();
-
-        child.renderLayout(left, top, size.width, size.height);
-      }
-    },
+		// overridden
+		verifyLayoutProperty : core.Env.getValue("debug") ? function(item, name, value)
+			{
+				this.assert(name == "left" || name == "top", "The property '"+name+"' is not supported by the Basic layout!");
+				this.assertInteger(value);
+			} : null,
 
 
-    // overridden
-    _computeSizeHint : function()
-    {
-      var children = this._getLayoutChildren();
-      var child, size, props;
-      var neededWidth=0, neededHeight=0;
-      var localWidth, localHeight;
+		// overridden
+		renderLayout : function(availWidth, availHeight)
+		{
+			var children = this._getLayoutChildren();
+			var child, size, props, left, top;
+
+			// Render children
+			for (var i=0, l=children.length; i<l; i++)
+			{
+				child = children[i];
+				size = child.getSizeHint();
+				props = child.getLayoutProperties();
+
+				left = (props.left || 0) + child.getMarginLeft();
+				top = (props.top || 0) + child.getMarginTop();
+
+				child.renderLayout(left, top, size.width, size.height);
+			}
+		},
 
 
-      // Iterate over children
-      for (var i=0, l=children.length; i<l; i++)
-      {
-        child = children[i];
-        size = child.getSizeHint();
-        props = child.getLayoutProperties();
-
-        localWidth = size.width + (props.left || 0) + child.getMarginLeft() + child.getMarginRight();
-        localHeight = size.height + (props.top || 0) + child.getMarginTop() + child.getMarginBottom();
-
-        if (localWidth > neededWidth) {
-          neededWidth = localWidth;
-        }
-
-        if (localHeight > neededHeight) {
-          neededHeight = localHeight;
-        }
-      }
+		// overridden
+		_computeSizeHint : function()
+		{
+			var children = this._getLayoutChildren();
+			var child, size, props;
+			var neededWidth=0, neededHeight=0;
+			var localWidth, localHeight;
 
 
-      // Return hint
-      return {
-        width : neededWidth,
-        height : neededHeight
-      };
-    }
-  }
+			// Iterate over children
+			for (var i=0, l=children.length; i<l; i++)
+			{
+				child = children[i];
+				size = child.getSizeHint();
+				props = child.getLayoutProperties();
+
+				localWidth = size.width + (props.left || 0) + child.getMarginLeft() + child.getMarginRight();
+				localHeight = size.height + (props.top || 0) + child.getMarginTop() + child.getMarginBottom();
+
+				if (localWidth > neededWidth) {
+					neededWidth = localWidth;
+				}
+
+				if (localHeight > neededHeight) {
+					neededHeight = localHeight;
+				}
+			}
+
+
+			// Return hint
+			return {
+				width : neededWidth,
+				height : neededHeight
+			};
+		}
+	}
 });

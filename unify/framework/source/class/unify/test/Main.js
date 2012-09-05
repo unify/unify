@@ -6,9 +6,9 @@
 
 var global = this;
 $(function() {
-  
-  core.Env.define("debug", true);
-  unify.test.theme.Theme.test();
-  unify.test.ui.core.VisibleBox.test();
-  
+	
+	core.Env.define("debug", true);
+	unify.test.theme.Theme.test();
+	unify.test.ui.core.VisibleBox.test();
+	
 });

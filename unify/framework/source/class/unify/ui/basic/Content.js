@@ -1,11 +1,11 @@
 /*
 ===============================================================================================
 
-    Unify Project
+		Unify Project
 
-    Homepage: unify-project.org
-    License: MIT + Apache (V2)
-    Copyright: 2010, Sebastian Fastner, Mainz, Germany, http://unify-training.com
+		Homepage: unify-project.org
+		License: MIT + Apache (V2)
+		Copyright: 2010, Sebastian Fastner, Mainz, Germany, http://unify-training.com
 
 ===============================================================================================
 */
@@ -17,22 +17,22 @@
  * Simple content widget based upon html DIV element
  */
 core.Class("unify.ui.basic.Content", {
-  include : [unify.ui.core.Widget],
-  
-  properties : {
-    // overridden
-    appearance : {
-      init: "content"
-    }
-  },
-  
-  construct : function() {
-    unify.ui.core.Widget.call(this);
-  },
-  
-  members : {
-    _createElement : function() {
-      return document.createElement("div");
-    }
-  }
+	include : [unify.ui.core.Widget],
+	
+	properties : {
+		// overridden
+		appearance : {
+			init: "content"
+		}
+	},
+	
+	construct : function() {
+		unify.ui.core.Widget.call(this);
+	},
+	
+	members : {
+		_createElement : function() {
+			return document.createElement("div");
+		}
+	}
 });

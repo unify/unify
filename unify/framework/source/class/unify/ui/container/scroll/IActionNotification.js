@@ -16,12 +16,12 @@
  * Interface for Action Notification widgets of unify.ui.container.ActionScroll
  */
 core.Interface("unify.ui.container.scroll.IActionNotification", {
-  properties : {
-    //phase of the notification
-    phase : {type : ["initial", "activated", "executing"]}
-  },
-  members:{
-    show:function(){},
-    exclude:function(){}
-  }
+	properties : {
+		//phase of the notification
+		phase : {type : ["initial", "activated", "executing"]}
+	},
+	members:{
+		show:function(){},
+		exclude:function(){}
+	}
 });

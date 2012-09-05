@@ -21,23 +21,23 @@
  * #require(ext.RequestAnimationFrame)
  */
 core.Module("unify.fx.core.AnimationFrame", {
-  /**
-   * Request animation frame
-   *
-   * @param callback {Function} Callback function if animation frame is hitten
-   * @param root {Object?} optional html element defining the area where the animation happens
-   * @return {Object} request handle
-   */
-  request : function(callback,root) {
-    return requestAnimationFrame(callback,root);//TODO check spec if root element is still there and if browsers support it
-  },
+	/**
+	 * Request animation frame
+	 *
+	 * @param callback {Function} Callback function if animation frame is hitten
+	 * @param root {Object?} optional html element defining the area where the animation happens
+	 * @return {Object} request handle
+	 */
+	request : function(callback,root) {
+		return requestAnimationFrame(callback,root);//TODO check spec if root element is still there and if browsers support it
+	},
 
-  /**
-   * cancels a pending animation frame step
-   * 
-   * @param handle {Object} the pending requests handle
-   */
-  cancel : function(handle) {
-    return cancelAnimationFrame(handle);
-  }
+	/**
+	 * cancels a pending animation frame step
+	 * 
+	 * @param handle {Object} the pending requests handle
+	 */
+	cancel : function(handle) {
+		return cancelAnimationFrame(handle);
+	}
 });

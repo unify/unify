@@ -1,5 +1,5 @@
 core.Module("unify.bom.Viewport", {
-  isLandscape : function() {
-    return window.outerWidth > window.outerHeight;
-  }
+	isLandscape : function() {
+		return window.outerWidth > window.outerHeight;
+	}
 });
