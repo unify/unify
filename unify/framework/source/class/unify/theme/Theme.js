@@ -147,20 +147,27 @@ core.Class("unify.theme.Theme", {
 			}
 			
 			if (theme.include) {
-				var includedTheme = theme.include.getParsedTheme();
-				var colors = includedTheme.colors;
-				var fonts = includedTheme.fonts;
-				var styles = includedTheme.styles;
-				var key;
+				var incl = theme.include;
+				if (!(incl instanceof Array)) {
+					incl = [incl];
+				}
 				
-				for (key in colors) {
-					themeColors[key] = colors[key];
-				}
-				for (key in fonts) {
-					themeFonts[key] = fonts[key];
-				}
-				for (key in styles) {
-					themeStyles[key] = styles[key];
+				for (i=0,ii=incl.length; i<ii; i++) {
+					var includedTheme = incl[i].getParsedTheme();
+					var colors = includedTheme.colors;
+					var fonts = includedTheme.fonts;
+					var styles = includedTheme.styles;
+					var key;
+					
+					for (key in colors) {
+						themeColors[key] = colors[key];
+					}
+					for (key in fonts) {
+						themeFonts[key] = fonts[key];
+					}
+					for (key in styles) {
+						themeStyles[key] = styles[key];
+					}
 				}
 			}
 			
