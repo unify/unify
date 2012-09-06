@@ -118,7 +118,7 @@ core.Class("unify.view.Navigation",
 		 * suitable view.
 		 */
 		setStartView : function(viewClass) {
-			if (!viewClass instanceof Array) {
+			if (!(viewClass instanceof Array)) {
 				viewClass = [viewClass];
 			}
 			
