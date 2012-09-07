@@ -344,7 +344,7 @@ qx.Class.define("unify.ui.container.Scroll", {
      */
     _getIndicator : function() {
       var Indicator=unify.ui.container.scroll.Indicator;
-      if(true || unify.bom.client.System.ANDROID){
+      if(unify.bom.client.System.ANDROID){
         //android renders the default indicator in a funny way (scaling the middle element does not work correctly for certain values
         //so we use a specialized one here
         Indicator=unify.ui.container.scroll.ScalingIndicator;
