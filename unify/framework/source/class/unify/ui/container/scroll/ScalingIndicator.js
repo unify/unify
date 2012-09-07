@@ -100,11 +100,10 @@ qx.Class.define("unify.ui.container.scroll.ScalingIndicator", {
     __horizontal: false,
     __currentSize : null,
     __minSize:null,
-    __maxSize: null,
+    __baseIndicatorSize: null,
     __currentIndicatorPosition: null,
-    __minIndicatorPosition:null,
-    __maxIndicatorPosition:null,
     __maxScrollPosition: null,
+    __margin: null,
 
     __elem: null,
 
@@ -147,28 +146,27 @@ qx.Class.define("unify.ui.container.scroll.ScalingIndicator", {
         if (twoAxisScroll) {
           margin += ScrollIndicator.THICKNESS + ScrollIndicator.DISTANCE;
         }
+        this.__margin=margin;
         var minSize=this.__minSize=ScrollIndicator.THICKNESS;
-        this.__minIndicatorPosition=0;
 
         if(this.__horizontal){
-          this.__maxSize=(scrollerWidth>0 && contentWidth>0)?(Math.max(minSize,Math.round((scrollerWidth/contentWidth)*(scrollerWidth-margin)))):0;
-          this.__maxIndicatorPosition=scrollerWidth-this.__maxSize-margin;
-          this.__maxScrollPosition=contentWidth-scrollerWidth;
-
+          this.__baseIndicatorSize=(scrollerWidth>0 && contentWidth>0)?(Math.max(minSize,Math.round((scrollerWidth/contentWidth)*(scrollerWidth-margin)))):0;
+          this.__clientSize=scrollerWidth;
+          this.__maxScrollPosition=Math.max(0,contentWidth-scrollerWidth);
           qx.bom.element.Style.setStyles(this.__elem,{
               left:ScrollIndicator.DISTANCE+"px",
               top: (scrollerHeight-ScrollIndicator.THICKNESS-ScrollIndicator.DISTANCE)+"px",
               height:ScrollIndicator.THICKNESS+"px",
-              width:this.__maxSize+"px"});
+              width:this.__baseIndicatorSize+"px"});
         } else {
-          this.__maxSize=(scrollerHeight>0 && contentHeight>0)?(Math.max(minSize,Math.round((scrollerHeight/contentHeight)*(scrollerHeight-margin)))):0;
-          this.__maxIndicatorPosition=scrollerHeight-this.__maxSize-margin;
-          this.__maxScrollPosition=contentHeight-scrollerHeight;
+          this.__baseIndicatorSize=(scrollerHeight>0 && contentHeight>0)?(Math.max(minSize,Math.round((scrollerHeight/contentHeight)*(scrollerHeight-margin)))):0;
+          this.__clientSize=scrollerHeight;
+          this.__maxScrollPosition=Math.max(0,contentHeight-scrollerHeight);
           qx.bom.element.Style.setStyles(this.__elem,{
               top:ScrollIndicator.DISTANCE+"px",
               left: (scrollerWidth-ScrollIndicator.THICKNESS-ScrollIndicator.DISTANCE)+"px",
               width:ScrollIndicator.THICKNESS+"px",
-              height:this.__maxSize+"px"
+              height:this.__baseIndicatorSize+"px"
           });
         }
       }
@@ -227,7 +225,7 @@ qx.Class.define("unify.ui.container.scroll.ScalingIndicator", {
      *
      * @param scrollPosition {Integer} current scroll position on the indicators axis
      */
-    render : function(scrollPosition) {
+    render : function(scrollPosition,zoom) {
 
       // Omit update when invisible or fading out
       // We move the scrollbar out of view as soon as it is not visible anymore
@@ -239,25 +237,29 @@ qx.Class.define("unify.ui.container.scroll.ScalingIndicator", {
       var changed=false;
       var horizontal=this.__horizontal;
       var newPosition;
-      var newSize;
-      var maxSize=this.__maxSize;
+
+      var clientSize=this.__clientSize;
+      var maxScrollPosition=Math.round((this.__maxScrollPosition+clientSize)*zoom)-clientSize;
+      var baseSize=this.__baseIndicatorSize;
+      var newSize=Math.round(baseSize/zoom);
+      var maxIndicatorPosition=clientSize-newSize-this.__margin;
+
       //bounce up/left
       if (scrollPosition < 0)
       {
-        newSize = Math.max(Math.round(maxSize + scrollPosition), this.__minSize);
-        newPosition=this.__minIndicatorPosition;
+        newSize = Math.max(Math.round(newSize + scrollPosition), this.__minSize);
+        newPosition=0;
       }
       //bounce down/right
-      else if (scrollPosition > this.__maxScrollPosition)
+      else if (scrollPosition > maxScrollPosition)
       {
-        newSize = Math.max(Math.round(maxSize + this.__maxScrollPosition - scrollPosition),this.__minSize);
-        newPosition = this.__maxIndicatorPosition;
+        newSize = Math.max(Math.round(newSize + maxScrollPosition - scrollPosition),this.__minSize);
+        newPosition = maxIndicatorPosition;
       }
       // In range
       else
       {
-        newSize=maxSize;
-        newPosition=Math.round((scrollPosition/this.__maxScrollPosition)*this.__maxIndicatorPosition);
+        newPosition=(maxScrollPosition==0)?0:Math.round((scrollPosition/maxScrollPosition)*maxIndicatorPosition);
       }
 
       if(newPosition!=this.__currentIndicatorPosition){
@@ -266,32 +268,37 @@ qx.Class.define("unify.ui.container.scroll.ScalingIndicator", {
         style.transform = this.__currentPositionTransform = horizontal ? unify.bom.Transform.accelTranslate(newPosition+"px",0) : unify.bom.Transform.accelTranslate(0,newPosition+"px");
       }
 
+
       if (newSize !=this.__currentSize)
       {
        changed=true;
        this.__currentSize=newSize;
 
        if(horizontal){
-         style.transformOriginX=((newSize<maxSize && newPosition==this.__minIndicatorPosition)?"0%":"100%");
+         style.transformOriginX=((newSize<baseSize && newPosition==maxIndicatorPosition)?"100%":"0%");
        } else {
-         style.transformOriginY=((newSize<maxSize && newPosition==this.__minIndicatorPosition)?"0%":"100%");
+         style.transformOriginY=((newSize<baseSize && newPosition==maxIndicatorPosition)?"100%":"0%");
        }
        var scale;
-       if(newSize<maxSize){
+       if(newSize<baseSize){
          if(horizontal){
-           scale=unify.bom.Transform.accelScale((newSize/this.__maxSize),1);
+           scale=unify.bom.Transform.accelScale((newSize/baseSize),1);
          } else {
-           scale=unify.bom.Transform.accelScale(1,(newSize/this.__maxSize));
+           scale=unify.bom.Transform.accelScale(1,(newSize/baseSize));
          }
        } else {
          scale=unify.bom.Transform.accelScale(1,1);
        }
-
+       this.__currentScaleTransform=scale;
        if(style.transform){
          style.transform+=" "+scale;
        } else {
          style.transform=this.__currentPositionTransform+" "+scale;
        }
+      } else {
+        if(this.__currentScaleTransform){
+          style.transform+=" "+this.__currentScaleTransform;
+        }
       }
 
       if(changed){

@@ -35,7 +35,7 @@ qx.Interface.define("unify.ui.container.scroll.IIndicator", {
   },
   
   members : {
-    render : function(scrollPosition) {},
+    render : function(scrollPosition,zoom) {},
     initRenderingCache : function(scroll) {}
   }
 });

@@ -164,7 +164,7 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
         width: thickness,
         height: thickness,
         position: 'absolute',
-        transformOrigin: 'left top'
+        transformOrigin: '0% 0%'
       });
       Style.setStyles(endElem, {
         background: bgstyle,
@@ -185,7 +185,7 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
         });
         Style.setStyles(middleElem, {
           width: '1px',
-          left: '3px'
+          left: endsize
         });
         Style.setStyles(endElem, {
           borderTopRightRadius: radiussize,
@@ -203,7 +203,7 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
         });
         Style.setStyles(middleElem, {
           height: '1px',
-          top: '3px'
+          top: endsize
         });
         Style.setStyles(endElem, {
           borderBottomLeftRadius: radiussize,
@@ -233,14 +233,14 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
      *
      * @param scrollPosition {Integer} current scrollPosition of the parent
      */
-    render : function(scrollPosition) {
-
+    render : function(scrollPosition,zoom) {
       var endSize=this.__endSize;
       var distance=this.__distance;
       var margin = this.__indicatorMargin;
-      var maxPosition=this.__maxScrollPosition;
+      
       var clientSize=this.__clientSize;
-      var size=this.__indicatorSize;
+      var maxPosition=Math.round((this.__maxScrollPosition+clientSize)*zoom)-clientSize;
+      var size=Math.round(this.__indicatorSize/zoom);
       var position;
       //bounce up/left
       if (scrollPosition < 0)
@@ -253,7 +253,7 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
       else if (scrollPosition > maxPosition)
       {
         size = Math.max(Math.round(size + maxPosition - scrollPosition), endSize*2);
-        position = clientSize - margin - size;
+        position = distance + clientSize - margin - size;
       }
 
       // In range
@@ -262,7 +262,7 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
         var percent = scrollPosition / maxPosition;
         var avail = clientSize - margin - size;
 
-        position = Math.round(percent * avail);
+        position = distance + Math.round(percent * avail);
       }
 
       var Style = qx.bom.element.Style;
@@ -360,7 +360,6 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
         this.__isFadingOut = false;
       }
     },
-
 
     /**
      * executes on update of scroll property

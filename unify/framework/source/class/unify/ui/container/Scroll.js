@@ -89,6 +89,35 @@ qx.Class.define("unify.ui.container.Scroll", {
       apply : "_applyScrollerProperty"
     },
 
+    /**
+     * Whether the content should be zoomable
+     */
+    zoomable :
+    {
+      init : false,
+      check : "Boolean",
+      apply : "_applyScrollerProperty"
+    },
+
+    /**
+     * max zoom for content
+     */
+    maxZoom : {
+      init: 3,
+      check: "Number",
+      apply: "_applyScrollerProperty"
+    },
+
+    /**
+     * min zoom for content
+     */
+    minZoom : {
+      init: 1,
+      check: "Number",
+      apply: "_applyScrollerProperty"
+    },
+
+
     /** Whether horizontal scrolling should be enabled */
     enableScrollX :
     {
@@ -191,7 +220,12 @@ qx.Class.define("unify.ui.container.Scroll", {
 
     /** {Integer} Current scroll position on y-axis */
     __scrollTop : 0,
+    
+    /** {Number} Current zoom factor */
+    __zoom: 1,
 
+    /** {Number} distance of most recent multitouch start, used for scale calculation if not ios */
+    __touchesDistStart:null,
 
     /*
      ---------------------------------------------------------------------------
@@ -265,7 +299,14 @@ qx.Class.define("unify.ui.container.Scroll", {
       
       return child;
     },
-    
+
+    /**
+     * get current zoom factor
+     * @return {Number}
+     */
+    getZoom: function(){
+      return this.__zoom;
+    },
 
     /**
      * Gets inner content container
@@ -303,7 +344,7 @@ qx.Class.define("unify.ui.container.Scroll", {
      */
     _getIndicator : function() {
       var Indicator=unify.ui.container.scroll.Indicator;
-      if(unify.bom.client.System.ANDROID){
+      if(true || unify.bom.client.System.ANDROID){
         //android renders the default indicator in a funny way (scaling the middle element does not work correctly for certain values
         //so we use a specialized one here
         Indicator=unify.ui.container.scroll.ScalingIndicator;
@@ -327,16 +368,19 @@ qx.Class.define("unify.ui.container.Scroll", {
       var self = this;
 
       var render = function(left, top, zoom, event) {
+        zoom=(zoom!==undefined)?zoom:1;
         self.__inAnimation = !!self.__inTouch;//TODO this evaluates to false during deceleration!
-        Style.set(contentElement,"transform",Transform.accelTranslate((-left) + 'px', (-top) + 'px'));
-        if (self.__enableScrollX) {
-          self.__scrollLeft=left;
-        }
-        if (self.__enableScrollY) {
-          self.__scrollTop=top;
-        }
+        Style.setStyles(contentElement,{
+          "transform":Transform.accelTranslate((-left) + 'px', (-top) + 'px')+" "+Transform.accelScale(zoom,zoom),
+          "transformOrigin":"0% 0%"
+        });
+
+        //update internal cache
+        self.__scrollLeft=left;
+        self.__scrollTop=top;
+        self.__zoom=zoom;
         
-        self.__renderIndicators(left,top);
+        self.__renderIndicators(left,top,zoom);
         
         if (self.hasListener("scroll")) {
           self.fireEvent("scroll");
@@ -355,7 +399,10 @@ qx.Class.define("unify.ui.container.Scroll", {
         scrollingX : this.getEnableScrollX(),
         scrollingY : this.getEnableScrollY(),
         paging : this.getPaging(),
-        bouncing : this.getBounces()
+        bouncing : this.getBounces(),
+        zooming: this.getZoomable(),
+        minZoom:this.getMinZoom(),
+        maxZoom:this.getMaxZoom()
       };
       var currentLeft=this.__scrollLeft;
       var currentTop=this.__scrollTop;
@@ -435,14 +482,14 @@ qx.Class.define("unify.ui.container.Scroll", {
      * @param left {Number} current scrollLeft
      * @param top {Number} current scrollTop
      */
-    __renderIndicators : function(left,top){
+    __renderIndicators : function(left,top,zoom){
       // Display scroll indicators as soon as we touch and the content is bigger than the container
       if (this.__enableScrollX && this.__showIndicatorX) {
-        this.__horizontalScrollIndicator.render(left);
+        this.__horizontalScrollIndicator.render(left,zoom);
       }
 
       if (this.__enableScrollY && this.__showIndicatorY) {
-        this.__verticalScrollIndicator.render(top);
+        this.__verticalScrollIndicator.render(top,zoom);
       }
 
     },
@@ -493,8 +540,8 @@ qx.Class.define("unify.ui.container.Scroll", {
       if (top == null) {
         top = this.__scrollTop;
       }
-
-      this.__scrollTo(left, top, animate);
+      
+      this.__scrollTo(left, top, animate,this.__zoom);
     },
 
     /**
@@ -510,10 +557,25 @@ qx.Class.define("unify.ui.container.Scroll", {
       if(!animate){
         this.__scrollTop=top;
         this.__scrollLeft=left;
+        this.__zoom=zoom;
         
         this.fireEvent("scrollend");
       }
     },
+
+    /**
+     * zooms the content
+     * @param zoom {Number} desired zoom factor (corrected to minZoom or maxZoom if out of bounds)
+     * @param animate {boolean} if the zoom should be animated
+     * @param originLeft {Integer} x coordinate for zoom origin
+     * @param originTop {Integer} y coordinate for zoom origin
+     */
+    zoomTo: function(zoom, animate, originLeft, originTop){
+      zoom=Math.min(Math.max(zoom,this.getMinZoom()),this.getMaxZoom());
+      this.__scroller.zoomTo(zoom, animate, originLeft, originTop);
+    },
+    
+
 
     /**
      * Returns the cached client width
@@ -601,8 +663,13 @@ qx.Class.define("unify.ui.container.Scroll", {
       this.__enableScrollY = this.getEnableScrollY();
       this.__showIndicatorX = this.getShowIndicatorX();
       this.__showIndicatorY = this.getShowIndicatorY();
+      this.__zoomable=this.getZoomable();
+      this.__maxZoom=this.getMaxZoom();
+      this.__minZoom=this.getMinZoom();
       var oldTwoAxisScroll=this.__twoAxisScroll;
-      this.__twoAxisScroll = this.__enableScrollX && this.__showIndicatorX && this.__enableScrollY && this.__showIndicatorY;
+      this.__twoAxisScroll = 
+        this.__enableScrollX && this.__showIndicatorX && this.__contentWidth*this.__zoom>this.__clientWidth
+        this.__enableScrollY && this.__showIndicatorY && this.__contentHeight*this.__zoom>this.__clientHeight;
       //twoaxisscroll changed, indicators need to adapt to new dimensions
       if(oldTwoAxisScroll!=this.__twoAxisScroll){
         this.__horizontalScrollIndicator.initRenderingCache(this);
@@ -653,8 +720,8 @@ qx.Class.define("unify.ui.container.Scroll", {
       //TODO why is this called here? touchstart should not change the properties, so no need to recache them
       this.__updateProperties();
 
-      if (!(this.getScrollOnSmallContent() || (this.__enableScrollX && this.__contentWidth > this.__clientWidth)
-          || (this.__enableScrollY && this.__contentHeight > this.__clientHeight))) {
+      if (!(this.getScrollOnSmallContent() || (this.__enableScrollX && this.__contentWidth*this.__zoom > this.__clientWidth)
+          || (this.__enableScrollY && this.__contentHeight*this.__zoom > this.__clientHeight))) {
         return; //neither X nor Y scroll possible, no need to try
       }
 
@@ -665,8 +732,16 @@ qx.Class.define("unify.ui.container.Scroll", {
       if (touches[0].target.tagName && touches[0].target.tagName.match(/input|textarea|select/i)) {
         return;
       }
+      
+      //multi-touch, calculate distance between first 2 touches
+      if(touches.length>1){
+        var c1 = Math.abs(touches[0].pageX-touches[1].pageX);
+        var c2 = Math.abs(touches[0].pageY-touches[1].pageY);
+        this.__touchesDistStart = Math.sqrt(c1 * c1 + c2 * c2);
+      }
 
       this.__scroller.doTouchStart(touches, +ne.timeStamp);
+      
       e.preventDefault();
     },
 
@@ -675,11 +750,11 @@ qx.Class.define("unify.ui.container.Scroll", {
      * axis must be scroll enabled and the indicator must be allowed to show
      */
     __showIndicators: function(){
-      if (this.__enableScrollX && this.__showIndicatorX && this.__inTouch) {
+      if (this.__enableScrollX && this.__showIndicatorX && this.__inTouch && this.__clientWidth<this.__contentWidth*this.__zoom) {
         this.__horizontalScrollIndicator.setVisible(true);
       }
 
-      if (this.__enableScrollY && this.__showIndicatorY && this.__inTouch) {
+      if (this.__enableScrollY && this.__showIndicatorY && this.__inTouch&& this.__clientHeight<this.__contentHeight*this.__zoom) {
         this.__verticalScrollIndicator.setVisible(true);
       }
     },
@@ -699,7 +774,19 @@ qx.Class.define("unify.ui.container.Scroll", {
         
       }
       var ne=e.getNativeEvent();
-      this.__scroller.doTouchMove(ne.touches, +ne.timeStamp, ne.scale);
+      var touches =ne.touches;
+      var scale=this.__zoom;
+      if(touches.length>1){
+        if(unify.bom.client.System.IOS){
+          scale=ne.scale;//IOS offers a scale property, use it
+        } else {
+          var c1 = Math.abs(touches[0].pageX-touches[1].pageX);
+          var c2 = Math.abs(touches[0].pageY-touches[1].pageY);
+          var touchesDist = Math.sqrt(c1 * c1 + c2 * c2);
+          scale=touchesDist/this.__touchesDistStart;
+        }
+      } 
+      this.__scroller.doTouchMove(ne.touches, +ne.timeStamp, scale);
     },
     
     /**
