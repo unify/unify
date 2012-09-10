@@ -1,7 +1,7 @@
 import webbrowser, http.server, os, multiprocessing
 
 def getAssetManager(state):
-	if "assetManager" in state:
+	if hasattr(state, "assetManager"):
 		return state.assetManager
 	else:
 		return state.session.getAssetManager()
