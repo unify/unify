@@ -426,6 +426,6 @@ qx.Class.define("unify.ui.container.scroll.Indicator", {
   },
   
   destruct: function(){
-    this._disposeObjects("__startElem","__middleElem","__endElem");
+    this.__startElem=this.__middleElem=this.__endElem=null;
   }
 });

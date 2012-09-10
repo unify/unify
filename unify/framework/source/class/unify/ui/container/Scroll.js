@@ -368,6 +368,9 @@ qx.Class.define("unify.ui.container.Scroll", {
       var self = this;
 
       var render = function(left, top, zoom, event) {
+        if(self.$$disposed){
+          return;
+        }
         zoom=(zoom!==undefined)?zoom:1;
         self.__inAnimation = !!self.__inTouch;//TODO this evaluates to false during deceleration!
         Style.setStyles(contentElement,{
@@ -615,6 +618,14 @@ qx.Class.define("unify.ui.container.Scroll", {
     },
 
     /**
+     * returns allowed max values for left and top scroll positions
+     * @return {*|Map}
+     */
+    getScrollMax: function(){
+      return this.__scroller.getScrollMax();
+    },
+
+    /**
      * Returns the cached content height
      *
      * @deprecated
@@ -835,6 +846,7 @@ qx.Class.define("unify.ui.container.Scroll", {
     root.removeListener("touchend", this.__onTouchEnd,this);
     root.removeListener("touchcancel", this.__onTouchEnd,this);
     this._disposeObjects("__contentWidget","__horizontalScrollIndicator","__verticalScrollIndicator");
+    this.__scroller.cancelRunningAnimations();
     this.__scroller=null;
   }
 });
@@ -1478,7 +1490,25 @@ var Scroller;
 			return self.zoomTo(self.__zoomLevel * change, false, pageX - self.__clientLeft, pageY - self.__clientTop);
 
 		},
+    /**
+     * immediatly cancel running animations
+     * scroller state might get inconsistent after you called this, so only use it in cleanup code (e.g. destructors)
+     */
+    cancelRunningAnimations: function(){
+      var self = this;
 
+      // Stop deceleration
+      if (self.__isDecelerating) {
+        core.effect.Animate.stop(self.__isDecelerating);
+        self.__isDecelerating = false;
+      }
+
+      // Stop animation
+      if (self.__isAnimating) {
+        core.effect.Animate.stop(self.__isAnimating);
+        self.__isAnimating = false;
+      }
+    },
 
 		/**
 		 * Touch start handler for scrolling support
