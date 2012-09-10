@@ -1,5 +1,11 @@
 import webbrowser, http.server, os, multiprocessing
 
+def getAssetManager(state):
+	if "assetManager" in state:
+		return state.assetManager
+	else:
+		return state.session.getAssetManager()
+
 @share
 def unify_source(state, NAMESPACE):
 	# Permutation independend config
@@ -11,7 +17,7 @@ def unify_source(state, NAMESPACE):
 	state.jsOptimization.disable("blocks")
 	
 	# Assets
-	state.assetManager.addSourceProfile()
+	getAssetManager(state).addSourceProfile()
 	
 	# Store loader script
 	includedByKernel = state.storeKernel("script/kernel.js")
@@ -36,8 +42,8 @@ def unify_build(state, NAMESPACE, cdnPrefix="asset"):
 	state.jsOptimization.enable("blocks")
 	
 	# Assets
-	state.assetManager.addBuildProfile(cdnPrefix)
-	state.assetManager.deploy(state.Resolver().addClassName("%s.Application" % NAMESPACE).getIncludedClasses())
+	getAssetManager(state).addBuildProfile(cdnPrefix)
+	getAssetManager(state).deploy(state.Resolver().addClassName("%s.Application" % NAMESPACE).getIncludedClasses())
 	
 	# Store loader script
 	includedByKernel = state.storeKernel("script/kernel.js")
