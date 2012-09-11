@@ -556,7 +556,6 @@ core.Class("unify.view.ViewManager", {
 		 * @param remove {Boolean}  true: the state is removed; false: the state is added
 		 */
 		__changeChildState: function (widget,state,remove){
-			console.log(widget.constructor, !!widget.getChildren);
 			var children = widget.getChildren && widget.getChildren();
 			if(children){
 				for (var i = 0,l=children.length;i<l;i++){
