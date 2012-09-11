@@ -473,6 +473,9 @@ qx.Class.define("unify.ui.container.Scroll", {
         
         this.__scroller.setDimensions(scrollerWidth, scrollerHeight, contentWidth, contentHeight);
         
+        var pos=qx.bom.element.Location.get(this.getElement());
+        this.__scroller.setPosition(pos.left,pos.top);
+        
         this.__clientWidth = scrollerWidth;
         this.__clientHeight = scrollerHeight;
         this.__contentWidth = contentWidth;
