@@ -52,7 +52,7 @@ def unify_build(state, NAMESPACE, cdnPrefix="asset"):
 	state.updateFile("source/index.html", "index.html")    
 	
 	# Process every possible permutation
-	for permutation in state.session.getPermutations():
+	for permutation in state.session.permutate():
 		# Resolving dependencies
 		resolver = state.Resolver().addClassName("%s.Application" % NAMESPACE).excludeClasses(includedByKernel)
 		
