@@ -789,7 +789,7 @@ qx.Class.define("unify.ui.container.Scroll", {
       }
       var ne=e.getNativeEvent();
       var touches =ne.touches;
-      var scale=this.__zoom;
+      var scale=null;
       if(touches.length>1){
         if(unify.bom.client.System.IOS){
           scale=ne.scale;//IOS offers a scale property, use it
