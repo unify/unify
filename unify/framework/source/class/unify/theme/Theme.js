@@ -10,323 +10,423 @@
 ===============================================================================================
 */
 
-core.Class("unify.theme.Theme", {
-	construct : function(theme) {
-		var colors = this.__colors = {};
-		var fonts = this.__fonts = {};
-		var styles = this.__styles = {};
+/**
+ * Theme
+ */
+core.Class('unify.theme.Theme', {
 
-		this.__styleCache = {};
+  /**
+   * Constructor
+   *
+   * Creates new theme instance
+   *
+   * @param theme {Object} Theme configuration
+   */
+  construct: function(theme) {
+    // Initialize configuration
+    var colors = this.__colors = { };
+    var fonts = this.__fonts = { };
+    var styles = this.__styles = { };
 
-		this._parse(theme, colors, fonts, styles);
-	},
-	
-	members : {
-		__styleCache : null,
-		
-		/* PUBLIC API */
-		
-		name : function() {
-			return this.__name;
-		},
-		
-		resolveColor : function(name) {
-			var result = this.__colors[name] || null;
-			if (core.Env.getValue("debug")) {
-				if (!result) {
-					console.warn("Color " + name + " not found!");
-				}
-			}
-			return result;
-		},
-		
-		resolveFont : function(name) {
-			var result = this.__fonts[name] || null;
-			if (core.Env.getValue("debug")) {
-				if (!result) {
-					console.warn("Font " + name + " not found!");
-				}
-			}
-			return result;
-		},
-		
-		__runFunctionsFromArray : function(arrayOrFnt, states) {
-			var res;
-			
-			if (typeof(arrayOrFnt) == "function") {
-				res = arrayOrFnt(states);
-			} else {
-				res = {};
-				for (var i=0,ii=arrayOrFnt.length; i<ii; i++) {
-					var aof = arrayOrFnt[i];
-					
-					if (aof) {
-						var r = this.__runFunctionsFromArray(aof, states);
-						var k = Object.keys(r);
-						for (var j=0, jj=k.length; j<jj; j++) {
-							var key = k[j];
-							res[key] = r[key];
-						}
-					}
-				}
-			}
-			
-			return res;
-		},
-		
-		resolveStyle : function(name, states) {
-			states = states || {};
-			var id = name + "-" + Object.keys(states).sort().join("-");
-			var result = this.__styleCache[id];
-			if (result) {
-				return result;
-			}
-			
-			var style = this.__styles[name];
-			
-			if (!style) {
-				if (core.Env.getValue("debug") && style !== null) {
-					console.log("No style '" + name + "' found");
-				}
-				return null;
-			}
-			
-			var styles = this.__runFunctionsFromArray(style, states);
-			
-			var colorTags = ["color", "backgroundColor", "borderColor", "borderTopColor", "borderLeftColor", "borderRightColor", "borderBottomColor"];
-			for (var i=0,ii=colorTags.length; i<ii; i++) {
-				var tag = colorTags[i];
-				if (styles[tag]) {
-					styles[tag] = this.resolveColor(styles[tag]);
-				}
-			}
-			var textColor = styles.font && styles.font.textColor;
-			var color = styles.font && styles.font.color;
-			if (textColor) {
-				styles.font.textColor = this.resolveColor(textColor);
-			}
-			if (color) {
-				styles.font.color = this.resolveColor(color);
-			}
-			
-			// Cache only if not in debug mode
-			this.__styleCache[id] = styles;
-			
-			return styles;
-		},
-		
-		getParsedTheme : function() {
-			return {
-				colors: this.__colors,
-				fonts: this.__fonts,
-				styles: this.__styles
-			};
-		},
-		
-		/* PRIVATE */
-		
-		__colors : null,
-		__fonts : null,
-		__styles : null,
-		__name : null,
-		
-		_parse : function(theme, themeColors, themeFonts, themeStyles) {
-			if (core.Env.getValue("debug")) {
-				if (!theme) {
-					throw new Error("No theme given!");
-				}
-			}
-			
-			var keys;
-			var i;
-			var ii;
-			
-			var name = theme.name;
-			if (name) {
-				this.__name = name;
-			}
-			
-			if (theme.include) {
-				var incl = theme.include;
-				if (!(incl instanceof Array)) {
-					incl = [incl];
-				}
-				
-				for (i=0,ii=incl.length; i<ii; i++) {
-					var includedTheme = incl[i].getParsedTheme();
-					var colors = includedTheme.colors;
-					var fonts = includedTheme.fonts;
-					var styles = includedTheme.styles;
-					var key;
-					
-					for (key in colors) {
-						themeColors[key] = colors[key];
-					}
-					for (key in fonts) {
-						themeFonts[key] = fonts[key];
-					}
-					for (key in styles) {
-						themeStyles[key] = styles[key];
-					}
-				}
-			}
-			
-			var colors = theme.colors;
-			if (colors) {
-				keys = Object.keys(colors);
-				var colorMap = themeColors;
-				
-				for (i=0,ii=keys.length; i<ii; i++) {
-					var colorName = keys[i];
-					var color = colors[colorName];
-					
-					colorMap[colorName] = color;
-				}
-			}
-			
-			var fonts = theme.fonts;
-			if (fonts) {
-				keys = Object.keys(fonts);
-				var fontMap = themeFonts;
-				
-				for (i=0,ii=keys.length; i<ii; i++) {
-					var fontName = keys[i];
-					var font = this.__parseFont(fonts[fontName]);
-					
-					fontMap[fontName] = font;
-				}
-			}
-			
-			var styles = theme.styles;
-			if (styles) {
-				this.__parseStyles(styles, themeStyles);
-			}
-		},
-		
-		__parseFont : function(font) {
-			var def = {
-				fontSize: "16px",
-				fontStyle: "normal",
-				fontWeight: "normal",
-				textDecoration: "none",
-				lineHeight: 1.0
-			};
-			
-			if (font.family) {
-				def.fontFamily = font.family;
-			}
-			if (font.size) {
-				def.fontSize = font.size + "px";
-			}
-			if (font.style) {
-				def.fontStyle = font.style;
-			}
-			if (font.weight) {
-				def.fontWeight = font.weight;
-			}
-			if (font.decoration) {
-				def.textDecoration = font.decoration;
-			}
-			if (font.lineHeight) {
-				def.lineHeight = font.lineHeight;
-			}
-			if (font.src) {
-				def.fontObject = new lowland.bom.Font(font.src);
-			}
-			
-			return def;
-		},
-		
-		__parseStyles : function(styles, themeStyles) {
-			var styleMap = themeStyles;
-			
-			var includeHelper = [];
-			var includes = {};
-			var childControls = [];
-			
-			var keys = Object.keys(styles);
-			for (var i=0,ii=keys.length; i<ii; i++) {
-				var key = keys[i];
-				var value = styles[key];
-				
-				var slashPos = key.indexOf("/");
-				if (slashPos > -1) {
-					var first = key.substring(0, slashPos);
-					var second = key.substring(slashPos+1);
-					
-					childControls.push({main: first, control: second});
-				}
-				
-				if (typeof value == "string") {
-					// construct is "a" : "b"
-					
-					includeHelper.push({
-						key: key,
-						include: value
-					});
-				} else {
-					if (value.include) {
-						if (typeof value.include === 'string') {
-							value.include = [ value.include ];
-						}
+    // Initialize style cache
+    this.__styleCache = { };
 
-						for (var k = 0, l = value.include.length; k < l; k++) {
-							includeHelper.push({
-								key: key,
-								include: value.include[k]
-							});
-						}
-					}
-					if (value.style) {
-						if (styleMap[key]) {
-							styleMap[key] = [styleMap[key], value.style];
-						} else {
-							styleMap[key] = value.style;
-						}
-					} else {
-						styleMap[key] = null;
-					}
-				}
-			}
-			
-			var task;
-			
-			for (i=0,ii=includeHelper.length; i<ii; i++) {
-				task = includeHelper[i];
-				
-				if (includes[task.include]) {
-					includes[task.include].push(task.key);
-				} else {
-					includes[task.include] = [task.key];
-				}
-				
-				var keyFnt = styleMap[task.key];
-				if (keyFnt) {
-					styleMap[task.key] = [styleMap[task.include], keyFnt];
-				} else {
-					styleMap[task.key] = styleMap[task.include];
-				}
-			}
-			
-			for (i=0,ii=childControls.length; i<ii; i++) {
-				task = childControls[i];
-				var nFnt = styleMap[task.main + "/" + task.control];
-				
-				var incl = includes[task.main];
-				if (incl) {
-					for (var j=0,jj=incl.length; j<jj; j++) {
-						var origName = incl[j] + "/" + task.control;
-						var sm = styleMap[origName];
-						
-						if (!sm) {
-							// Set only if no styling is set by developer
-							styleMap[origName] = nFnt;
-						}
-					}
-				}
-			}
-		}
-		
-		
-	}
+    // Parse theme configuration
+    this._parse(theme, colors, fonts, styles);
+  },
+
+  /*
+   ******************************************************************************
+   MEMBERS
+   ******************************************************************************
+   */
+
+  members: {
+
+    /*
+     ----------------------------------------------------------------------------
+     PRIVATE
+     ----------------------------------------------------------------------------
+     */
+
+    /**
+     * {String} Theme name
+     */
+    __name: null,
+
+    /**
+     * {Object} Color definitions
+     */
+    __colors: null,
+
+    /**
+     * {Object} Font definitions
+     */
+    __font: null,
+
+    /**
+     * {Object} Style definitions
+     */
+    __styles: null,
+
+    /**
+     * {Object} Style cache
+     */
+    __styleCache: null,
+
+
+    /**
+     * Extend object
+     *
+     * Simple helper method to extend one object with the properties of
+     * another object (non recursive).
+     *
+     * @param base {Object} The object to extend
+     * @param extend {Object} The object that should be added to the base object
+     * @return {Object} The extended object
+     */
+    __extendObject: function(base, extend) {
+      if (extend instanceof Object) {
+        for (key in extend) {
+          base[key] = extend[key];
+        }
+      }
+
+      return base;
+    },
+
+
+    /**
+     * Resolve style helper
+     *
+     * This method does the heavy lifting for creating CSS styles. It
+     * parses all the includes for a style definitions and executes the style
+     * functions.
+     *
+     * @param styleDef {Array} List of style definitions
+     * @param states {Object} Map of states that should be passed to each
+     *                        style function
+     * @return {Object} Map of CSS style definitions
+     */
+    __resolveStyleHelper: function(styleDef, states) {
+      var result = { };
+
+      for (var i = 0, ii = styleDef.length; i < ii; i++) {
+        var obj = styleDef[i];
+
+        // Processing include(s)
+        for (var j = 0, jj = obj.includes.length; j < jj; j++) {
+          var includedStyle = this.__styles[obj.includes[j]];
+          var temp = this.__resolveStyleHelper(includedStyle, states);
+          result = this.__extendObject(result, temp);
+        }
+
+        // Processing style function(s)
+        for (var k = 0, kk = obj.styles.length; k < kk; k++) {
+          if (obj.styles[k] != null) {
+            var temp = obj.styles[k](states);
+            result = this.__extendObject(result, temp);
+          } else {
+            result = { };
+          }
+        }
+      }
+
+      return result;
+    },
+
+
+    /**
+     * Parse font definition
+     *
+     * @param font {Object} The raw font definition
+     * @return {Object} The parsed font definition
+     */
+    __parseFont: function(font) {
+      var def = {
+        fontSize: '16px',
+        fontStyle: 'normal',
+        fontWeight: 'normal',
+        lineHeight: 1.0,
+        textDecoration: 'none'
+      };
+
+      if (font.decoration) {
+        def.textDecoration = font.decoration;
+      }
+      if (font.family) {
+        def.fontFamily = font.family;
+      }
+      if (font.lineHeight) {
+        def.lineHeight = font.lineHeight;
+      }
+      if (font.size) {
+        def.fontSize = font.size + 'px';
+      }
+      if (font.style) {
+        def.fontStyle = font.style;
+      }
+      if (font.weight) {
+        def.fontWeight = font.weight;
+      }
+      if (font.src) {
+        def.fontObject = new lowland.bom.Font(font.src);
+      }
+
+      return def;
+    },
+
+
+    /**
+     * Parse styles
+     *
+     * @param styles {Object} The raw style definitions
+     * @param themeStyles {Object} Reference to the parsed style definitions
+     */
+    __parseStyles: function(styles, themeStyles) {
+
+      var keys = Object.keys(styles);
+      for (var i = 0, ii = keys.length; i < ii; i++) {
+        var key = keys[i];
+        var value = styles[key];
+        var obj = { theme: this.__name, key: key, includes: [ ], styles: [ ] };
+
+        // @todo Where do these properties come from?
+        if (key == 'moduleName' || key == 'toString' || key == 'valueOf' ||
+          key == '__isModule') {
+          continue;
+        }
+
+        // Check whether there is already a style defined by that name/key
+        if (!themeStyles[key]) {
+          themeStyles[key] = [ ];
+        }
+
+        if (typeof value === 'string') {
+          // e.g. 'button': 'baseButton' (take all styles from baseButton)
+          obj.includes.push(value);
+        } else {
+          // e.g. 'button': { include: ..., style: ... }
+          if (value.include) {
+            if (typeof value.include === 'string') {
+              value.include = [ value.include ];
+            }
+
+            for (var j = 0, jj = value.include.length; j < jj; j++) {
+              obj.includes.push(value.include[j]);
+            }
+          }
+
+          if (value.style) {
+            obj.styles.push(value.style);
+          } else {
+            obj.styles.push(null);
+          }
+        }
+
+        themeStyles[key].push(obj);
+      }
+    },
+
+
+    /*
+     ----------------------------------------------------------------------------
+     PROTECTED
+     ----------------------------------------------------------------------------
+     */
+
+    /**
+     * Parse the theme definition
+     *
+     * @param theme {Object} The theme definition to parse
+     * @param themeColors {Object} Reference to theme's colors
+     * @param themeFonts {Object} Reference to theme's fonts
+     * @param themeStyles {Object} Reference to theme's styles
+     */
+    _parse: function(theme, themeColors, themeFonts, themeStyles) {
+      // Check whether ot not theme configuration was provided
+      if (!theme && core.Env.getValue('debug')) {
+        throw new Error('No theme given!');
+      }
+
+      // Counter variables
+      var i;
+      var ii;
+      var key;
+
+      // Set theme name
+      var name = theme.name;
+      if (name) {
+        this.__name = name;
+      }
+
+      // Check for other themes to include
+      if (theme.include) {
+        var themesToInclude = theme.include instanceof Array ?
+          theme.include : [ theme.include ];
+
+        for (i = 0, ii = themesToInclude.length; i < ii; i++) {
+          var includedTheme = themesToInclude[i].getParsedTheme();
+          var includedColors = includedTheme.colors;
+          var includedFonts = includedTheme.fonts;
+          var includedStyles = includedTheme.styles;
+
+          for (key in includedColors) {
+            themeColors[key] = includedColors[key];
+          }
+          for (key in includedFonts) {
+            themeFonts[key] = includedFonts[key];
+          }
+          for (key in includedStyles) {
+            themeStyles[key] = includedStyles[key];
+          }
+        }
+      }
+
+      // Set colors
+      var colors = theme.colors;
+      if (colors) {
+        var keys = Object.keys(colors);
+        for (i = 0, ii = keys.length; i < ii; i++) {
+          var colorName = keys[i];
+          var color = colors[colorName];
+
+          themeColors[colorName] = color;
+        }
+      }
+
+      // Set fonts
+      var fonts = theme.fonts;
+      if (fonts) {
+        var keys = Object.keys(fonts);
+        for (i = 0, ii = keys.length; i < ii; i++) {
+          var fontName = keys[i];
+          var font = this.__parseFont(fonts[fontName]);
+
+          themeFonts[fontName] = font;
+        }
+      }
+
+      // Set styles
+      var styles = theme.styles;
+      if (styles) {
+        this.__parseStyles(styles, themeStyles);
+      }
+    },
+
+
+    /*
+     ----------------------------------------------------------------------------
+     PUBLIC
+     ----------------------------------------------------------------------------
+     */
+
+    /**
+     * Get theme name
+     *
+     * @return {String} The name of the theme
+     */
+    name: function() {
+      return this.__name;
+    },
+
+
+    /**
+     * Get parsed theme
+     *
+     * @return {Object} The parsed theme with color, font and style definitions
+     */
+    getParsedTheme: function() {
+      return {
+        colors: this.__colors,
+        fonts: this.__fonts,
+        styles: this.__styles
+      }
+    },
+
+
+    /**
+     * Get color by name
+     *
+     * @param name {String} The name of the color definition
+     * @return {String|null} The color
+     */
+    resolveColor: function(name) {
+      var result = this.__colors[name] || null;
+
+      if (!result && core.Env.getValue('debug')) {
+        console.warn('Color "' + name + '" not found!');
+      }
+
+      return result;
+    },
+
+
+    /**
+     * Get font by name
+     *
+     * @param name {String} The name of the font definition
+     * @return {Object|null} The font
+     */
+    resolveFont: function(name) {
+      var result = this.__fonts[name] || null;
+
+      if (!result && core.Env.getValue('debug')) {
+        console.warn('Font "' + name + '" not found!');
+      }
+
+      return result;
+    },
+
+
+    /**
+     * Get style by name
+     *
+     * @param name {String} The name of the style definition
+     * @param states {Object} Map of states to apply
+     * @return {Object} Map of CSS styles
+     */
+    resolveStyle: function(name, states) {
+      states = states || { };
+      var id = name + '-' + Object.keys(states).sort().join('-');
+
+      // Check, whether or not the styles are already in the cache
+      var result = this.__styleCache[id];
+      if (result) {
+        return result;
+      }
+
+      // Check, whether or not the style is available
+      var styleDef = this.__styles[name];
+
+      if (!styleDef) {
+        if (core.Env.getValue('debug')) {
+          console.warn('No style "' + name + '" found!');
+        }
+        return null;
+      }
+
+      // Execute style functions
+      var styles = this.__resolveStyleHelper(styleDef, states);
+
+      // Resolve colors
+      var colorTags = [
+        'backgroundColor', 'borderColor', 'borderBottomColor',
+        'borderLeftColor', 'borderRightColor', 'borderTopColor',
+        'color'
+      ];
+      for (var i = 0, ii = colorTags.length; i < ii; i++) {
+        var tag = colorTags[i];
+        if (styles[tag]) {
+          styles[tag] = this.resolveColor(styles[tag]);
+        }
+      }
+
+      // Cache styles
+      this.__styleCache[id] = styles;
+
+      return styles;
+    }
+  }
+
 });
