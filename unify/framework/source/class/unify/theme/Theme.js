@@ -220,7 +220,10 @@ core.Class('unify.theme.Theme', {
           if (value.style) {
             obj.styles.push(value.style);
           } else {
-            obj.styles.push(null);
+            if (!value.include) {
+              obj.styles.push(null);
+            }
+
           }
         }
 
