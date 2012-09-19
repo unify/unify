@@ -26,10 +26,10 @@ def source(session, config):
 		
 
 @share
-def build(session, config, cdnPrefix="asset"):
+def build(session, config, cdnPrefix="asset", compressionLevel=2, formattingLevel=0):
 	name = config.get("name")
 	assetManager = AssetManager(session)
-	outputManager = OutputManager(session, assetManager, 2, 0)
+	outputManager = OutputManager(session, assetManager, compressionLevel, formattingLevel)
 	fileManager = FileManager(session)
 	
 	# Assets
