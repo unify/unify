@@ -58,14 +58,14 @@
 					backgroundColor:"transparent",
 					backgroundPosition:"center center",
 					backgroundRepeat:"no-repeat",
-					backgroundImage:"url("+core.io.Asset.toUri(this.__source)+")",
+					backgroundImage:"url("+jasy.Asset.toUri(this.__source)+")",
 					transformOriginX:"50%",
 					transformOriginY:"50%"
 				});
 				return elem;
 			},
 			_applySource : function(value) {
-				this.setStyle({backgroundImage:"url("+core.io.Asset.toUri(value)+")"});
+				this.setStyle({backgroundImage:"url("+jasy.Asset.toUri(value)+")"});
 			},
 			/**
 			 * Event handler for visibility changes
