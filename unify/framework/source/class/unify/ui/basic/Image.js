@@ -94,17 +94,15 @@ core.Class("unify.ui.basic.Image", {
 		},
 		
 		_applySource : function(value) {
-			var ResourceManager = core.io.Asset;
-
 			if (this._hasElement()) {
 				var e = this.getElement();
 				
 				var size = null;
 				
 				var src = value;
-				if (ResourceManager.has(value)) {
-					src = ResourceManager.toUri(value);
-					size = ResourceManager.getImageSize(value);
+				if (jasy.Asset.has(value)) {
+					src = jasy.Asset.toUri(value);
+					size = core.io.Asset.getImageSize(value);
 				}
 
 				var style = {
