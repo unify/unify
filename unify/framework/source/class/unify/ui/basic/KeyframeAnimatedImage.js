@@ -1,12 +1,12 @@
 /* ***********************************************************************************************
 
-    Unify Project
+ Unify Project
 
-    Homepage: unify-project.org
-    License: MIT + Apache (V2)
-    Copyright: 2011, TELEKOM AG
+ Homepage: unify-project.org
+ License: MIT + Apache (V2)
+ Copyright: 2011, TELEKOM AG
 
-*********************************************************************************************** */
+ *********************************************************************************************** */
 
 /**
  * EXPERIMENTAL
@@ -64,10 +64,10 @@ qx.Class.define("unify.ui.basic.KeyframeAnimatedImage", {
      */
     __startRotate : function(){
       this.setStyle({
-          animationName: "KAI_rotateZ",
-          animationDuration: this.getAnimateRotateDuration()+"ms",
-          animationIterationCount: "infinite",
-          animationTimingFunction: "linear"
+        animationName: "KAI_rotateZ",
+        animationDuration: this.getAnimateRotateDuration()+"ms",
+        animationIterationCount: "infinite",
+        animationTimingFunction: "linear"
       });
     },
 
@@ -86,15 +86,33 @@ qx.Class.define("unify.ui.basic.KeyframeAnimatedImage", {
   defer: function(){
     var styleNode = document.createElement('style');
     styleNode.type = 'text/css';
-    //TODO write keyframe rule with correct prefix depending on browser engine
-    var rules = document.createTextNode(
-        '@-webkit-keyframes KAI_rotateZ{' +//use a unique name to avoid overriding other keyframe definitions
-          'from{' +
-            '-webkit-transform:rotate3d(0,0,1,0deg)}' +
-          'to{' +
-            '-webkit-transform:rotate3d(0,0,1,360deg)' +
-          '}' +
-        '}');
+
+    var transformProperty= qx.lang.String.hyphenate(qx.bom.element.Style.property('transform'));
+    var keyframeRules = 'KAI_rotateZ{' +//use a unique name to avoid overriding other keyframe definitions
+    'from{'+ transformProperty+':'+unify.bom.Transform.rotate(0)
+    +'} to {' + transformProperty+':'+unify.bom.Transform.rotate(360)+'}' +
+    '}';
+    var keyframeName;
+    switch(unify.bom.client.Engine.NAME){
+      case "webkit":
+        keyframeName="@-webkit-keyframes";
+        break;
+      case "gecko":{
+        keyframeName="@-moz-keyframes";
+        break;
+      }
+      case "trident":
+        keyframeName="@-ms-keyframes";
+        break;
+      case "opera":{
+        keyframeName="@-o-keyframes";
+        break;
+      }
+      default:
+        keyframeName="@keyframes";
+        break;
+    }
+    var rules = document.createTextNode(keyframeName+" "+keyframeRules );
     styleNode.appendChild(rules);
     document.getElementsByTagName("head")[0].appendChild(styleNode);
   }
