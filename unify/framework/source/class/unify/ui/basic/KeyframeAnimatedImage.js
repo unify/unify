@@ -16,7 +16,7 @@
 
 (function() {
 	
-	if (core.Env.getValue("engine") == "webkit") {
+	if (jasy.Env.getValue("engine") == "webkit") {
 		var styleNode = document.createElement('style');
 		styleNode.type = 'text/css';
 		//TODO write keyframe rule with correct prefix depending on browser engine
@@ -84,7 +84,7 @@
 			 * starts rotation by adding the required css styles
 			 */
 			__startRotate : function(){
-				if (core.Env.getValue("engine") == "webkit") {
+				if (jasy.Env.getValue("engine") == "webkit") {
 					this.setStyle({
 							animationName: "KAI_rotateZ",
 							animationDuration: this.getAnimateRotateDuration()+"ms",
@@ -98,7 +98,7 @@
 			 * stops rotation by removing the required css styles
 			 */
 			__stopRotate : function(){
-				if (core.Env.getValue("engine") == "webkit") {
+				if (jasy.Env.getValue("engine") == "webkit") {
 					this.setStyle({
 						animationName: "",
 						animationDuration: "",

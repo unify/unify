@@ -58,7 +58,7 @@ core.Module('unify.bom.Gradient', {
 		options.angle = options.angle || 'to bottom';  // could also be 45deg
 		options.colorStops = options.colorStops || [ ];
 		
-		if (core.Env.getValue("debug")) {
+		if (jasy.Env.getValue("debug")) {
 			if (options.type != "linear") {
 				throw "Gradient type " + options.type + " is not allowed";
 			}
@@ -97,7 +97,7 @@ core.Module('unify.bom.Gradient', {
 		}
 		
 		var gradient;
-		if (core.Env.isSet("engine", "webkit")) {
+		if (jasy.Env.isSet("engine", "webkit")) {
 			var g = [];
 			
 			var startX;
@@ -184,7 +184,7 @@ core.Module('unify.bom.Gradient', {
 			
 			gradient = "-webkit-gradient(linear," + g.join(",") + ")";
 		}
-		if (core.Env.getValue("engine") == "gecko") {
+		if (jasy.Env.getValue("engine") == "gecko") {
 			var geckoAngle = 90 - angle;
 			if (geckoAngle < -90) {
 				geckoAngle += 180;
@@ -199,7 +199,7 @@ core.Module('unify.bom.Gradient', {
 			
 			gradient = "-moz-linear-gradient(" + geckoAngle + "deg, " + colorStops.join(",") + ")";
 		}
-		if (core.Env.getValue("engine") == "presto") {
+		if (jasy.Env.getValue("engine") == "presto") {
 			
 			var geckoAngle = 90 - angle;
 			if (geckoAngle < -90) {
@@ -216,7 +216,7 @@ core.Module('unify.bom.Gradient', {
 			
 			gradient = "-o-linear-gradient(" + geckoAngle + "deg, " + colorStops.join(",") + ")";
 		}
-		if (core.Env.getValue("engine") == "trident") {
+		if (jasy.Env.getValue("engine") == "trident") {
 			var version = /MSIE.(\d+)/.exec(navigator.userAgent);
 			if (version[1] && parseInt(version[1],10) < 9) {
 				return null;

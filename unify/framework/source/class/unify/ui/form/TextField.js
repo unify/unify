@@ -119,7 +119,7 @@ core.Class("unify.ui.form.TextField", {
 				e.setAttribute("pattern", "[0-9]*");
 			}
 
-			if (core.Env.getValue('engine') == 'trident') {
+			if (jasy.Env.getValue('engine') == 'trident') {
 				// IE < 8 does not support oninput event, so we listen to
 				// onkeyup instead (for now, in every IE version)
 				this.addNativeListener(e, "keyup", this._onInput, this);

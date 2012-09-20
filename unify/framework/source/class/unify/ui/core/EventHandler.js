@@ -18,7 +18,7 @@
 	
 	var leftMouseButton;
 	
-	if (core.Env.getValue("engine") == "trident") {
+	if (jasy.Env.getValue("engine") == "trident") {
 		var version = /MSIE.(\d+)/.exec(navigator.userAgent);
 		if (version[1] && parseInt(version[1],10) < 9) {
 			leftMouseButton = 1;

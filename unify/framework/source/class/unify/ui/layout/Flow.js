@@ -205,7 +205,7 @@ core.Class("unify.ui.layout.Flow",
 		*/
 
 		// overridden
-		/*verifyLayoutProperty : qx.core.Environment.select("qx.debug",
+		/*verifyLayoutProperty : qx.jasy.Environment.select("qx.debug",
 		{
 			"true" : function(item, name, value) {
 				this.assertEquals("lineBreak", name, "The property '"+name+"' is not supported by the flow layout!" );

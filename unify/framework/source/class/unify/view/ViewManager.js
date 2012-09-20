@@ -37,7 +37,7 @@ core.Class("unify.view.ViewManager", {
 
 		this.setUserData("viewmanager", this);
 
-		if (core.Env.getValue("debug"))
+		if (jasy.Env.getValue("debug"))
 		{
 			if (managerId == null) {
 				throw new Error("Invalid manager ID: " + managerId);
@@ -52,7 +52,7 @@ core.Class("unify.view.ViewManager", {
 		if (!registry) {
 			registry = registry = unify.view.ViewManager.__managers = {};
 		}
-		if (core.Env.getValue("debug"))
+		if (jasy.Env.getValue("debug"))
 		{
 			if (registry[managerId]) {
 				throw new Error("Manager ID is already in use by: " + registry[managerId]);
@@ -237,7 +237,7 @@ core.Class("unify.view.ViewManager", {
 		__resetHelper : function()
 		{
 			var defaultViewId = this.__defaultViewId;
-			if (core.Env.getValue("debug"))
+			if (jasy.Env.getValue("debug"))
 			{
 				if (!defaultViewId) {
 					throw new Error("Missing default view ID!");
@@ -259,7 +259,7 @@ core.Class("unify.view.ViewManager", {
 		},
 
 		navigate : function(path) {
-			if (core.Env.getValue("debug"))
+			if (jasy.Env.getValue("debug"))
 			{
 				//TODO Instance check here
 				if (!(path.constructor instanceof unify.view.Path.constructor)) {
@@ -310,7 +310,7 @@ core.Class("unify.view.ViewManager", {
 			var views = this.__views;
 			var currentFragment = path[length-1];
 			var currentViewCls = views[currentFragment.view || this.__currentView.getId()];
-			if (core.Env.getValue("debug"))
+			if (jasy.Env.getValue("debug"))
 			{
 				if (!currentViewCls) {
 					throw new Error("Invalid view: " + currentFragment.view + " in view manager " + this.getId());
@@ -426,7 +426,7 @@ core.Class("unify.view.ViewManager", {
 			} else {
 				// Re-activate view (normally only useful if it was paused before)
 				var view = this.__currentView;
-				if (core.Env.getValue("debug")) {
+				if (jasy.Env.getValue("debug")) {
 					this.debug("Show with: " + view);
 				}
 
@@ -473,7 +473,7 @@ core.Class("unify.view.ViewManager", {
 		
 		register : function(viewClass, isDefault)
 		{
-			if (core.Env.getValue("debug"))
+			if (jasy.Env.getValue("debug"))
 			{
 				if (!viewClass) {
 					throw new Error("Invalid view class to add(): " + viewClass);
@@ -792,13 +792,13 @@ core.Class("unify.view.ViewManager", {
 		 */
 		__activate: function(callee){
 			if(this.__active){
-				if(core.Env.getValue("debug")){
+				if(jasy.Env.getValue("debug")){
 					this.debug("tried to activate viewmanager "+this.getId()+" but it is already active");
 				}
 				return;//already active
 			}
 
-			if(core.Env.getValue("debug")){
+			if(jasy.Env.getValue("debug")){
 				this.debug("activate viewmanager "+this.getId());
 			}
 			this.__active=true;
@@ -835,12 +835,12 @@ core.Class("unify.view.ViewManager", {
 		 */
 		__deactivate: function(callee){
 			if(!this.__active){
-				if(core.Env.getValue("debug")){
+				if(jasy.Env.getValue("debug")){
 					this.debug("tried to deactivate viewmanager "+this.getId()+" but it is already deactive");
 				}
 				return;//already active
 			}
-			if(core.Env.getValue("debug")){
+			if(jasy.Env.getValue("debug")){
 				this.debug("deactivate viewmanager "+this.getId());
 			}
 			this.__active=false;
@@ -876,7 +876,7 @@ unify.core.Statics.annotate(unify.view.ViewManager, {
 	get : function(managerId)
 	{
 		var mgr = unify.view.ViewManager.__managers[managerId];
-		if (core.Env.getValue("debug"))
+		if (jasy.Env.getValue("debug"))
 		{
 			if (!mgr) {
 				throw new Error("Unknown view manager: " + managerId);

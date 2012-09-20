@@ -103,7 +103,7 @@ core.Class("unify.ui.layout.Canvas", {
 		*/
 
 		// overridden
-		/*verifyLayoutProperty : qx.core.Environment.select("qx.debug",
+		/*verifyLayoutProperty : qx.jasy.Environment.select("qx.debug",
 		{
 			"true" : function(item, name, value)
 			{

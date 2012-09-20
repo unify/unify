@@ -25,7 +25,7 @@ core.Class("unify.ui.layout.Canvas", {
 		__bar : null,
 	
 		renderLayout : function(availWidth, availHeight) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				if (this._getLayoutChildren().length != 1) {
 					this.error("Center layout only supports one child");
 				}

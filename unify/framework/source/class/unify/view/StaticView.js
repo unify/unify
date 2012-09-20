@@ -263,7 +263,7 @@ core.Class("unify.view.StaticView",
 		{
 			var now = +(new Date());
 			this._createView();
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				this.debug("Created in: " + ((new Date()) - now) + "ms");
 			}
 			this.__layer = true;
@@ -311,7 +311,7 @@ core.Class("unify.view.StaticView",
 		 */
 		_createView : function()
 		{
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				throw new Error(this.toString() + " needs implementation for _createView()!")
 			}
 		},

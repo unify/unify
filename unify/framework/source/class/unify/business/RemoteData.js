@@ -307,7 +307,7 @@ core.Class("unify.business.RemoteData",
 					{
 						start = new Date;
 						data = JSON.parse(data);
-						if (core.Env.getValue("debug")) {
+						if (jasy.Env.getValue("debug")) {
 							this.debug("Restored JSON in: " + (new Date - start) + "ms");
 						}
 					}
@@ -316,7 +316,7 @@ core.Class("unify.business.RemoteData",
 						start = new Date;
 						throw new Error("XML not supported now"); // TODO!!!
 						data = xml.Document.fromString(data);
-						if (core.Env.getValue("debug")) {
+						if (jasy.Env.getValue("debug")) {
 							this.debug("Recovered XML in: " + (new Date - start) + "ms");
 						}
 					}
@@ -503,7 +503,7 @@ core.Class("unify.business.RemoteData",
 		 */
 		__getCacheId : function(service, params)
 		{
-			if (core.Env.getValue("debug"))
+			if (jasy.Env.getValue("debug"))
 			{
 				if (service == null) {
 					throw new Error("Please define at least a service name!");
@@ -548,7 +548,7 @@ core.Class("unify.business.RemoteData",
 				var match = url.match(/^(https|http):\/\//);
 				if (match) {
 					url = match[0] + this.getProxyUrl() + "/" + url.substring(match[0].length);
-				} else if (core.Env.getValue("debug")) {
+				} else if (jasy.Env.getValue("debug")) {
 					throw new Error("Proxy could not be added to url: " + url);
 				}
 			}
@@ -678,7 +678,7 @@ core.Class("unify.business.RemoteData",
 
 			// Every request has a unique identifier
 			req.setUserData("id", id);
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				this.debug("Sending request to: " + service + "[id=" + id + "]...");
 			}
 
@@ -712,7 +712,7 @@ core.Class("unify.business.RemoteData",
 			var params = req.getUserData("params");
 
 			// Debug
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				this.debug("Request done: " + service + "[id=" + id + "]");
 			}
 
@@ -724,7 +724,7 @@ core.Class("unify.business.RemoteData",
 			var isModified = !isErrornous && !isMalformed; // TODO : && this.__isModified(req);
 			if (isModified)
 			{
-				if (core.Env.getValue("debug")) {
+				if (jasy.Env.getValue("debug")) {
 					//this.debug("Loaded: " + text.length + " bytes in " + req.getDuration() + "ms");//TODO replace getDuration
 				}
 
@@ -745,7 +745,7 @@ core.Class("unify.business.RemoteData",
 								this.error("failed to parse json: "+ex);
 								isMalformed=true;
 							}
-							if (core.Env.getValue("debug")) {
+							if (jasy.Env.getValue("debug")) {
 								this.debug("Parsed JSON in: " + (new Date - start) + "ms");
 							}
 							break;
@@ -757,7 +757,7 @@ core.Class("unify.business.RemoteData",
 							{
 								start = new Date;
 								data = unify.util.XmlToJson.convert(data);
-								if (core.Env.getValue("debug")) {
+								if (jasy.Env.getValue("debug")) {
 									this.debug("Converted to JSON in: " + (new Date - start) + "ms");
 								}
 								// Fix type as we now deal with JSON only
@@ -766,7 +766,7 @@ core.Class("unify.business.RemoteData",
 								// Overwrite original text from service with stringified converted json
 								start = new Date;
 								text = Json.stringify(data);
-								if (core.Env.getValue("debug")) {
+								if (jasy.Env.getValue("debug")) {
 									this.debug("Prepared to cache in: " + (new Date - start) + "ms");
 								}
 							}
@@ -836,7 +836,7 @@ core.Class("unify.business.RemoteData",
 							metaStored=true;
 							var storageDataId = this.__storageDataPrefix + cacheId;
 							Storage.set(storageDataId, text);
-							if (core.Env.getValue("debug")) {
+							if (jasy.Env.getValue("debug")) {
 								this.debug("Stored in: " + (new Date - start) + "ms");
 							}
 						}
@@ -894,7 +894,7 @@ core.Class("unify.business.RemoteData",
 					this.__purgeCache(serviceName,start-keep*1000);
 				}
 			}
-			if (core.Env.getValue("debug")){
+			if (jasy.Env.getValue("debug")){
 				var end=new Date();
 				this.debug('garbage collection took: '+(end-start)+'ms');
 			}
@@ -914,7 +914,7 @@ core.Class("unify.business.RemoteData",
 				matched,
 				meta,
 				key;
-			if (core.Env.getValue("debug")){
+			if (jasy.Env.getValue("debug")){
 				this.debug('Cached entries of service "' + serviceName + '" are expired when last checked before: ' + new Date(expiredWhenCheckedBefore));
 			}
 			for (key in localStorage) {
@@ -922,7 +922,7 @@ core.Class("unify.business.RemoteData",
 				if (matched) {
 					meta = JSON.parse(localStorage.getItem(key));
 					if (meta && meta.checked && meta.checked < expiredWhenCheckedBefore) {
-						if (core.Env.getValue("debug")){
+						if (jasy.Env.getValue("debug")){
 							this.debug('*** Expired Cache Entry "' + key + '", checked: ' + new Date(meta.checked));
 						}
 						localStorage.removeItem(dataPrefix + matched[1]);

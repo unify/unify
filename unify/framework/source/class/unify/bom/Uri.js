@@ -48,7 +48,7 @@ core.Module("unify.bom.Uri", {
 	parse : function(str, mode)
 	{
 		var parser = this.__urlParsers[mode||"loose"];
-		if (core.Env.getValue("debug"))
+		if (jasy.Env.getValue("debug"))
 		{
 			if (!parser) {
 				throw new Error("Invalid mode: " + mode);
@@ -131,7 +131,7 @@ core.Module("unify.bom.Uri", {
 	/**
 	 * {Array} Contains regular expressions for matching native URLs
 	 */
-	__nativeUrlPatterns: /*(core.Env.getValue("os.name") == "ios") ? [
+	__nativeUrlPatterns: /*(jasy.Env.getValue("os.name") == "ios") ? [
 		new RegExp("^mailto:"),
 		new RegExp("^tel:"),
 		new RegExp("^http:\/\/maps.google.com\/maps\?"),

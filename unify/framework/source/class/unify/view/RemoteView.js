@@ -218,7 +218,7 @@ core.Class("unify.view.RemoteView",
 					this.__appliedVersion = cachedEntry.created;
 				}
 				this._wrappedRenderData(e.getData());
-			} else if (core.Env.getValue("debug")) {
+			} else if (jasy.Env.getValue("debug")) {
 				this.debug("Data was not modified!");
 			}
 		}

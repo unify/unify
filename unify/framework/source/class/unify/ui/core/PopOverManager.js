@@ -37,7 +37,7 @@ core.Class("unify.ui.core.PopOverManager", {
 		this.__overlays={};
 		this.__styleRegistry = {};
 		
-		zIndexBase = core.Env.getValue("unify.config.zIndexBase") || zIndexBase;
+		zIndexBase = jasy.Env.getValue("unify.config.zIndexBase") || zIndexBase;
 		
 		var pblocker = this.__pblocker = document.createElement("div");
 		var pstyle = unify.theme.Manager.get().resolveStyle("POPOVER-BLOCKER");
@@ -230,7 +230,7 @@ core.Class("unify.ui.core.PopOverManager", {
 		 * @param position {String|Map|unify.ui.Widget?"center"} Position of widget ("center", "window", {left:50,top:50}) or trigger widget
 		 */
 		show : function(widget, position) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				this.debug("Show: " + (widget&&widget.constructor));
 				core.Interface.assert(widget, unify.ui.core.IPopOver);
 			}

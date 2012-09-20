@@ -27,7 +27,7 @@
 		 */
 		accelTranslate : function(x, y) {
 			// Fix resize bug with translate3d on google chrome 15.0.874.121 m
-			if (chrome || core.Env.getValue("engine") != "webkit") {
+			if (chrome || jasy.Env.getValue("engine") != "webkit") {
 				return "translate("+x+","+y+")";
 			} else {
 				return "translate3d("+x+","+y+",0)";
@@ -54,7 +54,7 @@
 		 */
 		accelScale : function(x,y){
 			// Fix resize bug with translate3d on google chrome 15.0.874.121 m
-			if (chrome || core.Env.getValue("engine") != "webkit") {
+			if (chrome || jasy.Env.getValue("engine") != "webkit") {
 				return "scale("+x+","+y+")";
 			} else {
 				return "scale3d("+x+","+y+",1)";
@@ -80,7 +80,7 @@
 		 */
 		accelRotate : function(deg){
 			// Fix resize bug with translate3d on google chrome 15.0.874.121 m
-			if (chrome || core.Env.getValue("engine") != "webkit") {
+			if (chrome || jasy.Env.getValue("engine") != "webkit") {
 				return "rotate("+deg+"deg)";
 			} else {
 				return "rotate3d(0,0,1,"+deg+"deg)";

@@ -53,7 +53,7 @@ core.Class("unify.business.StaticData", {
 		 */
 		read : function(service, params)
 		{
-			if (core.Env.getValue("debug"))
+			if (jasy.Env.getValue("debug"))
 			{
 				if (!service || !this.__services[service]) {
 					throw new Error("Unsupported service: " + service);
@@ -84,7 +84,7 @@ core.Class("unify.business.StaticData", {
 		_addService : function(service, config)
 		{
 			var db = this.__services;
-			if (core.Env.getValue("debug"))
+			if (jasy.Env.getValue("debug"))
 			{
 				if (db[service]) {
 					throw new Error("Service " + service + " is already registered!");
@@ -110,7 +110,7 @@ core.Class("unify.business.StaticData", {
 		_getService : function(service)
 		{
 			var config = this.__services[service];
-			if (core.Env.getValue("debug"))
+			if (jasy.Env.getValue("debug"))
 			{
 				if (!config) {
 					throw new Error("Unknown service: " + service);

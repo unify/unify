@@ -198,7 +198,7 @@ core.Class("unify.ui.core.Widget", {
 						nlrOldObj.callback === nlrObj.callback &&
 						nlrOldObj.context === nlrObj.context) {
 							found = i;
-							if (core.Env.getValue("debug")) {
+							if (jasy.Env.getValue("debug")) {
 								this.debug(this.toString() + " binds " + nlrOldObj.event + " twice");
 							}
 							break;
@@ -347,7 +347,7 @@ core.Class("unify.ui.core.Widget", {
 
 		// overridden
 		_applyAppearance : function(value) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				var e = this.getElement();
 				if (!e) {
 					console.error("NO ELEMENT : ", this.constructor);
@@ -468,7 +468,7 @@ core.Class("unify.ui.core.Widget", {
 		 * another widget instead.
 		 */
 		_setLayout : function(layout) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				if (layout) {
 					// TODO : this.assertInstance(layout, unify.ui.layout.Base);
 				}
@@ -504,7 +504,7 @@ core.Class("unify.ui.core.Widget", {
 							height: 0
 						};
 					}
-					/*if (core.Env.getValue("debug")) {
+					/*if (jasy.Env.getValue("debug")) {
 						var msg = "The layout " + layout.toString() + " of the widget " + this.toString() + " returned an invalid size hint!";
 						this.assetInteger(hint.width, "Wrong width value. " + msg);
 						this.assetInteger(hint.height, "Wrong height value. " + msg);
@@ -537,7 +537,7 @@ core.Class("unify.ui.core.Widget", {
 			var minHeight = this.getMinHeight();
 			var maxHeight = this.getMaxHeight();
 
-			if (core.Env.getValue("debug"))
+			if (jasy.Env.getValue("debug"))
 			{
 				if (minWidth !== null && maxWidth !== null) {
 					// TODO: this.assert(minWidth <= maxWidth, "minWidth is larger than maxWidth!");
@@ -841,7 +841,7 @@ core.Class("unify.ui.core.Widget", {
 			if (!preventSize) {
 				var element = this.getElement();
 				var isDocFragment;
-				if (core.Env.getValue("engine") == "trident") {
+				if (jasy.Env.getValue("engine") == "trident") {
 					isDocFragment = element.nodeName == "#document-fragment";
 				} else {
 					isDocFragment = element instanceof DocumentFragment;
@@ -856,7 +856,7 @@ core.Class("unify.ui.core.Widget", {
 					if (layoutParent) {
 						parentVirtualPosition = layoutParent.getVirtualPosition();
 					} else {
-						if (core.Env.getValue("debug")) {
+						if (jasy.Env.getValue("debug")) {
 							this.warn("No parent widget set, so virtual position is set to 0/0")
 						}
 					}
@@ -1573,7 +1573,7 @@ core.Class("unify.ui.core.Widget", {
 				unify.ui.layout.queue.Layout.add(this);
 			}*/
 			
-			if (core.Env.getValue("engine") == "trident") {
+			if (jasy.Env.getValue("engine") == "trident") {
 				var version = /MSIE.(\d+)/.exec(navigator.userAgent);
 				if (version[1] && parseInt(version[1],10) < 9) {
 					// IE<9 only transform translation
@@ -1743,13 +1743,13 @@ core.Class("unify.ui.core.Widget", {
 				element.$$widget = this.getHash();
 
 				var isDocFragment;
-				if (core.Env.getValue("engine") == "trident") {
+				if (jasy.Env.getValue("engine") == "trident") {
 					isDocFragment = element.nodeName == "#document-fragment";
 				} else {
 					isDocFragment = element instanceof DocumentFragment;
 				}
 				if (!(isDocFragment)) {
-					if(core.Env.getValue("debug")){
+					if(jasy.Env.getValue("debug")){
 						element.setAttribute("unifyclass",this.constructor.toString());
 						element.setAttribute("appearance",this.getAppearance());
 					}
@@ -1768,7 +1768,7 @@ core.Class("unify.ui.core.Widget", {
 		 * Applies test id to element to help autmatic ui tests
 		 */
 		_applyTestId : function(value) {
-			if(core.Env.getValue("debug") || core.Env.getValue("unify.testid")) {
+			if(jasy.Env.getValue("debug") || jasy.Env.getValue("unify.testid")) {
 				this.getElement().setAttribute("testid", value);
 			}
 		},
@@ -1897,7 +1897,7 @@ core.Class("unify.ui.core.Widget", {
 		 */
 		_addBefore : function(child, before, options)
 		{
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				this.assertInArray(before, this._getChildren(),
 					"The 'before' widget is not a child of this widget!");
 			}
@@ -1936,7 +1936,7 @@ core.Class("unify.ui.core.Widget", {
 		 */
 		_addAfter : function(child, after, options)
 		{
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				this.assertInArray(after, this._getChildren(),
 					"The 'after' widget is not a child of this widget!");
 			}
@@ -2071,7 +2071,7 @@ core.Class("unify.ui.core.Widget", {
 		 */
 		__addHelper : function(child, options,index)
 		{
-			/* TODO: if (core.Env.getValue("debug"))
+			/* TODO: if (jasy.Env.getValue("debug"))
 			{
 				//this.assertInstance(child, unify.ui.core.VisibleBox, "Invalid widget to add: " + child);
 				this.assertInstance(child, unify.ui.core.VisibleBox, "Invalid widget to add: " + child);
@@ -2140,7 +2140,7 @@ core.Class("unify.ui.core.Widget", {
 		 */
 		__removeHelper : function(child)
 		{
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				if (!child) {
 					throw new Error("Can not remove undefined child!");
 				}

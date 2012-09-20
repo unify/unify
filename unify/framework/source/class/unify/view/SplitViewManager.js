@@ -108,7 +108,7 @@ core.Class("unify.view.SplitViewManager",
 
 			if(isLandscape){
 				if(oldOrient != "landscape"){
-					if (core.Env.getValue("debug")) {
+					if (jasy.Env.getValue("debug")) {
 						this.debug("Switching to landscape layout");
 					}
 					ViewOverlayManager.hide(master.getId(),true);
@@ -121,7 +121,7 @@ core.Class("unify.view.SplitViewManager",
 				}
 			} else {
 				if(oldOrient != "portrait"){
-					if (core.Env.getValue("debug")) {
+					if (jasy.Env.getValue("debug")) {
 						this.debug("Switching to portrait layout");
 					}
 					elem.setAttribute("orient", "portrait");

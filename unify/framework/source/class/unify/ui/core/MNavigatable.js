@@ -116,7 +116,7 @@ core.Class("unify.ui.core.MNavigatable", {
 				viewManagerWidget = viewManagerWidget.getParentBox();
 			}
 			
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				if (!viewManager) {
 					this.warn("Widget " + this + " has no parent view manager!");
 				}
@@ -141,7 +141,7 @@ core.Class("unify.ui.core.MNavigatable", {
 					 */
 					this.__navigationWidgetHelper.lowDelay(0, this, viewManager);
 				} else {
-					if(core.Env.getValue("debug")){
+					if(jasy.Env.getValue("debug")){
 						this.debug(viewManager.getId()+ "is currently animating, skipping navigation attempt");
 					}
 				}
@@ -228,7 +228,7 @@ core.Class("unify.ui.core.MNavigatable", {
 			// .segment (switch segment, no transition)
 			// :param (switch param, no transition)
 
-			if (core.Env.getValue("debug"))
+			if (jasy.Env.getValue("debug"))
 			{
 				if (rel != "same" && rel != "master" && rel != null) {
 					throw new Error("Invalid 'rel' attribute: " + rel);

@@ -131,7 +131,7 @@ core.Module("unify.bom.client.Feature",
 	var undef = undefined;
 	var node = document.createElement("div");
 	var style = node.style;
-	var prefix = core.Env.getValue("engine");
+	var prefix = jasy.Env.getValue("engine");
 	prefix = {
 		"presto" : "Ms",
 		"trident" : "O",

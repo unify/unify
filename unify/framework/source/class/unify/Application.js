@@ -29,7 +29,7 @@ core.Class("unify.Application", {
 		unify.core.Init.call(this);
 		
 		if (window.location.search.indexOf("testid=true") > 0) {
-			core.Env.define("unify.testid", true);
+			jasy.Env.define("unify.testid", true);
 		}
 	},
 	
@@ -47,7 +47,7 @@ core.Class("unify.Application", {
 		main : function() {
 
 			// Global error handling (otherwise we see nothing in PhoneGap)
-			/* TODO: if (core.Env.getValue("phonegap"))
+			/* TODO: if (jasy.Env.getValue("phonegap"))
 			{
 				GlobalError.setErrorHandler(function(ex) {
 					console.error("" + ex);
@@ -55,7 +55,7 @@ core.Class("unify.Application", {
 			}*/
 
 			// Display build time
-			var buildTime = core.Env.getValue("unify.$$build");
+			var buildTime = jasy.Env.getValue("unify.$$build");
 			if (buildTime) {
 				this.info("Build Time: " + new Date(buildTime));
 			}
@@ -102,7 +102,7 @@ core.Class("unify.Application", {
 			this.addNativeListener(rootElement, "touchmove", function(e) { lowland.bom.Events.preventDefault(e); }, this);
 			this.addNativeListener(window, "orientationchange", this.__onRotate, this);
 			/*
-			if (core.Env.getValue("os.name") == "webos") {
+			if (jasy.Env.getValue("os.name") == "webos") {
 				var palmSystem = window.PalmSystem;
 				if (palmSystem) {
 					palmSystem.stageReady();
@@ -137,7 +137,7 @@ core.Class("unify.Application", {
 		},
 		
 		_getTheme : function() {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				throw new Error(this.toString() + " needs implementation for _getTheme()!");
 			}
 		},
