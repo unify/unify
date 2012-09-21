@@ -135,7 +135,7 @@
 				var self = unify.ui.container.scroll.Indicator;
 	
 				// set scrollbar styles
-				var Style = core.bom.Style;
+				var Style = lowland.bom.Style;
 				var bgstyle = 'rgba(0,0,0,0.5)';
 				var radiussize = '2px';
 				var endsize = ENDSIZE + 'px';
@@ -253,7 +253,7 @@
 					position = Math.round(percent * avail);
 				}
 	
-				var Style = core.bom.Style;
+				var Style = lowland.bom.Style;
 	
 				if (this.__position !== position)
 				{
@@ -319,7 +319,7 @@
 				{
 					// Recover old position
 					var translate = this.__horizontal ? unify.bom.Transform.accelTranslate(this.__position + "px", 0) : unify.bom.Transform.accelTranslate(0, this.__position + "px");
-					core.bom.Style.set(this.getElement(), "transform", translate);
+					lowland.bom.Style.set(this.getElement(), "transform", translate);
 	
 					// Fade in
 					this.__isFadingOut = false;
@@ -353,7 +353,7 @@
 				if (this.__isFadingOut)
 				{
 					//TODO why is this needed (in applyvisible the position gets restored anyways)
-					core.bom.Style.set(this.getElement(), "transform", null);
+					lowland.bom.Style.set(this.getElement(), "transform", null);
 					this.__isFadingOut = false;
 				}
 			},

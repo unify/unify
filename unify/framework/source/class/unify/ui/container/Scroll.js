@@ -323,7 +323,7 @@ core.Class("unify.ui.container.Scroll", {
 			delete this.__scroller;
 			var contentWidget = this._getScrollerContentWidget();
 			var contentElement= contentWidget.getElement();
-			var Style=core.bom.Style;
+			var Style=lowland.bom.Style;
 			var Transform=unify.bom.Transform;
 			var self = this;
 

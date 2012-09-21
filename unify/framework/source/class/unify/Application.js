@@ -70,17 +70,17 @@ core.Class("unify.Application", {
 			var rootLayout = this._getRootLayout();
 			var viewportElement = this._getViewportElement();
 			var root = this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), viewportElement, rootLayout);
-			core.bom.Style.set(rootElement, "visibility", "hidden");
+			lowland.bom.Style.set(rootElement, "visibility", "hidden");
 			
 			// Add box sizing css node
-			var prop = core.bom.Style.property("boxSizing").hyphenate();
+			var prop = lowland.bom.Style.property("boxSizing").hyphenate();
 			lowland.bom.Style.addStyleText(" * { " + prop + ": border-box; } ");
 			
 			// Support focus handling
 			unify.ui.core.FocusHandler.getInstance().connectTo(root);
 
 			// Configure document
-			var Style = core.bom.Style;
+			var Style = lowland.bom.Style;
 			var rootStyle = unify.theme.Manager.get().resolveStyle("BODY") || {};
 			Style.set(rootElement, rootStyle);
 			if (rootStyle.font) {
@@ -114,7 +114,7 @@ core.Class("unify.Application", {
 		
 		// overridden
 		finalize : function() {
-			core.bom.Style.set(this._getRootElement(), "visibility", "visible");
+			lowland.bom.Style.set(this._getRootElement(), "visibility", "visible");
 		},
 
 		

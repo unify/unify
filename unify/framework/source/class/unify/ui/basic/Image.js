@@ -58,7 +58,7 @@ core.Class("unify.ui.basic.Image", {
 		_createElement : function() {
 			var e = document.createElement("div");
 			
-			core.bom.Style.set(e, {
+			lowland.bom.Style.set(e, {
 				backgroundRepeat: "no-repeat",
 				backgroundPosition: "center",
 				backgroundSize: null
@@ -90,7 +90,7 @@ core.Class("unify.ui.basic.Image", {
 				style.backgroundSize = "contain"
 			}
 			
-			core.bom.Style.set(e, style);
+			lowland.bom.Style.set(e, style);
 		},
 		
 		_applySource : function(value) {
@@ -117,7 +117,7 @@ core.Class("unify.ui.basic.Image", {
 					style.backgroundSize = "contain";
 				}
 				
-				core.bom.Style.set(e, style);
+				lowland.bom.Style.set(e, style);
 			}
 		}
 	}

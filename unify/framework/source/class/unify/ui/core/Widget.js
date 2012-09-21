@@ -299,7 +299,7 @@ core.Class("unify.ui.core.Widget", {
 		_applyVisibility : function(value, old)
 		{
 			var container = this.getElement();
-			var Style = core.bom.Style;
+			var Style = lowland.bom.Style;
 
 
 			if (value === "visible") {
@@ -693,7 +693,7 @@ core.Class("unify.ui.core.Widget", {
 			this.invalidateLayoutCache();
 
 			if (!this.__initialAppearanceApplied) {
-				core.bom.Style.set(this.getElement(), "visibility", "visible");
+				lowland.bom.Style.set(this.getElement(), "visibility", "visible");
 				this.__initialAppearanceApplied = true;
 			}
 				
@@ -879,7 +879,7 @@ core.Class("unify.ui.core.Widget", {
 						newTop += modPos[1];
 					}*/
 					
-					core.bom.Style.set(element, {
+					lowland.bom.Style.set(element, {
 						position: "absolute",
 						left: newLeft + "px",
 						top: newTop + "px",
@@ -1594,7 +1594,7 @@ core.Class("unify.ui.core.Widget", {
 				}
 			}
 			
-			core.bom.Style.set(this.getElement(), style);
+			lowland.bom.Style.set(this.getElement(), style);
 
 			if (properties) {
 				var keys = Object.keys(properties);
@@ -1659,7 +1659,7 @@ core.Class("unify.ui.core.Widget", {
 			if (value) {
 				return value;
 			} else {
-				return core.bom.Style.get(this.getElement(), name, computed);
+				return lowland.bom.Style.get(this.getElement(), name, computed);
 			}
 		},
 
@@ -1758,7 +1758,7 @@ core.Class("unify.ui.core.Widget", {
 					if (style) {
 						this._setStyle(style);
 					}
-					core.bom.Style.set(element, "visibility", "hidden");
+					lowland.bom.Style.set(element, "visibility", "hidden");
 				}
 
 				return element;

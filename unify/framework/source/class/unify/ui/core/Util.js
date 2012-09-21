@@ -21,7 +21,7 @@
 					originalPosition : {
 						left: origPos[0],
 						top: origPos[1],
-						zIndex: core.bom.Style.get(e, "zIndex")
+						zIndex: lowland.bom.Style.get(e, "zIndex")
 					},
 					newPosition : {
 						left: pos.left,
@@ -40,7 +40,7 @@
 			
 			widget.setUserData("domElementPositionOverride", {left: posOverride.newPosition.left, top: posOverride.newPosition.top});
 			
-			core.bom.Style.set(e, {
+			lowland.bom.Style.set(e, {
 				left: posOverride.newPosition.left + "px",
 				top:  posOverride.newPosition.top + "px",
 				zIndex: 20000
@@ -67,7 +67,7 @@
 			
 			var origPos = posOverride.originalPosition;
 			
-			core.bom.Style.set(e, {
+			lowland.bom.Style.set(e, {
 				left: origPos.left + "px",
 				top: origPos.top + "px",
 				zIndex: origPos.zIndex

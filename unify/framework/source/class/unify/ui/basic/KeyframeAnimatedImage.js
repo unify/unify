@@ -54,7 +54,7 @@
 			_createElement: function(){
 				//use a backgroundimage div because android (at least on motorola xoom with 3.1) has problems rotating images around their center
 				var elem= document.createElement('div');
-				core.bom.Style.set(elem,{
+				lowland.bom.Style.set(elem,{
 					backgroundColor:"transparent",
 					backgroundPosition:"center center",
 					backgroundRepeat:"no-repeat",
