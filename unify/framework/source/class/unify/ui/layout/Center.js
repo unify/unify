@@ -13,7 +13,7 @@
 /**
  * EXPERIMENTAL
  */
-core.Class("unify.ui.layout.Canvas", {
+core.Class("unify.ui.layout.Center", {
 	include : [unify.ui.layout.Base],
 	
 	construct : function() {
