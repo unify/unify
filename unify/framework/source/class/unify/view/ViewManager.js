@@ -471,6 +471,10 @@ core.Class("unify.view.ViewManager", {
 		/** current view instance */
 		__currentView: null,
 		
+		getDefaultPath : function() {
+			return this.__defaultViewId;
+		},
+		
 		register : function(viewClass, isDefault)
 		{
 			if (jasy.Env.getValue("debug"))
