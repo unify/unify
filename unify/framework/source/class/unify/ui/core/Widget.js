@@ -299,13 +299,12 @@ core.Class("unify.ui.core.Widget", {
 		_applyVisibility : function(value, old)
 		{
 			var container = this.getElement();
-			var Style = lowland.bom.Style;
 
 
 			if (value === "visible") {
-				Style.set(container, "display", "block"); // TODO: Block right? or simply null?
+				this.__setElementStyle(container, "display", "block"); // TODO: Block right? or simply null?
 			} else {
-				Style.set(container, "display", "none");
+				this.__setElementStyle(container, "display", "none");
 			}
 
 			// only force a layout update if visibility change from/to "exclude"
@@ -693,7 +692,7 @@ core.Class("unify.ui.core.Widget", {
 			this.invalidateLayoutCache();
 
 			if (!this.__initialAppearanceApplied) {
-				lowland.bom.Style.set(this.getElement(), "visibility", "visible");
+				this.__setElementStyle(this.getElement(), "visibility", "visible");
 				this.__initialAppearanceApplied = true;
 			}
 				
@@ -879,7 +878,7 @@ core.Class("unify.ui.core.Widget", {
 						newTop += modPos[1];
 					}*/
 					
-					lowland.bom.Style.set(element, {
+					this.__setElementStyle(element, {
 						position: "absolute",
 						left: newLeft + "px",
 						top: newTop + "px",
@@ -1336,6 +1335,12 @@ core.Class("unify.ui.core.Widget", {
 			
 			return map1;
 		},
+		
+		__setElementStyle : function(element, name, property) {
+			if (element && String(element).indexOf("DocumentFragment") < 0) {
+				lowland.bom.Style.set(element, name, property);
+			}
+		},
 
 		/**
 		 * Set styles of @map {Map} to the element.
@@ -1594,7 +1599,7 @@ core.Class("unify.ui.core.Widget", {
 				}
 			}
 			
-			lowland.bom.Style.set(this.getElement(), style);
+			this.__setElementStyle(this.getElement(), style);
 
 			if (properties) {
 				var keys = Object.keys(properties);
@@ -1758,7 +1763,7 @@ core.Class("unify.ui.core.Widget", {
 					if (style) {
 						this._setStyle(style);
 					}
-					lowland.bom.Style.set(element, "visibility", "hidden");
+					this.__setElementStyle(element, "visibility", "hidden");
 				}
 
 				return element;
