@@ -63,22 +63,31 @@ core.Class("unify.view.Navigation",
 		__startPath : null,
 
 		/**
-		 * Adds a view manager @viewManager {unify.view.ViewManager} to the global navigation. All views
+		 * Adds a view manager @manager {unify.view.ViewManager} to the global navigation. All views
 		 * of this view manager will be globally accessible by their name.
 		 */
-		register : function(viewManager)
-		{
-			var managerId = viewManager.getId();
-
-			if (jasy.Env.getValue("debug"))
-			{
-				if (this.__viewManagers[managerId]) {
-					throw new Error("ViewManager ID is already used: " + managerId);
-				}
+		register : function(manager) {
+			var viewManagers = [];
+			if (manager.getViewManagers) {
+				viewManagers = manager.getViewManagers();
+			} else {
+				viewManagers.push(manager);
 			}
-
-			this.__viewManagers[managerId] = viewManager;
-			viewManager.addListener("changePath", this.__onSubPathChange, this);
+			
+			for (var i=0,ii=viewManagers.length; i<ii; i++) {
+				var viewManager = viewManagers[i];
+				var managerId = viewManager.getId();
+	
+				if (jasy.Env.getValue("debug"))
+				{
+					if (this.__viewManagers[managerId]) {
+						throw new Error("ViewManager ID is already used: " + managerId);
+					}
+				}
+	
+				this.__viewManagers[managerId] = viewManager;
+				viewManager.addListener("changePath", this.__onSubPathChange, this);
+			}
 		},
 		
 		/**
@@ -88,6 +97,13 @@ core.Class("unify.view.Navigation",
 		 */
 		init : function()
 		{
+			var viewManagers = this.__viewManagers;
+			var viewIds = [];
+			for (var id in viewManagers) {
+				viewIds.push(viewManagers[id].getDefaultPath());
+			}
+			var startPath = this.__startPath = viewIds.join("/");
+			
 			// Connect to history managment
 			var History = unify.bom.History.getInstance();
 			History.addListener("change", this.__onHistoryChange, this);
@@ -107,7 +123,7 @@ core.Class("unify.view.Navigation",
 			if(path){
 				History.init(path);
 			} else {
-				History.init(this.__startPath);
+				History.init(startPath);
 			}
 			delete this.__historyInit;
 		},
@@ -118,17 +134,9 @@ core.Class("unify.view.Navigation",
 		 * suitable view.
 		 */
 		setStartView : function(viewClass) {
-			if (!(viewClass instanceof Array)) {
-				viewClass = [viewClass];
+			if(jasy.Env.getValue("debug")){
+				console.error("setStartView of unify.view.Navigation is deprecated");
 			}
-			
-			var viewIds = [];
-			for (var i=0,ii=viewClass.length; i<ii; i++) {
-				var classname = viewClass[i].className;
-				var id = classname.substring(classname.lastIndexOf(".")+1).hyphenate().substring(1).toLowerCase();
-				viewIds.push(id);
-			}
-			this.__startPath = viewIds.join("/");
 		},
 		
 		/**
