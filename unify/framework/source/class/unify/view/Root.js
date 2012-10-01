@@ -141,7 +141,7 @@ core.Class("unify.view.Root", {
 		 */
 		_getSizeHint : function() {
 			var e;
-			if (core.Env.getValue("os.name") == "ios") {
+			if (jasy.Env.getValue("os.name") == "ios") {
 				var root = this.__rootElement;
 				e = {
 					width: root.clientWidth,

@@ -32,7 +32,7 @@ core.Class("unify.view.TabViewManager", {
 
 		this.setUserData("viewmanager", this);
 
-		if (core.Env.getValue("debug"))
+		if (jasy.Env.getValue("debug"))
 		{
 			if (viewManager == null) {
 				throw new Error("TabViewManager needs a ViewManager at construction time!");

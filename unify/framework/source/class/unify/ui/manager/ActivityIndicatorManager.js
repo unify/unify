@@ -67,7 +67,7 @@ core.Class("unify.ui.manager.ActivityIndicatorManager", {
 		hide : function(id) {
 			if (!id) id = "undef";
 			var am = this.__activeMap;
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				if (!am[id]) {
 					console.error("Activity indicator " + id + " is not shown!");
 					return;

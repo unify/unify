@@ -118,7 +118,7 @@ core.Class("unify.view.helper.ViewOverlayManager", {
 				viewManager.init();
 			}
 			
-			if (core.Env.getValue("debug"))
+			if (jasy.Env.getValue("debug"))
 			{
 				if (!viewManager) {
 					throw new Error("Unknown view manager: " + id);
@@ -126,14 +126,14 @@ core.Class("unify.view.helper.ViewOverlayManager", {
 			}
 			
 			if (this.__visibleViewManagers.indexOf(viewManager) > -1) {
-				if (core.Env.getValue("debug")){
+				if (jasy.Env.getValue("debug")){
 					this.debug("called show with viewmanager that is already visible: "+id);
 				}
 				
 				return; // already visible
 			}
 			
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				this.debug("Show: " + id);
 			}
 
@@ -172,13 +172,13 @@ core.Class("unify.view.helper.ViewOverlayManager", {
 		hide : function(id) {
 			var viewManager = unify.view.ViewManager.get(id);
 
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				if (!viewManager) {
 					throw new Error("Unknown view manager: " + id);
 				}
 			}
 			if (this.__visibleViewManagers.indexOf(viewManager) < 0) {
-				if (core.Env.getValue("debug")){
+				if (jasy.Env.getValue("debug")){
 						this.debug("called hide with viewmanager that is not visible: "+id);
 				}
 				return;

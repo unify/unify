@@ -37,18 +37,18 @@ core.Class("unify.ui.core.PopOverManager", {
 		this.__overlays={};
 		this.__styleRegistry = {};
 		
-		zIndexBase = core.Env.getValue("unify.config.zIndexBase") || zIndexBase;
+		zIndexBase = jasy.Env.getValue("unify.config.zIndexBase") || zIndexBase;
 		
 		var pblocker = this.__pblocker = document.createElement("div");
 		var pstyle = unify.theme.Manager.get().resolveStyle("POPOVER-BLOCKER");
 		pstyle.display = "none";
-		core.bom.Style.set(pblocker, pstyle);
+		lowland.bom.Style.set(pblocker, pstyle);
 		pblocker.id = "popover-blocker";
 		
 		var mblocker = this.__mblocker = document.createElement("div");
 		var mstyle = unify.theme.Manager.get().resolveStyle("MODAL-BLOCKER");
 		mstyle.display = "none";
-		core.bom.Style.set(mblocker, mstyle);
+		lowland.bom.Style.set(mblocker, mstyle);
 		mblocker.id = "modal-blocker";
 		
 		this.addNativeListener(pblocker, "tap", this.__onTapBlocker, this);
@@ -102,8 +102,8 @@ core.Class("unify.ui.core.PopOverManager", {
 		
 		__resizeHandler : function(e) {
 			var height = this.__getDocHeight() + "px";
-			core.bom.Style.set(this.__mblocker, "height", height);
-			core.bom.Style.set(this.__pblocker, "height", height);
+			lowland.bom.Style.set(this.__mblocker, "height", height);
+			lowland.bom.Style.set(this.__pblocker, "height", height);
 		},
 		
 		__applyAutoResize : function(value) {
@@ -120,8 +120,8 @@ core.Class("unify.ui.core.PopOverManager", {
 				left: left + "px",
 				top: top + "px"
 			};
-			core.bom.Style.set(this.__mblocker, style);
-			core.bom.Style.set(this.__pblocker, style);
+			lowland.bom.Style.set(this.__mblocker, style);
+			lowland.bom.Style.set(this.__pblocker, style);
 		},
 		
 		/**
@@ -161,7 +161,7 @@ core.Class("unify.ui.core.PopOverManager", {
 						var style = unify.theme.Manager.get().resolveStyle("MODAL-BLOCKER") || {};
 						style.zIndex = (zIndexBase-1)+2*i;
 						style.display = 'block';
-						core.bom.Style.set(mblocker, style);
+						lowland.bom.Style.set(mblocker, style);
 						
 						mSet = true;
 					} else if (!pSet && !modal){
@@ -175,7 +175,7 @@ core.Class("unify.ui.core.PopOverManager", {
 						var style = unify.theme.Manager.get().resolveStyle("POPOVER-BLOCKER") || {};
 						style.zIndex = (zIndexBase-1)+2*i;
 						style.display = 'block';
-						core.bom.Style.set(pblocker, style);
+						lowland.bom.Style.set(pblocker, style);
 						
 						pSet = true;
 					}
@@ -184,23 +184,23 @@ core.Class("unify.ui.core.PopOverManager", {
 					}
 				}
 				if(!mSet){
-					core.bom.Style.set(mblocker, {
+					lowland.bom.Style.set(mblocker, {
 						zIndex: null,
 						display: "none"
 					});
 				}
 				if(!pSet){
-					core.bom.Style.set(pblocker, {
+					lowland.bom.Style.set(pblocker, {
 						zIndex: null,
 						display: "none"
 					});
 				}
 			} else {
-				core.bom.Style.set(mblocker, {
+				lowland.bom.Style.set(mblocker, {
 					zIndex: null,
 					display: "none"
 				});
-				core.bom.Style.set(pblocker, {
+				lowland.bom.Style.set(pblocker, {
 					zIndex: null,
 					display: "none"
 				});
@@ -230,7 +230,7 @@ core.Class("unify.ui.core.PopOverManager", {
 		 * @param position {String|Map|unify.ui.Widget?"center"} Position of widget ("center", "window", {left:50,top:50}) or trigger widget
 		 */
 		show : function(widget, position) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				this.debug("Show: " + (widget&&widget.constructor));
 				core.Interface.assert(widget, unify.ui.core.IPopOver);
 			}

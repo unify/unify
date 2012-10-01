@@ -115,7 +115,7 @@
 		parseFragment : function(fragment)
 		{
 			var match = this.__fragmentMatcher.exec(fragment);
-			if (core.Env.getValue("debug"))
+			if (jasy.Env.getValue("debug"))
 			{
 				if (!match) {
 					throw new Error("Invalid location fragment: " + fragment);

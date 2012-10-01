@@ -29,7 +29,7 @@ core.Class("unify.Application", {
 		unify.core.Init.call(this);
 		
 		if (window.location.search.indexOf("testid=true") > 0) {
-			core.Env.define("unify.testid", true);
+			jasy.Env.define("unify.testid", true);
 		}
 	},
 	
@@ -47,7 +47,7 @@ core.Class("unify.Application", {
 		main : function() {
 
 			// Global error handling (otherwise we see nothing in PhoneGap)
-			/* TODO: if (core.Env.getValue("phonegap"))
+			/* TODO: if (jasy.Env.getValue("phonegap"))
 			{
 				GlobalError.setErrorHandler(function(ex) {
 					console.error("" + ex);
@@ -55,7 +55,7 @@ core.Class("unify.Application", {
 			}*/
 
 			// Display build time
-			var buildTime = core.Env.getValue("unify.$$build");
+			var buildTime = jasy.Env.getValue("unify.$$build");
 			if (buildTime) {
 				this.info("Build Time: " + new Date(buildTime));
 			}
@@ -70,17 +70,17 @@ core.Class("unify.Application", {
 			var rootLayout = this._getRootLayout();
 			var viewportElement = this._getViewportElement();
 			var root = this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), viewportElement, rootLayout);
-			core.bom.Style.set(rootElement, "visibility", "hidden");
+			lowland.bom.Style.set(rootElement, "visibility", "hidden");
 			
 			// Add box sizing css node
-			var prop = core.bom.Style.property("boxSizing").hyphenate();
+			var prop = lowland.bom.Style.property("boxSizing").hyphenate();
 			lowland.bom.Style.addStyleText(" * { " + prop + ": border-box; } ");
 			
 			// Support focus handling
 			unify.ui.core.FocusHandler.getInstance().connectTo(root);
 
 			// Configure document
-			var Style = core.bom.Style;
+			var Style = lowland.bom.Style;
 			var rootStyle = unify.theme.Manager.get().resolveStyle("BODY") || {};
 			Style.set(rootElement, rootStyle);
 			if (rootStyle.font) {
@@ -102,7 +102,7 @@ core.Class("unify.Application", {
 			this.addNativeListener(rootElement, "touchmove", function(e) { lowland.bom.Events.preventDefault(e); }, this);
 			this.addNativeListener(window, "orientationchange", this.__onRotate, this);
 			/*
-			if (core.Env.getValue("os.name") == "webos") {
+			if (jasy.Env.getValue("os.name") == "webos") {
 				var palmSystem = window.PalmSystem;
 				if (palmSystem) {
 					palmSystem.stageReady();
@@ -114,7 +114,7 @@ core.Class("unify.Application", {
 		
 		// overridden
 		finalize : function() {
-			core.bom.Style.set(this._getRootElement(), "visibility", "visible");
+			lowland.bom.Style.set(this._getRootElement(), "visibility", "visible");
 		},
 
 		
@@ -137,7 +137,7 @@ core.Class("unify.Application", {
 		},
 		
 		_getTheme : function() {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				throw new Error(this.toString() + " needs implementation for _getTheme()!");
 			}
 		},

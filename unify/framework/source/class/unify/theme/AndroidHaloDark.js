@@ -103,9 +103,9 @@
 							var color;
 							
 							if (state.active) {
-								url = core.io.Asset.toUri("unify/android/halo/textfield-underline.png");
+								url = jasy.Asset.toUri("unify/android/halo/textfield-underline.png");
 							} else {
-								url = core.io.Asset.toUri("unify/android/halo/textfield-underline-gray.png");
+								url = jasy.Asset.toUri("unify/android/halo/textfield-underline-gray.png");
 							}
 							
 							if (state.placeholder) {
@@ -139,13 +139,13 @@
 							
 							if (state.pressed) {
 								backgroundColor = "android_bg_highlight";
-								url = core.io.Asset.toUri("unify/android/halo/button-pressed.png");
+								url = jasy.Asset.toUri("unify/android/halo/button-pressed.png");
 							} else if (state.active || state.hover) {
 								backgroundColor = "android_bg_focus";
-								url = core.io.Asset.toUri("unify/android/halo/button-focused.png");
+								url = jasy.Asset.toUri("unify/android/halo/button-focused.png");
 							} else {
 								backgroundColor = "android_bg_darkgray";
-								url = core.io.Asset.toUri("unify/android/halo/button-normal.png");
+								url = jasy.Asset.toUri("unify/android/halo/button-normal.png");
 							}
 							
 							return {

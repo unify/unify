@@ -49,7 +49,7 @@
 		}
 		
 		// Secondly, we check for a supported browser engine
-		if (!(supportedEngines.contains(core.Env.getValue('engine')))) {
+		if (!(supportedEngines.contains(jasy.Env.getValue('engine')))) {
 			return false;
 		}
 		
@@ -168,9 +168,9 @@
 	var exit;
 	if (document.cancelFullScreen) {
 		exit = document.cancelFullScreen;
-	} else if (core.Env.isSet("engine", "gecko") && document.mozCancelFullScreen) {
+	} else if (jasy.Env.isSet("engine", "gecko") && document.mozCancelFullScreen) {
 		exit = document.mozCancelFullScreen;
-	} else if (core.Env.isSet("engine", "webkit") && document.webkitCancelFullScreen) {
+	} else if (jasy.Env.isSet("engine", "webkit") && document.webkitCancelFullScreen) {
 		exit = document.webkitCancelFullScreen;
 	}
 	

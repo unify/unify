@@ -68,7 +68,7 @@ core.Class("unify.view.ViewportRoot", {
 				left: 0,
 				top: 0
 			};
-			core.bom.Style.set(div, pos);
+			lowland.bom.Style.set(div, pos);
 			
 			this.__viewportElement.appendChild(div);
 			
@@ -137,7 +137,7 @@ core.Class("unify.view.ViewportRoot", {
 				var trigger = child.getTrigger && child.getTrigger();
 				
 				if (!trigger) {
-					core.bom.Style.set(child.getElement(), {
+					lowland.bom.Style.set(child.getElement(), {
 						"transform" : "translate(" + left + "," + top + ")"
 					});
 				}

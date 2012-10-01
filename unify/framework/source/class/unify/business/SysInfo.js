@@ -47,7 +47,7 @@ core.Class("unify.business.SysInfo",
 			STATIC DATA INTERFACE
 		---------------------------------------------------------------------------
 		*/
-		//TODO replace unify.bom.client usage with core.Env.getValue calls
+		//TODO replace unify.bom.client usage with jasy.Env.getValue calls
 		// overridden
 		_readData : function(service, params)
 		{
@@ -72,7 +72,7 @@ core.Class("unify.business.SysInfo",
 					break;
 
 				case "env":
-					var Environment=core.Env;
+					var Environment=jasy.Env;
 					data =
 					{
 						"Runtime" :

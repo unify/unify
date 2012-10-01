@@ -215,7 +215,7 @@ core.Class("unify.ui.layout.Dock", {
 
 
 		// overridden
-		/*verifyLayoutProperty : qx.core.Environment.select("qx.debug",
+		/*verifyLayoutProperty : qx.jasy.Environment.select("qx.debug",
 		{
 			"true" : function(item, name, value)
 			{

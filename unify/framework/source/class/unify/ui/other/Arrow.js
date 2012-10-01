@@ -43,7 +43,7 @@ core.Class("unify.ui.other.Arrow", {
 			var e = document.createElement("div");
 			
 			var arrowSpan = this.__arrowSpan = document.createElement("span");
-			core.bom.Style.set(arrowSpan,{display:"block",position:"absolute"});
+			lowland.bom.Style.set(arrowSpan,{display:"block",position:"absolute"});
 			e.appendChild(arrowSpan);
 			
 			return e;
@@ -52,7 +52,7 @@ core.Class("unify.ui.other.Arrow", {
 		_applyArrowStyle : function(value) {
 			var arrowSpan = this.__arrowSpan;
 			if (arrowSpan) {
-				core.bom.Style.set(arrowSpan, value);
+				lowland.bom.Style.set(arrowSpan, value);
 			}
 		},
 

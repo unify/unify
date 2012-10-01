@@ -291,7 +291,7 @@ core.Class("unify.theme.Base", {
 					style : function() {
 						return {
 							height: 44,
-							background: "url(" + core.io.Asset.toUri("unify/iphoneos/navigation-bar/black/navigationbar.png") + ")",
+							background: "url(" + jasy.Asset.toUri("unify/iphoneos/navigation-bar/black/navigationbar.png") + ")",
 							properties : {
 								allowGrowX: true,
 								allowGrowY: false,
@@ -431,7 +431,7 @@ core.Class("unify.theme.Base", {
 				"toolbar.segmented.container" : {
 					style : function() {
 						return {
-							//"WebkitBorderImage" : "url(" + core.io.Asset.toUri("unify/iphoneos/tool-bar/black/segmented-all.png") + ") 0 5 120 5"
+							//"WebkitBorderImage" : "url(" + jasy.Asset.toUri("unify/iphoneos/tool-bar/black/segmented-all.png") + ") 0 5 120 5"
 						};
 					}
 				},

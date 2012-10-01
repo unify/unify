@@ -83,7 +83,7 @@ core.Class("unify.ui.layout.Basic", {
 		*/
 
 		// overridden
-		verifyLayoutProperty : core.Env.getValue("debug") ? function(item, name, value)
+		verifyLayoutProperty : jasy.Env.getValue("debug") ? function(item, name, value)
 			{
 				this.assert(name == "left" || name == "top", "The property '"+name+"' is not supported by the Basic layout!");
 				this.assertInteger(value);

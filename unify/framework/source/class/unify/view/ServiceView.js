@@ -194,7 +194,7 @@ core.Class("unify.view.ServiceView",
 				this.error("Failed to render \"" + this._getServiceName() + "\" data: " + ex);
 				this._errorHandler("renderer", ex);
 			}*/
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				this.debug("Rendered in: " + ((new Date).valueOf() - now) + "ms");
 			}
 		}

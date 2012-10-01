@@ -4,7 +4,7 @@
 	var DOMReadyEvent;
 
 	// Determine the proper event for DOM is ready
-	if (core.Env.getValue('engine') == 'trident') {
+	if (jasy.Env.getValue('engine') == 'trident') {
 		DOMReadyEvent = 'readystatechange';
 	} else {
 		DOMReadyEvent = 'DOMContentLoaded';
@@ -20,7 +20,7 @@
 	var isDocReady = function() {
 		var isReady = false;
 
-		if (core.Env.getValue('engine') === 'trident') {
+		if (jasy.Env.getValue('engine') === 'trident') {
 			if (document.readyState === 'complete') {
 				isReady = true;
 			}
@@ -58,7 +58,7 @@
 		if (isDocReady()) {
 			lowland.bom.Events.unlisten(document, DOMReadyEvent, onDocStateChange);
 
-			var Application = core.Class.getByName(core.Env.getValue('application') + '.Application');
+			var Application = core.Class.getByName(jasy.Env.getValue('application') + '.Application');
 			var init = app = new Application();
 
 			init.main();

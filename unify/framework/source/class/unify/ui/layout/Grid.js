@@ -174,7 +174,7 @@ core.Class("unify.ui.layout.Grid", {
 
 
 		// overridden
-		/*verifyLayoutProperty : qx.core.Environment.select("qx.debug",
+		/*verifyLayoutProperty : qx.jasy.Environment.select("qx.debug",
 		{
 			"true" : function(item, name, value)
 			{
@@ -361,7 +361,7 @@ core.Class("unify.ui.layout.Grid", {
 		 */
 		setColumnAlign : function(column, hAlign, vAlign)
 		{
-			if (core.Env.getValue("debug"))
+			if (jasy.Env.getValue("debug"))
 			{
 				/*this.assertInteger(column, "Invalid parameter 'column'");
 				this.assertInArray(hAlign, ["left", "center", "right"]);
@@ -413,7 +413,7 @@ core.Class("unify.ui.layout.Grid", {
 		 */
 		setRowAlign : function(row, hAlign, vAlign)
 		{
-			if (core.Env.getValue("debug"))
+			if (jasy.Env.getValue("debug"))
 			{
 				this.assertInteger(row, "Invalid parameter 'row'");
 				this.assertInArray(hAlign, ["left", "center", "right"]);

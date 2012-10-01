@@ -14,7 +14,7 @@
  * Local storage abstraction and helper class
  */
 (function(global) {
-	var prefix = (core.Env.getValue("application") || "default") + "/";
+	var prefix = (jasy.Env.getValue("application") || "default") + "/";
 	var localStorage = global.localStorage;
 	var hasLocalStorage = !!localStorage;
 	
@@ -34,7 +34,7 @@
 		set : function(key, value, otherPrefix)
 		{
 			if (hasLocalStorage) {
-				/* TODO: if (core.Evn.getValue("os.name") == "ios" && parseFloat(core.Env.getValue("os.version") || 0) < 4.2) {
+				/* TODO: if (core.Evn.getValue("os.name") == "ios" && parseFloat(jasy.Env.getValue("os.version") || 0) < 4.2) {
 						//TODO find out exact version of fix (some time between 3.2 and 4.2)
 						//fixes problem with QUOTA_EXCEEDED_ERR on older ios versions see http://stackoverflow.com/questions/2603682/
 						localStorage.removeItem(this.__prefix + key, value);

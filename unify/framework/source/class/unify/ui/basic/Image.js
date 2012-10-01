@@ -58,7 +58,7 @@ core.Class("unify.ui.basic.Image", {
 		_createElement : function() {
 			var e = document.createElement("div");
 			
-			core.bom.Style.set(e, {
+			lowland.bom.Style.set(e, {
 				backgroundRepeat: "no-repeat",
 				backgroundPosition: "center",
 				backgroundSize: null
@@ -90,21 +90,19 @@ core.Class("unify.ui.basic.Image", {
 				style.backgroundSize = "contain"
 			}
 			
-			core.bom.Style.set(e, style);
+			lowland.bom.Style.set(e, style);
 		},
 		
 		_applySource : function(value) {
-			var ResourceManager = core.io.Asset;
-
 			if (this._hasElement()) {
 				var e = this.getElement();
 				
 				var size = null;
 				
 				var src = value;
-				if (ResourceManager.has(value)) {
-					src = ResourceManager.toUri(value);
-					size = ResourceManager.getImageSize(value);
+				if (jasy.Asset.has(value)) {
+					src = jasy.Asset.toUri(value);
+					size = core.io.Asset.getImageSize(value);
 				}
 
 				var style = {
@@ -119,7 +117,7 @@ core.Class("unify.ui.basic.Image", {
 					style.backgroundSize = "contain";
 				}
 				
-				core.bom.Style.set(e, style);
+				lowland.bom.Style.set(e, style);
 			}
 		}
 	}

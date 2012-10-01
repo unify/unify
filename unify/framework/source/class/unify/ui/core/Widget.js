@@ -198,7 +198,7 @@ core.Class("unify.ui.core.Widget", {
 						nlrOldObj.callback === nlrObj.callback &&
 						nlrOldObj.context === nlrObj.context) {
 							found = i;
-							if (core.Env.getValue("debug")) {
+							if (jasy.Env.getValue("debug")) {
 								this.debug(this.toString() + " binds " + nlrOldObj.event + " twice");
 							}
 							break;
@@ -299,13 +299,12 @@ core.Class("unify.ui.core.Widget", {
 		_applyVisibility : function(value, old)
 		{
 			var container = this.getElement();
-			var Style = core.bom.Style;
 
 
 			if (value === "visible") {
-				Style.set(container, "display", "block"); // TODO: Block right? or simply null?
+				this.__setElementStyle(container, "display", "block"); // TODO: Block right? or simply null?
 			} else {
-				Style.set(container, "display", "none");
+				this.__setElementStyle(container, "display", "none");
 			}
 
 			// only force a layout update if visibility change from/to "exclude"
@@ -347,7 +346,7 @@ core.Class("unify.ui.core.Widget", {
 
 		// overridden
 		_applyAppearance : function(value) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				var e = this.getElement();
 				if (!e) {
 					console.error("NO ELEMENT : ", this.constructor);
@@ -468,7 +467,7 @@ core.Class("unify.ui.core.Widget", {
 		 * another widget instead.
 		 */
 		_setLayout : function(layout) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				if (layout) {
 					// TODO : this.assertInstance(layout, unify.ui.layout.Base);
 				}
@@ -504,7 +503,7 @@ core.Class("unify.ui.core.Widget", {
 							height: 0
 						};
 					}
-					/*if (core.Env.getValue("debug")) {
+					/*if (jasy.Env.getValue("debug")) {
 						var msg = "The layout " + layout.toString() + " of the widget " + this.toString() + " returned an invalid size hint!";
 						this.assetInteger(hint.width, "Wrong width value. " + msg);
 						this.assetInteger(hint.height, "Wrong height value. " + msg);
@@ -537,7 +536,7 @@ core.Class("unify.ui.core.Widget", {
 			var minHeight = this.getMinHeight();
 			var maxHeight = this.getMaxHeight();
 
-			if (core.Env.getValue("debug"))
+			if (jasy.Env.getValue("debug"))
 			{
 				if (minWidth !== null && maxWidth !== null) {
 					// TODO: this.assert(minWidth <= maxWidth, "minWidth is larger than maxWidth!");
@@ -693,7 +692,7 @@ core.Class("unify.ui.core.Widget", {
 			this.invalidateLayoutCache();
 
 			if (!this.__initialAppearanceApplied) {
-				core.bom.Style.set(this.getElement(), "visibility", "visible");
+				this.__setElementStyle(this.getElement(), "visibility", "visible");
 				this.__initialAppearanceApplied = true;
 			}
 				
@@ -841,7 +840,7 @@ core.Class("unify.ui.core.Widget", {
 			if (!preventSize) {
 				var element = this.getElement();
 				var isDocFragment;
-				if (core.Env.getValue("engine") == "trident") {
+				if (jasy.Env.getValue("engine") == "trident") {
 					isDocFragment = element.nodeName == "#document-fragment";
 				} else {
 					isDocFragment = element instanceof DocumentFragment;
@@ -856,7 +855,7 @@ core.Class("unify.ui.core.Widget", {
 					if (layoutParent) {
 						parentVirtualPosition = layoutParent.getVirtualPosition();
 					} else {
-						if (core.Env.getValue("debug")) {
+						if (jasy.Env.getValue("debug")) {
 							this.warn("No parent widget set, so virtual position is set to 0/0")
 						}
 					}
@@ -879,7 +878,7 @@ core.Class("unify.ui.core.Widget", {
 						newTop += modPos[1];
 					}*/
 					
-					core.bom.Style.set(element, {
+					this.__setElementStyle(element, {
 						position: "absolute",
 						left: newLeft + "px",
 						top: newTop + "px",
@@ -1336,6 +1335,12 @@ core.Class("unify.ui.core.Widget", {
 			
 			return map1;
 		},
+		
+		__setElementStyle : function(element, name, property) {
+			if (element && String(element).indexOf("DocumentFragment") < 0) {
+				lowland.bom.Style.set(element, name, property);
+			}
+		},
 
 		/**
 		 * Set styles of @map {Map} to the element.
@@ -1573,7 +1578,7 @@ core.Class("unify.ui.core.Widget", {
 				unify.ui.layout.queue.Layout.add(this);
 			}*/
 			
-			if (core.Env.getValue("engine") == "trident") {
+			if (jasy.Env.getValue("engine") == "trident") {
 				var version = /MSIE.(\d+)/.exec(navigator.userAgent);
 				if (version[1] && parseInt(version[1],10) < 9) {
 					// IE<9 only transform translation
@@ -1594,7 +1599,7 @@ core.Class("unify.ui.core.Widget", {
 				}
 			}
 			
-			core.bom.Style.set(this.getElement(), style);
+			this.__setElementStyle(this.getElement(), style);
 
 			if (properties) {
 				var keys = Object.keys(properties);
@@ -1659,7 +1664,7 @@ core.Class("unify.ui.core.Widget", {
 			if (value) {
 				return value;
 			} else {
-				return core.bom.Style.get(this.getElement(), name, computed);
+				return lowland.bom.Style.get(this.getElement(), name, computed);
 			}
 		},
 
@@ -1743,13 +1748,13 @@ core.Class("unify.ui.core.Widget", {
 				element.$$widget = this.getHash();
 
 				var isDocFragment;
-				if (core.Env.getValue("engine") == "trident") {
+				if (jasy.Env.getValue("engine") == "trident") {
 					isDocFragment = element.nodeName == "#document-fragment";
 				} else {
 					isDocFragment = element instanceof DocumentFragment;
 				}
 				if (!(isDocFragment)) {
-					if(core.Env.getValue("debug")){
+					if(jasy.Env.getValue("debug")){
 						element.setAttribute("unifyclass",this.constructor.toString());
 						element.setAttribute("appearance",this.getAppearance());
 					}
@@ -1758,7 +1763,7 @@ core.Class("unify.ui.core.Widget", {
 					if (style) {
 						this._setStyle(style);
 					}
-					core.bom.Style.set(element, "visibility", "hidden");
+					this.__setElementStyle(element, "visibility", "hidden");
 				}
 
 				return element;
@@ -1768,7 +1773,7 @@ core.Class("unify.ui.core.Widget", {
 		 * Applies test id to element to help autmatic ui tests
 		 */
 		_applyTestId : function(value) {
-			if(core.Env.getValue("debug") || core.Env.getValue("unify.testid")) {
+			if(jasy.Env.getValue("debug") || jasy.Env.getValue("unify.testid")) {
 				this.getElement().setAttribute("testid", value);
 			}
 		},
@@ -1897,7 +1902,7 @@ core.Class("unify.ui.core.Widget", {
 		 */
 		_addBefore : function(child, before, options)
 		{
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				this.assertInArray(before, this._getChildren(),
 					"The 'before' widget is not a child of this widget!");
 			}
@@ -1936,7 +1941,7 @@ core.Class("unify.ui.core.Widget", {
 		 */
 		_addAfter : function(child, after, options)
 		{
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				this.assertInArray(after, this._getChildren(),
 					"The 'after' widget is not a child of this widget!");
 			}
@@ -2071,7 +2076,7 @@ core.Class("unify.ui.core.Widget", {
 		 */
 		__addHelper : function(child, options,index)
 		{
-			/* TODO: if (core.Env.getValue("debug"))
+			/* TODO: if (jasy.Env.getValue("debug"))
 			{
 				//this.assertInstance(child, unify.ui.core.VisibleBox, "Invalid widget to add: " + child);
 				this.assertInstance(child, unify.ui.core.VisibleBox, "Invalid widget to add: " + child);
@@ -2140,7 +2145,7 @@ core.Class("unify.ui.core.Widget", {
 		 */
 		__removeHelper : function(child)
 		{
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				if (!child) {
 					throw new Error("Can not remove undefined child!");
 				}

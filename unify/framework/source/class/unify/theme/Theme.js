@@ -248,7 +248,7 @@ core.Class('unify.theme.Theme', {
      */
     _parse: function(theme, themeColors, themeFonts, themeStyles) {
       // Check whether ot not theme configuration was provided
-      if (!theme && core.Env.getValue('debug')) {
+      if (!theme && jasy.Env.getValue('debug')) {
         throw new Error('No theme given!');
       }
 
@@ -357,7 +357,7 @@ core.Class('unify.theme.Theme', {
     resolveColor: function(name) {
       var result = this.__colors[name] || null;
 
-      if (!result && core.Env.getValue('debug')) {
+      if (!result && jasy.Env.getValue('debug')) {
         console.warn('Color "' + name + '" not found!');
       }
 
@@ -374,7 +374,7 @@ core.Class('unify.theme.Theme', {
     resolveFont: function(name) {
       var result = this.__fonts[name] || null;
 
-      if (!result && core.Env.getValue('debug')) {
+      if (!result && jasy.Env.getValue('debug')) {
         console.warn('Font "' + name + '" not found!');
       }
 
@@ -403,7 +403,7 @@ core.Class('unify.theme.Theme', {
       var styleDef = this.__styles[name];
 
       if (!styleDef) {
-        if (core.Env.getValue('debug')) {
+        if (jasy.Env.getValue('debug')) {
           console.warn('No style "' + name + '" found!');
         }
         return null;

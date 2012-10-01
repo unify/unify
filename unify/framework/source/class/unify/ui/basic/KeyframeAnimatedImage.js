@@ -16,7 +16,7 @@
 
 (function() {
 	
-	if (core.Env.getValue("engine") == "webkit") {
+	if (jasy.Env.getValue("engine") == "webkit") {
 		var styleNode = document.createElement('style');
 		styleNode.type = 'text/css';
 		//TODO write keyframe rule with correct prefix depending on browser engine
@@ -54,18 +54,18 @@
 			_createElement: function(){
 				//use a backgroundimage div because android (at least on motorola xoom with 3.1) has problems rotating images around their center
 				var elem= document.createElement('div');
-				core.bom.Style.set(elem,{
+				lowland.bom.Style.set(elem,{
 					backgroundColor:"transparent",
 					backgroundPosition:"center center",
 					backgroundRepeat:"no-repeat",
-					backgroundImage:"url("+core.io.Asset.toUri(this.__source)+")",
+					backgroundImage:"url("+jasy.Asset.toUri(this.__source)+")",
 					transformOriginX:"50%",
 					transformOriginY:"50%"
 				});
 				return elem;
 			},
 			_applySource : function(value) {
-				this.setStyle({backgroundImage:"url("+core.io.Asset.toUri(value)+")"});
+				this.setStyle({backgroundImage:"url("+jasy.Asset.toUri(value)+")"});
 			},
 			/**
 			 * Event handler for visibility changes
@@ -84,7 +84,7 @@
 			 * starts rotation by adding the required css styles
 			 */
 			__startRotate : function(){
-				if (core.Env.getValue("engine") == "webkit") {
+				if (jasy.Env.getValue("engine") == "webkit") {
 					this.setStyle({
 							animationName: "KAI_rotateZ",
 							animationDuration: this.getAnimateRotateDuration()+"ms",
@@ -98,7 +98,7 @@
 			 * stops rotation by removing the required css styles
 			 */
 			__stopRotate : function(){
-				if (core.Env.getValue("engine") == "webkit") {
+				if (jasy.Env.getValue("engine") == "webkit") {
 					this.setStyle({
 						animationName: "",
 						animationDuration: "",

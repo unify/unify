@@ -35,12 +35,12 @@ core.Class("unify.bom.History", {
 		// See also: https://bugs.webkit.org/show_bug.cgi?id=21605
 		// https://developer.mozilla.org/en/DOM/window.onhashchange
 		if (lowland.bom.Events.isSupported("hashchange", window)) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				this.debug("Using HTML5 hashchange");
 			}
 			this.addNativeListener(window, "hashchange", this.__onCallbackWrapped);
 		} else {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				console.debug("Using interval");
 			}
 			this.__intervalHandler = window.setInterval(this.__onCallbackWrapped, 100);

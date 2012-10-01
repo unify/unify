@@ -117,7 +117,7 @@ core.Class("unify.ui.container.scroll.ActionNotification", {
 		_applyPhase : function(phase,old){
 			var activityIcon=this.__activityIconElem;
 			var pullIcon=this.__pullIconElem;
-			var Style=core.bom.Style;
+			var Style=lowland.bom.Style;
 			var labelValue="";
 			var location=this.getLocation();
 			//start regular and rotate 180° counter-clockwise

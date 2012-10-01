@@ -128,7 +128,7 @@
 						this.__maxIndicatorPosition=scrollerWidth-this.__maxSize-margin;
 						this.__maxScrollPosition=contentWidth-scrollerWidth;
 	
-						core.bom.Style.set(this.__elem,{
+						lowland.bom.Style.set(this.__elem,{
 								left:DISTANCE+"px",
 								top: (scrollerHeight-THICKNESS-DISTANCE)+"px",
 								height:THICKNESS+"px",
@@ -137,7 +137,7 @@
 						this.__maxSize=(scrollerHeight>0 && contentHeight>0)?(Math.max(minSize,Math.round((scrollerHeight/contentHeight)*(scrollerHeight-margin)))):0;
 						this.__maxIndicatorPosition=scrollerHeight-this.__maxSize-margin;
 						this.__maxScrollPosition=contentHeight-scrollerHeight;
-						core.bom.Style.set(this.__elem,{
+						lowland.bom.Style.set(this.__elem,{
 								top:DISTANCE+"px",
 								left: (scrollerWidth-THICKNESS-DISTANCE)+"px",
 								width:THICKNESS+"px",
@@ -173,7 +173,7 @@
 					position:"absolute",
 					zIndex: 10
 				};
-				core.bom.Style.set(elem,baseStyles);
+				lowland.bom.Style.set(elem,baseStyles);
 	
 				return elem;
 			},
@@ -267,7 +267,7 @@
 				}
 	
 				if(changed){
-					core.bom.Style.set(this.__elem,style);
+					lowland.bom.Style.set(this.__elem,style);
 				}
 			},
 	

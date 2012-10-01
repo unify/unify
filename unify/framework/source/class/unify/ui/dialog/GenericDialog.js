@@ -136,7 +136,28 @@
 						allowShrinkX: true,
 						allowShrinkY: false
 					});
+					var leftButtonContainer = this.getChildControl("leftButtonContainer");
+					var rightButtonContainer = this.getChildControl("rightButtonContainer");
+					var centerButtonContainer = this.getChildControl("centerButtonContainer");
+					control.add(leftButtonContainer, {flex: 2});
+					control.add(centerButtonContainer, {flex: 1});
+					control.add(rightButtonContainer, {flex: 2});
 					this._add(control);
+				} else if (id == "leftButtonContainer") {
+					var layout = new unify.ui.layout.HBox();
+					layout.setAlignX("left");
+					layout.setSpacing(10);
+					control = new unify.ui.container.Composite(layout);
+				}  else if (id == "rightButtonContainer") {
+					var layout = new unify.ui.layout.HBox();
+					layout.setAlignX("right");
+					layout.setSpacing(10);
+					control = new unify.ui.container.Composite(layout);
+				}  else if (id == "centerButtonContainer") {
+					var layout = new unify.ui.layout.HBox();
+					layout.setAlignX("center");
+					layout.setSpacing(10);
+					control = new unify.ui.container.Composite(layout);
 				}
 				
 				return control; // || this.base(arguments, id);
@@ -168,24 +189,9 @@
 			 * @param buttons {Array} Array of button configurations to add to buttonContainer
 			 */
 			__createButtons : function(buttonContainer, buttons) {
-				var leftButtonContainer_layout = new unify.ui.layout.HBox();
-				leftButtonContainer_layout.setAlignX("left");
-				leftButtonContainer_layout.setSpacing(10);
-				var leftButtonContainer = new unify.ui.container.Composite(leftButtonContainer_layout);
-				
-				var centerButtonContainer_layout = new unify.ui.layout.HBox();
-				centerButtonContainer_layout.setAlignX("center");
-				centerButtonContainer_layout.setSpacing(10);
-				var centerButtonContainer = new unify.ui.container.Composite(centerButtonContainer_layout);
-				
-				var rightButtonContainer_layout = new unify.ui.layout.HBox();
-				rightButtonContainer_layout.setAlignX("right");
-				rightButtonContainer_layout.setSpacing(10);
-				var rightButtonContainer = new unify.ui.container.Composite(rightButtonContainer_layout);
-				
-				buttonContainer.add(leftButtonContainer, {flex: 2});
-				buttonContainer.add(centerButtonContainer, {flex: 1});
-				buttonContainer.add(rightButtonContainer, {flex: 2});
+				var leftButtonContainer = this.getChildControl("leftButtonContainer");
+				var centerButtonContainer = this.getChildControl("centerButtonContainer");
+				var rightButtonContainer = this.getChildControl("rightButtonContainer");
 				
 				if (!buttons || (buttons.length <= 0)) {
 					// No buttons are specified. Create a default Button
