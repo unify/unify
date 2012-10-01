@@ -1,10 +1,15 @@
 (function(){
 
 	var positionStore = {};
+  var viewportRoot = null;
 	
 	core.Module("unify.ui.core.Util", {
 		getWidgetLocation : function(widget) {
-			return lowland.bom.Element.getLocation(widget.getElement());
+      if (!viewportRoot) {
+        viewportRoot = unify.core.Init.getApplication().getRoot().getViewportElement();
+      }
+      
+			return lowland.bom.Element.getLocation(widget.getElement(), viewportRoot);
 		},
 		
 		domElementToRootLevel : function(widget) {
