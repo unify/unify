@@ -1,9 +1,0 @@
-[submodule "support/jasy"]
-	path = support/jasy
-	url = https://github.com/fastner/jasy.git
-[submodule "support/core"]
-	path = support/core
-	url = https://github.com/fastner/core.git
-[submodule "support/lowland"]
-	path = support/lowland
-	url = https://github.com/fastner/lowland.git
