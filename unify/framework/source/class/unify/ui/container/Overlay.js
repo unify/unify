@@ -199,7 +199,11 @@ core.Class("unify.ui.container.Overlay", {
 			if(trigger && relativeTriggerPosition){
 				var triggerPoint=this.__resolveRelative(trigger.getPositionInfo(),relativeTriggerPosition);
 				left = triggerPoint.left;
-				top=triggerPoint.top;
+				top = triggerPoint.top;
+        
+				var viewportPos = lowland.bom.Element.getLocation(unify.core.Init.getApplication().getRoot().getViewportElement());
+				left -= viewportPos.left;
+				top -= viewportPos.top;
 			}
 			
 			var isString = false;
