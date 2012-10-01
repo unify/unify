@@ -40,7 +40,8 @@
 					"android_section_border" : "#393939",
 					"android_head_text" : "#B9B9B9",
 					"android_text" : "#FFFFFF",
-					"android_text_mute": "#393939"
+					"android_text_mute": "#393939",
+					"transparent": "transparent"
 				},
 				fonts: {
 				},
@@ -69,6 +70,11 @@
 					"label" : {
 						style : function() {
 							return {
+								marginTop: BU + "px",
+								marginBottom: BU + "px",
+								marginLeft: (BU * 4 - 2) + "px",
+								marginRight: (BU * 4 - 2) + "px",
+								paddingTop: "8px",
 								color: "android_head_text"
 							};
 						}
