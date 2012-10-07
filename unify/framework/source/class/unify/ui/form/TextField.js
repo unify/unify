@@ -147,6 +147,12 @@ core.Class("unify.ui.form.TextField", {
 		setValue : function(value) {
 			this.__changed = true;
 			this.getElement().value = value;
+            if (value && value.length > 0) {
+                this.removeState("placeholder");
+            } else {
+                this.setValue(this.__placeholderValue);
+                this.addState("placeholder");
+            }
 		},
 		
 		/**
