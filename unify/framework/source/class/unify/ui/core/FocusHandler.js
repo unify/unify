@@ -252,7 +252,7 @@ core.Class("unify.ui.core.FocusHandler", {
 				widget = widget.getLayoutParent();
 			}*/
 
-			if (widget == null) {
+            if (widget == null) {
 				return [];
 			}
 
@@ -260,7 +260,7 @@ core.Class("unify.ui.core.FocusHandler", {
 			this.__collectAllBefore(root, widget, result);
 			result.sort(this.__compareTabOrder);
 
-			var len = result.length;
+            var len = result.length;
 			return len > 0 ? result[len - 1] : this.__getLastWidget();
 		},
 
@@ -333,9 +333,9 @@ core.Class("unify.ui.core.FocusHandler", {
 					continue;
 				}
 
-				if (!this.isFocusRoot(child) && child.isEnabled() && child.isVisible())
+				if (!this.isFocusRoot(child) && child.getEnabled() && child.isVisible())
 				{
-					if (child.isFocusable() && this.__compareTabOrder(widget, child) > 0) {
+					if (child.getFocusable() && this.__compareTabOrder(widget, child) > 0) {
 						result.push(child);
 					}
 
@@ -406,9 +406,9 @@ core.Class("unify.ui.core.FocusHandler", {
 				}
 
 				// Ignore focus roots completely
-				if (!this.isFocusRoot(child) && child.isEnabled() && child.isVisible())
+				if (!this.isFocusRoot(child) && child.getEnabled() && child.isVisible())
 				{
-					if (child.isFocusable())
+					if (child.getFocusable())
 					{
 						if (lastWidget == null || this.__compareTabOrder(child, lastWidget) > 0) {
 							lastWidget = child;
