@@ -80,16 +80,8 @@ core.Class("unify.ui.form.TextField", {
 		unify.ui.core.Widget.call(this);
 		unify.ui.core.MInteractionState.call(this);
 		
-		this.addNativeListener("focus", this.__onFocus, this);
-		this.addNativeListener("blur", this.__onBlur, this);
-		
-		this.addNativeListener("tap", function(e) {
-			if (this.hasState("disable")) {
-				return;
-			}
-			
-			this.focus();
-		}, this);
+		this.addListener("focus", this.__onFocus, this);
+		this.addListener("blur", this.__onBlur, this);
 	},
 	
 	members : {
@@ -135,8 +127,13 @@ core.Class("unify.ui.form.TextField", {
 		 * Apply placeholder value
 		 */
 		_applyPlaceholderValue: function(placeholder) {
-			this.__placeholderValue = placeholder;
-			this.__onBlur();
+            if (jasy.Env.isSet("html5.placeholder")) {
+                var e = this.getElement();
+                e.setAttribute("placeholder", placeholder);
+            } else {
+    			this.__placeholderValue = placeholder;
+    			this.__onBlur();
+            }
 		},
 		
 		/**
@@ -146,13 +143,12 @@ core.Class("unify.ui.form.TextField", {
 		 */
 		setValue : function(value) {
 			this.__changed = true;
-			this.getElement().value = value;
+            
             if (value && value.length > 0) {
                 this.removeState("placeholder");
-            } else {
-                this.setValue(this.__placeholderValue);
-                this.addState("placeholder");
             }
+            
+			this.getElement().value = value;
 		},
 		
 		/**
@@ -242,14 +238,21 @@ core.Class("unify.ui.form.TextField", {
 				this.__changed = false;
 			}
 			
-			// Restore placeholder value if the currently set text is empty
-			var currentValue = this.getValue();
-			if (currentValue == '') {
-				this.setValue(this.__placeholderValue);
-				if (this.__placeholderValue) {
-					this.addState("placeholder");
-				}
-			}
+            if (jasy.Env.isSet("html5.placeholder")) {
+                var currentValue = this.getValue();
+        		if (currentValue == '') {
+                    this.addState("placeholder");
+        		}
+            } else {
+    			// Restore placeholder value if the currently set text is empty
+    			var currentValue = this.getValue();
+    			if (currentValue == '') {
+    				this.setValue(this.__placeholderValue);
+    				if (this.__placeholderValue) {
+    					this.addState("placeholder");
+    				}
+    			}
+            }
 		},
 		
 		
@@ -266,18 +269,21 @@ core.Class("unify.ui.form.TextField", {
 			if (this.hasState("disable")) {
 				return;
 			}
-			
-			
-			var currentValue = this.getValue();
-			if (this.__placeholderValue != '' &&
-					currentValue == this.__placeholderValue) {
-						
-				this.removeState("placeholder");
-				this.setValue('');
-				return;
-			}
-			//Fix for mousecatch after input
-			this.setValue(currentValue);
+            
+            if (jasy.Env.isSet("html5.placeholder")) {
+                this.removeState("placeholder");
+            } else {
+    			var currentValue = this.getValue();
+                
+    			if (this.__placeholderValue != '' &&
+    					currentValue == this.__placeholderValue) {
+    				this.removeState("placeholder");
+    				this.setValue('');
+    				return;
+    			}
+    			//Fix for mousecatch after input
+    			this.setValue(currentValue);
+            }
 		}
 	}/*,
 	

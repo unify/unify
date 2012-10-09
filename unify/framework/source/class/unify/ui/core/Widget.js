@@ -65,13 +65,13 @@ core.Class("unify.ui.core.Widget", {
 		/**
 		 * Fired on move of the widget.
 		 */
-		move : lowland.events.Event//,
+		move : lowland.events.Event,
 
 		/** Fired if widget is focusable {@link #focusable} and gets focus */
-		//focus : "event.type.Focus",
+		focus : lowland.events.Event,
 
 		/** Fired if widget is focusable {@link #focusable} and looses focus */
-		//blur : "event.type.Focus"
+		blur : lowland.events.Event
 	},
 
 	properties : {
@@ -434,6 +434,7 @@ core.Class("unify.ui.core.Widget", {
 		 */
 		tabFocus : function() {
 			this.addState("active");
+            this.fireEvent("focus");
 		},
 
 		/**
@@ -441,6 +442,7 @@ core.Class("unify.ui.core.Widget", {
 		 */
 		tabBlur : function() {
 			this.removeState("active");
+            this.fireEvent("blur");
 		},
 		
 		_startFocusHandler: function() {
