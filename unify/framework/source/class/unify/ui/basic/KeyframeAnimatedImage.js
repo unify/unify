@@ -54,14 +54,20 @@
 			_createElement: function(){
 				//use a backgroundimage div because android (at least on motorola xoom with 3.1) has problems rotating images around their center
 				var elem= document.createElement('div');
-				lowland.bom.Style.set(elem,{
+				var style = {
 					backgroundColor:"transparent",
 					backgroundPosition:"center center",
 					backgroundRepeat:"no-repeat",
-					backgroundImage:"url("+jasy.Asset.toUri(this.__source)+")",
 					transformOriginX:"50%",
 					transformOriginY:"50%"
-				});
+				};
+				
+				if (this.__source) {
+					style.backgroundImage = "url("+jasy.Asset.toUri(this.__source)+")";
+				}
+				
+				lowland.bom.Style.set(elem, style);
+				
 				return elem;
 			},
 			_applySource : function(value) {
