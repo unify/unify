@@ -178,7 +178,7 @@ core.Class('unify.theme.Theme', {
 			if (font.weight) {
 				def.fontWeight = font.weight;
 			}
-			console.log(JSON.stringify(def));
+			
 			return def;
 		},
 
