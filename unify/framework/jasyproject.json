@@ -1,28 +1,32 @@
 {
-    "name": "unify",
-    "kind" : "full",
-    "package" : "",
-    "fields" : {
-        "application" : {
-            "check" : "String",
-            "default" : "default"
-        },
-        "application.version" : {
-            "check" : "String",
-            "default" : "none"
-        },
-        "os.name" : {
-            "check" : ["win", "mac", "unix", "android", "ios", "webos", "qnx"],
-            "detect" : "unify.bom.detect.OsName"
-        },
-        "html5.placeholder" : {
-            "check" : "Boolean",
-            "detect" : "unify.bom.detect.Html5Placeholder"
-        }
-    },
-    "requires" : [{
-        "source" : "https://github.com/fastner/lowland.git"
-    }, {
-        "source" : "https://github.com/fastner/jasy-appcache.git"
-    }]
+	"name": "unify",
+	"kind" : "full",
+	"package" : "",
+	"fields" : {
+		"application" : {
+			"check" : "String",
+			"default" : "default"
+		},
+		"application.version" : {
+			"check" : "String",
+			"default" : "none"
+		},
+		"os.name" : {
+			"check" : ["win", "mac", "unix", "android", "ios", "webos", "qnx"],
+			"detect" : "unify.bom.detect.OsName"
+		},
+		"html5.placeholder" : {
+			"check" : "Boolean",
+			"detect" : "unify.bom.detect.Html5Placeholder"
+		},
+		"develop" : {
+			"check" : "Boolean",
+			"detect" : "unify.bom.detect.Develop"
+		}
+	},
+	"requires" : [{
+		"source" : "https://github.com/fastner/lowland.git"
+		}, {
+		"source" : "https://github.com/fastner/jasy-appcache.git"
+	}]
 }
