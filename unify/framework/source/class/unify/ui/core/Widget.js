@@ -311,7 +311,12 @@ core.Class("unify.ui.core.Widget", {
 			var parent = this.getParentBox();
 			
 			if (parent && (old == null || value == null || old === "excluded" || value === "excluded")) {
-				parent.invalidateLayoutChildren();
+				while (parent) {
+					// TODO: Check if all this is neccessary!
+					parent.invalidateLayoutCache();
+					parent.invalidateLayoutChildren();
+					parent = parent.getParentBox();
+				}
 			}
 
 			// Update visibility cache
