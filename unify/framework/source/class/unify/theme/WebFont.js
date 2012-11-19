@@ -53,6 +53,7 @@
 				
 				var initSize = this.__initSize;
 				var lastMeasure = { width: 0, height: 0 };
+				var fontname = this.__fontname;
 				
 				var cnt = 0;
 				var testFnt = function() {
@@ -60,15 +61,13 @@
 					var size = getSize();
 					
 					if (testSize(size, initSize) && (size.width == lastMeasure.width) && (size.height == lastMeasure.height)) {
-						document.body.removeChild(testElement);
 						callback();
 					} else {
 						cnt++;
 						
 						if (cnt > 5000) {
 							// If more than 5000 tests, maybe we have an issue with loading fonts, so open application anyway
-							console.warn("Maybe fontloading of " + this.__fontname + " failed");
-							document.body.removeChild(testElement);
+							console.warn("Maybe fontloading of " + fontname + " failed");
 							callback();
 						} else {
 							lastMeasure = size;
