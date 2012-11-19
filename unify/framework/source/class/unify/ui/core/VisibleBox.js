@@ -2,7 +2,7 @@
 	
 	var dimensionFnt;
 	var stretchFnt;
-	dimmensionFnt = stretchFnt = function(value) {
+	dimensionFnt = stretchFnt = function(value) {
 		this.__invalidateParent();
 		
 		this.invalidateLayoutCache();
@@ -18,37 +18,37 @@
 			/** {Integer} Width of widget */
 			width: {
 				init: null,
-				apply : dimmensionFnt
+				apply : dimensionFnt
 			},
 			
 			/** {Integer} Minimal width of widget */
 			minWidth: {
 				init: null,
-				apply : dimmensionFnt
+				apply : dimensionFnt
 			},
 			
 			/** {Integer} Maximal width of widget */
 			maxWidth: {
 				init: null,
-				apply : dimmensionFnt
+				apply : dimensionFnt
 			},
 			
 			/** {Integer} Height of widget */
 			height: {
 				init: null,
-				apply : dimmensionFnt
+				apply : dimensionFnt
 			},
 			
 			/** {Integer} Minimal height of widget */
 			minHeight: {
 				init: null,
-				apply : dimmensionFnt
+				apply : dimensionFnt
 			},
 			
 			/** {Integer} Maximal height of widget */
 			maxHeight: {
 				init: null,
-				apply : dimmensionFnt
+				apply : dimensionFnt
 			},
 			
 			/** {Integer} Left margin of widget */
