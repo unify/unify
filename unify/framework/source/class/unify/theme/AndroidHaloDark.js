@@ -133,6 +133,59 @@
 						}
 					},
 					
+					/**
+					 * #asset(unify/android/halo/radio-*)
+					 */
+					"radio" : {
+						style : function(state) {
+							var imagename = ["radio"];
+							
+							if (state.checked) {
+								imagename.push("checked");
+							} else {
+								imagename.push("unchecked");
+							}
+							
+							if (state.disable) {
+								imagename.push("disabled");
+							}
+							
+							if (state.pressed && (!state.disable)) {
+								imagename.push("pressed");
+							} else if (state.active)  {
+								imagename.push("focused");
+							}
+							
+							var url = "unify/android/halo/" + imagename.join("-") + ".png";
+							
+							return {
+								properties : {
+									image: url
+								}
+							};
+						}
+					},
+					
+					"radio/image" : {
+						style : function() {
+							return {
+								width: 34,
+								height: 34
+							}
+						}
+					},
+					
+					"radio/label" : {
+						include: "label",
+						style : function() {
+							return {
+								marginLeft: "0px",
+								paddingTop: "0px",
+								color: "android_head_text"
+							};
+						}
+					},
+					
 					"button" : {
 						style : function(state) {
 							var url, backgroundColor;
