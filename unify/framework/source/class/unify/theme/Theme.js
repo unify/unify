@@ -160,11 +160,11 @@ core.Class('unify.theme.Theme', {
 					def[key] = val[key];
 				}
 			}
-			if (font.decoration) {
-				def.textDecoration = font.decoration;
-			}
 			if (font.family) {
 				def.fontFamily = font.family;
+			}
+			if (font.decoration) {
+				def.textDecoration = font.decoration;
 			}
 			if (font.lineHeight) {
 				def.lineHeight = font.lineHeight;

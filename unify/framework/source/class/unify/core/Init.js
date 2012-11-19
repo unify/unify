@@ -3,6 +3,13 @@
 	var app;
 	var DOMReadyEvent;
 
+
+	var prerun = [];
+	var registerPrerunCallback = function(callback, context) {
+		prerun.push({method: callback, context: context});
+	};
+
+
 	// Determine the proper event for DOM is ready
 	if (jasy.Env.getValue('engine') == 'trident') {
 		DOMReadyEvent = 'readystatechange';
@@ -61,8 +68,24 @@
 			var Application = core.Class.getByName(jasy.Env.getValue('application') + '.Application');
 			var init = app = new Application();
 
-			init.main();
-			init.finalize();
+			if (prerun.length <= 0) {
+				init.main();
+				init.finalize();
+			} else {
+				var preruns = prerun.length;
+				
+				var cbrun = function() {
+					preruns--;
+					if (preruns === 0) {
+						init.main();
+						init.finalize();
+					}
+				};
+				
+				for (var i=0,ii=prerun.length; i<ii; i++) {
+					prerun[i].method.call(prerun[i].context, cbrun);
+				}
+			}
 		}
 	};
 
@@ -99,6 +122,10 @@
 	};
 
 
+
+	
+
+
 	/**
 	 * Init
 	 */
@@ -119,6 +146,7 @@
 
 	unify.core.Statics.annotate(unify.core.Init, {
 		getApplication : getApplication,
+		registerPrerunCallback : registerPrerunCallback,
 		startUp : startUp,
 		shutDown : shutDown
 	});
