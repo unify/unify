@@ -37,6 +37,12 @@ core.Class("unify.ui.form.TextArea", {
 			type: 'String',
 			init: '',
 			apply: function(value, old) { this._applyPlaceholderValue(value, old); }
+		},
+		
+		readOnly : {
+			type: 'Boolean',
+			init: false,
+			apply: function(value) { if (value) this.getElement().setAttribute("readonly", "readonly"); else this.getElement().removeAttribute("readonly"); }
 		}
 	},
 	
@@ -91,7 +97,7 @@ core.Class("unify.ui.form.TextArea", {
 		 * @param e {Event} Input event
 		 */
 		_onInput : function(e) {
-			if (this.hasState("disable")) {
+			if (this.hasState("disable") || this.getReadOnly()) {
 				return;
 			}
 			
