@@ -190,7 +190,10 @@ core.Class("unify.ui.basic.Label", {
 		 * @param value {String} New value to set
 		 */
 		_applyValue : function(value) {
-			this.invalidateLayoutChildren(); // TODO
+			var parent = this.getParentBox();
+			if (parent) {
+				parent.invalidateLayoutChildren();
+			}
 			this.invalidateLayoutCache();
 			lowland.bom.Label.setValue(this.getElement(), value, this.getHtml());
 		},
