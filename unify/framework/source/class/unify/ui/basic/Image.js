@@ -110,7 +110,7 @@ core.Class("unify.ui.basic.Image", {
 				};
 				
 				if (size) {
-					style.backgroundSize = size.width + "px " + size.height + "px";
+					style.backgroundSize = size[0] + "px " + size[1] + "px";
 				}
 				
 				if (this.getFitToSize()) {
