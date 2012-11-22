@@ -10,104 +10,157 @@
 ===============================================================================================
 */
 
-/**
- * EXPERIMENTAL
- *
- *
- * Embedded iframe widget
- */
-core.Class("unify.ui.embed.Iframe", {
-	include : [unify.ui.core.Widget],
-	
-	properties : {
-		// overridden
-		appearance : {
-			init: "iframe"
-		}
-	},
-	
-	members : {
-		__isLoaded : false,
-		__content : null,
-		
-		// overridden
-		_createElement : function() {
-			// TODO : IFRAME HANDLING
-			var e = document.createElement("iframe"); //qx.bom.Iframe.create();
-			this.addNativeListener(e, "load", this.__iframeLoaded, this);
-			return e;
-		},
-		
-		/**
-		 * Executed on loading of iframe, this is called after adding iframe to DOM
-		 */
-		__iframeLoaded : function() {
-			qx.event.Registration.removeListener(this.getElement(), "load", this.__iframeLoaded, this);
-			this.__isLoaded = true;
-			
-			var c = this.__content;
-			if (c) {
-				this.__content = null;
-				
-				if (c.type == "html") {
-					this.setHtmlFromText(c.content);
-				} else if (c.type == "fragment") {
-					this.setContent(c.content);
-				}
-			}
-		},
-		
-		/**
-		 * Set content of IFrame as document fragment
-		 *
-		 * @param documentFragment {DocumentFragment} Document fragment to add to iframe
-		 */
-		setContent : function(documentFragment) {
-			if (this.__isLoaded) {
-				var doc = qx.bom.Iframe.getDocument(this.getElement());
-				doc.body.appendChild(documentFragment);
-			} else {
-				this.__content = {
-					type: "fragment",
-					content: documentFragment
-				};
-			}
-		},
-		
-		/**
-		 * Set content of IFrame as HTML string
-		 *
-		 * @param text {String} HTML content as string
-		 */
-		setContentFromText : function(text) {
-			var div = document.createElement("div");
-			div.innerHTML = text;
-			
-			var df = document.createDocumentFragment();
-			var dcn = div.childNodes;
-			for (var i=0, ii=dcn.length; i<ii; i++) {
-				df.appendChild(dcn[i]);
-			}
-			this.setContent(df);
-		},
-		
-		/**
-		 * Set content of IFrame from HTML document as string
-		 *
-		 * @param text {String} Full HTML content as string
-		 */
-		setHtmlFromText : function(text) {
-			if (this.__isLoaded) {
-				var doc = qx.bom.Iframe.getDocument(this.getElement());
-				doc.open();
-				doc.write(text);
-				doc.close();
-			} else {
-				this.__content = {
-					type: "html",
-					content: text
-				};
-			}
-		}
-	}
+core.Class('unify.ui.embed.Iframe', {
+
+  include: [
+    unify.ui.core.Widget
+  ],
+
+
+  /**
+   * Constructor
+   *
+   * Creates a new instance of Iframe
+   */
+  construct: function() {
+    // Call superclass'
+    unify.ui.core.Widget.call(this);
+
+    // Set (default) values
+    this.__isLoading = false;
+    this.__isLoaded = false;
+  },
+
+
+  /*
+  ******************************************************************************
+    PROPERTIES
+  ******************************************************************************
+  */
+
+  properties: {
+
+    /** {String} Initial appearance selector */
+    appearance: {
+      init: 'iframe'
+    },
+
+    /** {String} The source location for the iframe */
+    src: {
+      type: 'String',
+      init: '',
+      nullable: false,
+      apply: function(newValue, oldValue) {
+        if (newValue != oldValue) {
+          this.__applySrc(newValue, oldValue);
+        }
+      }
+    }
+
+  },
+
+
+  /*
+  ******************************************************************************
+    MEMBERS
+  ******************************************************************************
+  */
+
+  members: {
+
+    /*
+    ----------------------------------------------------------------------------
+      PRIVATE
+    ----------------------------------------------------------------------------
+    */
+
+    /** {Boolean} Indicates whether or not this iframe is currently loading */
+    __isLoading: null,
+
+    /** {Boolean} Indicates whether or not this iframe is completely loaded */
+    __isLoaded: null,
+
+
+    /**
+     * Apply source
+     *
+     * @param newValue {String} The new source
+     * @param oldValue {String} Teh current source
+     */
+    __applySrc: function(newValue, oldValue) {
+      this.__isLoading = false;
+      this.__isLoaded = false;
+    },
+
+
+    // -------------------------------------------------------------------------
+    // Event handler
+    // -------------------------------------------------------------------------
+
+    /**
+     * Handler for onload
+     *
+     * Called whenever the source of the iframe has been completely loaded
+     *
+     * @param e {Event} The onload event
+     */
+    __onLoad: function(e) {
+      // We know that the iframe's source has been loaded, so
+      // we remove event listeners
+      var elem = this.getElement();
+      this.addNativeListener(elem, 'load', this.__onLoad, this);
+
+      this.__isLoading = false;
+      this.__isLoaded = true;
+    },
+
+
+    /*
+    ----------------------------------------------------------------------------
+      PROTECTED
+    ----------------------------------------------------------------------------
+    */
+
+    /**
+     * Create element
+     *
+     * @return {HTMLElement} Returns a newly created iframe element
+     * @overridden
+     */
+    _createElement: function() {
+      return document.createElement('iframe');
+    },
+
+
+    /*
+    ----------------------------------------------------------------------------
+      PUBLIC
+    ----------------------------------------------------------------------------
+    */
+
+    /**
+     * Load
+     *
+     * Applies the src property to the iframe's DOM attribute, which
+     * should automatically trigger loading the web page.
+     */
+    load: function() {
+      // Check, if we have a source URL to load
+      var src = this.getSrc();
+      if (!src || src == '') {
+        return;
+      }
+
+      // Register event listeners
+      var elem = this.getElement();
+      this.addNativeListener(elem, 'load', this.__onLoad, this);
+
+      // Load source
+      elem.setAttribute('src', src);
+
+      this.__isLoading = true;
+      this.__isLoaded = false;
+    }
+  }
+
 });
