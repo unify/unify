@@ -59,6 +59,20 @@ core.Class("unify.ui.container.Scroll", {
 		/*root.addNativeListener("touchmove", this.__onTouchMove,this);
 		root.addNativeListener("touchend", this.__onTouchEnd,this);
 		root.addNativeListener("touchcancel", this.__onTouchEnd,this);*/
+		
+		this.__inInitPhase = false;
+		if ( (jasy.Env.getValue("os.name") != "android") && (jasy.Env.getValue("os.name") != "ios") ) {
+			this.__inInitPhase = true;
+			this.addListener("resize", function() {
+				this.__showIndicators();
+				(function() {
+					this.__inInitPhase = false;
+					if (!this.__inTouch) {
+						this.__hideIndicators();
+					}
+				}).lowDelay(1500, this);
+			}, this);
+		}
 	},
 
 	/*
@@ -718,11 +732,11 @@ core.Class("unify.ui.container.Scroll", {
 		 * axis must be scroll enabled and the indicator must be allowed to show
 		 */
 		__showIndicators: function(){
-			if (this.__enableScrollX && this.__showIndicatorX && this.__inTouch) {
+			if (this.__enableScrollX && this.__showIndicatorX && (this.__inTouch || this.__inInitPhase)) {
 				this.__horizontalScrollIndicator.setVisible(true);
 			}
 
-			if (this.__enableScrollY && this.__showIndicatorY && this.__inTouch) {
+			if (this.__enableScrollY && this.__showIndicatorY && (this.__inTouch || this.__inInitPhase)) {
 				this.__verticalScrollIndicator.setVisible(true);
 			}
 		},
