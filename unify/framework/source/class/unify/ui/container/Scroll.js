@@ -63,7 +63,7 @@ core.Class("unify.ui.container.Scroll", {
 		this.__inInitPhase = false;
 		if ( (jasy.Env.getValue("os.name") != "android") && (jasy.Env.getValue("os.name") != "ios") ) {
 			this.__inInitPhase = true;
-			this.addListener("resize", function() {
+			var cb = function() {
 				this.__showIndicators();
 				(function() {
 					this.__inInitPhase = false;
@@ -71,7 +71,14 @@ core.Class("unify.ui.container.Scroll", {
 						this.__hideIndicators();
 					}
 				}).lowDelay(1500, this);
+			}.bind(this);
+			this.addListener("changeVisibility", function(e) {
+				if (e.getData() == "visible") {
+					this.__inInitPhase = true;
+					cb();
+				}
 			}, this);
+			this.addListener("resize", cb, this);
 		}
 	},
 
