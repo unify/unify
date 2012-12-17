@@ -85,9 +85,9 @@
 				var text = [
 					"@font-face {",
 						"font-family: '" + fontname + "';",
-						"src:url('" + jasy.Asset.toUri(font+".eot") + "');",
-						"src:url('" + jasy.Asset.toUri(font+".eot") + "?#iefix') format('embedded-opentype'),",
-							"url('" + jasy.Asset.toUri(font+".woff") + "') format('woff'),",
+						//"src:url('" + jasy.Asset.toUri(font+".eot") + "');",
+						//"src:url('" + jasy.Asset.toUri(font+".eot") + "?#iefix') format('embedded-opentype'),",
+							"src:url('" + jasy.Asset.toUri(font+".woff") + "') format('woff'),",
 							"url('" + jasy.Asset.toUri(font+".ttf") + "') format('truetype'),",
 							"url('" + jasy.Asset.toUri(font+".svg") + "#" + fontname + "') format('svg');",
 							"font-weight: normal;",
