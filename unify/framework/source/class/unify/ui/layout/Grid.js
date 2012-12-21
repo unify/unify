@@ -415,9 +415,9 @@ core.Class("unify.ui.layout.Grid", {
 		{
 			if (jasy.Env.getValue("debug"))
 			{
-				this.assertInteger(row, "Invalid parameter 'row'");
+				/*this.assertInteger(row, "Invalid parameter 'row'");
 				this.assertInArray(hAlign, ["left", "center", "right"]);
-				this.assertInArray(vAlign, ["top", "middle", "bottom"]);
+				this.assertInArray(vAlign, ["top", "middle", "bottom"]);*/
 			}
 
 			this._setRowData(row, "hAlign", hAlign);
