@@ -15,6 +15,12 @@
 		include : [unify.core.Object],
 		
 		properties : {
+			/** {Float} Scaling factor of widget */
+			scale : {
+				init: 1,
+				apply : dimensionFnt
+			},
+			
 			/** {Integer} Width of widget */
 			width: {
 				init: null,
@@ -206,6 +212,8 @@
 			},
 			
 			_computeSizeHint : function() {
+				var scale = this.getScale();
+				
 				var width = this.getWidth();
 				var height = this.getHeight();
 				var maxWidth = this.getMaxWidth();
