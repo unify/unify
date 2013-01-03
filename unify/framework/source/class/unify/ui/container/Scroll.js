@@ -391,7 +391,7 @@ core.Class("unify.ui.container.Scroll", {
 			
 			return scroller;
 		},
-
+		
 		/**
 		 * get the content widget for the scroller.
 		 * 
@@ -413,13 +413,13 @@ core.Class("unify.ui.container.Scroll", {
 		 * 
 		 * recreates the scroller immediatly or after the running animation ended
 		 */
-	 _applyScrollerProperty : function(){
-		 if(this.__inAnimation){
-			 this.addListenerOnce("scrollend",this._createScroller,this);
-		 } else {
-			 this._createScroller();
-		 }
-	 },
+		_applyScrollerProperty : function(){
+			if(this.__inAnimation){
+				this.addListenerOnce("scrollend",this._createScroller,this);
+			} else {
+				this._createScroller();
+			}
+		},
 
 		_applyShowIndicatorX : function() {
 			this.__updateProperties();
