@@ -889,15 +889,18 @@ core.Class("unify.ui.core.Widget", {
 					var newWidth = width / scale;
 					var newHeight = height / scale;
 					
-					this.__setElementStyle(element, {
+					var options = {
 						position: "absolute",
 						left: newLeft + "px",
 						top: newTop + "px",
 						width: newWidth + "px",
-						height: newHeight + "px",
-						transform: "scale(" + scale + ")",
-						transformOrigin: "left top"
-					});
+						height: newHeight + "px"
+					};
+					if (scale !== 1) {
+						options.transform = "scale(" + scale + ")";
+						options.transformOrigin = "left top";
+					}
+					this.__setElementStyle(element, options);
 				}
 			}
 
