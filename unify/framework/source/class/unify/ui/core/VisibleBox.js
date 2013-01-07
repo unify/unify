@@ -16,7 +16,8 @@
 		
 		properties : {
 			/** {Float} Scaling factor of widget */
-			scale : {
+			boxScale : {
+				// Should be renamed in Unify 4.x, conflicts with ui.basic.Image.scale
 				init: 1,
 				apply : dimensionFnt
 			},
@@ -212,8 +213,6 @@
 			},
 			
 			_computeSizeHint : function() {
-				var scale = this.getScale();
-				
 				var width = this.getWidth();
 				var height = this.getHeight();
 				var maxWidth = this.getMaxWidth();

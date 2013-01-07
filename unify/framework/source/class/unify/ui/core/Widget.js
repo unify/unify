@@ -885,7 +885,7 @@ core.Class("unify.ui.core.Widget", {
 						newTop += modPos[1];
 					}*/
 					
-					var scale = this.getScale();
+					var scale = this.getBoxScale();
 					var newWidth = width / scale;
 					var newHeight = height / scale;
 					
