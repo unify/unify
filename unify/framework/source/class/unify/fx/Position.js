@@ -62,7 +62,7 @@ core.Class("unify.fx.Position", {
 			var matcher = new RegExp("translate(?:3d)?([^)]+)");
 			var parsed = matcher.exec(from);
 			var mod;
-			if (parsed && parsed.length == 2) {
+			if ((jasy.Env.getValue("render.translate") == false) && parsed && parsed.length == 2) {
 				var vals = parsed[1].substring(1).split(",");
 				var pos = this.__getPosition(vals[0], vals[1]);
 				mod = this.__mod = {
@@ -109,9 +109,7 @@ core.Class("unify.fx.Position", {
 			var left = Math.round(mod.left + (anim.left * percent));
 			var top = Math.round(mod.top + (anim.top * percent));
 
-			this._widget.setStyle({
-				transform: unify.bom.Transform.accelTranslate(left+"px", top+"px")
-			});
+			this._widget.setPostLayout(unify.bom.Transform.accelTranslate(left+"px", top+"px"));
 		}
 	}
 });

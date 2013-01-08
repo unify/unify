@@ -812,6 +812,17 @@ core.Class("unify.ui.core.Widget", {
 		getPosition : function() {
 			return this.__elementPos;
 		},
+		
+		setPostLayout : function(option) {
+			this.__postlayoutTransform = option;
+			var layoutTransform = this.__layoutTransform || "";
+			this.__setElementStyle(this.getElement(), "transform", layoutTransform + " " + option);
+		},
+		
+		overrideLayoutTransform : function(left, top) {
+			var layoutTransform = this.__layoutTransform = "translate(" + left + "px, " + top + "px)";
+			this.__setElementStyle(this.getElement(), "transform", layoutTransform + " " + (this.__postlayoutTransform || ""));
+		},
 
 		/**
 		 * Render method to apply layout on widget's DOM element. This method applies
@@ -891,15 +902,27 @@ core.Class("unify.ui.core.Widget", {
 					
 					var options = {
 						position: "absolute",
-						left: newLeft + "px",
-						top: newTop + "px",
 						width: newWidth + "px",
-						height: newHeight + "px"
+						height: newHeight + "px",
+						transform: ""
 					};
-					if (scale !== 1) {
-						options.transform = "scale(" + scale + ")";
-						options.transformOrigin = "left top";
+					if (jasy.Env.isSet("render.translate")) {
+						options.left = 0;
+						options.top = 0;
+						
+						if (newLeft+newTop !== 0) {
+							options.transform = "translate("+newLeft+"px,"+newTop+"px)"
+						}
+					} else {
+						options.left = newLeft + "px";
+						options.top = newTop + "px";
 					}
+					if (scale !== 1) {
+						// Scale with origin top left
+						options.transform += " translate(-50%, -50%) scale(" + scale + ") translate(50%, 50%)";
+					}
+					this.__layoutTransform = options.transform;
+					options.transform += " " + (this.__postlayoutTransform||"");
 					this.__setElementStyle(element, options);
 				}
 			}

@@ -40,11 +40,18 @@
 			
 			widget.setUserData("domElementPositionOverride", {left: posOverride.newPosition.left, top: posOverride.newPosition.top});
 			
-			lowland.bom.Style.set(e, {
-				left: posOverride.newPosition.left + "px",
-				top:  posOverride.newPosition.top + "px",
-				zIndex: 20000
-			});
+			if (jasy.Env.isSet("render.translate")) {
+				widget.overrideLayoutTransform(posOverride.newPosition.left, posOverride.newPosition.top);
+				lowland.bom.Style.set(e, {
+					zIndex: 20000
+				});
+			} else {
+				lowland.bom.Style.set(e, {
+					left: posOverride.newPosition.left + "px",
+					top:  posOverride.newPosition.top + "px",
+					zIndex: 20000
+				});
+			}
 			
 			rootElement.appendChild(e);
 		},
@@ -67,11 +74,18 @@
 			
 			var origPos = posOverride.originalPosition;
 			
-			lowland.bom.Style.set(e, {
-				left: origPos.left + "px",
-				top: origPos.top + "px",
-				zIndex: origPos.zIndex
-			});
+			if (jasy.Env.isSet("render.translate")) {
+				widget.overrideLayoutTransform(origPos.left, origPos.top);
+				lowland.bom.Style.set(e, {
+					zIndex: origPos.zIndex
+				});
+			} else {
+				lowland.bom.Style.set(e, {
+					left: origPos.left + "px",
+					top: origPos.top + "px",
+					zIndex: origPos.zIndex
+				});
+			}
 			parentElement.appendChild(e);
 			
 			widget.setUserData("domElementPositionOverride", null);

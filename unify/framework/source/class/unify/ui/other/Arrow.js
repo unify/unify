@@ -67,9 +67,7 @@ core.Class("unify.ui.other.Arrow", {
 			}
 			
 			if (rotate) {
-				this.setStyle({
-					transform: rotate
-				});
+				this.setPostLayout(rotate);
 			}
 		}
 	}

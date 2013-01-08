@@ -58,9 +58,7 @@ core.Class("unify.fx.Rotate", {
 			var mod = this.__mod;
 			var anim = this.__anim;
 
-			this._widget.setOwnStyle({
-				transform: "rotate(" + (mod + anim * percent) + "deg)"
-			});
+			this._widget.setPostLayout("rotate(" + (mod + anim * percent) + "deg)");
 		}
 	}
 });

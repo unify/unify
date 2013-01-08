@@ -350,7 +350,8 @@ core.Class("unify.ui.container.Scroll", {
 
 			var render = function(left, top, zoom, event) {
 				self.__inAnimation = !!self.__inTouch;//TODO this evaluates to false during deceleration!
-				Style.set(contentElement,"transform",Transform.accelTranslate((-left) + 'px', (-top) + 'px'));
+				contentWidget.setPostLayout(Transform.accelTranslate((-left) + 'px', (-top) + 'px'));
+				
 				if (self.__enableScrollX) {
 					self.__scrollLeft=left;
 				}
