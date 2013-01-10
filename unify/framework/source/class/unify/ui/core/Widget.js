@@ -820,8 +820,15 @@ core.Class("unify.ui.core.Widget", {
 		},
 		
 		overrideLayoutTransform : function(left, top) {
-			var layoutTransform = this.__layoutTransform = "translate(" + left + "px, " + top + "px)";
-			this.__setElementStyle(this.getElement(), "transform", layoutTransform + " " + (this.__postlayoutTransform || ""));
+			if (jasy.Env.isSet("render.translate")) {
+				var layoutTransform = this.__layoutTransform = "translate(" + left + "px, " + top + "px)";
+				this.__setElementStyle(this.getElement(), "transform", layoutTransform + " " + (this.__postlayoutTransform || ""));
+			} else {
+				this.__setElementStyle(this.getElement(), {
+					left: left + "px",
+					top: top + "px"
+				});
+			}
 		},
 
 		/**
