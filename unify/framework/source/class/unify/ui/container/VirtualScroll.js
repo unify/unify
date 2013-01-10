@@ -45,6 +45,15 @@ core.Class("unify.ui.container.VirtualScroll", {
 			this.getChildrenContainer().setHeight(Math.ceil(model.length / this.getColumns()) * this.__elementHeight);
 			this.__isInit = true;
 			
+			var widgetMap = this.__widgetMap;
+			for (var row in widgetMap) {
+				var widgetRow = widgetMap[row];
+				for (var col in widgetRow) {
+					this.__pushWidgetToPool(widgetRow[col]);
+				}
+			}
+			this.__widgetMap = [];
+			
 			this.__onVirtualScroll();
 		},
 		
@@ -109,7 +118,6 @@ core.Class("unify.ui.container.VirtualScroll", {
 		
 		__getWidgetFromPool : function() {
 			var widgetPool = this.__widgetPool;
-			
 			if (widgetPool.length > 0) {
 				return widgetPool.pop();
 			} else {
@@ -118,9 +126,8 @@ core.Class("unify.ui.container.VirtualScroll", {
 		},
 		
 		__pushWidgetToPool : function(widget) {
-			var widgetPool = this.__widgetPool;
-			
-			widgetPool.push(widget);
+			widget.overrideLayoutTransform(0, -100000);
+			this.__widgetPool.push(widget);
 		},
 	}
 });
