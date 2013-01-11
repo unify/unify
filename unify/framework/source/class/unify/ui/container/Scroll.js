@@ -349,6 +349,7 @@ core.Class("unify.ui.container.Scroll", {
 			var self = this;
 
 			var render = function(left, top, zoom, event) {
+
 				self.__inAnimation = !!self.__inTouch;//TODO this evaluates to false during deceleration!
 				contentWidget.setPostLayout(Transform.accelTranslate((-left) + 'px', (-top) + 'px'));
 				
@@ -360,8 +361,7 @@ core.Class("unify.ui.container.Scroll", {
 				}
 				
 				self.__renderIndicators(left,top);
-				
-				if (self.hasListener("scroll")) {
+				if (event!=="cleanup" && self.hasListener("scroll")) {
 					self.fireEvent("scroll");
 				}
 				if (event == "stop" || event == "stop_deceleration" || event == "stop_animation") {
@@ -1138,7 +1138,7 @@ var Scroller;
 			self.__computeScrollMax();
 
 			// Refresh scroll position
-			self.scrollTo(self.__scrollLeft, self.__scrollTop, true);
+			self.scrollTo(self.__scrollLeft, self.__scrollTop, null, null, false);
 
 		},
 
@@ -1353,7 +1353,7 @@ var Scroller;
 		 * @param animate {Boolean?false} Whether the scrolling should happen using an animation
 		 * @param zoom {Number?null} Zoom level to go to
 		 */
-		scrollTo: function(left, top, animate, zoom) {
+		scrollTo: function(left, top, animate, zoom, fireEvents) {
 
 			var self = this;
 
@@ -1422,7 +1422,7 @@ var Scroller;
 			}
 
 			// Publish new values
-			self.__publish(left, top, zoom, animate);
+			self.__publish(left, top, zoom, animate, fireEvents);
 
 		},
 
@@ -1850,7 +1850,7 @@ var Scroller;
 		 * @param top {Number} Top scroll position
 		 * @param animate {Boolean?false} Whether animation should be used to move to the new coordinates
 		 */
-		__publish: function(left, top, zoom, animate) {
+		__publish: function(left, top, zoom, animate, fireEvents) {
 			var self = this;
 
 			// Remember whether we had an animation, then we try to continue based on the current "drive" of the animation
@@ -1919,7 +1919,7 @@ var Scroller;
 
 				// Push values out
 				if (self.__callback) {
-					self.__callback(left, top, zoom);
+					self.__callback(left, top, zoom, (fireEvents===false)?"cleanup":null);
 				}
 
 				// Fix max scroll ranges
