@@ -22,6 +22,10 @@
 		"develop" : {
 			"check" : "Boolean",
 			"detect" : "unify.bom.detect.Develop"
+		},
+		"render.translate" : {
+			"check" : "Boolean",
+			"default" : false
 		}
 	},
 	"requires" : [{
