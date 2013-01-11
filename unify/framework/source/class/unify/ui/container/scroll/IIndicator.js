@@ -6,11 +6,11 @@ core.Interface("unify.ui.container.scroll.IIndicator", {
 	----------------------------------------------------------------------------
 	*/
 	
-	/*events : {
+	events : {
 		indicatorMoveStart : lowland.events.DataEvent,
 		indicatorMoveEnd : lowland.events.DataEvent,
 		indicatorMove : lowland.events.DataEvent
-	},*/
+	},
 	
 	properties : {
 		/** Orientation of the scroll indicator */

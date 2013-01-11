@@ -54,6 +54,12 @@
 				apply: function(value) { this._applyScroll(value); }
 			}
 		},
+		
+		events : {
+			indicatorMoveStart : lowland.events.DataEvent,
+			indicatorMoveEnd : lowland.events.DataEvent,
+			indicatorMove : lowland.events.DataEvent
+		},
 	
 		/**
 		 * @param orientation {String?null} Orientation of indicator

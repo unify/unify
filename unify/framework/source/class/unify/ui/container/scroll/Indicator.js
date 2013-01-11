@@ -60,6 +60,12 @@
 				apply: function(value) { this._applyScroll(value); }
 			}
 		},
+		
+		events : {
+			indicatorMoveStart : lowland.events.DataEvent,
+			indicatorMoveEnd : lowland.events.DataEvent,
+			indicatorMove : lowland.events.DataEvent
+		},
 	
 		/**
 		 * @param orientation {String?null} Orientation of indicator
@@ -121,7 +127,7 @@
 				this.__setSliderStyle(this.getOrientation() === "horizontal");
 	
 				// Listener for animation purposes
-				this.addListener(elem, "transitionEnd", this.__onTransitionEnd, this);
+				this.addNativeListener(elem, "transitionEnd", this.__onTransitionEnd, this);
 	
 				return elem;
 			},
