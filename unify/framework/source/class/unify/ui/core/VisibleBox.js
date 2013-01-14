@@ -144,6 +144,10 @@
 				}
 			},
 			
+			_invalidateParentLayout : function() {
+				this.__invalidateParent();
+			},
+			
 			/**
 			 * Invalidates layout cache so this visible box is layouted in next running
 			 * of layout queue if added.
