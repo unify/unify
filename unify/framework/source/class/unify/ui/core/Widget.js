@@ -819,11 +819,13 @@ core.Class("unify.ui.core.Widget", {
 			this.__setElementStyle(this.getElement(), "transform", layoutTransform + " " + option);
 		},
 		
+		__overrideLayout : false,
 		overrideLayoutTransform : function(left, top) {
 			if (jasy.Env.isSet("render.translate")) {
 				var layoutTransform = this.__layoutTransform = "translate(" + left + "px, " + top + "px)";
 				this.__setElementStyle(this.getElement(), "transform", layoutTransform + " " + (this.__postlayoutTransform || ""));
 			} else {
+				this.__overrideLayout = true;
 				this.__setElementStyle(this.getElement(), {
 					left: left + "px",
 					top: top + "px"
@@ -897,12 +899,6 @@ core.Class("unify.ui.core.Widget", {
 					
 					this.__elementPos = [newLeft, newTop];
 					
-					/*var modPos = this.__modificationPosition;
-					if (modPos) {
-						newLeft += modPos[0];
-						newTop += modPos[1];
-					}*/
-					
 					var scale = this.getBoxScale();
 					var newWidth = width / scale;
 					var newHeight = height / scale;
@@ -921,8 +917,10 @@ core.Class("unify.ui.core.Widget", {
 							options.transform = "translate("+newLeft+"px,"+newTop+"px)"
 						}
 					} else {
-						options.left = newLeft + "px";
-						options.top = newTop + "px";
+						if (!this.__overrideLayout) {
+							options.left = newLeft + "px";
+							options.top = newTop + "px";
+						}
 					}
 					if (scale !== 1) {
 						// Scale with origin top left
