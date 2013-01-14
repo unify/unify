@@ -44,6 +44,16 @@ core.Class("unify.ui.basic.Label", {
 		}
 
 		this._applyEllipsis(this.getEllipsis());
+		
+		this.addNativeListener(window, "resize", function() {
+			var oldSize = this.getSizeHint();
+			this.invalidateLayoutCache();
+			var newSize = this.getSizeHint();
+			if (oldSize.width != newSize.width) {
+				unify.ui.layout.queue.Layout.add(this);
+				this._invalidateParentLayout();
+			}
+		}, this);
 	},
 
 	properties : {
