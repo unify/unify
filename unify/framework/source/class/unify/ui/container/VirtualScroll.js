@@ -121,7 +121,9 @@ core.Class("unify.ui.container.VirtualScroll", {
 			widgetUpdater(widget, column, row, false);
 			this.add(widget);
 			
-			widget.overrideLayoutTransform(column*this.__elementWidth+offsetX, row*this.__elementHeight+offsetY);
+			var left = column*this.__elementWidth+offsetX;
+			var top = row*this.__elementHeight+offsetY;
+			widget.overrideLayoutTransform(left, top);
 			
 			if (!this.__widgetMap[row]) {
 				this.__widgetMap[row] = {};
