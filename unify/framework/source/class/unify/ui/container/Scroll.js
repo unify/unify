@@ -188,6 +188,7 @@ core.Class("unify.ui.container.Scroll", {
 		__horizontalScrollIndicator : null,
 		
 		__inTouch : false,
+    __inMouseWheel: false,
 		__showIndicatorsOnNextTouchMove: false,
 
 		/*
@@ -610,6 +611,8 @@ core.Class("unify.ui.container.Scroll", {
 		 * @param e {Event} Mouse wheel event
 		 */
 		__onMouseWheel : function(e) {
+      this.__inMouseWheel = true;
+
 			var newScrollPos = this.__newWheelScrollPos;
 			var top;
 			
@@ -629,13 +632,27 @@ core.Class("unify.ui.container.Scroll", {
 			}
 			
 			this.__newWheelScrollPos = top;
-			
+
+      this.__showIndicators();
 			this.scrollTo(null, top, false);
 			
-			this.addListenerOnce("scrollend", function() {
-				this.__newWheelScrollPos = null;
-			}, this);
+			this.addListenerOnce("scrollend", this.__onMouseWheelScrollEnd, this);
 		},
+
+
+    __onMouseWheelScrollEnd: function(e) {
+      this.__newWheelScrollPos = null;
+      this.__inMouseWheel = false;
+
+      // We delay the hiding of the scroll indicators to make it more pleasing
+      // on the eyes to show them. Since it takes some time to smoothly fade
+      // them in, it could be that the indicators would otherwise not be visible
+      // at all.
+      (function() {
+        this.__hideIndicators();
+      }).lowDelay(250, this);
+    },
+
 
 		/**
 		 * Update cached scroll properties
@@ -740,11 +757,11 @@ core.Class("unify.ui.container.Scroll", {
 		 * axis must be scroll enabled and the indicator must be allowed to show
 		 */
 		__showIndicators: function(){
-			if (this.__enableScrollX && this.__showIndicatorX && (this.__inTouch || this.__inInitPhase)) {
+			if (this.__enableScrollX && this.__showIndicatorX && (this.__inTouch || this.__inMouseWheel || this.__inInitPhase)) {
 				this.__horizontalScrollIndicator.setVisible(true);
 			}
 
-			if (this.__enableScrollY && this.__showIndicatorY && (this.__inTouch || this.__inInitPhase)) {
+			if (this.__enableScrollY && this.__showIndicatorY && (this.__inTouch || this.__inMouseWheel || this.__inInitPhase)) {
 				this.__verticalScrollIndicator.setVisible(true);
 			}
 		},
