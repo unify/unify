@@ -15,7 +15,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 		this.__widgetMap = [];
 		
 		this.addListener("resize", function() {
-			this.__onVirtualScroll();
+			//this.__onVirtualScroll();
 		}, this);
 	},
 	
@@ -33,11 +33,13 @@ core.Class("unify.ui.container.VirtualScroll", {
 		},
 		
 		offsetX : {
-			init: 0
+			init: 0,
+			apply : function() { this.__onVirtualScroll() }
 		},
 		
 		offsetY : {
-			init: 0
+			init: 0,
+			apply : function() { this.__onVirtualScroll() }
 		}
 	},
 	
@@ -70,6 +72,9 @@ core.Class("unify.ui.container.VirtualScroll", {
 			this.__onVirtualScroll();
 		},
 		
+		__oldOffsetX : null,
+		__oldOffsetY : null,
+		
 		__onVirtualScroll : function() {
 			if (!this.__isInit) {
 				return;
@@ -101,6 +106,17 @@ core.Class("unify.ui.container.VirtualScroll", {
 			
 			var offsetX = this.getOffsetX();
 			var offsetY = this.getOffsetY();
+			var changedOffset = false;
+			
+			if ((offsetX != this.__oldOffsetX) || (offsetY != this.__oldOffsetY)) {
+				this.__oldOffsetX = offsetX;
+				this.__oldOffsetY = offsetY;
+				
+				changedOffset = true;
+			}
+			
+			var elementWidth = this.__elementWidth;
+			var elementHeight = this.__elementHeight;
 			
 			// If new rows appears that have no rendered widgets, do it
 			for (var row = startRow; row <= endRow; row++) {
@@ -108,6 +124,11 @@ core.Class("unify.ui.container.VirtualScroll", {
 				for (var i=0; i<columns; i++) {
 					if ((!widgetMap[row]) || (!widgetMap[row][i])) {
 						this.__createWidget(i, row, offsetX, offsetY);
+					} else if (changedOffset) {
+						var widget = widgetMap[row][i];
+						var left = i*elementWidth+offsetX;
+						var top = row*elementHeight+offsetY;
+						widget.overrideLayoutTransform(left, top);
 					}
 				}
 			}
