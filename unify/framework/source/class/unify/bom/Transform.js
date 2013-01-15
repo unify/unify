@@ -25,13 +25,11 @@
 		 * @param y {Integer} Y position of translate
 		 * @return {String} Accelerated translate
 		 */
-		accelTranslate : function(x, y) {
+		accelTranslate : (chrome || jasy.Env.getValue("engine") != "webkit") ? function(x, y) {
 			// Fix resize bug with translate3d on google chrome 15.0.874.121 m
-			if (chrome || jasy.Env.getValue("engine") != "webkit") {
-				return "translate("+x+","+y+")";
-			} else {
-				return "translate3d("+x+","+y+",0)";
-			}
+			return "translate("+x+","+y+")";
+		} : function(x, y) {
+			return "translate3d("+x+","+y+",0)";
 		},
 		
 		/**
