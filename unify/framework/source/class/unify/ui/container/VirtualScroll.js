@@ -142,7 +142,6 @@ core.Class("unify.ui.container.VirtualScroll", {
 			var widgetUpdater = this.__widgetUpdater;
 			var widget = this.__getWidgetFromPool();
 			
-			widgetUpdater(widget, column, row, false);
 			this.add(widget);
 			
 			var left = column*this.__elementWidth+offsetX;
@@ -170,6 +169,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 		__pushWidgetToPool : function(widget) {
 			widget.overrideLayoutTransform(0, -100000);
 			this.__widgetPool.push(widget);
+			this.__widgetUpdater(widget, null, null, false);
 		},
 	}
 });
