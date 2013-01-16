@@ -31,17 +31,18 @@ core.Class("unify.ui.container.VirtualScroll", {
 		
 		columns : {
 			init: 1,
-			type: "integer"
+			type: "Integer",
+			apply: function(value) { this.__applyColumns(value); }
 		},
 		
 		offsetX : {
 			init: 0,
-			apply : function() { this.__onVirtualScroll() }
+			apply : function() { this.__onVirtualScroll(); }
 		},
 		
 		offsetY : {
 			init: 0,
-			apply : function() { this.__onVirtualScroll() }
+			apply : function() { this.__onVirtualScroll(); }
 		}
 	},
 	
@@ -60,7 +61,21 @@ core.Class("unify.ui.container.VirtualScroll", {
 		__isInit : null,
 		
 		__applyModel : function(model) {
-			this.getChildrenContainer().setHeight(Math.ceil(model.length / this.getColumns()) * this.__elementHeight);
+			var rows = Math.ceil(model.length / this.getColumns());
+			this.getChildrenContainer().setHeight(rows * this.__elementHeight);
+			this.__reflow();
+		},
+
+		__applyColumns : function(columns) {
+			var model = this.getModel();
+			if (model && columns > 0) {
+				var rows = Math.ceil(model.length / columns);
+				this.getChildrenContainer().setHeight(rows * this.__elementHeight);
+				this.__reflow();
+			}
+		},
+
+		__reflow : function() {
 			this.__isInit = true;
 			
 			var widgetMap = this.__widgetMap;
@@ -170,6 +185,6 @@ core.Class("unify.ui.container.VirtualScroll", {
 			widget.overrideLayoutTransform(0, -100000);
 			this.__widgetPool.push(widget);
 			this.__widgetUpdater(widget, null, null, false);
-		},
+		}
 	}
 });
