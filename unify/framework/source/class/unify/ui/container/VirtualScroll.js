@@ -1,7 +1,7 @@
 core.Class("unify.ui.container.VirtualScroll", {
 	include : [unify.ui.container.Scroll],
 	
-	construct : function(elementWidth, elementHeight, widgetFactory, widgetUpdater) {
+	construct : function(elementWidth, elementHeight, widgetFactory, widgetUpdater, prerenderRows) {
 		unify.ui.container.Scroll.call(this, new unify.ui.layout.Basic());
 		
 		this.addListener("scroll", this.__onVirtualScroll, this);
@@ -10,6 +10,8 @@ core.Class("unify.ui.container.VirtualScroll", {
 		
 		this.__widgetFactory = widgetFactory;
 		this.__widgetUpdater = widgetUpdater;
+		
+		this.__prerenderRows = prerenderRows || 0;
 		
 		this.__widgetPool = [];
 		this.__widgetMap = [];
@@ -48,6 +50,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 	},
 	
 	members : {
+		__prerenderRows : 0,
 		__elementHeight : 100,
 		__elementWidth : null,
 		__widgetPool : null,
@@ -90,8 +93,8 @@ core.Class("unify.ui.container.VirtualScroll", {
 			var widgetMap = this.__widgetMap;
 			
 			var maxElementHeight = this.__elementHeight;
-			var startRow = Math.floor(currentPos / maxElementHeight);
-			var endRow = Math.floor((currentPos + currentHeight) / maxElementHeight);
+			var startRow = Math.floor(currentPos / maxElementHeight) - this.__prerenderRows;
+			var endRow = Math.floor((currentPos + currentHeight) / maxElementHeight) + this.__prerenderRows;
 			
 			// Move all widgets not shown anymore to widget pool
 			for (var row in widgetMap) {
