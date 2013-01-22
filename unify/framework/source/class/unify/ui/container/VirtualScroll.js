@@ -1,13 +1,11 @@
 core.Class("unify.ui.container.VirtualScroll", {
 	include : [unify.ui.container.Scroll],
 	
-	construct : function(elementWidth, elementHeight, widgetFactory, widgetUpdater, prerenderRows) {
+	construct : function(widgetFactory, widgetUpdater, prerenderRows) {
 		unify.ui.container.Scroll.call(this, new unify.ui.layout.Basic());
 		
 		this.addListener("scroll", this.__onVirtualScroll, this);
-		this.__elementHeight = elementHeight;
-		this.__elementWidth = elementWidth;
-		
+
 		this.__widgetFactory = widgetFactory;
 		this.__widgetUpdater = widgetUpdater;
 		
@@ -43,6 +41,15 @@ core.Class("unify.ui.container.VirtualScroll", {
 		offsetY : {
 			init: 0,
 			apply : function() { this.__onVirtualScroll(); }
+		},
+
+		elementHeight : {
+		  init : 100
+		},
+		
+		elementWidth : {
+		  init : null,
+			apply : function(value) { this.__applyWidth(value); }
 		}
 	},
 	
@@ -52,8 +59,6 @@ core.Class("unify.ui.container.VirtualScroll", {
 	
 	members : {
 		__prerenderRows : 0,
-		__elementHeight : 100,
-		__elementWidth : null,
 		__widgetPool : null,
 		__widgetFactory : null,
 		__widgetUpdater : null,
@@ -62,7 +67,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 		
 		__applyModel : function(model) {
 			var rows = Math.ceil(model.length / this.getColumns());
-			this.getChildrenContainer().setHeight(rows * this.__elementHeight);
+			this.getChildrenContainer().setHeight(rows * this.getElementHeight());
 			this.__reflow();
 		},
 
@@ -70,10 +75,15 @@ core.Class("unify.ui.container.VirtualScroll", {
 			var model = this.getModel();
 			if (model && columns > 0) {
 				var rows = Math.ceil(model.length / columns);
-				this.getChildrenContainer().setHeight(rows * this.__elementHeight);
+				this.getChildrenContainer().setHeight(rows * this.getElementHeight());
 				this.__reflow();
 			}
 		},
+
+
+__applyWidth : function(width) {
+  console.log("applyWidth", width);
+},
 
 		__reflow : function() {
 			this.__isInit = true;
@@ -107,7 +117,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 			
 			var widgetMap = this.__widgetMap;
 			
-			var maxElementHeight = this.__elementHeight;
+			var maxElementHeight = this.getElementHeight();
 			var startRow = Math.floor(currentPos / maxElementHeight) - this.__prerenderRows;
 			var endRow = Math.floor((currentPos + currentHeight) / maxElementHeight) + this.__prerenderRows;
 			
@@ -133,8 +143,8 @@ core.Class("unify.ui.container.VirtualScroll", {
 				changedOffset = true;
 			}
 			
-			var elementWidth = this.__elementWidth;
-			var elementHeight = this.__elementHeight;
+			var elementWidth = this.getElementWidth();
+			var elementHeight = this.getElementHeight();
 			
 			// If new rows appears that have no rendered widgets, do it
 			for (var row = startRow; row <= endRow; row++) {
@@ -147,6 +157,10 @@ core.Class("unify.ui.container.VirtualScroll", {
 						var left = i*elementWidth+offsetX;
 						var top = row*elementHeight+offsetY;
 						widget.overrideLayoutTransform(left, top);
+
+console.debug("onVirtualScroll", row, i, "left", left, "top", top);
+console.debug("-> style: left", widget.getStyle("left"), "top", widget.getStyle("top"), widget.getStyle("transform"));
+
 					}
 				}
 			}
@@ -159,8 +173,8 @@ core.Class("unify.ui.container.VirtualScroll", {
 			
 			this.add(widget);
 			
-			var left = column*this.__elementWidth+offsetX;
-			var top = row*this.__elementHeight+offsetY;
+			var left = column*this.getElementWidth()+offsetX;
+			var top = row*this.getElementHeight()+offsetY;
 			widget.overrideLayoutTransform(left, top);
 			
 			if (!this.__widgetMap[row]) {
