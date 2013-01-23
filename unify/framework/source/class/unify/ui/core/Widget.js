@@ -822,6 +822,7 @@ core.Class("unify.ui.core.Widget", {
 		__overrideLayout : false,
 		overrideLayoutTransform : function(left, top) {
 			if (jasy.Env.isSet("render.translate")) {
+				this.__overrideLayout = true;
 				var layoutTransform = this.__layoutTransform = unify.bom.Transform.accelTranslate(left + "px", top + "px");
 				this.__setElementStyle(this.getElement(), "transform", layoutTransform + " " + (this.__postlayoutTransform || ""));
 			} else {
@@ -910,11 +911,13 @@ core.Class("unify.ui.core.Widget", {
 						transform: ""
 					};
 					if (jasy.Env.isSet("render.translate")) {
-						options.left = 0;
-						options.top = 0;
-						
-						if (newLeft+newTop !== 0) {
-							options.transform = unify.bom.Transform.accelTranslate(newLeft+"px", newTop+"px");
+						if (!this.__overrideLayout) {
+							options.left = 0;
+							options.top = 0;
+							
+							if (newLeft+newTop !== 0) {
+								options.transform = unify.bom.Transform.accelTranslate(newLeft+"px", newTop+"px");
+							}
 						}
 					} else {
 						if (!this.__overrideLayout) {
