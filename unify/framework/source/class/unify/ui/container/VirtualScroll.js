@@ -82,6 +82,9 @@ core.Class("unify.ui.container.VirtualScroll", {
 		},
 
 		__reflow : function() {
+			if (!this.getModel()) {
+				return;
+			}
 			this.__isInit = true;
 			
 			var widgetMap = this.__widgetMap;
