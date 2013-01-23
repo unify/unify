@@ -64,6 +64,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 		__widgetFactory : null,
 		__widgetUpdater : null,
 		__widgetMap : null,
+		__maximalRows : 0,
 		__isInit : null,
 		
 		getCurrentWidgets : function() {
@@ -90,6 +91,8 @@ core.Class("unify.ui.container.VirtualScroll", {
 				return;
 			}
 			this.__isInit = true;
+			
+			this.__maximalRows = Math.ceil(this.getModel().length / this.getColumns());
 			
 			var widgetMap = this.__widgetMap;
 			for (var row in widgetMap) {
@@ -123,6 +126,15 @@ core.Class("unify.ui.container.VirtualScroll", {
 			var maxElementHeight = this.getElementHeight();
 			var startRow = Math.floor(currentPos / maxElementHeight) - this.__prerenderRows;
 			var endRow = Math.floor((currentPos + currentHeight) / maxElementHeight) + this.__prerenderRows;
+			
+			if (startRow < 0) {
+				startRow = 0;
+			}
+			var maxEndRow = this.__maximalRows;
+			if (endRow >= maxEndRow) {
+				endRow = maxEndRow-1;
+			}
+			
 			
 			// Move all widgets not shown anymore to widget pool
 			for (var row in widgetMap) {
