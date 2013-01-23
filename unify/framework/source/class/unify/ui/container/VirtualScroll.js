@@ -66,6 +66,10 @@ core.Class("unify.ui.container.VirtualScroll", {
 		__widgetMap : null,
 		__isInit : null,
 		
+		getCurrentWidgets : function() {
+			return this.__widgetMap;
+		},
+		
 		__applyModel : function(model) {
 			var rows = Math.ceil(model.length / this.getColumns());
 			this.getChildrenContainer().setHeight(rows * this.getElementHeight());
