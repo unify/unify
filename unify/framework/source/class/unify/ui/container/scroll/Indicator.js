@@ -271,7 +271,7 @@
 					if (this.__isVisible)
 					{
 						var translate = this.__horizontal ? unify.bom.Transform.accelTranslate(position+"px",0) : unify.bom.Transform.accelTranslate(0,position+"px");
-						Style.set(this.getElement(), "transform", translate);
+						this.setPostLayout(translate);
 					}
 				}
 	
