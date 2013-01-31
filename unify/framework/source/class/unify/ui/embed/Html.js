@@ -39,7 +39,7 @@ core.Class("unify.ui.embed.Html", {
 		
 		// overridden
 		_createElement : function() {
-			var div = document.createElement("div");
+			var div = new ebenejs.Div(); //document.createElement("div");
 			return div;
 		},
 		
@@ -63,7 +63,7 @@ core.Class("unify.ui.embed.Html", {
 			el.style.height = null;
 			el.style.visibility = "hidden";
 			
-			var height = lowland.bom.Element.getContentHeight(el);
+			var height = 100; //lowland.bom.Element.getContentHeight(el);
 			
 			el.style.width = origWidth;
 			el.style.height = origHeight;

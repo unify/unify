@@ -58,6 +58,7 @@ core.Class("unify.ui.core.PopOverManager", {
 		// especially on 'slow' devices, e.g. iPad
 		(function fn() {
 			var rootElement = root.getViewportElement();
+			return;
 			rootElement.appendChild(pblocker);
 			rootElement.appendChild(mblocker);
 		}.lazy());
@@ -230,6 +231,7 @@ core.Class("unify.ui.core.PopOverManager", {
 		 * @param position {String|Map|unify.ui.Widget?"center"} Position of widget ("center", "window", {left:50,top:50}) or trigger widget
 		 */
 		show : function(widget, position) {
+			return; // SF
 			if (jasy.Env.getValue("debug")) {
 				this.debug("Show: " + (widget&&widget.constructor));
 				core.Interface.assert(widget, unify.ui.core.IPopOver);

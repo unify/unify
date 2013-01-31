@@ -69,7 +69,7 @@ core.Class("unify.ui.basic.Atom", {
 		__labelWidget : null,
 		
 		_createElement : function() {
-			return document.createElement("div");
+			return new ebenejs.Container(); //document.createElement("div");
 		},
 		
 		/**

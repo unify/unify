@@ -306,7 +306,7 @@ core.Class("unify.ui.container.Scroll", {
 		},
 
 		_createElement : function() {
-			return document.createElement("div");
+			return new ebenejs.Container(); //document.createElement("div");
 		},
 
 		_computeSizeHint : function() {

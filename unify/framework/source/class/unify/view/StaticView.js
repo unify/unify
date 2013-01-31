@@ -213,7 +213,7 @@ core.Class("unify.view.StaticView",
 			//return this.getLayer().getElement();
 			//console.error("getElement");
 			var e = unify.ui.container.Composite.prototype.getElement.call(this); //this.base(arguments);
-			core.bom.ClassName.add(e, "layer");
+			//core.bom.ClassName.add(e, "layer");
 			return e;
 		},
 

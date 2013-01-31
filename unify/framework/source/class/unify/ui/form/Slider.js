@@ -114,7 +114,7 @@ core.Class("unify.ui.form.Slider", {
 		},
 		
 		_createElement : function() {
-			var e = document.createElement("div");
+			var e = new ebenejs.Container(); //document.createElement("div");
 			
 			return e;
 		},
@@ -244,6 +244,7 @@ core.Class("unify.ui.form.Slider", {
 		 * Recalculate the absolute position of the knob on the sliderbar
 		 */
 		_recalculateKnobPosition : function() {
+			return; // SF
 			var value = this.getValue();
 			var horizontal = this.getDirection() == "horizontal";
 			var posInfo = this.getChildControl("bar").getPositionInfo();

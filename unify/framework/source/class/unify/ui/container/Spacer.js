@@ -30,7 +30,7 @@ core.Class("unify.ui.container.Spacer", {
 	
 	members : {
 		_createElement : function() {
-			return document.createElement("div");
+			return new ebenejs.Div(); // document.createElement("div");
 		}
 	}
 });

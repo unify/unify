@@ -32,7 +32,7 @@ core.Class("unify.ui.basic.Content", {
 	
 	members : {
 		_createElement : function() {
-			return document.createElement("div");
+			return new ebenejs.Div(); //document.createElement("div");
 		}
 	}
 });

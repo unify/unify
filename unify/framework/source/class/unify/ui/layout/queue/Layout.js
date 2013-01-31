@@ -15,7 +15,6 @@
  */
 
 (function() {
-	
 	var widgetQueue = [];
 	
 	/** {String} Name of queue */

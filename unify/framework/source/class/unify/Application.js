@@ -70,7 +70,10 @@ core.Class("unify.Application", {
 			var rootLayout = this._getRootLayout();
 			var viewportElement = this._getViewportElement();
 			var root = this.__root = new unify.view.Root(rootElement, this._getRootEventElement(), viewportElement, rootLayout);
-			lowland.bom.Style.set(rootElement, "visibility", "hidden");
+			//lowland.bom.Style.set(rootElement, "visibility", "hidden");
+			rootElement.setVisible(false);
+			
+			root.getViewport().add(root);
 			
 			// Add box sizing css node
 			var prop = lowland.bom.Style.property("boxSizing").hyphenate();
@@ -82,24 +85,29 @@ core.Class("unify.Application", {
 			// Configure document
 			var Style = lowland.bom.Style;
 			var rootStyle = unify.theme.Manager.get().resolveStyle("BODY") || {};
-			Style.set(rootElement, rootStyle);
+			//Style.set(rootElement, rootStyle);
+			console.log("ROOT ELEMENT: ", rootElement, rootStyle);
+			rootElement.set(rootStyle);
 			if (rootStyle.font) {
-				Style.set(rootElement, unify.theme.Manager.get().resolveFont(rootStyle.font));
+				//Style.set(rootElement, unify.theme.Manager.get().resolveFont(rootStyle.font));
+				rootElement.set(unify.theme.Manager.get().resolveFont(rootStyle.font));
 			}
 			
 			// <html>
-			Style.set(rootElement.parentNode, {
+			/*SF:Style.set(rootElement.parentNode, {
 				width : "100%",
 				height : "100%",
 				overflow : "hidden",
 				padding : 0
-			});
+			});*/
+			
+			this.getViewportRoot();
 			
 			this.__setupDocumentSize();
 
 			// Event listeners
 			this.addNativeListener(window, "resize", this.__onResize, this);
-			this.addNativeListener(rootElement, "touchmove", function(e) { lowland.bom.Events.preventDefault(e); }, this);
+			//SF:this.addNativeListener(rootElement, "touchmove", function(e) { lowland.bom.Events.preventDefault(e); }, this);
 			this.addNativeListener(window, "orientationchange", this.__onRotate, this);
 			/*
 			if (jasy.Env.getValue("os.name") == "webos") {
@@ -114,7 +122,8 @@ core.Class("unify.Application", {
 		
 		// overridden
 		finalize : function() {
-			lowland.bom.Style.set(this._getRootElement(), "visibility", "visible");
+			//lowland.bom.Style.set(this._getRootElement(), "visibility", "visible");
+			this._getRootElement().setVisible(true);
 		},
 
 		
@@ -126,14 +135,14 @@ core.Class("unify.Application", {
 		 * @return {Element} DOM element that is the root for this application
 		 */
 		_getRootElement : function() {
-			return document.body;
+			return new ebenejs.Container(); //document.body;
 		},
 		
 		/**
 		 * {Element} Returns viewport element all popovers and out of layout widgets are bound to.
 		 */
 		_getViewportElement : function() {
-			return this._getRootElement();
+			return document.body; //this._getRootElement();
 		},
 		
 		_getTheme : function() {

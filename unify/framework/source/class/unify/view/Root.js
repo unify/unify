@@ -140,6 +140,7 @@ core.Class("unify.view.Root", {
 		 * @return {Map} Calculated size of root element
 		 */
 		_getSizeHint : function() {
+			return {width: 1000, height: 500};
 			var e;
 			if (jasy.Env.getValue("os.name") == "ios") {
 				var root = this.__rootElement;

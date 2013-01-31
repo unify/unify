@@ -123,7 +123,9 @@ core.Class("unify.ui.basic.Label", {
 	members : {
 		// overridden
 		_createElement : function() {
-			return lowland.bom.Label.create(this.getValue(), this.getHtml());
+			var label =  new ebenejs.Label(); 
+			label.setValue(this.getValue() || "");
+			return label;//lowland.bom.Label.create(this.getValue(), this.getHtml());
 		},
 
 		// overridden
@@ -205,7 +207,8 @@ core.Class("unify.ui.basic.Label", {
 				parent.invalidateLayoutChildren();
 			}
 			this.invalidateLayoutCache();
-			lowland.bom.Label.setValue(this.getElement(), value, this.getHtml());
+			//lowland.bom.Label.setValue(this.getElement(), value, this.getHtml());
+			this.getElement().setValue(value);
 		},
 
 		/**

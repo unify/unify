@@ -56,13 +56,15 @@ core.Class("unify.ui.basic.Image", {
 	
 	members: {
 		_createElement : function() {
-			var e = document.createElement("div");
+			var e = new ebenejs.Image(); //document.createElement("div");
 			
-			lowland.bom.Style.set(e, {
+			/*lowland.bom.Style.set(e, {
 				backgroundRepeat: "no-repeat",
 				backgroundPosition: "center",
 				backgroundSize: null
-			});
+			});*/
+			
+			e.setPosition("center");
 			
 			return e;
 		},
@@ -87,10 +89,11 @@ core.Class("unify.ui.basic.Image", {
 			};
 			
 			if (value) {
-				style.backgroundSize = "contain"
+				style.backgroundSize = "contain";
+				e.setImageScale("contain");
 			}
 			
-			lowland.bom.Style.set(e, style);
+			//lowland.bom.Style.set(e, style);
 		},
 		
 		_applySource : function(value) {
@@ -117,7 +120,8 @@ core.Class("unify.ui.basic.Image", {
 					style.backgroundSize = "contain";
 				}
 				
-				lowland.bom.Style.set(e, style);
+				//lowland.bom.Style.set(e, style);
+				e.setSource(src);
 			}
 		}
 	}

@@ -61,7 +61,7 @@ core.Class("unify.view.ViewportRoot", {
 		
 		// overridden
 		_createElement : function() {
-			var div = document.createElement("div");
+			var div = ebenejs.util.Canvas.create(window.innerWidth, window.innerHeight); //document.createElement("canvas"); //div");
 			
 			var pos = {
 				position: "absolute",
@@ -69,10 +69,10 @@ core.Class("unify.view.ViewportRoot", {
 				top: 0
 			};
 			lowland.bom.Style.set(div, pos);
-			
 			this.__viewportElement.appendChild(div);
+			var stage = new ebenejs.CanvasStage(div, window.innerWidth, window.innerHeight);
 			
-			return div;
+			return stage;
 		},
 		
 		/**

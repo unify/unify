@@ -116,13 +116,16 @@
 			_createElement : function()
 			{
 				var doc = document;
-				var elem = doc.createElement("div");
+				var elem = new ebenejs.Container(); //doc.createElement("div");
 				//elem.className = "scroll-indicator " + this.getOrientation();
 	
 				// Build sub elements
-				this.__startElem = elem.appendChild(doc.createElement("div"));
+				/*this.__startElem = elem.appendChild(doc.createElement("div"));
 				this.__middleElem = elem.appendChild(doc.createElement("div"));
-				this.__endElem = elem.appendChild(doc.createElement("div"));
+				this.__endElem = elem.appendChild(doc.createElement("div"));*/
+				this.__startElem = elem.add(new ebenejs.Div());
+				this.__middleElem = elem.add(new ebenejs.Div());
+				this.__endElem = elem.add(new ebenejs.Div());
 	
 				this.__setSliderStyle(this.getOrientation() === "horizontal");
 	
@@ -148,7 +151,7 @@
 				var thickness = THICKNESS + 'px';
 				
 				// general styles
-				Style.set(this.__startElem, {
+				this.__startElem.set({
 					background: bgstyle,
 					top: '0px',
 					left: '0px',
@@ -156,7 +159,7 @@
 					height: thickness,
 					position: 'absolute'
 				});
-				Style.set(this.__middleElem, {
+				this.__middleElem.set({
 					background: bgstyle,
 					top: '0px',
 					left: '0px',
@@ -165,7 +168,7 @@
 					position: 'absolute',
 					transformOrigin: 'left top'
 				});
-				Style.set(this.__endElem, {
+				this.__endElem.set({
 					background: bgstyle,
 					top: '0px',
 					left: '0px',
@@ -177,16 +180,16 @@
 				if (horizontal === true) 
 				{
 					// vertical scrollbar
-					Style.set(this.__startElem, {
+					this.__startElem.set({
 						borderTopLeftRadius: radiussize,
 						borderBottomLeftRadius: radiussize,
 						width: endsize
 					});
-					Style.set(this.__middleElem, {
+					this.__middleElem.set({
 						width: '1px',
 						left: '3px'
 					});
-					Style.set(this.__endElem, {
+					this.__endElem.set({
 						borderTopRightRadius: radiussize,
 						borderBottomRightRadius: radiussize,
 						width: endsize
@@ -195,16 +198,16 @@
 				else 
 				{
 					// vertical scrollbar
-					Style.set(this.__startElem, {
+					this.__startElem.set({
 						borderTopLeftRadius: radiussize,
 						borderTopRightRadius: radiussize,
 						height: endsize
 					});
-					Style.set(this.__middleElem, {
+					this.__middleElem.set({
 						height: '1px',
 						top: '3px'
 					});
-					Style.set(this.__endElem, {
+					this.__endElem.set({
 						borderBottomLeftRadius: radiussize,
 						borderBottomRightRadius: radiussize,
 						height: endsize
@@ -295,8 +298,10 @@
 					}
 	
 					// Apply transforms for best-in-class performance
-					Style.set(this.__middleElem, "transform", unify.bom.Transform.accelScale(scaleX,scaleY));//"scale3d(" + scaleX + "," + scaleY + ",1)");
-					Style.set(this.__endElem, "transform", unify.bom.Transform.accelTranslate(endPosX + "px", endPosY + "px"));
+					this.__middleElem.setTransform(unify.bom.Transform.accelScale(scaleX,scaleY));
+					this.__endElem.setTransform(unify.bom.Transform.accelTranslate(endPosX + "px", endPosY + "px"));
+					//Style.set(this.__middleElem, "transform", unify.bom.Transform.accelScale(scaleX,scaleY));//"scale3d(" + scaleX + "," + scaleY + ",1)");
+					//Style.set(this.__endElem, "transform", unify.bom.Transform.accelTranslate(endPosX + "px", endPosY + "px"));
 				}
 			},
 	
@@ -325,7 +330,8 @@
 				{
 					// Recover old position
 					var translate = this.__horizontal ? unify.bom.Transform.accelTranslate(this.__position + "px", 0) : unify.bom.Transform.accelTranslate(0, this.__position + "px");
-					lowland.bom.Style.set(this.getElement(), "transform", translate);
+					this.getElement().setTransform(translate);
+					//lowland.bom.Style.set(this.getElement(), "transform", translate);
 	
 					// Fade in
 					this.__isFadingOut = false;

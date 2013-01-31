@@ -102,7 +102,7 @@ core.Class("unify.ui.form.TextField", {
 			
 			var type = this.getType();
 			
-			var e = document.createElement("input");
+			var e = new ebenejs.Div(); /*SF: document.createElement("input");
 			if (!this.__autocomplete) {
 				e.setAttribute("autocomplete", "off");
 			}
@@ -117,7 +117,7 @@ core.Class("unify.ui.form.TextField", {
 				this.addNativeListener(e, "keyup", this._onInput, this);
 			} else {
 				this.addNativeListener(e, "input", this._onInput, this);
-			}
+			}*/
 
 
 			return e;
@@ -129,7 +129,7 @@ core.Class("unify.ui.form.TextField", {
 		_applyPlaceholderValue: function(placeholder) {
             if (jasy.Env.isSet("html5.placeholder")) {
                 var e = this.getElement();
-                e.setAttribute("placeholder", placeholder);
+                //e.setAttribute("placeholder", placeholder);
             } else {
     			this.__placeholderValue = placeholder;
     			this.__onBlur();

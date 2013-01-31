@@ -132,6 +132,9 @@
 		},
 		
 		members : {
+			/** SF: Added */
+			addNativeListener : function() {},
+			
 			/** {Object} Calculated size hint map */
 			__sizeHint : null,
 			

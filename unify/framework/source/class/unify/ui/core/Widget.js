@@ -758,8 +758,17 @@ core.Class("unify.ui.core.Widget", {
 		 */
 		getPositionInfo : function() {
 			var e = this.getElement();
+			
+			return {
+				left: e.getLeft(),
+				top: e.getTop(),
+				width: e.getWidth(),
+				height: e.getHeight(),
+				padding: this.__padding,
+				border: this.__border
+			};
 
-			var pos = unify.ui.core.Util.getWidgetLocation(this);
+			/*var pos = unify.ui.core.Util.getWidgetLocation(this);
 			var dim = this.__dimensionInfo || lowland.bom.Element.getContentSize(e);
 
 			return {
@@ -769,7 +778,7 @@ core.Class("unify.ui.core.Widget", {
 				height: dim.height,
 				padding: this.__padding,
 				border: this.__border
-			};
+			};*/
 		},
 		
 		getRenderedDimension : function() {
@@ -906,8 +915,8 @@ core.Class("unify.ui.core.Widget", {
 					
 					var options = {
 						position: "absolute",
-						width: newWidth + "px",
-						height: newHeight + "px",
+						width: newWidth, // + "px",
+						height: newHeight, // + "px",
 						transform: ""
 					};
 					if (jasy.Env.isSet("render.translate")) {
@@ -921,8 +930,8 @@ core.Class("unify.ui.core.Widget", {
 						}
 					} else {
 						if (!this.__overrideLayout) {
-							options.left = newLeft + "px";
-							options.top = newTop + "px";
+							options.left = newLeft; // + "px";
+							options.top = newTop; // + "px";
 						}
 					}
 					if (scale !== 1) {
@@ -986,14 +995,17 @@ core.Class("unify.ui.core.Widget", {
 			}
 			var appendCount=append.length;
 			if(appendCount>0){
-				var elementToAppend = append[0];
+				/*var elementToAppend = append[0];
 				if(appendCount>1){
 					elementToAppend = document.createDocumentFragment();
 					for (var j=0; j<appendCount; j++) {
 						elementToAppend.appendChild(append[j]);
 					}
 				}
-				contentElement.appendChild(elementToAppend);
+				contentElement.appendChild(elementToAppend);*/
+				for (var j=0; j<appendCount; j++) {
+					contentElement.add(append[j]);
+				}
 			}
 
 			this.__initializeRenderQueue();
@@ -1385,7 +1397,19 @@ core.Class("unify.ui.core.Widget", {
 		
 		__setElementStyle : function(element, name, property) {
 			if (element && String(element).indexOf("DocumentFragment") < 0) {
-				lowland.bom.Style.set(element, name, property);
+				//lowland.bom.Style.set(element, name, property);
+				//element.set({name: property})
+				if (name == "visibility") {
+					element.setVisible(property == "visible");
+				} else {
+					if (arguments.length == 2) {
+						element.set(name);
+					} else {
+						var s = {};
+						s[name] = property;
+						element.set(s);
+					}
+				}
 			}
 		},
 
@@ -1711,7 +1735,7 @@ core.Class("unify.ui.core.Widget", {
 			if (value) {
 				return value;
 			} else {
-				return lowland.bom.Style.get(this.getElement(), name, computed);
+				return this.getElement().get(name); //lowland.bom.Style.get(this.getElement(), name, computed);
 			}
 		},
 
@@ -2144,7 +2168,7 @@ core.Class("unify.ui.core.Widget", {
 			//unify.bom.Style.set(element, "visibility", "hidden");
 			
 			var contentElem=this.getContentElement();
-			var childNodes=contentElem.childNodes;
+			var childNodes=(contentElem.getChildren) ? contentElem.getChildren() : 0; //childNodes;
 
 			var queue = this.__renderQueue;
 			if(index!=null && index >=0 && index < childNodes.length){
@@ -2222,7 +2246,7 @@ core.Class("unify.ui.core.Widget", {
 
 				if (!isVirtualIndexedElement) {
 					// Element is in DOM, so remove it there
-					this.getContentElement().removeChild(element);
+					this.getContentElement().remove(element);
 				}
 			}
 

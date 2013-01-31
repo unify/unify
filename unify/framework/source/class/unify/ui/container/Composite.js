@@ -38,7 +38,7 @@ core.Class("unify.ui.container.Composite", {
 	
 	members : {
 		_createElement : function() {
-			return document.createElement("div");
+			return new ebenejs.Container(); //document.createElement("div");
 		},
 		
 		/**
