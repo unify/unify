@@ -325,7 +325,7 @@
 				{
 					// Recover old position
 					var translate = this.__horizontal ? unify.bom.Transform.accelTranslate(this.__position + "px", 0) : unify.bom.Transform.accelTranslate(0, this.__position + "px");
-					lowland.bom.Style.set(this.getElement(), "transform", translate);
+					this.setPostLayout(translate);
 	
 					// Fade in
 					this.__isFadingOut = false;
