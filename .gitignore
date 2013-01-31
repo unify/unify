@@ -16,3 +16,6 @@ application/coretest/api
 unify/application/flicky/log.txt
 .DS_Store
 .settings.xml
+
+external
+unify/framework/external
