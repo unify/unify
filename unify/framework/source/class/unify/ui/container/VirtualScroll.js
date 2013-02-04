@@ -119,7 +119,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 				return; // no need to do anything on overshoot
 			}
 			
-			var currentHeight = this._getClientHeight();
+			var currentHeight = this.getHeight();
 			
 			var widgetMap = this.__widgetMap;
 			
