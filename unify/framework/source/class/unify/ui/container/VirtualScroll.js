@@ -194,7 +194,15 @@ core.Class("unify.ui.container.VirtualScroll", {
 			this.__widgetMap[row][column] = widget;
 			
 			var pos = row * this.getColumns() + column;
-			widgetUpdater.lazy(this, widget, column, row, this.getModel()[pos]);
+			var model = this.getModel();
+			
+			if (pos >= model.length) {
+				//widget.hide();
+				widget.overrideLayoutTransform(0, -100000);
+			} else {
+				//widget.show();
+				widgetUpdater.lazy(this, widget, column, row, model[pos]);
+			}
 		},
 		
 		__getWidgetFromPool : function() {

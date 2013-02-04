@@ -302,7 +302,7 @@ core.Class("unify.ui.core.Widget", {
 
 
 			if (value === "visible") {
-				this.__setElementStyle(container, "display", "block"); // TODO: Block right? or simply null?
+				this.__setElementStyle(container, "display", "block");
 			} else {
 				this.__setElementStyle(container, "display", "none");
 			}
