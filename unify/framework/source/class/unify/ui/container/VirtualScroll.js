@@ -15,7 +15,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 		this.__widgetMap = [];
 		
 		this.addListener("resize", function() {
-			//this.__onVirtualScroll();
+			this.__reflow();
 		}, this);
 	},
 	
@@ -119,7 +119,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 				return; // no need to do anything on overshoot
 			}
 			
-			var currentHeight = this.getHeight();
+			var currentHeight = this._getClientHeight();
 			
 			var widgetMap = this.__widgetMap;
 			
