@@ -14,8 +14,10 @@ core.Class("unify.ui.container.VirtualScroll", {
 		this.__widgetPool = [];
 		this.__widgetMap = [];
 		
+		this.__debouncedReflow = this.__reflow.debounce(10);
+		
 		this.addListener("resize", function() {
-			this.__reflow();
+			this.__debouncedReflow();
 		}, this);
 	},
 	
@@ -35,22 +37,22 @@ core.Class("unify.ui.container.VirtualScroll", {
 		
 		offsetX : {
 			init: 0,
-			apply : function() { this.__onVirtualScroll(); }
+			apply : function() { this.__debouncedReflow(); }
 		},
 		
 		offsetY : {
 			init: 0,
-			apply : function() { this.__onVirtualScroll(); }
+			apply : function() { this.__debouncedReflow(); }
 		},
 		
 		elementWidth : {
 			init: 50,
-			apply: function() { this.__reflow(); }
+			apply: function() { this.__debouncedReflow(); }
 		},
 		
 		elementHeight : {
 			init: 100,
-			apply: function() { this.__reflow(); }
+			apply: function() { this.__debouncedReflow(); }
 		}
 	},
 	
@@ -74,7 +76,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 		__applyModel : function(model) {
 			var rows = Math.ceil(model.length / this.getColumns());
 			this.getChildrenContainer().setHeight(rows * this.getElementHeight());
-			this.__reflow();
+			this.__debouncedReflow();
 		},
 
 		__applyColumns : function(columns) {
@@ -82,17 +84,20 @@ core.Class("unify.ui.container.VirtualScroll", {
 			if (model && columns > 0) {
 				var rows = Math.ceil(model.length / columns);
 				this.getChildrenContainer().setHeight(rows * this.getElementHeight());
-				this.__reflow();
+				this.__debouncedReflow();
 			}
 		},
 
+		__debouncedReflow : function() { this.__reflow(); },
+
 		__reflow : function() {
-			if (!this.getModel()) {
+			var model = this.getModel();
+			if (!model) {
 				return;
 			}
 			this.__isInit = true;
 			
-			this.__maximalRows = Math.ceil(this.getModel().length / this.getColumns());
+			this.__maximalRows = Math.ceil(model.length / this.getColumns());
 			
 			var widgetMap = this.__widgetMap;
 			for (var row in widgetMap) {
