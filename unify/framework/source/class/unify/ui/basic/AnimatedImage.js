@@ -32,7 +32,7 @@ core.Class("unify.ui.basic.AnimatedImage", {
 		 * @param e {Event} Change event
 		 */
 		__onChangeVisibility : function(e) {
-			if (e.getData() == "visible") {
+			if (e.getValue() == "visible") {
 				this.setAnimateRotateInfinite(true);
 				this.setAnimateRotate(360);
 			} else {
