@@ -13,10 +13,12 @@
  * Fired by business object whenever a data communication is completed.
  */
 core.Class("unify.business.CompletedEvent", {
-	include : [lowland.events.Event],
+	implement : [core.event.IEvent],
 
-	construct : function(target, id, data, modified, errornous, malformed, request) {
-		lowland.events.Event.call(this, target);
+	construct : function(eventType, target, id, data, modified, errornous, malformed, request) {
+		//lowland.events.Event.call(this, target);
+		this.__eventType = eventType;
+		this.__target = target;
 		this.init(id, data, modified, errornous, malformed, request);
 	},
 
@@ -28,6 +30,10 @@ core.Class("unify.business.CompletedEvent", {
 		__malformed : null,
 		__modified : null,
 
+
+		getType : function() { return this.__eventType; },
+		getTarget : function() { return this.__target; },
+		setTarget : function(target) { this.__target = target; },
 
 		/**
 		 * Initialize the fields of the event. The event must be initialized before
