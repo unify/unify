@@ -157,7 +157,7 @@ core.Class("unify.ui.core.MChildControl", {
 			lowland.events.EventManager.forceDirect(this, "changeAppearance");
 			
 			this.addListener("changeAppearance", function(e) {
-				appearanceChanged(e.getData());
+				appearanceChanged(e.getValue());
 			}, this);
 
 			// Establish connection to parent
@@ -368,7 +368,7 @@ core.Class("unify.ui.core.MChildControl", {
 				var childs = this._getCreatedChildControls();
 				
 				for (var id in childs) {
-					childs[id].setAppearance(e.getData() + "/" + id);
+					childs[id].setAppearance(e.getValue() + "/" + id);
 				}
 			}, this);
 		}/*,
