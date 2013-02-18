@@ -73,8 +73,9 @@ core.Class("unify.Application", {
 			lowland.bom.Style.set(rootElement, "visibility", "hidden");
 			
 			// Add box sizing css node
-			var prop = lowland.bom.Style.property("boxSizing").hyphenate();
-			lowland.bom.Style.addStyleText(" * { " + prop + ": border-box; } ");
+			var boxSizeProp = lowland.bom.Style.property("boxSizing").hyphenate();
+			var backfaceProp = lowland.bom.Style.property("backfaceVisibility").hyphenate();
+			lowland.bom.Style.addStyleText(" * { " + boxSizeProp + ": border-box; " + backfaceProp + ": hidden; } ");
 			
 			// Support focus handling
 			unify.ui.core.FocusHandler.getInstance().connectTo(root);
