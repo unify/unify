@@ -185,9 +185,12 @@ core.Class("unify.ui.container.VirtualScroll", {
 		
 		__createWidget : function(column, row, offsetX, offsetY) {
 			var widgetUpdater = this.__widgetUpdater;
-			var widget = this.__getWidgetFromPool();
+			var widgetConfig = this.__getWidgetFromPool();
+			var widget = widgetConfig.widget;
 			
-			this.add(widget);
+			if (!widgetConfig.fromPool) {
+				this.add(widget);
+			}
 			
 			var left = column*this.getElementWidth()+offsetX;
 			var top = row*this.getElementHeight()+offsetY;
@@ -213,9 +216,15 @@ core.Class("unify.ui.container.VirtualScroll", {
 		__getWidgetFromPool : function() {
 			var widgetPool = this.__widgetPool;
 			if (widgetPool.length > 0) {
-				return widgetPool.pop();
+				return {
+					widget: widgetPool.pop(),
+					fromPool: true
+				};
 			} else {
-				return this.__widgetFactory();
+				return {
+					widget: this.__widgetFactory(),
+					fromPool: false
+				};
 			}
 		},
 		
