@@ -16,6 +16,8 @@ core.Class("unify.business.CompletedEvent", {
 	implement : [core.event.IEvent],
 	include : [core.event.MDispatchable],
 
+	pooling : true,
+
 	construct : function(eventType, target, id, data, modified, errornous, malformed, request) {
 		//lowland.events.Event.call(this, target);
 		this.__eventType = eventType;
