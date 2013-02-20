@@ -26,6 +26,10 @@
 		"render.translate" : {
 			"check" : "Boolean",
 			"default" : false
+		},
+		"unify.testid" : {
+			"check" : "Boolean",
+			"default" : false
 		}
 	},
 	"requires" : [{
