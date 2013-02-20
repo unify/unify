@@ -490,7 +490,7 @@ core.Class("unify.view.ViewManager", {
 			}
 			instance.setManager(this);
 			var classname = viewClass.className;
-			var id = classname.substring(classname.lastIndexOf(".")+1).hyphenate().substring(1).toLowerCase();
+			var id = core.util.String.hyphenate(classname.substring(classname.lastIndexOf(".")+1)).substring(1).toLowerCase();
 			if (isDefault) {
 				this.__defaultViewId = id;
 			}

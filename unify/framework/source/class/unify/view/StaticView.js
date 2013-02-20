@@ -46,7 +46,7 @@ core.Class("unify.view.StaticView",
 		
 		var className = this.constructor.className.split(".").pop();
 		className = className[0].toLowerCase() + className.substring(1);
-		this.__id = className.hyphenate();
+		this.__id = core.util.String.hyphenate(className);
 	},
 	
 

@@ -12,8 +12,6 @@
 
 /**
  * Application class for next generation devices.
- * 
- * #require(ext.sugar.String)
  */
 core.Class("unify.Application", {
 	
@@ -73,8 +71,8 @@ core.Class("unify.Application", {
 			lowland.bom.Style.set(rootElement, "visibility", "hidden");
 			
 			// Add box sizing css node
-			var boxSizeProp = lowland.bom.Style.property("boxSizing").hyphenate();
-			var backfaceProp = lowland.bom.Style.property("backfaceVisibility").hyphenate();
+			var boxSizeProp = core.util.String.hyphenate(lowland.bom.Style.property("boxSizing"));
+			var backfaceProp = core.util.String.hyphenate(lowland.bom.Style.property("backfaceVisibility"));
 			lowland.bom.Style.addStyleText(" * { " + boxSizeProp + ": border-box; " + backfaceProp + ": hidden; } ");
 			
 			// Support focus handling
