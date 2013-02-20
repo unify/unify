@@ -17,6 +17,6 @@ core.Module("unify.bom.detect.Develop", {
 	
 	/** {=Boolean} True is source variant */
 	VALUE : (function(location) {
-		return location.pathname.contains("/source/");
+		return location.pathname.indexOf("/source/") !== -1;
 	})(this.location)
 });

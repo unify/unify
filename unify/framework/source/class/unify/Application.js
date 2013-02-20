@@ -55,7 +55,7 @@ core.Class("unify.Application", {
 			}*/
 
 			// Display build time
-			var buildTime = jasy.Env.getValue("unify.$$build");
+			var buildTime = null; //jasy.Env.getValue("unify.$$build");
 			if (buildTime) {
 				this.info("Build Time: " + new Date(buildTime));
 			}

@@ -37,7 +37,7 @@ core.Class("unify.ui.core.PopOverManager", {
 		this.__overlays={};
 		this.__styleRegistry = {};
 		
-		zIndexBase = jasy.Env.getValue("unify.config.zIndexBase") || zIndexBase;
+		//zIndexBase = 0; // jasy.Env.getValue("unify.config.zIndexBase") || zIndexBase;
 		
 		var pblocker = this.__pblocker = document.createElement("div");
 		var pstyle = unify.theme.Manager.get().resolveStyle("POPOVER-BLOCKER");

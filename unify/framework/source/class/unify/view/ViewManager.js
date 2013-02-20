@@ -700,7 +700,7 @@ core.Class("unify.view.ViewManager", {
 				if (toView.hasRenderedLayout()) {
 					afterRenderAction();
 				} else {
-					toView.addListenerOnce("resize", afterRenderAction, this);
+					toView.addListenerOnce("resize", afterRenderAction);
 				}
 			};
 			
@@ -751,7 +751,7 @@ core.Class("unify.view.ViewManager", {
 				if (view.hasRenderedLayout()) {
 					afterRenderAction();
 				} else {
-					view.addListenerOnce("resize", afterRenderAction, this);
+					view.addListenerOnce("resize", afterRenderAction);
 				}
 			};
 

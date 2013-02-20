@@ -871,11 +871,11 @@ core.Class("unify.business.RemoteData",
 			}
 			
 			// Fire event
-			var args = [id, data, isModified, isErrornous, isMalformed, req];
-			this.fireSpecialEvent("completed", args);
+			var event = new unify.business.CompletedEvent("completed", this, id, data, isModified, isErrornous, isMalformed, req);
+			this.dispatchEvent(event);
 
 			// Dispose request
-			req.dispose();
+			//req.dispose();
 		},
 
 		/**
