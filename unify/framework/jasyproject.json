@@ -32,6 +32,7 @@
 		"source" : "https://github.com/fastner/lowland.git",
 		"version" : "features/core-update-next"
 	}, {
-		"source" : "https://github.com/fastner/jasy-appcache.git"
+		"source" : "https://github.com/fastner/jasy-appcache.git",
+		"version" : "features/core-update-next"
 	}]
 }
