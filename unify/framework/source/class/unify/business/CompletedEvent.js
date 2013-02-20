@@ -34,6 +34,8 @@ core.Class("unify.business.CompletedEvent", {
 		getType : function() { return this.__eventType; },
 		getTarget : function() { return this.__target; },
 		setTarget : function(target) { this.__target = target; },
+		setCurrentTarget : function() {},
+		setEventPhase : function() {},
 
 		/**
 		 * Initialize the fields of the event. The event must be initialized before
