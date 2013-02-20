@@ -14,11 +14,11 @@
  */
 core.Class("unify.business.CompletedEvent", {
 	implement : [core.event.IEvent],
+	include : [core.event.MDispatchable],
 
 	construct : function(eventType, target, id, data, modified, errornous, malformed, request) {
 		//lowland.events.Event.call(this, target);
 		this.__eventType = eventType;
-		this.__target = target;
 		this.init(id, data, modified, errornous, malformed, request);
 	},
 
@@ -32,12 +32,6 @@ core.Class("unify.business.CompletedEvent", {
 
 
 		getType : function() { return this.__eventType; },
-		getTarget : function() { return this.__target; },
-		setTarget : function(target) { this.__target = target; },
-		setCurrentTarget : function() {},
-		setEventPhase : function() {},
-		isPropagationStopped : function() { return true; },
-		resetDispatch : function() {},
 
 		/**
 		 * Initialize the fields of the event. The event must be initialized before
