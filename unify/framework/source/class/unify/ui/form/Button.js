@@ -32,7 +32,8 @@ core.Class("unify.ui.form.Button", {
 		focusable : {
 			init: true
 		},
-		
+	
+		/** @deprecated */	
 		directEvent : {
 			type: "Boolean",
 			init: false
@@ -88,11 +89,7 @@ core.Class("unify.ui.form.Button", {
 				return;
 			}
 			
-			if (this.getDirectEvent()) {
-				this.fireDirectEvent("execute");
-			} else {
-				this.fireEvent("execute");
-			}
+			this.fireEvent("execute");
 		},
 		
 		/**
