@@ -36,6 +36,7 @@ core.Class("unify.business.CompletedEvent", {
 		setTarget : function(target) { this.__target = target; },
 		setCurrentTarget : function() {},
 		setEventPhase : function() {},
+		isPropagationStopped : function() { return true; },
 
 		/**
 		 * Initialize the fields of the event. The event must be initialized before
