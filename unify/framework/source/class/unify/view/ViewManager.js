@@ -79,10 +79,10 @@ core.Class("unify.view.ViewManager", {
 	events :
 	{
 		/** Fired whenever the view-local path was modified */
-		changePath : lowland.events.DataEvent,
+		changePath : core.event.Simple,
 		
 		/** Fired whenever the displayed view was modified */
-		changeView : lowland.events.Event
+		changeView : core.event.Simple
 	},
 	
 	

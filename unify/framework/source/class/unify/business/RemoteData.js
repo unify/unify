@@ -871,8 +871,9 @@ core.Class("unify.business.RemoteData",
 			}
 			
 			// Fire event
-			var event = new unify.business.CompletedEvent("completed", this, id, data, isModified, isErrornous, isMalformed, req);
-			this.dispatchEvent(event);
+      var event = unify.business.CompletedEvent.obtain("completed", id, data, isModified, isErrornous, isMalformed, req);
+  		this.dispatchEvent(event);
+      event.release();
 
 			// Dispose request
 			//req.dispose();

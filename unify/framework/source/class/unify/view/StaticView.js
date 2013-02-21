@@ -60,16 +60,16 @@ core.Class("unify.view.StaticView",
 	events :
 	{
 		/** Fired when the view appears on the screen */
-		"appear" : lowland.events.Event,
+		"appear" : core.event.Simple,
 
 		/** Fired when the view disappears on the screen */
-		"disappear" : lowland.events.Event,
+		"disappear" : core.event.Simple,
 
 		/** Fired every time the title may have changed through new conditions */
-		"changeTitle" : lowland.events.Event,
+		"changeTitle" : core.event.Simple,
 		
 		/** Fired every time the parent changed */
-		"changeParent" : lowland.events.Event
+		"changeParent" : core.event.Simple
 	},
 
 

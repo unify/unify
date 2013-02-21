@@ -16,7 +16,6 @@
 	
 	var zIndexBase = 100;
 	
-
 /**
  * Handles pop over stacking (and blocking elements)
  */
@@ -65,10 +64,10 @@ core.Class("unify.ui.core.PopOverManager", {
 	
 	events : {
 		/** Show popup event */
-		"show" : lowland.events.DataEvent,
+		"show" : core.event.Simple,
 		
 		/** Hide popup event */
-		"hide" : lowland.events.DataEvent
+		"hide" : core.event.Simple
 	},
 	
 	properties : {
@@ -143,7 +142,7 @@ core.Class("unify.ui.core.PopOverManager", {
 					widget.setStyle({zIndex: zIndexBase + 2*i});
 				}
 			}
-
+      
 			if (numVisible > 0) {
 				var mSet=false;
 				var pSet=false;
@@ -161,6 +160,7 @@ core.Class("unify.ui.core.PopOverManager", {
 						var style = unify.theme.Manager.get().resolveStyle("MODAL-BLOCKER") || {};
 						style.zIndex = (zIndexBase-1)+2*i;
 						style.display = 'block';
+            
 						lowland.bom.Style.set(mblocker, style);
 						
 						mSet = true;
@@ -183,6 +183,7 @@ core.Class("unify.ui.core.PopOverManager", {
 						break;
 					}
 				}
+        
 				if(!mSet){
 					lowland.bom.Style.set(mblocker, {
 						zIndex: null,

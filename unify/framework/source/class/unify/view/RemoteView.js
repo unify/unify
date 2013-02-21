@@ -194,7 +194,6 @@ core.Class("unify.view.RemoteView",
 		 */
 		__onBusinessObjectCompleted : function(e)
 		{
-			
 			if (e.getId() !== this.__requestId) {
 				return;
 			}

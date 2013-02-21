@@ -56,9 +56,9 @@
 		},
 		
 		events : {
-			indicatorMoveStart : lowland.events.DataEvent,
-			indicatorMoveEnd : lowland.events.DataEvent,
-			indicatorMove : lowland.events.DataEvent
+			indicatorMoveStart : core.event.Simple,
+			indicatorMoveEnd : core.event.Simple,
+			indicatorMove : core.event.Simple
 		},
 	
 		/**

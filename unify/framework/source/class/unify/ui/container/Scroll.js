@@ -165,13 +165,13 @@ core.Class("unify.ui.container.Scroll", {
 	events :
 	{
 		/** Event fired if in scroll */
-		scroll: lowland.events.Event,
+		scroll: core.event.Simple,
 		
 		/** Event fired if scroll is ended */
-		scrollend: lowland.events.Event,
+		scrollend: core.event.Simple,
 		
 		/** Event fired if container snaped */
-		snap: lowland.events.Event
+		snap: core.event.Simple
 	},
 
 	/*

@@ -154,7 +154,7 @@ core.Class("unify.ui.core.MChildControl", {
 				};
 			})(this, id);
 			
-			lowland.events.EventManager.forceDirect(this, "changeAppearance");
+			//lowland.events.EventManager.forceDirect(this, "changeAppearance");
 			
 			this.addListener("changeAppearance", function(e) {
 				appearanceChanged(e.getValue());

@@ -68,10 +68,10 @@ core.Class("unify.ui.form.TextField", {
 	
 	events : {
 		/** Fired on input */
-		"input" : lowland.events.DataEvent,
+		"input" : core.event.Simple,
 		
 		/** Fired on loosing focus */
-		"changeValue" : lowland.events.DataEvent
+		"changeValue" : core.event.Simple
 	},
 	
 	construct : function(autocomplete) {

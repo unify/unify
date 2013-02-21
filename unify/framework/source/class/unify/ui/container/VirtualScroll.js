@@ -57,7 +57,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 	},
 	
 	events : {
-		changeModel: lowland.events.Event
+		changeModel: core.event.Simple
 	},
 	
 	members : {

@@ -19,7 +19,7 @@ core.Class("unify.ui.form.Button", {
 
 	events : {
 		/** Execute event when button is tapped */
-		"execute" : lowland.events.Event
+		"execute" : core.event.Simple
 	},
 
 	properties: {

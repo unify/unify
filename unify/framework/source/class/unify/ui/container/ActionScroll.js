@@ -57,16 +57,16 @@ core.Class("unify.ui.container.ActionScroll", {
 	
 	events:{
 		//fires when an action is activated
-		actionActivated: lowland.events.DataEvent,
+		actionActivated: core.event.Simple,
 		
 		//fires when an action is deactivated (either by the user dragging back out of the active zone or after the execution
-		actionDeactivated: lowland.events.DataEvent,
+		actionDeactivated: core.event.Simple,
 		
 		//fires when an action is executed
-		actionExecuted: lowland.events.DataEvent,
+		actionExecuted: core.event.Simple,
 		
 		//fires when an action finished (that is, when finishedPullAction was called after the action was executed).
-		actionFinished: lowland.events.DataEvent
+		actionFinished: core.event.Simple
 	},
 	
 	members: {
