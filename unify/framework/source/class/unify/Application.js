@@ -72,8 +72,19 @@ core.Class("unify.Application", {
 			
 			// Add box sizing css node
 			var boxSizeProp = core.util.String.hyphenate(lowland.bom.Style.property("boxSizing"));
-			var backfaceProp = core.util.String.hyphenate(lowland.bom.Style.property("backfaceVisibility"));
-			lowland.bom.Style.addStyleText(" * { " + boxSizeProp + ": border-box; " + backfaceProp + ": hidden; } ");
+			var settings = {};
+			settings[boxSizeProp] = 'border-box;'
+			if (jasy.Env.isSet("engine", "webkit")) {
+				var backfaceProp = core.util.String.hyphenate(lowland.bom.Style.property("backfaceVisibility"));
+				settings[backfaceProp] = "hidden;";
+			}
+			
+			var styleText = ['* {'];
+			for (var key in settings) {
+				styleText.push([key, settings[key]].join(":"));
+			}
+			styleText.push('}');
+			lowland.bom.Style.addStyleText(styleText.join(""));
 			
 			// Support focus handling
 			unify.ui.core.FocusHandler.getInstance().connectTo(root);
