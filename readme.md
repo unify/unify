@@ -11,6 +11,6 @@ Unify is made available under a dual license: MIT + Apache, Version 2.0. For det
 Setup
 -----
 
-Go to create.unifyjs.com to download you personal unify skeleton.
+Go to [create.unifyjs.com](http://create.unifyjs.com)...
 
 Happy coding.
