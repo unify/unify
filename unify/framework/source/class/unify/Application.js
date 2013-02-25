@@ -12,8 +12,6 @@
 
 /**
  * Application class for next generation devices.
- * 
- * #require(ext.sugar.String)
  */
 core.Class("unify.Application", {
 	
@@ -55,7 +53,7 @@ core.Class("unify.Application", {
 			}*/
 
 			// Display build time
-			var buildTime = jasy.Env.getValue("unify.$$build");
+			var buildTime = null; //jasy.Env.getValue("unify.$$build");
 			if (buildTime) {
 				this.info("Build Time: " + new Date(buildTime));
 			}
@@ -73,9 +71,20 @@ core.Class("unify.Application", {
 			lowland.bom.Style.set(rootElement, "visibility", "hidden");
 			
 			// Add box sizing css node
-			var boxSizeProp = lowland.bom.Style.property("boxSizing").hyphenate();
-			var backfaceProp = lowland.bom.Style.property("backfaceVisibility").hyphenate();
-			lowland.bom.Style.addStyleText(" * { " + boxSizeProp + ": border-box; " + backfaceProp + ": hidden; } ");
+			var boxSizeProp = core.util.String.hyphenate(lowland.bom.Style.property("boxSizing"));
+			var settings = {};
+			settings[boxSizeProp] = 'border-box;'
+			if (jasy.Env.isSet("engine", "webkit")) {
+				var backfaceProp = core.util.String.hyphenate(lowland.bom.Style.property("backfaceVisibility"));
+				settings[backfaceProp] = "hidden;";
+			}
+			
+			var styleText = ['* {'];
+			for (var key in settings) {
+				styleText.push([key, settings[key]].join(":"));
+			}
+			styleText.push('}');
+			lowland.bom.Style.addStyleText(styleText.join(""));
 			
 			// Support focus handling
 			unify.ui.core.FocusHandler.getInstance().connectTo(root);
