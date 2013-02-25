@@ -71,11 +71,11 @@ core.Class("unify.Application", {
 			lowland.bom.Style.set(rootElement, "visibility", "hidden");
 			
 			// Add box sizing css node
-			var boxSizeProp = core.util.String.hyphenate(lowland.bom.Style.property("boxSizing"));
+			var boxSizeProp = lowland.bom.Style.property("boxSizing").hyphenate();
 			var settings = {};
 			settings[boxSizeProp] = 'border-box;'
 			if (jasy.Env.isSet("engine", "webkit")) {
-				var backfaceProp = core.util.String.hyphenate(lowland.bom.Style.property("backfaceVisibility"));
+				var backfaceProp = lowland.bom.Style.property("backfaceVisibility").hyphenate();
 				settings[backfaceProp] = "hidden;";
 			}
 			
