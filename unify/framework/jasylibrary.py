@@ -18,14 +18,13 @@ def source(session, config):
 
 	assetManager.addSourceProfile()
 	if jasy.__version__ < "1.1":
-		includedByKernel = outputManager.storeKernel("$prefix/script/kernel.js", classes=["unify.Kernel"], debug=True)
+		outputManager.storeKernel("$prefix/script/kernel.js", classes=["unify.Kernel"])
 	else:
-		includedByKernel = outputManager.storeKernel("$prefix/script/kernel.js", "unify.Kernel")
+		outputManager.storeKernel("$prefix/script/kernel.js", "unify.Kernel")
 
 	for permutation in session.permutate():
 		# Resolving dependencies
 		resolver = Resolver(session).addClassName("%s.Application" % name)
-		#.excludeClasses(includedByKernel)
 		
 		# Building class loader
 		outputManager.storeLoader(resolver.getSortedClasses(), "$prefix/script/%s-$permutation.js" % name, "unify.core.Init.startUp();")
@@ -43,7 +42,10 @@ def build(session, config, cdnPrefix="asset", compressionLevel=2, formattingLeve
 	assetManager.deploy(Resolver(session).addClassName("%s.Application" % name).getIncludedClasses())
 	
 	# Store loader script
-	outputManager.storeKernel("$prefix/script/kernel.js")
+	if jasy.__version__ < "1.1":
+		outputManager.storeKernel("$prefix/script/kernel.js", classes=["unify.Kernel"])
+	else:
+		outputManager.storeKernel("$prefix/script/kernel.js", "unify.Kernel")
 	
 	# Copy files from source
 	fileManager.updateFile("source/index.html", "$prefix/index.html")    
