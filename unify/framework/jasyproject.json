@@ -11,6 +11,10 @@
 			"check" : "String",
 			"default" : "none"
 		},
+		"unify.application.namespace" : {
+			"check" : "String",
+			"default" : "undefined"
+		},
 		"os.name" : {
 			"check" : ["win", "mac", "unix", "android", "ios", "webos", "qnx"],
 			"detect" : "unify.bom.detect.OsName"
@@ -34,9 +38,9 @@
 	},
 	"requires" : [{
 		"source" : "https://github.com/fastner/lowland.git",
-		"version" : "features/core-update-next"
+		"version" : "features/core-update-next-2"
 	}, {
 		"source" : "https://github.com/fastner/jasy-appcache.git",
-		"version" : "features/core-update-next"
+		"version" : "features/core-update-next-2"
 	}]
 }
