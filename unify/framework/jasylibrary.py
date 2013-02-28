@@ -5,6 +5,7 @@ from jasy.core.OutputManager import OutputManager
 from jasy.core.FileManager import FileManager
 from jasy.js.Resolver import Resolver
 from jasy.http.Server import Server
+import jasy
 
 
 @share
@@ -13,8 +14,13 @@ def source(session, config):
 	assetManager = AssetManager(session)
 	outputManager = OutputManager(session, assetManager, 0, 1)
 
+	session.setField("unify.application.namespace", name)
+
 	assetManager.addSourceProfile()
-	includedByKernel = outputManager.storeKernel("$prefix/script/kernel.js")
+	if jasy.__version__ < "1.1":
+		includedByKernel = outputManager.storeKernel("$prefix/script/kernel.js", classes=["unify.Kernel"])
+	else:
+		includedByKernel = outputManager.storeKernel("$prefix/script/kernel.js", "unify.Kernel")
 
 	for permutation in session.permutate():
 		# Resolving dependencies

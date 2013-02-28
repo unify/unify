@@ -58,7 +58,7 @@ core.Class("unify.bom.History", {
 	events :
 	{
 		/** Fired every time the history is modified */
-		change : lowland.events.DataEvent //"unify.event.type.History"
+		change : core.event.Simple
 	},
 
 

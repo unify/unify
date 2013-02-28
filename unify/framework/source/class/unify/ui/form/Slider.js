@@ -52,9 +52,9 @@ core.Class("unify.ui.form.Slider", {
 	
 	events : {
 		/** Fired when user clicks on bar */
-		clickOnBar: lowland.events.DataEvent,
+		clickOnBar: core.event.Simple,
 		
-		changeValue: lowland.events.DataEvent
+		changeValue: core.event.Simple
 	},
 	
 	construct : function() {

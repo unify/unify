@@ -41,7 +41,7 @@
 		 
 		events: {
 			/** This event is fired when the dialog is closed by pressing a button */
-			"execute": lowland.events.DataEvent
+			"execute": core.event.Simple
 		},
 		
 		/**

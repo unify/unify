@@ -102,8 +102,9 @@ core.Class("unify.business.AsyncData",
 		 */
 		__callback : function(id, data, isModified, isErrornous)
 		{
-			var event = new unify.business.CompletedEvent("completed", this, id, data, isModified !== false, isErrornous);
+			var event = unify.business.CompletedEvent.obtain("completed", id, data, isModified !== false, isErrornous);
 			this.dispatchEvent(event);
+			event.release();
 		}
 	}
 });

@@ -26,7 +26,7 @@ core.Class("unify.ui.form.util.HtmlFileInput", {
 
 	events : {
 		/** Fired on loosing focus */
-		"changeValue" : lowland.events.DataEvent
+		"changeValue" : core.event.Simple
 	},
 
 	construct : function() {

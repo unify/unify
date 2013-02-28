@@ -14,7 +14,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 		this.__widgetPool = [];
 		this.__widgetMap = [];
 		
-		this.__debouncedReflow = this.__reflow.debounce(10);
+		this.__debouncedReflow = core.util.Function.debounce(this.__reflow, 10);
 		
 		this.addListener("resize", function() {
 			this.__debouncedReflow();
@@ -57,7 +57,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 	},
 	
 	events : {
-		changeModel: lowland.events.Event
+		changeModel: core.event.Simple
 	},
 	
 	members : {
@@ -185,9 +185,12 @@ core.Class("unify.ui.container.VirtualScroll", {
 		
 		__createWidget : function(column, row, offsetX, offsetY) {
 			var widgetUpdater = this.__widgetUpdater;
-			var widget = this.__getWidgetFromPool();
+			var widgetConfig = this.__getWidgetFromPool();
+			var widget = widgetConfig.widget;
 			
-			this.add(widget);
+			if (!widgetConfig.fromPool) {
+				this.add(widget);
+			}
 			
 			var left = column*this.getElementWidth()+offsetX;
 			var top = row*this.getElementHeight()+offsetY;
@@ -213,9 +216,15 @@ core.Class("unify.ui.container.VirtualScroll", {
 		__getWidgetFromPool : function() {
 			var widgetPool = this.__widgetPool;
 			if (widgetPool.length > 0) {
-				return widgetPool.pop();
+				return {
+					widget: widgetPool.pop(),
+					fromPool: true
+				};
 			} else {
-				return this.__widgetFactory();
+				return {
+					widget: this.__widgetFactory(),
+					fromPool: false
+				};
 			}
 		},
 		

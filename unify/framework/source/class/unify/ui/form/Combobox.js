@@ -19,7 +19,7 @@ core.Class("unify.ui.form.Combobox", {
 
 	events : {
 		/** Execute event when button is tapped */
-		"execute" : lowland.events.DataEvent
+		"execute" : core.event.Simple
 	},
 
 	/**

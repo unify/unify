@@ -44,34 +44,34 @@ core.Class("unify.ui.core.Widget", {
 		/**
 		 * Fired on resize of the widget.
 		 */
-		resize : lowland.events.DataEvent,
+		resize : core.event.Simple,
 		
 		/**
 		 * Fired on resize of the widget.
 		 */
-		appearance : lowland.events.DataEvent,
+		appearance : core.event.Simple,
 		
 		/**
 		 * Fired on change of appearance property
 		 */
-		changeAppearance : lowland.events.DataEvent,
+		changeAppearance : core.event.Simple,
 		
 		/**
 		 * Fired on change of visibility property
 		 */
-		changeVisibility : lowland.events.DataEvent,
+		changeVisibility : core.event.Simple,
 
 
 		/**
 		 * Fired on move of the widget.
 		 */
-		move : lowland.events.Event,
+		move : core.event.Simple,
 
 		/** Fired if widget is focusable {@link #focusable} and gets focus */
-		focus : lowland.events.Event,
+		focus : core.event.Simple,
 
 		/** Fired if widget is focusable {@link #focusable} and looses focus */
-		blur : lowland.events.Event
+		blur : core.event.Simple
 	},
 
 	properties : {

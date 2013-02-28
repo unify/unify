@@ -25,7 +25,7 @@ core.Class("unify.ui.container.List", {
 
 	events: {
 		/** Event fired if list element is tapped */
-		"change" : lowland.events.DataEvent
+		"change" : core.event.Simple
 	},
 
 	properties : {

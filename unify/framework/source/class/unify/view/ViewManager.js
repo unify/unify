@@ -79,10 +79,10 @@ core.Class("unify.view.ViewManager", {
 	events :
 	{
 		/** Fired whenever the view-local path was modified */
-		changePath : lowland.events.DataEvent,
+		changePath : core.event.Simple,
 		
 		/** Fired whenever the displayed view was modified */
-		changeView : lowland.events.Event
+		changeView : core.event.Simple
 	},
 	
 	
@@ -490,7 +490,7 @@ core.Class("unify.view.ViewManager", {
 			}
 			instance.setManager(this);
 			var classname = viewClass.className;
-			var id = classname.substring(classname.lastIndexOf(".")+1).hyphenate().substring(1).toLowerCase();
+			var id = core.util.String.hyphenate(classname.substring(classname.lastIndexOf(".")+1)).substring(1).toLowerCase();
 			if (isDefault) {
 				this.__defaultViewId = id;
 			}

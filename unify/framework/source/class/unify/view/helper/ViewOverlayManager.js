@@ -37,10 +37,10 @@ core.Class("unify.view.helper.ViewOverlayManager", {
 	
 	events : {
 		/** Show popup event */
-		"show" : lowland.events.DataEvent,
+		"show" : core.event.Simple,
 		
 		/** Hide popup event */
-		"hide" : lowland.events.DataEvent
+		"hide" : core.event.Simple
 	},
 
 	/*
