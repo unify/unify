@@ -14,7 +14,7 @@ def source(session, config):
 	outputManager = OutputManager(session, assetManager, 0, 1)
 
 	assetManager.addSourceProfile()
-	includedByKernel = outputManager.storeKernel("$prefix/script/kernel.js", debug=True)
+	includedByKernel = outputManager.storeKernel("$prefix/script/kernel.js")
 
 	for permutation in session.permutate():
 		# Resolving dependencies
