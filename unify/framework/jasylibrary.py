@@ -37,6 +37,8 @@ def build(session, config, cdnPrefix="asset", compressionLevel=2, formattingLeve
 	outputManager = OutputManager(session, assetManager, compressionLevel, formattingLevel)
 	fileManager = FileManager(session)
 	
+	session.setField("unify.application.namespace", name)
+
 	# Assets
 	assetManager.addBuildProfile(cdnPrefix)
 	assetManager.deploy(Resolver(session).addClassName("%s.Application" % name).getIncludedClasses())
