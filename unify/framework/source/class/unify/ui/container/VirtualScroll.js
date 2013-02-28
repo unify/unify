@@ -14,7 +14,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 		this.__widgetPool = [];
 		this.__widgetMap = [];
 		
-		this.__debouncedReflow = this.__reflow.debounce(10);
+		this.__debouncedReflow = core.util.Function.debounce(this.__reflow, 10);
 		
 		this.addListener("resize", function() {
 			this.__debouncedReflow();
