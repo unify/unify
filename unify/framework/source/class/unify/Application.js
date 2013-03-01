@@ -13,16 +13,16 @@
 /**
  * Application class for next generation devices.
  *
- * #require(core.ext.FunctionBind)
- * #require(core.ext.Base64)
- * #require(core.ext.Console)
- * #require(core.ext.DateNow)
- * #require(core.ext.DocumentHead)
- * #require(core.ext.ExecScript)
- * #require(core.ext.IsArray)
- * #require(core.ext.RequestAnimationFrame)
- * #require(core.ext.StringTrim)
- * #require(core.ext.TimeoutArgs)
+ * #require(ext.FunctionBind)
+ * #require(ext.Base64)
+ * #require(ext.Console)
+ * #require(ext.DateNow)
+ * #require(ext.DocumentHead)
+ * #require(ext.ExecScript)
+ * #require(ext.IsArray)
+ * #require(ext.RequestAnimationFrame)
+ * #require(ext.StringTrim)
+ * #require(ext.TimeoutArgs)
  */
 core.Class("unify.Application", {
 	
