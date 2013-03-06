@@ -822,11 +822,11 @@ core.Class("unify.ui.core.Widget", {
 		__overrideLayout : false,
 		overrideLayoutTransform : function(left, top) {
 			if (jasy.Env.isSet("render.translate")) {
-				this.__overrideLayout = true;
-				var layoutTransform = this.__layoutTransform = unify.bom.Transform.accelTranslate(left + "px", top + "px");
+				this.__overrideLayout = { left: left, top: top };
+				var layoutTransform = this.__layoutTransform = " translate(" + left + "px," + top + "px) "; //unify.bom.Transform.accelTranslate(left + "px", top + "px");
 				this.__setElementStyle(this.getElement(), "transform", layoutTransform + " " + (this.__postlayoutTransform || ""));
 			} else {
-				this.__overrideLayout = true;
+				this.__overrideLayout = { left: left, top: top };
 				this.__setElementStyle(this.getElement(), {
 					left: left + "px",
 					top: top + "px"
@@ -910,19 +910,27 @@ core.Class("unify.ui.core.Widget", {
 						height: newHeight + "px",
 						transform: ""
 					};
+					var overrideLayout = this.__overrideLayout;
 					if (jasy.Env.isSet("render.translate")) {
-						if (!this.__overrideLayout) {
+						if (!overrideLayout) {
 							options.left = 0;
 							options.top = 0;
 							
 							if (newLeft+newTop !== 0) {
 								options.transform = unify.bom.Transform.accelTranslate(newLeft+"px", newTop+"px");
 							}
+						} else {
+							if (overrideLayout.left+overrideLayout.top !== 0) {
+								options.transform = unify.bom.Transform.translate(overrideLayout.left+"px", overrideLayout.top+"px");
+							}
 						}
 					} else {
-						if (!this.__overrideLayout) {
+						if (!overrideLayout) {
 							options.left = newLeft + "px";
 							options.top = newTop + "px";
+						} else {
+							options.left = overrideLayout.left + "px";
+							options.top = overrideLayout.top + "px";
 						}
 					}
 					if (scale !== 1) {
@@ -932,10 +940,9 @@ core.Class("unify.ui.core.Widget", {
 					this.__layoutTransform = options.transform;
 					options.transform += " " + (this.__postlayoutTransform||"");
 					
-					/*if (options.transform.trim() == "") {
-						options.transform = " ";
-					}*/
-					
+					if (options.transform.trim() == "") {
+						options.transform = "none ";
+					}
 					this.__setElementStyle(element, options);
 				}
 			}
