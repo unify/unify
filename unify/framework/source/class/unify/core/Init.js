@@ -1,5 +1,5 @@
 (function() {
-
+	if (jasy.Env.isSet("runtime", "browser")) {
 	var app;
 	var DOMReadyEvent;
 
@@ -150,6 +150,13 @@
 		startUp : startUp,
 		shutDown : shutDown
 	});
+	} else {
+		core.Module("unify.core.Init", {
+			startUp : function() {
+				console.log("worker startup");
+			}
+		});
+	}
 
 })();
 

@@ -14,6 +14,10 @@
 
 (function(global) {
 
+	if (!jasy.Env.isSet("runtime", "browser")) {
+		return;
+	}
+
 	var emulateTouch = unify.bom.client.Device.DESKTOP;
 	
 	var leftMouseButton;

@@ -23,13 +23,15 @@
 		}
 	};
 	
-	if (window.onerror) {
-		oldErrorHandler = window.onerror;
+	if (jasy.Env.isSet("runtime", "browser")) {
+		if (window.onerror) {
+			oldErrorHandler = window.onerror;
+		}
+		window.onerror = function(msg, uri, lineNumber) {
+			oldErrorHandler && oldErrorHandler(msg, uri, lineNumber);
+			handleError.call(this, null, [msg, uri, lineNumber]);
+		};
 	}
-	window.onerror = function(msg, uri, lineNumber) {
-		oldErrorHandler && oldErrorHandler(msg, uri, lineNumber);
-		handleError.call(this, null, [msg, uri, lineNumber]);
-	};
 	
 	core.Module("unify.core.GlobalError", {
 		/**

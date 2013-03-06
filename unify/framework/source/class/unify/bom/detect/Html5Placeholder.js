@@ -17,7 +17,10 @@ core.Module("unify.bom.detect.Html5Placeholder", {
 	
 	/** {Boolean} If html5 placeholders are supported */
 	VALUE : (function(doc) {
+		if (!doc) {
+			return false;
+		}
 		var i = doc.createElement("input");
-        return ("placeholder" in i);
-	})(document)
+		return ("placeholder" in i);
+	})(this.window && window.document)
 });

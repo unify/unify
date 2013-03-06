@@ -7,6 +7,10 @@ from jasy.js.Resolver import Resolver
 from jasy.http.Server import Server
 import jasy
 
+session.permutateField("debug")
+session.permutateField("es5")
+session.permutateField("runtime")
+session.setField("webworker.prefixurl", "../")
 
 @share
 def source(session, config):

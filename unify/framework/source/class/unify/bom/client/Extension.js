@@ -29,14 +29,14 @@ core.Module("unify.bom.client.Extension",
 	AIR : navigator.userAgent.match(/adobeair/i) !== null,
 
 	/** {Boolean} Whether the application is running inside a Mozilla Prism package */
-	PRISM : !!window.platform,
+	PRISM : jasy.Env.isSet("runtime", "browser") && (!!window.platform),
 
 	/** {Boolean} Whether the application is running inside a Titanium Desktop package */
-	TITANIUM : !!window.Titanium,
+	TITANIUM : jasy.Env.isSet("runtime", "browser") && (!!window.Titanium),
 
 	/** {Boolean} Whether the application is running inside a PhoneGap application right now. */
-	PHONEGAP : !!(window.PhoneGap || window.DroidGap),
+	PHONEGAP : jasy.Env.isSet("runtime", "browser") && (!!(window.PhoneGap || window.DroidGap)),
 
 	/** {Boolean} Whether the BONDI API is supported */
-	BONDI : !!window.bondi
+	BONDI : jasy.Env.isSet("runtime", "browser") && (!!window.bondi)
 });
