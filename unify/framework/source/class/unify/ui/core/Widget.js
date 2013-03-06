@@ -932,9 +932,9 @@ core.Class("unify.ui.core.Widget", {
 					this.__layoutTransform = options.transform;
 					options.transform += " " + (this.__postlayoutTransform||"");
 					
-					if (options.transform.trim() == "") {
-						options.transform = "none";
-					}
+					/*if (options.transform.trim() == "") {
+						options.transform = " ";
+					}*/
 					
 					this.__setElementStyle(element, options);
 				}
