@@ -188,7 +188,7 @@ core.Class("unify.ui.container.Scroll", {
 		__horizontalScrollIndicator : null,
 		
 		__inTouch : false,
-    __inMouseWheel: false,
+		__inMouseWheel: false,
 		__showIndicatorsOnNextTouchMove: false,
 
 		/*
@@ -245,9 +245,10 @@ core.Class("unify.ui.container.Scroll", {
 			switch(id){
 				case "content":{
 					child = this.getChildrenContainer();
+					child.forceAccelerated();
 					this._add(child, {
-								type: "content"
-							});
+						type: "content"
+					});
 				}
 				break;
 				case "indicatorX":{
