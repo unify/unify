@@ -161,6 +161,17 @@ core.Class("unify.ui.core.Widget", {
 	},
 
 	members: {
+		__accelerated : false,
+		__transformFnt : unify.bom.Transform.translate,
+		/**
+		 * Force accelerated widget. This is GPU intensive and should only be enabled
+		 * if neccessary.
+		 */
+		forceAccelerated : function() {
+			this.__accelerated = true;
+			this.__transformFnt = unify.bom.Transform.accelTranslate;
+		},
+		
 		__nativeListenerRegistry : null,
 		
 		/**
@@ -823,7 +834,7 @@ core.Class("unify.ui.core.Widget", {
 		overrideLayoutTransform : function(left, top) {
 			if (jasy.Env.isSet("render.translate")) {
 				this.__overrideLayout = { left: left, top: top };
-				var layoutTransform = this.__layoutTransform = " translate(" + left + "px," + top + "px) "; //unify.bom.Transform.accelTranslate(left + "px", top + "px");
+				var layoutTransform = this.__layoutTransform = this.__transformFnt(left + "px", top + "px");
 				this.__setElementStyle(this.getElement(), "transform", layoutTransform + " " + (this.__postlayoutTransform || ""));
 			} else {
 				this.__overrideLayout = { left: left, top: top };
@@ -917,11 +928,11 @@ core.Class("unify.ui.core.Widget", {
 							options.top = 0;
 							
 							if (newLeft+newTop !== 0) {
-								options.transform = unify.bom.Transform.accelTranslate(newLeft+"px", newTop+"px");
+								options.transform = this.__transformFnt(newLeft+"px", newTop+"px");
 							}
 						} else {
 							if (overrideLayout.left+overrideLayout.top !== 0) {
-								options.transform = unify.bom.Transform.translate(overrideLayout.left+"px", overrideLayout.top+"px");
+								options.transform = this.__transformFnt(overrideLayout.left+"px", overrideLayout.top+"px");
 							}
 						}
 					} else {

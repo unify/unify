@@ -250,20 +250,26 @@ core.Class("unify.ui.form.Slider", {
 			var knobPosInfo = this.getChildControl("knob").getPositionInfo();
 			var mod;
 			var avail;
-			var transform;
+			//var transform;
+			
+			var left = 0;
+			var top = 0;
 			
 			if (horizontal) {
 				mod = posInfo.padding.left;
 				avail = this.__getAvailSliderWidth();
-				transform = "translate(" + Math.round(avail * value + mod) + "px, 0)";
+				left = Math.round(avail * value + mod);
+				//transform = "translate(" + Math.round(avail * value + mod) + "px, 0)";
 			} else {
 				mod = posInfo.padding.top + posInfo.border.top;
 				avail = this.__getAvailSliderHeight();
-				transform = "translate(0, " + Math.round(avail * value + mod) + "px)";
+				top = Math.round(avail * value + mod);
+				//transform = "translate(0, " + Math.round(avail * value + mod) + "px)";
 			}
-			this.getChildControl("knob").setOwnStyle({
+			/*this.getChildControl("knob").setOwnStyle({
 				transform: transform
-			});
+			});*/
+			this.getChildControl("knob").overrideLayoutTransform(left, top);
 		},
 		
 		/**
