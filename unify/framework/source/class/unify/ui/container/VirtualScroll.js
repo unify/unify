@@ -190,6 +190,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 			
 			if (!widgetConfig.fromPool) {
 				this.add(widget);
+				widget.forceAccelerated();
 			}
 			
 			var left = column*this.getElementWidth()+offsetX;

@@ -72,7 +72,8 @@ core.Class("unify.ui.form.Slider", {
 		
 		this._setLayout(new unify.ui.layout.Canvas());
 		this._showChildControl("bar");
-		this._showChildControl("knob");
+		var knob = this._showChildControl("knob");
+		knob.forceAccelerated();
 		
 		this.addNativeListener("tap", this.__onTap, this);
 		this.addListener("resize", this.__onResize, this);
