@@ -931,6 +931,11 @@ core.Class("unify.ui.core.Widget", {
 					}
 					this.__layoutTransform = options.transform;
 					options.transform += " " + (this.__postlayoutTransform||"");
+					
+					if (options.transform.trim() == "") {
+						options.transform = "none";
+					}
+					
 					this.__setElementStyle(element, options);
 				}
 			}
