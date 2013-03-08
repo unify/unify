@@ -952,7 +952,7 @@ core.Class("unify.ui.core.Widget", {
 					options.transform += " " + (this.__postlayoutTransform||"");
 					
 					if (options.transform.trim() == "") {
-						options.transform = "none ";
+						options.transform = this.__transformFnt(0,0) + " ";
 					}
 					this.__setElementStyle(element, options);
 				}
