@@ -27,7 +27,8 @@ core.Class("unify.ui.basic.Atom", {
 		this._forwardStates = {
 			"hover" : true,
 			"pressed" : true,
-			"checked" : true
+			"checked" : true,
+			"disable" : true
 		};
 		
 		this._setLayout(new unify.ui.layout.special.AtomLayout());
