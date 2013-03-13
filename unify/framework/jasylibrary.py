@@ -9,7 +9,7 @@ import jasy
 
 
 @share
-def source(session, config):
+def source(session, config, kernelName="unify.Kernel"):
 	name = config.get("name")
 	assetManager = AssetManager(session)
 	outputManager = OutputManager(session, assetManager, 0, 1)
@@ -18,9 +18,9 @@ def source(session, config):
 
 	assetManager.addSourceProfile()
 	if jasy.__version__ < "1.1":
-		outputManager.storeKernel("$prefix/script/kernel.js", classes=["unify.Kernel"])
+		outputManager.storeKernel("$prefix/script/kernel.js", classes=[kernelName])
 	else:
-		outputManager.storeKernel("$prefix/script/kernel.js", "unify.Kernel")
+		outputManager.storeKernel("$prefix/script/kernel.js", kernelName)
 
 	for permutation in session.permutate():
 		# Resolving dependencies
@@ -31,7 +31,7 @@ def source(session, config):
 		
 
 @share
-def build(session, config, cdnPrefix="asset", compressionLevel=2, formattingLevel=0):
+def build(session, config, cdnPrefix="asset", compressionLevel=2, formattingLevel=0, kernelName="unify.Kernel"):
 	name = config.get("name")
 	assetManager = AssetManager(session)
 	outputManager = OutputManager(session, assetManager, compressionLevel, formattingLevel)
@@ -45,9 +45,9 @@ def build(session, config, cdnPrefix="asset", compressionLevel=2, formattingLeve
 	
 	# Store loader script
 	if jasy.__version__ < "1.1":
-		outputManager.storeKernel("$prefix/script/kernel.js", classes=["unify.Kernel"])
+		outputManager.storeKernel("$prefix/script/kernel.js", classes=[kernelName])
 	else:
-		outputManager.storeKernel("$prefix/script/kernel.js", "unify.Kernel")
+		outputManager.storeKernel("$prefix/script/kernel.js", kernelName)
 	
 	# Copy files from source
 	fileManager.updateFile("source/index.html", "$prefix/index.html")    
