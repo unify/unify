@@ -86,8 +86,13 @@ core.Class("unify.ui.form.TextArea", {
 		 * Apply placeholder value
 		 */
 		_applyPlaceholderValue: function(placeholder) {
-			this.__placeholderValue = placeholder;
-			this.__onBlur();
+      if (jasy.Env.isSet("html5.placeholder")) {
+        var e = this.getElement();
+        e.setAttribute("placeholder", placeholder);
+      } else {
+        this.__placeholderValue = placeholder;
+        this.__onBlur();
+      }
 		},
 		
 		/**
