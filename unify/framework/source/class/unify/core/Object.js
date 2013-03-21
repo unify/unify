@@ -25,7 +25,9 @@ core.Class("unify.core.Object", {
 			if (this.__disposed) {
 				return;
 			}
-			console.log("DISPOSE: ", this);
+			if (jasy.Env.isSet("debug")) {
+				console.log("DISPOSE: ", this);
+			}
 			this.__disposed = true;
 			
 			try {
