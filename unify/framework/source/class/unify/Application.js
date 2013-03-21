@@ -283,6 +283,11 @@ core.Class("unify.Application", {
 				rootStyle.width = window.innerWidth + "px";
 				rootStyle.height = window.innerHeight + "px";
 			}*/
+		},
+		
+		destruct : function() {
+			this._disposeObjects(this.__root);
+			unify.core.Init.prototype.destruct.call(this);
 		}
 	}
 });

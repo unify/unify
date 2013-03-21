@@ -216,6 +216,11 @@ core.Class("unify.ui.container.scroll.ActionNotification", {
 					throw new Error("qooxdoo property system broken, called apply with disallowed value: "+value);
 				}
 			}
+		},
+		
+		destruct : function() {
+			unify.ui.core.MChildControl.prototype.destruct.call(this);
+			unify.ui.container.Composite.prototype.destruct.call(this);
 		}
 	}
 });

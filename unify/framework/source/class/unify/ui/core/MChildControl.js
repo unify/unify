@@ -211,6 +211,10 @@ core.Class("unify.ui.core.MChildControl", {
 
 			delete this.__childControls;
 		},
+		
+		destruct : function() {
+			this._disposeChildControls();
+		},
 
 
 		/**

@@ -2284,12 +2284,9 @@ core.Class("unify.ui.core.Widget", {
 		 * Destructor
 		 */
 		destruct : function() {
-			this._disposeArray("__widgetChildren");
-			this._disposeObjects(
-				"__layoutManager",
-				"__element",
-				"__nativeListenerRegistry"
-			);
+			console.log("destruct ", this);
+			this._disposeArrays(this.__widgetChildren);
+			this._disposeObjects(this.__layoutManager, this.__element, this.__nativeListenerRegistry);
 			
 			unify.ui.core.VisibleBox.prototype.destruct.call(this);
 		}

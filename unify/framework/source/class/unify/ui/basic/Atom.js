@@ -112,6 +112,11 @@ core.Class("unify.ui.basic.Atom", {
 		_applyText : function(value) {
 			var label = this._showChildControl("label");
 			label.setValue(value);
+		},
+		
+		destruct : function() {
+			unify.ui.core.MChildControl.prototype.destruct.call(this);
+			unify.ui.core.Widget.prototype.destruct.call(this);
 		}
 	}
 });

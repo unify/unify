@@ -336,6 +336,11 @@ core.Class("unify.ui.form.Slider", {
 			}
 
 			this.fireEvent("clickOnBar", { tapValue: tapPos / bar, tapInfo: e });
+		},
+		
+		destruct : function() {
+			unify.ui.core.MChildControl.prototype.destruct.call(this);
+			unify.ui.container.Composite.prototype.destruct.call(this);
 		}
 	}
 });

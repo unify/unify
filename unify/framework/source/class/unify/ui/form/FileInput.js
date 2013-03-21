@@ -107,6 +107,11 @@ core.Class("unify.ui.form.FileInput", {
 		 */
 		__fileInputValueChanged : function(e) {
 			this.fireEvent("changeValue", e.getData());
+		},
+		
+		destruct : function() {
+			unify.ui.core.MChildControl.prototype.destruct.call(this);
+			unify.ui.container.Composite.prototype.destruct.call(this);
 		}
 	}/*,
 
