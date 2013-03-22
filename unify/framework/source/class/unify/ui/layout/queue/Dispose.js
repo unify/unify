@@ -40,7 +40,7 @@
 		flush : function() {
 			var widget;
 			while ((widget = widgetQueue.shift())) {
-				widget.dispose();
+				widget.dispose(true);
 			}
 		}
 	});

@@ -853,6 +853,11 @@ core.Class("unify.ui.core.Widget", {
 		 * useful if element is an root DOM element.
 		 */
 		renderLayout : function(left, top, width, height, preventSize) {
+			if (jasy.Env.isSet("debug")) {
+				if (this.isDisposed()) {
+					throw "Widget " + this + " is disposed; rendering not allowed; parent: " + this.getParentBox();
+				}
+			}
 			var userOverride = this.getUserData("domElementPositionOverride");
 			var userModification = this.getUserData("domElementPositionModification");
 
@@ -2213,8 +2218,14 @@ core.Class("unify.ui.core.Widget", {
 		 *
 		 * @param child {LayoutItem} The child to remove.
 		 */
-		__removeHelper : function(child)
-		{
+		__removeHelper : function(child) {
+			if (this.isDisposed()) {
+				if (jasy.Env.isSet("debug")) {
+					console.warn(this + " is disposed, so no child removal");
+				}
+				return;
+			}
+
 			if (jasy.Env.getValue("debug")) {
 				if (!child) {
 					throw new Error("Can not remove undefined child!");
@@ -2279,16 +2290,29 @@ core.Class("unify.ui.core.Widget", {
 				this.__layoutManager.invalidateLayoutCache();
 			}
 		},
+
+		dispose : function(forceNow) {
+			if (forceNow) {
+				unify.ui.core.VisibleBox.prototype.dispose.call(this);
+			} else {
+				unify.ui.layout.queue.Dispose.add(this);
+			}
+		},
 		
 		/**
 		 * Destructor
 		 */
 		destruct : function() {
-			console.log("destruct ", this);
+			var parentBox = this.getParentBox();
+			if (parentBox) {
+				parentBox.remove(this);
+			}
 			this._disposeArrays(this.__widgetChildren);
 			this._disposeObjects(this.__layoutManager, this.__element, this.__nativeListenerRegistry);
 			
 			unify.ui.core.VisibleBox.prototype.destruct.call(this);
+
+			unify.ui.layout.queue.Layout.remove(this);
 		}
 	}
 });
