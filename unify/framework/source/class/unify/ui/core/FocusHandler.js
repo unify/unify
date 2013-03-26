@@ -57,8 +57,10 @@ core.Class("unify.ui.core.FocusHandler", {
 
 				if ((!this.__focusedChild) || (target != this.__focusedChild.getElement())) {
 					var newFocus = unify.ui.core.Widget.getByElement(target);
-					this.__focusedChild = newFocus;
-					newFocus.tabFocus();
+					if (newFocus) {
+						this.__focusedChild = newFocus;
+						newFocus.tabFocus();
+					}
 				}
 			}
 		},

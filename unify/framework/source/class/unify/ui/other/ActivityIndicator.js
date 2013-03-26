@@ -104,6 +104,11 @@ core.Class("unify.ui.other.ActivityIndicator", {
 		hide : function() {
 			unify.ui.container.Composite.prototype.hide.call(this);
 			this.getChildControl("image").hide();
+		},
+		
+		destruct : function() {
+			unify.ui.core.MChildControl.prototype.destruct.call(this);
+			unify.ui.container.Composite.prototype.destruct.call(this);
 		}
 	}
 });

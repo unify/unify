@@ -12,6 +12,17 @@
 
 /**
  * Application class for next generation devices.
+ *
+ * #require(ext.FunctionBind)
+ * #require(ext.Base64)
+ * #require(ext.Console)
+ * #require(ext.DateNow)
+ * #require(ext.DocumentHead)
+ * #require(ext.ExecScript)
+ * #require(ext.IsArray)
+ * #require(ext.RequestAnimationFrame)
+ * #require(ext.StringTrim)
+ * #require(ext.TimeoutArgs)
  */
 core.Class("unify.Application", {
 	
@@ -71,11 +82,11 @@ core.Class("unify.Application", {
 			lowland.bom.Style.set(rootElement, "visibility", "hidden");
 			
 			// Add box sizing css node
-			var boxSizeProp = lowland.bom.Style.property("boxSizing").hyphenate();
+			var boxSizeProp = core.util.String.hyphenate(lowland.bom.Style.property("boxSizing"));
 			var settings = {};
 			settings[boxSizeProp] = 'border-box;'
 			if (jasy.Env.isSet("engine", "webkit")) {
-				var backfaceProp = lowland.bom.Style.property("backfaceVisibility").hyphenate();
+				var backfaceProp = core.util.String.hyphenate(lowland.bom.Style.property("backfaceVisibility"));
 				settings[backfaceProp] = "hidden;";
 			}
 			
@@ -272,6 +283,11 @@ core.Class("unify.Application", {
 				rootStyle.width = window.innerWidth + "px";
 				rootStyle.height = window.innerHeight + "px";
 			}*/
+		},
+		
+		destruct : function() {
+			this._disposeObjects(this.__root);
+			unify.core.Init.prototype.destruct.call(this);
 		}
 	}
 });

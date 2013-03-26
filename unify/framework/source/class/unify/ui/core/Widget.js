@@ -44,34 +44,34 @@ core.Class("unify.ui.core.Widget", {
 		/**
 		 * Fired on resize of the widget.
 		 */
-		resize : lowland.events.DataEvent,
+		resize : core.event.Simple,
 		
 		/**
 		 * Fired on resize of the widget.
 		 */
-		appearance : lowland.events.DataEvent,
+		appearance : core.event.Simple,
 		
 		/**
 		 * Fired on change of appearance property
 		 */
-		changeAppearance : lowland.events.DataEvent,
+		changeAppearance : core.event.Simple,
 		
 		/**
 		 * Fired on change of visibility property
 		 */
-		changeVisibility : lowland.events.DataEvent,
+		changeVisibility : core.event.Simple,
 
 
 		/**
 		 * Fired on move of the widget.
 		 */
-		move : lowland.events.Event,
+		move : core.event.Simple,
 
 		/** Fired if widget is focusable {@link #focusable} and gets focus */
-		focus : lowland.events.Event,
+		focus : core.event.Simple,
 
 		/** Fired if widget is focusable {@link #focusable} and looses focus */
-		blur : lowland.events.Event
+		blur : core.event.Simple
 	},
 
 	properties : {
@@ -161,6 +161,17 @@ core.Class("unify.ui.core.Widget", {
 	},
 
 	members: {
+		__accelerated : false,
+		__transformFnt : unify.bom.Transform.translate,
+		/**
+		 * Force accelerated widget. This is GPU intensive and should only be enabled
+		 * if neccessary.
+		 */
+		forceAccelerated : function() {
+			this.__accelerated = true;
+			this.__transformFnt = unify.bom.Transform.accelTranslate;
+		},
+		
 		__nativeListenerRegistry : null,
 		
 		/**
@@ -822,11 +833,11 @@ core.Class("unify.ui.core.Widget", {
 		__overrideLayout : false,
 		overrideLayoutTransform : function(left, top) {
 			if (jasy.Env.isSet("render.translate")) {
-				this.__overrideLayout = true;
-				var layoutTransform = this.__layoutTransform = unify.bom.Transform.accelTranslate(left + "px", top + "px");
+				this.__overrideLayout = { left: left, top: top };
+				var layoutTransform = this.__layoutTransform = this.__transformFnt(left + "px", top + "px");
 				this.__setElementStyle(this.getElement(), "transform", layoutTransform + " " + (this.__postlayoutTransform || ""));
 			} else {
-				this.__overrideLayout = true;
+				this.__overrideLayout = { left: left, top: top };
 				this.__setElementStyle(this.getElement(), {
 					left: left + "px",
 					top: top + "px"
@@ -842,6 +853,11 @@ core.Class("unify.ui.core.Widget", {
 		 * useful if element is an root DOM element.
 		 */
 		renderLayout : function(left, top, width, height, preventSize) {
+			if (jasy.Env.isSet("debug")) {
+				if (this.isDisposed()) {
+					throw "Widget " + this + " is disposed; rendering not allowed; parent: " + this.getParentBox();
+				}
+			}
 			var userOverride = this.getUserData("domElementPositionOverride");
 			var userModification = this.getUserData("domElementPositionModification");
 
@@ -910,19 +926,27 @@ core.Class("unify.ui.core.Widget", {
 						height: newHeight + "px",
 						transform: ""
 					};
+					var overrideLayout = this.__overrideLayout;
 					if (jasy.Env.isSet("render.translate")) {
-						if (!this.__overrideLayout) {
+						if (!overrideLayout) {
 							options.left = 0;
 							options.top = 0;
 							
 							if (newLeft+newTop !== 0) {
-								options.transform = unify.bom.Transform.accelTranslate(newLeft+"px", newTop+"px");
+								options.transform = this.__transformFnt(newLeft+"px", newTop+"px");
+							}
+						} else {
+							if (overrideLayout.left+overrideLayout.top !== 0) {
+								options.transform = this.__transformFnt(overrideLayout.left+"px", overrideLayout.top+"px");
 							}
 						}
 					} else {
-						if (!this.__overrideLayout) {
+						if (!overrideLayout) {
 							options.left = newLeft + "px";
 							options.top = newTop + "px";
+						} else {
+							options.left = overrideLayout.left + "px";
+							options.top = overrideLayout.top + "px";
 						}
 					}
 					if (scale !== 1) {
@@ -931,6 +955,10 @@ core.Class("unify.ui.core.Widget", {
 					}
 					this.__layoutTransform = options.transform;
 					options.transform += " " + (this.__postlayoutTransform||"");
+					
+					if (options.transform.trim() == "") {
+						options.transform = this.__transformFnt(0,0) + " ";
+					}
 					this.__setElementStyle(element, options);
 				}
 			}
@@ -2190,8 +2218,14 @@ core.Class("unify.ui.core.Widget", {
 		 *
 		 * @param child {LayoutItem} The child to remove.
 		 */
-		__removeHelper : function(child)
-		{
+		__removeHelper : function(child) {
+			if (this.isDisposed()) {
+				if (jasy.Env.isSet("debug")) {
+					console.warn(this + " is disposed, so no child removal");
+				}
+				return;
+			}
+
 			if (jasy.Env.getValue("debug")) {
 				if (!child) {
 					throw new Error("Can not remove undefined child!");
@@ -2256,19 +2290,29 @@ core.Class("unify.ui.core.Widget", {
 				this.__layoutManager.invalidateLayoutCache();
 			}
 		},
+
+		dispose : function(forceNow) {
+			if (forceNow) {
+				unify.ui.core.VisibleBox.prototype.dispose.call(this);
+			} else {
+				unify.ui.layout.queue.Dispose.add(this);
+			}
+		},
 		
 		/**
 		 * Destructor
 		 */
 		destruct : function() {
-			this._disposeArray("__widgetChildren");
-			this._disposeObjects(
-				"__layoutManager",
-				"__element",
-				"__nativeListenerRegistry"
-			);
+			var parentBox = this.getParentBox();
+			if (parentBox) {
+				parentBox.remove(this);
+			}
+			this._disposeArrays(this.__widgetChildren);
+			this._disposeObjects(this.__layoutManager, this.__element, this.__nativeListenerRegistry);
 			
 			unify.ui.core.VisibleBox.prototype.destruct.call(this);
+
+			unify.ui.layout.queue.Layout.remove(this);
 		}
 	}
 });

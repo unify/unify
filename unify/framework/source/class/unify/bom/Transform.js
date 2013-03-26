@@ -15,7 +15,8 @@
  */
 (function() {
 	
-	var chrome = (navigator.userAgent.toLowerCase().indexOf("chrome") >= 0);
+	var chromeAgent = /Chrome\/(\d+)/.exec(navigator.userAgent);
+	var oldChrome = chromeAgent && chromeAgent[1] && parseInt(chromeAgent[1],10) < 20;
 	
 	core.Module("unify.bom.Transform", {
 		/**
@@ -25,7 +26,7 @@
 		 * @param y {Integer} Y position of translate
 		 * @return {String} Accelerated translate
 		 */
-		accelTranslate : (chrome || jasy.Env.getValue("engine") != "webkit") ? function(x, y) {
+		accelTranslate : (oldChrome || jasy.Env.getValue("engine") != "webkit") ? function(x, y) {
 			// Fix resize bug with translate3d on google chrome 15.0.874.121 m
 			return "translate("+x+","+y+")";
 		} : function(x, y) {
@@ -52,7 +53,7 @@
 		 */
 		accelScale : function(x,y){
 			// Fix resize bug with translate3d on google chrome 15.0.874.121 m
-			if (chrome || jasy.Env.getValue("engine") != "webkit") {
+			if (oldChrome || jasy.Env.getValue("engine") != "webkit") {
 				return "scale("+x+","+y+")";
 			} else {
 				return "scale3d("+x+","+y+",1)";
@@ -78,7 +79,7 @@
 		 */
 		accelRotate : function(deg){
 			// Fix resize bug with translate3d on google chrome 15.0.874.121 m
-			if (chrome || jasy.Env.getValue("engine") != "webkit") {
+			if (oldChrome || jasy.Env.getValue("engine") != "webkit") {
 				return "rotate("+deg+"deg)";
 			} else {
 				return "rotate3d(0,0,1,"+deg+"deg)";

@@ -165,13 +165,13 @@ core.Class("unify.ui.container.Scroll", {
 	events :
 	{
 		/** Event fired if in scroll */
-		scroll: lowland.events.Event,
+		scroll: core.event.Simple,
 		
 		/** Event fired if scroll is ended */
-		scrollend: lowland.events.Event,
+		scrollend: core.event.Simple,
 		
 		/** Event fired if container snaped */
-		snap: lowland.events.Event
+		snap: core.event.Simple
 	},
 
 	/*
@@ -188,7 +188,7 @@ core.Class("unify.ui.container.Scroll", {
 		__horizontalScrollIndicator : null,
 		
 		__inTouch : false,
-    __inMouseWheel: false,
+		__inMouseWheel: false,
 		__showIndicatorsOnNextTouchMove: false,
 
 		/*
@@ -245,9 +245,10 @@ core.Class("unify.ui.container.Scroll", {
 			switch(id){
 				case "content":{
 					child = this.getChildrenContainer();
+					child.forceAccelerated();
 					this._add(child, {
-								type: "content"
-							});
+						type: "content"
+					});
 				}
 				break;
 				case "indicatorX":{
@@ -842,23 +843,15 @@ core.Class("unify.ui.container.Scroll", {
 			if (e.getData() !== "visible") {
 				this.__hideIndicators();
 			}
-		}
-	}/*,
-	
-	destruct : function() {
-		this.removeListener("touchstart", this.__onTouchStart,this);
-		this.removeListener("mousewheel", this.__onMouseWheel, this);
+		},
 		
-		this.removeListener("resize", this.__updateDimensions, this);
-		this.getChildrenContainer().removeListener("resize", this.__updateDimensions, this);
-		this.removeListener("changeVisibility", this.__onChangeVisibility, this);
+		destruct : function() {
+			this.getChildrenContainer().removeListener("resize", this.__updateDimensions, this);
+			
+			unify.ui.core.MChildControl.prototype.destruct.call(this);
+			unify.ui.core.Widget.prototype.destruct.call(this);
+		}
 	}
-======= ORIGIN:
-		var root = qx.core.Init.getApplication().getRoot();
-		root.removeListener("touchmove", this.__onTouchMove,this);
-		root.removeListener("touchend", this.__onTouchEnd,this);
-		root.removeListener("touchcancel", this.__onTouchEnd,this);
-	}*/
 });
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

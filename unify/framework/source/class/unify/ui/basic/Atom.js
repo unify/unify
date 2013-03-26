@@ -27,7 +27,8 @@ core.Class("unify.ui.basic.Atom", {
 		this._forwardStates = {
 			"hover" : true,
 			"pressed" : true,
-			"checked" : true
+			"checked" : true,
+			"disable" : true
 		};
 		
 		this._setLayout(new unify.ui.layout.special.AtomLayout());
@@ -111,6 +112,11 @@ core.Class("unify.ui.basic.Atom", {
 		_applyText : function(value) {
 			var label = this._showChildControl("label");
 			label.setValue(value);
+		},
+		
+		destruct : function() {
+			unify.ui.core.MChildControl.prototype.destruct.call(this);
+			unify.ui.core.Widget.prototype.destruct.call(this);
 		}
 	}
 });

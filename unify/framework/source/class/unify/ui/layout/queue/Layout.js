@@ -43,6 +43,10 @@
 				unify.ui.layout.queue.Manager.run(name);
 			}
 		},
+
+		remove : function(widget) {
+			widgetQueue.remove(widget);
+		},
 		
 		/**
 		 * Flushes queue. 

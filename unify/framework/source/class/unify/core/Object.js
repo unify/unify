@@ -25,38 +25,38 @@ core.Class("unify.core.Object", {
 			if (this.__disposed) {
 				return;
 			}
-			
 			this.__disposed = true;
 			
-			this.destruct();
+			try {
+				this.destruct();
+			} catch (e) {
+				console.error(e.message, e.stack);
+			}
 		},
 		
-		_disposeArray : function(field) {
-			var data = this[field];
-			if (!data) {
-				return;
-			}
-			
-			for (var i=0,ii=data.length; i<ii; i++) {
-				var d = data[i];
-				if (d.dispose) {
-					d.dispose();
+		_disposeArrays : function() {
+			for (var i=0,ii=arguments.length; i<ii; i++) {
+				var data = arguments[i];
+				if (data) {
+					console.log("dispose array: ", data);
+					for (var i=0,ii=data.length; i<ii; i++) {
+						var d = data[i];
+						if (d.dispose) {
+							d.dispose();
+						}
+					}
+					data.length = 0;
 				}
 			}
-			
-			data.length = 0;
-			this[field] = null;
 		},
 		
 		_disposeObjects : function() {
-			for (var i=1,ii=arguments.length; i<ii; i++) {
-				var objName = arguments[i];
-				var obj = this[objName];
+			for (var i=0,ii=arguments.length; i<ii; i++) {
+				var obj = arguments[i];
 				
 				if (obj && obj.dispose) {
 					obj.dispose();
 				}
-				this[objName] = null;
 			}
 		},
 		

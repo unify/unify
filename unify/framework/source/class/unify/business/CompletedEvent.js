@@ -13,46 +13,26 @@
  * Fired by business object whenever a data communication is completed.
  */
 core.Class("unify.business.CompletedEvent", {
-	include : [lowland.events.Event],
+	pooling : true,
+	implement : [core.event.IEvent],
+	include : [core.event.Simple],
 
-	construct : function(target, id, data, modified, errornous, malformed, request) {
-		lowland.events.Event.call(this, target);
-		this.init(id, data, modified, errornous, malformed, request);
+	construct : function(type, id, data, modified, errornous, malformed, request) {
+    core.event.Simple.call(this, type, data);
+    
+    this.__id = id;
+    this.__modified = modified;
+    this.__errornous = errornous;
+    this.__malformed = malformed;
+    this.__request = request;
 	},
 
 	members : {
 		__id : null,
-		__data : null,
 		__errornous : null,
 		__request : null,
 		__malformed : null,
 		__modified : null,
-
-
-		/**
-		 * Initialize the fields of the event. The event must be initialized before
-		 * it can be dispatched.
-		 *
-		 * @param id {String} Unique ID of the request.
-		 * @param data {String} The result data set from the request.
-		 * @param modified {Boolean} Whether the request comes with modified data.
-		 * @param errornous {Boolean} Whether the request was errornous.
-		 * @param malformed {Boolean} Whether the response content is malformed
-		 * @param request {Xhr} Request object to query communication details
-		 * @return {tweet.business.TwitterEvent} The initialized event instance
-		 */
-		init : function(id, data, modified, errornous, malformed, request)
-		{
-			this.__id = id;
-			this.__data = data;
-			this.__modified = modified;
-			this.__errornous = errornous;
-			this.__malformed = malformed;
-			this.__request = request;
-
-			return this;
-		},
-
 
 		/**
 		 * Get a copy of this object
@@ -64,7 +44,7 @@ core.Class("unify.business.CompletedEvent", {
 		 *
 		 * @return {tweet.business.TwitterEvent} a copy of this object
 		 */
-		clone : function(embryo)
+		/*clone : function(embryo)
 		{
 			//var clone = this.base(arguments, embryo);
 			var clone = {};
@@ -77,7 +57,7 @@ core.Class("unify.business.CompletedEvent", {
 			clone.__request = this.__request;
 
 			return clone;
-		},
+		},*/
 
 
 		/**
@@ -87,16 +67,6 @@ core.Class("unify.business.CompletedEvent", {
 		 */
 		getId: function() {
 			return this.__id;
-		},
-
-
-		/**
-		 * Returns the data gathered from the request
-		 *
-		 * @return {Map} Returns the data. Typically a JSON data structure.
-		 */
-		getData: function() {
-			return this.__data;
 		},
 
 

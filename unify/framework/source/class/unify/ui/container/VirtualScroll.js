@@ -14,7 +14,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 		this.__widgetPool = [];
 		this.__widgetMap = [];
 		
-		this.__debouncedReflow = this.__reflow.debounce(10);
+		this.__debouncedReflow = core.util.Function.debounce(this.__reflow, 10);
 		
 		this.addListener("resize", function() {
 			this.__debouncedReflow();
@@ -57,7 +57,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 	},
 	
 	events : {
-		changeModel: lowland.events.Event
+		changeModel: core.event.Simple
 	},
 	
 	members : {
@@ -190,6 +190,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 			
 			if (!widgetConfig.fromPool) {
 				this.add(widget);
+				widget.forceAccelerated();
 			}
 			
 			var left = column*this.getElementWidth()+offsetX;

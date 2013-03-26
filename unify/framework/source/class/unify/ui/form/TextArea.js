@@ -48,10 +48,10 @@ core.Class("unify.ui.form.TextArea", {
 	
 	events : {
 		/** Fired on input */
-		"input" : lowland.events.DataEvent, 
+		"input" : core.event.Simple, 
 		
 		/** Fired on loosing focus */
-		"changeValue" : lowland.events.DataEvent
+		"changeValue" : core.event.Simple
 	},
 	
 	construct : function() {
@@ -86,8 +86,13 @@ core.Class("unify.ui.form.TextArea", {
 		 * Apply placeholder value
 		 */
 		_applyPlaceholderValue: function(placeholder) {
-			this.__placeholderValue = placeholder;
-			this.__onBlur();
+      if (jasy.Env.isSet("html5.placeholder")) {
+        var e = this.getElement();
+        e.setAttribute("placeholder", placeholder);
+      } else {
+        this.__placeholderValue = placeholder;
+        this.__onBlur();
+      }
 		},
 		
 		/**

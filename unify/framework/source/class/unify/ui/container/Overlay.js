@@ -423,6 +423,11 @@ core.Class("unify.ui.container.Overlay", {
 				// FROM MASTER OVERWRITTEN this.getParentBox().add(this, posHint);
 				this.setLayoutProperties(posHint);
 			}
+		},
+		
+		destruct : function() {
+			unify.ui.core.MChildControl.prototype.destruct.call(this);
+			unify.ui.container.Composite.prototype.destruct.call(this);
 		}
 	}/*,
 

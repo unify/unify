@@ -5,39 +5,49 @@ from jasy.core.OutputManager import OutputManager
 from jasy.core.FileManager import FileManager
 from jasy.js.Resolver import Resolver
 from jasy.http.Server import Server
+import jasy
 
 
 @share
-def source(session, config):
+def source(session, config, kernelName="unify.Kernel"):
 	name = config.get("name")
 	assetManager = AssetManager(session)
 	outputManager = OutputManager(session, assetManager, 0, 1)
 
+	session.setField("unify.application.namespace", name)
+
 	assetManager.addSourceProfile()
-	includedByKernel = outputManager.storeKernel("$prefix/script/kernel.js", debug=True)
+	if jasy.__version__ < "1.1":
+		outputManager.storeKernel("$prefix/script/kernel.js", classes=[kernelName])
+	else:
+		outputManager.storeKernel("$prefix/script/kernel.js", kernelName)
 
 	for permutation in session.permutate():
 		# Resolving dependencies
 		resolver = Resolver(session).addClassName("%s.Application" % name)
-		#.excludeClasses(includedByKernel)
 		
 		# Building class loader
 		outputManager.storeLoader(resolver.getSortedClasses(), "$prefix/script/%s-$permutation.js" % name, "unify.core.Init.startUp();")
 		
 
 @share
-def build(session, config, cdnPrefix="asset", compressionLevel=2, formattingLevel=0):
+def build(session, config, cdnPrefix="asset", compressionLevel=2, formattingLevel=0, kernelName="unify.Kernel"):
 	name = config.get("name")
 	assetManager = AssetManager(session)
 	outputManager = OutputManager(session, assetManager, compressionLevel, formattingLevel)
 	fileManager = FileManager(session)
 	
+	session.setField("unify.application.namespace", name)
+
 	# Assets
 	assetManager.addBuildProfile(cdnPrefix)
 	assetManager.deploy(Resolver(session).addClassName("%s.Application" % name).getIncludedClasses())
 	
 	# Store loader script
-	outputManager.storeKernel("$prefix/script/kernel.js")
+	if jasy.__version__ < "1.1":
+		outputManager.storeKernel("$prefix/script/kernel.js", classes=[kernelName])
+	else:
+		outputManager.storeKernel("$prefix/script/kernel.js", kernelName)
 	
 	# Copy files from source
 	fileManager.updateFile("source/index.html", "$prefix/index.html")    

@@ -52,9 +52,9 @@ core.Class("unify.ui.form.Slider", {
 	
 	events : {
 		/** Fired when user clicks on bar */
-		clickOnBar: lowland.events.DataEvent,
+		clickOnBar: core.event.Simple,
 		
-		changeValue: lowland.events.DataEvent
+		changeValue: core.event.Simple
 	},
 	
 	construct : function() {
@@ -72,7 +72,8 @@ core.Class("unify.ui.form.Slider", {
 		
 		this._setLayout(new unify.ui.layout.Canvas());
 		this._showChildControl("bar");
-		this._showChildControl("knob");
+		var knob = this._showChildControl("knob");
+		knob.forceAccelerated();
 		
 		this.addNativeListener("tap", this.__onTap, this);
 		this.addListener("resize", this.__onResize, this);
@@ -250,20 +251,26 @@ core.Class("unify.ui.form.Slider", {
 			var knobPosInfo = this.getChildControl("knob").getPositionInfo();
 			var mod;
 			var avail;
-			var transform;
+			//var transform;
+			
+			var left = 0;
+			var top = 0;
 			
 			if (horizontal) {
 				mod = posInfo.padding.left;
 				avail = this.__getAvailSliderWidth();
-				transform = "translate(" + Math.round(avail * value + mod) + "px, 0)";
+				left = Math.round(avail * value + mod);
+				//transform = "translate(" + Math.round(avail * value + mod) + "px, 0)";
 			} else {
 				mod = posInfo.padding.top + posInfo.border.top;
 				avail = this.__getAvailSliderHeight();
-				transform = "translate(0, " + Math.round(avail * value + mod) + "px)";
+				top = Math.round(avail * value + mod);
+				//transform = "translate(0, " + Math.round(avail * value + mod) + "px)";
 			}
-			this.getChildControl("knob").setOwnStyle({
+			/*this.getChildControl("knob").setOwnStyle({
 				transform: transform
-			});
+			});*/
+			this.getChildControl("knob").overrideLayoutTransform(left, top);
 		},
 		
 		/**
@@ -329,6 +336,11 @@ core.Class("unify.ui.form.Slider", {
 			}
 
 			this.fireEvent("clickOnBar", { tapValue: tapPos / bar, tapInfo: e });
+		},
+		
+		destruct : function() {
+			unify.ui.core.MChildControl.prototype.destruct.call(this);
+			unify.ui.container.Composite.prototype.destruct.call(this);
 		}
 	}
 });

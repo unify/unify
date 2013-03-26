@@ -154,10 +154,10 @@ core.Class("unify.ui.core.MChildControl", {
 				};
 			})(this, id);
 			
-			lowland.events.EventManager.forceDirect(this, "changeAppearance");
+			//lowland.events.EventManager.forceDirect(this, "changeAppearance");
 			
 			this.addListener("changeAppearance", function(e) {
-				appearanceChanged(e.getData());
+				appearanceChanged(e.getValue());
 			}, this);
 
 			// Establish connection to parent
@@ -202,14 +202,19 @@ core.Class("unify.ui.core.MChildControl", {
 
 			for (var id in controls) {
 				var control = controls[id];
-				if (!Widget.contains(this, control)) {
+				/*if (!Widget.contains(this, control)) {
 					control.destroy();
 				} else {
 					control.dispose();
-				}
+				}*/
+				control.dispose();
 			}
 
 			delete this.__childControls;
+		},
+		
+		destruct : function() {
+			this._disposeChildControls();
 		},
 
 
@@ -368,7 +373,7 @@ core.Class("unify.ui.core.MChildControl", {
 				var childs = this._getCreatedChildControls();
 				
 				for (var id in childs) {
-					childs[id].setAppearance(e.getData() + "/" + id);
+					childs[id].setAppearance(e.getValue() + "/" + id);
 				}
 			}, this);
 		}/*,

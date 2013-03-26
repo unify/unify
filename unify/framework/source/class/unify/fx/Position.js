@@ -57,23 +57,27 @@ core.Class("unify.fx.Position", {
 		},
 
 		_setup : function() {
-			var from = this.__resetPoint = this._widget.getStyle("transform");
-			
-			var matcher = new RegExp("translate(?:3d)?([^)]+)");
-			var parsed = matcher.exec(from);
-			var mod;
-			if ((jasy.Env.getValue("render.translate") == false) && parsed && parsed.length == 2) {
-				var vals = parsed[1].substring(1).split(",");
-				var pos = this.__getPosition(vals[0], vals[1]);
-				mod = this.__mod = {
-					top: pos.top,
-					left: pos.left
-				};
+			if (this.__currentPosition) {
+				this.__mod = this.__currentPosition;
 			} else {
-				mod = this.__mod = {
-					top: 0,
-					left: 0
-				};
+				var from = this.__resetPoint = this._widget.getStyle("transform");
+				
+				var matcher = new RegExp("translate(?:3d)?([^)]+)");
+				var parsed = matcher.exec(from);
+				
+				if (parsed && parsed.length == 2) {
+					var vals = parsed[1].substring(1).split(",");
+					var pos = this.__getPosition(vals[0], vals[1]);
+					this.__mod = {
+						left: pos.left,
+						top: pos.top
+					};
+				} else {
+					this.__mod = {
+						left: 0,
+						top: 0
+					};
+				}
 			}
 		},
 		
@@ -94,6 +98,7 @@ core.Class("unify.fx.Position", {
 
 			var mod = this.__mod;
 			var anim = this.__anim;
+      
 			if (!anim) {
 				var to = this.getValue();
 				var toPos = this.__getPosition(to.left, to.top);
@@ -108,6 +113,11 @@ core.Class("unify.fx.Position", {
 
 			var left = Math.round(mod.left + (anim.left * percent));
 			var top = Math.round(mod.top + (anim.top * percent));
+			
+			this.__currentPosition = {
+				left: left,
+				top: top
+			};
 
 			this._widget.setPostLayout(unify.bom.Transform.accelTranslate(left+"px", top+"px"));
 		}
