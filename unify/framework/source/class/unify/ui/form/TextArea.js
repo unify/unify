@@ -127,14 +127,20 @@ core.Class("unify.ui.form.TextArea", {
 		},
 		
 		/**
-		 * Set value of text area
+		 * Sets input value
 		 *
-		 * @param value {String} New value of text area
+		 * @param value {String} Value to set on input field
 		 */
 		setValue : function(value) {
+			this.__changed = true;
+            
+            if (value && value.length > 0) {
+                this.removeState("placeholder");
+            }
+            
 			this.getElement().value = value;
 		},
-		
+
 		/**
 		 * Get value of text area
 		 *
@@ -153,13 +159,22 @@ core.Class("unify.ui.form.TextArea", {
 				this.__changed = false;
 			}
 			
-			// Restore placeholder value if the currently set text is empty
-			var currentValue = this.getValue();
-			if (currentValue == '') {
-				this.setValue(this.__placeholderValue);
-			}
-		},
-		
+            if (jasy.Env.isSet("html5.placeholder")) {
+                var currentValue = this.getValue();
+        		if (currentValue == '') {
+                    this.addState("placeholder");
+        		}
+            } else {
+    			// Restore placeholder value if the currently set text is empty
+    			var currentValue = this.getValue();
+    			if (currentValue == '') {
+    				this.setValue(this.__placeholderValue);
+    				if (this.__placeholderValue) {
+    					this.addState("placeholder");
+    				}
+    			}
+            }
+		},		
 		
 		/**
 		 * Focus handler
