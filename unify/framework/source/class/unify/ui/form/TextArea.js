@@ -12,7 +12,7 @@
 
 /**
  * EXPERIMENTAL
- * Input component
+ * Text area component
  */
 core.Class("unify.ui.form.TextArea", {
 	include : [unify.ui.core.Widget],
@@ -86,13 +86,13 @@ core.Class("unify.ui.form.TextArea", {
 		 * Apply placeholder value
 		 */
 		_applyPlaceholderValue: function(placeholder) {
-      if (jasy.Env.isSet("html5.placeholder")) {
-        var e = this.getElement();
-        e.setAttribute("placeholder", placeholder);
-      } else {
-        this.__placeholderValue = placeholder;
-        this.__onBlur();
-      }
+			if (jasy.Env.isSet("html5.placeholder")) {
+				var e = this.getElement();
+				e.setAttribute("placeholder", placeholder);
+			} else {
+				this.__placeholderValue = placeholder;
+				this.__onBlur();
+			}
 		},
 		
 		/**
@@ -159,21 +159,21 @@ core.Class("unify.ui.form.TextArea", {
 				this.__changed = false;
 			}
 			
-            if (jasy.Env.isSet("html5.placeholder")) {
-                var currentValue = this.getValue();
-        		if (currentValue == '') {
-                    this.addState("placeholder");
-        		}
-            } else {
-    			// Restore placeholder value if the currently set text is empty
-    			var currentValue = this.getValue();
-    			if (currentValue == '') {
-    				this.setValue(this.__placeholderValue);
-    				if (this.__placeholderValue) {
-    					this.addState("placeholder");
-    				}
-    			}
-            }
+			if (jasy.Env.isSet("html5.placeholder")) {
+				var currentValue = this.getValue();
+				if (currentValue == '') {
+					this.addState("placeholder");
+				}
+			} else {
+				// Restore placeholder value if the currently set text is empty
+				var currentValue = this.getValue();
+				if (currentValue == '') {
+					this.setValue(this.__placeholderValue);
+					if (this.__placeholderValue) {
+						this.addState("placeholder");
+					}
+				}
+			}
 		},		
 		
 		/**
