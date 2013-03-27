@@ -12,7 +12,7 @@
 
 (function(global) {
 	
-	var globalErrorHandling = true;
+	var globalErrorHandling = jasy.Env.isSet("debug") ? false : true;
 	var globalErrorHandler = [];
 	var oldErrorHandler = null;
 	
