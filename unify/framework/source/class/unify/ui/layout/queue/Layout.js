@@ -38,7 +38,7 @@
 		 * Add @widget {unify.ui.core.Widget} to queue.
 		 */
 		add : function(widget) {
-			if (!widgetQueue.contains(widget)) {
+			if (!core.Array.contains(widgetQueue, widget)) {
 				widgetQueue.push(widget);
 				unify.ui.layout.queue.Manager.run(name);
 			}

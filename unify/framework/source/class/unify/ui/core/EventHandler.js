@@ -128,7 +128,7 @@
 			}
 		}
 		for (i=removeTouchElement.length-1; i>=0; i--) {
-			touchElement.remove(removeTouchElement[i]);
+			core.Array.remove(touchElement, removeTouchElement[i]);
 		}
 		removeTouchElement = null;
 	});

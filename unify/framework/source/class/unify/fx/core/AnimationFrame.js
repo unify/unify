@@ -17,8 +17,15 @@
  #ignore(requestAnimationFrame)
  #ignore(cancelAnimationFrame)
  */
+
+(function() {
+
+var AnimationFrame = core.effect.AnimationFrame;
+var requestAnimationFrame = AnimationFrame.request;
+var cancelAnimationFrame = AnimationFrame.cancel;
+
 /**
- * #require(ext.RequestAnimationFrame)
+ * require(ext.RequestAnimationFrame)
  */
 core.Module("unify.fx.core.AnimationFrame", {
 	/**
@@ -41,3 +48,5 @@ core.Module("unify.fx.core.AnimationFrame", {
 		return cancelAnimationFrame(handle);
 	}
 });
+
+})();

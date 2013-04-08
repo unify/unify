@@ -29,7 +29,7 @@
 		 * Add @widget {unify.ui.core.Widget} to queue.
 		 */
 		add : function(widget) {
-			if (!widgetQueue.contains(widget)) {
+			if (!core.Array.contains(widgetQueue, widget)) {
 				widgetQueue.push(widget);
 				unify.ui.layout.queue.Manager.run(name);
 			}
@@ -47,11 +47,11 @@
 			var widget;
 			while ((widget = widgetQueue.shift())) {
 				if (widget.getVisibility() == "visible") {
-					if (!visibilityCache.contains(widget)) {
+					if (!core.Array.contains(visibilityCache, widget)) {
 						visibilityCache.push(widget);
 					}
 				} else {
-					visibilityCache.remove(widget);
+					core.Array.remove(visibilityCache, widget);
 				}
 				widget.checkAppearanceNeeds();
 			}
@@ -61,7 +61,7 @@
 		 * {Boolean} Return if @widget {unify.ui.core.Widget} is visible.
 		 */
 		isVisible : function(widget) {
-			return visibilityCache.contains(widget);
+			return core.Array.contains(visibilityCache, widget);
 		}
 	});
 

@@ -1125,7 +1125,7 @@ core.Class("unify.ui.core.Widget", {
 						layoutChildren = children.concat();
 					}
 
-					layoutChildren.remove(child);
+					core.Array.remove(layoutChildren, child);
 				}
 			}
 
@@ -1921,7 +1921,7 @@ core.Class("unify.ui.core.Widget", {
 		_add : function(child, options) {
 			// When moving in the same widget, remove widget first
 			if (child.getParentBox() == this) {
-				this.__widgetChildren.remove(child);
+				core.Array.remove(this.__widgetChildren, child);
 			}
 
 			if (this.__widgetChildren) {
@@ -1946,7 +1946,7 @@ core.Class("unify.ui.core.Widget", {
 
 			// When moving in the same widget, remove widget first
 			if (child.getParentBox() == this) {
-				this.__widgetChildren.remove(child);
+				core.Array.remove(this.__widgetChildren, child);
 			}
 
 			var ref = this.__widgetChildren[index];
@@ -1994,7 +1994,7 @@ core.Class("unify.ui.core.Widget", {
 
 			// When moving in the same widget, remove widget first
 			if (child.getParentBox() == this) {
-				this.__widgetChildren.remove(child);
+				core.Array.remove(this.__widgetChildren, child);
 			}
 
 			var widgetChildren = this.__widgetChildren;
@@ -2033,7 +2033,7 @@ core.Class("unify.ui.core.Widget", {
 
 			// When moving in the same widget, remove widget first
 			if (child.getParentBox() == this) {
-				this.__widgetChildren.remove(child);
+				core.Array.remove(this.__widgetChildren, child);
 			}
 
 			this.__widgetChildren.inesrtAt(child, this.__widgetChildren.indexOf(after)+1);
@@ -2054,7 +2054,7 @@ core.Class("unify.ui.core.Widget", {
 				throw new Error("This widget has no children!");
 			}
 
-			this.__widgetChildren.remove(child);
+			core.Array.remove(this.__widgetChildren, child);
 			this.__removeHelper(child);
 		},
 
@@ -2242,12 +2242,12 @@ core.Class("unify.ui.core.Widget", {
 			// If so, remove it from there, otherwise it is a real DOM element that must be removed from DOM.
 			var queue = this.__renderQueue;
 			var indexed = queue.indexed;
-			var isVirtualAppendedElement = !!queue.append.remove(element);
+			var isVirtualAppendedElement = !!core.Array.remove(queue.append, element);
 			if (!isVirtualAppendedElement) {
 				var isVirtualIndexedElement = false;
 				for (var key in indexed) {
 					var indexedArray = indexed[key];
-					isVirtualIndexedElement = !!indexedArray.remove(element);
+					isVirtualIndexedElement = !!core.Array.remove(indexedArray, element);
 
 					if (isVirtualIndexedElement) {
 						break;

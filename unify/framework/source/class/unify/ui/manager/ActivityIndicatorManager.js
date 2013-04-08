@@ -76,7 +76,7 @@ core.Class("unify.ui.manager.ActivityIndicatorManager", {
 			am[id]--;
 			// TODO !!
 			if (true || am[id] == 0) {
-				this.__activeIds.remove(id);
+				core.Array.remove(this.__activeIds, id);
 			}
 			
 			if (this.__activeIds.length <= 0) {

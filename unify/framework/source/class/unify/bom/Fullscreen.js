@@ -49,7 +49,7 @@
 		}
 		
 		// Secondly, we check for a supported browser engine
-		if (!(supportedEngines.contains(jasy.Env.getValue('engine')))) {
+		if (!(core.Array.contains(supportedEngines, jasy.Env.getValue('engine')))) {
 			return false;
 		}
 		

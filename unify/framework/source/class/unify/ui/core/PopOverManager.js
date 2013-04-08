@@ -268,7 +268,7 @@ core.Class("unify.ui.core.PopOverManager", {
 			var self = this;
 			
 			var hideCallback=function(){
-				self.__visibleOverlays.remove(widget);
+				core.Array.remove(self.__visibleOverlays, widget);
 				self.__sortPopOvers();
 				
 				self.fireEvent("hide", widget);

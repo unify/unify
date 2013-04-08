@@ -189,7 +189,7 @@ core.Class("unify.view.helper.ViewOverlayManager", {
 			var self = this;
 			var finalize = function() {
 				var vvm = self.__visibleViewManagers;
-				vvm.remove(viewManager);
+				core.Array.remove(vvm, viewManager);
 				self.fireEvent("hide", id);
 				
 				if (vvm.length > 0) {
@@ -228,7 +228,7 @@ core.Class("unify.view.helper.ViewOverlayManager", {
 				var widget = lowland.ObjectManager.find(overlay.getUserData("viewmanager"));
 				
 				if (widget) {
-					this.__visibleViewManagers.remove(widget);
+					core.Array.remove(this.__visibleViewManagers, widget);
 					this.fireEvent("hide", (widget&&widget.getId()) || null);
 					widget.hide();
 				}
