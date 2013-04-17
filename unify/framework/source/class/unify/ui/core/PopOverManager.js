@@ -270,6 +270,21 @@ core.Class("unify.ui.core.PopOverManager", {
 			var hideCallback=function(){
 				core.Array.remove(self.__visibleOverlays, widget);
 				self.__sortPopOvers();
+
+        // IE Hack [start]
+        // Unfortunately, IE 10 (and probably earlier version, too) do not
+        // always apply the correct z-index if the z-index is altered on the
+        // fly. To circumvent this, we force the rendering engine to redraw
+        // the blocker to apply correct z-index values/renderings.
+        if (jasy.Env.getValue('engine') === 'trident') {
+          // Increase blocker size by a tiny bit
+          lowland.bom.Style.set(this.__mblocker, 'width', (100 + Math.random()) + '%');
+          var delay = (function() {
+            // Reset blocker to correct size
+            lowland.bom.Style.set(this.__mblocker, 'width', '100%');
+          }).lowDelay(0, this);
+        }
+        // IE Hack [end]
 				
 				self.fireEvent("hide", widget);
 			};

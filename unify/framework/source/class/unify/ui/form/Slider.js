@@ -215,16 +215,18 @@ core.Class("unify.ui.form.Slider", {
 			} else if (diff > calcVal) {
 				diff = calcVal;
 			}
-			
-			var transform;
-			if (horizontal) {
-				transform = unify.bom.Transform.accelTranslate(Math.round(diff)+"px", 0);
-			} else {
-				transform = unify.bom.Transform.accelTranslate(0, Math.round(diff)+"px");
-			}
-			this.__knob.setOwnStyle({
-				transform: transform
-			});
+
+      //var transform;
+      if (horizontal) {
+        this.getChildControl("knob").overrideLayoutTransform(Math.round(diff)+"px", 0);
+        //transform = unify.bom.Transform.accelTranslate(Math.round(diff)+"px", 0);
+      } else {
+        this.getChildControl("knob").overrideLayoutTransform(0, Math.round(diff)+"px");
+        //transform = unify.bom.Transform.accelTranslate(0, Math.round(diff)+"px");
+      }
+      /*this.__knob.setOwnStyle({
+       transform: transform
+       });*/
 			
 			var value = this.__value = diff / calcVal;
 			this.setValue(value);
