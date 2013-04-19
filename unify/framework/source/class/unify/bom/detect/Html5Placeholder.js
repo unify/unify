@@ -10,14 +10,21 @@
 ===============================================================================================
 */
 
-/**
- * Detects the operating system name
- */
-core.Module("unify.bom.detect.Html5Placeholder", {
+
+if (jasy.Env.isSet("runtime", "browser")) {
+	/**
+	 * Detects the operating system name
+	 */
+	core.Module("unify.bom.detect.Html5Placeholder", {
 	
-	/** {Boolean} If html5 placeholders are supported */
-	VALUE : (function(doc) {
-		var i = doc.createElement("input");
-        return ("placeholder" in i);
-	})(document)
-});
+		/** {Boolean} If html5 placeholders are supported */
+		VALUE : (function(doc) {
+			var i = doc.createElement("input");
+		    return ("placeholder" in i);
+		})(document)
+	});
+} else {
+	core.Module("unify.bom.detect.Html5Placeholder", {
+		VALUE: true
+	});
+}
