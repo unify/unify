@@ -179,11 +179,6 @@ core.Class("unify.ui.core.Widget", {
 		 * TODO: Signature
 		 */
 		addNativeListener:  function(type) {
-			var nlr = this.__nativeListenerRegistry;
-			if (!nlr) {
-				nlr = this.__nativeListenerRegistry = [];
-			}
-			
 			var args = arguments;
 			if (typeof(type) == "string") {
 				args = [this.getEventElement()];
@@ -191,6 +186,13 @@ core.Class("unify.ui.core.Widget", {
 					args.push(arguments[i]);
 				}
 			}
+			return unify.ui.core.VisibleBox.prototype.addNativeListener.apply(this, args);
+			
+			var nlr = this.__nativeListenerRegistry;
+			if (!nlr) {
+				nlr = this.__nativeListenerRegistry = [];
+			}
+			
 			
 			// Save global error bound method to native listener registry to find on removeNativeListener
 			var nlrObj = {
@@ -229,6 +231,14 @@ core.Class("unify.ui.core.Widget", {
 		 * TODO: Signature
 		 */
 		removeNativeListener:  function(type) {
+			var args = arguments;
+			if (typeof(type) == "string") {
+				args = [this.getEventElement()];
+				for (var i=0,ii=arguments.length; i<ii; i++) {
+					args.push(arguments[i]);
+				}
+			}
+			return unify.ui.core.VisibleBox.prototype.removeNativeListener.apply(this, args);
 			var nlr = this.__nativeListenerRegistry;
 			
 			var args = arguments;
@@ -1958,7 +1968,7 @@ core.Class("unify.ui.core.Widget", {
 			var widgetChildren = this.__widgetChildren;
 			if (ref) {
 				var pos = widgetChildren.indexOf(ref);
-				widgetChildren.insertAt(child, pos<0?null:pos);
+				core.Array.insertAt(widgetChildren, child, pos<0?null:pos);
 			} else {
 				widgetChildren.push(child);
 			}
@@ -1999,7 +2009,7 @@ core.Class("unify.ui.core.Widget", {
 
 			var widgetChildren = this.__widgetChildren;
 			var pos = widgetChildren.indexOf(before);
-			widgetChildren.insertAt(child, pos<0?null:pos);
+			core.Array.insertAt(widgetChildren, child, pos<0?null:pos);
 
 			this.__addHelper(child, options, addAtIndex);
 		},
@@ -2073,7 +2083,7 @@ core.Class("unify.ui.core.Widget", {
 
 			var child = this.__widgetChildren[index];
 
-			this.__widgetChildren.removeAt(index);
+			core.Array.removeAt(this.__widgetChildren, index);
 			this.__removeHelper(child);
 
 			return child;
@@ -2091,7 +2101,7 @@ core.Class("unify.ui.core.Widget", {
 
 			// Working on a copy to make it possible to clear the
 			// internal array before calling setLayoutParent()
-			var children = this.__widgetChildren.concat();
+			var children = core.Array.clone(this.__widgetChildren);
 			this.__widgetChildren.length = 0;
 
 			for (var i=children.length-1; i>=0; i--) {
