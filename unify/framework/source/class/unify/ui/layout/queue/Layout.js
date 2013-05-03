@@ -45,7 +45,7 @@
 		},
 
 		remove : function(widget) {
-			widgetQueue.remove(widget);
+			core.Array.remove(widgetQueue, widget);
 		},
 		
 		/**
