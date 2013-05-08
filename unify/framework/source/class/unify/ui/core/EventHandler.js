@@ -75,16 +75,19 @@
 				lowland.bom.Events.preventDefault(e);
 			}
 		});
+
+		var mouseMoveHandler = function(e) {
+			lowland.bom.Events.dispatch(lowland.bom.Events.getTarget(e), "touchmove", false, touchSynthesizer(e));
+		};
 		lowland.bom.Events.set(eventElement, "mousedown", function(e) {
 			if (e.button == leftMouseButton) {
 				lowland.bom.Events.dispatch(lowland.bom.Events.getTarget(e), "touchstart", false, touchSynthesizer(e));
+				lowland.bom.Events.set(eventElement, "mousemove", mouseMoveHandler);
 			}
-		});
-		lowland.bom.Events.set(eventElement, "mousemove", function(e) {
-			lowland.bom.Events.dispatch(lowland.bom.Events.getTarget(e), "touchmove", false, touchSynthesizer(e));
 		});
 		lowland.bom.Events.set(eventElement, "mouseup", function(e) {
 			if (e.button == leftMouseButton) {
+				lowland.bom.Events.unset(eventElement, "mousemove", mouseMoveHandler);
 				lowland.bom.Events.dispatch(lowland.bom.Events.getTarget(e), "touchend", false, touchSynthesizer(e));
 			}
 		});
