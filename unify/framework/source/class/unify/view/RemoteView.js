@@ -165,6 +165,11 @@ qx.Class.define("unify.view.RemoteView",
           // this.debug("Cache is valid!")
 
           var cachedEntry = business.getCachedEntry(service, params);
+          if(cachedEntry==null){//cache failed, rerender from scratch
+            delete this.__appliedVersion;
+            this._wrappedRenderData(null);
+            this.refresh();
+          }
           if (cachedEntry.created > this.__appliedVersion)
           {
             // this.debug("Cache is newer than rendered view => render with new cached data...");

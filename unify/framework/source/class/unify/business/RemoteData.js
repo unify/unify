@@ -306,6 +306,13 @@ qx.Class.define("unify.business.RemoteData",
 
           // Recover json/xml data
           var data = unify.bom.Storage.get(this.__storageDataPrefix + cacheId);
+          if(data==null){
+            if(qx.core.Environment.get('qx.debug')){
+              this.debug('invalid localstorage state: empty data for cache of '+service+" "+params+" cleaning remains");
+            }
+            this.clearCache(service,params);
+            return null;
+          }
           var start;
           if (entry.type == "application/json")
           {
@@ -333,6 +340,14 @@ qx.Class.define("unify.business.RemoteData",
 
           // Copy over to in-memory cache
           cache[cacheId] = entry;
+        }
+      } else {
+        if(entry.data==null){
+          if(qx.core.Environment.get('qx.debug')){
+            this.debug('invalid in memory state: empty data for cache of '+service+" "+params+" cleaning remains");
+          }
+          this.clearCache(service,params);
+          return null;
         }
       }
 
