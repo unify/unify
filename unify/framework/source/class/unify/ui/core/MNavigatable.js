@@ -118,7 +118,20 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
 
       var exec = this.getExecute();
       if (exec) {
-        viewManager.getCurrentView()[exec](this);
+        if(viewManager.isInAnimation()){
+          if(qx.core.Environment.get("qx.debug")){
+            this.debug(viewManager.getId()+ " is currently animating, skipping execute attempt");
+          }
+          return;
+        }
+        var currentView = viewManager.getCurrentView();
+        if(exec in currentView && typeof currentView.exec === "function"){
+          currentView[exec](this);
+        } else {
+          if(qx.core.Environment.get("qx.debug")){
+            this.debug(currentView.getId() + " has no function named "+exec+", skipping execute attempt");
+          }
+        }
       } else {
         // Detect absolute links
         var href = this.getHyperreference(); //elem.getAttribute("href");
