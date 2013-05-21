@@ -125,7 +125,7 @@ qx.Mixin.define("unify.ui.core.MNavigatable", {
           return;
         }
         var currentView = viewManager.getCurrentView();
-        if(exec in currentView && typeof currentView.exec === "function"){
+        if(currentView[exec]!=undefined){
           currentView[exec](this);
         } else {
           if(qx.core.Environment.get("qx.debug")){
