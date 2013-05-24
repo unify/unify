@@ -79,7 +79,7 @@
 			 * @param e {Event} Change event
 			 */
 			__onChangeVisibility : function(e) {
-				if (e.getData() == "visible") {
+				if (e.getValue() == "visible") {
 					this.__startRotate();
 				} else {
 					this.__stopRotate();
