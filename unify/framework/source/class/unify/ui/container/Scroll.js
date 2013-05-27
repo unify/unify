@@ -292,6 +292,20 @@ core.Class("unify.ui.container.Scroll", {
 		
 
 		/**
+		 * Returns the current scroll y-position
+		 */
+		getScrollTop : function(){
+			return this.__scrollLeft;
+		},
+		
+		/**
+		 * Returns the current scroll x-position
+		 */
+		getScrollLeft : function(){
+			return this.__scrollTop;
+		},
+
+		/**
 		 * Gets inner content container
 		 *
 		 * @return {unify.ui.core.Widget} Content widget
@@ -612,6 +626,12 @@ core.Class("unify.ui.container.Scroll", {
 		 * @param e {Event} Mouse wheel event
 		 */
 		__onMouseWheel : function(e) {
+			
+			if(!this.getEnableScrollY()){
+				return; //nothing to do if scrolling is deactivated for Y-scrolling
+			}
+			
+			
       this.__inMouseWheel = true;
 
 			var newScrollPos = this.__newWheelScrollPos;
