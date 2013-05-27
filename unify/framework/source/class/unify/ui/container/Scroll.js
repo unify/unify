@@ -295,14 +295,14 @@ core.Class("unify.ui.container.Scroll", {
 		 * Returns the current scroll y-position
 		 */
 		getScrollTop : function(){
-			return this.__scrollLeft;
+			return this.__scrollTop;
 		},
 		
 		/**
 		 * Returns the current scroll x-position
 		 */
 		getScrollLeft : function(){
-			return this.__scrollTop;
+			return this.__scrollLeft;
 		},
 
 		/**
