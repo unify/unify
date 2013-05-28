@@ -238,17 +238,45 @@ core.Class("unify.ui.core.PopOverManager", {
 			var pos = position || "center";
 
 			if (core.Class.isClass(pos.constructor) && pos.constructor instanceof unify.ui.core.Widget.constructor) {
+				
 				if (widget.setTrigger) {
 					widget.setTrigger(pos);
 					pos = widget.getPositionHint();
 				} else {
 					pos = null;
 				}
-			} else if (pos == "center" || pos == "window") {
-				pos = {left: "center", top: "center"};
-			} else if (pos == "full") {
-				pos = {left: 0, top: 0, right: 0, bottom: 0};
+			} else {
+					switch(pos)
+					{
+						case "full" :
+							pos = {left: 0, top: 0, right: 0, bottom: 0};
+							break;
+						
+						case "top" :
+							pos = {top: 0, left: "center"};
+							break;
+						
+						case "left" :
+							pos = {top: "center", left: 0};
+							break;
+						
+						case "right":
+							pos = {top: "center", right: 0};
+							break;
+						
+						case "bottom":
+							pos = {bottom: 0, left: "center"};
+							break;
+						
+						default :
+							this.debug("Unknown Key for PopUp position; using center instead");
+						case "center" :
+						case "window" :
+							pos = {left: "center", top: "center"};
+							break;
+				}
 			}
+			
 			this.__root.add(widget, pos);
 			this.__visibleOverlays.push(widget);
 			this.__sortPopOvers();
