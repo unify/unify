@@ -8,8 +8,18 @@ from jasy.http.Server import Server
 import jasy
 
 
+
+
 @share
 def source(session, config, kernelName="unify.Kernel"):
+	# Check for new jasy replacement system (1.1.0-rc4)
+	if session.expandFileName("{{id}}") != "{{id}}":
+        	PREFIX = "{{prefix}}"
+	        HASH = "{{id}}"
+	else:
+        	PREFIX = "$prefix"
+	        HASH = "$permutation"
+
 	name = config.get("name")
 	assetManager = AssetManager(session)
 	outputManager = OutputManager(session, assetManager, 0, 1)
@@ -18,20 +28,28 @@ def source(session, config, kernelName="unify.Kernel"):
 
 	assetManager.addSourceProfile()
 	if jasy.__version__ < "1.1":
-		outputManager.storeKernel("$prefix/script/kernel.js", classes=[kernelName])
+		outputManager.storeKernel(PREFIX + "/script/kernel.js", classes=[kernelName])
 	else:
-		outputManager.storeKernel("$prefix/script/kernel.js", kernelName)
+		outputManager.storeKernel(PREFIX + "/script/kernel.js", kernelName)
 
 	for permutation in session.permutate():
 		# Resolving dependencies
 		resolver = Resolver(session).addClassName("%s.Application" % name)
 		
 		# Building class loader
-		outputManager.storeLoader(resolver.getSortedClasses(), "$prefix/script/%s-$permutation.js" % name, "unify.core.Init.startUp();")
+		outputManager.storeLoader(resolver.getSortedClasses(), PREFIX + "/script/%s-" + HASH + ".js" % name, "unify.core.Init.startUp();")
 		
 
 @share
 def build(session, config, cdnPrefix="asset", compressionLevel=2, formattingLevel=0, kernelName="unify.Kernel"):
+	# Check for new jasy replacement system (1.1.0-rc4)
+	if session.expandFileName("{{id}}") != "{{id}}":
+        	PREFIX = "{{prefix}}"
+	        HASH = "{{id}}"
+	else:
+        	PREFIX = "$prefix"
+	        HASH = "$permutation"
+
 	name = config.get("name")
 	assetManager = AssetManager(session)
 	outputManager = OutputManager(session, assetManager, compressionLevel, formattingLevel)
@@ -45,12 +63,12 @@ def build(session, config, cdnPrefix="asset", compressionLevel=2, formattingLeve
 	
 	# Store loader script
 	if jasy.__version__ < "1.1":
-		outputManager.storeKernel("$prefix/script/kernel.js", classes=[kernelName])
+		outputManager.storeKernel(PREFIX + "/script/kernel.js", classes=[kernelName])
 	else:
-		outputManager.storeKernel("$prefix/script/kernel.js", kernelName)
+		outputManager.storeKernel(PREFIX + "/script/kernel.js", kernelName)
 	
 	# Copy files from source
-	fileManager.updateFile("source/index.html", "$prefix/index.html")    
+	fileManager.updateFile("source/index.html", PREFIX + "/index.html")    
 	
 	# Process every possible permutation
 	for permutation in session.permutate():
@@ -58,7 +76,7 @@ def build(session, config, cdnPrefix="asset", compressionLevel=2, formattingLeve
 		resolver = Resolver(session).addClassName("%s.Application" % name)
 		
 		# Compressing classes
-		outputManager.storeCompressed(resolver.getSortedClasses(), "$prefix/script/%s-$permutation.js" % name, "unify.core.Init.startUp();")
+		outputManager.storeCompressed(resolver.getSortedClasses(), PREFIX + "/script/%s-" + HASH + ".js" % name, "unify.core.Init.startUp();")
 
 
 @share
