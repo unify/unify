@@ -37,7 +37,7 @@ def source(session, config, kernelName="unify.Kernel"):
 		resolver = Resolver(session).addClassName("%s.Application" % name)
 		
 		# Building class loader
-		outputManager.storeLoader(resolver.getSortedClasses(), PREFIX + "/script/%s-" + HASH + ".js" % name, "unify.core.Init.startUp();")
+		outputManager.storeLoader(resolver.getSortedClasses(), (PREFIX + "/script/%s-" + HASH + ".js") % name, "unify.core.Init.startUp();")
 		
 
 @share
@@ -76,7 +76,7 @@ def build(session, config, cdnPrefix="asset", compressionLevel=2, formattingLeve
 		resolver = Resolver(session).addClassName("%s.Application" % name)
 		
 		# Compressing classes
-		outputManager.storeCompressed(resolver.getSortedClasses(), PREFIX + "/script/%s-" + HASH + ".js" % name, "unify.core.Init.startUp();")
+		outputManager.storeCompressed(resolver.getSortedClasses(), (PREFIX + "/script/%s-" + HASH + ".js") % name, "unify.core.Init.startUp();")
 
 
 @share
