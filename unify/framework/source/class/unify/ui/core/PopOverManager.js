@@ -147,38 +147,52 @@ core.Class("unify.ui.core.PopOverManager", {
 				var mSet=false;
 				var pSet=false;
 				for(var i=numVisible-1;i>=0;i--){
-					var modal = visible[i].getModal();
-
-					if(!mSet && modal){
+					var type;
+					//Check which interface is used atm.
+					if(visible[i].getPopUpType){
+						type = visible[i].getPopUpType().toLowerCase();
+					} else {
+						console.warn("unify.ui.core.IPopOver is deprecated and will be replaced by unify.ui.core.IPopUp");
+						type = visible[i].getModal();
+					}
+					//if type is boolean we assume the old interface is used
+					if( (!mSet && type === true) || (!mSet && type === "modal") ){
 						var styleState = visible[i].getUserData("blockerState");
 						if (styleState) {
 							var val = styleState;
 							styleState = {};
 							styleState[val] = true;
 						}
-						
 						var style = unify.theme.Manager.get().resolveStyle("MODAL-BLOCKER") || {};
 						style.zIndex = (zIndexBase-1)+2*i;
 						style.display = 'block';
-            
 						lowland.bom.Style.set(mblocker, style);
-						
 						mSet = true;
-					} else if (!pSet && !modal){
+
+					} else if ( (!pSet && type === false) || (!pSet && type === "popup")){
 						var styleState = visible[i].getUserData("blockerState");
 						if (styleState) {
 							var val = styleState;
 							styleState = {};
 							styleState[val] = true;
 						}
-						
 						var style = unify.theme.Manager.get().resolveStyle("POPOVER-BLOCKER") || {};
 						style.zIndex = (zIndexBase-1)+2*i;
 						style.display = 'block';
 						lowland.bom.Style.set(pblocker, style);
-						
+						pSet = true;
+
+					//The info popup has no blocker element
+					} else if(!pSet && type === "info"){
+						var styleState = visible[i].getUserData("blockerState");
+						if (styleState) {
+							var val = styleState;
+							styleState = {};
+							styleState[val] = true;
+						}
 						pSet = true;
 					}
+
 					if (mSet&&pSet) {
 						break;
 					}
@@ -233,6 +247,7 @@ core.Class("unify.ui.core.PopOverManager", {
 		show : function(widget, position) {
 			if (jasy.Env.getValue("debug")) {
 				this.debug("Show: " + (widget&&widget.constructor));
+				//should be switched to IPopUp in the future
 				core.Interface.assert(widget, unify.ui.core.IPopOver);
 			}
 			var pos = position || "center";
