@@ -194,7 +194,8 @@ core.Class("unify.ui.core.PopOverManager", {
 							styleState = {};
 							styleState[val] = true;
 						}
-						pSet = true;
+						//turn of blocker. Fix for multiple popups with different types
+						pSet = false;
 					}
 
 					if (mSet&&pSet) {
