@@ -150,7 +150,7 @@ core.Class("unify.ui.core.PopOverManager", {
 					var type;
 					//Check which interface is used atm.
 					if(visible[i].getPopUpType){
-						type = visible[i].getPopUpType().toLowerCase();
+						type = visible[i].getPopUpType();
 					} else {
 						console.warn("unify.ui.core.IPopOver is deprecated and will be replaced by unify.ui.core.IPopUp");
 						type = visible[i].getModal();

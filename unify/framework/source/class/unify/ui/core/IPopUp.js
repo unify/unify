@@ -18,12 +18,13 @@ core.Interface("unify.ui.core.IPopUp", {
 	members : {
 		/**
 		 * should be used to determine what kind of popup is used.
-		 * atm we differ between 3 types : Modal, PopUp, Info
+		 * atm we differ between 3 types : modal, popup, info
 		 * Modal is used to force the user handling the popup
 		 * PopUp is used without the forcing.
 		 * It has, however, a blocker to register events outside the PopUp.
 		 * Info should be used as a notification without any direct user interaction.
 		 * It is basically a PopUp wihtout the blocker.
+		 * The returning value must be "info", "modal" or "popup"
 		 */
 		getPopUpType : function(){}
 	}
