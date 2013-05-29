@@ -152,7 +152,11 @@ core.Class("unify.ui.core.PopOverManager", {
 					if(visible[i].getPopUpType){
 						type = visible[i].getPopUpType();
 					} else {
-						console.warn("unify.ui.core.IPopOver is deprecated and will be replaced by unify.ui.core.IPopUp");
+						//Show warn only in debug mode
+						if (jasy.Env.getValue("debug")) {
+							console.warn("unify.ui.core.IPopOver is deprecated and will be replaced by unify.ui.core.IPopUp");
+						}
+						//we assume old interface here
 						type = visible[i].getModal();
 					}
 					//if type is boolean we assume the old interface is used
