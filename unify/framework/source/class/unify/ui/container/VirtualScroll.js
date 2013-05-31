@@ -211,7 +211,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 				//widget.show();
 				//this.__widgetUpdater.lazy(this, widget, column, row, model[pos]);
 				var widgetUpdater = lowland.Function.curryBind(this.__widgetUpdater, this, widget, column, row, model[pos]);
-				widgetUpdater.lazy();
+				core.Function.immediate(widgetUpdater);
 			}
 		},
 		
