@@ -64,13 +64,14 @@ core.Class("unify.ui.container.Scroll", {
 		if ( (jasy.Env.getValue("os.name") != "android") && (jasy.Env.getValue("os.name") != "ios") ) {
 			this.__inInitPhase = true;
 			var cb = function() {
+				var self = this;
 				this.__showIndicators();
 				(function() {
-					this.__inInitPhase = false;
-					if (!this.__inTouch) {
-						this.__hideIndicators();
+					self.__inInitPhase = false;
+					if (!self.__inTouch) {
+						self.__hideIndicators();
 					}
-				}).lowDelay(1500, this);
+				}).lowDelay(1500);
 			}.bind(this);
 			this.addListener("changeVisibility", function(e) {
 				if (e.getData() == "visible") {
@@ -669,9 +670,7 @@ core.Class("unify.ui.container.Scroll", {
       // on the eyes to show them. Since it takes some time to smoothly fade
       // them in, it could be that the indicators would otherwise not be visible
       // at all.
-      (function() {
-        this.__hideIndicators();
-      }).lowDelay(250, this);
+		this.__hideIndicators.lowDelay(250, this);
     },
 
 
