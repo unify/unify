@@ -633,7 +633,7 @@ core.Class("unify.ui.container.Scroll", {
 			}
 			
 			
-      this.__inMouseWheel = true;
+			this.__inMouseWheel = true;
 
 			var newScrollPos = this.__newWheelScrollPos;
 			var top;
@@ -655,23 +655,23 @@ core.Class("unify.ui.container.Scroll", {
 			
 			this.__newWheelScrollPos = top;
 
-      this.__showIndicators();
+			this.__showIndicators();
 			this.scrollTo(null, top, false);
 			
 			this.addListenerOnce("scrollend", this.__onMouseWheelScrollEnd, this);
 		},
 
 
-    __onMouseWheelScrollEnd: function(e) {
-      this.__newWheelScrollPos = null;
-      this.__inMouseWheel = false;
+		__onMouseWheelScrollEnd: function(e) {
+			this.__newWheelScrollPos = null;
+			this.__inMouseWheel = false;
 
-      // We delay the hiding of the scroll indicators to make it more pleasing
-      // on the eyes to show them. Since it takes some time to smoothly fade
-      // them in, it could be that the indicators would otherwise not be visible
-      // at all.
-		this.__hideIndicators.lowDelay(250, this);
-    },
+			// We delay the hiding of the scroll indicators to make it more pleasing
+			// on the eyes to show them. Since it takes some time to smoothly fade
+			// them in, it could be that the indicators would otherwise not be visible
+			// at all.
+			this.__hideIndicators.lowDelay(250, this);
+		},
 
 
 		/**
@@ -763,7 +763,7 @@ core.Class("unify.ui.container.Scroll", {
 			root.addNativeListener("touchend", this.__onTouchEnd,this);
 			root.addNativeListener("touchcancel", this.__onTouchEnd,this);
 			
-/* NEW:      var cb = function() {
+			/* NEW:      var cb = function() {
 				this.removeNativeListener(root, "touchmove", cb);
 				this.__showIndicators.apply(this, arguments);
 			}.bind(this);
@@ -1842,9 +1842,9 @@ var Scroller;
 				} else {
 
 					self.scrollTo(self.__scrollLeft, self.__scrollTop, true, self.__zoomLevel);
-																				if (self.__callback) {
-																								self.__callback(self.__scrollLeft, self.__scrollTop, self.__zoomLevel, "stop");
-																				}
+					if (self.__callback) {
+						self.__callback(self.__scrollLeft, self.__scrollTop, self.__zoomLevel, "stop");
+					}
 
 					// Directly signalize deactivation (nothing todo on refresh?)
 					if (self.__refreshActive) {
@@ -2033,9 +2033,9 @@ var Scroller;
 
 				// Animate to grid when snapping is active, otherwise just fix out-of-boundary positions
 				self.scrollTo(self.__scrollLeft, self.__scrollTop, self.options.snapping);
-																if (self.__callback) {
-																				self.__callback(self.__scrollLeft, self.__scrollTop, self.__zoomLevel, "stop_deceleration");
-																}
+				if (self.__callback) {
+					self.__callback(self.__scrollLeft, self.__scrollTop, self.__zoomLevel, "stop_deceleration");
+				}
 			};
 
 			// Start animation and switch on flag
