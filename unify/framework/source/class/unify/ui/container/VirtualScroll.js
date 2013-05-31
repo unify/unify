@@ -184,7 +184,6 @@ core.Class("unify.ui.container.VirtualScroll", {
 		},
 		
 		__createWidget : function(column, row, offsetX, offsetY) {
-			var widgetUpdater = this.__widgetUpdater;
 			var widgetConfig = this.__getWidgetFromPool();
 			var widget = widgetConfig.widget;
 			
@@ -210,7 +209,9 @@ core.Class("unify.ui.container.VirtualScroll", {
 				widget.overrideLayoutTransform(0, -100000);
 			} else {
 				//widget.show();
-				widgetUpdater.lazy(this, widget, column, row, model[pos]);
+				//this.__widgetUpdater.lazy(this, widget, column, row, model[pos]);
+				var widgetUpdater = lowland.Function.curryBind(this.__widgetUpdater, this, widget, column, row, model[pos]);
+				core.Function.immediate(widgetUpdater);
 			}
 		},
 		
