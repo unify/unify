@@ -53,16 +53,16 @@ qx.Class.define("unify.ui.container.ActionScroll", {
   
   events:{
     //fires when an action is activated
-    actionActivated: "qx.event.type.DataEvent",
+    actionActivated: "qx.event.type.Data",
     
     //fires when an action is deactivated (either by the user dragging back out of the active zone or after the execution
-    actionDeactivated: "qx.event.type.DataEvent",
+    actionDeactivated: "qx.event.type.Data",
     
     //fires when an action is executed
-    actionExecuted: "qx.event.type.DataEvent",
+    actionExecuted: "qx.event.type.Data",
     
     //fires when an action finished (that is, when finishedPullAction was called after the action was executed).
-    actionFinished: "qx.event.type.DataEvent"
+    actionFinished: "qx.event.type.Data"
   },
   
   members: {
