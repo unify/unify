@@ -12,8 +12,7 @@
 */
 
 
-(function() {
-	
+(function () {
 	var zIndexBase = 100;
 	
 /**
@@ -265,7 +264,7 @@ core.Class("unify.ui.core.PopOverManager", {
 				} else {
 					pos = null;
 				}
-			} else {
+			} else if(typeof pos === "string"){
 					switch(pos)
 					{
 						case "full" :
@@ -295,6 +294,9 @@ core.Class("unify.ui.core.PopOverManager", {
 							pos = {left: "center", top: "center"};
 							break;
 				}
+			} else if(!(typeof pos === "object" && pos.top && pos.left)){ //check if pos is already a position map
+				//if not make default position
+				pos = {left: "center", top: "center"};
 			}
 			
 			this.__root.add(widget, pos);
