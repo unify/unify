@@ -66,12 +66,7 @@ core.Class("unify.ui.container.Scroll", {
 			var cb = function() {
 				var self = this;
 				this.__showIndicators();
-				(function() {
-					self.__inInitPhase = false;
-					if (!self.__inTouch) {
-						self.__hideIndicators();
-					}
-				}).lowDelay(1500);
+				this.__hideUntappedIndicators.lowDelay(1500, this);
 			}.bind(this);
 			this.addListener("changeVisibility", function(e) {
 				if (e.getData() == "visible") {
@@ -851,6 +846,13 @@ core.Class("unify.ui.container.Scroll", {
 		__hideIndicators : function() {
 			this.__verticalScrollIndicator.setVisible(false);
 			this.__horizontalScrollIndicator.setVisible(false);
+		},
+		
+		__hideUntappedIndicators : function() {
+			this.__inInitPhase = false;
+			if (!this.__inTouch) {
+				this.__hideIndicators();
+			}
 		},
 		
 		/**
