@@ -63,7 +63,11 @@ core.Class("unify.ui.form.TextField", {
 			type: 'String',
 			init: '',
 			apply: function(value, old) { this._applyPlaceholderValue(value, old); }
-		}
+		},
+
+    hoverForPopover: {
+      init: false
+    }
 	},
 	
 	events : {
