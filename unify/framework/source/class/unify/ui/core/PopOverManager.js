@@ -304,13 +304,12 @@ core.Class("unify.ui.core.PopOverManager", {
 			this.__sortPopOvers();
 			
 			widget.show();
-
-      if (widget.getTrigger) {
-        var trigger = widget.getTrigger();
-        if (trigger.getHoverForPopover && trigger.getHoverForPopover()) {
-          unify.ui.core.Util.domElementToRootLevel(trigger);
-        }
-      }
+			if (widget.getTrigger && widget.getTrigger()) {
+				var trigger = widget.getTrigger();
+				if (trigger.getHoverForPopover && trigger.getHoverForPopover()) {
+					unify.ui.core.Util.domElementToRootLevel(trigger);
+				}
+			}
 			
 			this.fireEvent("show", widget);
 		},
@@ -349,7 +348,7 @@ core.Class("unify.ui.core.PopOverManager", {
 			widget.addListenerOnce("changeVisibility", hideCallback, this);
 			widget.hide();
 
-      if (widget.getTrigger) {
+      if (widget.getTrigger && widget.getTrigger()) {
         var trigger = widget.getTrigger();
         if (trigger.getHoverForPopover && trigger.getHoverForPopover()) {
           unify.ui.core.Util.domElementToTreeLevel(trigger);
