@@ -38,7 +38,9 @@ core.Class("unify.core.Object", {
 			for (var i=0,ii=arguments.length; i<ii; i++) {
 				var data = arguments[i];
 				if (data) {
-					console.log("dispose array: ", data);
+					if (jasy.Env.isSet("debug")) {
+						console.log("dispose array: ", data);
+					}
 					for (var i=0,ii=data.length; i<ii; i++) {
 						var d = data[i];
 						if (d.dispose) {
