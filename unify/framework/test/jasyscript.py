@@ -24,7 +24,7 @@ def distclean():
     Repository.distclean()
 
 @task 
-def test(target="source", tool="phantom", browsers=None):
+def test(target="source", tool="phantom", browsers=all):
     """Automatically executes tests in either PhantomJS, NodeJS or Testem CI"""
     
     core.test(target, tool, browsers)

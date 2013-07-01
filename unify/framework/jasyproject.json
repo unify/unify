@@ -38,7 +38,7 @@
 	},
 	"requires" : [{
 		"source" : "https://github.com/fastner/lowland.git",
-		"version" : "stable/1-latest"
+		"version" : "master"
 	}, {
 		"source" : "https://github.com/fastner/jasy-appcache.git",
 		"version" : "features/core-update-next-2"
