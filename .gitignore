@@ -13,6 +13,11 @@ application/coretest/source/script
 application/coretest/test/script
 application/coretest/api
 
+unify/framework/external
+unify/framework/test/external
+unify/framework/test/.jasy
+unify/framework/test/source/script
+
 unify/application/flicky/log.txt
 .DS_Store
 .settings.xml
