@@ -82,10 +82,12 @@ core.Class("unify.Application", {
 			var boxSizeProp = core.String.hyphenate(lowland.bom.Style.property("boxSizing"));
 			var settings = {};
 			settings[boxSizeProp] = 'border-box;'
-			if (jasy.Env.isSet("engine", "webkit")) {
+			
+			//Premature optimizations are evil !!
+			/*if (jasy.Env.isSet("engine", "webkit")) {
 				var backfaceProp = core.String.hyphenate(lowland.bom.Style.property("backfaceVisibility"));
 				settings[backfaceProp] = "hidden;";
-			}
+			}*/
 			
 			var styleText = ['* {'];
 			for (var key in settings) {
