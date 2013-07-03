@@ -377,7 +377,9 @@ core.Class("unify.ui.core.Widget", {
 				if (!e) {
 					console.error("NO ELEMENT : ", this.constructor);
 				}
-				e.setAttribute("appearance",value);
+				if (e.setAttribute) {
+					e.setAttribute("appearance",value);
+				}
 			}
 			this.updateAppearance();
 		},
