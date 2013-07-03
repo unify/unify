@@ -158,6 +158,14 @@ qx.Class.define("unify.business.RemoteData",
     {
       check : "String",
       nullable : true
+    },
+
+    /**
+     * add a nocache=<timestamp> parameter to post request urls that prevents effective browser caching
+     */
+    postCacheBust:{
+      check:"Boolean",
+      init:false
     }
   },
 
@@ -665,6 +673,9 @@ qx.Class.define("unify.business.RemoteData",
       // Add post data
       if (method == "POST")
       {
+        if(this.getPostCacheBust()||config.postCacheBust){
+          req.setCache(false);
+        }
         var reqType = this.getRequestType();
         if (reqType == "application/json" && typeof data != "string") {
           data = qx.lang.Json.stringify(data);
