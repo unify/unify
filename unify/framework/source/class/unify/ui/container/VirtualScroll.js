@@ -13,7 +13,8 @@ core.Class("unify.ui.container.VirtualScroll", {
 		
 		this.__widgetPool = [];
 		this.__widgetMap = [];
-		
+		this.__modelHashes = {};
+
 		this.__debouncedReflow = core.Function.debounce(this.__reflow, 10);
 		
 		this.addListener("resize", function() {
@@ -69,11 +70,16 @@ core.Class("unify.ui.container.VirtualScroll", {
 		__maximalRows : 0,
 		__isInit : null,
 		
+		/** Map used to find requested model/widget combinations to speed up model layout */
+		__modelHashes : null,
+
 		getCurrentWidgets : function() {
 			return this.__widgetMap;
 		},
 		
 		__applyModel : function(model) {
+			//new model new hashes. Overwrite old model hashes list
+			this.__modelHashes = {};
 			var rows = Math.ceil(model.length / this.getColumns());
 			this.getChildrenContainer().setHeight(rows * this.getElementHeight());
 			this.__debouncedReflow();
@@ -118,7 +124,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 			if (!this.__isInit) {
 				return;
 			}
-			
+			var row;
 			var currentPos = this.getScrollTop();
 			if(currentPos < 0 || currentPos > this.getContentHeight()){
 				return; // no need to do anything on overshoot
@@ -142,7 +148,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 			
 			
 			// Move all widgets not shown anymore to widget pool
-			for (var row in widgetMap) {
+			for (row in widgetMap) {
 				if (row < startRow || row > endRow) {
 					var widgets = widgetMap[row];
 					delete widgetMap[row];
@@ -167,7 +173,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 			var elementHeight = this.getElementHeight();
 			
 			// If new rows appears that have no rendered widgets, do it
-			for (var row = startRow; row <= endRow; row++) {
+			for (row = startRow; row <= endRow; row++) {
 				var columns = this.getColumns();
 				for (var i=0; i<columns; i++) {
 					if ((!widgetMap[row]) || (!widgetMap[row][i])) {
@@ -184,9 +190,10 @@ core.Class("unify.ui.container.VirtualScroll", {
 		},
 		
 		__createWidget : function(column, row, offsetX, offsetY) {
-			var widgetConfig = this.__getWidgetFromPool();
+			var pos = row * this.getColumns() + column;
+			var model = this.getModel();
+			var widgetConfig = this.__getWidgetFromPool(model[pos]);
 			var widget = widgetConfig.widget;
-			
 			if (!widgetConfig.fromPool) {
 				this.add(widget);
 				widget.forceAccelerated();
@@ -201,9 +208,6 @@ core.Class("unify.ui.container.VirtualScroll", {
 			}
 			this.__widgetMap[row][column] = widget;
 			
-			var pos = row * this.getColumns() + column;
-			var model = this.getModel();
-			
 			if (pos >= model.length) {
 				//widget.hide();
 				widget.overrideLayoutTransform(0, -100000);
@@ -215,16 +219,63 @@ core.Class("unify.ui.container.VirtualScroll", {
 			}
 		},
 		
-		__getWidgetFromPool : function() {
+		__getWidgetFromPool : function(model) {
 			var widgetPool = this.__widgetPool;
+			var adler32 = core.crypt.Adler32;
+			var modelHash = adler32.checksum(JSON.stringify(model));
+			var hashMap = this.__modelHashes;
+			var widget;
+			var widgetHash;
+
 			if (widgetPool.length > 0) {
-				return {
-					widget: widgetPool.pop(),
-					fromPool: true
-				};
+
+				//Here we check if there is a widget already defined with this model
+				if(hashMap[modelHash]){
+
+					//now get the corresponding widget from the array...urgs
+					for(var i = 0; i<widgetPool.length; i++){
+						if(lowland.ObjectManager.getHash(widgetPool[i]) === hashMap[modelHash]){
+							return {
+								//get widget and remove item from array
+								widget: widgetPool.splice(i,1)[0],
+								fromPool: true
+							};
+						}
+					}
+					//Iterated but no luck ? Return any widget and(!) delete entry from hashmap
+					hashMap[modelHash] = null;
+
+					//Of course, save the hash for this one...might come handy later
+					widget = widgetPool.pop();
+					widgetHash = lowland.ObjectManager.getHash(widget);
+					hashMap[modelHash] = widgetHash;
+					return {
+						widget: widget,
+						fromPool: true
+					};
+
+				//No widget with this model. Fine, take any widget!
+				} else {
+
+					//Save the hash for later use
+					widget = widgetPool.pop();
+					widgetHash = lowland.ObjectManager.getHash(widget);
+					hashMap[modelHash] = widgetHash;
+
+					return {
+						widget: widget,
+						fromPool: true
+					};
+				}
+
+			//There is no widget ? Create one !
 			} else {
+				widget = this.__widgetFactory();
+				widgetHash = lowland.ObjectManager.getHash(widget);
+				//Store the modelhash as key for the widgethash which already has this model
+				hashMap[modelHash] = widgetHash;
 				return {
-					widget: this.__widgetFactory(),
+					widget: widget,
 					fromPool: false
 				};
 			}
