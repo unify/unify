@@ -78,6 +78,8 @@ core.Class("unify.ui.container.VirtualScroll", {
 		},
 		
 		__applyModel : function(model) {
+			//new model new hashes. Overwrite old model hashes list
+			this.__modelHashes = {};
 			var rows = Math.ceil(model.length / this.getColumns());
 			this.getChildrenContainer().setHeight(rows * this.getElementHeight());
 			this.__debouncedReflow();
@@ -229,7 +231,7 @@ core.Class("unify.ui.container.VirtualScroll", {
 
 				//Here we check if there is a widget already defined with this model
 				if(hashMap[modelHash]){
-					
+
 					//now get the corresponding widget from the array...urgs
 					for(var i = 0; i<widgetPool.length; i++){
 						if(lowland.ObjectManager.getHash(widgetPool[i]) === hashMap[modelHash]){
