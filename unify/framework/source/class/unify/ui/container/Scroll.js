@@ -366,6 +366,7 @@ qx.Class.define("unify.ui.container.Scroll", {
       var Style=qx.bom.element.Style;
       var Transform=unify.bom.Transform;
       var self = this;
+      Style.set(contentElement,"transformOrigin","0% 0%",false);
 
       var render = function(left, top, zoom, event) {
         if(self.$$disposed){
@@ -373,10 +374,7 @@ qx.Class.define("unify.ui.container.Scroll", {
         }
         zoom=(zoom!==undefined)?zoom:1;
         self.__inAnimation = !!self.__inTouch;//TODO this evaluates to false during deceleration!
-        Style.setStyles(contentElement,{
-          "transform":Transform.accelTranslate((-left) + 'px', (-top) + 'px')+" "+Transform.accelScale(zoom,zoom),
-          "transformOrigin":"0% 0%"
-        });
+        Style.set(contentElement,"transform",Transform.accelTranslate((-left) + 'px', (-top) + 'px')+" "+Transform.accelScale(zoom,zoom),false);
 
         //update internal cache
         self.__scrollLeft=left;
