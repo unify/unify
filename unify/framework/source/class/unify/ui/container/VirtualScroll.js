@@ -77,6 +77,14 @@ core.Class("unify.ui.container.VirtualScroll", {
 			return this.__widgetMap;
 		},
 		
+		/**
+		 * Resets the modelHashes cache and triggers a reflow
+		 */
+		clearScrollerCache : function(){
+			this.__modelHashes = {};
+			this.__reflow();
+		},
+
 		__applyModel : function(model) {
 			//new model new hashes. Overwrite old model hashes list
 			this.__modelHashes = {};
