@@ -201,7 +201,9 @@ qx.Class.define("unify.ui.basic.Label", {
      */
     _applyValue : function(value) {
       this.__contentSize = null;
-      this.invalidateLayoutChildren();
+      if(this.getAutoCalculateSize()){
+        this.invalidateLayoutChildren();
+      }
       qx.bom.Label.setValue(this.getElement(), value);
     },
 
