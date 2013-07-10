@@ -271,14 +271,17 @@ qx.Class.define("unify.ui.core.Widget", {
 
 
       if (value === "visible") {
-        Style.setStyles(container, {"display":"block","visibility":""}); // TODO: Block right? or simply null?
+        Style.set(container,"display","block",false);// TODO: Block right? or simply null/""?
+        Style.set(container,"visibility","",false);
       } else if(value=== "hidden") {
         //use visibility:hidden because browsers do not reflow for visibility changes
         //downside is, that a child with visibility:visible would 'shine through', so make sure not to use it
         //if that effect is not intended
-        Style.setStyles(container, {"display":"block","visibility":"hidden"});
+        Style.set(container,"display","block",false);
+        Style.set(container,"visibility","hidden",false);
       } else {
-        Style.setStyles(container, {"display":"none","visibility":""});
+        Style.set(container,"display","none",false);
+        Style.set(container,"visibility","",false);
       }
 
       // only force a layout update if visibility change from/to "exclude"
@@ -795,14 +798,12 @@ qx.Class.define("unify.ui.core.Widget", {
             top = userOverride.newPosition.top;
             parentVirtualPosition = {left: 0, top: 0};
           }
+          var Style=qx.bom.element.Style;
 
-          qx.bom.element.Style.setStyles(element, {
-            position: "absolute",
-            left: (left + parentVirtualPosition.left) + "px",
-            top: (top + parentVirtualPosition.top) + "px",
-            width: width + "px",
-            height: height + "px"
-          });
+          Style.set(element,"left",(left + parentVirtualPosition.left) + "px",false);
+          Style.set(element,"top",(top + parentVirtualPosition.top) + "px",false);
+          Style.set(element,"width", width + "px",false);
+          Style.set(element,"height", height + "px",false);
         }
       }
 
@@ -1629,7 +1630,7 @@ qx.Class.define("unify.ui.core.Widget", {
             element.setAttribute("unifyclass",this.classname);
             element.setAttribute("appearance",this.getAppearance());
           }
-
+          qx.bom.element.Style.set(element,"position","absolute",false);
           var style = this.__style;
           if (style) {
             qx.bom.element.Style.setStyles(element, style);
