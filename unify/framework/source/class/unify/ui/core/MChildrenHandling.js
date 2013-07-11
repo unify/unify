@@ -21,6 +21,33 @@ core.Class("unify.ui.core.MChildrenHandling", {
 		},
 		
 		/**
+		 * Add a widget before another already inserted widget
+		 *
+		 * @param child {LayoutItem} widget to add
+		 * @param before {LayoutItem} widget before the new widget will be inserted.
+		 * @param options {Map?null} Optional layout data for widget.
+		 * @return {void}
+		 */
+		addBefore : function(child, before, options)
+		{
+			this._addBefore.apply(this, arguments);
+		},
+
+		/**
+		 * Add a widget after another already inserted widget
+		 *
+		 * @param child {LayoutItem} widget to add
+		 * @param after {LayoutItem} widget, after which the new widget will
+		 *   be inserted
+		 * @param options {Map?null} Optional layout data for widget.
+		 * @return {void}
+		 */
+		addAfter : function(child, after, options)
+		{
+			this._addAfter.apply(this, arguments);
+		},
+
+		/**
 		 * Adds new a @child {unify.ui.core.VisibleBox} widget to this widget.
 		 * Optional an @options {Map?} map can be given defining layout data for widget.
 		 * This parameters are documented in each layout manager.
@@ -61,9 +88,9 @@ core.Class("unify.ui.core.MChildrenHandling", {
 		},
 		
 		/**
-		 * Set a layout manager @layout {unify.ui.layout.Base} for the widget. 
-		 * A layout manager can only be connected with one widget. Reset the 
-		 * connection with a previous widget first, if you like to use it in 
+		 * Set a layout manager @layout {unify.ui.layout.Base} for the widget.
+		 * A layout manager can only be connected with one widget. Reset the
+		 * connection with a previous widget first, if you like to use it in
 		 * another widget instead.
 		 */
 		setLayout : function(layout) {
