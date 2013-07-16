@@ -80,6 +80,8 @@
 			indexOf : unify.ui.core.MRemoteChildrenHandling.prototype.indexOf,
 			add : unify.ui.core.MRemoteChildrenHandling.prototype.add,
 			addAt : unify.ui.core.MRemoteChildrenHandling.prototype.addAt,
+			addBefore : unify.ui.core.MRemoteChildrenHandling.prototype.addBefore,
+	                addAfter : unify.ui.core.MRemoteChildrenHandling.prototype.addAfter,
 			getChildren : unify.ui.core.MRemoteChildrenHandling.prototype.getChildren,
 			setStyle : unify.ui.core.MRemoteChildrenHandling.prototype.setStyle,
 			getStyle : unify.ui.core.MRemoteChildrenHandling.prototype.getStyle,
