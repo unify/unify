@@ -20,7 +20,7 @@
  */
 core.Class("unify.view.ViewManager", {
 	include : [unify.ui.container.Composite],
-	implement : [unify.view.IViewManager],
+	implement : [unify.view.IViewManager, unify.ui.core.IPopUp],
 	
 	/*
 	----------------------------------------------------------------------------
@@ -158,10 +158,10 @@ core.Class("unify.view.ViewManager", {
 		/**
 		 * {Boolean} Returns if view manager handles modal views
 		 */
-		getModal : function() {
-			return (this.getDisplayMode() == "modal");
+		getPopUpType : function(){
+			return this.getDisplayMode();
 		},
-		
+
 		getCurrentView : function() {
 			return this.__currentView;
 		},
@@ -382,7 +382,7 @@ core.Class("unify.view.ViewManager", {
 		 * an optional @callback {Function?null} is called.
 		 */
 		hide : function(callback) {
-			if (!this.getModal()) {
+			if (this.getPopUpType() != "modal") {
 				unify.ui.container.Composite.prototype.hide.call(this);
 				this.__deactivate();
 			} else {
@@ -420,7 +420,7 @@ core.Class("unify.view.ViewManager", {
 			if(!this.__initialized){
 				this.init();
 			}
-			if (!this.getModal()) {
+			if (this.getPopUpType() != "modal") {
 				this.__activate();
 				unify.ui.container.Composite.prototype.show.call(this);
 			} else {
@@ -813,11 +813,11 @@ core.Class("unify.view.ViewManager", {
 				view.setActive(true);
 			}
 			
-			if(callee && callee.getModal()){
+			if(callee && callee.getPopUpType() == "modal"){
 				return;// got activated by a  modal viewmanager
 			}
 
-			if(this.getModal()){
+			if(this.getPopUpType() == "modal"){
 				//deactivate all other active viewmanagers
 				var deactivated= this.__deactivatedManagers={};
 				var managers=unify.view.ViewManager.__managers;
@@ -853,10 +853,10 @@ core.Class("unify.view.ViewManager", {
 				view.setActive(false);
 			}
 			
-			if(callee && callee.getModal()){
+			if(callee && callee.getPopUpType() == "modal"){
 				return;// got deactivated by a  modal viewmanager
 			}
-			if(this.getModal()){
+			if(this.getPopUpType() == "modal"){
 				//reactivate the viewmanagers that got deactivated by this viewmanager
 				var managers=this.__deactivatedManagers;
 				for(var id in managers){

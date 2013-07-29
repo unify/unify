@@ -6,7 +6,7 @@
 		Homepage: unify-project.org
 		License: MIT + Apache (V2)
 		Copyright: 2009-2011 Deutsche Telekom AG, Germany, http://telekom.com
-							 2012 Sebastian Fastner, Mainz, Germany, http://unify-training.com
+							2012 Sebastian Fastner, Mainz, Germany, http://unify-training.com
 
 ===============================================================================================
 */
@@ -23,7 +23,7 @@ core.Class("unify.ui.core.PopOverManager", {
 	
 	/*
 	----------------------------------------------------------------------------
-		 CONSTRUCTOR
+		CONSTRUCTOR
 	----------------------------------------------------------------------------
 	*/
 		
@@ -79,7 +79,7 @@ core.Class("unify.ui.core.PopOverManager", {
 
 	/*
 	----------------------------------------------------------------------------
-		 MEMBERS
+		MEMBERS
 	----------------------------------------------------------------------------
 	*/
 		
@@ -172,7 +172,7 @@ core.Class("unify.ui.core.PopOverManager", {
 						lowland.bom.Style.set(mblocker, style);
 						mSet = true;
 
-					} else if ( (!pSet && type === false) || (!pSet && type === "popup")){
+					} else if ( (!pSet && type === false) || (!pSet && type === "popup") || (!pSet && type === "popover")){
 						var styleState = visible[i].getUserData("blockerState");
 						if (styleState) {
 							var val = styleState;
@@ -252,7 +252,7 @@ core.Class("unify.ui.core.PopOverManager", {
 			if (jasy.Env.getValue("debug")) {
 				this.debug("Show: " + (widget&&widget.constructor));
 				//should be switched to IPopUp in the future
-				core.Interface.assert(widget, unify.ui.core.IPopOver);
+				core.Interface.assert(widget, unify.ui.core.IPopUp);
 			}
 			var pos = position || "center";
 

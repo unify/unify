@@ -17,11 +17,11 @@
  */
 core.Class("unify.ui.container.Overlay", {
 	include : [unify.ui.container.Composite, unify.ui.core.MChildControl, unify.ui.core.MRemoteChildrenHandling],
-	implement : [unify.ui.core.IPopOver],
+	implement : [unify.ui.core.IPopUp],
 	
 	events : {
 		/** Event thrown if overlay visibility is changed to hidden */
-		"hidden" : unify.event.type.Event, 
+		"hidden" : unify.event.type.Event,
 		
 		/** Event thrown if overlay visibility is changed to shown */
 		"shown" : unify.event.type.Event
@@ -58,7 +58,7 @@ core.Class("unify.ui.container.Overlay", {
 			apply: function(value, old) { this._applyTrigger(value, old); }
 		},
 
-		 /** optional strategy to ponsition overlay relative to trigger
+		/** optional strategy to ponsition overlay relative to trigger
 			* must be a map containing a value for x and y axis
 			* the value can be "left,right,center,top,bottom, a percentage of the axis size or a pixel value (relative to axis start)
 			*/
@@ -68,11 +68,11 @@ core.Class("unify.ui.container.Overlay", {
 			apply: function(value, old) { this._applyPositionProperty(value, old); }
 		},
 		
-		modal : {
-			type: "Boolean",
-			init: true
+		popUpType : {
+			type: "String",
+			init: "modal"
 		},
-		
+
 		staticPosition : {
 			init: null,
 			nullable: true,
@@ -296,7 +296,7 @@ core.Class("unify.ui.container.Overlay", {
 			return {
 				left: arrowLeft,
 				top: arrowTop
-			}
+			};
 		},
 		
 		/**
