@@ -15,7 +15,7 @@
  */
 core.Class("unify.ui.other.ActivityIndicator", {
 	include : [unify.ui.container.Composite, unify.ui.core.MChildControl],
-	implement : [unify.ui.core.IPopOver],
+	implement : [unify.ui.core.IPopUp],
 	
 	properties : {
 		/**
@@ -30,12 +30,13 @@ core.Class("unify.ui.other.ActivityIndicator", {
 			type: "String",
 			apply: function(value) { this._applyText(value); }
 		},
-		
-		/** {Boolean} Is activity indicator modal */
-		modal : {
-			type: "Boolean",
-			init: true
+
+		popUpType : {
+			type : "String",
+			init : "modal"
 		}
+
+
 	},
 	
 	construct : function() {

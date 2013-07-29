@@ -112,7 +112,7 @@ core.Class("unify.view.helper.ViewOverlayManager", {
 		 */
 		show : function(id, trigger) {
 			var viewManager = unify.view.ViewManager.get(id);
-			var modal = viewManager.getModal();
+			var modal = viewManager.getPopUpType() == "modal";
 			
 			if (!viewManager.isInitialized()) {
 				viewManager.init();
@@ -201,7 +201,7 @@ core.Class("unify.view.helper.ViewOverlayManager", {
 			};
 			
 
-			if (viewManager.getModal()) {
+			if (viewManager.getPopUpType() == "modal") {
 				PopOverManager.hide(viewManager);
 				finalize();
 			} else {
