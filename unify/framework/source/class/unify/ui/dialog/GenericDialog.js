@@ -31,7 +31,7 @@
 							unify.ui.core.MChildControl,
 							unify.ui.core.MRemoteChildrenHandling
 						 ],
-		implement : [unify.ui.core.IPopOver],
+		implement : [unify.ui.core.IPopUp],
 		
 		/*
 		 ----------------------------------------------------------------------------
@@ -88,10 +88,10 @@
 			removeAll : unify.ui.core.MRemoteChildrenHandling.prototype.removeAll,
 			remove : unify.ui.core.MRemoteChildrenHandling.prototype.remove,
 			
-			getModal : function() {
-				return true;
+			getPopUpType : function(){
+				return "modal";
 			},
-			
+
 			/**
 			 * Get children container that is accessed via remote child handling
 			 *
