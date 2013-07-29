@@ -146,7 +146,7 @@ core.Class("unify.view.helper.ViewOverlayManager", {
 			} else {
 				popOverElement = this.__getOverlay(viewManager);
 				popOverElement.set({
-					modal: false
+					popUpType: "popup"
 				});
 	
 				

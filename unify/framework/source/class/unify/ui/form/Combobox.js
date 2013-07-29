@@ -137,7 +137,7 @@ core.Class("unify.ui.form.Combobox", {
 			}
 			
 			var overlay = this.getChildControl("overlay");
-			overlay.setModal(false);
+			overlay.setPopUpType("popup");
 			var container = overlay.getChildControl("container");
 			container.setWidth(this.getWidth());
 			container.setAllowGrowX(false);
@@ -156,7 +156,7 @@ core.Class("unify.ui.form.Combobox", {
 			}
 			overlay.add(container, {edge: 0});
 			
-			unify.ui.core.PopOverManager.getInstance().show(overlay, this)
+			unify.ui.core.PopOverManager.getInstance().show(overlay, this);
 		},
 		
 		__onButtonExecute : function(e) {
