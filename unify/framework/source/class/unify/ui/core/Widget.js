@@ -1473,7 +1473,7 @@ core.Class("unify.ui.core.Widget", {
 			}
 			if (map.width) {
 				this.setWidth(parseInt(map.width,10));
-				delete map.height;
+				delete map.width;
 			}
 
 			//margins
