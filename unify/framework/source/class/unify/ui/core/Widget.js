@@ -187,43 +187,6 @@ core.Class("unify.ui.core.Widget", {
 				}
 			}
 			return unify.ui.core.VisibleBox.prototype.addNativeListener.apply(this, args);
-			
-			var nlr = this.__nativeListenerRegistry;
-			if (!nlr) {
-				nlr = this.__nativeListenerRegistry = [];
-			}
-			
-			
-			// Save global error bound method to native listener registry to find on removeNativeListener
-			var nlrObj = {
-				element : args[0],
-				event: args[1], 
-				callback: lowland.ObjectManager.getHash(args[2]),
-				context: lowland.ObjectManager.getHash(args[3])
-			};
-			
-			//Check if this listener is already bound
-			var found = null;
-			for (var i=0,ii=nlr.length; i<ii; i++) {
-				var nlrOldObj = nlr[i];
-				if (nlrOldObj.element === nlrObj.element &&
-						nlrOldObj.event === nlrObj.event &&
-						nlrOldObj.callback === nlrObj.callback &&
-						nlrOldObj.context === nlrObj.context) {
-							found = i;
-							if (jasy.Env.getValue("debug")) {
-								this.debug(this.toString() + " binds " + nlrOldObj.event + " twice");
-							}
-							break;
-					}
-				}
-			
-			//Only add Listener if not bound twice
-			if (found === null) {
-				nlrObj.observer = args[2] = unify.core.GlobalError.observeMethod(args[2]);
-				nlr.unshift(nlrObj);
-				unify.ui.core.VisibleBox.prototype.addNativeListener.apply(this, args);
-			}
 		},
 		
 		/**
@@ -239,39 +202,8 @@ core.Class("unify.ui.core.Widget", {
 				}
 			}
 			return unify.ui.core.VisibleBox.prototype.removeNativeListener.apply(this, args);
-			var nlr = this.__nativeListenerRegistry;
-			
-			var args = arguments;
-			if (typeof(type) == "string") {
-				args = [this.getEventElement()];
-				for (var i=0,ii=arguments.length; i<ii; i++) {
-					args.push(arguments[i]);
-				}
-			}
-			
-			var found = null;
-			if (nlr) {
-				for (var i=0,ii=nlr.length; i<ii; i++) {
-					var nlrObj = nlr[i];
-					
-					if (nlrObj.element === args[0] &&
-							nlrObj.event === args[1] &&
-							nlrObj.callback === lowland.ObjectManager.getHash(args[2]) &&
-							nlrObj.context === lowland.ObjectManager.getHash(args[3])) {
-						args[2] = nlrObj.observer;
-						found = i;
-						break;
-					}
-				}
-			}
-			
-			if (found !== null) {
-				nlr.splice(found, 1);
-			}
-			
-			unify.ui.core.VisibleBox.prototype.removeNativeListener.apply(this, args);
 		},
-		
+
 		/** {Map} Padding of element */
 		__padding : null,
 
