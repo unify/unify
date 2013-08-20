@@ -29,6 +29,28 @@ if (jasy.Env.isSet("runtime", "browser"))
   });
 
   suite.test("fonts", function() {
+    jasy.Asset.addData({
+      profiles : [],
+      assets : {
+        "testfont.woff" : {
+          p:0,
+          u:"testfont"
+        },
+        "testfont.ttf" : {
+          p:0,
+          u:"testfont"
+        },
+        "testfont.svg" : {
+          p:0,
+          u:"testfont"
+        },
+        "testfont.eot" : {
+          p:0,
+          u:"testfont"
+        }
+      }
+    });
+
     var t = new unify.theme.Theme({
       fonts: {
         font0: {},
@@ -42,7 +64,7 @@ if (jasy.Env.isSet("runtime", "browser"))
         },
         font2: {
           family: "Droid",
-          src: "Droid.ttf"
+          webfont: new unify.theme.WebFont("testfont")
         }
       }
     });

@@ -599,56 +599,58 @@ core.Class("unify.ui.core.Widget", {
 			var selector = this.__appearanceSelector;
 			var oldStyle, newStyle, key;
 
-			// Check for requested selector update
-			if (this.__updateSelector) {
-				// Clear flag
-				this.__updateSelector = false;
+			if (manager) {
+				// Check for requested selector update
+				if (this.__updateSelector) {
+					// Clear flag
+					this.__updateSelector = false;
 
-				// Check if the selector was created previously
-				if (selector) {
-					// Query old style
-					oldStyle = manager.resolveStyle(selector, states);
-					//oldStyle = manager.styleFrom(selector, states, null, this.getAppearance());
+					// Check if the selector was created previously
+					if (selector) {
+						// Query old style
+						oldStyle = manager.resolveStyle(selector, states);
+						//oldStyle = manager.styleFrom(selector, states, null, this.getAppearance());
 
-					// Clear current selector (to force recompute)
-					selector = null;
+						// Clear current selector (to force recompute)
+						selector = null;
+					}
 				}
-			}
-			// Build selector
-			if (!selector) {
-				selector = this.__appearanceSelector = this.getAppearance();
+				// Build selector
 				if (!selector) {
-					this.warn("No appearance set on " + this.constructor);
-					return;
+					selector = this.__appearanceSelector = this.getAppearance();
+					if (!selector) {
+						this.warn("No appearance set on " + this.constructor);
+						return;
+					}
 				}
-			}
 
-			// Query current selector
-			//newStyle = manager.styleFrom(selector, states, null, this.getAppearance());
-			newStyle = manager.resolveStyle(selector, states);
+				// Query current selector
+				//newStyle = manager.styleFrom(selector, states, null, this.getAppearance());
+				newStyle = manager.resolveStyle(selector, states);
 
-			if (newStyle) {
-				if (oldStyle) {
-					var oldStyleData = {};
-					var hasOldStyleData = false;
-					for (key in oldStyle) {
-						if (newStyle[key] === undefined) {
-							hasOldStyleData = true;
-							oldStyleData[key] = null;
+				if (newStyle) {
+					if (oldStyle) {
+						var oldStyleData = {};
+						var hasOldStyleData = false;
+						for (key in oldStyle) {
+							if (newStyle[key] === undefined) {
+								hasOldStyleData = true;
+								oldStyleData[key] = null;
+							}
+						}
+						if (hasOldStyleData) {
+							this._setStyle(oldStyleData);
 						}
 					}
-					if (hasOldStyleData) {
-						this._setStyle(oldStyleData);
-					}
-				}
-				this._setStyle(newStyle);
+					this._setStyle(newStyle);
 
-			} else if (oldStyle) {
-				var styleData = {};
-				for (key in oldStyle) {
-					styleData[key] = undefined;
+				} else if (oldStyle) {
+					var styleData = {};
+					for (key in oldStyle) {
+						styleData[key] = undefined;
+					}
+					this._setStyle(styleData);
 				}
-				this._setStyle(styleData);
 			}
 
 			this.invalidateLayoutCache();

@@ -48,6 +48,8 @@ core.Class("unify.view.Root", {
 		 * Set styles of @map {Map} to the element.
 		 */
 		setStyle : unify.ui.core.MChildrenHandling.prototype.setStyle,
+		_afterAddChild : unify.ui.core.MChildrenHandling.prototype._afterAddChild,
+		_afterRemoveChild : unify.ui.core.MChildrenHandling.prototype._afterRemoveChild,
 		
 		// Root element the whole application is based upon
 		__rootElement : null,

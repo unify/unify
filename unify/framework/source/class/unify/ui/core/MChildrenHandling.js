@@ -113,6 +113,22 @@ core.Class("unify.ui.core.MChildrenHandling", {
 		 */
 		getLayout : function() {
 			return this._getLayout();
+		},
+
+		_afterAddChild : function(child) {
+			this.invalidateLayoutCache();
+			var parent = this.getParentBox();
+			if (parent) {
+				parent.invalidateLayoutChildren();
+			}
+		},
+
+		_afterRemoveChild : function() {
+			this.invalidateLayoutCache();
+			var parent = this.getParentBox();
+			if (parent) {
+				parent.invalidateLayoutChildren();
+			}
 		}
 	}
 });

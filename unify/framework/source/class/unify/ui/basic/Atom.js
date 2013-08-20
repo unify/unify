@@ -65,6 +65,8 @@ core.Class("unify.ui.basic.Atom", {
 	
 	members: {
 		setStyle : unify.ui.core.MChildrenHandling.prototype.setStyle,
+		_afterAddChild : unify.ui.core.MChildrenHandling.prototype._afterAddChild,
+		_afterRemoveChild : unify.ui.core.MChildrenHandling.prototype._afterRemoveChild,
 		
 		__imageWidget : null,
 		__labelWidget : null,

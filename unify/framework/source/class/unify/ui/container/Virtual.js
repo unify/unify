@@ -45,6 +45,8 @@ core.Class("unify.ui.container.Virtual", {
 
 	members : {
 		setStyle : unify.ui.core.MChildrenHandling.prototype.setStyle,
+		_afterAddChild : unify.ui.core.MChildrenHandling.prototype._afterAddChild,
+		_afterRemoveChild : unify.ui.core.MChildrenHandling.prototype._afterRemoveChild,
 			
 		_createElement : function() {
 			return document.createDocumentFragment();
