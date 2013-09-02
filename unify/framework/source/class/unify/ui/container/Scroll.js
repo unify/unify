@@ -804,8 +804,7 @@ core.Class("unify.ui.container.Scroll", {
 				this.__showIndicators();
 				
 			}
-			var ne=e;
-			this.__scroller.doTouchMove(ne.touches, +ne.timeStamp, ne.scale);
+			this.__scroller.doTouchMove(ne.touches, Date.now(), e.scale);
 		},
 		
 		/**
@@ -826,7 +825,7 @@ core.Class("unify.ui.container.Scroll", {
 			this.__showIndicatorsOnNextTouchMove=false;
 			if (this.__isMoved) {
 				this.__isMoved = false;
-				this.__scroller.doTouchEnd(+e.timeStamp);
+				this.__scroller.doTouchEnd(Date.now());
 			}
 		},
 		
