@@ -1092,6 +1092,9 @@ core.Class("unify.ui.core.Widget", {
 		 */
 		invalidateLayoutChildren : function()
 		{
+			if (this.isDisposed()) {
+				return;
+			}
 			var layout = this.__layoutManager;
 			if (layout) {
 				layout.invalidateChildrenCache();
