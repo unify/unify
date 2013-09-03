@@ -739,14 +739,14 @@ core.Class("unify.ui.container.Scroll", {
 
 			//var ne=e.getNativeEvent();
 			var ne = e;
-			var touches=ne.touches;
+			var touches=e.touches;
 
 			// Don't react if initial down happens on a form element
 			if (touches[0].target.tagName && touches[0].target.tagName.match(/input|textarea|select/i)) {
 				return;
 			}
 
-			this.__scroller.doTouchStart(touches, +ne.timeStamp);
+			this.__scroller.doTouchStart(touches, +e.timeStamp);
 			lowland.bom.Events.preventDefault(e);
 			
 			var root = this.__root;
@@ -804,7 +804,7 @@ core.Class("unify.ui.container.Scroll", {
 				this.__showIndicators();
 				
 			}
-			this.__scroller.doTouchMove(ne.touches, Date.now(), e.scale);
+			this.__scroller.doTouchMove(e.touches, Date.now(), e.scale);
 		},
 		
 		/**
