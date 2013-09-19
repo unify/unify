@@ -154,7 +154,7 @@ core.Class("unify.view.RemoteView",
 				{
 					delete this.__requestId;
 					var hash = this.getHash();
-					if(this.__activityIndicator.isShown(hash)){
+					if(this.__activityIndicator && this.__activityIndicator.isShown(hash)){
 						this.__activityIndicator.hide(hash);
 					}
 					this.__appliedVersion = cachedEntry.created;
