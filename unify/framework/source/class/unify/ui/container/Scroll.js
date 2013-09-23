@@ -690,15 +690,15 @@ core.Class("unify.ui.container.Scroll", {
 			
 			if (data.orientation == "horizontal") {
 				var pos = this.__indicatorMovePos = data.pos;
-				this.__scroller.doTouchStart([{pageX: pos, pageY: 0}], +data.nativeEvent.timeStamp);
+				this.__scroller.doTouchStart([{pageX: pos, pageY: 0}], Date.now());
 			} else {
 				var pos = this.__indicatorMovePos = data.pos;
-				this.__scroller.doTouchStart([{pageX: 0, pageY: pos}], +data.nativeEvent.timeStamp);
+				this.__scroller.doTouchStart([{pageX: 0, pageY: pos}], Date.now());
 			}
 		},
 		
 		__onIndicatorMoveEnd : function(e) {
-			this.__scroller.doTouchEnd(+e.getData().nativeEvent.timeStamp);
+			this.__scroller.doTouchEnd(Date.now());
 		},
 		
 		__onIndicatorMove : function(e) {
@@ -708,10 +708,10 @@ core.Class("unify.ui.container.Scroll", {
 			
 			if (data.orientation == "horizontal") {
 				var pos = data.pos;
-				this.__scroller.doTouchMove([{pageX: pos, pageY: 0}], +data.nativeEvent.timeStamp, 1.0);
+				this.__scroller.doTouchMove([{pageX: pos, pageY: 0}], Date.now(), 1.0);
 			} else {
 				pos = data.pos;
-				this.__scroller.doTouchMove([{pageX: 0, pageY: pos}], +data.nativeEvent.timeStamp, 1.0);
+				this.__scroller.doTouchMove([{pageX: 0, pageY: pos}], Date.now(), 1.0);
 			}
 		},
 
@@ -746,7 +746,7 @@ core.Class("unify.ui.container.Scroll", {
 				return;
 			}
 
-			this.__scroller.doTouchStart(touches, +e.timeStamp);
+			this.__scroller.doTouchStart(touches, Date.now());
 			lowland.bom.Events.preventDefault(e);
 			
 			var root = this.__root;
@@ -831,7 +831,7 @@ core.Class("unify.ui.container.Scroll", {
 		
 		abortTouch : function() {
 			this.__onTouchEnd({
-				timeStamp: (new Date).valueOf()
+				timeStamp: Date.now()
 			});
 		},
 		
