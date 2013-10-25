@@ -13,8 +13,8 @@
 /** #require(lowland.bom.event.MouseEvents) */
 
 (function(global) {
-
-	var emulateTouch = unify.bom.client.Device.DESKTOP;
+	//Test for touch devices instead of user agent sniffing
+	var emulateTouch = !lowland.bom.Events.isSupported('touchend');//unify.bom.client.Device.DESKTOP;
 	
 	var leftMouseButton;
 	
