@@ -63,7 +63,7 @@ core.Class("unify.ui.container.Scroll", {
 				this.__hideUntappedIndicators.lowDelay(1500, this);
 			}.bind(this);
 			this.addListener("changeVisibility", function(e) {
-				if (e.getData() == "visible") {
+				if (e.getValue() == "visible") {
 					this.__inInitPhase = true;
 					cb();
 				}
@@ -856,7 +856,7 @@ core.Class("unify.ui.container.Scroll", {
 		 * @param e {Event} Visibility event
 		 */
 		__onChangeVisibility : function(e) {
-			if (e.getData() !== "visible") {
+			if (e.getValue() !== "visible") {
 				this.__hideIndicators();
 			}
 		},
