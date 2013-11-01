@@ -54,11 +54,16 @@ core.Class("unify.ui.form.Button", {
 
 	members: {
 		_createElement : function() {
-			var e = unify.ui.basic.Atom.prototype._createElement.call(this);
+			var element = unify.ui.basic.Atom.prototype._createElement.call(this);
+			if(lowland.bom.Events.isSupported("touchend")){
+				lowland.bom.Events.listen(element, "touchend", core.Function.bind(this.__onTap, this), false);
+			} else {
+				lowland.bom.Events.listen(element, "click", core.Function.bind(this.__onTap, this), false);
+			}
+			
+			//this.addNativeListener(e, "tap", this.__onTap, this);
 
-			this.addNativeListener(e, "tap", this.__onTap, this);
-
-			return e;
+			return element;
 		},
 
 		/**
