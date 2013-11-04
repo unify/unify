@@ -54,14 +54,17 @@ core.Class("unify.ui.form.Button", {
 
 	members: {
 
-		/* remember the touchstart element */
-		__touchElement : null,
+		/* remember the widget start element */
+		__widgetElement : null,
+
+		/* remember the touch start coordinates */
+		__touchCoords : null,
 
 		/* remember the bind function for proper unlisten */
 		__touchBind : null,
 
 		_createElement : function() {
-			var element = this.__touchElement = unify.ui.basic.Atom.prototype._createElement.call(this);
+			var element = this.__widgetElement = unify.ui.basic.Atom.prototype._createElement.call(this);
 			if(lowland.bom.Events.isSupported("touchstart")){
 				lowland.bom.Events.listen(element, "touchstart", core.Function.bind(this.__onTouchStart, this), false);
 			} else {
@@ -95,32 +98,47 @@ core.Class("unify.ui.form.Button", {
 		 * We listen to touchstart, now we listen to toucend on the same
 		 * element
 		 */
-		__onTouchStart : function(){
+		__onTouchStart : function(e){
 			if (this.hasState("disable")) {
 				return;
 			}
-			var startElement = this.__touchElement;
+			var widgetElement = this.__widgetElement;
 			
-			//if there is already a touchBind function than it is a old function
+			this.__touchCoords = {
+				x : e.touches[0].clientX,
+				y : e.touches[0].clientY
+			};
+			//if there is already a touchBind function then it is a old function
 			if(this.__touchBind){
-				lowland.bom.Events.unlisten(startElement, "touchend", this.__touchBind , false);
+				lowland.bom.Events.unlisten(widgetElement, "touchend", this.__touchBind , false);
 				this.__touchBind = null;
 			}
 
 			this.__touchBind = core.Function.bind(this.__onTouchEnd, this);
-			lowland.bom.Events.listen(startElement, "touchend", this.__touchBind , false);
+			lowland.bom.Events.listen(widgetElement, "touchend", this.__touchBind , false);
 		},
 
 		/**
 		 * should only be called if a touchend was triggered on the
 		 * same element as touchstart
 		 */
-		__onTouchEnd : function(){
+		__onTouchEnd : function(e){
+			if(e.changedTouches && e.changedTouches[0]){
+				var fTouch = this.__touchCoords;
+				var touch = e.changedTouches[0];
+				
+				var x = Math.abs(touch.clientX - fTouch.x);
+				var y = Math.abs(touch.clientY - fTouch.y);
+				
+				if (x+y <= 10) {
+					this.fireEvent("execute");
+				}
+			}
 
-			lowland.bom.Events.unlisten(this.__touchElement, "touchend", this.__touchBind, false);
+			lowland.bom.Events.unlisten(this.__widgetElement, "touchend", this.__touchBind, false);
 			this.__touchBind = null;
+			this.__touchCoords = null;
 
-			this.fireEvent("execute");
 		},
 
 		/**
