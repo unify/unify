@@ -33,7 +33,7 @@ core.Class("unify.ui.form.Button", {
 			init: true
 		},
 	
-		/** @deprecated */	
+		/** @deprecated */
 		directEvent : {
 			type: "Boolean",
 			init: false
@@ -53,12 +53,19 @@ core.Class("unify.ui.form.Button", {
 	},
 
 	members: {
+
+		/* remember the touchstart element */
+		__touchElement : null,
+
+		/* remember the bind function for proper unlisten */
+		__touchBind : null,
+
 		_createElement : function() {
-			var element = unify.ui.basic.Atom.prototype._createElement.call(this);
-			if(lowland.bom.Events.isSupported("touchend")){
-				lowland.bom.Events.listen(element, "touchend", core.Function.bind(this.__onTap, this), false);
+			var element = this.__touchElement = unify.ui.basic.Atom.prototype._createElement.call(this);
+			if(lowland.bom.Events.isSupported("touchstart")){
+				lowland.bom.Events.listen(element, "touchstart", core.Function.bind(this.__onTouchStart, this), false);
 			} else {
-				lowland.bom.Events.listen(element, "click", core.Function.bind(this.__onTap, this), false);
+				lowland.bom.Events.listen(element, "click", core.Function.bind(this.__onClick, this), false);
 			}
 			
 			//this.addNativeListener(e, "tap", this.__onTap, this);
@@ -85,11 +92,43 @@ core.Class("unify.ui.form.Button", {
 		},
 
 		/**
+		 * We listen to touchstart, now we listen to toucend on the same
+		 * element
+		 */
+		__onTouchStart : function(){
+			if (this.hasState("disable")) {
+				return;
+			}
+			var startElement = this.__touchElement;
+			
+			//if there is already a touchBind function than it is a old function
+			if(this.__touchBind){
+				lowland.bom.Events.unlisten(startElement, "touchend", this.__touchBind , false);
+				this.__touchBind = null;
+			}
+
+			this.__touchBind = core.Function.bind(this.__onTouchEnd, this);
+			lowland.bom.Events.listen(startElement, "touchend", this.__touchBind , false);
+		},
+
+		/**
+		 * should only be called if a touchend was triggered on the
+		 * same element as touchstart
+		 */
+		__onTouchEnd : function(){
+
+			lowland.bom.Events.unlisten(this.__touchElement, "touchend", this.__touchBind, false);
+			this.__touchBind = null;
+
+			this.fireEvent("execute");
+		},
+
+		/**
 		 * onTap handler on button
 		 *
 		 * @param e {Event} Tap event
 		 */
-		__onTap : function(e) {
+		__onClick : function() {
 			if (this.hasState("disable")) {
 				return;
 			}
