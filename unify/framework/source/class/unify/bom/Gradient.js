@@ -217,8 +217,8 @@ core.Module('unify.bom.Gradient', {
 			gradient = "-o-linear-gradient(" + geckoAngle + "deg, " + colorStops.join(",") + ")";
 		}
 		if (jasy.Env.getValue("engine") == "trident") {
-			var version = /MSIE.(\d+)/.exec(navigator.userAgent);
-			if (version[1] && parseInt(version[1],10) < 9) {
+		    var version = /Trident.(\d+)/.exec(navigator.userAgent);
+		    if (version[1] && parseInt(version[1], 10) < 6) {
 				return null;
 			}
 			var geckoAngle = 90 - angle;

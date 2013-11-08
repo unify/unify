@@ -1603,8 +1603,8 @@ core.Class("unify.ui.core.Widget", {
 			}*/
 			
 			if (jasy.Env.getValue("engine") == "trident") {
-				var version = /MSIE.(\d+)/.exec(navigator.userAgent);
-				if (version[1] && parseInt(version[1],10) < 9) {
+				var version = /Trident.(\d+)/.exec(navigator.userAgent);
+				if (version[1] && parseInt(version[1],10) < 6) {
 					// IE<9 only transform translation
 					
 					if (style.transform) {
