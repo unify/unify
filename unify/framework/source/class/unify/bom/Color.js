@@ -22,8 +22,8 @@
 	var colorFnt;
 	
 	if (jasy.Env.getValue("engine") == "trident") {
-		var version = /MSIE.(\d+)/.exec(navigator.userAgent);
-		if (version[1] && parseInt(version[1],10) < 9) {
+	    var version = /Trident.(\d+)/.exec(navigator.userAgent);
+	    if (version[1] && parseInt(version[1], 10) < 6) {
 			colorFnt = rgb;
 		} else {
 			colorFnt = rgba;
