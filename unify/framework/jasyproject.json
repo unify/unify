@@ -37,7 +37,7 @@
 		}
 	},
 	"requires" : [{
-		"source" : "https://github.com/fastner/lowland.git",
+		"source" : "https://github.com/unify/lowland.git",
 		"version" : "master"
 	}, {
 		"source" : "https://github.com/fastner/jasy-appcache.git",
