@@ -40,7 +40,7 @@
 		"source" : "https://github.com/unify/lowland.git",
 		"version" : "master"
 	}, {
-		"source" : "https://github.com/fastner/jasy-appcache.git",
+		"source" : "https://github.com/unify/jasy-appcache.git",
 		"version" : "features/core-update-next-2"
 	}]
 }
