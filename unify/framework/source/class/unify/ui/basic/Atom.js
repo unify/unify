@@ -115,7 +115,7 @@ core.Class("unify.ui.basic.Atom", {
 			var label = this._showChildControl("label");
 			label.setValue(value);
 			//added title dom element for atoms
-			//this.getElement().setAttribute("title", value);
+			this.getElement().setAttribute("title", value);
 
 		},
 		
